@@ -4,6 +4,10 @@ Spyder Editor
 
 This is a temporary script file.
 """
+import math
+import pint
+u = pint.UnitRegistry(system='mks')
+
 def Re_pipe(Q,D,nu):
     Re=(4*Q)/(math.pi*D*nu)
     return Re.to(u.dimensionless)
