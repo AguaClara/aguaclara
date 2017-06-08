@@ -12,7 +12,11 @@ import numpy as np
 # We will use Pandas
 import pandas as pd
 # load the pipedb from a csv file
-with open('pipedatabase.csv') as pipedbfile:
+    
+import os.path    
+dir_path = os.path.dirname(__file__)
+csv_path = os.path.join(dir_path, 'pipe_database.csv')
+with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
     
 # Returns outer diameter of pipe corresponding to nominal diameter. 
