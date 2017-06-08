@@ -3,8 +3,8 @@
 ######################### Imports #########################
 import math
 
-import pint 
-u= pint.UnitRegistry(system='mks')
+from AguaClara_design.units import unit_registry as u
+
 
 #######################Simple geometry#######################
 

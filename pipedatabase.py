@@ -7,7 +7,10 @@ Created on Thu Jun  8 18:20:38 2017
 
 #Let's begin to create the pipe database
 # https://docs.python.org/2/library/csv.html
+from AguaClara_design.units import unit_registry as u
+import numpy as np
 # We will use Pandas
+import pandas as pd
 # load the pipedb from a csv file
 with open('pipe database.csv') as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
