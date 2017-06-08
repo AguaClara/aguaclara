@@ -1,5 +1,11 @@
 # This file contains unit process functions pertaining to the design of physical/chemical unit processes for AguaClara water treatment plants.
 
+######################### Imports #########################
+import math
+
+import pint 
+u= pint.UnitRegistry(system='mks')
+
 ######################### Hydraulics ######################### 
 
 def Re_pipe(Q,D,nu):
@@ -34,8 +40,8 @@ def HL(Q,D,L,nu,e,K):
 	
 ######################### Flocculation #########################
 
-# Function for calculating precipitate concentration
-def C_Prec(Dose: 'in mg/L'): 
+# Calculates precipitate concentration given Aluminum concentration.
+def C_Prec(D: 'Dose in mg/L as Al'): 
 	return Dose.to(u.mg/u.L)*1.3/0.027/13 # Changed 1.039384 to 1.3
 
 # Function for calculation phi_0
