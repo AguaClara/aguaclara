@@ -1,3 +1,5 @@
+# units allows us to include units in all of our calculations
+from AguaClara_design.units import unit_registry as u
 #It would be nice to display answers with a reasonable number of significant digits
 # x is a number that may include units. n is the number of significant digits to display.
 
