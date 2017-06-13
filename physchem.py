@@ -3,7 +3,7 @@
 ######################### Imports #########################
 import math
 
-from AguaClara_design.units import unit_registry as u
+from units import unit_registry as u
 
 
 #######################Simple geometry#######################
@@ -26,13 +26,41 @@ def Re_pipe(Q,D,nu):
 
 Re_TRANSITION_PIPE=2100
 
+#returns the hydraulic radius
+def R_h(w,b,openchannel):
+    if openchannel==1:
+        h=(w*b)/(w + 2*b)
+#if openchnnael==1, the channel is open. Otherwise, the channel is assumed to have sides    
+    else:
+        h=(w*b)/(2*(w+b))
+    return h.to(u.m)
+
+#returns the general hydraulic radius
+def R_hGen(A,WP):
+     hGen= A/WP 
+#Area/wetted perimeter
+     return hGen.to(u.m)
+
+#returns the Reynolds number for rectangular channel
+def Re_rect(Q,w,b,nu,openchannel):
+       rect=4*Q*R_h(w,b,openchannel)/(w*b*nu)
+#Reynolds number for rectangular channel; open = 0 if all sides are wetted; l = D and D = 4*R.h       
+       return rect.to(u.dimesnionless)
+
+#returns the Reynolds number for general cross section
+def Re_Gen(V,A,WP,nu):
+    gen=4*R_hGen(A,WP)*V/nu
+    return gen.to(u.dimensionless)
+    
+   
+       
 # Returns the friction factor for pipe flow for both laminar and turbulent flows
 def f(Q,D,nu,e):
     if Re_pipe(Q,D,nu)>=Re_TRANSITION_PIPE:
         f=0.25/(math.log10(e/(3.7*D)+5.74/Re_pipe(Q,D,nu)**0.9))**2
     else:
         f=64/Re_pipe(Q,D,nu)
-    return f*u.dimensionless
+    return f.to(u.dimensionless)
 
 # Returns the major pipe head loss (due to wall shear) for both laminar and turbulent flows.
 def HLf(Q,D,L,nu,e):
