@@ -26,8 +26,9 @@ def Re_pipe(Q,D,nu):
 
 Re_TRANSITION_PIPE=2100
 
-#returns the hydraulic radius
+
 def R_h(w,b,openchannel):
+    """ returns the hydraulic radius"""    
     if openchannel==1:
         h=(w*b)/(w + 2*b)
 #if openchnnael==1, the channel is open. Otherwise, the channel is assumed to have sides    
@@ -35,48 +36,99 @@ def R_h(w,b,openchannel):
         h=(w*b)/(2*(w+b))
     return h.to(u.m)
 
-#returns the general hydraulic radius
+
 def R_hGen(A,WP):
-     hGen= A/WP 
+    """returns the general hydraulic radius"""
+    hGen= A/WP 
 #Area/wetted perimeter
-     return hGen.to(u.m)
+    return hGen.to(u.m)
 
-#returns the Reynolds number for rectangular channel
+
 def Re_rect(Q,w,b,nu,openchannel):
-       rect=4*Q*R_h(w,b,openchannel)/(w*b*nu)
+    """returns the Reynolds number for rectangular channel"""
+    rect=4*Q*R_h(w,b,openchannel)/(w*b*nu)
 #Reynolds number for rectangular channel; open = 0 if all sides are wetted; l = D and D = 4*R.h       
-       return rect.to(u.dimesnionless)
+    return rect.to(u.dimesnionless)
 
-#returns the Reynolds number for general cross section
+
 def Re_Gen(V,A,WP,nu):
+    """returns the Reynolds number for general cross section"""
     gen=4*R_hGen(A,WP)*V/nu
     return gen.to(u.dimensionless)
-    
-   
-       
-# Returns the friction factor for pipe flow for both laminar and turbulent flows
+           
 def f(Q,D,nu,e):
+    """Returns the friction factor for pipe flow for both laminar and turbulent flows"""
     if Re_pipe(Q,D,nu)>=Re_TRANSITION_PIPE:
+#Swamee-Jain friction factor for turbulent flow; best for Re>3000 and ε/D < 0.02        
         f=0.25/(math.log10(e/(3.7*D)+5.74/Re_pipe(Q,D,nu)**0.9))**2
     else:
         f=64/Re_pipe(Q,D,nu)
     return f.to(u.dimensionless)
 
-# Returns the major pipe head loss (due to wall shear) for both laminar and turbulent flows.
+def f_rect(Q,w,b,nu,e,openchannel):
+    """returns the friction factor for a rectangular channel"""
+    if Re_rect(Q,w,b,nu,openchannel)>=Re_TRANSITION_PIPE:
+#Swamee-Jain friction factor adapted for rectangular channel.
+#D = 4*R*h in this case.         
+          f=0.25/(math.log10(e/(3.7*4*R_h(w,b,openchannel))+5.74/Re_rect(Q,w,b,nu,openchannel)**0.9))**2
+    else:
+         f=64/Re_rect(Q,w,b,nu,openchannel)
+    return f.to(u.dimensionless)   
+ 
+def f_gen(A,WP,V,nu,e):
+    """returns the friction factor for a general channel"""
+    if Re_Gen(V,A,WP,nu)>=Re_TRANSITION_PIPE:
+#Swamee-Jain friction factor adapted for any cross-section.
+#D = 4*R*h 
+        f=0.25/(math.log10(e/(3.7*4*R_hGen(A,WP))+5.74/Re_Gen(V,A,WP,nu)**0.9))**2
+    else:
+        f=64/Re_Gen(V,A,WP,nu)
+    return f.to(u.dimensionless)      
+                 
 def HLf(Q,D,L,nu,e):
+    """Returns the major head loss (due to wall shear) in a pipe for both laminar and turbulent flows"""
     HLf=f(Q,D,nu,e)*8/(u.g_0*math.pi**2)*(L*Q**2)/D**5
-    return HLf.to(u.m)
+    return HLf.to(u.m)  
 
-# Returns the minor head loss (due to expansions). This equation applies to both laminar and turbulent flows.
 def HLe(Q,D,K):
+    """Returns the minor head loss (due to expansions) in a pipe. This equation applies to both laminar and turbulent flows"""
     HLe=K*8/(u.g_0*math.pi**2)*(Q**2)/(D**4)
     return HLe.to(u.m)
 
-# Returns the total head loss due to major and minor losses. This equation applies to both laminar and turbulent flows.
 def HL(Q,D,L,nu,e,K):
+    """ Returns the total head loss due to major and minor losses in a pipe. This equation applies to both laminar and turbulent flows"""
     HL=HLf(Q,D,L,nu,e)+HLe(Q,D,K)
     return HL.to(u.m)
 
+def Hfrect(Q,w,b,L,nu,e,openchannel):
+    """Returns the major head loss (due to wall shear) in a rectangular channel for both laminar and turbulent flows"""
+    Hfrect=f_rect(Q,w,b,nu,e,openchannel)*L/(4*R_h(w,b,openchannel))*Q**2/(2*u.g_0*(w*b)**2)
+    return Hfrect.to(u.m)
+
+def Herect(Q,w,b,K):
+     """Returns the minor head loss (due to expansions) in a rectangular channel. This equation applies to both laminar and turbulent flows"""
+     Herect=K*Q**2/(2*u.g_0*(w*b)**2)
+     return Herect.to(u.m)
+ 
+def Hlrect(Q,w,b,L,K,nu,e,openchannel):
+      """ Returns the total head loss due to major and minor losses in a rectangular channel. This equation applies to both laminar and turbulent flows"""
+      Hlrect=Herect(Q,w,b,K)+Hfrect(Q,w,b,L,nu,e,openchannel)
+      return Hlrect.to(u.m)
+    
+def Hfgen(A,WP,V,L,nu,e):
+     """Returns the major head loss (due to wall shear) in the general case for both laminar and turbulent flows"""
+     Hfgen=f_gen(A,WP,V,nu,e)*L/(4*R_hGen(A,WP))*V**2/(2*u.g_0)
+     return Hfgen.to(u.m)
+ 
+def Hegen(V,K):
+    """Returns the minor head loss (due to expansions) in the general case. This equation applies to both laminar and turbulent flows"""
+    Hegen=K*V**2/(2*u.g_0)
+    return Hegen.to(u.m)
+
+def Hlgen(V,WP,L,K,nu,e):
+     """ Returns the total head loss due to major and minor losses in the general case. This equation applies to both laminar and turbulent flows"""
+     Hlgen=h
+    
 def D_Hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
     return D.to_base_units()
@@ -214,4 +266,3 @@ def pC_I(N, k):
 
 def pC_V(N, k): 
 	return 1.5*np.log10(2.0/3.0*np.pi*k*N*(6.0/np.pi)**(2.0/3.0) + 1)
-
