@@ -145,7 +145,7 @@ def headloss_manifold(Q,D,L,K,nu,e,n):
 def flow_orifice(D,h,ratio_VC_orifice):
     """Returns the flow rate of orifice"""
     if h>0*u.cm:
-        Q=ratio_VC_orifice*area_circle(D)*(2*u.g_0*h)**1/2
+        Q=ratio_VC_orifice*area_circle(D)*(2*u.g_0*h)**(1/2)
     else:
          Q=0
     return Q.to(u.L/u.s)
@@ -153,10 +153,33 @@ def flow_orifice(D,h,ratio_VC_orifice):
 def flow_orifice_vert(D,h,ratio_VC_orifice):
     """Returns the vertical flow rate of orifice"""
     if h>-D/2:
-        Q=ratio_VC_orifice*((2*u.g_0)**1/2)*scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*((h-z)**1/2),-D/2,min(D/2,h))
+        Q=ratio_VC_orifice*((2*u.g_0)**(1/2))*scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*((h-z)**(1/2)),-D/2,min(D/2,h))
     else:
         Q=0
     return Q.to(u.m)
+
+def head_orifice(D,ratio_VC_orifice,Q):
+     """Returns the head of orifice"""
+     h=(Q/(ratio_VC_orifice*area_circle(D)))**2/(2*u.g_0)
+     return h.to(u.m)
+ 
+def area_orifice(h,ratio_VC_orifice,Q):
+    """Returns the area of orifice"""
+    area=Q/(ratio_VC_orifice*(2*u.g_0*h)**(1/2))
+    return area.to(u.mm**2)
+    
+def number_orifices(Q_plant,ratio_VC_orifice,headloss_orifice,D_orifice):
+     """Returns the number of orifice"""
+     n=math.ceil(area_orifice(headloss_orifice,ratio_VC_orifice,Q_plant)/area_circle(D_orifice))
+     return n.to(u.dimensionless)
+ 
+def diam_orifice_manifold(Q_manifold_ratio,Q_tank,d_pipe,L_s,L_l,K_total,n_orifice,nu,e,ratio_VC_orifice):
+     """Returns the diameter of orifice in the manifold"""
+     d=(((1-Q_manifold_ratio)*d_pipe)**4/(((K_total + (fric(Q_tank,d_pipe,nu,e)*L_l/d_pipe))*(Q_manifold_ratio) - K_total - (fric(Q_tank,d_pipe,nu,e)*L_l/d_pipe))*(ratio_VC_orifice)**2*(n_orifice) **2)**4
+     return d.to(u.m)
+    
+    
+    
 def D_Hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
     return D.to_base_units()
