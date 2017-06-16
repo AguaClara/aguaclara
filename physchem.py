@@ -153,8 +153,8 @@ def flow_orifice(D,h,ratio_VC_orifice):
 def flow_orifice_vert(D,h,ratio_VC_orifice):
     """Returns the vertical flow rate of orifice"""
     if h>-D/2:
-        h.to(u.m)
-        D.to(u.m)
+        h = h.to(u.m)
+        D = D.to(u.m)
         h=h.magnitude
         D=D.magnitude
 
