@@ -153,8 +153,13 @@ def flow_orifice(D,h,ratio_VC_orifice):
 def flow_orifice_vert(D,h,ratio_VC_orifice):
     """Returns the vertical flow rate of orifice"""
     if h>-D/2:
+        h.to(u.m)
+        D.to(u.m)
+        h.to(u.dimensionless)
+        D.to(u.dimensionless)
         Q=ratio_VC_orifice*((2*u.g_0)**(1/2))*scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*((h-z)**(1/2)),-D/2,min(D/2,h))
-        return Q.to(u.L/u.s)
+    
+        return Q*((u.m)**3/u.s)
     else:
        return 0*(u.L/u.s)
 
