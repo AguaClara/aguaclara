@@ -175,10 +175,12 @@ def number_orifices(Q_plant,ratio_VC_orifice,headloss_orifice,D_orifice):
  
 def diam_orifice_manifold(Q_manifold_ratio,Q_tank,d_pipe,L_s,L_l,K_total,n_orifice,nu,e,ratio_VC_orifice):
      """Returns the diameter of orifice in the manifold"""
-     d=(((1-Q_manifold_ratio)*d_pipe)**4/(((K_total + (fric(Q_tank,d_pipe,nu,e)*L_l/d_pipe))*(Q_manifold_ratio) - K_total - (fric(Q_tank,d_pipe,nu,e)*L_l/d_pipe))*(ratio_VC_orifice)**2*(n_orifice) **2)**4
+     d=(((1-Q_manifold_ratio)*d_pipe)**4/((((K_total + (fric(Q_tank,d_pipe,nu,e)*L_l/d_pipe))*(Q_manifold_ratio)) - K_total - (fric(Q_tank,d_pipe,nu,e)*L_l/d_pipe)*(ratio_VC_orifice)**2*(n_orifice) **2)))**(1/4)
      return d.to(u.m)
-    
-    
+ 
+
+ 
+        
     
 def D_Hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
