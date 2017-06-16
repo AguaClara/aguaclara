@@ -156,7 +156,7 @@ def flow_orifice_vert(D,h,ratio_VC_orifice):
         Q=ratio_VC_orifice*((2*u.g_0)**(1/2))*scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*((h-z)**(1/2)),-D/2,min(D/2,h))
     else:
         Q=0
-    return Q.to(u.m)
+    return Q.to(u.L/u.s)
 
 def head_orifice(D,ratio_VC_orifice,Q):
      """Returns the head of orifice"""
@@ -178,10 +178,56 @@ def diam_orifice_manifold(Q_manifold_ratio,Q_tank,d_pipe,L_s,L_l,K_total,n_orifi
      d=(((1-Q_manifold_ratio)*d_pipe)**4/((((K_total + (fric(Q_tank,d_pipe,nu,e)*L_l/d_pipe))*(Q_manifold_ratio)) - K_total - (fric(Q_tank,d_pipe,nu,e)*L_l/d_pipe)*(ratio_VC_orifice)**2*(n_orifice) **2)))**(1/4)
      return d.to(u.m)
  
+# Here we define functions that return the flow rate.
 
+# Returns the flow rate for the transition between laminar and turbulent.
+# This equation is used in some of the other equations for flow.
+
+def Q_Transition(D,nu):
+    return (math.pi*D*Re_TRANSITION_PIPE*nu/4).to(u.L/u.s)
+
+# Flow rate for laminar flow with only major losses
+def Q_Hagen(D,hf,L,nu):
+    return ((math.pi*D**4)/(128*nu)*u.g_0*hf/L).to(u.L/u.s)
+
+# Flow rate for turbulent flow with only major losses
+def Q_Swamee(D,hf,L,nu,e):
+    logterm=-math.log10(e/(3.7*D)+2.51*nu*(L/(2*u.g_0*hf*D**3))**(1/2))
+    return ((math.pi/2**(1/2))*D**(5/2)*(u.g_0*hf/L)**(1/2)*logterm).to(u.L/u.s)
+
+# Flow rate for turbulent or laminar flow with only major losses
+def Q_PipeMajor(D,hf,L,nu,e):
+    Q_H=Q_Hagen(D,hf,L,nu)
+    if Q_H<Q_Transition(D,nu):
+        Q=Q_H
+    else:
+        Q=Q_Swamee(D,hf,L,nu,e)
+    return Q.to(u.L/u.s)
+
+# Flow rate for turbulent or laminar flow with only minor losses
+def Q_PipeMinor(D,he,K):
+    return (A_Circle(D)*(2*u.g_0*he/K)**(1/2)).to(u.L/u.s)
+
+# Now we put all of the flow equations together and calculate the flow in a 
+# straight pipe that has both major and minor losses and might be either
+# laminar or turbulent.
+def Q_Pipe(D,hl,L,nu,e,K):
+    if K==0:
+        Q=Q_PipeMajor(D,hl,L,nu,e)
+    else:
+        Qprev=0*u.L/u.s
+        err=1
+        Q=min(Q_PipeMajor(D,hl,L,nu,e),Q_PipeMinor(D,hl,K))
+        while err>0.01:
+            Qprev=Q
+            hfnew=hl*HLf(Q,D,L,nu,e)/(HLf(Q,D,L,nu,e)+HLe(Q,D,K))
+            Q=Q_PipeMajor(D,hfnew,L,nu,e)
+            if Q==0*u.L/u.s:
+                err=0
+            else:
+                err=abs(Q-Qprev)/(Q+Qprev)
+    return Q.to(u.L/u.s)  	
  
-        
-    
 def D_Hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
     return D.to_base_units()
@@ -228,55 +274,7 @@ def D_Pipe(Q,hl,L,nu,e,K):
         D=D_PipeMajor(Q,hfnew,L,nu,e)
         err=abs(D-Dprev)/(D+Dprev)
     return D.to_base_units() 
-
-# Here we define functions that return the flow rate.
-
-# Returns the flow rate for the transition between laminar and turbulent.
-# This equation is used in some of the other equations for flow.
-def Q_Transition(D,nu):
-    return (math.pi*D*Re_TRANSITION_PIPE*nu/4).to(u.L/u.s)
-
-# Flow rate for laminar flow with only major losses
-def Q_Hagen(D,hf,L,nu):
-    return ((math.pi*D**4)/(128*nu)*u.g_0*hf/L).to(u.L/u.s)
-
-# Flow rate for turbulent flow with only major losses
-def Q_Swamee(D,hf,L,nu,e):
-    logterm=-math.log10(e/(3.7*D)+2.51*nu*(L/(2*u.g_0*hf*D**3))**(1/2))
-    return ((math.pi/2**(1/2))*D**(5/2)*(u.g_0*hf/L)**(1/2)*logterm).to(u.L/u.s)
-
-# Flow rate for turbulent or laminar flow with only major losses
-def Q_PipeMajor(D,hf,L,nu,e):
-    Q_H=Q_Hagen(D,hf,L,nu)
-    if Q_H<Q_Transition(D,nu):
-        Q=Q_H
-    else:
-        Q=Q_Swamee(D,hf,L,nu,e)
-    return Q.to(u.L/u.s)
-
-# Flow rate for turbulent or laminar flow with only minor losses
-def Q_PipeMinor(D,he,K):
-    return (A_Circle(D)*(2*u.g_0*he/K)**(1/2)).to(u.L/u.s)
-
-# Now we put all of the flow equations together and calculate the flow in a 
-# straight pipe that has both major and minor losses and might be either
-# laminar or turbulent.
-def Q_Pipe(D,hl,L,nu,e,K):
-    if K==0:
-        Q=Q_PipeMajor(D,hl,L,nu,e)
-    else:
-        Qprev=0*u.L/u.s
-        err=1
-        Q=min(Q_PipeMajor(D,hl,L,nu,e),Q_PipeMinor(D,hl,K))
-        while err>0.01:
-            Qprev=Q
-            hfnew=hl*HLf(Q,D,L,nu,e)/(HLf(Q,D,L,nu,e)+HLe(Q,D,K))
-            Q=Q_PipeMajor(D,hfnew,L,nu,e)
-            if Q==0*u.L/u.s:
-                err=0
-            else:
-                err=abs(Q-Qprev)/(Q+Qprev)
-    return Q.to(u.L/u.s)  	
+  	
 ######################### Flocculation #########################
 
 # Calculates precipitate concentration given Aluminum concentration.
