@@ -287,6 +287,36 @@ def diam_pipe(Q,hl,L,nu,e,K):
         err=abs(D-Dprev)/(D+Dprev)
     return D.to_base_units() 
 
+#weir head loss equations
+RATIO_VC_ORIFICE=0.62
+def width_rect_weir(Q,H):
+    """Returns the width of a rectangular weir"""
+    w=(3/2)*Q/(RATIO_VC_ORIFICE*((2*u.g_0)**(1/2)*(H**(3/2))))
+    return w.to(u.m)
+
+#For a pipe, W is the circumference of the pipe.
+#head loss for a weir is the difference in height between the water upstream of the weir and the top of the weir.
+def headloss_weir(Q,W):
+    """returns the headloss of a weir"""
+    hl=((3/2)*Q/(RATIO_VC_ORIFICE*((2*u.g_0)**(1/2)*W)))**3
+    return hl.to(u.m)
+
+def flow_rect_weir(H,W):
+    """Returns the flow of a rectangular weir"""
+    q=(2/3)*RATIO_VC_ORIFICE*((2*u.g_0)**(1/2)*(H**(3/2)))*W
+    return q.to(u.m)
+
+def height_water_critical(Q,W):
+    """Returns the critical local water depth"""
+    hw=(Q/(W*(u.g_0)))**(2/3)
+    return hw.to(u.m)
+
+def vel_horizontal(height_water_critical):
+    """Returns the horizontal velocity"""
+    v=(u.g_0*height_water_critical)**(1/2)
+    return v.to(u.m/u.s)
+    
+
 
   	
 ######################### Flocculation #########################
