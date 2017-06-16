@@ -8,6 +8,7 @@ Created on Thu Jun 15 14:07:28 2017
 
 ######################### Imports #########################
 import math
+import numpy as np
 import scipy
 
 from units import unit_registry as u
@@ -189,47 +190,47 @@ def diam_orifice_manifold(Q_manifold_ratio,Q_tank,d_pipe,L_s,L_l,K_total,n_orifi
 # Here we define functions that return the flow rate.
 
 # This equation is used in some of the other equations for flow.
-def Q_Transition(D,nu):
+def flow_transition(D,nu):
     """Returns the flow rate for the transition between laminar and turbulent."""
     return (math.pi*D*Re_TRANSITION_PIPE*nu/4).to(u.L/u.s)
 
-def Q_Hagen(D,hf,L,nu):
+def flow_hagen(D,hf,L,nu):
     """Returns the Flow rate for laminar flow with only major losses"""
     return ((math.pi*D**4)/(128*nu)*u.g_0*hf/L).to(u.L/u.s)
 
-def Q_Swamee(D,hf,L,nu,e):
+def flow_swamee(D,hf,L,nu,e):
     """Returns the  Flow rate for turbulent flow with only major losses"""
     logterm=-math.log10(e/(3.7*D)+2.51*nu*(L/(2*u.g_0*hf*D**3))**(1/2))
     return ((math.pi/2**(1/2))*D**(5/2)*(u.g_0*hf/L)**(1/2)*logterm).to(u.L/u.s)
 
-def Q_PipeMajor(D,hf,L,nu,e):
+def flow_pipemajor(D,hf,L,nu,e):
     """Returns the Flow rate for turbulent or laminar flow with only major losses"""
-    Q_H=Q_Hagen(D,hf,L,nu)
-    if Q_H<Q_Transition(D,nu):
+    Q_H=flow_hagen(D,hf,L,nu)
+    if Q_H<flow_transition(D,nu):
         Q=Q_H
     else:
-        Q=Q_Swamee(D,hf,L,nu,e)
+        Q=flow_swamee(D,hf,L,nu,e)
     return Q.to(u.L/u.s)
 
-def Q_PipeMinor(D,he,K):
+def flow_pipeminor(D,he,K):
     """Returns the  Flow rate for turbulent or laminar flow with only minor losses""" 
     return (area_circle(D)*(2*u.g_0*he/K)**(1/2)).to(u.L/u.s)
 
 # Now we put all of the flow equations together and calculate the flow in a 
 # straight pipe that has both major and minor losses and might be either
 # laminar or turbulent.
-def Q_Pipe(D,hl,L,nu,e,K):
+def flow_pipe(D,hl,L,nu,e,K):
     """Returns the the flow in a straight pipe that has both major and minor losses and might be either laminar or turbulent."""
     if K==0:
-        Q=Q_PipeMajor(D,hl,L,nu,e)
+        Q=flow_pipemajor(D,hl,L,nu,e)
     else:
         Qprev=0*u.L/u.s
         err=1
-        Q=min(Q_PipeMajor(D,hl,L,nu,e),Q_PipeMinor(D,hl,K))
+        Q=min(flow_pipemajor(D,hl,L,nu,e),flow_pipeminor(D,hl,K))
         while err>0.01:
             Qprev=Q
             hfnew=hl*headloss_fric(Q,D,L,nu,e)/(headloss_fric(Q,D,L,nu,e)+headloss_exp(Q,D,K))
-            Q=Q_PipeMajor(D,hfnew,L,nu,e)
+            Q=flow_pipemajor(D,hfnew,L,nu,e)
             if Q==0*u.L/u.s:
                 err=0
             else:
@@ -237,7 +238,7 @@ def Q_Pipe(D,hl,L,nu,e,K):
     return Q.to(u.L/u.s)  	
  
 
-def D_Hagen(Q,hf,L,nu):
+def diam_hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
     return D.to_base_units()
 
@@ -248,7 +249,7 @@ def D_Hagen(Q,hf,L,nu):
 # Pint has trouble adding two numbers that are raised to the 25th power. 
 # The following code strips the units before adding the two terms and then reattaches the units.
 
-def D_Swamee(Q,hf,L,nu,e):
+def diam_swamee(Q,hf,L,nu,e):
     """Returns the inner diameter of a pipe"""
     a=((e**1.25)*((L*(Q**2))/(u.g_0*hf))**4.75).to_base_units().magnitude
     b=(nu*(Q**9.4)*(L/(u.g_0*hf))**5.2).to_base_units().magnitude
@@ -256,35 +257,37 @@ def D_Swamee(Q,hf,L,nu,e):
     return D.to_base_units()
 
 # Applies to both laminar and turbulent flow
-def D_PipeMajor(Q,hf,L,nu,e):
+def diam_pipemajor(Q,hf,L,nu,e):
     """Returns the pipe ID that would result in given major losses"""
-    D_Laminar= D_Hagen(Q,hf,L,nu)
+    D_Laminar= diam_hagen(Q,hf,L,nu)
     if re_pipe(Q,D_Laminar,nu)<=Re_TRANSITION_PIPE:
         D=D_Laminar
     else:
-        D=D_Swamee(Q,hf,L,nu,e)
+        D=diam_swamee(Q,hf,L,nu,e)
     return D.to_base_units()
 
 # Applies to both laminar and turbulent flow
-def D_PipeMinor(Q,he,K):
+def diam_pipeminor(Q,he,K):
     """Returns the pipe ID that would result in the given minor losses"""
     D=(4*Q/math.pi)**(1/2)*(K/(2*u.g_0*he))**(1/4)
     return D.to_base_units()
 
 # Applies to both laminar and turbulent flow and incorporates both minor and major losses
-def D_Pipe(Q,hl,L,nu,e,K):
+def diam_pipe(Q,hl,L,nu,e,K):
     """Returns the pipe ID that would result in the given total head loss"""
     if K==0:
-        D=D_PipeMinor(Q,hl,K)
+        D=diam_pipeminor(Q,hl,K)
     else:
-        D=D_PipeMajor(Q,hl,L,nu,e)
+        D=diam_pipemajor(Q,hl,L,nu,e)
     err=1.00
     while err > 0.001:
         Dprev=D
         hfnew=hl*headloss_fric(Q,D,L,nu,e)/(headloss_fric(Q,D,L,nu,e) + headloss_exp(Q,D,K))
-        D=D_PipeMajor(Q,hfnew,L,nu,e)
+        D=diam_pipemajor(Q,hfnew,L,nu,e)
         err=abs(D-Dprev)/(D+Dprev)
     return D.to_base_units() 
+
+
   	
 ######################### Flocculation #########################
 
