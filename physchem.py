@@ -160,7 +160,7 @@ def flow_orifice_vert(D,h,ratio_VC_orifice):
 
         Q=scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*((h-z)**(1/2)),-D/2,min(D/2,h))
         Qnew=Q[0]
-        Q=ratio_VC_orifice*((2*9.80665)**(1/2))*Qnew
+        Q=ratio_VC_orifice*((2*9.80665)**(1/2))*Qnew*1000
        
         return Q*(u.L/u.s)
     else:
@@ -236,6 +236,7 @@ def Q_Pipe(D,hl,L,nu,e,K):
                 err=abs(Q-Qprev)/(Q+Qprev)
     return Q.to(u.L/u.s)  	
  
+
 def D_Hagen(Q,hf,L,nu):
     D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
     return D.to_base_units()
@@ -246,31 +247,33 @@ def D_Hagen(Q,hf,L,nu):
 # This equation ONLY applies to turbulent flow.
 # Pint has trouble adding two numbers that are raised to the 25th power. 
 # The following code strips the units before adding the two terms and then reattaches the units.
+
 def D_Swamee(Q,hf,L,nu,e):
+    """Returns the inner diameter of a pipe"""
     a=((e**1.25)*((L*(Q**2))/(u.g_0*hf))**4.75).to_base_units().magnitude
     b=(nu*(Q**9.4)*(L/(u.g_0*hf))**5.2).to_base_units().magnitude
     D=(0.66*(a+b)**0.04)*u.m
     return D.to_base_units()
 
-# Returns the pipe ID that would result in given major losses
 # Applies to both laminar and turbulent flow
 def D_PipeMajor(Q,hf,L,nu,e):
+    """Returns the pipe ID that would result in given major losses"""
     D_Laminar= D_Hagen(Q,hf,L,nu)
-    if Re_pipe(Q,D_Laminar,nu)<=Re_TRANSITION_PIPE:
+    if re_pipe(Q,D_Laminar,nu)<=Re_TRANSITION_PIPE:
         D=D_Laminar
     else:
         D=D_Swamee(Q,hf,L,nu,e)
     return D.to_base_units()
 
-# Returns the pipe ID that would result in the given minor losses
 # Applies to both laminar and turbulent flow
 def D_PipeMinor(Q,he,K):
+    """Returns the pipe ID that would result in the given minor losses"""
     D=(4*Q/math.pi)**(1/2)*(K/(2*u.g_0*he))**(1/4)
     return D.to_base_units()
 
-# Returns the pipe ID that would result in the given total head loss
 # Applies to both laminar and turbulent flow and incorporates both minor and major losses
 def D_Pipe(Q,hl,L,nu,e,K):
+    """Returns the pipe ID that would result in the given total head loss"""
     if K==0:
         D=D_PipeMinor(Q,hl,K)
     else:
@@ -278,7 +281,7 @@ def D_Pipe(Q,hl,L,nu,e,K):
     err=1.00
     while err > 0.001:
         Dprev=D
-        hfnew=hl*HLf(Q,D,L,nu,e)/(HLf(Q,D,L,nu,e) + HLe(Q,D,K))
+        hfnew=hl*headloss_fric(Q,D,L,nu,e)/(headloss_fric(Q,D,L,nu,e) + headloss_exp(Q,D,K))
         D=D_PipeMajor(Q,hfnew,L,nu,e)
         err=abs(D-Dprev)/(D+Dprev)
     return D.to_base_units() 
