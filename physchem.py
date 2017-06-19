@@ -315,6 +315,13 @@ def vel_horizontal(height_water_critical):
     """Returns the horizontal velocity"""
     v=(u.g_0*height_water_critical)**(1/2)
     return v.to(u.m/u.s)
+
+K_KOZENY=5
+
+def headloss_kozeny(L,D,V,e,nu):
+    """Returns the Carmen Kozeny Sand Bed head loss"""
+    hl = K_KOZENY*L*nu/(u.g_0)*(1-e)**2/(e**3)*36*V/(D**2)
+    return hl.to(u.m)
     
 
 
