@@ -12,7 +12,7 @@ import numpy as np
 import scipy
 
 from units import unit_registry as u
-
+g=9.80665*(u.m/(u.s**2))
 
 #######################Simple geometry#######################
 
@@ -95,12 +95,12 @@ def fric_general(A,WP,V,nu,e):
                  
 def headloss_fric(Q,D,L,nu,e):
     """Returns the major head loss (due to wall shear) in a pipe for both laminar and turbulent flows"""
-    HLf=fric(Q,D,nu,e)*8/(u.g_0*math.pi**2)*(L*Q**2)/D**5
+    HLf=fric(Q,D,nu,e)*8/(g*math.pi**2)*(L*Q**2)/D**5
     return HLf.to(u.m)  
 
 def headloss_exp(Q,D,K):
     """Returns the minor head loss (due to expansions) in a pipe. This equation applies to both laminar and turbulent flows"""
-    HLe=K*8/(u.g_0*math.pi**2)*(Q**2)/(D**4)
+    HLe=K*8/(g*math.pi**2)*(Q**2)/(D**4)
     return HLe.to(u.m)
 
 def headloss(Q,D,L,nu,e,K):
@@ -110,12 +110,12 @@ def headloss(Q,D,L,nu,e,K):
 
 def headloss_fric_rect(Q,w,b,L,nu,e,openchannel):
     """Returns the major head loss (due to wall shear) in a rectangular channel for both laminar and turbulent flows"""
-    Hfrect=fric_rect(Q,w,b,nu,e,openchannel)*L/(4*radius_hydraulic(w,b,openchannel))*Q**2/(2*u.g_0*(w*b)**2)
+    Hfrect=fric_rect(Q,w,b,nu,e,openchannel)*L/(4*radius_hydraulic(w,b,openchannel))*Q**2/(2*g*(w*b)**2)
     return Hfrect.to(u.m)
 
 def headloss_exp_rect(Q,w,b,K):
      """Returns the minor head loss (due to expansions) in a rectangular channel. This equation applies to both laminar and turbulent flows"""
-     Herect=K*Q**2/(2*u.g_0*(w*b)**2)
+     Herect=K*Q**2/(2*g*(w*b)**2)
      return Herect.to(u.m)
  
 def headloss_rect(Q,w,b,L,K,nu,e,openchannel):
@@ -125,12 +125,12 @@ def headloss_rect(Q,w,b,L,K,nu,e,openchannel):
     
 def headloss_fric_general(A,WP,V,L,nu,e):
      """Returns the major head loss (due to wall shear) in the general case for both laminar and turbulent flows"""
-     Hfgen=fric_general(A,WP,V,nu,e)*L/(4*radius_hydraulic_general(A,WP))*V**2/(2*u.g_0)
+     Hfgen=fric_general(A,WP,V,nu,e)*L/(4*radius_hydraulic_general(A,WP))*V**2/(2*g)
      return Hfgen.to(u.m)
  
 def headloss_exp_general(V,K):
     """Returns the minor head loss (due to expansions) in the general case. This equation applies to both laminar and turbulent flows"""
-    Hegen=K*V**2/(2*u.g_0)
+    Hegen=K*V**2/(2*g)
     return Hegen.to(u.m)
 
 def headloss_gen(A,V,WP,L,K,nu,e):
@@ -146,7 +146,7 @@ def headloss_manifold(Q,D,L,K,nu,e,n):
 def flow_orifice(D,h,ratio_VC_orifice):
     """Returns the flow rate of orifice"""
     if h>0*u.cm:
-        Q=ratio_VC_orifice*area_circle(D)*(2*u.g_0*h)**(1/2)
+        Q=ratio_VC_orifice*area_circle(D)*(2*g*h)**(1/2)
         return Q.to(u.L/u.s)
     else:
          return 0*(u.L/u.s)
@@ -169,12 +169,12 @@ def flow_orifice_vert(D,h,ratio_VC_orifice):
 
 def head_orifice(D,ratio_VC_orifice,Q):
      """Returns the head of orifice"""
-     h=(Q/(ratio_VC_orifice*area_circle(D)))**2/(2*u.g_0)
+     h=(Q/(ratio_VC_orifice*area_circle(D)))**2/(2*g)
      return h.to(u.m)
  
 def area_orifice(h,ratio_VC_orifice,Q):
     """Returns the area of orifice"""
-    area=Q/(ratio_VC_orifice*(2*u.g_0*h)**(1/2))
+    area=Q/(ratio_VC_orifice*(2*g*h)**(1/2))
     return area.to(u.mm**2)
     
 def number_orifices(Q_plant,ratio_VC_orifice,headloss_orifice,D_orifice):
@@ -196,12 +196,12 @@ def flow_transition(D,nu):
 
 def flow_hagen(D,hf,L,nu):
     """Returns the Flow rate for laminar flow with only major losses"""
-    return ((math.pi*D**4)/(128*nu)*u.g_0*hf/L).to(u.L/u.s)
+    return ((math.pi*D**4)/(128*nu)*g*hf/L).to(u.L/u.s)
 
 def flow_swamee(D,hf,L,nu,e):
     """Returns the  Flow rate for turbulent flow with only major losses"""
-    logterm=-math.log10(e/(3.7*D)+2.51*nu*(L/(2*u.g_0*hf*D**3))**(1/2))
-    return ((math.pi/2**(1/2))*D**(5/2)*(u.g_0*hf/L)**(1/2)*logterm).to(u.L/u.s)
+    logterm=-math.log10(e/(3.7*D)+2.51*nu*(L/(2*g*hf*D**3))**(1/2))
+    return ((math.pi/2**(1/2))*D**(5/2)*(g*hf/L)**(1/2)*logterm).to(u.L/u.s)
 
 def flow_pipemajor(D,hf,L,nu,e):
     """Returns the Flow rate for turbulent or laminar flow with only major losses"""
@@ -214,7 +214,7 @@ def flow_pipemajor(D,hf,L,nu,e):
 
 def flow_pipeminor(D,he,K):
     """Returns the  Flow rate for turbulent or laminar flow with only minor losses""" 
-    return (area_circle(D)*(2*u.g_0*he/K)**(1/2)).to(u.L/u.s)
+    return (area_circle(D)*(2*g*he/K)**(1/2)).to(u.L/u.s)
 
 # Now we put all of the flow equations together and calculate the flow in a 
 # straight pipe that has both major and minor losses and might be either
@@ -239,7 +239,7 @@ def flow_pipe(D,hl,L,nu,e,K):
  
 
 def diam_hagen(Q,hf,L,nu):
-    D=((128*nu*Q*L)/(u.g_0*hf*math.pi))**(1/4)
+    D=((128*nu*Q*L)/(g*hf*math.pi))**(1/4)
     return D.to_base_units()
 
 # The Swamee Jain equation (below) is dimensionally correct and returns the inner diameter of a pipe 
@@ -251,8 +251,8 @@ def diam_hagen(Q,hf,L,nu):
 
 def diam_swamee(Q,hf,L,nu,e):
     """Returns the inner diameter of a pipe"""
-    a=((e**1.25)*((L*(Q**2))/(u.g_0*hf))**4.75).to_base_units().magnitude
-    b=(nu*(Q**9.4)*(L/(u.g_0*hf))**5.2).to_base_units().magnitude
+    a=((e**1.25)*((L*(Q**2))/(g*hf))**4.75).to_base_units().magnitude
+    b=(nu*(Q**9.4)*(L/(g*hf))**5.2).to_base_units().magnitude
     D=(0.66*(a+b)**0.04)*u.m
     return D.to_base_units()
 
@@ -269,7 +269,7 @@ def diam_pipemajor(Q,hf,L,nu,e):
 # Applies to both laminar and turbulent flow
 def diam_pipeminor(Q,he,K):
     """Returns the pipe ID that would result in the given minor losses"""
-    D=(4*Q/math.pi)**(1/2)*(K/(2*u.g_0*he))**(1/4)
+    D=(4*Q/math.pi)**(1/2)*(K/(2*g*he))**(1/4)
     return D.to_base_units()
 
 # Applies to both laminar and turbulent flow and incorporates both minor and major losses
@@ -291,36 +291,36 @@ def diam_pipe(Q,hl,L,nu,e,K):
 RATIO_VC_ORIFICE=0.62
 def width_rect_weir(Q,H):
     """Returns the width of a rectangular weir"""
-    w=(3/2)*Q/(RATIO_VC_ORIFICE*((2*u.g_0)**(1/2)*(H**(3/2))))
+    w=(3/2)*Q/(RATIO_VC_ORIFICE*((2*g)**(1/2)*(H**(3/2))))
     return w.to(u.m)
 
 #For a pipe, W is the circumference of the pipe.
 #head loss for a weir is the difference in height between the water upstream of the weir and the top of the weir.
 def headloss_weir(Q,W):
     """returns the headloss of a weir"""
-    hl=((3/2)*Q/(RATIO_VC_ORIFICE*((2*u.g_0)**(1/2)*W)))**3
+    hl=((3/2)*Q/(RATIO_VC_ORIFICE*((2*g)**(1/2)*W)))**3
     return hl.to(u.m)
 
 def flow_rect_weir(H,W):
     """Returns the flow of a rectangular weir"""
-    q=(2/3)*RATIO_VC_ORIFICE*((2*u.g_0)**(1/2)*(H**(3/2)))*W
+    q=(2/3)*RATIO_VC_ORIFICE*((2*g)**(1/2)*(H**(3/2)))*W
     return q.to(u.m)
 
 def height_water_critical(Q,W):
     """Returns the critical local water depth"""
-    hw=(Q/(W*(u.g_0)))**(2/3)
+    hw=(Q/(W*(g)))**(2/3)
     return hw.to(u.m)
 
 def vel_horizontal(height_water_critical):
     """Returns the horizontal velocity"""
-    v=(u.g_0*height_water_critical)**(1/2)
+    v=(g*height_water_critical)**(1/2)
     return v.to(u.m/u.s)
 
 K_KOZENY=5
 
 def headloss_kozeny(L,D,V,e,nu):
     """Returns the Carmen Kozeny Sand Bed head loss"""
-    hl = K_KOZENY*L*nu/(u.g_0)*(1-e)**2/(e**3)*36*V/(D**2)
+    hl = K_KOZENY*L*nu/(g)*(1-e)**2/(e**3)*36*V/(D**2)
     return hl.to(u.m)
     
 
