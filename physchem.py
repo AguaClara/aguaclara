@@ -14,7 +14,7 @@ import math
 import numpy as np
 import scipy
 
-from units import unit_registry as u
+from AguaClara_design.units import unit_registry as u
 g=9.80665*(u.m/(u.s**2))
 
 #######################Simple geometry#######################
@@ -275,9 +275,9 @@ def diam_pipemajor(Q,hf,L,nu,e):
 # Applies to both laminar and turbulent flow
 def diam_pipeminor(Q,he,K):
     """Returns the pipe ID that would result in the given minor losses"""
-   
-    D=((4*Q/math.pi)**(1/2))*(K/(2*g*he))**(1/4)
-    return D.to_base_units() 
+
+    D=((4*Q/math.pi)**(1/2))*((K/(2*g*he))**(1/4))
+    return D.to(u.m)
 
 # Applies to both laminar and turbulent flow and incorporates both minor and major losses
 def diam_pipe(Q,hl,L,nu,e,K):
