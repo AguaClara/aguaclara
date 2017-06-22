@@ -152,7 +152,7 @@ def headloss_manifold(Q,D,L,K,nu,e,n):
 def flow_orifice(D,h,ratio_VC_orifice):
     """Returns the flow rate of orifice"""
     if h>0*u.cm:
-        Q=ratio_VC_orifice*area_circle(D)*math.sqrt(2*g*h)
+        Q=ratio_VC_orifice*area_circle(D)*(2*g*h)**(1/2)
         return Q.to(u.L/u.s)
     else:
          return 0*(u.L/u.s)
@@ -167,7 +167,7 @@ def flow_orifice_vert(D,h,ratio_VC_orifice):
 
         Q=scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*math.sqrt(h-z),-D/2,min(D/2,h))
         Qnew=Q[0]
-        Q=ratio_VC_orifice*math.sqrt(2*9.80665)*Qnew*1000
+        Q=ratio_VC_orifice*math.sqrt(2*g.magnitude)*Qnew*1000
        
         return Q*(u.L/u.s)
     else:
