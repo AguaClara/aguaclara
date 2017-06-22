@@ -26,7 +26,10 @@ def area_circle(diam_Circle):
     return math.pi/4*diam_Circle**2
 
 def diam_circle(A_Circle):
-    return math.sqrt(4*A_Circle/math.pi)
+    A_Circle=A_Circle.to(u.m**2)
+    A_Circle=A_Circle.magnitude
+    diam_req = math.sqrt(4*A_Circle/math.pi)
+    return diam_req*(u.m)
 
 ######################### Hydraulics ######################### 
 
@@ -272,8 +275,9 @@ def diam_pipemajor(Q,hf,L,nu,e):
 # Applies to both laminar and turbulent flow
 def diam_pipeminor(Q,he,K):
     """Returns the pipe ID that would result in the given minor losses"""
-    D=math.sqrt(4*Q/math.pi)*(K/(2*g*he))**(1/4)
-    return D.to_base_units()
+
+    D=((4*Q/math.pi)**(1/2))*((K/(2*g*he))**(1/4))
+    return D.to(u.m)
 
 # Applies to both laminar and turbulent flow and incorporates both minor and major losses
 def diam_pipe(Q,hl,L,nu,e,K):
