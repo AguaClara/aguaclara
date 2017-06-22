@@ -23,7 +23,10 @@ def area_circle(diam_Circle):
     return math.pi/4*diam_Circle**2
 
 def diam_circle(A_Circle):
-    return math.sqrt(4*A_Circle/math.pi)
+    A_Circle=A_Circle.to(u.m**2)
+    A_Circle=A_Circle.magnitude
+    diam_req = math.sqrt(4*A_Circle/math.pi)
+    return diam_req*(u.m)
 
 ######################### Hydraulics ######################### 
 
