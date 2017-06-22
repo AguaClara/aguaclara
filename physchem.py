@@ -2,6 +2,9 @@
 Created on Thu Jun 15 14:07:28 2017
 
 @author: kn348
+
+Last modified: Thu Jun 22 2017 
+By: Sage Weber-Shirk
 """
 #test
 # This file contains unit process functions pertaining to the design of physical/chemical unit processes for AguaClara water treatment plants.
@@ -11,7 +14,7 @@ import math
 import numpy as np
 import scipy
 
-from units import unit_registry as u
+from AguaClara_design.units import unit_registry as u
 g=9.80665*(u.m/(u.s**2))
 
 #######################Simple geometry#######################
