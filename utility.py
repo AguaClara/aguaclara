@@ -1,7 +1,15 @@
+"""
+Created on Sun Jun 11
+
+@author: Monroe Weber-Shirk
+
+Last modified: Thu Jun 22 2017 
+By: Sage Weber-Shirk
+"""
 # units allows us to include units in all of our calculations
 import math
 
-from units import unit_registry as u
+from AguaClara_design.units import unit_registry as u
 
 
 # x is a number that may include units. n is the number of significant digits to display.
@@ -18,3 +26,10 @@ def sig(x,n):
     if xmag!=0:
         xmag=round(xmag, n-1-int(math.floor(math.log10(abs(xmag)))))
     return '{:~P}'.format(u.Quantity(xmag,xunit))
+
+
+def stepceil_with_units(param, step, unit):
+    counter = 0 * unit
+    while counter < param.to(unit):
+        counter += step * u.inch
+    return counter

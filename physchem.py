@@ -2,6 +2,9 @@
 Created on Thu Jun 15 14:07:28 2017
 
 @author: kn348
+
+Last modified: Thu Jun 22 2017 
+By: Sage Weber-Shirk
 """
 #test
 # This file contains unit process functions pertaining to the design of physical/chemical unit processes for AguaClara water treatment plants.
@@ -23,7 +26,10 @@ def area_circle(diam_Circle):
     return math.pi/4*diam_Circle**2
 
 def diam_circle(A_Circle):
-    return (4*A_Circle/math.pi)**(1/2)
+    A_Circle=A_Circle.to(u.m**2)
+    A_Circle=A_Circle.magnitude
+    diam_req = math.sqrt(4*A_Circle/math.pi)
+    return diam_req*(u.m)
 
 ######################### Hydraulics ######################### 
 
@@ -146,7 +152,7 @@ def headloss_manifold(Q,D,L,K,nu,e,n):
 def flow_orifice(D,h,ratio_VC_orifice):
     """Returns the flow rate of orifice"""
     if h>0*u.cm:
-        Q=ratio_VC_orifice*area_circle(D)*(2*g*h)**(1/2)
+        Q=ratio_VC_orifice*area_circle(D)*math.sqrt(2*g*h)
         return Q.to(u.L/u.s)
     else:
          return 0*(u.L/u.s)
@@ -159,9 +165,9 @@ def flow_orifice_vert(D,h,ratio_VC_orifice):
         h=h.magnitude
         D=D.magnitude
 
-        Q=scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*((h-z)**(1/2)),-D/2,min(D/2,h))
+        Q=scipy.integrate.quad(lambda z: D*math.sin(math.acos(z/(D/2)))*math.sqrt(h-z),-D/2,min(D/2,h))
         Qnew=Q[0]
-        Q=ratio_VC_orifice*((2*9.80665)**(1/2))*Qnew*1000
+        Q=ratio_VC_orifice*math.sqrt(2*9.80665)*Qnew*1000
        
         return Q*(u.L/u.s)
     else:
@@ -174,7 +180,7 @@ def head_orifice(D,ratio_VC_orifice,Q):
  
 def area_orifice(h,ratio_VC_orifice,Q):
     """Returns the area of orifice"""
-    area=Q/(ratio_VC_orifice*(2*g*h)**(1/2))
+    area=Q/(ratio_VC_orifice*math.sqrt(2*g*h))
     return area.to(u.mm**2)
     
 def number_orifices(Q_plant,ratio_VC_orifice,headloss_orifice,D_orifice):
@@ -200,8 +206,8 @@ def flow_hagen(D,hf,L,nu):
 
 def flow_swamee(D,hf,L,nu,e):
     """Returns the  Flow rate for turbulent flow with only major losses"""
-    logterm=-math.log10(e/(3.7*D)+2.51*nu*(L/(2*g*hf*D**3))**(1/2))
-    return ((math.pi/2**(1/2))*D**(5/2)*(g*hf/L)**(1/2)*logterm).to(u.L/u.s)
+    logterm=-math.log10(e/(3.7*D)+2.51*nu*math.sqrt(L/(2*g*hf*D**3)))
+    return ((math.pi/math.sqrt(2))*D**(5/2)*math.sqrt(g*hf/L)*logterm).to(u.L/u.s)
 
 def flow_pipemajor(D,hf,L,nu,e):
     """Returns the Flow rate for turbulent or laminar flow with only major losses"""
@@ -214,7 +220,7 @@ def flow_pipemajor(D,hf,L,nu,e):
 
 def flow_pipeminor(D,he,K):
     """Returns the  Flow rate for turbulent or laminar flow with only minor losses""" 
-    return (area_circle(D)*(2*g*he/K)**(1/2)).to(u.L/u.s)
+    return (area_circle(D)*math.sqrt(2*g*he/K)).to(u.L/u.s)
 
 # Now we put all of the flow equations together and calculate the flow in a 
 # straight pipe that has both major and minor losses and might be either
@@ -269,7 +275,7 @@ def diam_pipemajor(Q,hf,L,nu,e):
 # Applies to both laminar and turbulent flow
 def diam_pipeminor(Q,he,K):
     """Returns the pipe ID that would result in the given minor losses"""
-    D=(4*Q/math.pi)**(1/2)*(K/(2*g*he))**(1/4)
+    D=math.sqrt(4*Q/math.pi)*(K/(2*g*he))**(1/4)
     return D.to_base_units()
 
 # Applies to both laminar and turbulent flow and incorporates both minor and major losses
@@ -291,19 +297,19 @@ def diam_pipe(Q,hl,L,nu,e,K):
 RATIO_VC_ORIFICE=0.62
 def width_rect_weir(Q,H):
     """Returns the width of a rectangular weir"""
-    w=(3/2)*Q/(RATIO_VC_ORIFICE*((2*g)**(1/2)*(H**(3/2))))
+    w=(3/2)*Q/(RATIO_VC_ORIFICE*(math.sqrt(2*g)*(H**(3/2))))
     return w.to(u.m)
 
 #For a pipe, W is the circumference of the pipe.
 #head loss for a weir is the difference in height between the water upstream of the weir and the top of the weir.
 def headloss_weir(Q,W):
     """returns the headloss of a weir"""
-    hl=((3/2)*Q/(RATIO_VC_ORIFICE*((2*g)**(1/2)*W)))**3
+    hl=((3/2)*Q/(RATIO_VC_ORIFICE*(math.sqrt(2*g)*W)))**3
     return hl.to(u.m)
 
 def flow_rect_weir(H,W):
     """Returns the flow of a rectangular weir"""
-    q=(2/3)*RATIO_VC_ORIFICE*((2*g)**(1/2)*(H**(3/2)))*W
+    q=(2/3)*RATIO_VC_ORIFICE*(math.sqrt(2*g)*(H**(3/2)))*W
     return q.to(u.m)
 
 def height_water_critical(Q,W):
@@ -313,7 +319,7 @@ def height_water_critical(Q,W):
 
 def vel_horizontal(height_water_critical):
     """Returns the horizontal velocity"""
-    v=(g*height_water_critical)**(1/2)
+    v=math.sqrt(g*height_water_critical)
     return v.to(u.m/u.s)
 
 K_KOZENY=5
