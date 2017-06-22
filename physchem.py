@@ -11,7 +11,7 @@ import math
 import numpy as np
 import scipy
 
-from units import unit_registry as u
+from AguaClara_design.units import unit_registry as u
 g=9.80665*(u.m/(u.s**2))
 
 #######################Simple geometry#######################
