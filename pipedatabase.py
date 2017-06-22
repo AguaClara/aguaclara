@@ -7,7 +7,7 @@ Created on Thu Jun  8 18:20:38 2017
 
 #Let's begin to create the pipe database
 # https://docs.python.org/2/library/csv.html
-from AguaClara_design.units import unit_registry as u
+from units import unit_registry as u
 import numpy as np
 # We will use Pandas
 import pandas as pd
@@ -60,8 +60,16 @@ def ID_SDR_all_available(SDR):
 # Return an available ND given an ID and a schedule
 # Take the values of the array, compare to the ID, find the index of the first value greater or equal
 def ND_SDR_available(ID,SDR):
-    myindex = np.argmax((np.array(ID_SDR_all_available(SDR)) >= (ID.to(u.inch)).magnitude))
+    nd_list = []
+    for i in range(len(np.array(ID_SDR_all_available(SDR)))):
+        if np.array(ID_SDR_all_available(SDR))[i] >= (ID.to(u.inch)).magnitude:
+            nd_list.append(np.array(ID_SDR_all_available(SDR))[i])
+    print (nd_list)
+            
+
+    myindex = nd_list.index(max(nd_list))
     return ND_all_available()[myindex]
+
 
 # Returns the minimum ND that is available.
 def ND_available(NDguess):
