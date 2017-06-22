@@ -7,7 +7,7 @@ Created on Thu Jun  8 18:20:38 2017
 
 #Let's begin to create the pipe database
 # https://docs.python.org/2/library/csv.html
-from units import unit_registry as u
+from AguaClara_design.units import unit_registry as u
 import numpy as np
 # We will use Pandas
 import pandas as pd
