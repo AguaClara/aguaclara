@@ -20,11 +20,15 @@ def sig(x,n):
     if type(x) == type(1*u.m):
         xmag=float(x.magnitude)
         xunit=x.units
+        if n==1:
+            return math.floor(xmag)
         if xmag!=0:
            xmag=round(xmag, n-1-int(math.floor(math.log10(abs(xmag)))))
            return '{:~P}'.format(u.Quantity(xmag,xunit))
     else:
         xmag=x
+        if n==1:
+            return math.floor(xmag)
         if xmag!=0:
            xmag=round(xmag, n-1-int(math.floor(math.log10(abs(xmag)))))
            return xmag
