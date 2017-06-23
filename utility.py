@@ -9,7 +9,7 @@ By: Sage Weber-Shirk
 # units allows us to include units in all of our calculations
 import math
 
-from AguaClara_design.units import unit_registry as u
+from units import unit_registry as u
 
 
 # x is a number that may include units. n is the number of significant digits to display.
@@ -20,12 +20,14 @@ def sig(x,n):
     if type(x) == type(1*u.m):
         xmag=float(x.magnitude)
         xunit=x.units
+        if xmag!=0:
+           xmag=round(xmag, n-1-int(math.floor(math.log10(abs(xmag)))))
+           return '{:~P}'.format(u.Quantity(xmag,xunit))
     else:
         xmag=x
-        xunit=1
-    if xmag!=0:
-        xmag=round(xmag, n-1-int(math.floor(math.log10(abs(xmag)))))
-    return '{:~P}'.format(u.Quantity(xmag,xunit))
+        if xmag!=0:
+           xmag=round(xmag, n-1-int(math.floor(math.log10(abs(xmag)))))
+           return xmag
 
 
 def stepceil_with_units(param, step, unit):
