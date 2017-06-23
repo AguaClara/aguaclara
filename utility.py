@@ -9,7 +9,7 @@ By: Sage Weber-Shirk
 # units allows us to include units in all of our calculations
 import math
 
-from units import unit_registry as u
+from AguaClara_design.units import unit_registry as u
 
 #We need to fix the formatting so that it doesn't display trailing zeroes
 #that are not significant.

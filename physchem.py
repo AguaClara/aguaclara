@@ -465,13 +465,13 @@ global variables that have not been defined.
 
 def C_Prec(D: 'Dose in mg/L as Al'): 
     """Calculate precipitate concentration given Aluminum concentration."""
-	return Dose.to(u.mg/u.L) * 1.3 / 0.027 / 13 # Changed 1.039384 to 1.3
+    return Dose.to(u.mg/u.L) * 1.3 / 0.027 / 13 # Changed 1.039384 to 1.3
 
 
 def phi_0(Dose: 'in mg/L', Inf: 'in NTU'): 
     """Calculate phi_0."""
-	x = C_Prec(Dose) / r_Co + Inf.to(u.mg/u.L) / r_Cl
-	return x.to(u.dimensionless) 
+    x = C_Prec(Dose) / r_Co + Inf.to(u.mg/u.L) / r_Cl
+    return x.to(u.dimensionless) 
 
 
 def P_ClSphere(P_HD): 
@@ -479,7 +479,7 @@ def P_ClSphere(P_HD):
     
     Normalized to that of a sphere.
     """
-	return (0.5 + P_HD) * (2/(3*P_HD))**(2/3)
+    return (0.5 + P_HD) * (2/(3*P_HD))**(2/3)
 
 
 def P_AClATot(Inf: 'in NTU', D_Cl: 'in um', D_T: 'in inches', P_HD): 
@@ -487,41 +487,46 @@ def P_AClATot(Inf: 'in NTU', D_Cl: 'in um', D_T: 'in inches', P_HD):
     
     Surface area is calculated as the sum of clay + walls.
     """
-	x = (1 / (1+(2 * D_Cl.to(u.m) / (3 * D_T.to(u.m) * P_ClSphere(P_HD) 
+    x = (1 / (1+(2 * D_Cl.to(u.m) / (3 * D_T.to(u.m) * P_ClSphere(P_HD) 
                                     * Inf / r_Cl
                                     )))
-        )
-	return x.to(u.dimensionless)
+         )
+    return x.to(u.dimensionless)
 
 
 def Gamma(Inf, D, D_T, D_Cl, P_HD, D_Co): 
     """Calculate Gamma."""
-	return (1 - np.exp((-phi_0(D, 0*u.mg/u.L) * D_Cl)
-                      / (phi_0(0*u.mg/u.L, Inf) * D_Co) * 1 / np.pi
-                      * (P_AClATot(Inf, D_Cl, D_T, P_HD))
-                      / (P_ClSphere(P_HD))
-                      )
-           )
+    return (1 - np.exp((-phi_0(D, 0*u.mg/u.L) * D_Cl)
+                       / (phi_0(0*u.mg/u.L, Inf) * D_Co) * 1 / np.pi
+                       * (P_AClATot(Inf, D_Cl, D_T, P_HD))
+                       / (P_ClSphere(P_HD))
+                       )
+            )
+
 
 def D_Sep(phi, D_Cl): 
     """Return the particle separation distance."""
-	x = (np.pi / 6 / phi)**(1/3) * D_Cl
-	return x.to(u.micrometer)
+    x = (np.pi / 6 / phi)**(1/3) * D_Cl
+    return x.to(u.micrometer)
+
 
 def P_V(Gam, t, EDR, nu, phi):
-	x = (Gam * t * np.sqrt(EDR.to(u.m**2/u.s**3) / nu.to(u.m**2/u.s)) 
-        * phi**(2/3)
-        )
-	return x.to(u.dimensionless)
+    x = (Gam * t * np.sqrt(EDR.to(u.m**2/u.s**3) / nu.to(u.m**2/u.s)) 
+         * phi**(2/3)
+         )
+    return x.to(u.dimensionless)
+
 
 def P_I(Gam, t, EDR, D_Cl, phi):
-	x = (Gam * t * (EDR.to(u.m**2/u.s**3) / D_Cl.to(u.m)**2)**(1/3)
-        * phi**(8/9)
-        )
-	return x.to(u.dimensionless)
+    x = (Gam * t * (EDR.to(u.m**2/u.s**3) / D_Cl.to(u.m)**2)**(1/3)
+         * phi**(8/9)
+         )
+    return x.to(u.dimensionless)
+
 
 def pC_I(N, k):
-	return 9/8 * np.log10(8/9 * np.pi * k * N * (6.0 / np.pi)**(8/9) + 1)
+    return 9/8 * np.log10(8/9 * np.pi * k * N * (6.0 / np.pi)**(8/9) + 1)
+
 
 def pC_V(N, k): 
-	return 1.5 * np.log10(2/3 * np.pi * k * N * (6.0 / np.pi)**(2/3) + 1)
+    return 1.5 * np.log10(2/3 * np.pi * k * N * (6.0 / np.pi)**(2/3) + 1)
