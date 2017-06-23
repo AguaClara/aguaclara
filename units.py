@@ -1,4 +1,12 @@
 """
+Created on Thu Jun 8 2017
+
+@author: Monroe Weber-Shirk
+
+Last modified: Fri Jun 23 2017 
+By: Sage Weber-Shirk
+
+
 Module containing global `pint` unit registry.
 
 The `pint` module supports arithmetic involving *physical quantities*
@@ -14,6 +22,9 @@ modules.
 
 
 import pint
+from os import path
 
 
 unit_registry = pint.UnitRegistry(system='mks')
+
+unit_registry = unit_registry.load_definitions(path.expanduser('~\\Documents\\GitHub\\AguaClara_design\\unit_definitions.txt'))
