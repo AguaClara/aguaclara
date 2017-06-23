@@ -9,7 +9,7 @@ By: Sage Weber-Shirk
 # units allows us to include units in all of our calculations
 import math
 
-from units import unit_registry as u
+from AguaClara_design.units import unit_registry as u
 
 
 """x is a number that may include units. n is the number of significant
