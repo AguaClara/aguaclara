@@ -40,6 +40,38 @@ def diam_circle(A_Circle):
 
 ######################### Hydraulics ######################### 
 
+WATER_DENSITY_TABLE = [u.Quantity([0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
+                                 ],u.degC), 
+                     [999.9, 1000, 999.7, 998.2, 995.7, 992.2, 988.1, 983.2, 
+                      977.8, 971.8, 965.3, 958.4
+                      ]
+                     ]
+
+
+def mu_water(temp):
+    return 2.414 * 10**(-5) * u.Pa * u.s * 10**((2.478*u.K)/(temp-140*u.K))
+
+
+def density_fluid(temp, DensityTable):
+    """Return a fluid's density at a given temperature.
+    
+    Requires both a temperature (in Celsius) and a table of densities.
+    * 'temp' can be any numeric datatype, but should be in Celsius.
+    * 'DensityTable' should be a two-dimensional array, with 
+       DensityTable[0] a list of temperatures (in Celsius) and 
+       DensityTable[1] a list of corresponding densities (in kg/m**3)
+    For water, use WATER_DENSITY_TABLE, defined above.
+    """
+    rhointerpolated = scipy.interpolate.CubicSpline(DensityTable[0], 
+                                                    DensityTable[1])
+    rho=rhointerpolated(temp.to(u.degC))
+    return rho * u.kg/u.m**3
+
+
+def nu_water(temp):
+    return mu_water(temp) / density_fluid(temp, WATER_DENSITY_TABLE)
+
+
 def re_pipe(Q, D, nu):
     """Return the Reynolds number for a pipe."""
     Re=(4*Q)/(math.pi*D*nu)
@@ -461,21 +493,6 @@ def headloss_kozeny(L,D,V,e,nu):
   	
 ######################### Flocculation #########################
 PHI_FLOC = 45 / 24
-
-WATER_DENSITY_TABLE = [(0, 999.9), (5, 1000), (10, 999.7), (20, 998.2), 
-                       (30, 999.5), (40, 992.2), (50, 988.1), (60, 983.2), 
-                       (70, 977.8), (80, 971.8), (90, 965.3), (100, 958.4)]
-
-def cubic_spline(xarray, yarray, x):
-    pass
-
-
-def mu_water(temp):
-    return 2.414 * 10**(-5) * u.Pa * u.s * 10**((2.478*u.K)/(temp-140*u.K))
-
-
-def rho_water(temp):
-    pass
 
 
 def C_Prec(Dose: 'Dose in mg/L as Al'): 
