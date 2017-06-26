@@ -1,9 +1,9 @@
 """
 Created on Thu Jun 15 14:07:28 2017
 
-@author: kn348
+@author: Karan Newatia
 
-Last modified: Fri Jun 23 2017 
+Last modified: Mon Jun 26 2017 
 By: Sage Weber-Shirk
 
 
@@ -18,7 +18,7 @@ import scipy
 
 from AguaClara_design.units import unit_registry as u
 
-g=9.80665 * (u.m/(u.s**2))
+gravity = 9.80665 * (u.m / (u.s**2))
 """Define the gravitational constant."""
 
 #######################Simple geometry#######################
@@ -39,6 +39,38 @@ def diam_circle(A_Circle):
     return diam_req*(u.m)
 
 ######################### Hydraulics ######################### 
+
+WATER_DENSITY_TABLE = [u.Quantity([0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
+                                 ],u.degC), 
+                     [999.9, 1000, 999.7, 998.2, 995.7, 992.2, 988.1, 983.2, 
+                      977.8, 971.8, 965.3, 958.4
+                      ]
+                     ]
+
+
+def mu_water(temp):
+    return 2.414 * 10**(-5) * u.Pa * u.s * 10**((2.478*u.K)/(temp-140*u.K))
+
+
+def density_fluid(temp, DensityTable):
+    """Return a fluid's density at a given temperature.
+    
+    Requires both a temperature (in Celsius) and a table of densities.
+    * 'temp' can be any numeric datatype, but should be in Celsius.
+    * 'DensityTable' should be a two-dimensional array, with 
+       DensityTable[0] a list of temperatures (in Celsius) and 
+       DensityTable[1] a list of corresponding densities (in kg/m**3)
+    For water, use WATER_DENSITY_TABLE, defined above.
+    """
+    rhointerpolated = scipy.interpolate.CubicSpline(DensityTable[0], 
+                                                    DensityTable[1])
+    rho=rhointerpolated(temp.to(u.degC))
+    return rho * u.kg/u.m**3
+
+
+def nu_water(temp):
+    return mu_water(temp) / density_fluid(temp, WATER_DENSITY_TABLE)
+
 
 def re_pipe(Q, D, nu):
     """Return the Reynolds number for a pipe."""
@@ -128,7 +160,7 @@ def headloss_fric(Q, D, L, nu, e):
     
     This equation applies to both laminar and turbulent flows.
     """
-    HLf = fric(Q, D, nu, e) * 8 / (g*math.pi**2) * (L * Q**2) / D**5
+    HLf = fric(Q, D, nu, e) * 8 / (gravity*math.pi**2) * (L * Q**2) / D**5
     return HLf.to(u.m)  
 
 
@@ -137,7 +169,7 @@ def headloss_exp(Q, D, K):
     
     This equation applies to both laminar and turbulent flows.
     """
-    HLe = K * 8 / (g * math.pi**2) * Q**2 / D**4
+    HLe = K * 8 / (gravity * math.pi**2) * Q**2 / D**4
     return HLe.to(u.m)
 
 
@@ -157,7 +189,7 @@ def headloss_fric_rect(Q, w, b, L, nu, e, openchannel):
     """
     Hfrect = (fric_rect(Q, w, b, nu, e, openchannel) * L 
               / (4 * radius_hydraulic(w, b, openchannel)) * Q**2 
-              / (2 * g * (w*b)**2)
+              / (2 * gravity * (w*b)**2)
               )
     return Hfrect.to(u.m)
 
@@ -167,7 +199,7 @@ def headloss_exp_rect(Q, w, b, K):
      
      This equation applies to both laminar and turbulent flows.
      """
-     Herect = K * Q**2 / (2 * g * (w*b)**2)
+     Herect = K * Q**2 / (2 * gravity * (w*b)**2)
      return Herect.to(u.m)
  
     
@@ -188,7 +220,7 @@ def headloss_fric_general(A, WP, V, L, nu, e):
      This equation applies to both laminar and turbulent flows.
      """
      Hfgen = (fric_general(A, WP, V, nu, e) * L 
-              / (4*radius_hydraulic_general(A,WP)) * V**2 / (2*g)
+              / (4*radius_hydraulic_general(A,WP)) * V**2 / (2*gravity)
               )
      return Hfgen.to(u.m)
  
@@ -198,7 +230,7 @@ def headloss_exp_general(V, K):
     
     This equation applies to both laminar and turbulent flows.
     """
-    Hegen=K * V**2 / (2*g)
+    Hegen=K * V**2 / (2*gravity)
     return Hegen.to(u.m)
 
 
@@ -221,7 +253,7 @@ def headloss_manifold(Q, D, L, K, nu, e, n):
 def flow_orifice(D, h, ratio_VC_orifice):
     """Return the flow rate of the orifice."""
     if h > 0 * u.cm:
-        Q = ratio_VC_orifice * area_circle(D) * np.sqrt(2*g*h)
+        Q = ratio_VC_orifice * area_circle(D) * np.sqrt(2*gravity*h)
         return Q.to(u.L/u.s)
     else:
          return 0 * (u.L/u.s)
@@ -238,7 +270,7 @@ def flow_orifice_vert(D,h,ratio_VC_orifice):
                                  * np.sqrt(h-z),-D/2,min(D/2,h)
                                  )
         Qnew = Q[0]
-        Q = ratio_VC_orifice * np.sqrt(2*g.magnitude) * Qnew * 1000
+        Q = ratio_VC_orifice * np.sqrt(2*gravity.magnitude) * Qnew * 1000
         return Q * (u.L/u.s)
     else:
        return 0 * (u.L/u.s)
@@ -246,13 +278,13 @@ def flow_orifice_vert(D,h,ratio_VC_orifice):
 
 def head_orifice(D, ratio_VC_orifice, Q):
      """Return the head of the orifice."""
-     h = (Q / (ratio_VC_orifice*area_circle(D)))**2 / (2*g)
+     h = (Q / (ratio_VC_orifice*area_circle(D)))**2 / (2*gravity)
      return h.to(u.m)
  
     
 def area_orifice(h, ratio_VC_orifice, Q):
     """Return the area of the orifice."""
-    area = Q / (ratio_VC_orifice * np.sqrt(2*g*h))
+    area = Q / (ratio_VC_orifice * np.sqrt(2*gravity*h))
     return area.to(u.mm**2)
     
 
@@ -288,14 +320,15 @@ def flow_transition(D, nu):
 
 def flow_hagen(D, hf, L, nu):
     """Return the flow rate for laminar flow with only major losses."""
-    return ((math.pi * D**4) / (128*nu) * g * hf / L).to(u.L/u.s)
+    return ((math.pi * D**4) / (128*nu) * gravity * hf / L).to(u.L/u.s)
 
 
 def flow_swamee(D, hf, L, nu, e):
     """Return the flow rate for turbulent flow with only major losses."""
-    logterm = -math.log10(e/(3.7*D) + 2.51*nu*np.sqrt(L/(2 * g * hf * D**3)))
+    logterm = -math.log10(e/(3.7*D) + 2.51*nu*np.sqrt(L/(2 * gravity * hf * 
+                                                         D**3)))
     return ((math.pi / np.sqrt(2)) * D**(5/2) 
-            * np.sqrt(g * hf / L) * logterm
+            * np.sqrt(gravity * hf / L) * logterm
             ).to(u.L/u.s)
 
 
@@ -317,7 +350,7 @@ def flow_pipeminor(D,he,K):
     
     This function applies to both laminar and turbulent flows.
     """ 
-    return (area_circle(D) * np.sqrt(2 * g * he / K)).to(u.L/u.s)
+    return (area_circle(D) * np.sqrt(2 * gravity * he / K)).to(u.L/u.s)
 
 # Now we put all of the flow equations together and calculate the flow in a 
 # straight pipe that has both major and minor losses and might be either
@@ -350,7 +383,7 @@ def flow_pipe(D, hl, L, nu, e, K):
  
 
 def diam_hagen(Q, hf, L, nu):
-    D = ((128 * nu * Q * L) / (g * hf * math.pi)) ** (1/4)
+    D = ((128 * nu * Q * L) / (gravity * hf * math.pi)) ** (1/4)
     return D.to_base_units()
 
 
@@ -366,8 +399,8 @@ def diam_swamee(Q, hf, L, nu, e):
     power. This function strips the units before adding the two 
     terms and then reattaches the units.
     """
-    a = ((e**1.25) * ((L * Q**2) / (g*hf))**4.75).to_base_units().magnitude
-    b = (nu * (Q**9.4) * (L / (g*hf))**5.2).to_base_units().magnitude
+    a = ((e**1.25) * ((L * Q**2) / (gravity*hf))**4.75).to_base_units().magnitude
+    b = (nu * (Q**9.4) * (L / (gravity*hf))**5.2).to_base_units().magnitude
     D = (0.66 * (a+b)**0.04) * u.m
     return D.to_base_units()
 
@@ -390,7 +423,7 @@ def diam_pipeminor(Q, he, K):
     
     This function applies to both laminar and turbulent flow.
     """
-    D = (np.sqrt(4 * Q / math.pi)) * (K / (2 * g * he))**(1/4)
+    D = (np.sqrt(4 * Q / math.pi)) * (K / (2 * gravity * he))**(1/4)
     return D.to(u.m)
 
 
@@ -419,7 +452,7 @@ RATIO_VC_ORIFICE = 0.62
 
 def width_rect_weir(Q, H):
     """Return the width of a rectangular weir."""
-    w = (3 / 2) * Q / (RATIO_VC_ORIFICE * (np.sqrt(2*g) * H**(3/2)))
+    w = (3 / 2) * Q / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity) * H**(3/2)))
     return w.to(u.m)
 
 # For a pipe, W is the circumference of the pipe.
@@ -427,49 +460,50 @@ def width_rect_weir(Q, H):
 # upstream of the weir and the top of the weir.
 def headloss_weir(Q,W):
     """Return the headloss of a weir."""
-    hl = ((3/2) * Q / (RATIO_VC_ORIFICE * (np.sqrt(2*g)*W))) ** 3
+    hl = ((3/2) * Q / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity)*W))) ** 3
     return hl.to(u.m)
 
 
 def flow_rect_weir(H, W):
     """Return the flow of a rectangular weir."""
-    q = (2/3) * RATIO_VC_ORIFICE * (np.sqrt(2*g) * H**(3/2)) * W
+    q = (2/3) * RATIO_VC_ORIFICE * (np.sqrt(2*gravity) * H**(3/2)) * W
     return q.to(u.m)
 
 
 def height_water_critical(Q, W):
     """Return the critical local water depth."""
-    hw = (Q / (W * g)) ** (2/3)
+    hw = (Q / (W * gravity)) ** (2/3)
     return hw.to(u.m)
 
 
 def vel_horizontal(height_water_critical):
     """Return the horizontal velocity."""
-    v = np.sqrt(g * height_water_critical)
+    v = np.sqrt(gravity * height_water_critical)
     return v.to(u.m/u.s)
 
 K_KOZENY=5
 
 def headloss_kozeny(L,D,V,e,nu):
     """Return the Carmen Kozeny Sand Bed head loss."""
-    hl = K_KOZENY * L * nu / g * (1-e) ** 2 / e**3 * 36 * V / D**2
+    hl = K_KOZENY * L * nu / gravity * (1-e) ** 2 / e**3 * 36 * V / D**2
     return hl.to(u.m)
     
 
 
   	
 ######################### Flocculation #########################
-"""Many of these functions are currently broken, calling on 
-global variables that have not been defined.
-"""
+PHI_FLOC = 45 / 24
 
-def C_Prec(D: 'Dose in mg/L as Al'): 
+
+def C_Prec(Dose: 'Dose in mg/L as Al'): 
     """Calculate precipitate concentration given Aluminum concentration."""
     return Dose.to(u.mg/u.L) * 1.3 / 0.027 / 13 # Changed 1.039384 to 1.3
 
 
 def phi_0(Dose: 'in mg/L', Inf: 'in NTU'): 
-    """Calculate phi_0."""
+    """Calculate phi_0. 
+    
+    Currently broken."""
     x = C_Prec(Dose) / r_Co + Inf.to(u.mg/u.L) / r_Cl
     return x.to(u.dimensionless) 
 
@@ -485,6 +519,7 @@ def P_ClSphere(P_HD):
 def P_AClATot(Inf: 'in NTU', D_Cl: 'in um', D_T: 'in inches', P_HD): 
     """Normalize surface area of clay by total surface area.
     
+    Currently broken.
     Surface area is calculated as the sum of clay + walls.
     """
     x = (1 / (1+(2 * D_Cl.to(u.m) / (3 * D_T.to(u.m) * P_ClSphere(P_HD) 
@@ -530,3 +565,5 @@ def pC_I(N, k):
 
 def pC_V(N, k): 
     return 1.5 * np.log10(2/3 * np.pi * k * N * (6.0 / np.pi)**(2/3) + 1)
+
+
