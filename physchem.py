@@ -48,28 +48,25 @@ WATER_DENSITY_TABLE = [u.Quantity([0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
                      ]
 
 
-def mu_water(temp):
-    return 2.414 * 10**(-5) * u.Pa * u.s * 10**((2.478*u.K)/(temp-140*u.K))
+# dynamic viscosity
+def viscosity_dynamic(T):
+    Ttemp=T.to(u.kelvin).magnitude
+    mu=2.414*(10**-5)*u.Pa*u.s*10**((247.8)/(Ttemp-140))
+    return mu
 
 
-def density_fluid(temp, DensityTable):
-    """Return a fluid's density at a given temperature.
-    
-    Requires both a temperature (in Celsius) and a table of densities.
-    * 'temp' can be any numeric datatype, but should be in Celsius.
-    * 'DensityTable' should be a two-dimensional array, with 
-       DensityTable[0] a list of temperatures (in Celsius) and 
-       DensityTable[1] a list of corresponding densities (in kg/m**3)
-    For water, use WATER_DENSITY_TABLE, defined above.
-    """
-    rhointerpolated = scipy.interpolate.CubicSpline(DensityTable[0], 
-                                                    DensityTable[1])
+def density_water(temp):
+    """Return the density of water at a given temperature."""
+    rhointerpolated = scipy.interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
+                                                    WATER_DENSITY_TABLE[1])
     rho=rhointerpolated(temp.to(u.degC))
     return rho * u.kg/u.m**3
 
 
-def nu_water(temp):
-    return mu_water(temp) / density_fluid(temp, WATER_DENSITY_TABLE)
+# kinematic viscosity
+def viscosity_kinematic(T):
+    nu=viscosity_dynamic(T)/(density_water(T))
+    return nu.to(u.mm**2/u.s)
 
 
 def re_pipe(Q, D, nu):
@@ -567,3 +564,19 @@ def pC_V(N, k):
     return 1.5 * np.log10(2/3 * np.pi * k * N * (6.0 / np.pi)**(2/3) + 1)
 
 
+def diam_floc_max(epsMax):
+    """Return floc size as a function of energy dissipation rate.
+    
+    Based on Ian Tse's work with floc size as a function of energy 
+    dissipation rate. This is for the average energy dissipation rate 
+    in a tube flocculator. It isn't clear how to convert this to the 
+    turbulent flow case. Maybe the flocs are mostly experiencing viscous
+    shear. But that isn't clear. Some authors have made the case that 
+    floc breakup is due to viscous effects. If that is the case, then 
+    the results from the tube flocculator should be applicable to the 
+    turbulent case. We will have to account for the temporal and spatial
+    variability in the turbulent energy dissipation rate. The factor of 
+    95 μm is based on the assumption that the ratio of the max to 
+    average energy dissipation rate for laminar flow is approximately 2.
+    """
+    return 95 * u.um * (1 / (epsMax.to(u.W/u.kg).magnitude)**(1/3))
