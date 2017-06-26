@@ -27,4 +27,4 @@ from os import path
 
 unit_registry = pint.UnitRegistry(system='mks')
 
-unit_registry = unit_registry.load_definitions(path.expanduser('~\\Documents\\GitHub\\AguaClara_design\\unit_definitions.txt'))
+unit_registry.load_definitions(path.expanduser('~\\Documents\\GitHub\\AguaClara_design\\unit_definitions.txt'))
