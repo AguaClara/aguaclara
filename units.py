@@ -25,6 +25,6 @@ import pint
 from os import path
 
 
-unit_registry = pint.UnitRegistry(system='mks')
+unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
 
 unit_registry.load_definitions(path.expanduser('~\\Documents\\GitHub\\AguaClara_design\\unit_definitions.txt'))
