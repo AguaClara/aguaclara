@@ -6,7 +6,7 @@ Created on Mon Jun 26 15:54:16 2017
 """
 from AguaClara_design.units import unit_registry as u
 
-#tabulated constants
+#####tabulated constants
 
 #density of water
 RHO_H20=1000*u.kg/(u.m**3)
@@ -29,6 +29,8 @@ NU_AIR=12*u.to(u.mm**2/u.s)
 
 #needed for the filter siphon design
 RHO_AIR=1.204*u.kg/(u.mm**3)
+
+####general assumptions and constants
 
 PLANT_ORIGIN=[0,0,0]*u.m
 
@@ -89,7 +91,7 @@ def flow_train(flow_plant):
     
     return flow_plant/(n_train(flow_plant))
 
-#Flow orifice meter
+#####Flow orifice meter
 
 #Maximum number of rows or orifices in lfom.
 RATIO_LFOM_ORIFICE = 10
@@ -119,3 +121,62 @@ def en_lfom_pipe(flow_plant):
         return 0
     else:
         return 1
+
+####entrance tank
+
+#Used to make a smaller entrance tank if the source water doesn't contain grit.
+##0 if we want entrance tank sized to capture grit, 1 for minimum size
+##EN_GRIT=0    ASK Monroe
+
+##0 if there is only one inlet, 1 if there is two inlet
+##EN_TWO_INLETS=0
+
+#Angle of the sloped walls of the entrance tank hoppers
+ANGLE_ENT_TANK_SLOPE=45*u.deg
+
+#Extra space around the float (increase in effective diameter) to ensure that float has free travel 
+SPACE_ENT_TANK_FLOAT=5*u.cm
+
+#Increased to get better mixing (10/10/2015 by Monroe)
+ENERGY_DIS_RAPID_MIX=3*u.W/u.kg
+
+#Distance that the rapid mix coupling extends into the first floc channel so that the RM orifice place can be fixed in place
+LENGTH_FLOC_COUPLING_EXT=5*u.cm
+
+WIDTH_ENT_TANK_HOPPER_PEAK=3*u.cm
+
+#Distance from the front wall to the pipe stubs in the hopper drains so that an operator can easily reach them.
+LENGTH_ENT_TANK_WALLTODRAIN_MAX=40*u.cm
+
+#Entrance tank capture velocity
+VEL_ENT_TANK_CAPTURE_BOD=8*u.mm/u.s
+
+AN_ENT_TANK_PLATE=50*u.deg
+
+SPACE_ENT_TANK_PLATE=2.5*u.cm
+
+THICKNESS_ENT_TANK_PLATE=2*u.mm
+
+DIST_CENTER_ENT_TANK_PLATE=SPACE_ENT_TANK_PLATE+THICKNESS_ENT_TANK_PLATE
+
+NOM_DIAM_ENT_TANK_MOD=0.5*u.inch
+
+NOM_DIAM_ENT_TANK_MOD_SPACER=0.75*u.inch
+
+#Thickness of the PVC disk used as the float for the chemical dose controller lever arm.
+THICKNESS_ENT_TANK_FLOAT=5*u.cm
+
+SPACE_ENT_TANK_LAMINA_PIPETOEDGE=5*u.cm
+
+NOM_DIAM_RAPID_MIX_PLATE_RESTRAINER=0.5*u.inch
+
+#Nom diam of the pipes that are embedded in the entrance tank slope to support the plate settler module
+NOM_DIAM_ENT_TANK_PLATE_SUPPORT=3*u.inch
+
+####chemical dose controller
+
+##0 is alum, 1 is PACl
+##EN_COAG=1
+
+
+
