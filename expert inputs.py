@@ -178,5 +178,70 @@ NOM_DIAM_ENT_TANK_PLATE_SUPPORT=3*u.inch
 ##0 is alum, 1 is PACl
 ##EN_COAG=1
 
+M_COAG_SACK=25*u.kg
+
+#The coagulant stock is relatively stable and can last many days. Here we set the minimum time the coagulant stock will last when applying the maximum possible dose to size the stock tanks. In general the dose will be less than this and the stock will last much longer.
+TIME_COAG_STOCK_MIN_EST=1*u.day
+
+#Want chlorine stock to run out on average every day so that the stock is made fresh frequently because the chlorine stock degrades with time depending on temperature, concentration, and pH.
+TIME_CHLOR_STOCK_AVE=1*u.day
+
+ID_COAG_TUBE=1/8*u.inch
+#1/8" tubes are readily available in hardware stores in Honduras
+ID_CHLOR_TUBE=1/8*u.inch
+
+CONC_COAG_STOCK_EST=150*u.gm/u.L
+
+CONC_CHLOR_STOCK_EST1=15*u.gm/u.L
+
+P_CHLOR=0.7
+
+#This is the elevation difference between the outlet of the coagulant stock tanks and the water level in the constant head tank, which is set by the hydraulic head required to provide the desired max chemical flow rate through the float valve orifice in the CHT.
+#It is treated as constant here to ensure a practical elevation difference is left between the stock tanks and the CHT even when a float valve is selected which requires very little hydraulic head to deliver the required maximum chemical flow rate.
+HEIGHT_COAG_TANK_ABOVE_HEAD_TANK=30*u.cm
+
+#This is the distance from the bottom of the stock tanks to the outlets to allow space for solids to settle.
+DIST_CENTER_STOCK_OUTLET=10*u.cm
+
+#Distance between a tank and the border of the platform
+SPACE_CHEM_TANK_BORDER=5*u.cm
+
+#This is the estimated elevation difference between the water level in the constant head tank and the top of the entrance tank wall.
+#he constant head tank water level is the same as the elevation of the outlet of the dosing tube when the lever arm is horizontal (zero flow).
+#Therefore this height depends only on the hardware used to make the slider/drop tube assembly and to mount the lever arm to the entrance tank wall.
+#Note that this will vary depending on hardware used, and is only defined here to calculate the elevation of the stock tanks, which can be approximate.
+HEIGHT_DOSER_ASSEMBLY=6.77*u.cm
+
+#Maximum error allowed between a linear flow vs tube head loss relationship and the actual performance (which is affected by non-linear minor losses), assuming calibration at the maximum flow rate
+RATIO_LINEAR_CDC_ERROR=0.1
+
+#Estimated minor loss coefficient for the small-diameter flexible tubing using fittings that have larger ID than the tubing
+K_MINOR_CDC_TUBE=2
+
+#Head loss through the doser at maximum flow rate.
+#Maximum head loss through the small-diameter dosing tubing, which corresponds to the variation in water levels in the entrance tank and the difference between the maximum and minimum elevation of the dosing tube outlet attached to the lever arm.\
+HEADLOSS_CDC=20*u.cm
+
+#Estimated distance between fluid level in constant head tank and float valve orifice
+HEIGHT_CDC_FLOAT_VALVE=5*u.cm
+
+#Nominal diameter of the PVC plumbing for the chlorine dosing system.
+NOM_DIAM_CHLOR_PIPE=0.5*u.inch
+
+#Nominal diameter of the PVC plumbing for the coagulant dosing system.
+NOM_DIAM_COAG_PIPE=0.5*u.inch
+
+#Supplier Information:
+#http://www.rotoplas.com/assets/files/industria/catalogo.pdf
+#5-gallon bucket
+#http://www.mcmaster.com/#storage-buckets/=kd23oh
+#35-gallon drum
+#http://www.jlmovingsupplies.com/c31/DIXIE-OPEN-CLOSED-HEAD-DRUMS-p36721.html
+VOL_CHEM_TANK_AVAIL=[5*u.gal,35*u.gal,55*u.gal,450*u.L,750*u.L,1100*u.L,2500*u.L]
+DIAM__CHEM_TANK_AVAIL=[11.875*u.inch,20.75*u.inch,22.5*u.inch,0.85*u.m,1.10*u.m,1,10*u.m,1.55*u.m]
+HEIGHT_CHEM_TANK_AVAIL=[17.75*u.inch,31.75*u.inch,33.5*u.inch,0.99*u.inch,1.02*u.inch,1.39*u.inch,1.65*u.inch]
+
+####Chemical dose controller dimensions (based on inserted drawings)
+
 
 
