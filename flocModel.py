@@ -4,18 +4,15 @@ Created on Mon Jun 26 16:50:46 2017
 
 @author: Sage Weber-Shirk
 
-Last revised: Tue Jun 27 2017
+Last revised: Wed Jun 28 2017
 By: Sage Weber-Shirk
 """
 
 ######################### Imports #########################
-import math
 import numpy as np
-import scipy
 
-from AguaClara_design.units import unit_registry as u
 from AguaClara_design import physchem as pc
-from AguaClara_design import pipedatabase as pipe
+from AguaClara_design.units import unit_registry as u
 from AguaClara_design import utility as ut
 
 u.enable_contexts('chem')
@@ -23,27 +20,27 @@ u.enable_contexts('chem')
 ##################### Class Definition #####################
 
 class Chemical:
-    def __init__(self, name, diameter, density, molecWeight, alumMPM, Precip):
+    def __init__(self, name, diameter, density, molecWeight, alumMPM, Precipitate):
         self.name = name
         self.Diameter = diameter
         self.Density = density
         self.MolecWeight = molecWeight
         self.AluminumMPM = alumMPM
-        self.Precip = Precip
+        self.Precip = Precipitate
         if self.Precip == self.name:
-            self.Precip.name = self.name
-            self.Precip.Diameter = self.Diameter
-            self.Precip.Density = self.Density
-            self.Precip.MolecWeight = self.MolecWeight
-            self.Precip.AluminumMPM = self.AluminumMPM
+            self.PrecipName = name
+            self.PrecipDiameter = diameter
+            self.PrecipDensity = density
+            self.PrecipMolecWeight = molecWeight
+            self.PrecipAluminumMPM = alumMPM
         else:
-            self.Precip.name = self.Precip
+            self.PrecipName = Precipitate
         
     def define_Precip(self, diameter, density, molecweight, alumMPM):
-        self.Precip.Diameter = diameter
-        self.Precip.Density = density
-        self.Precip.MolecWeight = molecweight
-        self.Precip.AluminumMPM = alumMPM
+        self.PrecipDiameter = diameter
+        self.PrecipDensity = density
+        self.PrecipMolecWeight = molecweight
+        self.PrecipAluminumMPM = alumMPM
     
 
 ################## Coagulant Definitions ##################
@@ -79,8 +76,9 @@ def dens_alum_nanocluster(coag):
     This is useful for determining the volume of nanoclusters 
     given a concentration of aluminum.
     """
-    return (coag.Precip.Density * MOLEC_WEIGHT_ALUMINUM 
-            * coag.Precip.AluminumMPM / coag.Precip.MolecWeight)
+    density =  (coag.PrecipDensity * MOLEC_WEIGHT_ALUMINUM 
+                * coag.PrecipAluminumMPM / coag.PrecipMolecWeight)
+    return density.to(u.kg/u.m**3)
 
 
 def dens_pacl_solution(ConcAluminum, temp):
@@ -89,51 +87,54 @@ def dens_pacl_solution(ConcAluminum, temp):
     From Stock Tank Mixing report Fall 2013:
     https://confluence.cornell.edu/download/attachments/137953883/20131213_Research_Report.pdf
     """
-    return ((0.492 * ConcAluminum * PACl.MolecWeight 
-             / (PACl.AluminumMPM * MOLEC_WEIGHT_ALUMINUM)
-             ) + pc.density_water(temp)
-            )
+    density =  ((0.492 * ConcAluminum * PACl.MolecWeight 
+                 / (PACl.AluminumMPM * MOLEC_WEIGHT_ALUMINUM)
+                 ) + pc.density_water(temp)
+                )
+    return density.to(u.kg/u.m**3)
 
 
 def conc_precipitate(ConcAluminum, coag):
     """Return coagulant precipitate concentration given aluminum dose."""
-    return ((ConcAluminum / MOLEC_WEIGHT_ALUMINUM) 
-            * (coag.Precip.MolecWeight / coag.Precip.AluminumMPM)
-            )
+    concentration =  ((ConcAluminum / MOLEC_WEIGHT_ALUMINUM) 
+                      * (coag.PrecipMolecWeight / coag.PrecipAluminumMPM)
+                      )
+    return concentration.to(u.mg/u.L)
 
 
 def conc_floc(ConcAluminum, concClay, coag):
-    return conc_precipitate(ConcAluminum, coag) + concClay
+    return (conc_precipitate(ConcAluminum, coag) + concClay).to(u.mg/u.L)
 
 
 def moles_aluminum(ConcAluminum):
     """Return the # of moles Aluminum given aluminum concentration."""
-    return ConcAluminum / MOLEC_WEIGHT_ALUMINUM
+    return (ConcAluminum / MOLEC_WEIGHT_ALUMINUM).to(u.mol/u.m**3)
 
 
 def sep_dist_aluminum(ConcAluminum):
     """Return the separation distance between aluminum molecules."""
-    return (1 / (NUM_AVOGADRO * moles_aluminum(ConcAluminum)))**(1/3)
+    return ((1 / (NUM_AVOGADRO*moles_aluminum(ConcAluminum)))**(1/3)).to(u.nm)
 
 
 def num_clay(ConcClay, DiamClay):
-    return ConcClay / ((DENS_CLAY * np.pi * DiamClay**3) / 6)
+    return (ConcClay / ((DENS_CLAY * np.pi * DiamClay**3) / 6)).to(1/u.mm**3)
 
 
 def sep_dist_clay(ConcClay, DiamClay):
     """Return the separation distance between clay particles."""
-    return ((DENS_CLAY / ConcClay) * ((np.pi * DiamClay**3) / 6))**(1/3)
+    return (((DENS_CLAY / ConcClay) * ((np.pi * DiamClay**3) / 6))**(1/3)
+            ).to(u.nm)
 
 
 def num_nanoclusters(ConcAluminum, coag):
-    return (ConcAluminum / (dens_alum_nanocluster(coag) 
-                            * np.pi * (coag.Diameter**3)
-                            ))
+    return ((ConcAluminum / (dens_alum_nanocluster(coag) 
+                             * np.pi * (coag.Diameter**3)
+                             ))).to(1/u.L)
 
 
 def phi_floc_initial(ConcAluminum, ConcClay, coag):
-    return ((conc_precipitate(ConcAluminum, coag) / coag.Precipitate.Density)
-            + (ConcClay / DENS_CLAY))
+    return ((conc_precipitate(ConcAluminum, coag) / coag.PrecipDensity)
+            + (ConcClay / DENS_CLAY)).to(u.dimensionless)
 
 ####################### p functions #######################
 def p(C, Cprime):
@@ -146,7 +147,7 @@ def invp(pC, Cprime):
 #################### Fractal functions ####################
 def diam_fractal(DiamFractal, DiamInitial, NumCol):
     """Return the diameter of a floc given NumCol doubling collisions."""
-    return DiamInitial * 2**(NumCol / DiamFractal)
+    return (DiamInitial * 2**(NumCol / DiamFractal)).to(u.um)
 
 
 def num_coll_reqd(DiamFractal, DiamInit, DiamTarget):
@@ -164,14 +165,14 @@ def sep_dist_floc(ConcAluminum, ConcClay, coag,
     return (DiamInit 
             * (np.pi/(6*phi_floc_initial(ConcAluminum, ConcClay, coag)))**(1/3)
             * (DiamTarget / DiamInit)**(DiamFractal / 3)
-            )
+            ).to(u.nm)
 
 
 def phi(ConcAluminum, ConcClay, coag, DiamFractal, DiamInit, DiamTarget):
     """Return the floc volume fraction."""
     return (phi_floc_initial(ConcAluminum, ConcClay, coag) 
             * (DiamTarget / DiamInit)**(3-DiamFractal)
-            )
+            ).to(u.dimensionless)
 
 
 def dens_floc_init(ConcAluminum, ConcClay, coag):
@@ -181,18 +182,19 @@ def dens_floc_init(ConcAluminum, ConcClay, coag):
     """
     return (conc_floc(ConcAluminum, ConcClay, coag) 
             / phi_floc_initial(ConcAluminum, ConcClay, coag)
-            )
+            ).to(u.kg/u.m**3)
 
 #################### Flocculation Model ####################
-def ratio_clay_sphere(RatioHeightDistance):
+def ratio_clay_sphere(RatioHeightDiameter):
     """Return the surface area to volume ratio for clay.
     
     Normalized by surface area to volume ratio for a sphere.
     """
-    return (1/2 + RatioHeightDistance) * (2 / (3*RatioHeightDistance))**(2/3)
+    return (1/2 + RatioHeightDiameter) * (2 / (3*RatioHeightDiameter))**(2/3)
 
 
-def ratio_area_clay_total(ConcClay, DiamClay, DiamTube, RatioHeightDistance):
+def ratio_area_clay_total(ConcClay, DiamClay, DiamTube, 
+                          DensityClay, RatioHeightDiameter):
     """Return the surface area of clay normalized by total surface area.
     
     Total surface area is a combination of clay and reactor wall
@@ -202,8 +204,8 @@ def ratio_area_clay_total(ConcClay, DiamClay, DiamTube, RatioHeightDistance):
     return (1 
             / (1 
                + (2 * DiamClay 
-                  / (3 * DiamTube * ratio_clay_sphere(RatioHeightDistance)
-                     * (ConcClay / DiamClay)
+                  / (3 * DiamTube * ratio_clay_sphere(RatioHeightDiameter)
+                     * (ConcClay / DensityClay)
                      )
                   )
                )
@@ -211,7 +213,7 @@ def ratio_area_clay_total(ConcClay, DiamClay, DiamTube, RatioHeightDistance):
 
 
 def gamma_coag(ConcClay, ConcAluminum, coag, 
-               DiamTube, DiamClay, RatioHeightDistance):
+               DiamTube, DiamClay, DensityClay, RatioHeightDiameter):
     """Return the coverage of clay with nanoglobs.
     
     This function accounts for loss to the tube flocculator walls
@@ -226,22 +228,23 @@ def gamma_coag(ConcClay, ConcAluminum, coag,
                               * coag.Diameter
                               )
                         ) * (1/np.pi) 
-                          * (ratio_area_clay_total(ConcClay, DiamClay, DiamTube, 
-                                                   RatioHeightDistance)
-                             / ratio_clay_sphere(RatioHeightDistance)
+                          * (ratio_area_clay_total(ConcClay, DiamClay, 
+                                                   DiamTube, DensityClay, 
+                                                   RatioHeightDiameter)
+                             / ratio_clay_sphere(RatioHeightDiameter)
                              )
                        )
             )
 
     
-def pc_viscous(MinorLoss, EnerDis, Temp, Time, ConcAl, ConcClay, coag, 
-               DiamInit, DiamTube, RatioHeightDistance):
+def pc_viscous(FittingParam, EnerDis, Temp, Time, ConcAl, ConcClay, coag, 
+               DiamInit, DiamTube, RatioHeightDiameter, DensityClay):
     return ((3/2) 
-            * np.log10((2/3) * np.pi * MinorLoss * Time
+            * np.log10((2/3) * np.pi * FittingParam * Time
                        * np.sqrt(EnerDis/(pc.viscosity_kinematic(Temp)))
                        * gamma_coag(ConcClay, ConcAl, coag, DiamTube, 
-                                    DiamInit, RatioHeightDistance)
-                       * (DiamInit / sep_dist_clay(ConcClay, DiamClay)) ** 2
+                                    DiamInit, DensityClay, RatioHeightDiameter)
+                       * (DiamInit / sep_dist_clay(ConcClay, DiamInit)) ** 2
                        + 1
                        )
             )
@@ -253,7 +256,7 @@ def dens_floc(ConcAl, ConcClay, DiamFractal, DiamInit, DiamTarget, coag, Temp):
     return ((dens_floc_init(ConcAl, ConcClay, coag) - WaterDensity)
             * (DiamInit / DiamTarget)**(3 - DiamFractal)
             + WaterDensity
-            )
+            ).to(u.kg/u.m**3)
 
 
 def vel_term_floc(ConcAl, ConcClay, coag, DiamFractal, 
@@ -267,7 +270,7 @@ def vel_term_floc(ConcAl, ConcClay, coag, DiamFractal,
                / WaterDensity
                )
             * (DiamTarget / DiamInit) ** (DiamFractal - 1)
-            )
+            ).to(u.mm/u.s)
 
 
 def diam_floc_vel_term(ConcAl, ConcClay, coag, 
@@ -283,24 +286,25 @@ def diam_floc_vel_term(ConcAl, ConcClay, coag,
                                )
                             )
                         ) ** (1 / (DiamFractal - 1))
-            )
+            ).to(u.mm)
 
 
 def time_col_laminar(ConcAl, ConcClay, coag, DiamFractal, DiamInit,
-                     DiamTarget, EnerDis, Temp, DiamTube):
+                     DiamTarget, EnerDis, Temp, DiamTube, RatioHeightDiameter, 
+                     DensityClay):
     """Calculate single collision time for laminar flow mediated collisions.
     
     Calculated as a function of floc size.
     """
-    return (((1/6) * (6/np.pi)**(1/3) 
+    return (((1/6) * ((6/np.pi)**(1/3))
              * phi_floc_initial(ConcAl, ConcClay, coag)**(-2/3)
              * (pc.viscosity_kinematic(Temp) / EnerDis)**(1/2)
              * (DiamTarget / DiamInit)**(2*DiamFractal/3 - 2)
              ) # End of the numerator
-            / (gamma_coag(ConcClay, ConcAl, coag, 
-                          DiamTube, DiamInit, RatioHeightDistance)
+            / (gamma_coag(ConcClay, ConcAl, coag, DiamTube, 
+                          DiamInit, DensityClay, RatioHeightDiameter)
                ) # End of the denominator
-            ) # End of the function
+            ).to(u.s)
 
 
 def time_col_turbulent(ConcAl, ConcClay, coag, DiamFractal, DiamInit,
@@ -312,15 +316,15 @@ def time_col_turbulent(ConcAl, ConcClay, coag, DiamFractal, DiamInit,
     return((1/6) * (6/np.pi)**(1/9) * EnerDis**(-1/3) * DiamTarget**(2/3)
            * phi_floc_initial(ConcAl, ConcClay, coag)**(-8/9)
            * (DiamTarget / DiamInit)**((8*(DiamFractal-3)) / 9)
-           )
+           ).to(u.s)
 
 ########### Kolmogorov and viscous length scales ###########
 def eta_kolmogorov(EnerDis, Temp):
-    return ((pc.viscosity_kinematic(Temp)**3) / EnerDis)**(1/4)
+    return (((pc.viscosity_kinematic(Temp)**3) / EnerDis)**(1/4)).to(u.mm)
 
 
 def lambda_vel(EnerDis, Temp):
-    return RATIO_KOLMOGOROV * eta_kolmogorov(EnerDis, Temp)
+    return (RATIO_KOLMOGOROV * eta_kolmogorov(EnerDis, Temp)).to(u.mm)
 
 
 def diam_kolmogorov(ConcAl, ConcClay, coag, DiamInit, 
@@ -332,7 +336,7 @@ def diam_kolmogorov(ConcAl, ConcClay, coag, DiamInit,
             * ((eta_kolmogorov(EnerDis, Temp) / DiamInit)
                * ((6 * phi_floc_initial(ConcAl,ConcClay,coag)) / np.pi)**(1/3)
                )**(3/DiamFractal)
-            )
+            ).to(u.um)
 
 
 def diam_vel(ConcAl, ConcClay, coag, DiamInit, DiamFractal, EnerDis, Temp):
@@ -340,20 +344,24 @@ def diam_vel(ConcAl, ConcClay, coag, DiamInit, DiamFractal, EnerDis, Temp):
             * ((lambda_vel(EnerDis, Temp) / DiamInit)
                * ((6 * phi_floc_initial(ConcAl,ConcClay,coag)) / np.pi)**(1/3)
                )**(3/DiamFractal) #End of squares
-            )
+            ).to(u.mm)
 
 
 def ener_dis_diam_floc(Diam):
-    """Return max energy dissipation rate as a function of max floc diameter."""
-    return (why95 * u.um / Diam)**3 * u.W/u.kg
+    """Return max energy dissipation rate as a function of max floc diameter.
+    
+    This equation is under suspicion.
+    """
+    return ((95 * u.um / Diam)**3).to(u.mW/u.kg)
 
 ##### Velocity gradient in tubing for lab scale laminar flow flocculators #####
 def g_straight(PlantFlow, IDTube):
-    return 64 * PlantFlow / (3 * np.pi * IDTube)**3
+    return (64 * PlantFlow / (3 * np.pi * IDTube)**3).to(1/u.s)
 
 
 def reynolds_rapid_mix(PlantFlow, IDTube, Temp):
-    return 4 * PlantFlow / (np.pi * IDTube * pc.viscosity_kinematic(Temp))
+    return (4 * PlantFlow / (np.pi * IDTube * pc.viscosity_kinematic(Temp))
+            ).to(u.dimensionless)
 
 
 def dean_number(PlantFlow, IDTube, RadiusCoil, Temp):
@@ -364,10 +372,9 @@ def dean_number(PlantFlow, IDTube, RadiusCoil, Temp):
     to keep the Reynolds number and define a simple dimensionless geometric
     parameter.
     """
-    do_we_need_this
     return (reynolds_rapid_mix(PlantFlow, IDTube, Temp) 
             * (IDTube / (2 * RadiusCoil))**(1/2)
-            )
+            ).to(u.dimensionless)
 
 
 def g_coil(FlowPlant, IDTube, RadiusCoil, Temp):
@@ -381,16 +388,16 @@ def g_coil(FlowPlant, IDTube, RadiusCoil, Temp):
                                               RadiusCoil, Temp)
                                   ) ** 4
                ) ** (1/2)
-            )
+            ).to(1/u.s)
 
 
 def time_res_tube(IDTube, LengthTube, FlowPlant):
     """Calculate residence time in the flocculator."""
-    return (LengthTube * np.pi * (IDTube**2 / 4) / FlowPlant)
+    return (LengthTube * np.pi * (IDTube**2 / 4) / FlowPlant).to(u.s)
 
 
 def g_time_res(FlowPlant, IDTube, RadiusCoil, LengthTube, Temp):
     """G Residence Time calculated for a coiled tube flocculator."""
     return (g_coil(FlowPlant, IDTube, RadiusCoil, Temp)
             * time_res_tube(IDTube, LengthTube, FlowPlant)
-            )
+            ).to(u.dimensionless)

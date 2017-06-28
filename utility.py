@@ -3,11 +3,12 @@ Created on Sun Jun 11
 
 @author: Monroe Weber-Shirk
 
-Last modified: Fri Jun 23 2017 
+Last modified: Wed Jun 28 2017 
 By: Sage Weber-Shirk
 """
 # units allows us to include units in all of our calculations
 import math
+import numpy as np
 
 from AguaClara_design.units import unit_registry as u
 
@@ -83,11 +84,21 @@ digits to display."""
 
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
-equal to 'param' and outputs the result in Pint units. 
-This function is unit-aware and functions without requiring translation
-so long as 'param' and 'unit' are of the same diemnsionality.
-"""
+    equal to 'param' and outputs the result in Pint units. 
+    This function is unit-aware and functions without requiring translation
+    so long as 'param' and 'unit' are of the same dimensionality.
+    """
     counter = 0 * unit
     while counter < param.to(unit):
-        counter += step * u.inch
+        counter += step * unit
     return counter
+
+
+def unit_stripper(*args):
+    def single_strip(arg):
+        try:
+            arg.ito_base_units()
+            return arg.magnitude
+        except AttributeError: 
+            return arg
+    return np.array([single_strip(a) for a in args])
