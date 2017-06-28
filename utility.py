@@ -11,6 +11,8 @@ import math
 
 from AguaClara_design.units import unit_registry as u
 
+import numpy as np
+
 #We need to fix the formatting so that it doesn't display trailing zeroes
 #that are not significant.
 
