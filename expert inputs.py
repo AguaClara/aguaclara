@@ -243,5 +243,152 @@ HEIGHT_CHEM_TANK_AVAIL=[17.75*u.inch,31.75*u.inch,33.5*u.inch,0.99*u.inch,1.02*u
 
 ####Chemical dose controller dimensions (based on inserted drawings)
 
+#st587 addition
+LENGTH_CDC_LEVER_ARM=0.5*u.m
 
+DIAM_CDC_LEVER_CYLINDER1=1*u.inch
 
+DIAM_CDC_LEVER_CYLINDER4=2*u.inch
+
+DIAM_CDC_LEVER_CYLINDER_2=0.5*u.inch
+
+LENGTH_CDC_LEVER_PIVOTTO_CYLINDER2=6*u.cm
+
+LENGTH_CDC_LEVER_CYLINDER_2TO3=9.5*u.cm
+
+LENGTH_CDC_LEVER_PIVOT_BOX=2*u.inch
+
+WIDTH_CDC_LEVER_PIVOT_BOX=1*u.inch
+
+HEIGHT_CDC_LEVER_PIVOT_BOX=1*u.inch
+
+THICKNESS_CDC_LEVER_ARM=1/8*u.inch
+
+HEIGHT_CDC_LEVER_ARM=1*u.inch
+
+LENGTH_CDC_LEVER_INNERBAR=7*u.inch
+
+LENGTH_CDC_LEVER_MOUNTING_PLATE=6*u.inch
+
+WIDTH_CDC_LEVER_MOUNTING_PLATE=0.5*u.cm
+
+HEIGHT_CDC_LEVER_MOUNTING_PLATE=2*u.inch
+
+SPACE_LEVER_TO_ENT_TANK_Z_TOP=1*u.cm
+
+THICKNESS_CDC_FLOAT=5*u.cm
+
+DIAM_CDC_FLOAT_CABLE=0.5*u.cm
+
+LENGTH_CDC_LEVER_SLIDER_ORIGIN_TO_SCREW=1*u.inch
+
+THICKNESS_CDC_LEVER_SLIDER=1/4*u.inch
+
+HEIGHT_CDC_LEVER_SLIDER=1.5*u.inch
+
+LENGTH_CDC_LEVER_SLIDER=3*u.inch
+
+HEIGHT_CDC_LEVER_SLIDER_SHORT=1/8*u.inch
+
+LENGTH_CDC_LEVER_CYLINDER=6*u.inch
+
+LENGTH_ENT_TANK_FRONT_WALL_TO_CDC_FLOAT=0.874*u.m
+
+LENGTH_CDC_LEVER=0.5*u.m #This may be obsolete now... mrf222 2/10/16
+
+WIDTH_LEVER_ARM=0.0032*u.m
+
+HEIGHT_LEVER_ARM=0.0254*u.m
+
+DIAM_CDC_CHT=6*u.inch
+
+#Distance from the top of the entrance tank to the to the middle of the lever arm hole for the cable - (minus the) radius of the hole
+HEIGHT_LEVER_HOLE=0.0132*u.m-(0.0095/2*u.m)
+
+DIAM_CABLE=0.1*u.inch
+
+#Edited DLABOrigintoLAOriginZ to accommodate dimensions from McMaster vs Inserted Drawing
+DIAM_LAB_ORIGIN_TO_LA_ORIGIN_Z=0.0245*u.m
+
+#Distance from the lever arm origin to the outside center of the top part of the drop tube in the y direction
+LENGTH_LA_ORIGIN_TO_DT_Y=0.7812*u.m
+
+#Distance from the lever arm origin to the drop tube in the z direction
+LENGTH_LA_ORIGIN_TO_DT_Z=0.0429*u.m
+
+#Distance from the lever arm origin to the center of the drop tube in the x direction
+LENGTH_LA_ORIGIN_TO_DT_CENTER_X=0.0290*u.m
+
+#Measured from CDC research team's apparatus
+THICKNESS_CDC_REDUCER=9.5*u.mm
+
+#Distance from the lever arm origin to the center of the reducer in the x direction
+LENGTH_LA_ORIGIN_TO_REDUCER_X=0.0290*u.m
+
+#Distance from the lever arm origin to the outside center of the top part of the reducer in the y direction
+LENGTH_LA_ORIGIN_TO_REDUCER_Y=0.7135*u.cm
+
+#Distance from the lever arm origin to the center of the reducer in the x direction
+LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_X=0.0290*u.m
+
+#Distance from the lever arm origin to the center of the reducer in the y directio
+LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_Y=0.7919*u.m
+
+WIDTH_LEVER_BRACKET=5/8*u.inch
+
+LENGTH_LEVER_BRAKCET=1.5*u.inch
+
+RADIUS_LA_BAR=3/16*u.inch
+
+THICKNESS_LEVER_BRACKET=0.08*u.inch
+
+DIAM_LA_BAR=3/8*u.inch
+
+LENGTH_LA_BAR=4*u.inch
+
+LENGTH_SLIDER=3*u.inch
+
+WIDTH_SLIDER=(3.2*10**-3)*u.m
+
+NOM_DIAM_DROPTUBE=0.5*u.inch
+
+HEIGHT_SLIDER=5/8*u.inch
+
+LENGTH_DROPTUBE=0.61*u.m
+
+#The length of the drop tube needs to be calculated. The drop tube must as long as the supercritical flow
+#Thus the drop tube must extend down to the elevation of the sed tank effluent weir. This constant should be removed!
+
+#Outer diameter of fitting- measured from CDC research team's fittin
+OUTER_DIAM_CDC_FITTING=5/32*u.inch
+
+#Inner diameter of fitting- measured from CDC research team's fitting
+ID_CDC_FITTING=0.126*u.inch
+
+#Length of fitting - measured from CDC research team's fitting
+LENGTH_CDC_FITTING=0.75*u.inch
+
+#st587 addition
+##Constant Head Tank Dimensions
+
+#five gallons bucket dimensions for constant head tanks
+
+DIAM_CHT=10*u.cm
+
+HEIGHT_CHT=37/3*u.cm
+
+THICKNESS_CHT_WALL=1/3*u.cm
+
+NOM_DIAM_DELIVERY_PIPE=0.6*u.inch
+
+PIPE_SCHEDULE_FLEX_TUBE=2
+
+LENGTH_PVC_BALL_VALVE=0.1625/4*u.cm
+
+THICKNESS_MOUNTING_BOARD=1.5*u.inch
+
+##Manifold Dimensions
+
+SPACE_CDC_LEVER_TO_MANIFOLD=40*u.cm
+
+LENGTH_CHLOR_AIR_RELEASE_PIPE=30*u.cm #Arbitratily selected
