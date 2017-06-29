@@ -93,13 +93,3 @@ so long as 'param' and 'unit' are of the same diemnsionality.
     while counter < param.to(unit):
         counter += step * u.inch
     return counter
-
-
-def unit_stripper(*args):
-    def single_strip(arg):
-        try:
-            arg.ito_base_units()
-            return arg.magnitude
-        except AttributeError: 
-            return arg
-    return np.array([single_strip(a) for a in args])
