@@ -164,7 +164,7 @@ def fric(Q,D,nu,e):
     
     This equation applies to both laminar and turbulent flows.
     """
-    if re_pipe(Q, D, nu) >= Re_TRANSITION_PIPE:
+    if re_pipe(Q, D, nu) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor for turbulent flow; best for 
         #Re>3000 and ε/D < 0.02        
         f = 0.25 / (math.log10(e/(3.7*D) + 5.74/re_pipe(Q, D, nu) ** 0.9))**2
@@ -175,7 +175,7 @@ def fric(Q,D,nu,e):
 
 def fric_rect(Q, w, b, nu, e, openchannel):
     """Return the friction factor for a rectangular channel."""
-    if re_rect(Q, w, b, nu, openchannel) >= Re_TRANSITION_PIPE:
+    if re_rect(Q, w, b, nu, openchannel) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor adapted for rectangular channel.
         #D = 4*R*h in this case.         
         f = 0.25 / (math.log10(e/(3.7 * 4 * radius_hydraulic(w,b,openchannel))
@@ -189,7 +189,7 @@ def fric_rect(Q, w, b, nu, e, openchannel):
     
 def fric_general(A, WP, V, nu, e):
     """Return the friction factor for a general channel."""
-    if re_general(V, A, WP, nu) >= Re_TRANSITION_PIPE:
+    if re_general(V, A, WP, nu) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor adapted for any cross-section.
         #D = 4*R*h 
         f=0.25 / (math.log10(e/(3.7 * 4 * radius_hydraulic_general(A, WP)) 
@@ -361,7 +361,7 @@ def flow_transition(D, nu):
     
     This equation is used in some of the other equations for flow.
     """
-    return (math.pi * D * Re_TRANSITION_PIPE * nu / 4).to(u.L/u.s)
+    return (math.pi * D * RE_TRANSITION_PIPE * nu / 4).to(u.L/u.s)
 
 
 def flow_hagen(D, hf, L, nu):
@@ -457,7 +457,7 @@ def diam_pipemajor(Q, hf, L, nu, e):
     This function applies to both laminar and turbulent flow.
     """
     D_Laminar = diam_hagen(Q, hf, L, nu)
-    if re_pipe(Q, D_Laminar, nu) <= Re_TRANSITION_PIPE:
+    if re_pipe(Q, D_Laminar, nu) <= RE_TRANSITION_PIPE:
         D = D_Laminar
     else:
         D = diam_swamee(Q, hf, L, nu, e)

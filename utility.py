@@ -3,7 +3,7 @@ Created on Sun Jun 11
 
 @author: Monroe Weber-Shirk
 
-Last modified: Wed Jun 28 2017 
+Last modified: Thu Jun 29 2017 
 By: Sage Weber-Shirk
 """
 # units allows us to include units in all of our calculations
@@ -94,11 +94,77 @@ def stepceil_with_units(param, step, unit):
     return counter
 
 
-def unit_stripper(*args):
+####################### Unit Testing #######################
+def has_units(*args, strict=True):
+    """Return False if none of the passed parameters have pint units.
+    
+    By default, returns True only if every single parameter has units.
+    If strict mode is deactivated, returns True if the majority (>=50%) 
+    of the inputs have units.
+    This distinction is important as some functions have parameters both with
+    and without units (dimensionless ratios, etc.).
+    
+    Relies on the 'pint' module, which provides unit handling.
+    """
+    print('strict:', strict)
+    print('type:', type(strict))
+    if strict:
+        for a in args:
+            try:
+                a.units
+            except AttributeError:
+                return False
+        return True
+    else:
+        total = len(args)
+        print('length:', total)
+        num_units = 0
+        for a in args:
+            try:
+                a.units
+                num_units += 1
+            except AttributeError:
+                pass
+        if (num_units / total) >= 0.5:
+            return True
+        else:
+            return False
+
+
+def unit_stripper(*args, mode='cursory', checkall=True):
+    """Strip units from all input parameters.
+    
+    Parameters without units are simply passed along.
+    
+    By default, returns a NumPy array containing unit-stripped versions of
+    all non-keyword input parameters in input order.
+    
+    In comprehensive mode, returns a similar NumPy array but with the first
+    value a boolean indicator of whether or not the passed parameters contain
+    units.
+    By default, comprehensive mode 
+    
+    Values returned are in terms of pint's base units. AguaClara uses 'mks',
+    or meters/kilograms/seconds. All magnitudes returned by this function
+    will be in terms of those values or, in the case of temperature, Kelvin.
+    
+    Relies on the 'pint' module, which provides unit handling.
+    """
     def single_strip(arg):
         try:
             arg.ito_base_units()
             return arg.magnitude
         except AttributeError: 
             return arg
-    return np.array([single_strip(a) for a in args])
+    if mode == 'cursory':
+        return np.array([single_strip(a) for a in args])
+    elif mode == 'comprehensive':
+        print('checkall:', checkall)
+        print('type:', type(checkall))
+        HasUnits = has_units(args, strict=checkall)
+        print(args, HasUnits)
+        return HasUnits, np.array([single_strip(a) for a in args])
+    else:
+        raise ValueError('Unknown argument for keyword \'mode\'')
+
+
