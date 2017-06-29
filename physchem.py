@@ -19,8 +19,8 @@ import scipy
 from AguaClara_design.units import unit_registry as u
 from AguaClara_design import utility as ut
 
-gravity = 9.80665 * (u.m / (u.s**2))
-"""Define the gravitational constant."""
+gravity = 9.80665
+"""Define the gravitational constant, in m/s²."""
 
 #######################Simple geometry#######################
 """A few equations for useful geometry.
@@ -48,11 +48,10 @@ def diam_circle(A_Circle):
 ######################### Hydraulics ######################### 
 RE_TRANSITION_PIPE=2100
 
-WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15, 
-                        323.15, 333.15, 343.15, 353.15, 363.15, 373.15
-                        ), (999.9, 1000, 999.7, 998.2, 995.7, 992.2, 
-                            988.1, 983.2, 977.8, 971.8, 965.3, 958.4
-                            )
+WATER_DENSITY_TABLE = [[0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+                       , [999.9, 1000, 999.7, 998.2, 995.7, 992.2, 
+                          988.1, 983.2, 977.8, 971.8, 965.3, 958.4
+                          ]
                        ]
 """Table of temperatures and the corresponding water density.
 
@@ -61,42 +60,32 @@ Index[1] is the corresponding densities, in kg/m³.
 """
 
 
-# dynamic viscosity
+@u.wraps(u.Pa * u.s, u.degC, strict=False)
 def viscosity_dynamic(T):
     """Return the dynamic viscosity of water at a given temperature.
     
-    If given units, the function will automatically convert them to Kelvin.
-    If not given units, the function will assume Kelvin.
+    If given units, the function will automatically convert them to Celsius.
+    If not given units, the function will assume Celsius.
     """
-    HasUnits = ut.has_units(T)
-    if HasUnits:
-        T = ut.unit_stripper(T)
+    T += 273.15 #Convert Celsius to Kelvin
     mu = 2.414 * (10**-5) * 10**((247.8)/(T-140))
-    if HasUnits:
-        return mu * u.Pa*u.s
-    else: 
-        return mu
+    return mu
 
 
+@u.wraps(u.kg * u.m**3, u.degC, strict=False)
 def density_water(temp):
     """Return the density of water at a given temperature.
     
-    If given units, the function will automatically convert them to Kelvin.
-    If not given units, the function will assume Kelvin.
+    If given units, the function will automatically convert them to Celsius.
+    If not given units, the function will assume Celsius.
     """
-    HasUnits = ut.has_units(temp)
-    if HasUnits:
-        temp = ut.unit_stripper(temp)
     rhointerpolated = scipy.interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
                                                     WATER_DENSITY_TABLE[1])
     rho=rhointerpolated(temp)
-    if HasUnits:
-        return rho * u.kg/u.m**3
-    else: 
-        return rho
+    return rho
 
 
-# kinematic viscosity
+@u.wraps(u.m**2 / u.s, u.degC, strict=False)
 def viscosity_kinematic(T):
     """Return the kinematic viscosity of water at a given temperature.
     
@@ -112,7 +101,7 @@ def viscosity_kinematic(T):
     else: 
         return nu
 
-
+#unwrapped
 def re_pipe(Q, D, nu):
     """Return the Reynolds number for a pipe."""
     Q, D, nu = ut.unit_stripper(Q, D, nu)
@@ -139,7 +128,6 @@ def radius_hydraulic(w, b, openchannel):
 
 def radius_hydraulic_general(A, WP):
     """Return the general hydraulic radius."""
-    Has
     hGen = A / WP 
     #Area/wetted perimeter
     return hGen.to(u.m)
@@ -164,7 +152,7 @@ def fric(Q,D,nu,e):
     
     This equation applies to both laminar and turbulent flows.
     """
-    if re_pipe(Q, D, nu) >= Re_TRANSITION_PIPE:
+    if re_pipe(Q, D, nu) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor for turbulent flow; best for 
         #Re>3000 and ε/D < 0.02        
         f = 0.25 / (math.log10(e/(3.7*D) + 5.74/re_pipe(Q, D, nu) ** 0.9))**2
@@ -175,7 +163,7 @@ def fric(Q,D,nu,e):
 
 def fric_rect(Q, w, b, nu, e, openchannel):
     """Return the friction factor for a rectangular channel."""
-    if re_rect(Q, w, b, nu, openchannel) >= Re_TRANSITION_PIPE:
+    if re_rect(Q, w, b, nu, openchannel) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor adapted for rectangular channel.
         #D = 4*R*h in this case.         
         f = 0.25 / (math.log10(e/(3.7 * 4 * radius_hydraulic(w,b,openchannel))
@@ -189,7 +177,7 @@ def fric_rect(Q, w, b, nu, e, openchannel):
     
 def fric_general(A, WP, V, nu, e):
     """Return the friction factor for a general channel."""
-    if re_general(V, A, WP, nu) >= Re_TRANSITION_PIPE:
+    if re_general(V, A, WP, nu) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor adapted for any cross-section.
         #D = 4*R*h 
         f=0.25 / (math.log10(e/(3.7 * 4 * radius_hydraulic_general(A, WP)) 
@@ -361,7 +349,7 @@ def flow_transition(D, nu):
     
     This equation is used in some of the other equations for flow.
     """
-    return (math.pi * D * Re_TRANSITION_PIPE * nu / 4).to(u.L/u.s)
+    return (math.pi * D * RE_TRANSITION_PIPE * nu / 4).to(u.L/u.s)
 
 
 def flow_hagen(D, hf, L, nu):
@@ -457,7 +445,7 @@ def diam_pipemajor(Q, hf, L, nu, e):
     This function applies to both laminar and turbulent flow.
     """
     D_Laminar = diam_hagen(Q, hf, L, nu)
-    if re_pipe(Q, D_Laminar, nu) <= Re_TRANSITION_PIPE:
+    if re_pipe(Q, D_Laminar, nu) <= RE_TRANSITION_PIPE:
         D = D_Laminar
     else:
         D = diam_swamee(Q, hf, L, nu, e)

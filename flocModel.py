@@ -44,12 +44,11 @@ class Chemical:
     
 
 ################## Coagulant Definitions ##################
-PACl = Chemical('PACl', 50 * u.nm, 1138 * u.kg/u.m**3, 1039 * u.g/u.mole, 
-                13, 'PACl')
+# name, diameter in nm, density in kg/m³, molecular weight in g/mole
+PACl = Chemical('PACl', 50, 1138, 1039, 13, 'PACl')
 
-Alum = Chemical('Alum', 70 * u.nm, 2420 * u.kg/u.m**3, 599.21 * u.g/u.mole, 
-                2, 'AlOH3')
-Alum.define_Precip(70 * u.nm, 2420 * u.kg/u.m**3, 78.024 * u.g/u.mole, 1)
+Alum = Chemical('Alum', 70, 2420, 599.21, 2, 'AlOH3')
+Alum.define_Precip(70, 2420, 78.024, 1)
 
 ################### Necessary Constants ###################
 # Fractal diameter, based on data from Adachi.
