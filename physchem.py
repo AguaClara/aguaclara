@@ -3,7 +3,7 @@ Created on Thu Jun 15 14:07:28 2017
 
 @author: Karan Newatia
 
-Last modified: Thu Jun 29 2017 
+Last modified: Fri Jun 30 2017 
 By: Sage Weber-Shirk
 
 
@@ -12,12 +12,10 @@ physical/chemical unit processes for AguaClara water treatment plants.
 """
 
 ######################### Imports #########################
-import math
 import numpy as np
 import scipy
 
 from AguaClara_design.units import unit_registry as u
-from AguaClara_design import utility as ut
 
 gravity = 9.80665
 """Define the gravitational constant, in m/s²."""
@@ -29,29 +27,26 @@ Is there a geometry package that we should be using?
 
 def area_circle(diam_Circle):
     """Return the area of a circle."""
-    return math.pi/4*diam_Circle**2
+    return np.pi/4*diam_Circle**2
 
 
+@u.wraps(u.m, u.m**2, False)
 def diam_circle(A_Circle):
     """Return the diameter of a circle."""
-    try:
-        A_Circle.units
-        A_Circle = ut.unit_stripper(A_Circle)
-        has_units = True
-    except AttributeError:
-        has_units = False
-    diam_req = math.sqrt(4*A_Circle/math.pi)
-    if has_units:
-        return diam_req * (u.m)
-    else: return diam_req
+    return np.sqrt(4*A_Circle/np.pi)
 
 ######################### Hydraulics ######################### 
-RE_TRANSITION_PIPE=2100
+RATIO_VC_ORIFICE = 0.62
 
-WATER_DENSITY_TABLE = [[0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-                       , [999.9, 1000, 999.7, 998.2, 995.7, 992.2, 
-                          988.1, 983.2, 977.8, 971.8, 965.3, 958.4
-                          ]
+RE_TRANSITION_PIPE = 2100
+
+
+
+WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15, 
+                        323.15, 333.15, 343.15, 353.15, 363.15, 373.15
+                        ), (999.9, 1000, 999.7, 998.2, 995.7, 992.2, 
+                            988.1, 983.2, 977.8, 971.8, 965.3, 958.4
+                            )
                        ]
 """Table of temperatures and the corresponding water density.
 
@@ -60,19 +55,18 @@ Index[1] is the corresponding densities, in kg/m³.
 """
 
 
-@u.wraps(u.Pa * u.s, u.degC, strict=False)
+@u.wraps(u.kg/(u.m*u.s), [u.degC], False)
 def viscosity_dynamic(T):
-    """Return the dynamic viscosity of water at a given temperature.
+    """Return the dynamic Visc of water at a given temperature.
     
     If given units, the function will automatically convert them to Celsius.
     If not given units, the function will assume Celsius.
     """
     T += 273.15 #Convert Celsius to Kelvin
-    mu = 2.414 * (10**-5) * 10**((247.8)/(T-140))
-    return mu
+    return 2.414 * (10**-5) * 10**((247.8)/(T-140))
 
 
-@u.wraps(u.kg * u.m**3, u.degC, strict=False)
+@u.wraps(u.kg/u.m**3, [u.degC], False)
 def density_water(temp):
     """Return the density of water at a given temperature.
     
@@ -81,347 +75,404 @@ def density_water(temp):
     """
     rhointerpolated = scipy.interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
                                                     WATER_DENSITY_TABLE[1])
-    rho=rhointerpolated(temp)
-    return rho
+    return rhointerpolated(temp + 273.15)
 
 
-@u.wraps(u.m**2 / u.s, u.degC, strict=False)
+@u.wraps(u.m**2/u.s, [u.degC], False)
 def viscosity_kinematic(T):
-    """Return the kinematic viscosity of water at a given temperature.
+    """Return the kinematic Visc of water at a given temperature.
     
-    If given units, the function will automatically convert them to Kelvin.
-    If not given units, the function will assume Kelvin.
+    If given units, the function will automatically convert them to Celsius.
+    If not given units, the function will assume Celsius.
     """
-    HasUnits = ut.has_units(T)
-    if HasUnits:
-        T = ut.unit_stripper(T)
-    nu = viscosity_dynamic(T) / (density_water(T))
-    if HasUnits:
-        return nu * u.m**2 / u.s
-    else: 
-        return nu
-
-#unwrapped
-def re_pipe(Q, D, nu):
-    """Return the Reynolds number for a pipe."""
-    Q, D, nu = ut.unit_stripper(Q, D, nu)
-    Re = (4 * Q) / (math.pi * D * nu)
-    return Re
+    return viscosity_dynamic(T).magnitude / density_water(T).magnitude
 
 
-def radius_hydraulic(w, b, openchannel):
+@u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s], False)
+def re_pipe(FlowRate, Diam, Visc):
+    """Return the Reynolds Number for a pipe."""
+    return (4 * FlowRate) / (np.pi * Diam * Visc)
+
+
+@u.wraps(u.m, [u.m, u.m, None], False)
+def radius_hydraulic(Width, DistCenter, openchannel):
     """Return the hydraulic radius."""  
-    HasUnits = ut.has_units(w, b)
-    if HasUnits:
-        w, b = ut.unit_stripper(w, b)
-    if openchannel == 1:
-        h = (w*b) / (w + 2*b)
-        # if openchannel==1, the channel is open. Otherwise, the channel is 
-        # assumed to have sides    
+    if openchannel:
+        h = (Width*DistCenter) / (Width + 2*DistCenter)
+        # if openchannel is True, the channel is open. Otherwise, the channel 
+        # is assumed to have a top. 
     else:
-        h = (w*b) / (2 * (w+b))
-    if HasUnits:
-        return h * u.m
-    else: 
-        return h
+        h = (Width*DistCenter) / (2 * (Width+DistCenter))
+    return h
 
 
-def radius_hydraulic_general(A, WP):
+@u.wraps(u.m, [u.m**2, u.m], False)
+def radius_hydraulic_general(Area, WP):
     """Return the general hydraulic radius."""
-    hGen = A / WP 
-    #Area/wetted perimeter
-    return hGen.to(u.m)
+    return Area / WP 
 
 
-def re_rect(Q, w, b, nu, openchannel):
-    """Return the Reynolds number for a rectangular channel."""
-    rect = 4 * Q * radius_hydraulic(w, b, openchannel) / (w*b*nu)
-    #Reynolds number for rectangular channel; open = 0 if all sides
-    #are wetted; l = D and D = 4*R.h       
-    return rect.to(u.dimesnionless)
+@u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, None], False)
+def re_rect(FlowRate, Width, DistCenter, Visc, openchannel):
+    """Return the Reynolds Number for a rectangular channel."""
+    return (4 * FlowRate 
+            * radius_hydraulic(Width, DistCenter, openchannel).magnitude
+            / (Width * DistCenter * Visc))
+    #Reynolds Number for rectangular channel; open = False if all sides
+    #are wetted; l = Diam and Diam = 4*R.h     
+    
 
-
-def re_general(V, A, WP, nu):
-    """Return the Reynolds number for a general cross section."""
-    gen = 4 * radius_hydraulic_general(A, WP) * V / nu
-    return gen.to(u.dimensionless)
+@u.wraps(None, [u.m/u.s, u.m**2, u.m, u.m**2/u.s], False)
+def re_general(Vel, Area, WP, Visc):
+    """Return the Reynolds Number for a general cross section."""
+    return 4 * radius_hydraulic_general(Area, WP).magnitude * Vel / Visc
         
-   
-def fric(Q,D,nu,e):
+
+@u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
+def fric(FlowRate, Diam, Visc, PipeRough):
     """Return the friction factor for pipe flow.
     
     This equation applies to both laminar and turbulent flows.
     """
-    if re_pipe(Q, D, nu) >= RE_TRANSITION_PIPE:
+    if re_pipe(FlowRate, Diam, Visc) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor for turbulent flow; best for 
-        #Re>3000 and ε/D < 0.02        
-        f = 0.25 / (math.log10(e/(3.7*D) + 5.74/re_pipe(Q, D, nu) ** 0.9))**2
+        #Re>3000 and ε/Diam < 0.02        
+        f = (0.25 / (np.log10(PipeRough/(3.7*Diam) + 5.74 
+                                / re_pipe(FlowRate, Diam, Visc)**0.9
+                                )
+                     ) ** 2
+             )
     else:
-        f = 64 / re_pipe(Q, D, nu)
-    return f.to(u.dimensionless)
+        f = 64 / re_pipe(FlowRate, Diam, Visc)
+    return f
 
 
-def fric_rect(Q, w, b, nu, e, openchannel):
+@u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, None], False)
+def fric_rect(FlowRate, Width, SepDist, Visc, PipeRough, openchannel):
     """Return the friction factor for a rectangular channel."""
-    if re_rect(Q, w, b, nu, openchannel) >= RE_TRANSITION_PIPE:
+    if re_rect(FlowRate,Width,SepDist,Visc,openchannel) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor adapted for rectangular channel.
-        #D = 4*R*h in this case.         
-        f = 0.25 / (math.log10(e/(3.7 * 4 * radius_hydraulic(w,b,openchannel))
-                               + 5.74 / re_rect(Q,w,b,nu,openchannel)**0.9
-                               )
-                    ) ** 2
+        #Diam = 4*R_h in this case.         
+        f = (0.25 
+             / (np.log10(PipeRough 
+                           / ((3.7 * 4 
+                               * radius_hydraulic(Width, SepDist, openchannel)
+                               ) + 5.74
+                              ) 
+                           /re_rect(FlowRate,Width,SepDist,Visc,openchannel)**0.9
+                           )
+                ) ** 2
+             )
     else:
-        f = 64 / re_rect(Q, w, b, nu, openchannel)
-    return f.to(u.dimensionless)   
+        f = 64 / re_rect(FlowRate, Width, SepDist, Visc, openchannel)
+    return f
  
-    
-def fric_general(A, WP, V, nu, e):
+
+@u.wraps(None, [u.m**2, u.m, u.m/u.s, u.m**2/u.s, u.m], False)
+def fric_general(Area, PerimWetted, Vel, Visc, PipeRough):
     """Return the friction factor for a general channel."""
-    if re_general(V, A, WP, nu) >= RE_TRANSITION_PIPE:
+    if re_general(Vel, Area, PerimWetted, Visc) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor adapted for any cross-section.
-        #D = 4*R*h 
-        f=0.25 / (math.log10(e/(3.7 * 4 * radius_hydraulic_general(A, WP)) 
-                             + 5.74/re_general(V, A, WP, nu)**0.9
-                             )
-                  ) ** 2
+        #Diam = 4*R*h 
+        f= (0.25 /
+            (np.log10(PipeRough
+                      / (3.7 * 4 * radius_hydraulic_general(Area, PerimWetted))
+                      + 5.74
+                      / re_general(Vel, Area, PerimWetted, Visc) ** 0.9
+                      )
+             ) ** 2
+            )
     else:
-        f = 64 / re_general(V, A, WP, nu)
-    return f.to(u.dimensionless)      
+        f = 64 / re_general(Vel, Area, PerimWetted, Visc)
+    return f      
          
-        
-def headloss_fric(Q, D, L, nu, e):
+
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+def headloss_fric(FlowRate, Diam, Length, Visc, PipeRough):
     """Return the major head loss (due to wall shear) in a pipe.
     
     This equation applies to both laminar and turbulent flows.
     """
-    HLf = fric(Q, D, nu, e) * 8 / (gravity*math.pi**2) * (L * Q**2) / D**5
-    return HLf.to(u.m)  
+    return (fric(FlowRate, Diam, Visc, PipeRough) * 8 / (gravity * np.pi**2) 
+            * (Length * FlowRate**2) / Diam**5
+            )
 
 
-def headloss_exp(Q, D, K):
+@u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
+def headloss_exp(FlowRate, Diam, MinorLoss):
     """Return the minor head loss (due to expansions) in a pipe. 
     
     This equation applies to both laminar and turbulent flows.
     """
-    HLe = K * 8 / (gravity * math.pi**2) * Q**2 / D**4
-    return HLe.to(u.m)
+    return MinorLoss * 8 / (gravity * np.pi**2) * FlowRate**2 / Diam**4
 
 
-def headloss(Q, D, L, nu, e, K):
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, None], False)
+def headloss(FlowRate, Diam, Length, Visc, PipeRough, MinorLoss):
     """Return the total head loss from major and minor losses in a pipe.
     
     This equation applies to both laminar and turbulent flows.
     """
-    HL = headloss_fric(Q, D, L, nu, e) + headloss_exp(Q, D, K)
-    return HL.to(u.m)
+    return (headloss_fric(FlowRate, Diam, Length, Visc, PipeRough).magnitude
+            + headloss_exp(FlowRate, Diam, MinorLoss)).magnitude
 
 
-def headloss_fric_rect(Q, w, b, L, nu, e, openchannel):
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, u.m**2/u.s, u.m, None], False)
+def headloss_fric_rect(FlowRate, Width, SepDist, Length, Visc, PipeRough, openchannel):
     """Return the major head loss due to wall shear in a rectangular channel.
     
     This equation applies to both laminar and turbulent flows.
     """
-    Hfrect = (fric_rect(Q, w, b, nu, e, openchannel) * L 
-              / (4 * radius_hydraulic(w, b, openchannel)) * Q**2 
-              / (2 * gravity * (w*b)**2)
-              )
-    return Hfrect.to(u.m)
+    return (fric_rect(FlowRate, Width, SepDist, Visc, 
+                      PipeRough, openchannel).magnitude 
+            * Length 
+            / (4 * radius_hydraulic(Width, SepDist, openchannel)) 
+            * FlowRate**2 
+            / (2 * gravity * (Width*SepDist)**2)
+            )
 
 
-def headloss_exp_rect(Q, w, b, K):
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, None], False)
+def headloss_exp_rect(FlowRate, Width, SepDist, MinorLoss):
      """Return the minor head loss due to expansion in a rectangular channel.
      
      This equation applies to both laminar and turbulent flows.
      """
-     Herect = K * Q**2 / (2 * gravity * (w*b)**2)
-     return Herect.to(u.m)
+     return MinorLoss * FlowRate**2 / (2 * gravity * (Width*SepDist)**2) 
  
-    
-def headloss_rect(Q, w, b, L, K, nu, e, openchannel):
+
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, None, u.m**2/u.s, u.m, None], False)
+def headloss_rect(FlowRate, Width, SepDist, Length, 
+                  MinorLoss, Visc, PipeRough, openchannel):
       """Return the total head loss in a rectangular channel. 
       
       Total head loss is a combination of the major and minor losses.
       This equation applies to both laminar and turbulent flows.
       """
-      Hlrect = (headloss_exp_rect(Q, w, b, K) 
-                + headloss_fric_rect(Q, w, b, L, nu, e, openchannel))
-      return Hlrect.to(u.m)
+      return (headloss_exp_rect(FlowRate, Width, SepDist, MinorLoss).magnitude
+              + headloss_fric_rect(FlowRate, Width, SepDist, Length, 
+                                   Visc, PipeRough, openchannel).magnitude)
     
-    
-def headloss_fric_general(A, WP, V, L, nu, e):
+
+@u.wraps(u.m, [u.m**2, u.m, u.m/u.s, u.m, u.m**2/u.s, u.m], False)
+def headloss_fric_general(Area, PerimWetted, Vel, Length, Visc, PipeRough):
      """Return the major head loss due to wall shear in the general case.
      
      This equation applies to both laminar and turbulent flows.
      """
-     Hfgen = (fric_general(A, WP, V, nu, e) * L 
-              / (4*radius_hydraulic_general(A,WP)) * V**2 / (2*gravity)
-              )
-     return Hfgen.to(u.m)
- 
-    
-def headloss_exp_general(V, K):
+     return (fric_general(Area, PerimWetted, Vel, Visc, PipeRough) * Length 
+             / (4 * radius_hydraulic_general(Area, PerimWetted).magnitude) 
+             * Vel**2 / (2*gravity)
+             )
+     
+
+@u.wraps(u.m, [u.m/u.s, None], False)
+def headloss_exp_general(Vel, MinorLoss):
     """Return the minor head loss due to expansion in the general case.
     
     This equation applies to both laminar and turbulent flows.
     """
-    Hegen=K * V**2 / (2*gravity)
-    return Hegen.to(u.m)
+    return MinorLoss * Vel**2 / (2*gravity)
 
 
-def headloss_gen(A, V, WP, L, K, nu, e):
+@u.wraps(u.m, [u.m**2, u.m/u.s, u.m, u.m, None, u.m**2/u.s, u.m], False)
+def headloss_gen(Area, Vel, PerimWetted, Length, MinorLoss, Visc, PipeRough):
      """Return the total head lossin the general case.
      
      Total head loss is a combination of major and minor losses.
      This equation applies to both laminar and turbulent flows.
      """
-     Hlgen = headloss_exp_general(V,K) + headloss_fric_general(A,WP,V,L,nu,e)
-     return Hlgen.to(u.m)
+     return (headloss_exp_general(Vel, MinorLoss).magnitude 
+             + headloss_fric_general(Area, PerimWetted, Vel,
+                                     Length, Visc, PipeRough).magnitude)
+
  
-    
-def headloss_manifold(Q, D, L, K, nu, e, n):
+@u.wraps(u.m, [u.m**2/u.s, u.m, u.m, None, u.m**2/u.s, u.m, None], False)  
+def headloss_manifold(FlowRate, Diam, Length, MinorLoss, Visc, PipeRough, NumOutlets):
     """Return the total head loss through the manifold."""
-    hlmani = headloss(Q,D,L,nu,e,K) * (1/3 + 1/(2*n) + 1/((6*n)**2))
-    return hlmani.to(u.m)
+    return (headloss(FlowRate,Diam,Length,Visc,PipeRough,MinorLoss).magnitude
+            * (1/3 
+               + 1 / (2*NumOutlets) 
+               + 1 / ((6*NumOutlets)**2))
+            )
 
 
-def flow_orifice(D, h, ratio_VC_orifice):
+@u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
+def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
-    if h > 0 * u.cm:
-        Q = ratio_VC_orifice * area_circle(D) * np.sqrt(2*gravity*h)
-        return Q.to(u.L/u.s)
+    if Height > 0:
+        return (RatioVCOrifice * area_circle(Diam).magnitude 
+                * np.sqrt(2 * gravity * Height))
     else:
-         return 0 * (u.L/u.s)
+        return 0
 
 
-def flow_orifice_vert(D,h,ratio_VC_orifice):
+@u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
+def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
-    if h>-D/2:
-        h = h.to(u.m)
-        D = D.to(u.m)
-        h = h.magnitude
-        D = D.magnitude
-        Q = scipy.integrate.quad(lambda z: D * math.sin(math.acos(z/(D/2))) 
-                                 * np.sqrt(h-z),-D/2,min(D/2,h)
-                                 )
-        Qnew = Q[0]
-        Q = ratio_VC_orifice * np.sqrt(2*gravity.magnitude) * Qnew * 1000
-        return Q * (u.L/u.s)
+    if Height > -Diam / 2:
+        FlowRate = scipy.integrate.quad(lambda z: (Diam 
+                                                   * np.sin(np.acos(z/(Diam/2)))
+                                                   * np.sqrt(Height - z)
+                                                   ), -Diam/2,min(Diam/2,Height)
+                                        )
+        FlowRateNew = FlowRate[0]
+        return RatioVCOrifice * np.sqrt(2 * gravity) * FlowRateNew * 1000
     else:
-       return 0 * (u.L/u.s)
+       return 0
 
 
-def head_orifice(D, ratio_VC_orifice, Q):
+@u.wraps(u.m, [u.m, None, u.m**3/u.s], False)
+def head_orifice(Diam, RatioVCOrifice, FlowRate):
      """Return the head of the orifice."""
-     h = (Q / (ratio_VC_orifice*area_circle(D)))**2 / (2*gravity)
-     return h.to(u.m)
+     return ((FlowRate 
+              / (RatioVCOrifice * area_circle(Diam).magnitude)
+              )**2 
+             / (2*gravity)
+             )
+
  
-    
-def area_orifice(h, ratio_VC_orifice, Q):
+@u.wraps(u.m**2, [u.m, None, u.m**3/u.s], False)
+def area_orifice(h, RatioVCOrifice, FlowRate):
     """Return the area of the orifice."""
-    area = Q / (ratio_VC_orifice * np.sqrt(2*gravity*h))
-    return area.to(u.mm**2)
+    return FlowRate / (RatioVCOrifice * np.sqrt(2 * gravity * h))
     
 
-def number_orifices(Q_plant,ratio_VC_orifice,headloss_orifice,D_orifice):
+@u.wraps(None, [u.m**3/u.s, None, u.m, u.m], False)
+def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
      """Return the number of orifices."""
-     n = math.ceil(area_orifice(headloss_orifice, ratio_VC_orifice, Q_plant)
-                   / area_circle(D_orifice)
-                   )
-     return n.to(u.dimensionless)
+     return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice, 
+                                 FlowPlant).magnitude
+                    / area_circle(DiamOrifice).magnitude
+                    )
  
-    
-def diam_orifice_manifold(Q_manifold_ratio, Q_tank, d_pipe, L_s, L_l, K_total, 
-                          n_orifice, nu, e, ratio_VC_orifice):
+
+@u.wraps(u.m, [None, u.m**3/u.s, u.m, u.m, None, None, u.m**2/u.s, u.m, None],
+         False)
+def diam_orifice_manifold(FlowManifoldRatio, FlowTank, DiamPipe, Length, 
+                          MinorLossTotal, NumOrifices, Visc, PipeRough, 
+                          RatioVCOrifice):
      """Return the diameter of the orifice in the manifold."""
-     d = (((1 - Q_manifold_ratio)*d_pipe) ** 4 
-          / ((((K_total + (fric(Q_tank, d_pipe, nu, e) * L_l/d_pipe)) 
-               * (Q_manifold_ratio)) - K_total 
-               - (fric(Q_tank,d_pipe,nu,e) * L_l / d_pipe) 
-               * (ratio_VC_orifice)**2 * (n_orifice) **2)
-             )
-          ) ** (1/4)
-     return d.to(u.m)
+     return ((((1 - FlowManifoldRatio)*DiamPipe) ** 4 
+              / ((((MinorLossTotal 
+                    + (fric(FlowTank, DiamPipe, Visc, PipeRough) * Length/DiamPipe)
+                    )
+                   * (FlowManifoldRatio)
+                   ) 
+                   - MinorLossTotal 
+                   - (fric(FlowTank,DiamPipe,Visc,PipeRough) 
+                      * Length / DiamPipe
+                      ) 
+                   * RatioVCOrifice**2 
+                   * NumOrifices**2
+                   )
+                 )
+              ) ** (1/4))
  
     
 # Here we define functions that return the flow rate.
-def flow_transition(D, nu):
+@u.wraps(u.m**3/u.s, [u.m, u.m**2/u.s], False)
+def flow_transition(Diam, Visc):
     """Return the flow rate for the laminar/turbulent transition.
     
     This equation is used in some of the other equations for flow.
     """
-    return (math.pi * D * RE_TRANSITION_PIPE * nu / 4).to(u.L/u.s)
+    return np.pi * Diam * RE_TRANSITION_PIPE * Visc / 4
 
 
-def flow_hagen(D, hf, L, nu):
+@u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s], False)
+def flow_hagen(Diam, HeadLossFric, Length, Visc):
     """Return the flow rate for laminar flow with only major losses."""
-    return ((math.pi * D**4) / (128*nu) * gravity * hf / L).to(u.L/u.s)
+    return (np.pi * Diam**4) / (128*Visc) * gravity * HeadLossFric / Length
 
 
-def flow_swamee(D, hf, L, nu, e):
+@u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m], False)
+def flow_swamee(Diam, HeadLossFric, Length, Visc, PipeRough):
     """Return the flow rate for turbulent flow with only major losses."""
-    logterm = -math.log10(e/(3.7*D) + 2.51*nu*np.sqrt(L/(2 * gravity * hf * 
-                                                         D**3)))
-    return ((math.pi / np.sqrt(2)) * D**(5/2) 
-            * np.sqrt(gravity * hf / L) * logterm
-            ).to(u.L/u.s)
+    logterm = -np.log10(PipeRough
+                        / (3.7 * Diam) 
+                        + 2.51 * Visc * np.sqrt(Length / (2 
+                                                          * gravity
+                                                          * HeadLossFric
+                                                          * Diam**3)
+                                                )
+                        )
+    return ((np.pi / np.sqrt(2)) * Diam**(5/2) 
+            * np.sqrt(gravity * HeadLossFric / Length) * logterm
+            )
 
 
-def flow_pipemajor(D,hf,L,nu,e):
+@u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m], False)
+def flow_pipemajor(Diam, HeadLossFric, Length, Visc, PipeRough):
     """Return the flow rate with only major losses.
     
     This function applies to both laminar and turbulent flows.
     """
-    Q_H = flow_hagen(D, hf, L, nu)
-    if Q_H < flow_transition(D, nu):
-        Q = Q_H
+    FlowHagen = flow_hagen(Diam, HeadLossFric, Length, Visc).magnitude
+    if FlowHagen < flow_transition(Diam, Visc).magnitude:
+        return FlowHagen
     else:
-        Q = flow_swamee(D, hf, L, nu, e)
-    return Q.to(u.L/u.s)
+        return flow_swamee(Diam, HeadLossFric, Length, Visc, PipeRough).magnitude
 
 
-def flow_pipeminor(D,he,K):
+@u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
+def flow_pipeminor(Diam, HeadLossExpans, MinorLoss):
     """Return the flow rate with only minor losses.
     
     This function applies to both laminar and turbulent flows.
     """ 
-    return (area_circle(D) * np.sqrt(2 * gravity * he / K)).to(u.L/u.s)
+    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity 
+                                                  * HeadLossExpans 
+                                                  / MinorLoss)
+            )
 
 # Now we put all of the flow equations together and calculate the flow in a 
 # straight pipe that has both major and minor losses and might be either
 # laminar or turbulent.
-def flow_pipe(D, hl, L, nu, e, K):
+@u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m, None], False)
+def flow_pipe(Diam, HeadLoss, Length, Visc, PipeRough, MinorLoss):
     """Return the the flow in a straight pipe.
     
     This function works for both major and minor losses and 
     works whether the flow is laminar or turbulent.
     """
-    if K == 0:
-        Q = flow_pipemajor(D, hl, L, nu, e)
+    if MinorLoss == 0:
+        FlowRate = flow_pipemajor(Diam, HeadLoss, Length, Visc, 
+                                  PipeRough).magnitude
     else:
-        Qprev = 0 * u.L/u.s
+        FlowRatePrev = 0
         err = 1
-        Q = min(flow_pipemajor(D, hl, L, nu, e) , flow_pipeminor(D, hl, K))
+        FlowRate = min(flow_pipemajor(Diam, HeadLoss, Length, 
+                                      Visc, PipeRough).magnitude, 
+                       flow_pipeminor(Diam, HeadLoss, MinorLoss).magnitude
+                       )
         while err > 0.01:
-            Qprev = Q
-            hfnew = (hl * headloss_fric(Q, D, L, nu, e) 
-                     / (headloss_fric(Q, D, L, nu, e) 
-                        + headloss_exp(Q,D,K)
-                        )
-                     )
-            Q = flow_pipemajor(D, hfnew, L, nu, e)
-            if Q == 0 * u.L/u.s:
+            FlowRatePrev = FlowRate
+            HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length, 
+                                                  Visc, PipeRough).magnitude 
+                         / (headloss_fric(FlowRate, Diam, Length, 
+                                          Visc, PipeRough).magnitude
+                            + headloss_exp(FlowRate, Diam, MinorLoss).magnitude
+                            )
+                         )
+            FlowRate = flow_pipemajor(Diam, HLFricNew, Length, 
+                                      Visc, PipeRough).magnitude
+            if FlowRate == 0:
                 err = 0
             else:
-                err = abs(Q-Qprev) / (Q+Qprev)
-    return Q.to(u.L/u.s)  	
+                err = abs(FlowRate - FlowRatePrev) / (FlowRate + FlowRatePrev)
+    return FlowRate	
  
 
-def diam_hagen(Q, hf, L, nu):
-    D = ((128 * nu * Q * L) / (gravity * hf * math.pi)) ** (1/4)
-    return D.to_base_units()
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s], False)
+def diam_hagen(FlowRate, HeadLossFric, Length, Visc):
+    return ((128 * Visc * FlowRate * Length) 
+            / (gravity * HeadLossFric * np.pi)
+            ) ** (1/4)
 
 
-def diam_swamee(Q, hf, L, nu, e):
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+def diam_swamee(FlowRate, HeadLossFric, Length, Visc, PipeRough):
     """Return the inner diameter of a pipe.
     
     The Swamee Jain equation is dimensionally correct and returns the 
@@ -429,191 +480,119 @@ def diam_swamee(Q, hf, L, nu, e):
     to shear on the pipe walls. The Swamee Jain equation does NOT take 
     minor losses into account. This equation ONLY applies to turbulent 
     flow.
-    Pint has trouble adding two numbers that are raised to the 25th 
+    Pint has trouble adding two Numbers that are raised to the 25th 
     power. This function strips the units before adding the two 
     terms and then reattaches the units.
     """
-    a = ((e**1.25) * ((L * Q**2) / (gravity*hf))**4.75).to_base_units().magnitude
-    b = (nu * (Q**9.4) * (L / (gravity*hf))**5.2).to_base_units().magnitude
-    D = (0.66 * (a+b)**0.04) * u.m
-    return D.to_base_units()
+    a = ((PipeRough**1.25) 
+         * ((Length * FlowRate**2) 
+            / (gravity * HeadLossFric)
+            )**4.75
+         )
+    b = (Visc * (FlowRate**9.4) * (Length / (gravity*HeadLossFric))**5.2)
+    return 0.66 * (a+b)**0.04
 
 
-def diam_pipemajor(Q, hf, L, nu, e):
-    """Return the pipe ID that would result in given major losses.
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+def diam_pipemajor(FlowRate, HeadLossFric, Length, Visc, PipeRough):
+    """Return the pipe IDiam that would result in given major losses.
     
     This function applies to both laminar and turbulent flow.
     """
-    D_Laminar = diam_hagen(Q, hf, L, nu)
-    if re_pipe(Q, D_Laminar, nu) <= RE_TRANSITION_PIPE:
-        D = D_Laminar
+    DiamLaminar = diam_hagen(FlowRate, HeadLossFric, Length, Visc).magnitude
+    if re_pipe(FlowRate, DiamLaminar, Visc) <= RE_TRANSITION_PIPE:
+        return DiamLaminar
     else:
-        D = diam_swamee(Q, hf, L, nu, e)
-    return D.to_base_units()
+        return diam_swamee(FlowRate, HeadLossFric, Length, 
+                           Visc, PipeRough).magnitude
 
 
-def diam_pipeminor(Q, he, K):
-    """Return the pipe ID that would result in the given minor losses.
+@u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
+def diam_pipeminor(FlowRate, HeadLossExpans, MinorLoss):
+    """Return the pipe IDiam that would result in the given minor losses.
     
     This function applies to both laminar and turbulent flow.
     """
-    D = (np.sqrt(4 * Q / math.pi)) * (K / (2 * gravity * he))**(1/4)
-    return D.to(u.m)
+    return ((np.sqrt(4 * FlowRate / np.pi)) 
+            * (MinorLoss / (2 * gravity * HeadLossExpans)) ** (1/4)
+            )
 
 
-def diam_pipe(Q, hl, L, nu, e, K):
-    """Return the pipe ID that would result in the given total head loss.
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, None], False)
+def diam_pipe(FlowRate, HeadLoss, Length, Visc, PipeRough, MinorLoss):
+    """Return the pipe IDiam that would result in the given total head loss.
     
     This function applies to both laminar and turbulent flow and
     incorporates both minor and major losses.
     """
-    if K == 0:
-        D = diam_pipeminor(Q, hl, K)
+    if MinorLoss == 0:
+        Diam = diam_pipeminor(FlowRate, HeadLoss, MinorLoss).magnitude
     else:
-        D = diam_pipemajor(Q, hl, L, nu, e)
+        Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Visc, PipeRough)
     err = 1.00
     while err > 0.001:
-        Dprev = D
-        hfnew = (hl * headloss_fric(Q, D, L, nu, e) 
-                 / (headloss_fric(Q, D, L, nu, e) + headloss_exp(Q, D, K))
-                 )
-        D = diam_pipemajor(Q, hfnew, L, nu, e)
-        err = abs(D-Dprev) / (D+Dprev)
-    return D.to_base_units() 
+        DiamPrev = Diam
+        HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length, 
+                                              Visc, PipeRough
+                                              ).magnitude 
+                     / (headloss_fric(FlowRate, Diam, Length, 
+                                      Visc, PipeRough
+                                      ).magnitude 
+                                      + headloss_exp(FlowRate, 
+                                                     Diam, MinorLoss
+                                                     ).magnitude
+                        )
+                     )
+        Diam = diam_pipemajor(FlowRate, HLFricNew, Length, Visc, PipeRough
+                              ).magnitude
+        err = abs(Diam - DiamPrev) / (Diam + DiamPrev)
+    return Diam
 
 # Weir head loss equations
-RATIO_VC_ORIFICE = 0.62
-
-def width_rect_weir(Q, H):
+@u.wraps(u.m, [u.m**3/u.m, u.m], False)
+def width_rect_weir(FlowRate, Height):
     """Return the width of a rectangular weir."""
-    w = (3 / 2) * Q / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity) * H**(3/2)))
-    return w.to(u.m)
+    return ((3 / 2) * FlowRate 
+            / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity) * Height**(3/2)))
+            )
+
 
 # For a pipe, W is the circumference of the pipe.
 # Head loss for a weir is the difference in height between the water
 # upstream of the weir and the top of the weir.
-def headloss_weir(Q,W):
+@u.wraps(u.m, [u.m**3/u.s, u.m], False)
+def headloss_weir(FlowRate, Width):
     """Return the headloss of a weir."""
-    hl = ((3/2) * Q / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity)*W))) ** 3
-    return hl.to(u.m)
+    return (((3/2) * FlowRate 
+             / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity)*Width))
+             ) ** 3)
 
 
-def flow_rect_weir(H, W):
+@u.wraps(u.m, [u.m, u.m], False)
+def flow_rect_weir(Height, Width):
     """Return the flow of a rectangular weir."""
-    q = (2/3) * RATIO_VC_ORIFICE * (np.sqrt(2*gravity) * H**(3/2)) * W
-    return q.to(u.m)
+    return ((2/3) * RATIO_VC_ORIFICE 
+            * (np.sqrt(2*gravity) * Height**(3/2)) 
+            * Width)
 
 
-def height_water_critical(Q, W):
+@u.wraps(u.m, [u.m**3/u.s, u.m], False)
+def height_water_critical(FlowRate, Width):
     """Return the critical local water depth."""
-    hw = (Q / (W * gravity)) ** (2/3)
-    return hw.to(u.m)
+    return (FlowRate / (Width * gravity)) ** (2/3)
 
 
+@u.wraps(u.m/u.s, u.m, False)
 def vel_horizontal(height_water_critical):
     """Return the horizontal velocity."""
-    v = np.sqrt(gravity * height_water_critical)
-    return v.to(u.m/u.s)
+    return np.sqrt(gravity * height_water_critical)
 
 K_KOZENY=5
 
-def headloss_kozeny(L,D,V,e,nu):
+@u.wraps(u.m, [u.m, u.m, u.m, u.m**2/u.s], False)
+def headloss_kozeny(Length, Diam, Vel, PipeRough, Visc):
     """Return the Carmen Kozeny Sand Bed head loss."""
-    hl = K_KOZENY * L * nu / gravity * (1-e) ** 2 / e**3 * 36 * V / D**2
-    return hl.to(u.m)
-    
-
-
-  	
-######################### Flocculation #########################
-PHI_FLOC = 45 / 24
-
-
-def C_Prec(Dose: 'Dose in mg/L as Al'): 
-    """Calculate precipitate concentration given Aluminum concentration."""
-    return Dose.to(u.mg/u.L) * 1.3 / 0.027 / 13 # Changed 1.039384 to 1.3
-
-
-def phi_0(Dose: 'in mg/L', Inf: 'in NTU'): 
-    """Calculate phi_0. 
-    
-    Currently broken."""
-    x = C_Prec(Dose) / r_Co + Inf.to(u.mg/u.L) / r_Cl
-    return x.to(u.dimensionless) 
-
-
-def P_ClSphere(P_HD): 
-    """Calculate surface area to volume ratio for clay.
-    
-    Normalized to that of a sphere.
-    """
-    return (0.5 + P_HD) * (2/(3*P_HD))**(2/3)
-
-
-def P_AClATot(Inf: 'in NTU', D_Cl: 'in um', D_T: 'in inches', P_HD): 
-    """Normalize surface area of clay by total surface area.
-    
-    Currently broken.
-    Surface area is calculated as the sum of clay + walls.
-    """
-    x = (1 / (1+(2 * D_Cl.to(u.m) / (3 * D_T.to(u.m) * P_ClSphere(P_HD) 
-                                    * Inf / r_Cl
-                                    )))
-         )
-    return x.to(u.dimensionless)
-
-
-def Gamma(Inf, D, D_T, D_Cl, P_HD, D_Co): 
-    """Calculate Gamma."""
-    return (1 - np.exp((-phi_0(D, 0*u.mg/u.L) * D_Cl)
-                       / (phi_0(0*u.mg/u.L, Inf) * D_Co) * 1 / np.pi
-                       * (P_AClATot(Inf, D_Cl, D_T, P_HD))
-                       / (P_ClSphere(P_HD))
-                       )
-            )
-
-
-def D_Sep(phi, D_Cl): 
-    """Return the particle separation distance."""
-    x = (np.pi / 6 / phi)**(1/3) * D_Cl
-    return x.to(u.micrometer)
-
-
-def P_V(Gam, t, EDR, nu, phi):
-    x = (Gam * t * np.sqrt(EDR.to(u.m**2/u.s**3) / nu.to(u.m**2/u.s)) 
-         * phi**(2/3)
-         )
-    return x.to(u.dimensionless)
-
-
-def P_I(Gam, t, EDR, D_Cl, phi):
-    x = (Gam * t * (EDR.to(u.m**2/u.s**3) / D_Cl.to(u.m)**2)**(1/3)
-         * phi**(8/9)
-         )
-    return x.to(u.dimensionless)
-
-
-def pC_I(N, k):
-    return 9/8 * np.log10(8/9 * np.pi * k * N * (6.0 / np.pi)**(8/9) + 1)
-
-
-def pC_V(N, k): 
-    return 1.5 * np.log10(2/3 * np.pi * k * N * (6.0 / np.pi)**(2/3) + 1)
-
-
-def diam_floc_max(epsMax):
-    """Return floc size as a function of energy dissipation rate.
-    
-    Based on Ian Tse's work with floc size as a function of energy 
-    dissipation rate. This is for the average energy dissipation rate 
-    in a tube flocculator. It isn't clear how to convert this to the 
-    turbulent flow case. Maybe the flocs are mostly experiencing viscous
-    shear. But that isn't clear. Some authors have made the case that 
-    floc breakup is due to viscous effects. If that is the case, then 
-    the results from the tube flocculator should be applicable to the 
-    turbulent case. We will have to account for the temporal and spatial
-    variability in the turbulent energy dissipation rate. The factor of 
-    95 μm is based on the assumption that the ratio of the max to 
-    average energy dissipation rate for laminar flow is approximately 2.
-    """
-    return 95 * u.um * (1 / (epsMax.to(u.W/u.kg).magnitude)**(1/3))
+    return (K_KOZENY * Length * Visc 
+            / gravity * (1-PipeRough) ** 2 
+            / PipeRough**3 * 36 * Vel 
+            / Diam ** 2)
