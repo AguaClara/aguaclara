@@ -301,7 +301,7 @@ def headloss_manifold(FlowRate, Diam, Length, MinorLoss, Visc, PipeRough, NumOut
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
     if Height > 0:
-        return (RatioVCOrifice * area_circle(Diam).magnitude 
+        return (RatioVCOrifice * area_circle(Diam) 
                 * np.sqrt(2 * gravity.magnitude * Height))
     else:
         return 0
@@ -326,7 +326,7 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
 def head_orifice(Diam, RatioVCOrifice, FlowRate):
      """Return the head of the orifice."""
      return ((FlowRate 
-              / (RatioVCOrifice * area_circle(Diam).magnitude)
+              / (RatioVCOrifice * area_circle(Diam))
               )**2 
              / (2*gravity.magnitude)
              )
@@ -343,7 +343,7 @@ def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
      """Return the number of orifices."""
      return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice, 
                                  FlowPlant).magnitude
-                    / area_circle(DiamOrifice).magnitude
+                    / area_circle(DiamOrifice)
                     )
  
 
@@ -421,7 +421,7 @@ def flow_pipeminor(Diam, HeadLossExpans, MinorLoss):
     
     This function applies to both laminar and turbulent flows.
     """ 
-    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity.magnitude 
+    return (area_circle(Diam) * np.sqrt(2 * gravity.magnitude 
                                                   * HeadLossExpans 
                                                   / MinorLoss)
             )
