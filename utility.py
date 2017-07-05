@@ -3,7 +3,7 @@ Created on Sun Jun 11
 
 @author: Monroe Weber-Shirk
 
-Last modified: Fri Jun 23 2017 
+Last modified: Wed Jul 5 2017 
 By: Sage Weber-Shirk
 """
 # units allows us to include units in all of our calculations
@@ -11,25 +11,26 @@ import math
 
 from AguaClara_design.units import unit_registry as u
 
-import numpy as np
-
 #We need to fix the formatting so that it doesn't display trailing zeroes
 #that are not significant.
 
 def sig(x,n):
-    """x is a number that may include units. n is the number of significant
-digits to display."""
+    """Return the 1st input reduced to a number of significant digits.
+    
+    x is a number that may include units. n is the number of significant 
+    digits to display.
+    """
 # Check to see if the quantity x includes units so we can strip the
 # units and then reattach them at the end.
     if type(x) == type(1*u.m):
-        xunit=x.units
-        xmag=float(x.magnitude)
+        xunit = x.units
+        xmag = float(x.magnitude)
     else:
-        xmag=x
+        xmag = x
     
     if xmag == 0.:
         return "0." + "0"*(n-1)
-    if n==1:
+    if n == 1:
         return math.floor(xmag)
 
     out = []
@@ -85,11 +86,11 @@ digits to display."""
 
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
-equal to 'param' and outputs the result in Pint units. 
-This function is unit-aware and functions without requiring translation
-so long as 'param' and 'unit' are of the same diemnsionality.
-"""
+    equal to 'param' and outputs the result in Pint units. 
+    This function is unit-aware and functions without requiring translation
+    so long as 'param' and 'unit' are of the same dimensionality.
+    """
     counter = 0 * unit
     while counter < param.to(unit):
-        counter += step * u.inch
+        counter += step * unit
     return counter
