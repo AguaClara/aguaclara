@@ -84,8 +84,12 @@ def viscosity_kinematic(T):
     
     If given units, the function will automatically convert them to Celsius.
     If not given units, the function will assume Celsius.
+    
+    273.15 is subtracted from the input because both this function and the
+    functions it calls upon add 273.15 to the inputs to convert them to Kelvin.
+    Subtracting 273.15 prevents errors from this process.
     """
-    return viscosity_dynamic(T).magnitude / density_water(T).magnitude
+    return viscosity_dynamic(T-273.15).magnitude / density_water(T-273.15).magnitude
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s], False)
