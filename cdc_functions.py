@@ -45,12 +45,10 @@ def _diam_tube_avail(en_tube_series = True):
 NU_WATER = 1*(u.mm**2/u.s)
 
 def _nu_alum(conc_alum):
-    
     nu = (1 + (4.255 * 10**-6) * conc_alum**2.289) * NU_WATER
     return nu.to(u.mm**2/u.s)
     
 def _nu_pacl(conc_pacl):
-    
     nu = (1 + (2.383 * 10**-5) * conc_pacl**1.893) * NU_WATER
     return nu.to(u.mm**2/u.s)
     
@@ -62,6 +60,7 @@ def _nu_chem(conc_chem, en_chem):
     else:
         return NU_WATER
 
+  
     
 #==============================================================================
 # Flow rate Constraints for Laminar Tube Flow, Deviation from Linear Head Loss
@@ -93,11 +92,14 @@ def _len_tube(flow, diam, headloss, nu, k_minor):
     return len
 
 
+
 #==============================================================================
-# Help Functions     
+# Helper Functions     
 #==============================================================================
 
-def _n_tube_array(flow_plant, conc_dose_max, conc_stock, diam_tube_avail, headloss_cdc): 
+def _n_tube_array(flow_plant, conc_dose_max, conc_stock, 
+                  diam_tube_avail, headloss_cdc): 
+    
     math.ceil((flow_plant*conc_dose_max
                )/ conc_stock*_flow_available(diam_tube_avail, headloss_cdc)) 
 
@@ -106,22 +108,33 @@ def _flow_chem_stock(flow_plant, conc_dose_max, conc_stock):
     flow_plant*conc_dose_max/conc_stock 
     
 
-def _flow_cdc_tube(flow_plant, conc_dose_max, conc_stock, diam_tube_avail, headloss_cdc):
+def _flow_cdc_tube(flow_plant, conc_dose_max, conc_stock, 
+                   diam_tube_avail, headloss_cdc):
+    
     (_flow_chem_stock(flow_plant, conc_dose_max, conc_stock)
-    )/ (_n_tube_array(flow_plant, conc_dose_max, conc_stock, diam_tube_avail, headloss_cdc))
+    )/ (_n_tube_array(flow_plant, conc_dose_max, conc_stock, 
+                      diam_tube_avail, headloss_cdc))
     
     
 # Calculate the length of each diameter tube given the corresponding flow rate
 # and coagulant 
 # Choose the tube that is shorter than the maximum length tube.
-def _length_cdc_tube_array(flow_plant, conc_dose_max, conc_stock, diam_tube_avail, headloss_cdc, en_coag, k_cdc_tube):
-    _len_tube(_flow_cdc_tube(flow_plant, conc_dose_max, conc_stock, diam_tube_avail, headloss_cdc
+def _length_cdc_tube_array(flow_plant, conc_dose_max, conc_stock, 
+                           diam_tube_avail, headloss_cdc, en_coag, k_cdc_tube):
+    
+    _len_tube(_flow_cdc_tube(flow_plant, conc_dose_max, conc_stock, 
+                             diam_tube_avail, headloss_cdc
                              ),diam_tube_avail, headloss_cdc, _nu_chem(conc_stock, en_coag
                                                                       ), k_cdc_tube)
 
 # Find the index of that tube
-def i_cdc(flow_plant, conc_dose_max, conc_stock, diam_tube_avail, headloss_cdc, len_cdc_tube_max, en_coag, k_cdc_tube):
-    tube_array = _length_cdc_tube_array(flow_plant, conc_dose_max, conc_stock, diam_tube_avail, headloss_cdc, en_coag, k_cdc_tube)
+def i_cdc(flow_plant, conc_dose_max, conc_stock, 
+          diam_tube_avail, headloss_cdc, len_cdc_tube_max, 
+          en_coag, k_cdc_tube):
+    
+    tube_array = _length_cdc_tube_array(flow_plant, conc_dose_max, conc_stock, 
+                                        diam_tube_avail, headloss_cdc, en_coag, 
+                                        k_cdc_tube)
     if tube_array[0] < len_cdc_tube_max:
         if len_cdc_tube_max < 
     
