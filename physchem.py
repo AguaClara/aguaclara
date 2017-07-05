@@ -3,7 +3,7 @@ Created on Thu Jun 15 14:07:28 2017
 
 @author: Karan Newatia
 
-Last modified: Fri Jun 30 2017 
+Last modified: Wed Jul 5 2017 
 By: Sage Weber-Shirk
 
 
@@ -17,7 +17,7 @@ import scipy
 
 from AguaClara_design.units import unit_registry as u
 
-gravity = 9.80665
+gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""
 
 #######################Simple geometry#######################
@@ -55,41 +55,37 @@ Index[1] is the corresponding densities, in kg/m³.
 """
 
 
-@u.wraps(u.kg/(u.m*u.s), [u.degC], False)
+@u.wraps(u.kg/(u.m*u.s), [u.degK], False)
 def viscosity_dynamic(T):
     """Return the dynamic Visc of water at a given temperature.
     
-    If given units, the function will automatically convert them to Celsius.
-    If not given units, the function will assume Celsius.
+    If given units, the function will automatically convert them to Kelvin.
+    If not given units, the function will assume Kelvin.
     """
-    T += 273.15 #Convert Celsius to Kelvin
     return 2.414 * (10**-5) * 10**((247.8)/(T-140))
 
 
-@u.wraps(u.kg/u.m**3, [u.degC], False)
+@u.wraps(u.kg/u.m**3, [u.degK], False)
 def density_water(temp):
     """Return the density of water at a given temperature.
     
-    If given units, the function will automatically convert them to Celsius.
-    If not given units, the function will assume Celsius.
+    If given units, the function will automatically convert them to Kelvin.
+    If not given units, the function will assume Kelvin.
     """
     rhointerpolated = scipy.interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
                                                     WATER_DENSITY_TABLE[1])
-    return rhointerpolated(temp + 273.15)
+    return rhointerpolated(temp)
 
 
-@u.wraps(u.m**2/u.s, [u.degC], False)
+@u.wraps(u.m**2/u.s, [u.degK], False)
 def viscosity_kinematic(T):
     """Return the kinematic Visc of water at a given temperature.
     
-    If given units, the function will automatically convert them to Celsius.
-    If not given units, the function will assume Celsius.
-    
-    273.15 is subtracted from the input because both this function and the
-    functions it calls upon add 273.15 to the inputs to convert them to Kelvin.
-    Subtracting 273.15 prevents errors from this process.
+    If given units, the function will automatically convert them to Kelvin.
+    If not given units, the function will assume Kelvin.
     """
-    return viscosity_dynamic(T-273.15).magnitude / density_water(T-273.15).magnitude
+    return (viscosity_dynamic(T).magnitude 
+            / density_water(T).magnitude)
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s], False)
@@ -197,7 +193,7 @@ def headloss_fric(FlowRate, Diam, Length, Visc, PipeRough):
     
     This equation applies to both laminar and turbulent flows.
     """
-    return (fric(FlowRate, Diam, Visc, PipeRough) * 8 / (gravity * np.pi**2) 
+    return (fric(FlowRate, Diam, Visc, PipeRough) * 8 / (gravity.magnitude * np.pi**2) 
             * (Length * FlowRate**2) / Diam**5
             )
 
@@ -208,7 +204,7 @@ def headloss_exp(FlowRate, Diam, MinorLoss):
     
     This equation applies to both laminar and turbulent flows.
     """
-    return MinorLoss * 8 / (gravity * np.pi**2) * FlowRate**2 / Diam**4
+    return MinorLoss * 8 / (gravity.magnitude * np.pi**2) * FlowRate**2 / Diam**4
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, None], False)
@@ -232,7 +228,7 @@ def headloss_fric_rect(FlowRate, Width, SepDist, Length, Visc, PipeRough, opench
             * Length 
             / (4 * radius_hydraulic(Width, SepDist, openchannel)) 
             * FlowRate**2 
-            / (2 * gravity * (Width*SepDist)**2)
+            / (2 * gravity.magnitude * (Width*SepDist)**2)
             )
 
 
@@ -242,7 +238,7 @@ def headloss_exp_rect(FlowRate, Width, SepDist, MinorLoss):
      
      This equation applies to both laminar and turbulent flows.
      """
-     return MinorLoss * FlowRate**2 / (2 * gravity * (Width*SepDist)**2) 
+     return MinorLoss * FlowRate**2 / (2 * gravity.magnitude * (Width*SepDist)**2) 
  
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, None, u.m**2/u.s, u.m, None], False)
@@ -266,7 +262,7 @@ def headloss_fric_general(Area, PerimWetted, Vel, Length, Visc, PipeRough):
      """
      return (fric_general(Area, PerimWetted, Vel, Visc, PipeRough) * Length 
              / (4 * radius_hydraulic_general(Area, PerimWetted).magnitude) 
-             * Vel**2 / (2*gravity)
+             * Vel**2 / (2*gravity.magnitude)
              )
      
 
@@ -276,7 +272,7 @@ def headloss_exp_general(Vel, MinorLoss):
     
     This equation applies to both laminar and turbulent flows.
     """
-    return MinorLoss * Vel**2 / (2*gravity)
+    return MinorLoss * Vel**2 / (2*gravity.magnitude)
 
 
 @u.wraps(u.m, [u.m**2, u.m/u.s, u.m, u.m, None, u.m**2/u.s, u.m], False)
@@ -306,7 +302,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
     if Height > 0:
         return (RatioVCOrifice * area_circle(Diam).magnitude 
-                * np.sqrt(2 * gravity * Height))
+                * np.sqrt(2 * gravity.magnitude * Height))
     else:
         return 0
 
@@ -321,7 +317,7 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
                                                    ), -Diam/2,min(Diam/2,Height)
                                         )
         FlowRateNew = FlowRate[0]
-        return RatioVCOrifice * np.sqrt(2 * gravity) * FlowRateNew * 1000
+        return RatioVCOrifice * np.sqrt(2 * gravity.magnitude) * FlowRateNew * 1000
     else:
        return 0
 
@@ -332,14 +328,14 @@ def head_orifice(Diam, RatioVCOrifice, FlowRate):
      return ((FlowRate 
               / (RatioVCOrifice * area_circle(Diam).magnitude)
               )**2 
-             / (2*gravity)
+             / (2*gravity.magnitude)
              )
 
  
 @u.wraps(u.m**2, [u.m, None, u.m**3/u.s], False)
 def area_orifice(h, RatioVCOrifice, FlowRate):
     """Return the area of the orifice."""
-    return FlowRate / (RatioVCOrifice * np.sqrt(2 * gravity * h))
+    return FlowRate / (RatioVCOrifice * np.sqrt(2 * gravity.magnitude * h))
     
 
 @u.wraps(None, [u.m**3/u.s, None, u.m, u.m], False)
@@ -387,7 +383,7 @@ def flow_transition(Diam, Visc):
 @u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s], False)
 def flow_hagen(Diam, HeadLossFric, Length, Visc):
     """Return the flow rate for laminar flow with only major losses."""
-    return (np.pi * Diam**4) / (128*Visc) * gravity * HeadLossFric / Length
+    return (np.pi * Diam**4) / (128*Visc) * gravity.magnitude * HeadLossFric / Length
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m], False)
@@ -396,13 +392,13 @@ def flow_swamee(Diam, HeadLossFric, Length, Visc, PipeRough):
     logterm = -np.log10(PipeRough
                         / (3.7 * Diam) 
                         + 2.51 * Visc * np.sqrt(Length / (2 
-                                                          * gravity
+                                                          * gravity.magnitude
                                                           * HeadLossFric
                                                           * Diam**3)
                                                 )
                         )
     return ((np.pi / np.sqrt(2)) * Diam**(5/2) 
-            * np.sqrt(gravity * HeadLossFric / Length) * logterm
+            * np.sqrt(gravity.magnitude * HeadLossFric / Length) * logterm
             )
 
 
@@ -425,7 +421,7 @@ def flow_pipeminor(Diam, HeadLossExpans, MinorLoss):
     
     This function applies to both laminar and turbulent flows.
     """ 
-    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity 
+    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity.magnitude 
                                                   * HeadLossExpans 
                                                   / MinorLoss)
             )
@@ -471,7 +467,7 @@ def flow_pipe(Diam, HeadLoss, Length, Visc, PipeRough, MinorLoss):
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s], False)
 def diam_hagen(FlowRate, HeadLossFric, Length, Visc):
     return ((128 * Visc * FlowRate * Length) 
-            / (gravity * HeadLossFric * np.pi)
+            / (gravity.magnitude * HeadLossFric * np.pi)
             ) ** (1/4)
 
 
@@ -490,10 +486,10 @@ def diam_swamee(FlowRate, HeadLossFric, Length, Visc, PipeRough):
     """
     a = ((PipeRough**1.25) 
          * ((Length * FlowRate**2) 
-            / (gravity * HeadLossFric)
+            / (gravity.magnitude * HeadLossFric)
             )**4.75
          )
-    b = (Visc * (FlowRate**9.4) * (Length / (gravity*HeadLossFric))**5.2)
+    b = (Visc * (FlowRate**9.4) * (Length / (gravity.magnitude*HeadLossFric))**5.2)
     return 0.66 * (a+b)**0.04
 
 
@@ -518,7 +514,7 @@ def diam_pipeminor(FlowRate, HeadLossExpans, MinorLoss):
     This function applies to both laminar and turbulent flow.
     """
     return ((np.sqrt(4 * FlowRate / np.pi)) 
-            * (MinorLoss / (2 * gravity * HeadLossExpans)) ** (1/4)
+            * (MinorLoss / (2 * gravity.magnitude * HeadLossExpans)) ** (1/4)
             )
 
 
@@ -557,7 +553,7 @@ def diam_pipe(FlowRate, HeadLoss, Length, Visc, PipeRough, MinorLoss):
 def width_rect_weir(FlowRate, Height):
     """Return the width of a rectangular weir."""
     return ((3 / 2) * FlowRate 
-            / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity) * Height**(3/2)))
+            / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity.magnitude) * Height**(3/2)))
             )
 
 
@@ -568,7 +564,7 @@ def width_rect_weir(FlowRate, Height):
 def headloss_weir(FlowRate, Width):
     """Return the headloss of a weir."""
     return (((3/2) * FlowRate 
-             / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity)*Width))
+             / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity.magnitude)*Width))
              ) ** 3)
 
 
@@ -576,20 +572,20 @@ def headloss_weir(FlowRate, Width):
 def flow_rect_weir(Height, Width):
     """Return the flow of a rectangular weir."""
     return ((2/3) * RATIO_VC_ORIFICE 
-            * (np.sqrt(2*gravity) * Height**(3/2)) 
+            * (np.sqrt(2*gravity.magnitude) * Height**(3/2)) 
             * Width)
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m], False)
 def height_water_critical(FlowRate, Width):
     """Return the critical local water depth."""
-    return (FlowRate / (Width * gravity)) ** (2/3)
+    return (FlowRate / (Width * gravity.magnitude)) ** (2/3)
 
 
 @u.wraps(u.m/u.s, u.m, False)
 def vel_horizontal(height_water_critical):
     """Return the horizontal velocity."""
-    return np.sqrt(gravity * height_water_critical)
+    return np.sqrt(gravity.magnitude * height_water_critical)
 
 K_KOZENY=5
 
@@ -597,6 +593,6 @@ K_KOZENY=5
 def headloss_kozeny(Length, Diam, Vel, PipeRough, Visc):
     """Return the Carmen Kozeny Sand Bed head loss."""
     return (K_KOZENY * Length * Visc 
-            / gravity * (1-PipeRough) ** 2 
+            / gravity.magnitude * (1-PipeRough) ** 2 
             / PipeRough**3 * 36 * Vel 
             / Diam ** 2)

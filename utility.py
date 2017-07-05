@@ -3,34 +3,34 @@ Created on Sun Jun 11
 
 @author: Monroe Weber-Shirk
 
-Last modified: Thu Jun 29 2017 
+Last modified: Wed Jul 5 2017 
 By: Sage Weber-Shirk
 """
 # units allows us to include units in all of our calculations
 import math
-import numpy as np
 
 from AguaClara_design.units import unit_registry as u
-
-import numpy as np
 
 #We need to fix the formatting so that it doesn't display trailing zeroes
 #that are not significant.
 
 def sig(x,n):
-    """x is a number that may include units. n is the number of significant
-digits to display."""
+    """Return the 1st input reduced to a number of significant digits.
+    
+    x is a number that may include units. n is the number of significant 
+    digits to display.
+    """
 # Check to see if the quantity x includes units so we can strip the
 # units and then reattach them at the end.
     if type(x) == type(1*u.m):
-        xunit=x.units
-        xmag=float(x.magnitude)
+        xunit = x.units
+        xmag = float(x.magnitude)
     else:
-        xmag=x
+        xmag = x
     
     if xmag == 0.:
         return "0." + "0"*(n-1)
-    if n==1:
+    if n == 1:
         return math.floor(xmag)
 
     out = []
