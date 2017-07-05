@@ -22,63 +22,56 @@ def sig(x,n):
     """
 # Check to see if the quantity x includes units so we can strip the
 # units and then reattach them at the end.
-    if type(x) == type(1*u.m):
+    if type(x) == type(1 * u.m):
         xunit = x.units
         xmag = float(x.magnitude)
     else:
         xmag = x
-    
     if xmag == 0.:
-        return "0." + "0"*(n-1)
+        return "0." + "0" * (n-1)
     if n == 1:
         return math.floor(xmag)
 
     out = []
-
     if xmag < 0:
         out.append("-")
         xmag = -xmag
-
     e = int(math.log10(xmag))
     tens = math.pow(10, e - n + 1)
-    y = math.floor(xmag/tens)
-
+    y = math.floor(xmag / tens)
     if y < math.pow(10, n - 1):
         e = e -1
         tens = math.pow(10, e - n+1)
         y = math.floor(xmag / tens)
-
     if abs((y + 1.) * tens - xmag) <= abs(y * tens -xmag):
         y = y + 1
-
     if y >= math.pow(10,n):
         y = y / 10.
         e = e + 1
 
     m = "%.*g" % (n, y)
-
     if e < -2 or e >= n:
         out.append(m[0])
         if n > 1:
             out.append(".")
-            out.extend(m[1:n])
+            out.extend(m[1 : n])
         out.append('e')
         if e > 0:
             out.append("+")
         out.append(str(e))
-    elif e == (n -1):
+    elif e == (n - 1):
         out.append(m)
     elif e >= 0:
-        out.append(m[:e+1])
+        out.append(m[:e + 1])
         if e+1 < len(m):
             out.append(".")
-            out.extend(m[e+1:])
+            out.extend(m[e + 1:])
     else:
         out.append("0.")
-        out.extend(["0"]*-(e+1))
+        out.extend(["0"] * -(e + 1))
         out.append(m)
     
-    if type(x) == type(1*u.m):
+    if type(x) == type(1 * u.m):
         req = "".join(out)
         return '{:~P}'.format(u.Quantity(req,xunit))
     else:

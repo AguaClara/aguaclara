@@ -37,7 +37,9 @@ def OD(ND):
     3. Take the values of the array, subtract the ND, take the absolute 
        value, find the index of the minimium value.
     """
-    myindex = (np.abs(np.array(pipedb['NDinch']) - (ND.to(u.inch)).magnitude)).argmin()
+    myindex = (np.abs(np.array(pipedb['NDinch']) 
+                      - (ND.to(u.inch)).magnitude)
+                     ).argmin()
     return pipedb.iloc[myindex, 1] * u.inch
 
 
@@ -59,7 +61,9 @@ def ID_sch40(ND):
     Take the values of the array, subtract the ND, take the absolute 
     value, find the index of the minimium value.
     """
-    myindex = (np.abs(np.array(pipedb['NDinch']) - (ND.to(u.inch)).magnitude)).argmin()
+    myindex = (np.abs(np.array(pipedb['NDinch']) 
+                      - (ND.to(u.inch)).magnitude)
+                      ).argmin()
     return (pipedb.iloc[myindex, 1] - 2*(pipedb.iloc[myindex,5])) * u.inch
 
 
@@ -71,9 +75,9 @@ def ND_all_available():
     """
     ND_all_available = []
     for i in range(len(pipedb['NDinch'])):
-        if pipedb.iloc[i,4] == 1:
+        if pipedb.iloc[i, 4] == 1:
             ND_all_available.append((pipedb['NDinch'][i]))
-    return ND_all_available*u.inch
+    return ND_all_available * u.inch
 
 
 def ID_SDR_all_available(SDR):
@@ -86,7 +90,7 @@ def ID_SDR_all_available(SDR):
     ND = ND_all_available()
     for i in range(len(ND)):
         ID.append(ID_SDR(ND[i], SDR).magnitude)
-    return ID*u.inch
+    return ID * u.inch
 
 
 def ND_SDR_available(ID,SDR):   
