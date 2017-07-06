@@ -15,7 +15,10 @@ physical/chemical unit processes for AguaClara water treatment plants.
 import numpy as np
 import scipy
 
-from AguaClara_design.units import unit_registry as u
+try:
+    from AguaClara_design.units import unit_registry as u
+except:
+      from units import unit_registry as u
 
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""

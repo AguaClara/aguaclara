@@ -9,7 +9,10 @@ By: Sage Weber-Shirk
 # units allows us to include units in all of our calculations
 import math
 
-from AguaClara_design.units import unit_registry as u
+try:
+    from AguaClara_design.units import unit_registry as u
+except:
+       from units import unit_registry as u
 
 import numpy as np
 
