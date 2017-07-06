@@ -319,7 +319,7 @@ DIAM_CHEM_TANK_AVAIL = [(11.875 * u.inch).to(u.m).magnitude,
                         (20.75 * u.inch).to(u.m).magnitude, 
                         (22.5 * u.inch).to(u.m).magnitude, 
                          (0.85 * u.m).magnitude, (1.10 * u.m).magnitude, 
-                         (1,10 * u.m).magnitude, (1.55 * u.m).magnitude]
+                         (1.10 * u.m).magnitude, (1.55 * u.m).magnitude]
 
 HEIGHT_CHEM_TANK_AVAIL = ([17.75, 31.75, 33.5, 0.99, 1.02, 1.39, 
                           1.65] * u.inch).to(u.m).magnitude
