@@ -11,6 +11,8 @@ import math
 
 from AguaClara_design.units import unit_registry as u
 
+import numpy as np
+
 #We need to fix the formatting so that it doesn't display trailing zeroes
 #that are not significant.
 
@@ -87,3 +89,12 @@ def stepceil_with_units(param, step, unit):
     while counter < param.to(unit):
         counter += step * unit
     return counter
+# Take the values of the array, compare to x, find the index of the first value less than or equal to x
+def floor_nearest(x,array):
+    myindex = np.argmax(array <= x)
+    return array[myindex]
+
+# Take the values of the array, compare to x, find the index of the first value greater or equal to x
+def ceil_nearest(x,array):
+    myindex = np.argmax(array >= x)
+    return array[myindex]

@@ -137,5 +137,45 @@ def i_cdc(FlowPlant, ConcDoseMax, ConcStock,
                                         DiamTubeAvail, HeadlossCDC, ENCoag, 
                                         MinorLossCDCTube)
     if tube_array[0] < LenCDCTubeMax:
-        if LenCDCTubeMax < 
+        y=ut.floor_nearest(LenCDCTubeMax,tube_array)
+        x=tube_array.index(y)
+    else:
+        x=0
+    return x
+
+
+
+#Final easy to use functions
+#The length of tubing may be longer than the max specified if the stock concentration is too
+# high to give a viable solution with the specified length of tubing.
+def len_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
+          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
+          ENCoag, MinorLossCDCTube):
+    index=i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
+          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
+          ENCoag, MinorLossCDCTube)
+    len_cdc_tube=_length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
+                           DiamTubeAvail, HeadlossCDC, ENCoag, MinorLossCDCTube)[index]
+    return len_cdc_tube
+
+
+def diam_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
+          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
+          ENCoag, MinorLossCDCTube):
+     index=i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
+          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
+          ENCoag, MinorLossCDCTube)
+     diam_cdc_tube=DiamTubeAvail[index]
+     return diam_cdc_tube
+ 
     
+def n_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
+          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
+          ENCoag, MinorLossCDCTube):
+    index=i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
+          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
+          ENCoag, MinorLossCDCTube)
+    n_cdc_tube = _n_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
+                  DiamTubeAvail, HeadlossCDC)[index]
+    return n_cdc_tube
+
