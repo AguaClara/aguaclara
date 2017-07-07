@@ -6,6 +6,9 @@ Created on Mon Jun 26 16:50:46 2017
 
 Last revised: Wed Jul 5 2017
 By: Sage Weber-Shirk
+
+This file contains flocculation functions pertaining to the design of 
+physical/chemical unit processes for AguaClara water treatment plants
 """
 
 ######################### Imports #########################
@@ -19,7 +22,8 @@ u.enable_contexts('chem')
 ##################### Class Definition #####################
 
 class Chemical:
-    def __init__(self, name, diameter, density, molecWeight, alumMPM, Precipitate):
+    def __init__(self, name, diameter, density, molecWeight, alumMPM, 
+                 Precipitate):
         self.name = name
         self.Diameter = diameter
         self.Density = density
@@ -105,12 +109,13 @@ def conc_precipitate(ConcAluminum, coag):
 
 @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, None], False)
 def conc_floc(ConcAluminum, concClay, coag):
+    """Return floc density given aluminum dose, turbidity, and coagulant"""
     return conc_precipitate(ConcAluminum, coag).magnitude + concClay
 
 
 @u.wraps(u.mol/u.m**3, u.kg/u.m**3, False)
 def moles_aluminum(ConcAluminum):
-    """Return the # of moles Aluminum given aluminum concentration."""
+    """Return the # of moles aluminum given aluminum concentration."""
     return (ConcAluminum / MOLEC_WEIGHT_ALUMINUM)
 
 
@@ -139,7 +144,7 @@ def num_nanoclusters(ConcAluminum, coag):
 
 
 @u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None], False)
-def phi_floc_initial(ConcAluminum, ConcClay, coag):
+def shape_factor_floc_initial(ConcAluminum, ConcClay, coag):
     return ((conc_precipitate(ConcAluminum, coag).magnitude/coag.PrecipDensity)
             + (ConcClay / DENS_CLAY))
 
@@ -174,16 +179,17 @@ def sep_dist_floc(ConcAluminum, ConcClay, coag,
     """Return separation distance as a function of floc size."""
     return (DiamInit 
             * (np.pi/(6
-                      *phi_floc_initial(ConcAluminum,ConcClay,coag)
+                      *shape_factor_floc_initial(ConcAluminum,ConcClay,coag)
                       ))**(1/3)
             * (DiamTarget / DiamInit)**(DiamFractal / 3)
             )
 
 
 @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None, u.m, u.m], False)
-def phi(ConcAluminum, ConcClay, coag, DiamFractal, DiamInit, DiamTarget):
+def shape_factor(ConcAluminum, ConcClay, coag, DiamFractal, 
+                 DiamInit, DiamTarget):
     """Return the floc volume fraction."""
-    return (phi_floc_initial(ConcAluminum, ConcClay, coag) 
+    return (shape_factor_floc_initial(ConcAluminum, ConcClay, coag) 
             * (DiamTarget / DiamInit)**(3-DiamFractal)
             )
 
@@ -195,7 +201,7 @@ def dens_floc_init(ConcAluminum, ConcClay, coag):
     Initial floc is made primarily of the primary colloid and nanoglobs.
     """
     return (conc_floc(ConcAluminum, ConcClay, coag).magnitude
-            / phi_floc_initial(ConcAluminum, ConcClay, coag)
+            / shape_factor_floc_initial(ConcAluminum, ConcClay, coag)
             )
 
 #################### Flocculation Model ####################
@@ -240,10 +246,10 @@ def gamma_coag(ConcClay, ConcAluminum, coag,
     gradually approaching full coverage as coagulant dose increases.
     """
     return (1 - np.exp(
-                       ((- phi_floc_initial(ConcAluminum, 0*u.mg/u.L, 
+                       ((- shape_factor_floc_initial(ConcAluminum, 0*u.mg/u.L, 
                                             coag)
                          * DiamClay
-                         ) / (phi_floc_initial(0*u.mg/u.L, ConcClay, 
+                         ) / (shape_factor_floc_initial(0*u.mg/u.L, ConcClay, 
                                                coag)
                               * coag.Diameter
                               )
@@ -259,11 +265,11 @@ def gamma_coag(ConcClay, ConcAluminum, coag,
 
 @u.wraps(None, [None, u.W/u.kg, u.degK, u.s, u.kg/u.m**3, u.kg/u.m**3, None,
                 u.m, u.m, None, u.kg/u.m**3], False)
-def pc_viscous(FittingParam, EnerDis, Temp, Time, ConcAl, ConcClay, coag, 
+def pc_viscous(FittingParam, EnergyDis, Temp, Time, ConcAl, ConcClay, coag, 
                DiamInit, DiamTube, RatioHeightDiameter, DensityClay):
     return ((3/2) 
             * np.log10((2/3) * np.pi * FittingParam * Time
-                       * np.sqrt(EnerDis
+                       * np.sqrt(EnergyDis
                                  / (pc.viscosity_kinematic(Temp).magnitude)
                                  )
                        * gamma_coag(ConcClay, ConcAl, coag, DiamTube, 
@@ -326,18 +332,18 @@ def diam_floc_vel_term(ConcAl, ConcClay, coag,
             )
 
 
-@u.wraps(u.s, [u.kg/u.m**3, u.kg/u.m**3, None, None, u.m, u.m, u.W/u.kg, u.degK,
-               u.m, None, u.kg/u.m**3], False)
+@u.wraps(u.s, [u.kg/u.m**3, u.kg/u.m**3, None, None, u.m, u.m, u.W/u.kg, 
+               u.degK, u.m, None, u.kg/u.m**3], False)
 def time_col_laminar(ConcAl, ConcClay, coag, DiamFractal, DiamInit,
-                     DiamTarget, EnerDis, Temp, DiamTube, RatioHeightDiameter, 
-                     DensityClay):
+                     DiamTarget, EnergyDis, Temp, DiamTube, 
+                     RatioHeightDiameter, DensityClay):
     """Calculate single collision time for laminar flow mediated collisions.
     
     Calculated as a function of floc size.
     """
     return (((1/6) * ((6/np.pi)**(1/3))
-             * phi_floc_initial(ConcAl, ConcClay, coag)**(-2/3)
-             * (pc.viscosity_kinematic(Temp).magnitude / EnerDis)**(1/2)
+             * shape_factor_floc_initial(ConcAl, ConcClay, coag)**(-2/3)
+             * (pc.viscosity_kinematic(Temp).magnitude / EnergyDis)**(1/2)
              * (DiamTarget / DiamInit)**(2*DiamFractal/3 - 2)
              ) # End of the numerator
             / (gamma_coag(ConcClay, ConcAl, coag, DiamTube, 
@@ -349,46 +355,50 @@ def time_col_laminar(ConcAl, ConcClay, coag, DiamFractal, DiamInit,
 @u.wraps(u.s, [u.kg/u.m**3, u.kg/u.m**3, None, None, u.m, u.m, u.W/u.kg],
          False)
 def time_col_turbulent(ConcAl, ConcClay, coag, DiamFractal, DiamInit,
-                       DiamTarget, EnerDis):
+                       DiamTarget, EnergyDis):
     """Calculate single collision time for turbulent flow mediated collisions.
     
     Calculated as a function of floc size.
     """
-    return((1/6) * (6/np.pi)**(1/9) * EnerDis**(-1/3) * DiamTarget**(2/3)
-           * phi_floc_initial(ConcAl, ConcClay, coag)**(-8/9)
+    return((1/6) * (6/np.pi)**(1/9) * EnergyDis**(-1/3) * DiamTarget**(2/3)
+           * shape_factor_floc_initial(ConcAl, ConcClay, coag)**(-8/9)
            * (DiamTarget / DiamInit)**((8*(DiamFractal-3)) / 9)
            )
 
 ########### Kolmogorov and viscous length scales ###########
 @u.wraps(u.m, [u.W/u.kg, u.degK], False)
-def eta_kolmogorov(EnerDis, Temp):
-    return ((pc.viscosity_kinematic(Temp).magnitude**3) / EnerDis) ** (1/4)
+def eta_kolmogorov(EnergyDis, Temp):
+    return ((pc.viscosity_kinematic(Temp).magnitude**3) / EnergyDis) ** (1/4)
 
 
 @u.wraps(u.m, [u.W/u.kg, u.degK], False)
-def lambda_vel(EnerDis, Temp):
-    return RATIO_KOLMOGOROV * eta_kolmogorov(EnerDis, Temp).magnitude
+def lambda_vel(EnergyDis, Temp):
+    return RATIO_KOLMOGOROV * eta_kolmogorov(EnergyDis, Temp).magnitude
 
 @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, u.m, None, u.W/u.kg, u.degK], 
          False)
 def diam_kolmogorov(ConcAl, ConcClay, coag, DiamInit, 
-                    DiamFractal, EnerDis, Temp):
+                    DiamFractal, EnergyDis, Temp):
     """Return the size of the floc with separation distances equal to
     the Kolmogorov length and the inner viscous length scale.
     """
     return (DiamInit
-            * ((eta_kolmogorov(EnerDis, Temp).magnitude / DiamInit)
-               * ((6*phi_floc_initial(ConcAl, ConcClay, coag)) / np.pi)**(1/3)
+            * ((eta_kolmogorov(EnergyDis, Temp).magnitude / DiamInit)
+               * ((6 * shape_factor_floc_initial(ConcAl, ConcClay, coag)) 
+                  / np.pi
+                  )**(1/3)
                )**(3 / DiamFractal)
             )
 
 
 @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, u.m, None, u.W/u.kg, u.degK], 
          False)
-def diam_vel(ConcAl, ConcClay, coag, DiamInit, DiamFractal, EnerDis, Temp):
+def diam_vel(ConcAl, ConcClay, coag, DiamInit, DiamFractal, EnergyDis, Temp):
     return (DiamInit
-            * ((lambda_vel(EnerDis, Temp).magnitude / DiamInit)
-               * ((6*phi_floc_initial(ConcAl,ConcClay,coag)) / np.pi)**(1/3)
+            * ((lambda_vel(EnergyDis, Temp).magnitude / DiamInit)
+               * ((6 * shape_factor_floc_initial(ConcAl,ConcClay,coag)) 
+                  / np.pi
+                  )**(1/3)
                )**(3/DiamFractal)
             )
 
