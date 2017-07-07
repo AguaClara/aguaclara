@@ -27,15 +27,19 @@ gravity = 9.80665 * u.m/u.s**2
 """A few equations for useful geometry.
 Is there a geometry package that we should be using?"""
 
-def area_circle(diam_Circle):
+def area_circle(DiamCircle):
     """Return the area of a circle."""
-    return np.pi / 4 * diam_Circle**2
+    if DiamCircle <= 0:
+        raise ValueError("Diameter must be greater than zero.")
+    return np.pi / 4 * DiamCircle**2
 
 
 @u.wraps(u.m, u.m**2, False)
-def diam_circle(A_Circle):
+def diam_circle(AreaCircle):
     """Return the diameter of a circle."""
-    return np.sqrt(4 * A_Circle / np.pi)
+    if AreaCircle <= 0:
+        raise ValueError("Area must be greater than zero.")
+    return np.sqrt(4 * AreaCircle / np.pi)
 
 ######################### Hydraulics ######################### 
 RATIO_VC_ORIFICE = 0.62
@@ -61,7 +65,7 @@ Index[1] is the corresponding densities, in kg/m³.
 def viscosity_dynamic(T):
     """Return the dynamic viscosity of water at a given temperature.
     
-    If given units, the function will automatically convert them to Kelvin.
+    If given units, the function will automatically convert to Kelvin.
     If not given units, the function will assume Kelvin.
     """
     return 2.414 * (10**-5) * 10**((247.8)/(T-140))
@@ -71,7 +75,7 @@ def viscosity_dynamic(T):
 def density_water(temp):
     """Return the density of water at a given temperature.
     
-    If given units, the function will automatically convert them to Kelvin.
+    If given units, the function will automatically convert to Kelvin.
     If not given units, the function will assume Kelvin.
     """
     rhointerpolated = scipy.interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
@@ -83,7 +87,7 @@ def density_water(temp):
 def viscosity_kinematic(T):
     """Return the kinematic viscosity of water at a given temperature.
     
-    If given units, the function will automatically convert them to Kelvin.
+    If given units, the function will automatically convert to Kelvin.
     If not given units, the function will assume Kelvin.
     """
     return (viscosity_dynamic(T).magnitude 
@@ -93,12 +97,16 @@ def viscosity_kinematic(T):
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s], False)
 def re_pipe(FlowRate, Diam, Nu):
     """Return the Reynolds Number for a pipe."""
+    if (FlowRate or Diam) <= 0:
+        raise ValueError("Flow rate and pipe diameter must be greater than 0!")
     return (4 * FlowRate) / (np.pi * Diam * Nu)
 
 
 @u.wraps(u.m, [u.m, u.m, None], False)
 def radius_hydraulic(Width, DistCenter, openchannel):
     """Return the hydraulic radius."""  
+    if Width <= 0:
+        raise ValueError("Width must be greater than 0!")
     if openchannel:
         h = (Width*DistCenter) / (Width + 2*DistCenter)
         # if openchannel is True, the channel is open. Otherwise, the channel 
@@ -111,12 +119,16 @@ def radius_hydraulic(Width, DistCenter, openchannel):
 @u.wraps(u.m, [u.m**2, u.m], False)
 def radius_hydraulic_general(Area, WP):
     """Return the general hydraulic radius."""
+    if (Area or WP) <= 0:
+        raise ValueError("Inputs must be greater than 0!")
     return Area / WP 
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, None], False)
 def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
     """Return the Reynolds Number for a rectangular channel."""
+    if (FlowRate or Width) <= 0:
+        raise ValueError("Width and flow rate must be greater than 0!")
     return (4 * FlowRate 
             * radius_hydraulic(Width, DistCenter, openchannel).magnitude
             / (Width * DistCenter * Nu))
@@ -127,6 +139,8 @@ def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
 @u.wraps(None, [u.m/u.s, u.m**2, u.m, u.m**2/u.s], False)
 def re_general(Vel, Area, WP, Nu):
     """Return the Reynolds Number for a general cross section."""
+    if (Area or WP or Vel) <= 0:
+        raise ValueError("Inputs must be greater than 0!")
     return 4 * radius_hydraulic_general(Area, WP).magnitude * Vel / Nu
         
 
@@ -136,6 +150,8 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     
     This equation applies to both laminar and turbulent flows.
     """
+    if FlowRate <= 0:
+        raise ValueError("Flow rate must be greater than 0!")
     if re_pipe(FlowRate, Diam, Nu) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor for turbulent flow; best for 
         #Re>3000 and ε/Diam < 0.02        
