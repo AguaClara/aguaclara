@@ -303,31 +303,31 @@ def headloss_manifold(FlowRate, Diam, Length, MinorLoss, Visc, PipeRough, NumOut
 @u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
-    Height=np.array(Height)
-    flow_orifice=[]
+    Height = np.array(Height)
+    FlowRate = []
     for i in range(len(Height)):
          if Height[i] > 0:
-            flow_orifice.append(RatioVCOrifice * area_circle(Diam) 
+            FlowRate.append(RatioVCOrifice * area_circle(Diam) 
                 * np.sqrt(2 * gravity.magnitude * Height[i]))
          else:
-             flow_orifice.append(0)
-    return flow_orifice
+             FlowRate.append(0)
+    return np.array(FlowRate)
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
-    Height=np.array(Height)
-    FlowRate=[]
+    Height = np.array(Height)
+    FlowRate = []
     for i in range(len(Height)):
-        if Height > -Diam / 2:
-           FlowRate.append(scipy.integrate.quad(lambda z: (Diam 
-           * np.sin(np.acos(z/(Diam/2)))* np.sqrt(Height[i] - z)
-           ), -Diam/2,min(Diam/2,Height)))
-           FlowRateNew = FlowRate[0]
-           return RatioVCOrifice * np.sqrt(2 * gravity.magnitude) * FlowRateNew * 1000
-    else:
-       return 0
+        if Height[i] > -Diam / 2:
+           flow_vert = scipy.integrate.quad(lambda z: (Diam 
+           * np.sin(np.arccos(z/(Diam/2)))* np.sqrt(Height[i] - z)
+           ), -Diam/2,min(Diam/2,Height[i]))
+           FlowRate.append(RatioVCOrifice * np.sqrt(2 * gravity.magnitude) *flow_vert[0])
+        else:
+           FlowRate.append(0)
+    return np.array(FlowRate)
 
 
 @u.wraps(u.m, [u.m, None, u.m**3/u.s], False)
