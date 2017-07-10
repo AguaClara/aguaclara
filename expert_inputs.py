@@ -29,7 +29,7 @@ RATIO_VC_ORIFICE = 0.63
 P_ATM = 1*u.atm
 
 #Needed for the filter siphon design
-NU_AIR = 12 * u.to(u.mm**2/u.s)
+NU_AIR = 12 *u.mm**2/u.s
 
 #Needed for the filter siphon design
 RHO_AIR = 1.204 * u.kg/u.mm**3
@@ -632,16 +632,18 @@ DIAM_SED_MANIFOLD_PORT = 1.25 * u.inch
 # continuing from one set of sed tanks into the filter inlet channel. 
 #The execution of this extended channel involves a few calculations.
 HEADLOSS_SED_TO_FILTER_PIPE_MAX = 10 * u.cm
-if EN_DOUBLE_TRAIN == 1:
-    K_SED_EXIT = 1
-else:
-    K_SED_EXIT = 0
-
-
-if EN_DOUBLE_TRAIN == 1: 
-   HEIGTH_EXIT_FREE = 5 * u.cm
-else:
-   HEIGTH_EXIT_FREE = 0 * u.cm
+#==============================================================================
+# if EN_DOUBLE_TRAIN == 1:
+#     K_SED_EXIT = 1
+# else:
+#     K_SED_EXIT = 0
+# 
+# 
+# if EN_DOUBLE_TRAIN == 1: 
+#    HEIGTH_EXIT_FREE = 5 * u.cm
+# else:
+#    HEIGTH_EXIT_FREE = 0 * u.cm
+#==============================================================================
 
 ##added 12/5/16 by mrf222 ensures weir does not overtop backwards if 
 # filter weir is too high
