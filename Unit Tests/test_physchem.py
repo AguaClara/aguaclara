@@ -38,7 +38,7 @@ class GeometryTest(unittest.TestCase):
     
     
     def test_diam_circle_true(self):
-        """diam_circle should  should give known result with known input."""
+        """diam_circle should should give known result with known input."""
         checks = ((1, 1.1283791670955126), 
                   (0.1, 0.3568248232305542), 
                   (347, 21.019374919894773), 
@@ -127,9 +127,9 @@ class WaterPropertiesTest(unittest.TestCase):
 class ReynoldsNumsTest(unittest.TestCase):
     """Test the various Reynolds Number functions."""
     def test_re_pipe(self):
-        checks = (((12, 6, 2), 1.2732395447351628),
-                  ((12, 12, 12), 0.1061032953945969),
-                  ((12, 12, 12), 0.1061032953945969))
+        checks = (((12, 6, 0.2), 12.732395447351628),
+                  ((12, 12, 0.9), 1.4147106052612919),
+                  ((12, 12, .45), 2.8294212105225838))
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.re_pipe(*i[0]), i[1])
