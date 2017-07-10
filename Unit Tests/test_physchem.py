@@ -126,7 +126,7 @@ class WaterPropertiesTest(unittest.TestCase):
 
 class ReynoldsNumsTest(unittest.TestCase):
     """Test the various Reynolds Number functions."""
-    def test_pipe(self):
+    def test_re_pipe(self):
         checks = (((12, 6, 2), 1.2732395447351628),
                   ((12, 12, 12), 0.1061032953945969),
                   ((12, 12, 12), 0.1061032953945969))
