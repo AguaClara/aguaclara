@@ -379,7 +379,7 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
     #functions this function calls.
     if NumOutlets <= 0:
         raise ValueError("There must be at least one outlet.")
-    return (headloss(FlowRate,Diam,Length,Nu,PipeRough,KMinor).magnitude
+    return (headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor).magnitude
             * (1/3 
                + 1 / (2*NumOutlets) 
                + 1 / ((6*NumOutlets)**2))
@@ -389,18 +389,14 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
 @u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
-<<<<<<< HEAD
     #Checking input validity
     if not (Diam and Height) > 0:
         raise ValueError("Diameter and height must be greater than 0.")
     if not 0 < RatioVCOrifice < 1:
         raise ValueError("RatioVCOrifice should be between 0 and 1.")
     Height=np.array(Height)
-    flow_orifice=[]
-=======
     Height = np.array(Height)
     FlowRate = []
->>>>>>> master
     for i in range(len(Height)):
          if Height[i] > 0:
             FlowRate.append(RatioVCOrifice * area_circle(Diam) 
@@ -413,7 +409,6 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
 @u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
-<<<<<<< HEAD
     #Checking input validity
     if not (Diam and Height) > 0:
         raise ValueError("Diameter and height must be greater than 0.")
@@ -421,10 +416,8 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
         raise ValueError("RatioVCOrifice should be between 0 and 1.")
     Height=np.array(Height)
     FlowRate=[]
-=======
     Height = np.array(Height)
     FlowRate = []
->>>>>>> master
     for i in range(len(Height)):
         if Height[i] > -Diam / 2:
            flow_vert = scipy.integrate.quad(lambda z: (Diam 
