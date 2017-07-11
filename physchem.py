@@ -389,13 +389,10 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
 @u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
+    Height = np.array(Height)
     #Checking input validity
-    if not (Diam and Height) > 0:
-        raise ValueError("Diameter and height must be greater than 0.")
     if not 0 < RatioVCOrifice < 1:
         raise ValueError("RatioVCOrifice should be between 0 and 1.")
-    Height=np.array(Height)
-    Height = np.array(Height)
     FlowRate = []
     for i in range(len(Height)):
          if Height[i] > 0:
@@ -410,12 +407,8 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
     #Checking input validity
-    if not (Diam and Height) > 0:
-        raise ValueError("Diameter and height must be greater than 0.")
     if not 0 < RatioVCOrifice < 1:
         raise ValueError("RatioVCOrifice should be between 0 and 1.")
-    Height=np.array(Height)
-    FlowRate=[]
     Height = np.array(Height)
     FlowRate = []
     for i in range(len(Height)):
