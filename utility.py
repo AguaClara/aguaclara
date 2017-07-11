@@ -94,7 +94,7 @@ def stepceil_with_units(param, step, unit):
     return counter
 # Take the values of the array, compare to x, find the index of the first value less than or equal to x
 def floor_nearest(x,array):
-    myindex = np.argmax(array <= x)
+    myindex = np.argmax(array >= x) - 1
     return array[myindex]
 
 # Take the values of the array, compare to x, find the index of the first value greater or equal to x
