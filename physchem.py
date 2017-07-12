@@ -409,7 +409,7 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     #Checking input validity
     if not 0 < RatioVCOrifice < 1:
         raise ValueError("RatioVCOrifice should be between 0 and 1.")
-    Height = np.array(Height)
+    Height = np.arange(Height)
     FlowRate = []
     for i in range(len(Height)):
         if Height[i] > -Diam / 2:
