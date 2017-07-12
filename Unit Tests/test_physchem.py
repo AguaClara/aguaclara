@@ -3,10 +3,12 @@
 Created on Fri Jul  7 11:51:51 2017
 
 @author: Sage Weber-Shirk
+
+Last modified: Tue Jul 11 2017
+By: Sage Weber-Shirk
 """
 
 import unittest
-
 
 import sys, os
 myGitHubdir = os.path.expanduser('~\\Documents\\GitHub')
@@ -27,7 +29,7 @@ class GeometryTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.area_circle(i[0]), i[1])
-    
+
     def test_area_circle_error(self):
         """area_circle should return errors with inputs <= 0."""
         checks = ((0, ValueError), 
@@ -35,8 +37,7 @@ class GeometryTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(i[1], pc.area_circle, i[0])
-    
-    
+
     def test_diam_circle_true(self):
         """diam_circle should should give known result with known input."""
         checks = ((1, 1.1283791670955126), 
@@ -68,13 +69,13 @@ class WaterPropertiesTest(unittest.TestCase):
             with self.subTest(i=i):
                 self.assertEqual(table[0][i[0]], i[1])
                 self.assertEqual(table[1][i[0]], i[2])
-                
+
     def test_water_table_units(self):
         """The water density table should handle units properly."""
         table = pc.WATER_DENSITY_TABLE
         self.assertEqual(table[0][0], (0 * u.degC).to_base_units().magnitude)
         self.assertEqual(table[0][4], (30 * u.degC).to_base_units().magnitude)
-    
+
     def test_density_water_true(self):
         """density_water should give known result with known input."""
         checks = ((273.15, 999.9),
@@ -83,7 +84,7 @@ class WaterPropertiesTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.density_water(i[0]).magnitude, i[1])
-                
+
     def test_viscosity_dynamic(self):
         """viscosity_dynamic should give known result with known input."""
         checks = ((300, 0.0008540578046518858),
@@ -92,7 +93,7 @@ class WaterPropertiesTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.viscosity_dynamic(i[0]).magnitude, i[1])
-                
+
     def test_viscosity_dynamic_units(self):
         """viscosity_dynamic should give known result with known input."""
         checks = ((300 * u.degK, 0.0008540578046518858),
@@ -100,7 +101,7 @@ class WaterPropertiesTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.viscosity_dynamic(i[0]).magnitude, i[1])
-                
+
     def test_viscosity_kinematic(self):
         """viscosity_kinematic should give known results with known input."""
         checks = ((342, 4.1584506710898959e-07),
@@ -110,7 +111,7 @@ class WaterPropertiesTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.viscosity_kinematic(i[0]).magnitude, i[1])
-                
+
     def test_viscosity_kinematic_units(self):
         """viscosity_kinematic should handle units correctly."""
         checks = ((342, 4.1584506710898959e-07),
@@ -133,6 +134,8 @@ class ReynoldsNumsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.re_pipe(*i[0]), i[1])
+
+    
 
 
 if __name__ == "__main__":
