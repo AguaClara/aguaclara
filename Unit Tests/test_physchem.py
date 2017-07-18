@@ -23,9 +23,7 @@ class GeometryTest(unittest.TestCase):
     def test_area_circle_true(self):
         """area_circle should  should give known result with known input."""
         checks = ((1, 0.7853981633974483), 
-                  (10002, 78571235.40787338), 
-                  (495.6, 192908.99423885669), 
-                  (31, 754.7676350249478))
+                  (495.6, 192908.99423885669))
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.area_circle(i[0]), i[1])
