@@ -94,7 +94,6 @@ def stepceil_with_units(param, step, unit):
     return counter
 # Take the values of the array, compare to x, find the index of the first value less than or equal to x
 def floor_nearest(x,array):
-    myindex = np.argmax(array <= x)
     myindex = np.argmax(array >= x) - 1
     return array[myindex]
 
@@ -102,3 +101,52 @@ def floor_nearest(x,array):
 def ceil_nearest(x,array):
     myindex = np.argmax(array >= x)
     return array[myindex]
+
+
+def check_range(*args):
+    """Check whether passed paramters fall within approved ranges.
+    
+    Does not return anything, but will raise an error if a parameter falls
+    outside of its defined range.
+    
+    Input should be passed as an array of sequences, with each sequence
+    having three elements:
+        [0] is the value being checked,
+        [1] is the range parameter within which the value should fall, and
+        [2] is the name of the parameter, for better error messages.
+    If [2] is not supplied, "Input" will be appended as a generic name.
+    
+    Range requests that this function understands are listed in the
+    knownChecks sequence.
+    """
+    knownChecks = ('>0', '>=0', '0-1', '<0', '<=0', 'int')
+    for arg in args:
+        #Converts arg to a mutable list
+        arg = [*arg]
+        if len(arg) == 1:
+            #arg[1] details what range the parameter should fall within; if 
+            #len(arg) is 1 that means a validity was not specified and the 
+            #parameter should not have been passed in its current form
+            raise TypeError("No range-validity parameter provided.")
+        elif len(arg) == 2:
+            #Appending 'Input" to the end allows us to give more descriptive
+            #error messages that do not fail if no description was supplied.
+            arg.append("Input")
+        #This ensures that all whitespace is removed before checking if the
+        #request is understood
+        arg[1] = "".join(arg[1].split())
+            
+        if arg[1] not in knownChecks:
+            raise RuntimeError("Unknown parameter validation request: {0}.".format(arg[1]))
+        elif arg[1] == '>0' and arg[0] <= 0:
+            raise ValueError("{1} is {0} but must be greater than 0.".format(arg[0], arg[2]))
+        elif arg[1] == '>=0' and arg[0] <0:
+            raise ValueError("{1} is {0} but must be 0 or greater.".format(arg[0], arg[2]))
+        elif arg[1] == '0-1' and not 0 <= arg[0] <= 1:
+            raise ValueError("{1} is {0} but must be between 0 and 1.".format(arg[0], arg[2]))
+        elif arg[1] == '<0' and arg[0] >= 0:
+            raise ValueError("{1} is {0} but must be less than than 0.".format(arg[0], arg[2]))
+        elif arg[1] == '<=0' and arg[0] >0:
+            raise ValueError("{1} is {0} but must be 0 or less.".format(arg[0], arg[2]))
+        elif arg[1] == 'int' and int(arg[0]) != arg[0]:
+            raise TypeError("{1} is {0} but must be a numeric integer.".format(arg[0], arg[2]))
