@@ -177,17 +177,17 @@ class LFOM:
     def fric_n_orifices(self):
         FLOW_ramp_local = self.__flow_ramp()
         D_LFOM_Orifices = self.drillbit_diameter()
-        H_ramp_local = np.arange(D_LFOM_Orifices * 0.5, self.hl, self.__dist_center_rows(), dtype=object)
+        h = np.arange(self.__dist_center_rows(), self.hl, self.__dist_center_rows(), dtype=object)
+        d = np.arange(D_LFOM_Orifices * 0.5, self.hl, self.__dist_center_rows(), dtype=object)
         n = []
-        for i in range (len(H_ramp_local) - 1):
-            h = np.arange(self.__dist_center_rows(), self.hl, self.__dist_center_rows(), dtype=object)
-            d = H_ramp_local
+        for i in range (len(d) - 1):
             flow_actual = self.__flow_actual(i, n)
+            Height = h[i] - d[i]
+            rounded = np.round((FLOW_ramp_local[i] - flow_actual).to(u.m**3 / u.seconds) / pc.flow_orifice_vert(D_LFOM_Orifices, Height, ratio_VC_orifice))
             if self.nom_diam_pipe() <= 12 * u.inch:
-                rounded = round((FLOW_ramp_local[i] - flow_actual) / pc.flow_orifice_vert(D_LFOM_Orifices, h[i] - d[i], ratio_VC_orifice))
                 n.append(min(max(0, rounded), self.__n_orifices_per_row_max()))
             else:
-                 n.append(max(0,rounded))
+                n.append(max(0,rounded))
         return n
 
     #This function calculates the error of the design based on the differences between the predicted flow rate
