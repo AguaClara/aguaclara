@@ -6,41 +6,6 @@ Created on Tue Jul 11 10:59:18 2017
 """
 import functools
 
-def nonwrapped_base(*args, CheckMode='all', **kwargs,):
-    knownChecks = ('>0', '>=0', '0-1', 'int')
-    newVals = []
-    for arg in args:
-        #Converts arg to a mutable list
-        arg = [*arg]
-        if len(arg) == 1:
-            #arg[1] notifies input_checker what range it should be ensuring the
-            #parameter falls within; if len(arg) is 1 that means a validity was
-            #not specified and the parameter should not have been passed to 
-            #input_checker
-            raise TypeError("Error checking doesn't work if it doesn't know what to check for!")
-        elif len(arg) == 2:
-            #Appending 'Input" to the end allows us to give more descriptive
-            #error messages that do not fail if no description was supplied.
-            arg.append("Input")
-        #This ensures that all whitespace is removed before checking if the
-        #request is understood
-        arg[1] = "".join(arg[1].split())
-            
-        if arg[1] not in knownChecks:
-            raise RuntimeError("Unknown parameter validation request: {0}.".format(arg[1]))
-        elif arg[1] == ('>0') and arg[0] <= 0:
-            raise ValueError("{1} is {0} but must be greater than 0.".format(arg[0], arg[2]))
-        elif arg[1] == ('>=0') and arg[0] <0:
-            raise ValueError("{1} is {0} but must not be negative.".format(arg[0], arg[2]))
-        elif arg[1] == ('0-1') and not 0 <= arg[0] <= 1:
-            raise ValueError("{1} is {0} but must be between 0 and 1.".format(arg[0], arg[2]))
-        elif arg[1] == 'int' and int(arg[0]) != arg[0]:
-            raise TypeError("{1} is {0} but must be a numeric integer.".format(arg[0], arg[2]))
-
-        newVals.append(arg[0])
-        return newVals
-    
-    
 
 def input_checker(*params):
     """Ensure that the values in the wrapped function are within valid ranges.
