@@ -4,9 +4,12 @@ Created on Fri Jul  7 11:51:51 2017
 
 @author: Sage Weber-Shirk
 
-Last modified: Tue Jul 11 2017
+Last modified: Wed Jul 19 2017
 By: Sage Weber-Shirk
 """
+
+#Note: All answer values in this file should be checked against MathCad
+#before this file is released to the Master branch!
 
 import unittest
 
@@ -126,14 +129,135 @@ class WaterPropertiesTest(unittest.TestCase):
 class ReynoldsNumsTest(unittest.TestCase):
     """Test the various Reynolds Number functions."""
     def test_re_pipe(self):
-        checks = (((12, 6, 0.2), 12.732395447351628),
-                  ((12, 12, 0.9), 1.4147106052612919),
-                  ((12, 12, .45), 2.8294212105225838))
+        """re_pipe should return known results with known input."""
+        checks = (((12, 6, 0.01), 254.64790894703253),
+                  ((60, 1, 1), 76.39437268410977),
+                  ((1, 12, .45), 0.23578510087688198))
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.re_pipe(*i[0]), i[1])
 
+    def test_re_pipe_range(self):
+        """re_pipe should raise errors when inputs are out of bounds."""
+        checks = ((0, 4, .5), (1, 0, .4), (1, 1, 1.1), (1, 1, -0.1))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.re_pipe, *i)
+
+    def test_re_pipe_units(self):
+        """re_pipe should handle units correctly."""
+        base = pc.re_pipe(12, 6, 0.01)
+        checks = ([12 * u.m**3/u.s, 6 * u.m, 0.01 * u.m**2/u.s],
+                  [12000 * u.L/u.s, 600 * u.cm, 0.000001 * u.ha/u.s],
+                  [12, 0.006 * u.km, 100 * u.cm**2/u.s])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.re_pipe(*i), base)
     
+    def test_re_rect(self):
+        """re_rect should return known result with known input."""
+        self.assertEqual(pc.re_rect(10, 4, 6, 1, True), 2.5)
+    
+    def test_re_rect_range(self):
+        """re_rect should raise errors when inputs are out of bounds."""
+        checks = ([0, 1, 1, 1, False], [1, 1, 1, 1.1, False])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.re_rect, *i)
+    
+    def test_re_rect_units(self):
+        """re_rect should handle units correctly."""
+        base = pc.re_rect(10, 4, 6, 1, True)
+        checks = ([10 * u.m**3/u.s, 4 * u.m, 6 * u.m, 1 * u.m**2/u.s, True],
+                  [10000 * u.L/u.s, 4, 6, 1, True],
+                  [10, 400 * u.cm, 6, 1, True],
+                  [10, 4, 0.006 * u.km, 1, True],
+                  [10, 4, 6, 0.0001 * u.ha/u.s, True])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.re_rect(*i), base)
+    
+    def test_re_general(self):
+        """re_general should return known values with known input."""
+        checks = (([1, 2, 3, 0.4], 6.666666666666666),
+                  ([17, 6, 42, 1], 9.714285714285714),
+                  ([0, 1, 2, 0.3], 0))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.re_general(*i[0]), i[1])
+    
+    def test_re_general_range(self):
+        """re_general should raise errors with invalid inputs."""
+        checks = (([-1, 2, 3, 0.4], ValueError),
+                  ([1, 2, 3, 1.01], ValueError),
+                  ([1, 2, 3, 0], ZeroDivisionError))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(i[1], pc.re_general, *i[0])
+    
+    def test_re_general_units(self):
+        """re_general should handle units correctly."""
+        base = pc.re_general(1, 2, 3, 0.4)
+        checks = ([1 * u.m/u.s, 2 * u.m**2, 3 * u.m, 0.4 * u.m**2/u.s],
+                  [100 * u.cm/u.s, 2, 3, 0.4],
+                  [1, 20000 * u.cm**2, 3, 0.4],
+                  [1, 2, 0.003 * u.km, 0.4],
+                  [1, 2, 3, 4000 * u.cm**2/u.s])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.re_general(*i), base)
+
+
+class RadiusFuncsTest(unittest.TestCase):
+    """Test the various radius-acquisition functions."""
+    def test_radius_hydraulic(self):
+        """radius_hydraulic should return known results with known input."""
+        checks = (([10, 4, False], 1.4285714285714286),
+                  ([10, 4, True], 2.2222222222222223))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.radius_hydraulic(*i[0]).magnitude, i[1])
+
+    def test_radius_hydraulic_range(self):
+        """radius_hydraulic should return errors with invalid inputs."""
+        checks = (([0, 4, True], ValueError), ([-1, 4, True], ValueError),
+                  ([1, 0, True], ValueError), ([10, -1, True], ValueError),
+                  ([10, 4, 0], TypeError), ([10, 4, 6], TypeError))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(i[1], pc.radius_hydraulic, *i[0])
+
+    def test_radius_hydraulic_units(self):
+        """radius_hydraulic should handle units correctly."""
+        base = pc.radius_hydraulic(10, 4, False)
+        checks = ([1000 * u.cm, 4, False], 
+                  [0.01 * u.km, 40 * u.dm, False])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.radius_hydraulic(*i), base)
+
+    def test_radius_hydraulic_general(self):
+        """radius_hydraulic_general should return known results with known input."""
+        checks = (([6, 12], 0.5), ([70, 0.4], 175))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.radius_hydraulic_general(*i[0]).magnitude, i[1])
+    
+    def test_radius_hydraulic_general_range(self):
+        """radius_hydraulic_general should not accept inputs of 0 or less."""
+        checks = ([0, 6], [6, 0])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.radius_hydraulic_general, *i)
+    
+    def test_radius_hydraulic_general_units(self):
+        """radius_hydraulic_general should handle units correctly."""
+        base = pc.radius_hydraulic_general(4, 7)
+        checks = ([4 * u.m**2, 7 * u.m], [40000 * u.cm**2, 7],
+                  [4, 0.007 * u.km])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.radius_hydraulic_general(*i), base)
 
 
 if __name__ == "__main__":
