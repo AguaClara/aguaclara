@@ -109,9 +109,13 @@ def re_pipe(FlowRate, Diam, Nu):
 
 @u.wraps(u.m, [u.m, u.m, None], False)
 def radius_hydraulic(Width, DistCenter, openchannel):
-    """Return the hydraulic radius."""  
-    ut.check_range([Width, ">0", "Width"], [DistCenter, ">0", "DistCenter"])
-    if openchannel:
+    """Return the hydraulic radius.
+    
+    Width and DistCenter are length values and openchannel is a boolean.
+    """  
+    ut.check_range([Width, ">0", "Width"], [DistCenter, ">0", "DistCenter"],
+                   [openchannel, "boolean", "openchannel"])
+    if openchannel is True:
         h = (Width*DistCenter) / (Width + 2*DistCenter)
         # if openchannel is True, the channel is open. Otherwise, the channel 
         # is assumed to have a top. 
