@@ -260,5 +260,39 @@ class RadiusFuncsTest(unittest.TestCase):
                 self.assertEqual(pc.radius_hydraulic_general(*i), base)
 
 
+class FrictionFuncsTest(unittest.TestCase):
+    """Test the friction functions."""
+    def test_fric(self):
+        """fric should return known results with known input."""
+        checks = (([100, 2, 0.001, 1], 0.33154589118654193),
+                  ([100, 2, 0.1, 1], 0.10053096491487337),
+                  ([100, 2, 0.001, 0], 0.019675384283293733),
+                  ([46, 9, 0.001, 0.03], 0.039382681891291252),
+                  ([55, 0.4, 0.5, 0.0001], 0.18278357257249706))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.fric(*i[0]), i[1])
+    
+    def test_fric_range(self):
+        """fric should raise an error if 0 < PipeRough <= 1 is not true."""
+        checks = ([1, 2, 0.1, -0.1],
+                  [1, 2, 0.1, 1.1])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.fric, *i)
+    
+    def test_fric_units(self):
+        """fric should handle units correctly."""
+        base = pc.fric(100, 2, 0.001, 1)
+        checks = ([100 * u.m**3/u.s, 2 * u.m, 0.001 * u.m**2/u.s, 1 * u.m],
+                  [100000 * u.L/u.s, 2, 0.001, 1],
+                  [100, 20 * u.dm, 0.001, 1],
+                  [100, 2, 10 * u.cm**2/u.s, 1],
+                  [100, 2, 0.001, 1000 * u.mm])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.fric(*i), base)
+
+
 if __name__ == "__main__":
     unittest.main()
