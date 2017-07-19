@@ -119,7 +119,7 @@ def check_range(*args):
     Range requests that this function understands are listed in the
     knownChecks sequence.
     """
-    knownChecks = ('>0', '>=0', '0-1', '<0', '<=0', 'int')
+    knownChecks = ('>0', '>=0', '0-1', '<0', '<=0', 'int', 'boolean')
     for arg in args:
         #Converts arg to a mutable list
         arg = [*arg]
@@ -134,7 +134,7 @@ def check_range(*args):
             arg.append("Input")
         #This ensures that all whitespace is removed before checking if the
         #request is understood
-        arg[1] = "".join(arg[1].split())
+        arg[1] = "".join(arg[1].lower().split())
             
         if arg[1] not in knownChecks:
             raise RuntimeError("Unknown parameter validation request: {0}.".format(arg[1]))
@@ -150,3 +150,5 @@ def check_range(*args):
             raise ValueError("{1} is {0} but must be 0 or less.".format(arg[0], arg[2]))
         elif arg[1] == 'int' and int(arg[0]) != arg[0]:
             raise TypeError("{1} is {0} but must be a numeric integer.".format(arg[0], arg[2]))
+        elif arg[1] == 'boolean' and type(arg[0]) != bool:
+            raise TypeError("{1} is {0} but must be a boolean.".format(arg[0], arg[2]))
