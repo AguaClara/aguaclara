@@ -116,12 +116,11 @@ def radius_hydraulic(Width, DistCenter, openchannel):
     ut.check_range([Width, ">0", "Width"], [DistCenter, ">0", "DistCenter"],
                    [openchannel, "boolean", "openchannel"])
     if openchannel is True:
-        h = (Width*DistCenter) / (Width + 2*DistCenter)
+        return (Width*DistCenter) / (Width + 2*DistCenter)
         # if openchannel is True, the channel is open. Otherwise, the channel 
         # is assumed to have a top. 
     else:
-        h = (Width*DistCenter) / (2 * (Width+DistCenter))
-    return h
+        return (Width*DistCenter) / (2 * (Width+DistCenter))
 
 
 @u.wraps(u.m, [u.m**2, u.m], False)
