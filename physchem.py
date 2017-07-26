@@ -700,7 +700,7 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
         Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough).magnitude
         print(Diam)
     else:
-        Diam = max(diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough), diam_pipeminor(FlowRate, HeadLoss, KMinor))
+        Diam = max(diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough), diam_pipeminor(FlowRate, HeadLoss, KMinor)).magnitude
         print(Diam)
         err = 1.00
         while err > 0.001:
