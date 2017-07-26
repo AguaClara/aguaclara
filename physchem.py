@@ -244,7 +244,7 @@ def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
     #functions this function calls.
     if Length <= 0:
         raise ValueError("Length must be greater than 0.")
-    return (fric(FlowRate, Diam, Nu, PipeRough).magnitude 
+    return (fric(FlowRate, Diam, Nu, PipeRough)
             * 8 / (gravity.magnitude * np.pi**2) 
             * (Length * FlowRate**2) / Diam**5
             )
@@ -273,6 +273,8 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     """
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls.
+    print(headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude)
+    print(headloss_exp(FlowRate, Diam, KMinor).magnitude)
     return (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude
             + headloss_exp(FlowRate, Diam, KMinor)).magnitude
 
