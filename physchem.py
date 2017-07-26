@@ -696,8 +696,10 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
     #functions this function calls.
     if KMinor == 0:
         Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough).magnitude
+        print(Diam)
     else:
         Diam = max(diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough), diam_pipeminor(FlowRate, HeadLoss, KMinor))
+        print(Diam)
         err = 1.00
         while err > 0.001:
             DiamPrev = Diam
@@ -712,8 +714,10 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
                                                      ).magnitude
                         )
                      )
+            print(HLFricNew)
             Diam = diam_pipemajor(FlowRate, HLFricNew, Length, Nu, PipeRough
                               ).magnitude
+            print(Diam)
             err = abs(Diam - DiamPrev) / np.mean(Diam, DiamPrev)
     return Diam
 
