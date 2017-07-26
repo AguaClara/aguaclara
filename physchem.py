@@ -275,8 +275,9 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     #functions this function calls.
     print(headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude)
     print(headloss_exp(FlowRate, Diam, KMinor).magnitude)
-    return (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude
+    hl = headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude
             + headloss_exp(FlowRate, Diam, KMinor)).magnitude
+    return hl
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, u.m**2/u.s, u.m, None], False)
