@@ -697,13 +697,15 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls.
     if KMinor == 0:
-        Diam = diam_pipeminor(FlowRate, HeadLoss, KMinor).magnitude
+        Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough).magnitude
+        print(Diam)
     else:
-        Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough)
-    err = 1.00
-    while err > 0.001:
-        DiamPrev = Diam
-        HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length, 
+        Diam = max(diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough), diam_pipeminor(FlowRate, HeadLoss, KMinor))
+        print(Diam)
+        err = 1.00
+        while err > 0.001:
+            DiamPrev = Diam
+            HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length, 
                                               Nu, PipeRough
                                               ).magnitude 
                      / (headloss_fric(FlowRate, Diam, Length, 
@@ -714,9 +716,11 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
                                                      ).magnitude
                         )
                      )
-        Diam = diam_pipemajor(FlowRate, HLFricNew, Length, Nu, PipeRough
+            print(HLFricNew)
+            Diam = diam_pipemajor(FlowRate, HLFricNew, Length, Nu, PipeRough
                               ).magnitude
-        err = abs(Diam - DiamPrev) / (Diam + DiamPrev)
+            print(Diam)
+            err = abs(Diam - DiamPrev) / np.mean(Diam, DiamPrev)
     return Diam
 
 # Weir head loss equations
