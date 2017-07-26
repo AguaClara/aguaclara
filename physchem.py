@@ -720,7 +720,7 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
             Diam = diam_pipemajor(FlowRate, HLFricNew, Length, Nu, PipeRough
                               ).magnitude
             print(Diam)
-            err = abs(Diam - DiamPrev) / np.mean(Diam, DiamPrev)
+            err = abs(Diam - DiamPrev) / ((Diam+DiamPrev)/2)
     return Diam
 
 # Weir head loss equations
