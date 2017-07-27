@@ -164,8 +164,6 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     """
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
-    if not 0 < PipeRough < 1:
-        raise ValueError("Pipe roughness should be between 0 and 1.")
         
     if re_pipe(FlowRate, Diam, Nu) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor for turbulent flow; best for 
