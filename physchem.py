@@ -98,8 +98,14 @@ def viscosity_kinematic(T):
 def re_pipe(FlowRate, Diam, Nu):
     """Return the Reynolds Number for a pipe."""
     #Checking input validity
-    if not (FlowRate and Diam) > 0:
-        raise ValueError("Inputs must be greater than 0.")
+    for i in range(len(FlowRate)):
+        if not FlowRate[i] > 0:
+            raise ValueError("Inputs must be greater than 0.")
+     
+    for i in range(len(Diam)):
+        if not Diam[i] > 0:
+            raise ValueError("Inputs must be greater than 0.")
+            
     if not 0 < Nu < 1:
         raise ValueError("Nu should be between 0 and 1.")
         
