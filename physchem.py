@@ -272,9 +272,8 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     This equation applies to both laminar and turbulent flows.
     """
     #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
-    print(headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude)
-    print(headloss_exp(FlowRate, Diam, KMinor).magnitude)
+    #functions this function calls
+    
     hl = (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude 
           + headloss_exp(FlowRate, Diam, KMinor).magnitude)
     return hl
