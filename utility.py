@@ -30,12 +30,16 @@ def sig(x,n):
     if type(x) == type(1 * u.m):
         xunit = x.units
         xmag = float(x.magnitude)
+        if n==1 and xmag>=1:
+             req = round(xmag)
+             return '{:~P}'.format(u.Quantity(req,xunit))
+            
     else:
         xmag = x
     if xmag == 0.:
         return "0." + "0" * (n-1)
-    if n == 1:
-        return math.floor(xmag)
+    if n == 1 and type(x)!=type(1 * u.m):
+        return round(xmag)
 
     out = []
     if xmag < 0:
