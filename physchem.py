@@ -268,9 +268,18 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     """
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls
-    
-    hl = (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude 
-          + headloss_exp(FlowRate, Diam, KMinor).magnitude)
+
+    size = np.array(FlowRate).size
+    if not (np.array(Diam).size and np.array(KMinor).size) == size:
+        raise ValueError("FlowRate, Diam, and KMinor must have the same sizes.")
+
+    hl = []
+
+    for i in range(size): 
+      headloss = (headloss_fric(FlowRate[i], Diam[i], Length, Nu, PipeRough).magnitude 
+          + headloss_exp(FlowRate[i], Diam[i], KMinor[i]).magnitude)
+      hl.append(headloss)
+      
     return hl
 
 
