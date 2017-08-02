@@ -165,7 +165,7 @@ def fric(FlowRate, Diam, Nu, PipeRough):
         #Swamee-Jain friction factor for turbulent flow; best for 
         #Re>3000 and ε/Diam < 0.02        
         f = (0.25 / (np.log10(PipeRough/(3.7*Diam) + 5.74 
-                                / re_pipe(FlowRate, Diam, Nu)**0.9
+                                / re_pipe(FlowRate, Diam, Nu) ** 0.9
                                 )
                      ) ** 2
              )
@@ -183,20 +183,20 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
     if re_rect(FlowRate,Width,DistCenter,Nu,openchannel) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor adapted for rectangular channel.
         #Diam = 4*R_h in this case.         
-        f = (0.25 
-             / (np.log10(PipeRough 
-                           / ((3.7 * 4 
-                               * radius_hydraulic(Width, DistCenter, openchannel)
-                               ) + 5.74
-                              ) 
-                           / re_rect(FlowRate, Width, DistCenter, Nu,
-                                     openchannel) ** 0.9
-                           )
-                ) ** 2
-             )
+        return (0.25 
+                / (np.log10(PipeRough 
+                              / ((3.7 * 4 
+                                  * radius_hydraulic(Width, DistCenter, 
+                                                     openchannel).magnitude
+                                  ) + 5.74
+                                 ) 
+                              / re_rect(FlowRate, Width, DistCenter, Nu,
+                                        openchannel) ** 0.9
+                              )
+                   ) ** 2
+                )
     else:
-        f = 64 / re_rect(FlowRate, Width, DistCenter, Nu, openchannel)
-    return f
+        return 64 / re_rect(FlowRate, Width, DistCenter, Nu, openchannel)
  
 
 @u.wraps(None, [u.m**2, u.m, u.m/u.s, u.m**2/u.s, u.m], False)
@@ -210,7 +210,9 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
         #Diam = 4*R*h 
         f= (0.25 /
             (np.log10(PipeRough
-                      / (3.7 * 4 * radius_hydraulic_general(Area, PerimWetted))
+                      / (3.7 * 4 
+                         * radius_hydraulic_general(Area, PerimWetted).magnitude
+                         )
                       + 5.74
                       / re_general(Vel, Area, PerimWetted, Nu) ** 0.9
                       )
@@ -230,7 +232,7 @@ def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
     ut.check_range([Length, ">0", "Length"])
-    return (fric(FlowRate, Diam, Nu, PipeRough) 
+    return (fric(FlowRate, Diam, Nu, PipeRough)
             * 8 / (gravity.magnitude * np.pi**2) 
             * (Length * FlowRate**2) / Diam**5
             )
@@ -272,7 +274,7 @@ def headloss_fric_rect(FlowRate, Width, DistCenter, Length, Nu, PipeRough, openc
     return (fric_rect(FlowRate, Width, DistCenter, Nu, 
                       PipeRough, openchannel).magnitude 
             * Length 
-            / (4 * radius_hydraulic(Width, DistCenter, openchannel)) 
+            / (4 * radius_hydraulic(Width, DistCenter, openchannel).magnitude) 
             * FlowRate**2 
             / (2 * gravity.magnitude * (Width*DistCenter)**2)
             )
@@ -287,7 +289,9 @@ def headloss_exp_rect(FlowRate, Width, DistCenter, KMinor):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"], 
                    [DistCenter, ">0", "DistCenter"], [KMinor, ">=0", "K minor"])
-    return KMinor * FlowRate**2 / (2 * gravity.magnitude * (Width*DistCenter)**2) 
+    return (KMinor * FlowRate**2 
+            / (2 * gravity.magnitude * (Width*DistCenter)**2)
+            )
  
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, None, u.m**2/u.s, u.m, None], False)
@@ -373,7 +377,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
     FlowRate = []
     for i in range(len(Height)):
          if Height[i] > 0:
-            FlowRate.append(RatioVCOrifice * area_circle(Diam) 
+            FlowRate.append(RatioVCOrifice * area_circle(Diam).magnitude 
                 * np.sqrt(2 * gravity.magnitude * Height[i]))
          else:
              FlowRate.append(0)
@@ -431,7 +435,7 @@ def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
     #functions this function calls.
     return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice, 
                                  FlowPlant).magnitude
-                    / area_circle(DiamOrifice)
+                    / area_circle(DiamOrifice).magnitude
                     )
  
 
@@ -452,10 +456,10 @@ def diam_orifice_manifold(RatioFlowManifold, FlowTank, DiamPipe, Length,
              / ((((KMinorTotal 
                    + (fric(FlowTank, DiamPipe, Nu, PipeRough) * Length/DiamPipe)
                    )
-                  * (RatioFlowManifold)
+                  * RatioFlowManifold
                   ) 
                   - KMinorTotal 
-                  - (fric(FlowTank,DiamPipe,Nu,PipeRough) 
+                  - (fric(FlowTank, DiamPipe, Nu, PipeRough) 
                      * Length / DiamPipe
                      ) 
                   * RatioVCOrifice**2 
@@ -530,7 +534,7 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
     #functions this function calls.
     ut.check_range([HeadLossExpans, ">=0", "Headloss due to expansion"], 
                    [KMinor, ">=0", "K minor"])
-    return (area_circle(Diam) * np.sqrt(2 * gravity.magnitude 
+    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity.magnitude 
                                                   * HeadLossExpans 
                                                   / KMinor)
             )
@@ -600,12 +604,14 @@ def diam_swamee(FlowRate, HeadLossFric, Length, Nu, PipeRough):
     ut.check_range([FlowRate, ">0", "Flow rate"], [Length, ">0", "Length"],
                    [HeadLossFric, ">=0", "Headloss due to friction"],
                    [Nu, "0-1", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
-    a = ((PipeRough**1.25) 
+    a = ((PipeRough ** 1.25) 
          * ((Length * FlowRate**2) 
             / (gravity.magnitude * HeadLossFric)
             )**4.75
          )
-    b = (Nu * (FlowRate**9.4) * (Length / (gravity.magnitude*HeadLossFric))**5.2)
+    b = (Nu * FlowRate**9.4 
+         * (Length / (gravity.magnitude *  HeadLossFric)) ** 5.2
+         )
     return 0.66 * (a+b)**0.04
 
 
@@ -651,7 +657,7 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
     if KMinor == 0:
         Diam = diam_pipeminor(FlowRate, HeadLoss, KMinor).magnitude
     else:
-        Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough)
+        Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough).magnitude
     err = 1.00
     while err > 0.001:
         DiamPrev = Diam
@@ -692,7 +698,7 @@ def headloss_weir(FlowRate, Width):
     if not (FlowRate and Width) > 0:
         raise ValueError("Flow rate and width must be greater than 0.")
     return (((3/2) * FlowRate 
-             / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity.magnitude)*Width))
+             / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity.magnitude) * Width))
              ) ** 3)
 
 

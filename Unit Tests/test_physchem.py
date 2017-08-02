@@ -143,6 +143,7 @@ class ReynoldsNumsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.re_pipe, *i)
+        self.assertRaises(ZeroDivisionError, pc.re_pipe, *(1, 1, 0))
 
     def test_re_pipe_units(self):
         """re_pipe should handle units correctly."""
@@ -164,6 +165,7 @@ class ReynoldsNumsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.re_rect, *i)
+        self.assertRaises(ZeroDivisionError, pc.re_rect, *(1, 1, 1, 0, False))
     
     def test_re_rect_units(self):
         """re_rect should handle units correctly."""
@@ -292,6 +294,36 @@ class FrictionFuncsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.fric(*i), base)
+    
+    def test_fric_rect(self):
+        """fric_rect should return known results with known inputs."""
+        checks = (([60, 0.7, 1, 0.6, 0.001, True], 0.432),
+                  ([60, 0.7, 1, 0.6, 0.001, False], 0.544),
+                  ([120, 1, 0.04, 0.125, 0.6, True], 0.01406371394240729),
+                  ([120, 1, 0.04, 0.125, 0.6, False], 0.034666666666666665),
+                  ([120, 1, 0.04, 0.125, 0, False], 0.034666666666666665),
+                  ([120, 1, 0.04, 0.125, 0, True], 0))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.fric_rect(*i[0]), i[1])
+    
+    def test_fric_rect_range(self):
+        """fric_rect should raise an error if 0 < PipeRough <= 1 is not true."""
+        self.assertRaises(ValueError, pc.fric_rect, *(1, 1, 1, 1, 1.1, True))
+        
+    def test_fric_rect_units(self):
+        """fric_rect should handle units correctly."""
+        base = pc.fric_rect(0.06, 0.1, 0.0625, 0.347, 0.06, True)
+        checks = ([0.06 * u.m**3/u.s, 0.1 * u.m, 0.0625 * u.m, 
+                   0.347 * u.m**2/u.s, 0.06 * u.m, True],
+                  [60 * u.L/u.s, 0.1, 0.0625, 0.347, 0.06, True],
+                  [0.06, 10 * u.cm, 0.0625, 0.347, 0.06, True],
+                  [0.06, 0.1, 6.25 * u.cm, 0.347, 0.06, True],
+                  [0.06, 0.1, 0.0625, 3470 * u.cm**2/u.s, 0.06, True],
+                  [0.06, 0.1, 0.0625, 0.347, 6 * u.cm, True])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.fric_rect(*i), base)
 
 
 if __name__ == "__main__":
