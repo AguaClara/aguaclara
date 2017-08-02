@@ -150,24 +150,27 @@ def check_range(*args):
             if i not in knownChecks:
                 raise RuntimeError("Unknown parameter validation "
                                        "request: {0}.".format(i))
-        if '>0' in arg[1] and arg[0] <= 0:
-            raise ValueError("{1} is {0} but must be greater than "
-                             "0.".format(arg[0], arg[2]))
-        if '>=0' in arg[1] and arg[0] <0:
-            raise ValueError("{1} is {0} but must be 0 or "
-                             "greater.".format(arg[0], arg[2]))
-        if '0-1' in arg[1] and not 0 <= arg[0] <= 1:
-            raise ValueError("{1} is {0} but must be between 0 and "
-                             "1.".format(arg[0], arg[2]))
-        if '<0' in arg[1] and arg[0] >= 0:
-            raise ValueError("{1} is {0} but must be less than "
-                             "0.".format(arg[0], arg[2]))
-        if '<=0' in arg[1] and arg[0] >0:
-            raise ValueError("{1} is {0} but must be 0 or "
-                             "less.".format(arg[0], arg[2]))
-        if 'int' in arg[1] and int(arg[0]) != arg[0]:
-            raise TypeError("{1} is {0} but must be a numeric "
-                            "integer.".format(arg[0], arg[2]))
-        if 'boolean' in arg[1] and type(arg[0]) != bool:
-            raise TypeError("{1} is {0} but must be a "
-                            "boolean.".format(arg[0], arg[2]))
+        if not isinstance(arg[0], (list, tuple)):
+            arg[0] = [arg[0]]
+        for i in arg[0]:
+            if '>0' in arg[1] and i <= 0:
+                raise ValueError("{1} is {0} but must be greater than "
+                                 "0.".format(i, arg[2]))
+            if '>=0' in arg[1] and i <0:
+                raise ValueError("{1} is {0} but must be 0 or "
+                                 "greater.".format(i, arg[2]))
+            if '0-1' in arg[1] and not 0 <= i <= 1:
+                raise ValueError("{1} is {0} but must be between 0 and "
+                                 "1.".format(i, arg[2]))
+            if '<0' in arg[1] and i >= 0:
+                raise ValueError("{1} is {0} but must be less than "
+                                 "0.".format(i, arg[2]))
+            if '<=0' in arg[1] and i >0:
+                raise ValueError("{1} is {0} but must be 0 or "
+                                 "less.".format(i, arg[2]))
+            if 'int' in arg[1] and int(i) != i:
+                raise TypeError("{1} is {0} but must be a numeric "
+                                "integer.".format(i, arg[2]))
+            if 'boolean' in arg[1] and type(i) != bool:
+                raise TypeError("{1} is {0} but must be a "
+                                "boolean.".format(i, arg[2]))
