@@ -20,6 +20,7 @@ if myGitHubdir not in sys.path:
 
 from AguaClara_design.units import unit_registry as u
 from AguaClara_design import physchem as pc
+from AguaClara_design import utility as ut
 
 class GeometryTest(unittest.TestCase):
     """Test the circular area and diameter functions."""
@@ -272,7 +273,7 @@ class FrictionFuncsTest(unittest.TestCase):
                 self.assertEqual(pc.fric(*i[0]), i[1])
     
     def test_fric_range(self):
-        """fric should raise an error if 0 < PipeRough <= 1 is not true."""
+        """fric should raise an error if 0 <= PipeRough <= 1 is not true."""
         checks = ([1, 2, 0.1, -0.1],
                   [1, 2, 0.1, 1.1])
         for i in checks:
@@ -304,7 +305,7 @@ class FrictionFuncsTest(unittest.TestCase):
                 self.assertEqual(pc.fric_rect(*i[0]), i[1])
     
     def test_fric_rect_range(self):
-        """fric_rect should raise an error if 0 < PipeRough <= 1 is not true."""
+        """fric_rect should raise an error if 0 <= PipeRough <= 1 is not true."""
         checks = ([1, 1, 1, 1, 1.1, True],)
         for i in checks:
             with self.subTest(i=i):
@@ -334,8 +335,28 @@ class FrictionFuncsTest(unittest.TestCase):
                 self.assertEqual(pc.fric_general(*i[0]), i[1])
     
     def test_fric_general_range(self):
-        """fric_general should raise an error if 0 < PipeRough <= 1 is not true."""
-        pass
+        """fric_general should raise an error if 0 <= PipeRough <= 1 is not true."""
+        checks = ((1, 1, 1, 1, -0.0001), (1, 1, 1, 1, 1.1))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.fric_general, *i)
+    
+    def test_fric_general_units(self):
+        """fric_general should handle units correctly."""
+        base = pc.fric_general(46.2, 0.75, 1.23, 0.46, 0.002)
+        checks = ([46.2 * u.m**2, 0.75 * u.m, 1.23 * u.m/u.s, 
+                   0.46 * u.m**2/u.s, 0.002 * u.m],
+                  [462000 * u.cm**2, 0.75, 1.23, 0.46, 0.002],
+                  [46.2, 750 * u.mm, 1.23, 0.46, 0.002],
+                  [46.2, 0.75, 0.00123 * u.km/u.s, 0.46, 0.002],
+                  [46.2, 0.75, 1.23, 4600 * u.cm**2/u.s, 0.002],
+                  [46.2, 0.75, 1.23, 0.46, 2 * u.mm])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.fric_general(*i), base)
+    
+    def test_unit_checker(self):
+        ut.check_range([1, 2], ">0", "list")
 
 
 if __name__ == "__main__":
