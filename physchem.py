@@ -124,10 +124,10 @@ def radius_hydraulic(Width, DistCenter, openchannel):
 
 
 @u.wraps(u.m, [u.m**2, u.m], False)
-def radius_hydraulic_general(Area, WP):
+def radius_hydraulic_general(Area, PerimWetted):
     """Return the general hydraulic radius."""
-    ut.check_range([Area, ">0", "Area"], [WP, ">0", "Wetted perimeter"])
-    return Area / WP 
+    ut.check_range([Area, ">0", "Area"], [PerimWetted, ">0", "Wetted perimeter"])
+    return Area / PerimWetted 
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, None], False)
@@ -144,12 +144,12 @@ def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
     
 
 @u.wraps(None, [u.m/u.s, u.m**2, u.m, u.m**2/u.s], False)
-def re_general(Vel, Area, WP, Nu):
+def re_general(Vel, Area, PerimWetted, Nu):
     """Return the Reynolds Number for a general cross section."""
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
     ut.check_range([Vel, ">=0", "Velocity"], [Nu, ">0", "Nu"])
-    return 4 * radius_hydraulic_general(Area, WP).magnitude * Vel / Nu
+    return 4 * radius_hydraulic_general(Area, PerimWetted).magnitude * Vel / Nu
         
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
@@ -164,9 +164,9 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     if re_pipe(FlowRate, Diam, Nu) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor for turbulent flow; best for 
         #Re>3000 and ε/Diam < 0.02        
-        f = (0.25 / (np.log10(PipeRough/(3.7*Diam) + 5.74 
-                                / re_pipe(FlowRate, Diam, Nu) ** 0.9
-                                )
+        f = (0.25 / (np.log10(PipeRough / (3.7 * Diam) 
+                              + 5.74 / re_pipe(FlowRate, Diam, Nu) ** 0.9
+                              )
                      ) ** 2
              )
     else:
@@ -184,16 +184,17 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
         #Swamee-Jain friction factor adapted for rectangular channel.
         #Diam = 4*R_h in this case.         
         return (0.25 
-                / (np.log10(PipeRough 
-                              / ((3.7 * 4 
-                                  * radius_hydraulic(Width, DistCenter, 
-                                                     openchannel).magnitude
-                                  ) + 5.74
-                                 ) 
-                              / re_rect(FlowRate, Width, DistCenter, Nu,
-                                        openchannel) ** 0.9
-                              )
-                   ) ** 2
+                / (np.log10((PipeRough 
+                             / (3.7 * 4 
+                                * radius_hydraulic(Width, DistCenter, 
+                                                   openchannel).magnitude
+                                )
+                             )
+                            + (5.74 / (re_rect(FlowRate, Width, DistCenter, 
+                                               Nu, openchannel) ** 0.9)
+                               )
+                            )
+                    ) ** 2
                 )
     else:
         return 64 / re_rect(FlowRate, Width, DistCenter, Nu, openchannel)
@@ -209,12 +210,14 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
         #Swamee-Jain friction factor adapted for any cross-section.
         #Diam = 4*R*h 
         f= (0.25 /
-            (np.log10(PipeRough
-                      / (3.7 * 4 
-                         * radius_hydraulic_general(Area, PerimWetted).magnitude
+            (np.log10((PipeRough
+                       / (3.7 * 4 
+                          * radius_hydraulic_general(Area, PerimWetted).magnitude
+                          )
+                       )
+                      + (5.74
+                         / re_general(Vel, Area, PerimWetted, Nu) ** 0.9
                          )
-                      + 5.74
-                      / re_general(Vel, Area, PerimWetted, Nu) ** 0.9
                       )
              ) ** 2
             )
@@ -364,8 +367,7 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
     """Return the total head loss through the manifold."""
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
-    ut.check_range([NumOutlets, ">0", 'Number of outlets'])
-    #Question: does NumOutlets also need to be an integer?
+    ut.check_range([NumOutlets, ">0, int", 'Number of outlets'])
     return (headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor).magnitude
             * (1/3 
                + 1 / (2*NumOutlets) 
@@ -458,11 +460,10 @@ def diam_orifice_manifold(RatioFlowManifold, FlowTank, DiamPipe, Length,
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
     ut.check_range([Length, ">0", "Length"], [KMinorTotal, ">=0", "Total K minor"]
-                   [NumOrifices, ">0", "Number of orifices"],
-                   [RatioVCOrifice, "0-1", "VC orifice ratio"])
-    #Question: should RatioFlowManifold be constrained to between 0 and 1?
-    #Question: should NumOrifices be an int?
-    return ((((1 - RatioFlowManifold)*DiamPipe) ** 4 
+                   [NumOrifices, ">0, int", "Number of orifices"],
+                   [RatioVCOrifice, "0-1", "Vena Contracta orifice ratio"],
+                   [RatioFlowManifold, "0-1", "Flow Manifold Ratio"])
+    return ((((1-RatioFlowManifold) * DiamPipe) ** 4 
              / ((((KMinorTotal 
                    + (fric(FlowTank, DiamPipe, Nu, PipeRough) * Length/DiamPipe)
                    )

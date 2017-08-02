@@ -295,17 +295,20 @@ class FrictionFuncsTest(unittest.TestCase):
         """fric_rect should return known results with known inputs."""
         checks = (([60, 0.7, 1, 0.6, 0.001, True], 0.432),
                   ([60, 0.7, 1, 0.6, 0.001, False], 0.544),
-                  ([120, 1, 0.04, 0.125, 0.6, True], 0.01406371394240729),
+                  ([120, 1, 0.04, 0.125, 0.6, True], 150.90859874356411),
                   ([120, 1, 0.04, 0.125, 0.6, False], 0.034666666666666665),
                   ([120, 1, 0.04, 0.125, 0, False], 0.034666666666666665),
-                  ([120, 1, 0.04, 0.125, 0, True], 0))
+                  ([120, 1, 0.04, 0.125, 0, True], 0.042098136441473824))
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.fric_rect(*i[0]), i[1])
     
     def test_fric_rect_range(self):
         """fric_rect should raise an error if 0 < PipeRough <= 1 is not true."""
-        self.assertRaises(ValueError, pc.fric_rect, *(1, 1, 1, 1, 1.1, True))
+        checks = ([1, 1, 1, 1, 1.1, True],)
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.fric_rect, *i)
         
     def test_fric_rect_units(self):
         """fric_rect should handle units correctly."""
@@ -320,6 +323,19 @@ class FrictionFuncsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.fric_rect(*i), base)
+    
+    def test_fric_general(self):
+        """fric_general should return known results with known inputs."""
+        checks = (([9, 0.67, 3, 0.987, 0.86], 0.3918755555555556),
+                  ([1, 1, 1, 1, 1], 16),
+                  ([120, 0.6, 12, 0.3, 0.002], 0.023024557179148988))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.fric_general(*i[0]), i[1])
+    
+    def test_fric_general_range(self):
+        """fric_general should raise an error if 0 < PipeRough <= 1 is not true."""
+        pass
 
 
 if __name__ == "__main__":
