@@ -86,6 +86,7 @@ def sig(x,n):
     else:
         return "".join(out)
 
+
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
     equal to 'param' and outputs the result in Pint units. 
@@ -96,10 +97,13 @@ def stepceil_with_units(param, step, unit):
     while counter < param.to(unit):
         counter += step * unit
     return counter
+
+
 # Take the values of the array, compare to x, find the index of the first value less than or equal to x
 def floor_nearest(x,array):
     myindex = np.argmax(array >= x) - 1
     return array[myindex]
+
 
 # Take the values of the array, compare to x, find the index of the first value greater or equal to x
 def ceil_nearest(x,array):
@@ -139,20 +143,36 @@ def check_range(*args):
         #This ensures that all whitespace is removed before checking if the
         #request is understood
         arg[1] = "".join(arg[1].lower().split())
-            
-        if arg[1] not in knownChecks:
-            raise RuntimeError("Unknown parameter validation request: {0}.".format(arg[1]))
-        elif arg[1] == '>0' and arg[0] <= 0:
-            raise ValueError("{1} is {0} but must be greater than 0.".format(arg[0], arg[2]))
-        elif arg[1] == '>=0' and arg[0] <0:
-            raise ValueError("{1} is {0} but must be 0 or greater.".format(arg[0], arg[2]))
-        elif arg[1] == '0-1' and not 0 <= arg[0] <= 1:
-            raise ValueError("{1} is {0} but must be between 0 and 1.".format(arg[0], arg[2]))
-        elif arg[1] == '<0' and arg[0] >= 0:
-            raise ValueError("{1} is {0} but must be less than than 0.".format(arg[0], arg[2]))
-        elif arg[1] == '<=0' and arg[0] >0:
-            raise ValueError("{1} is {0} but must be 0 or less.".format(arg[0], arg[2]))
-        elif arg[1] == 'int' and int(arg[0]) != arg[0]:
-            raise TypeError("{1} is {0} but must be a numeric integer.".format(arg[0], arg[2]))
-        elif arg[1] == 'boolean' and type(arg[0]) != bool:
-            raise TypeError("{1} is {0} but must be a boolean.".format(arg[0], arg[2]))
+        #This block checks that each range request is understood. 
+        #If the request is a compound one, it must be separated into individual
+        #requests for validity comprehension
+        if True: # "," in arg[1]:
+            for i in arg[1].split(","):
+                if i not in knownChecks:
+                    raise RuntimeError("Unknown parameter validation "
+                                       "request: {0}.".format(i))
+        else:
+            if arg[1] not in knownChecks:
+                raise RuntimeError("Unknown parameter validation "
+                                   "request: {0}.".format(arg[1]))
+        if '>0' in arg[1] and arg[0] <= 0:
+            raise ValueError("{1} is {0} but must be greater than "
+                             "0.".format(arg[0], arg[2]))
+        if '>=0' in arg[1] and arg[0] <0:
+            raise ValueError("{1} is {0} but must be 0 or "
+                             "greater.".format(arg[0], arg[2]))
+        if '0-1' in arg[1] and not 0 <= arg[0] <= 1:
+            raise ValueError("{1} is {0} but must be between 0 and "
+                             "1.".format(arg[0], arg[2]))
+        if '<0' in arg[1] and arg[0] >= 0:
+            raise ValueError("{1} is {0} but must be less than "
+                             "0.".format(arg[0], arg[2]))
+        if '<=0' in arg[1] and arg[0] >0:
+            raise ValueError("{1} is {0} but must be 0 or "
+                             "less.".format(arg[0], arg[2]))
+        if 'int' in arg[1] and int(arg[0]) != arg[0]:
+            raise TypeError("{1} is {0} but must be a numeric "
+                            "integer.".format(arg[0], arg[2]))
+        if 'boolean' in arg[1] and type(arg[0]) != bool:
+            raise TypeError("{1} is {0} but must be a "
+                            "boolean.".format(arg[0], arg[2]))
