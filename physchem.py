@@ -260,6 +260,20 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     #functions this function calls.
     return (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude
             + headloss_exp(FlowRate, Diam, KMinor)).magnitude
+    #functions this function calls
+
+    size = np.array(FlowRate).size
+
+    hl = []
+
+    for i in range(size): 
+      headloss = (headloss_fric(FlowRate[i], Diam, Length, Nu, PipeRough).magnitude 
+          + headloss_exp(FlowRate[i], Diam, KMinor).magnitude)
+      hl.append(headloss)
+      
+    if size == 1:
+      return hl[0]  
+    return hl
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, u.m**2/u.s, u.m, None], False)
