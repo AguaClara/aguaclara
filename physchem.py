@@ -4,7 +4,7 @@ Created on Thu Jun 15 14:07:28 2017
 @author: Karan Newatia
 
 Last modified: Fri Jul 7 2017 
-Last modified: Mon Jul 10 2017 
+Last modified: Wed Aug 2 2017 
 By: Sage Weber-Shirk
 
 
@@ -258,10 +258,6 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     """
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls.
-    return (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude
-            + headloss_exp(FlowRate, Diam, KMinor)).magnitude
-    #functions this function calls
-
     size = np.array(FlowRate).size
 
     hl = []

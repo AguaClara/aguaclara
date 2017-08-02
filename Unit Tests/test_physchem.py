@@ -4,7 +4,7 @@ Created on Fri Jul  7 11:51:51 2017
 
 @author: Sage Weber-Shirk
 
-Last modified: Wed Jul 19 2017
+Last modified: Wed Aug 2 2017
 By: Sage Weber-Shirk
 """
 
@@ -139,11 +139,10 @@ class ReynoldsNumsTest(unittest.TestCase):
 
     def test_re_pipe_range(self):
         """re_pipe should raise errors when inputs are out of bounds."""
-        checks = ((0, 4, .5), (1, 0, .4), (1, 1, 1.1), (1, 1, -0.1))
+        checks = ((0, 4, .5), (1, 0, .4), (1, 1, -0.1), (1, 1, 0))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.re_pipe, *i)
-        self.assertRaises(ZeroDivisionError, pc.re_pipe, *(1, 1, 0))
 
     def test_re_pipe_units(self):
         """re_pipe should handle units correctly."""
@@ -161,11 +160,10 @@ class ReynoldsNumsTest(unittest.TestCase):
     
     def test_re_rect_range(self):
         """re_rect should raise errors when inputs are out of bounds."""
-        checks = ([0, 1, 1, 1, False], [1, 1, 1, 1.1, False])
+        checks = ((0, 1, 1, 1, False), (1, 1, 1, 0, False))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.re_rect, *i)
-        self.assertRaises(ZeroDivisionError, pc.re_rect, *(1, 1, 1, 0, False))
     
     def test_re_rect_units(self):
         """re_rect should handle units correctly."""
@@ -190,12 +188,10 @@ class ReynoldsNumsTest(unittest.TestCase):
     
     def test_re_general_range(self):
         """re_general should raise errors with invalid inputs."""
-        checks = (([-1, 2, 3, 0.4], ValueError),
-                  ([1, 2, 3, 1.01], ValueError),
-                  ([1, 2, 3, 0], ZeroDivisionError))
+        checks = ((-1, 2, 3, 0.4), (1, 2, 3, 0))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(i[1], pc.re_general, *i[0])
+                self.assertRaises(ValueError, pc.re_general, *i)
     
     def test_re_general_units(self):
         """re_general should handle units correctly."""
