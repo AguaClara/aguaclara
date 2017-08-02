@@ -270,16 +270,16 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     #functions this function calls
 
     size = np.array(FlowRate).size
-    if not (np.array(Diam).size and np.array(KMinor).size) == size:
-        raise ValueError("FlowRate, Diam, and KMinor must have the same sizes.")
 
     hl = []
 
     for i in range(size): 
-      headloss = (headloss_fric(FlowRate[i], Diam[i], Length, Nu, PipeRough).magnitude 
-          + headloss_exp(FlowRate[i], Diam[i], KMinor[i]).magnitude)
+      headloss = (headloss_fric(FlowRate[i], Diam, Length, Nu, PipeRough).magnitude 
+          + headloss_exp(FlowRate[i], Diam, KMinor).magnitude)
       hl.append(headloss)
       
+    if size == 1:
+      return hl[0]  
     return hl
 
 
