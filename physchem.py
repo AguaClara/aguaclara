@@ -103,7 +103,7 @@ def re_pipe(FlowRate, Diam, Nu):
     """Return the Reynolds Number for a pipe."""
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Diam, ">0", "Diameter"],
-                   [Nu, "0-1", "Nu"])
+                   [Nu, ">0", "Nu"])
     return (4 * FlowRate) / (np.pi * Diam * Nu)
 
 
@@ -135,7 +135,7 @@ def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
     """Return the Reynolds Number for a rectangular channel."""
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Nu, "0-1", "Nu"])
+    ut.check_range([FlowRate, ">0", "Flow rate"], [Nu, ">0", "Nu"])
     return (4 * FlowRate 
             * radius_hydraulic(Width, DistCenter, openchannel).magnitude
             / (Width * DistCenter * Nu))
@@ -148,7 +148,7 @@ def re_general(Vel, Area, WP, Nu):
     """Return the Reynolds Number for a general cross section."""
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
-    ut.check_range([Vel, ">=0", "Velocity"], [Nu, "0-1", "Nu"])
+    ut.check_range([Vel, ">=0", "Velocity"], [Nu, ">0", "Nu"])
     return 4 * radius_hydraulic_general(Area, WP).magnitude * Vel / Nu
         
 
@@ -477,7 +477,7 @@ def flow_transition(Diam, Nu):
     This equation is used in some of the other equations for flow.
     """
     #Checking input validity
-    ut.check_range([Diam, ">0", "Diameter"], [Nu, "0-1", "Nu"])
+    ut.check_range([Diam, ">0", "Diameter"], [Nu, ">0", "Nu"])
     return np.pi * Diam * RE_TRANSITION_PIPE * Nu / 4
 
 
@@ -487,7 +487,7 @@ def flow_hagen(Diam, HeadLossFric, Length, Nu):
     #Checking input validity
     ut.check_range([Diam, ">0", "Diameter"], [Length, ">0", "Length"],
                    [HeadLossFric, ">=0", "Headloss due to friction"],
-                   [Nu, "0-1", "Nu"])
+                   [Nu, ">0", "Nu"])
     return (np.pi*Diam**4) / (128*Nu) * gravity.magnitude * HeadLossFric / Length
 
 
@@ -497,7 +497,7 @@ def flow_swamee(Diam, HeadLossFric, Length, Nu, PipeRough):
     #Checking input validity
     ut.check_range([Diam, ">0", "Diameter"], [Length, ">0", "Length"],
                    [HeadLossFric, ">=0", "Headloss due to friction"],
-                   [Nu, "0-1", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
+                   [Nu, ">0", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
     logterm = -np.log10(PipeRough / (3.7 * Diam) 
                         + 2.51 * Nu * np.sqrt(Length / (2 * gravity.magnitude
                                                           * HeadLossFric
@@ -584,7 +584,7 @@ def diam_hagen(FlowRate, HeadLossFric, Length, Nu):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Length, ">0", "Length"],
                    [HeadLossFric, ">=0", "Headloss due to friction"],
-                   [Nu, "0-1", "Nu"])
+                   [Nu, ">0", "Nu"])
     return ((128 * Nu * FlowRate * Length) 
             / (gravity.magnitude * HeadLossFric * np.pi)
             ) ** (1/4)
@@ -603,7 +603,7 @@ def diam_swamee(FlowRate, HeadLossFric, Length, Nu, PipeRough):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Length, ">0", "Length"],
                    [HeadLossFric, ">=0", "Headloss due to friction"],
-                   [Nu, "0-1", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
+                   [Nu, ">0", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
     a = ((PipeRough ** 1.25) 
          * ((Length * FlowRate**2) 
             / (gravity.magnitude * HeadLossFric)
@@ -734,7 +734,7 @@ def headloss_kozeny(Length, Diam, Vel, PipeRough, Nu):
     """Return the Carmen Kozeny Sand Bed head loss."""
     #Checking input validity
     ut.check_range([Length, ">0", "Length"], [Diam, ">0", "Diam"],
-                   [Vel, ">0", "Velocity"], [Nu, "0-1", "Nu"],
+                   [Vel, ">0", "Velocity"], [Nu, ">0", "Nu"],
                    [PipeRough, "0-1", "Pipe roughness"])
     return (K_KOZENY * Length * Nu 
             / gravity.magnitude * (1-PipeRough) ** 2 
