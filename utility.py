@@ -120,7 +120,7 @@ def check_range(*args):
     Input should be passed as an array of sequences, with each sequence
     having three elements:
         [0] is the value being checked,
-        [1] is the range parameter within which the value should fall, and
+        [1] is the range parameter(s) within which the value should fall, and
         [2] is the name of the parameter, for better error messages.
     If [2] is not supplied, "Input" will be appended as a generic name.
     
@@ -146,15 +146,10 @@ def check_range(*args):
         #This block checks that each range request is understood. 
         #If the request is a compound one, it must be separated into individual
         #requests for validity comprehension
-        if True: # "," in arg[1]:
-            for i in arg[1].split(","):
-                if i not in knownChecks:
-                    raise RuntimeError("Unknown parameter validation "
-                                       "request: {0}.".format(i))
-        else:
-            if arg[1] not in knownChecks:
+        for i in arg[1].split(","):
+            if i not in knownChecks:
                 raise RuntimeError("Unknown parameter validation "
-                                   "request: {0}.".format(arg[1]))
+                                       "request: {0}.".format(i))
         if '>0' in arg[1] and arg[0] <= 0:
             raise ValueError("{1} is {0} but must be greater than "
                              "0.".format(arg[0], arg[2]))
