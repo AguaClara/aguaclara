@@ -164,17 +164,26 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     """
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
-        
-    if re_pipe(FlowRate, Diam, Nu) >= RE_TRANSITION_PIPE:
-        #Swamee-Jain friction factor for turbulent flow; best for 
-        #Re>3000 and ε/Diam < 0.02        
-        f = (0.25 / (np.log10(PipeRough/(3.7*Diam) + 5.74 
-                                / re_pipe(FlowRate, Diam, Nu)**0.9
-                                )
-                     ) ** 2
-             )
-    else:
-        f = 64 / re_pipe(FlowRate, Diam, Nu)
+
+    size = np.array(FlowRate).size
+
+    f = []
+
+    for i in range(size):    
+      if re_pipe(FlowRate, Diam, Nu) >= RE_TRANSITION_PIPE:
+          #Swamee-Jain friction factor for turbulent flow; best for 
+          #Re>3000 and ε/Diam < 0.02        
+          fric = (0.25 / (np.log10(PipeRough/(3.7*Diam) + 5.74 
+                                  / re_pipe(FlowRate, Diam, Nu)**0.9
+                                  )
+                       ) ** 2
+               )
+      else:
+          fric = 64 / re_pipe(FlowRate, Diam, Nu)
+      f.append(fric)
+
+    if size == 1:
+      return f[0]
     return f
 
 
