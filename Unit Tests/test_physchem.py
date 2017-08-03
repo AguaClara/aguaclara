@@ -12,6 +12,7 @@ By: Sage Weber-Shirk
 #before this file is released to the Master branch!
 
 import unittest
+import numpy as np
 
 import sys, os
 myGitHubdir = os.path.expanduser('~\\Documents\\GitHub')
@@ -20,7 +21,6 @@ if myGitHubdir not in sys.path:
 
 from AguaClara_design.units import unit_registry as u
 from AguaClara_design import physchem as pc
-from AguaClara_design import utility as ut
 
 class GeometryTest(unittest.TestCase):
     """Test the circular area and diameter functions."""
@@ -234,6 +234,11 @@ class RadiusFuncsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.radius_hydraulic(*i), base)
+    
+    def test_radius_hydraulic_lists(self):
+        """radius_hydraulic should handle list inputs."""
+        checks = ([(10, 4, [False, True]), [1.4285714285714286, 2.2222222222222223]])
+        self.assertTrue(np.array_equal(pc.radius_hydraulic(*checks[0]).magnitude, checks[1]))
 
     def test_radius_hydraulic_general(self):
         """radius_hydraulic_general should return known results with known input."""
@@ -354,9 +359,6 @@ class FrictionFuncsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.fric_general(*i), base)
-    
-    def test_unit_checker(self):
-        ut.check_range([1, 2], ">0", "list")
 
 
 if __name__ == "__main__":
