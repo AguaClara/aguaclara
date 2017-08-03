@@ -178,7 +178,7 @@ def check_range(*args):
             if i not in knownChecks:
                 raise RuntimeError("Unknown parameter validation "
                                        "request: {0}.".format(i))
-        if not isinstance(arg[0], (list, tuple)):
+        if not isinstance(arg[0], (list, tuple, np.ndarray)):
             arg[0] = [arg[0]]
         for i in arg[0]:
             if '>0' in arg[1] and i <= 0:
