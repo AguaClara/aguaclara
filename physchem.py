@@ -3,8 +3,7 @@ Created on Thu Jun 15 14:07:28 2017
 
 @author: Karan Newatia
 
-Last modified: Fri Jul 7 2017 
-Last modified: Wed Aug 2 2017 
+Last modified: Thu Aug 3 2017 
 By: Sage Weber-Shirk
 
 
@@ -46,6 +45,8 @@ def diam_circle(AreaCircle):
 RATIO_VC_ORIFICE = 0.62
 
 RE_TRANSITION_PIPE = 2100
+
+K_KOZENY=5
 
 
 
@@ -378,7 +379,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
     ut.check_range([Diam, ">0", "Diameter"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > 0:
-        return (RatioVCOrifice * area_circle(Diam).magnitude 
+        return (RatioVCOrifice * area_circle(Diam) 
                 * np.sqrt(2 * gravity.magnitude * Height))
     else:
         return 0
@@ -533,7 +534,7 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
     #functions this function calls.
     ut.check_range([HeadLossExpans, ">=0", "Headloss due to expansion"], 
                    [KMinor, ">=0", "K minor"])
-    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity.magnitude 
+    return (area_circle(Diam) * np.sqrt(2 * gravity.magnitude 
                                                   * HeadLossExpans 
                                                   / KMinor)
             )
@@ -631,7 +632,7 @@ def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
         return DiamLaminar
     else:
         return diam_swamee(FlowRate, HeadLossFric, Length, 
-                           Nu, PipeRough)
+                           Nu, PipeRough).magnitude
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
@@ -729,8 +730,6 @@ def vel_horizontal(HeightWaterCritical):
     #Checking input validity
     ut.check_range([HeightWaterCritical, ">0", "Critical height of water"])
     return np.sqrt(gravity.magnitude * HeightWaterCritical)
-
-K_KOZENY=5
 
 @u.wraps(u.m, [u.m, u.m, u.m, u.m**2/u.s], False)
 def headloss_kozeny(Length, Diam, Vel, PipeRough, Nu):
