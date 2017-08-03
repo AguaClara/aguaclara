@@ -108,6 +108,7 @@ def re_pipe(FlowRate, Diam, Nu):
 
 
 @u.wraps(u.m, [u.m, u.m, None], False)
+@ut.list_handler
 def radius_hydraulic(Width, DistCenter, openchannel):
     """Return the hydraulic radius.
     
@@ -153,6 +154,7 @@ def re_general(Vel, Area, PerimWetted, Nu):
         
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler
 def fric(FlowRate, Diam, Nu, PipeRough):
     """Return the friction factor for pipe flow.
     
@@ -175,6 +177,7 @@ def fric(FlowRate, Diam, Nu, PipeRough):
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, None], False)
+@ut.list_handler
 def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
     """Return the friction factor for a rectangular channel."""
     #Checking input validity - inputs not checked here are checked by
@@ -201,6 +204,7 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
  
 
 @u.wraps(None, [u.m**2, u.m, u.m/u.s, u.m**2/u.s, u.m], False)
+@ut.list_handler
 def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
     """Return the friction factor for a general channel."""
     #Checking input validity - inputs not checked here are checked by
@@ -254,6 +258,7 @@ def headloss_exp(FlowRate, Diam, KMinor):
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, None], False)
+@ut.list_handler
 def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     """Return the total head loss from major and minor losses in a pipe.
     
@@ -261,18 +266,8 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     """
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls.
-    size = np.array(FlowRate).size
-
-    hl = []
-
-    for i in range(size): 
-      headloss = (headloss_fric(FlowRate[i], Diam, Length, Nu, PipeRough).magnitude 
-          + headloss_exp(FlowRate[i], Diam, KMinor).magnitude)
-      hl.append(headloss)
-      
-    if size == 1:
-      return hl[0]  
-    return hl
+    return (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude 
+            + headloss_exp(FlowRate, Diam, KMinor).magnitude)
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, u.m**2/u.s, u.m, None], False)
@@ -376,46 +371,37 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
+@ut.list_handler
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
     Height = np.array(Height)
     #Checking input validity
     ut.check_range([Diam, ">0", "Diameter"], [Height, ">0", "Height"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
-    Height=np.array(Height)
-    Height = np.array(Height)
-    if not 0 < RatioVCOrifice < 1:
-        raise ValueError("RatioVCOrifice should be between 0 and 1.")
-    FlowRate = []
-    for i in range(len(Height)):
-         if Height[i] > 0:
-            FlowRate.append(RatioVCOrifice * area_circle(Diam).magnitude 
-                * np.sqrt(2 * gravity.magnitude * Height[i]))
-         else:
-             FlowRate.append(0)
-    return np.array(FlowRate)
+    if Height > 0:
+        return (RatioVCOrifice * area_circle(Diam).magnitude 
+                * np.sqrt(2 * gravity.magnitude * Height))
+    else:
+        return 0
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None], False)
+@ut.list_handler
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
     #Checking input validity
     ut.check_range([Diam, ">0", "Diameter"], [Height, ">0", "Height"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
-    Height=np.array(Height)
-    FlowRate=[]
-    Height = np.array(Height)
-    Height = np.arange(Height)
-    FlowRate = []
-    for i in range(len(Height)):
-        if Height[i] > -Diam / 2:
-           flow_vert = scipy.integrate.quad(lambda z: (Diam 
-           * np.sin(np.arccos(z/(Diam/2)))* np.sqrt(Height[i] - z)
-           ), -Diam/2,min(Diam/2,Height[i]))
-           FlowRate.append(RatioVCOrifice * np.sqrt(2 * gravity.magnitude) *flow_vert[0])
-        else:
-           FlowRate.append(0)
-    return np.array(FlowRate)
+    if Height > -Diam / 2:
+        flow_vert = scipy.integrate.quad(lambda z: (Diam 
+                                                    * np.sin(np.arccos(z/(Diam/2))) 
+                                                    * np.sqrt(Height - z)
+                                                    ), 
+                                                    - Diam / 2, 
+                                                    min(Diam/2, Height))
+        return flow_vert[0] * RatioVCOrifice * np.sqrt(2 * gravity.magnitude)
+    else:
+        return 0
 
 
 @u.wraps(u.m, [u.m, None, u.m**3/u.s], False)
@@ -521,6 +507,7 @@ def flow_swamee(Diam, HeadLossFric, Length, Nu, PipeRough):
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler
 def flow_pipemajor(Diam, HeadLossFric, Length, Nu, PipeRough):
     """Return the flow rate with only major losses.
     
@@ -554,6 +541,7 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
 # straight pipe that has both major and minor losses and might be either
 # laminar or turbulent.
 @u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m, None], False)
+@ut.list_handler
 def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
     """Return the the flow in a straight pipe.
     
@@ -627,6 +615,7 @@ def diam_swamee(FlowRate, HeadLossFric, Length, Nu, PipeRough):
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler
 def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
     """Return the pipe IDiam that would result in given major losses.
     
@@ -657,6 +646,7 @@ def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, None], False)
+@ut.list_handler
 def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
     """Return the pipe ID that would result in the given total head loss.
     
@@ -706,8 +696,7 @@ def width_rect_weir(FlowRate, Height):
 def headloss_weir(FlowRate, Width):
     """Return the headloss of a weir."""
     #Checking input validity
-    if not (FlowRate and Width) > 0:
-        raise ValueError("Flow rate and width must be greater than 0.")
+    ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
     return (((3/2) * FlowRate 
              / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity.magnitude) * Width))
              ) ** 3)
