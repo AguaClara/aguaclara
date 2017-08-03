@@ -15,6 +15,7 @@ except ModuleNotFoundError:
     from units import unit_registry as u
 
 import numpy as np
+import functools
 
 #We need to fix the formatting so that it doesn't display trailing zeroes
 #that are not significant.
@@ -109,6 +110,33 @@ def floor_nearest(x,array):
 def ceil_nearest(x,array):
     myindex = np.argmax(array >= x)
     return array[myindex]
+
+
+def list_handler(func):
+    """Wraps a function to handle list inputs."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        sequences = []
+        enums = enumerate(args)
+        for num, arg in enums:
+            if isinstance(arg, (list, tuple, np.ndarray)):
+                sequences.append(num)
+        if len(sequences) == 0:
+            result = func(*args, **kwargs)
+        else:
+            argsList = list(args)
+            limiter = len(argsList[sequences[0]])
+            iterant = 0
+            result = []
+            for num in sequences:
+                for arg in argsList[num]:
+                    if iterant >= limiter:
+                        break
+                    argsList[num] = arg
+                    result.append(wrapper(*argsList, **kwargs))
+                    iterant += 1
+        return result
+    return wrapper
 
 
 def check_range(*args):
