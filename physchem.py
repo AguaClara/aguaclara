@@ -116,7 +116,7 @@ def radius_hydraulic(Width, DistCenter, openchannel):
     """  
     ut.check_range([Width, ">0", "Width"], [DistCenter, ">0", "DistCenter"],
                    [openchannel, "boolean", "openchannel"])
-    if openchannel is True:
+    if openchannel:
         return (Width*DistCenter) / (Width + 2*DistCenter)
         # if openchannel is True, the channel is open. Otherwise, the channel 
         # is assumed to have a top. 
@@ -258,7 +258,6 @@ def headloss_exp(FlowRate, Diam, KMinor):
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, None], False)
-@ut.list_handler
 def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     """Return the total head loss from major and minor losses in a pipe.
     
@@ -280,7 +279,7 @@ def headloss_fric_rect(FlowRate, Width, DistCenter, Length, Nu, PipeRough, openc
     #functions this function calls.
     ut.check_range([Length, ">0", "Length"])
     return (fric_rect(FlowRate, Width, DistCenter, Nu, 
-                      PipeRough, openchannel).magnitude 
+                      PipeRough, openchannel) 
             * Length 
             / (4 * radius_hydraulic(Width, DistCenter, openchannel).magnitude) 
             * FlowRate**2 
@@ -376,7 +375,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
     Height = np.array(Height)
     #Checking input validity
-    ut.check_range([Diam, ">0", "Diameter"], [Height, ">0", "Height"],
+    ut.check_range([Diam, ">0", "Diameter"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > 0:
         return (RatioVCOrifice * area_circle(Diam).magnitude 
@@ -390,7 +389,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
     #Checking input validity
-    ut.check_range([Diam, ">0", "Diameter"], [Height, ">0", "Height"],
+    ut.check_range([Diam, ">0", "Diameter"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > -Diam / 2:
         flow_vert = scipy.integrate.quad(lambda z: (Diam 
@@ -433,38 +432,40 @@ def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
     #functions this function calls.
     return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice, 
                                  FlowPlant).magnitude
-                    / area_circle(DiamOrifice).magnitude
+                    / area_circle(DiamOrifice)
                     )
  
 
 @u.wraps(u.m, [None, u.m**3/u.s, u.m, u.m, None, None, u.m**2/u.s, u.m, None],
          False)
-def diam_orifice_manifold(RatioFlowManifold, FlowTank, DiamPipe, Length, 
-                          KMinorTotal, NumOrifices, Nu, PipeRough, 
+def diam_orifice_manifold(RatioFlowManifold, FlowTank, DiamPipe, Length_l, 
+                          Length_s, KMinorTotal, NumOrifices, Nu, PipeRough, 
                           RatioVCOrifice):
     """Return the diameter of the orifice in the manifold."""
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
-    ut.check_range([Length, ">0", "Length"], [KMinorTotal, ">=0", "Total K minor"]
+    ut.check_range([Length_l, ">0", "Length_l"], [Length_s, ">0", "Length_s"],
+                   [KMinorTotal, ">=0", "Total K minor"],
                    [NumOrifices, ">0, int", "Number of orifices"],
                    [RatioVCOrifice, "0-1", "Vena Contracta orifice ratio"],
                    [RatioFlowManifold, "0-1", "Flow Manifold Ratio"])
-    return ((((1-RatioFlowManifold) * DiamPipe) ** 4 
+    
+    friction = fric(FlowTank, DiamPipe, Nu, PipeRough)
+    return (((1-RatioFlowManifold) * (DiamPipe ** 4)
              / ((((KMinorTotal 
-                   + (fric(FlowTank, DiamPipe, Nu, PipeRough) * Length/DiamPipe)
+                   + friction * Length_l/DiamPipe
                    )
                   * RatioFlowManifold
-                  ) 
                   - KMinorTotal 
-                  - (fric(FlowTank, DiamPipe, Nu, PipeRough) 
-                     * Length / DiamPipe
-                     ) 
-                  * RatioVCOrifice**2 
-                  * NumOrifices**2
+                  - friction
+                  * Length_s / DiamPipe
                   )
+                 * RatioVCOrifice**2 
+                 * NumOrifices**2
+                 )
                 )
              ) ** (1/4))
- 
+
     
 # Here we define functions that return the flow rate.
 @u.wraps(u.m**3/u.s, [u.m, u.m**2/u.s], False)
@@ -574,7 +575,9 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
             if FlowRate == 0:
                 err = 0
             else:
-                err = abs(FlowRate - FlowRatePrev) / (FlowRate + FlowRatePrev)
+                err = (abs(FlowRate - FlowRatePrev) 
+                       / ((FlowRate + FlowRatePrev) / 2)
+                       )
     return FlowRate	
  
 
@@ -628,7 +631,7 @@ def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
         return DiamLaminar
     else:
         return diam_swamee(FlowRate, HeadLossFric, Length, 
-                           Nu, PipeRough).magnitude
+                           Nu, PipeRough)
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
@@ -640,7 +643,7 @@ def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [KMinor, ">=0", "K minor"],
                    [HeadLossExpans, ">=0", "Headloss due to expansion"])
-    return ((np.sqrt(4 * FlowRate / np.pi)) 
+    return (np.sqrt(4 * FlowRate / np.pi)
             * (KMinor / (2 * gravity.magnitude * HeadLossExpans)) ** (1/4)
             )
 

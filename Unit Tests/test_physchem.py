@@ -361,5 +361,98 @@ class FrictionFuncsTest(unittest.TestCase):
                 self.assertEqual(pc.fric_general(*i), base)
 
 
+class HeadlossFuncsTest(unittest.TestCase):
+    """Test the headloss functions."""
+    def test_headloss_fric(self):
+        """headloss_fric should return known results with known inputs."""
+        checks = (([100, 2, 4, 0.001, 1], 34.2549414191127),
+                  ([100, 2, 4, 0.1, 1], 10.386744054168654),
+                  ([100, 2, 4, 0.001, 0], 2.032838149828097),
+                  ([46, 9, 12, 0.001, 0.03], 0.001399778168304583),
+                  ([55, 0.4, 2, 0.5, 0.0001], 8926.108171551185))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_fric(*i[0]).magnitude, i[1])
+    
+    def test_headloss_fric_range(self):
+        """headloss_fric should raise an error if Length <= 0."""
+        checks = ([1, 1, 0, 1, 1], [1, 1, -1, 1, 1])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.headloss_fric, *i)
+    
+    def test_headloss_fric_units(self):
+        """headloss_fric should handle units correctly."""
+        base = pc.headloss_fric(100, 2, 4, 0.001, 0.03)
+        checks = ([100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 
+                   0.001 * u.m**2/u.s, 0.03 * u.m], 
+                  [10**5 * u.L/u.s, 2, 4, 0.001, 0.03],
+                  [100, 200 * u.cm, 4, 0.001, 0.03],
+                  [100, 2, 4000 * u.mm, 0.001, 0.03],
+                  [100, 2, 4, 10 * u.cm**2/u.s, 0.03],
+                  [100, 2, 4, 0.001, 3 * u.cm])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_fric(*i), base)
+    
+    def test_headloss_exp(self):
+        """headloss_exp should return known results with known input."""
+        self.assertEqual(pc.headloss_exp(60, 0.9, 0.067).magnitude, 
+                         30.386230766265214)
+    
+    def test_headloss_exp_range(self):
+        """headloss_exp should raise errors when inputs are out of bounds."""
+        checks = ([0, 1, 1], [1, 0, 1], [1, 1, -1])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.headloss_exp, *i)
+        self.assertRaises(AssertionError, self.assertRaises, 
+                          *(ValueError, pc.headloss_exp, *[1, 1, 0]))
+    
+    def test_headloss_exp_units(self):
+        """headloss_exp should handle units correctly."""
+        base = pc.headloss_exp(60, 0.9, 0.067)
+        checks = ([60 * u.m**3/u.s, 0.9 * u.m, 0.067],
+                  [60000 * u.L/u.s, 0.9, 0.067],
+                  [60, 900 * u.mm, 0.067])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_exp(*i), base)
+        self.assertRaises(ValueError, pc.headloss_exp, *[60, 0.9, 0.067 * u.m])
+    
+    def test_headloss(self):
+        """headloss should return known results with known inputs."""
+        checks = (([100, 2, 4, 0.001, 1, 2], 137.57379509731857),
+                  ([100, 2, 4, 0.1, 1, 0.4], 31.05051478980984),
+                  ([100, 2, 4, 0.001, 0, 1.2], 64.024150356751633),
+                  ([46, 9, 12, 0.001, 0.03, 4], 0.10802874052554703),
+                  ([55, 0.4, 2, 0.5, 0.0001, 0.12], 10098.131417963332))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss(*i[0]).magnitude, i[1])
+    
+    def test_headloss_units(self):
+        """headloss should handle units correctly."""
+        base = pc.headloss(100, 2, 4, 0.001, 1, 2)
+        checks = ([100 * u.m**3/u.s, 2 * u.m, 4 * u.m,
+                   0.001 * u.m**2/u.s, 1 * u.m, 2],
+                  [10**5 * u.L/u.s, 2, 4, 0.001, 1, 2],
+                  [100, 200 * u.cm, 4, 0.001, 1, 2],
+                  [100, 2, 4000 * u.mm, 0.001, 1, 2],
+                  [100, 2, 4, 10 * u.cm**2/u.s, 1, 2],
+                  [100, 2, 4, 0.001, 100 * u.cm, 2])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss(*i), base)
+    
+    def test_headloss_fric_rect(self):
+        """headloss_fric_rect should return known result with known inputs."""
+        checks = (([0.06, 2, 0.004, 3, 0.89, 0.07, True], 4),
+                  ([0.06, 2, 0.004, 3, 0.89, 0.07, False], 5))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_fric_rect(*i[0]).magnitude, i[1])
+
+
 if __name__ == "__main__":
     unittest.main()
