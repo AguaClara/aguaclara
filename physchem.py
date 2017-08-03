@@ -532,7 +532,7 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
     #functions this function calls.
     ut.check_range([HeadLossExpans, ">=0", "Headloss due to expansion"], 
                    [KMinor, ">=0", "K minor"])
-    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity.magnitude 
+    return (area_circle(Diam) * np.sqrt(2 * gravity.magnitude 
                                                   * HeadLossExpans 
                                                   / KMinor)
             )
@@ -630,7 +630,7 @@ def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
         return DiamLaminar
     else:
         return diam_swamee(FlowRate, HeadLossFric, Length, 
-                           Nu, PipeRough)
+                           Nu, PipeRough).magnitude
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
