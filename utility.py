@@ -115,16 +115,24 @@ def ceil_nearest(x,array):
 def list_handler(func):
     """Wraps a function to handle list inputs."""
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, HandlerResult="nparray", **kwargs):
+        """Run through the wrapped function once for each array element.
+        
+        :param HandlerResult: output type. Defaults to numpy arrays.
+        """
         sequences = []
-        enums = enumerate(args)
-        for num, arg in enums:
+        enumsUnitCheck = enumerate(args)
+        argsList = list(args)
+        for num, arg in enumsUnitCheck:
+            if type(arg) == type(1 * u.m):
+                argsList[num] = arg.to_base_units().magnitude
+        enumsUnitless = enumerate(argsList)
+        for num, arg in enumsUnitless:
             if isinstance(arg, (list, tuple, np.ndarray)):
                 sequences.append(num)
         if len(sequences) == 0:
             result = func(*args, **kwargs)
         else:
-            argsList = list(args)
             limiter = len(argsList[sequences[0]])
             iterant = 0
             result = []
@@ -133,9 +141,15 @@ def list_handler(func):
                     if iterant >= limiter:
                         break
                     argsList[num] = arg
-                    result.append(wrapper(*argsList, **kwargs))
+                    result.append(wrapper(*argsList, 
+                                          HandlerResult=HandlerResult, **kwargs))
                     iterant += 1
-            result =  np.array(result)
+            if HandlerResult == "nparray":
+                result = np.array(result)
+            elif HandlerResult == "tuple":
+                result = tuple(result)
+            elif HandlerResult == "list":
+                result == list(result)
         return result
     return wrapper
 
