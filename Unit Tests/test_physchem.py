@@ -34,11 +34,10 @@ class GeometryTest(unittest.TestCase):
 
     def test_area_circle_error(self):
         """area_circle should return errors with inputs <= 0."""
-        checks = ((0, ValueError), 
-                  (-3, ValueError))
+        checks = (0, -3)
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(i[1], pc.area_circle, i[0])
+                self.assertRaises(ValueError, pc.area_circle, i)
 
     def test_diam_circle_true(self):
         """diam_circle should should give known result with known input."""
