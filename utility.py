@@ -3,7 +3,7 @@ Created on Sun Jun 11
 
 @author: Monroe Weber-Shirk
 
-Last modified: Wed Jul 5 2017 
+Last modified: Fri Aug 5 2017 
 By: Sage Weber-Shirk
 """
 # units allows us to include units in all of our calculations
