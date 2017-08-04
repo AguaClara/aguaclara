@@ -373,7 +373,6 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
 @ut.list_handler
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
-    Height = np.array(Height)
     #Checking input validity
     ut.check_range([Diam, ">0", "Diameter"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
@@ -389,8 +388,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
     #Checking input validity
-    ut.check_range([Diam, ">0", "Diameter"],
-                   [RatioVCOrifice, "0-1", "VC orifice ratio"])
+    ut.check_range([RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > -Diam / 2:
         flow_vert = scipy.integrate.quad(lambda z: (Diam 
                                                     * np.sin(np.arccos(z/(Diam/2))) 
@@ -421,7 +419,7 @@ def area_orifice(Height, RatioVCOrifice, FlowRate):
     """Return the area of the orifice."""
     #Checking input validity
     ut.check_range([Height, ">0", "Height"], [FlowRate, ">0", "Flow rate"],
-                   [RatioVCOrifice, "0-1", "VC orifice ratio"])
+                   [RatioVCOrifice, "0-1, >0", "VC orifice ratio"])
     return FlowRate / (RatioVCOrifice * np.sqrt(2 * gravity.magnitude * Height))
 
 
