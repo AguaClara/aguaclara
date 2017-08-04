@@ -630,7 +630,7 @@ def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
         return DiamLaminar
     else:
         return diam_swamee(FlowRate, HeadLossFric, Length, 
-                           Nu, PipeRough)
+                           Nu, PipeRough).magnitude
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
