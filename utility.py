@@ -135,6 +135,7 @@ def list_handler(func):
                     argsList[num] = arg
                     result.append(wrapper(*argsList, **kwargs))
                     iterant += 1
+            result =  np.array(result)
         return result
     return wrapper
 
