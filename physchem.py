@@ -13,7 +13,7 @@ physical/chemical unit processes for AguaClara water treatment plants.
 
 ######################### Imports #########################
 import numpy as np
-import scipy
+from scipy import interpolate, integrate
 
 try:
     from AguaClara_design.units import unit_registry as u
@@ -81,7 +81,7 @@ def density_water(temp):
     If not given units, the function will assume Kelvin.
     """
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
-    rhointerpolated = scipy.interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
+    rhointerpolated = interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
                                                     WATER_DENSITY_TABLE[1])
     return rhointerpolated(temp)
 
@@ -390,7 +390,7 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     #Checking input validity
     ut.check_range([RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > -Diam / 2:
-        flow_vert = scipy.integrate.quad(lambda z: (Diam 
+        flow_vert = integrate.quad(lambda z: (Diam 
                                                     * np.sin(np.arccos(z/(Diam/2))) 
                                                     * np.sqrt(Height - z)
                                                     ), 
