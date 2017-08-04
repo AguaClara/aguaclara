@@ -406,8 +406,7 @@ class HeadlossFuncsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.headloss_exp, *i)
-        self.assertRaises(AssertionError, self.assertRaises, 
-                          *(ValueError, pc.headloss_exp, *[1, 1, 0]))
+        pc.headloss_exp(1, 1, 0)
     
     def test_headloss_exp_units(self):
         """headloss_exp should handle units correctly."""
@@ -486,8 +485,7 @@ class HeadlossFuncsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.headloss_exp_rect, *i)
-        self.assertRaises(AssertionError, self.assertRaises, 
-                          *(ValueError, pc.headloss_exp_rect, *[1, 1, 1, 0]))
+        pc.headloss_exp_rect(1, 1, 1, 0)
     
     def test_headloss_exp_rect_units(self):
         """headloss_exp_rect should handle units correctly."""
@@ -526,6 +524,315 @@ class HeadlossFuncsTest(unittest.TestCase):
                 self.assertEqual(pc.headloss_rect(*i), base)
         self.assertRaises(ValueError, pc.headloss_rect, 
                           *[1, 1, 1, 1, 1 * u.m, 1, 1, True])
+    
+    def test_headloss_fric_general(self):
+        """headloss_fric_general should return known result for known inputs."""
+        checks = (([1, 1, 1, 1, 1, 1], 0.20394324259558566),
+                  ([25, 4, 0.6, 2, 1, 1], 0.006265136412536391))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_fric_general(*i[0]).magnitude, i[1])
+    
+    def test_headloss_fric_general_range(self):
+        """headloss_fric_general should raise an error when Length <= 0."""
+        checks = ([1, 1, 1, 0, 1, 1], [1, 1, 1, -1, 1, 1])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.headloss_fric_general, *i)
+    
+    def test_headloss_fric_general_units(self):
+        """headloss_fric_general should handle units correctly."""
+        base = pc.headloss_fric_general(36, 5, 0.2, 6, 0.4, 0.002)
+        checks = ([36 * u.m**2, 5 * u.m, 0.2 * u.m/u.s, 
+                   6 * u.m, 0.4 * u.m**2/u.s, 0.002 * u.m],
+                  [0.000036 * u.km**2, 5, 0.2, 6, 0.4, 0.002],
+                  [36, 500 * u.cm, 0.2, 6, 0.4, 0.002],
+                  [36, 5, 20 * u.cm/u.s, 6, 0.4, 0.002],
+                  [36, 5, 0.2, 0.006 * u.km, 0.4, 0.002],
+                  [36, 5, 0.2, 6, 4000 * u.cm**2/u.s, 0.002],
+                  [36, 5, 0.2, 6, 0.4, 2 * u.mm])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_fric_general(*i), base)
+    
+    def test_headloss_exp_general(self):
+        """headloss_exp_general should return known result for known input."""
+        self.assertEqual(pc.headloss_exp_general(0.06, 0.02).magnitude, 
+                         3.670978366720542e-06)
+    
+    def test_headloss_exp_general_range(self):
+        """headloss_exp_general should raise errors if inputs are out of range."""
+        checks = ((0,1), (1, -1))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.headloss_exp_general, *i)
+        pc.headloss_exp_general(1, 0)
+    
+    def test_headloss_exp_general_units(self):
+        """headloss_exp_general should handle units correctly."""
+        base = pc.headloss_exp_general(0.06, 0.02)
+        self.assertEqual(pc.headloss_exp_general(0.06 * u.m/u.s, 0.02), base)
+        #KMinor should not have units
+        self.assertRaises(ValueError, pc.headloss_exp_general, *(0.06, 0.02 * u.m))
+    
+    def test_headloss_gen(self):
+        """headloss_gen should return known value for known inputs."""
+        checks = (([36, 0.1, 4, 6, 0.02, 0.86, 0.0045], 0.0013093911519979546),
+                  ([49, 2.4, 12, 3, 2, 4, 0.6], 0.9396236839032805))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_gen(*i[0]).magnitude, i[1])
+    
+    def test_headloss_gen_units(self):
+        """headloss_gen should handle units correctly."""
+        base = pc.headloss_gen(49, 2.4, 12, 3, 2, 4, 0.6).magnitude
+        checks = ([49 * u.m**2, 2.4 * u.m/u.s, 12 * u.m, 
+                   3 * u.m, 2, 4 * u.m**2/u.s, 0.6 * u.m],
+                  [490000 * u.cm**2, 2.4, 12, 3, 2, 4, 0.6],
+                  [49, 240 * u.cm/u.s, 12, 3, 2, 4, 0.6],
+                  [49, 2.4, 0.012 * u.km, 3, 2, 4, 0.6],
+                  [49, 2.4, 12, 3000 * u.mm, 2, 4, 0.6],
+                  [49, 2.4, 12, 3, 2, 40000 * u.cm**2/u.s, 0.6],
+                  [49, 2.4, 12, 3, 2, 4, 60 * u.cm])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_gen(*i).magnitude, base)
+        self.assertRaises(ValueError, pc.headloss_gen, 
+                          *[49, 2.4, 12, 3, 2 * u.m, 4, 0.6])
+    
+    def test_headloss_manifold(self):
+        """headloss_manifold should return known value for known input."""
+        checks = (([0.12, 0.4, 6, 0.8, 0.75, 0.0003, 5], 38.090067742277235),
+                  ([2, 6, 40, 5, 1.1, 0.04, 6], 0.11829559397492224))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_manifold(*i[0]).magnitude, i[1])
+    
+    def test_headloss_manifold_range(self):
+        """headloss_manifold should object if NumOutlets is not a positive int."""
+        failChecks = ((1, 1, 1, 1, 1, 1, -1), (1, 1, 1, 1, 1, 1, 0), 
+                      (1, 1, 1, 1, 1, 1, 0.1))
+        passchecks = ((1, 1, 1, 1, 1, 1, 1.0), (1, 1, 1, 1, 1, 1, 47))
+        for i in failChecks:
+            with self.subTest(i=i):
+                self.assertRaises((ValueError, TypeError), pc.headloss_manifold, *i)
+        for i in passchecks:
+            with self.subTest(i=i):
+                pc.headloss_manifold(*i)
+    
+    def test_headloss_manifold_units(self):
+        """headloss_manifold should handle units correctly."""
+        base = pc.headloss_manifold(2, 6, 40, 5, 1.1, 0.04, 6).magnitude
+        unitchecks = ([2 * u.m**2/u.s, 6 * u.m, 40 * u.m, 
+                       5, 1.1 * u.m**2/u.s, 0.04 * u.m, 6],
+                      [20000 * u.cm**2/u.s, 6, 40, 5, 1.1, 0.04, 6],
+                      [2, 6000 * u.mm, 40, 5, 1.1, 0.04, 6],
+                      [2, 6, 0.04 * u.km, 5, 1.1, 0.04, 6],
+                      [2, 6, 40, 5, 11000 * u.cm**2/u.s, 0.04, 6],
+                      [2, 6, 40, 5, 1.1, 4 * u.cm, 6])
+        for i in unitchecks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.headloss_manifold(*i).magnitude, base)
+        unitless = ((2, 6, 40, 5 * u.m, 1.1, 0.04, 6),
+                    (2, 6, 40, 5, 1.1, 0.04, 6 * u.m))
+        for i in unitless:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.headloss_manifold, *i)
+
+
+class OrificeFuncsTest(unittest.TestCase):
+    """Test the orifice functions."""
+    def test_flow_orifice(self):
+        """flow_orifice should return known result for known input."""
+        checks = (([0.4, 2, 0.46], 0.36204122788069698),
+                  ([2, 0.04, 0.2], 0.55652566805118475),
+                  ([7, 0, 1], 0),
+                  ([1.4, 0.1, 0], 0))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.flow_orifice(*i[0]).magnitude, i[1])
+    
+    def test_flow_orifice_range(self):
+        """flow_orifice should object when given invalid inputs."""
+        checks = ((0,1,1), (1, 1, 1.1), (1, 1, -1))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.flow_orifice, *i)
+        pc.flow_orifice(1, 1, 0)
+    
+    def test_flow_orifice_units(self):
+        """flow_orifice should handle units correctly."""
+        base = pc.flow_orifice(2, 3, 0.5).magnitude
+        checks = ((2 * u.m, 3 * u.m, 0.5), (200 * u.cm, 3, 0.5), 
+                  (2, 0.003 * u.km, 0.5))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.flow_orifice(*i).magnitude, base)
+        self.assertRaises(ValueError, pc.flow_orifice, *(2, 3, 0.5 * u.m))
+    
+    def test_flow_orifice_vert(self):
+        """flow_orifice_vert should return known values for known inputs."""
+        checks = (([1, 3, 0.4], 2.4077258053173907), 
+                  ([0.3, 4, 0.67], 0.41946278400781867), ([2, -4, 0.2], 0))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.flow_orifice_vert(*i[0]).magnitude, i[1])
+    
+    def test_flow_orifice_vert_range(self):
+        """flow_orifice_vert should object when given an invalid ratio."""
+        errorChecks = ((1, 1, -1), (1, 1, 2))
+        errorlessChecks = ((1, 1, 1), (1, 1, 0), (1, 1, 0.5))
+        for i in errorChecks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.flow_orifice_vert, *i)
+        for i in errorlessChecks:
+            with self.subTest(i=i):
+                pc.flow_orifice_vert(*i)
+    
+    def test_flow_orifice_vert_units(self):
+        """flow_orifice_vert should handle units correctly."""
+        base = pc.flow_orifice_vert(1, 3, 0.4).magnitude
+        checks = ([1 * u.m, 3 * u.m, 0.4],
+                  [100 * u.cm, 3, 0.4],
+                  [1, 0.003 * u.km, 0.4])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.flow_orifice_vert(*i).magnitude, base)
+        self.assertRaises(ValueError, pc.flow_orifice_vert, *(1, 3, 0.4 * u.m))
+    
+    def test_head_orifice(self):
+        """head_orifice should return known value for known inputs."""
+        checks = (([1, 1, 1], 0.08265508294256473), 
+                  ([1.2, 0.1, 0.12], 0.05739936315455882),
+                  ([2, 0.5, 0.04], 3.3062033177025895e-05))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.head_orifice(*i[0]).magnitude, i[1])
+    
+    def test_head_orifice_range(self):
+        """head_orifice should raise errors when passed invalid inputs."""
+        failChecks = ((0,1,1), (1, 1, 0), (1, -1, 1), (1, 2, 1))
+        for i in failChecks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.head_orifice, *i)
+        pc.head_orifice(1, 1, 1)
+        self.assertRaises(ZeroDivisionError, pc.head_orifice, *(1, 0, 1))
+    
+    def test_head_orifice_units(self):
+        """head_orifice should handle units correctly."""
+        base = pc.head_orifice(2, 0.5, 0.04).magnitude
+        checks = ([2 * u.m, 0.5, 0.04 * u.m**3/u.s],
+                  [200 * u.cm, 0.5, 0.04],
+                  [2, 0.5, 40 * u.L/u.s])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.head_orifice(*i).magnitude, base)
+        self.assertRaises(ValueError, pc.head_orifice, *[2, 0.5 * u.m, 0.04])
+    
+    def test_area_orifice(self):
+        """area_orifice should return known value for known inputs."""
+        checks = (([3, 0.4, 0.06], 0.019554886342464974),
+                  ([2, 0.1, 0.1], 0.15966497839052934),
+                  ([0.5, 0.02, 3], 47.899493517158803))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.area_orifice(*i[0]).magnitude, i[1])
+    
+    def test_area_orifice_range(self):
+        """area_orifice should raise errors when passed invalid paramters."""
+        failChecks = ((0, 1, 1), (1, 1, 0), (1, -1, 1), (1, 2, 1), (1, 0, 1))
+        for i in failChecks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.area_orifice, *i)
+        pc.area_orifice(1, 1, 1)
+    
+    def test_area_orifice_units(self):
+        """area_orifice should handle units correctly."""
+        base = pc.area_orifice(3, 0.4, 0.06).magnitude
+        checks = ([3 * u.m, 0.4, 0.06 * u.m**3/u.s],
+                  [300 * u.cm, 0.4, 0.06],
+                  [3, 0.4, 60 * u.L/u.s])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.area_orifice(*i).magnitude, base)
+        self.assertRaises(ValueError, pc.area_orifice, *(3, 0.4 * u.m, 0.06))
+    
+    def test_num_orifices(self):
+        """num_orifices should return known value for known inputs."""
+        checks = (([0.12, 0.04, 0.05, 2], 1),
+                  ([6, 0.8, 0.08, 1.2], 6))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.num_orifices(*i[0]), i[1])
+    
+    def test_num_orifices_units(self):
+        """num_orifices should handle units correctly."""
+        base = pc.num_orifices(6, 0.8, 0.08, 1.2)
+        checks = ([6 * u.m**3/u.s, 0.8, 0.08 * u.m, 1.2 * u.m],
+                  [6000 * u.L/u.s, 0.8, 0.08, 1.2],
+                  [6, 0.8, 8 * u.cm, 1.2],
+                  [6, 0.8, 0.08, 0.0012 * u.km])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.num_orifices(*i), base)
+        self.assertRaises(ValueError, pc.num_orifices, 
+                          *[6, 0.8 * u.m, 0.08, 1.2])
+    
+class FlowFuncsTest(unittest.TestCase):
+    """Test the flow functions."""
+    def test_flow_transition(self):
+        """flow_transition should return known value for known inputs."""
+        checks = (([2, 0.4], 1319.4689145077132), 
+                  ([0.8, 1.1], 1451.4158059584847))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.flow_transition(*i[0]).magnitude, i[1])
+    
+    def test_flow_transition_range(self):
+        """flow_transition should not accept inputs <= 0."""
+        checks = ((1, 0), (0, 1))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.flow_transition, *i)
+    
+    def test_flow_transition_units(self):
+        """flow_transition should handle units correctly."""
+        base = pc.flow_transition(2, 0.4).magnitude
+        checks = ([2 * u.m, 0.4 * u.m**2/u.s],
+                  [200 * u.cm, 0.4],
+                  [2, 4000 * u.cm**2/u.s])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.flow_transition(*i).magnitude, base)
+    
+    def test_flow_hagen(self):
+        """flow_hagen should return known value for known inputs."""
+        checks = (([1, 0.4, 5.21, 0.6], 0.03079864403023667),
+                  ([0.05, 0.0006, 0.3, 1.1], 2.7351295806397676e-09))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.flow_hagen(*i[0]).magnitude, i[1])
+    
+    def test_flow_hagen_range(self):
+        """flow_hagen should object when passed invalid inputs."""
+        failChecks = ((0, 1, 1, 1), (1, -1, 1, 1), (1, 1, 0, 1), (1, 1, 1, 0))
+        for i in failChecks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.flow_hagen, *i)
+        passChecks = ((1, 1, 1, 1), (1, 0, 1, 1))
+        for i in passChecks:
+            pc.flow_hagen(*i)
+    
+    def test_flow_hagen_units(self):
+        """flow_hagen should handle units properly."""
+        base = pc.flow_hagen(0.05, 0.0006, 0.3, 1.1).magnitude
+        checks = ([0.05 * u.m, 0.0006 * u.m, 0.3 * u.m, 1.1 * u.m**2/u.s],
+                  [5 * u.cm, 0.0006, 0.3, 1.1],
+                  [0.05, 0.6 * u.mm, 0.3, 1.1],
+                  [0.05, 0.0006, 0.0003 * u.km, 1.1],
+                  [0.05, 0.0006, 0.3, 11000 * u.cm**2/u.s])
+        for i in checks:
+            self.assertEqual(pc.flow_hagen(*i).magnitude, base)
 
 
 if __name__ == "__main__":
