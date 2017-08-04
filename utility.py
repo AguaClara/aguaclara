@@ -3,7 +3,7 @@ Created on Sun Jun 11
 
 @author: Monroe Weber-Shirk
 
-Last modified: Thu Aug 3 2017 
+Last modified: Fri Aug 5 2017 
 By: Sage Weber-Shirk
 """
 # units allows us to include units in all of our calculations
@@ -135,6 +135,7 @@ def list_handler(func):
                     argsList[num] = arg
                     result.append(wrapper(*argsList, **kwargs))
                     iterant += 1
+            result =  np.array(result)
         return result
     return wrapper
 
@@ -178,7 +179,7 @@ def check_range(*args):
             if i not in knownChecks:
                 raise RuntimeError("Unknown parameter validation "
                                        "request: {0}.".format(i))
-        if not isinstance(arg[0], (list, tuple,np.ndarray)):
+        if not isinstance(arg[0], (list, tuple, np.ndarray)):
             arg[0] = [arg[0]]
         for i in arg[0]:
             if '>0' in arg[1] and i <= 0:
