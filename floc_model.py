@@ -427,7 +427,7 @@ def ener_dis_diam_floc(Diam):
 ##### Velocity gradient in tubing for lab scale laminar flow flocculators #####
 @u.wraps(1/u.s, [u.m**3/u.s, u.m], False)
 def g_straight(PlantFlow, IDTube):
-    return 64 * PlantFlow / (3 * np.pi * IDTube)**3
+    return 64 * PlantFlow / (3 * np.pi * IDTube**3)
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.degK], False)
