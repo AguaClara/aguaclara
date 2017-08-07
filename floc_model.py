@@ -11,9 +11,13 @@ By: Sage Weber-Shirk
 ######################### Imports #########################
 import numpy as np
 
-from AguaClara_design import physchem as pc
-from AguaClara_design.units import unit_registry as u
+try:
+    from AguaClara_design.units import unit_registry as u
+except ModuleNotFoundError:
+    from units import unit_registry as u
 
+    
+    
 u.enable_contexts('chem')
 
 ##################### Class Definition #####################
@@ -423,7 +427,7 @@ def ener_dis_diam_floc(Diam):
 ##### Velocity gradient in tubing for lab scale laminar flow flocculators #####
 @u.wraps(1/u.s, [u.m**3/u.s, u.m], False)
 def g_straight(PlantFlow, IDTube):
-    return 64 * PlantFlow / (3 * np.pi * IDTube)**3
+    return 64 * PlantFlow / (3 * np.pi * IDTube**3)
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.degK], False)

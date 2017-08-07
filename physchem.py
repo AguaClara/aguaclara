@@ -3,8 +3,8 @@ Created on Thu Jun 15 14:07:28 2017
 
 @author: Karan Newatia
 
-Last modified: Thu Aug 3 2017 
-By: Sage Weber-Shirk
+Last modified: Fri Aug 4 2017 
+By: Monroe Weber-Shirk
 
 
 This file contains unit process functions pertaining to the design of 
@@ -13,7 +13,7 @@ physical/chemical unit processes for AguaClara water treatment plants.
 
 ######################### Imports #########################
 import numpy as np
-import scipy
+from scipy import interpolate, integrate
 
 try:
     from AguaClara_design.units import unit_registry as u
@@ -46,6 +46,7 @@ RATIO_VC_ORIFICE = 0.62
 
 RE_TRANSITION_PIPE = 2100
 
+K_KOZENY=5
 
 
 WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15, 
@@ -80,7 +81,7 @@ def density_water(temp):
     If not given units, the function will assume Kelvin.
     """
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
-    rhointerpolated = scipy.interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
+    rhointerpolated = interpolate.CubicSpline(WATER_DENSITY_TABLE[0], 
                                                     WATER_DENSITY_TABLE[1])
     return rhointerpolated(temp)
 
@@ -150,7 +151,7 @@ def re_general(Vel, Area, PerimWetted, Nu):
     #functions this function calls.
     ut.check_range([Vel, ">=0", "Velocity"], [Nu, ">0", "Nu"])
     return 4 * radius_hydraulic_general(Area, PerimWetted).magnitude * Vel / Nu
-        
+
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
 @ut.list_handler
@@ -200,7 +201,7 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
                 )
     else:
         return 64 / re_rect(FlowRate, Width, DistCenter, Nu, openchannel)
- 
+
 
 @u.wraps(None, [u.m**2, u.m, u.m/u.s, u.m**2/u.s, u.m], False)
 @ut.list_handler
@@ -227,7 +228,7 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
     else:
         f = 64 / re_general(Vel, Area, PerimWetted, Nu)
     return f      
-         
+
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
 def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
@@ -298,7 +299,7 @@ def headloss_exp_rect(FlowRate, Width, DistCenter, KMinor):
     return (KMinor * FlowRate**2 
             / (2 * gravity.magnitude * (Width*DistCenter)**2)
             )
- 
+
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, None, u.m**2/u.s, u.m, None], False)
 def headloss_rect(FlowRate, Width, DistCenter, Length, 
@@ -313,7 +314,7 @@ def headloss_rect(FlowRate, Width, DistCenter, Length,
     return (headloss_exp_rect(FlowRate, Width, DistCenter, KMinor).magnitude
               + headloss_fric_rect(FlowRate, Width, DistCenter, Length, 
                                    Nu, PipeRough, openchannel).magnitude)
-    
+
 
 @u.wraps(u.m, [u.m**2, u.m, u.m/u.s, u.m, u.m**2/u.s, u.m], False)
 def headloss_fric_general(Area, PerimWetted, Vel, Length, Nu, PipeRough):
@@ -328,7 +329,7 @@ def headloss_fric_general(Area, PerimWetted, Vel, Length, Nu, PipeRough):
             / (4 * radius_hydraulic_general(Area, PerimWetted).magnitude) 
             * Vel**2 / (2*gravity.magnitude)
             )
-     
+
 
 @u.wraps(u.m, [u.m/u.s, None], False)
 def headloss_exp_general(Vel, KMinor):
@@ -354,7 +355,7 @@ def headloss_gen(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough):
             + headloss_fric_general(Area, PerimWetted, Vel,
                                      Length, Nu, PipeRough).magnitude)
 
- 
+
 @u.wraps(u.m, [u.m**2/u.s, u.m, u.m, None, u.m**2/u.s, u.m, None], False)  
 def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets):
     """Return the total head loss through the manifold."""
@@ -372,12 +373,11 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
 @ut.list_handler
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
-    Height = np.array(Height)
     #Checking input validity
     ut.check_range([Diam, ">0", "Diameter"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > 0:
-        return (RatioVCOrifice * area_circle(Diam).magnitude 
+        return (RatioVCOrifice * area_circle(Diam) 
                 * np.sqrt(2 * gravity.magnitude * Height))
     else:
         return 0
@@ -388,10 +388,9 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
     #Checking input validity
-    ut.check_range([Diam, ">0", "Diameter"],
-                   [RatioVCOrifice, "0-1", "VC orifice ratio"])
+    ut.check_range([RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > -Diam / 2:
-        flow_vert = scipy.integrate.quad(lambda z: (Diam 
+        flow_vert = integrate.quad(lambda z: (Diam 
                                                     * np.sin(np.arccos(z/(Diam/2))) 
                                                     * np.sqrt(Height - z)
                                                     ), 
@@ -414,15 +413,15 @@ def head_orifice(Diam, RatioVCOrifice, FlowRate):
             / (2*gravity.magnitude)
             )
 
- 
+
 @u.wraps(u.m**2, [u.m, None, u.m**3/u.s], False)
 def area_orifice(Height, RatioVCOrifice, FlowRate):
     """Return the area of the orifice."""
     #Checking input validity
     ut.check_range([Height, ">0", "Height"], [FlowRate, ">0", "Flow rate"],
-                   [RatioVCOrifice, "0-1", "VC orifice ratio"])
+                   [RatioVCOrifice, "0-1, >0", "VC orifice ratio"])
     return FlowRate / (RatioVCOrifice * np.sqrt(2 * gravity.magnitude * Height))
-    
+
 
 @u.wraps(None, [u.m**3/u.s, None, u.m, u.m], False)
 def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
@@ -433,39 +432,8 @@ def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
                                  FlowPlant).magnitude
                     / area_circle(DiamOrifice)
                     )
- 
 
-@u.wraps(u.m, [None, u.m**3/u.s, u.m, u.m, None, None, u.m**2/u.s, u.m, None],
-         False)
-def diam_orifice_manifold(RatioFlowManifold, FlowTank, DiamPipe, Length_l, 
-                          Length_s, KMinorTotal, NumOrifices, Nu, PipeRough, 
-                          RatioVCOrifice):
-    """Return the diameter of the orifice in the manifold."""
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([Length_l, ">0", "Length_l"], [Length_s, ">0", "Length_s"],
-                   [KMinorTotal, ">=0", "Total K minor"],
-                   [NumOrifices, ">0, int", "Number of orifices"],
-                   [RatioVCOrifice, "0-1", "Vena Contracta orifice ratio"],
-                   [RatioFlowManifold, "0-1", "Flow Manifold Ratio"])
-    
-    friction = fric(FlowTank, DiamPipe, Nu, PipeRough)
-    return (((1-RatioFlowManifold) * (DiamPipe ** 4)
-             / ((((KMinorTotal 
-                   + friction * Length_l/DiamPipe
-                   )
-                  * RatioFlowManifold
-                  - KMinorTotal 
-                  - friction
-                  * Length_s / DiamPipe
-                  )
-                 * RatioVCOrifice**2 
-                 * NumOrifices**2
-                 )
-                )
-             ) ** (1/4))
 
-    
 # Here we define functions that return the flow rate.
 @u.wraps(u.m**3/u.s, [u.m, u.m**2/u.s], False)
 def flow_transition(Diam, Nu):
@@ -578,7 +546,7 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
                        / ((FlowRate + FlowRatePrev) / 2)
                        )
     return FlowRate	
- 
+
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s], False)
 def diam_hagen(FlowRate, HeadLossFric, Length, Nu):
@@ -729,7 +697,6 @@ def vel_horizontal(HeightWaterCritical):
     ut.check_range([HeightWaterCritical, ">0", "Critical height of water"])
     return np.sqrt(gravity.magnitude * HeightWaterCritical)
 
-K_KOZENY=5
 
 @u.wraps(u.m, [u.m, u.m, u.m, u.m**2/u.s], False)
 def headloss_kozeny(Length, Diam, Vel, PipeRough, Nu):
