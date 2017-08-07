@@ -12,7 +12,6 @@ By: Sage Weber-Shirk
 #before this file is released to the Master branch!
 
 import unittest
-import numpy as np
 
 import sys, os
 myGitHubdir = os.path.expanduser('~\\Documents\\GitHub')
@@ -24,7 +23,7 @@ from AguaClara_design import physchem as pc
 
 class GeometryTest(unittest.TestCase):
     """Test the circular area and diameter functions."""
-    def test_area_circle_true(self):
+    def test_area_circle(self):
         """area_circle should  should give known result with known input."""
         checks = ((1, 0.7853981633974483), 
                   (495.6, 192908.99423885669))
@@ -32,14 +31,14 @@ class GeometryTest(unittest.TestCase):
             with self.subTest(i=i):
                 self.assertEqual(pc.area_circle(i[0]), i[1])
 
-    def test_area_circle_error(self):
+    def test_area_circle_range(self):
         """area_circle should return errors with inputs <= 0."""
         checks = (0, -3)
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.area_circle, i)
 
-    def test_diam_circle_true(self):
+    def test_diam_circle(self):
         """diam_circle should should give known result with known input."""
         checks = ((1, 1.1283791670955126), 
                   (0.1, 0.3568248232305542), 
@@ -49,7 +48,7 @@ class GeometryTest(unittest.TestCase):
             with self.subTest(i=i):
                 self.assertEqual(pc.diam_circle(i[0]).magnitude, i[1])
 
-    def test_diam_circle_error(self):
+    def test_diam_circle_range(self):
         """diam_circle should return errors with inputs <= 0."""
         checks = ((0, ValueError), 
                   (-3, ValueError))
@@ -233,11 +232,6 @@ class RadiusFuncsTest(unittest.TestCase):
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.radius_hydraulic(*i), base)
-    
-    def test_radius_hydraulic_lists(self):
-        """radius_hydraulic should handle list inputs."""
-        checks = ([(10, 4, [False, True]), [1.4285714285714286, 2.2222222222222223]])
-        self.assertTrue(np.array_equal(pc.radius_hydraulic(*checks[0]).magnitude, checks[1]))
 
     def test_radius_hydraulic_general(self):
         """radius_hydraulic_general should return known results with known input."""
@@ -598,8 +592,8 @@ class HeadlossFuncsTest(unittest.TestCase):
     
     def test_headloss_manifold(self):
         """headloss_manifold should return known value for known input."""
-        checks = (([0.12, 0.4, 6, 0.8, 0.75, 0.0003, 5], 38.090067742277235),
-                  ([2, 6, 40, 5, 1.1, 0.04, 6], 0.11829559397492224))
+        checks = (([0.12, 0.4, 6, 0.8, 0.75, 0.0003, 5], 38.57715300752375),
+                  ([2, 6, 40, 5, 1.1, 0.04, 6], 0.11938889890999548))
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.headloss_manifold(*i[0]).magnitude, i[1])
@@ -1062,7 +1056,7 @@ class WeirFuncsTest(unittest.TestCase):
     def test_width_rect_weir(self):
         """width_rect_weir should return known value for known inputs."""
         self.assertEqual(pc.width_rect_weir(0.005, 0.2).magnitude, 
-                         0.03053860852473617)
+                         0.030538608524736166)
     
     def test_width_rect_weir_range(self):
         """width_rect_weird should raise errors when inputs are out of bounds."""
@@ -1085,7 +1079,7 @@ class WeirFuncsTest(unittest.TestCase):
     def test_headloss_weir(self):
         """headloss_weir should return known value for known inputs."""
         self.assertEqual(pc.headloss_weir(0.005, 1).magnitude, 
-                         2.0378992750563208e-08)
+                         0.019540221940287855)
     
     def test_headloss_weir_range(self):
         """headloss_weir should raise errors when inputs are out of bounds."""
@@ -1133,7 +1127,7 @@ class MiscPhysFuncsTest(unittest.TestCase):
     def test_height_water_critical(self):
         """height_water_critical should return known value for known inputs."""
         self.assertEqual(pc.height_water_critical(0.006, 1.2).magnitude, 
-                         0.006382138419258808)
+                         0.013660704939951886)
     
     def test_height_water_critical_range(self):
         """height_water_critical should raise errors when inputs are out of bounds."""
@@ -1189,7 +1183,7 @@ class MiscPhysFuncsTest(unittest.TestCase):
         checks = ([1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 
                    0.625 * u.m, 0.8 * u.m**2/u.s],
                   [100 * u.cm, 1.4, 0.5, 0.625, 0.8],
-                  [1, 140 * u.cm, 0.5, 0.625, 0.8],
+                  [1, 0.0014 * u.km, 0.5, 0.625, 0.8],
                   [1, 1.4, 30 * u.m/u.min, 0.625, 0.8],
                   [1, 1.4, 0.5, 625 * u.mm, 0.8],
                   [1, 1.4, 0.5, 0.625, 8000 * u.cm**2/u.s])

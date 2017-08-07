@@ -364,9 +364,10 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
     #functions this function calls.
     ut.check_range([NumOutlets, ">0, int", 'Number of outlets'])
     return (headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor).magnitude
-            * (1/3 
-               + 1 / (2*NumOutlets) 
-               + 1 / ((6*NumOutlets)**2))
+            * ((1/3 )
+               + (1 / (2*NumOutlets))
+               + (1 / (6*NumOutlets**2))
+               )
             )
 
 
@@ -383,7 +384,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
     else:
         return 0
 
-
+#Deviates from the MathCad at the 6th decimal place. Worth investigating or not?
 @u.wraps(u.m**3/u.s, [u.m, u.m, u.dimensionless], False)
 @ut.list_handler
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
@@ -391,12 +392,11 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     #Checking input validity
     ut.check_range([RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > -Diam / 2:
-        flow_vert = integrate.quad(lambda z: (Diam 
-                                                    * np.sin(np.arccos(z/(Diam/2))) 
-                                                    * np.sqrt(Height - z)
-                                                    ), 
-                                                    - Diam / 2, 
-                                                    min(Diam/2, Height))
+        flow_vert = integrate.quad(lambda z: (Diam * np.sin(np.arccos(z/(Diam/2))) 
+                                                   * np.sqrt(Height - z)
+                                                   ), 
+                                                   - Diam / 2, 
+                                                   min(Diam/2, Height))
         return flow_vert[0] * RatioVCOrifice * np.sqrt(2 * gravity.magnitude)
     else:
         return 0
@@ -658,7 +658,7 @@ def width_rect_weir(FlowRate, Height):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Height, ">0", "Height"])
     return ((3 / 2) * FlowRate 
-            / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity.magnitude) * Height**(3/2)))
+            / (RATIO_VC_ORIFICE * np.sqrt(2*gravity.magnitude) * Height**(3/2))
             )
 
 
@@ -671,8 +671,8 @@ def headloss_weir(FlowRate, Width):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
     return (((3/2) * FlowRate 
-             / (RATIO_VC_ORIFICE * (np.sqrt(2*gravity.magnitude) * Width))
-             ) ** 3)
+             / (RATIO_VC_ORIFICE * np.sqrt(2*gravity.magnitude) * Width)
+             ) ** (2/3))
 
 
 @u.wraps(u.m, [u.m, u.m], False)
@@ -690,7 +690,7 @@ def height_water_critical(FlowRate, Width):
     """Return the critical local water depth."""
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
-    return (FlowRate / (Width * gravity.magnitude)) ** (2/3)
+    return (FlowRate / (Width * np.sqrt(gravity.magnitude))) ** (2/3)
 
 
 @u.wraps(u.m/u.s, u.m, False)
