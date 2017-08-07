@@ -122,16 +122,31 @@ def list_handler(func):
         sequences = []
         enumsUnitCheck = enumerate(args)
         argsList = list(args)
+        #This for loop identifies pint unit objects and strips them 
+        #of their units.
         for num, arg in enumsUnitCheck:
             if type(arg) == type(1 * u.m):
                 argsList[num] = arg.to_base_units().magnitude
         enumsUnitless = enumerate(argsList)
+        #This for loop identifies arguments that are sequences and 
+        #adds their index location to the list 'sequences'.
         for num, arg in enumsUnitless:
             if isinstance(arg, (list, tuple, np.ndarray)):
                 sequences.append(num)
+        #If there are no sequences to iterate through, simply return
+        #the function.
         if len(sequences) == 0:
             result = func(*args, **kwargs)
         else:
+            #iterant keeps track of how many times we've iterated and 
+            #limiter stops the loop once we've iterated as many times
+            #as there are list elements. Without this check, a few 
+            #erroneous runs will occur, appending the last couple values
+            #to the end of the list multiple times.
+            #
+            #We only care about the length of sequences[0] because this
+            #function is recursive, and sequences[0] is always the relevant
+            #sequences for any given run.
             limiter = len(argsList[sequences[0]])
             iterant = 0
             result = []
@@ -139,10 +154,23 @@ def list_handler(func):
                 for arg in argsList[num]:
                     if iterant >= limiter:
                         break
+                    #We can safely replace the entire list argument
+                    #with a single element from it because of the looping
+                    #we're doing. We redefine the object, but that 
+                    #definition remains within this namespace and does
+                    #not penetrate further up the function.
                     argsList[num] = arg
+                    #Here we dive down the rabbit hole. This ends up
+                    #creating a multi-dimensional array shaped by the
+                    #sizes and shapes of the lists passed.
                     result.append(wrapper(*argsList, 
                                           HandlerResult=HandlerResult, **kwargs))
                     iterant += 1
+            #HandlerResult allows the user to specify what type to 
+            #return the generated sequence as. It defaults to numpy 
+            #arrays because functions tend to handle them better, but if
+            #the user does not wish to import numpy the base Python options
+            #are available to them.
             if HandlerResult == "nparray":
                 result = np.array(result)
             elif HandlerResult == "tuple":
