@@ -11,9 +11,13 @@ By: Sage Weber-Shirk
 ######################### Imports #########################
 import numpy as np
 
-from AguaClara_design import physchem as pc
-from AguaClara_design.units import unit_registry as u
+try:
+    from AguaClara_design.units import unit_registry as u
+except ModuleNotFoundError:
+    from units import unit_registry as u
 
+    
+    
 u.enable_contexts('chem')
 
 ##################### Class Definition #####################
