@@ -11,7 +11,7 @@ This file contains unit process functions pertaining to the design of
 physical/chemical unit processes for AguaClara water treatment plants.
 """
 
-######################### Imports #########################
+########################## Imports ##########################
 import numpy as np
 from scipy import interpolate, integrate
 
@@ -25,7 +25,7 @@ except ModuleNotFoundError:
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""
 
-#######################Simple geometry#######################
+###################### Simple geometry ######################
 """A few equations for useful geometry.
 Is there a geometry package that we should be using?"""
 
@@ -41,7 +41,7 @@ def diam_circle(AreaCircle):
     ut.check_range([AreaCircle, ">0", "AreaCircle"])
     return np.sqrt(4 * AreaCircle / np.pi)
 
-######################### Hydraulics ######################### 
+######################### Hydraulics #########################
 RATIO_VC_ORIFICE = 0.62
 
 RE_TRANSITION_PIPE = 2100
@@ -461,15 +461,15 @@ def flow_swamee(Diam, HeadLossFric, Length, Nu, PipeRough):
     """Return the flow rate for turbulent flow with only major losses."""
     #Checking input validity
     ut.check_range([Diam, ">0", "Diameter"], [Length, ">0", "Length"],
-                   [HeadLossFric, ">=0", "Headloss due to friction"],
+                   [HeadLossFric, ">0", "Headloss due to friction"],
                    [Nu, ">0", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
-    logterm = -np.log10(PipeRough / (3.7 * Diam) 
-                        + 2.51 * Nu * np.sqrt(Length / (2 * gravity.magnitude
-                                                          * HeadLossFric
-                                                          * Diam**3)
+    logterm = np.log10(PipeRough / (3.7 * Diam) 
+                       + 2.51 * Nu * np.sqrt(Length / (2 * gravity.magnitude
+                                                         * HeadLossFric
+                                                         * Diam**3)
                                               )
-                        )
-    return ((np.pi / np.sqrt(2)) * Diam**(5/2) * logterm
+                       )
+    return ((-np.pi / np.sqrt(2)) * Diam**(5/2) * logterm
             * np.sqrt(gravity.magnitude * HeadLossFric / Length) 
             )
 
@@ -499,7 +499,7 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
     ut.check_range([HeadLossExpans, ">=0", "Headloss due to expansion"], 
-                   [KMinor, ">=0", "K minor"])
+                   [KMinor, ">0", "K minor"])
     return (area_circle(Diam) * np.sqrt(2 * gravity.magnitude 
                                                   * HeadLossExpans 
                                                   / KMinor)
@@ -552,7 +552,7 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
 def diam_hagen(FlowRate, HeadLossFric, Length, Nu):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Length, ">0", "Length"],
-                   [HeadLossFric, ">=0", "Headloss due to friction"],
+                   [HeadLossFric, ">0", "Headloss due to friction"],
                    [Nu, ">0", "Nu"])
     return ((128 * Nu * FlowRate * Length) 
             / (gravity.magnitude * HeadLossFric * np.pi)
@@ -571,7 +571,7 @@ def diam_swamee(FlowRate, HeadLossFric, Length, Nu, PipeRough):
     """
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Length, ">0", "Length"],
-                   [HeadLossFric, ">=0", "Headloss due to friction"],
+                   [HeadLossFric, ">0", "Headloss due to friction"],
                    [Nu, ">0", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
     a = ((PipeRough ** 1.25) 
          * ((Length * FlowRate**2) 
@@ -609,7 +609,7 @@ def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
     """
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [KMinor, ">=0", "K minor"],
-                   [HeadLossExpans, ">=0", "Headloss due to expansion"])
+                   [HeadLossExpans, ">0", "Headloss due to expansion"])
     return (np.sqrt(4 * FlowRate / np.pi)
             * (KMinor / (2 * gravity.magnitude * HeadLossExpans)) ** (1/4)
             )
@@ -626,26 +626,28 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls.
     if KMinor == 0:
-        Diam = diam_pipeminor(FlowRate, HeadLoss, KMinor).magnitude
-    else:
         Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu, PipeRough).magnitude
-    err = 1.00
-    while err > 0.001:
-        DiamPrev = Diam
-        HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length, 
-                                              Nu, PipeRough
-                                              ).magnitude 
-                     / (headloss_fric(FlowRate, Diam, Length, 
-                                      Nu, PipeRough
-                                      ).magnitude 
-                                      + headloss_exp(FlowRate, 
-                                                     Diam, KMinor
-                                                     ).magnitude
-                        )
-                     )
-        Diam = diam_pipemajor(FlowRate, HLFricNew, Length, Nu, PipeRough
-                              ).magnitude
-        err = abs(Diam - DiamPrev) / (Diam + DiamPrev)
+    else:
+        Diam = max(diam_pipemajor(FlowRate, HeadLoss, 
+                                  Length, Nu, PipeRough).magnitude,
+                   diam_pipeminor(FlowRate, HeadLoss, KMinor).magnitude)
+        err = 1.00
+        while err > 0.001:
+            DiamPrev = Diam
+            HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length, 
+                                                  Nu, PipeRough
+                                                  ).magnitude 
+                         / (headloss_fric(FlowRate, Diam, Length, 
+                                          Nu, PipeRough
+                                          ).magnitude 
+                                          + headloss_exp(FlowRate, 
+                                                         Diam, KMinor
+                                                         ).magnitude
+                            )
+                         )
+            Diam = diam_pipemajor(FlowRate, HLFricNew, Length, Nu, PipeRough
+                                  ).magnitude
+            err = abs(Diam - DiamPrev) / (Diam + DiamPrev)
     return Diam
 
 # Weir head loss equations
