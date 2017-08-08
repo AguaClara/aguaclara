@@ -6,7 +6,6 @@ Created on Mon Aug  7 12:05:59 2017
 """
 
 import numpy as np
-import scipy
 import math
 
 try:
@@ -134,4 +133,54 @@ NOM_DIAM_SED_HOPPER_SKIMMER = 2*u.inch
 NOM_DIAM_SED_DIFFUSER = 1*u.inch
 
 NOM_DIAM_SED_JET_REVERSER = 3*u.inch
+
+############ Material constants - stacked rapid sand filter ############
+
+#We are going to take this pipe size for the slotted pipes as a given.
+# Larger pipes may block too much flow and they are harder to install.
+NOM_DIAM_FILTER_MANIFOLD_BRANCH = 1*u.inch
+
+NOM_DIAM_FILTER_BACKWASH_MANIFOLD_BRANCH = 1.5*u.inch
+
+#A slot thickness of 0.008 in or 0.2 mm is selected so that sand
+# will not enter the slotted pipes.
+WIDTH_FILTER_MANIFOLD_SLOTS = 0.008*u.inch
+
+NOM_DIAM_FILTER_BRANCH_HOLDER = 2*u.inch
+
+NOM_DIAM_FILTER_BACKWASH_BRANCH_HOLDER = 2*u.inch
+
+#Minimum vertical spacing between trunk line pipes going through 
+#the filter wall for concrete construction
+SPACE_FILTER_TRUNK_MIN = 3*u.cm
+
+#Space between the ends of the branch receiver pipes and the walls so that 
+#the manifold assemblies are easy to lower into the filter boxes
+# (if the branch receivers extended the entire length of the box they would 
+#just barely fit and it would be hard to get into place)
+SPACE_FILTER_MANIFOLD_ASSEMBLY = 1*u.cm
+
+LENGTH_FILTER_MANIFOLD_FEMCO_COUPLING = 4*u.cm
+
+##Sand Properties
+
+DIAM_FILTER_SAND_EFFECTIVE_SIZE = 0.5*u.mm
+
+RATIO_UNIFORMITY_COEFF_FILTER_SAND = 1.65
+
+DIAM_FILTER_SAND_60 = DIAM_FILTER_SAND_EFFECTIVE_SIZE * RATIO_UNIFORMITY_COEFF_FILTER_SAND
+
+#Porosity in a sand bed
+POROSITY_FILTER_SAND = 0.4
+
+RHO_FILTER_SAND = 2650*u.kg/(u.m**3)
+
+RATIO_FILTER_FLUIDIZED = 1.3 #Bed expands 30% when fluidized
+
+#Carman-Kozeny coefficient
+K_KOZENY = 5
+
+############## Drill Series ##############
+
+DIAM_DRILL_ENG = [0.03125, 0.0625, 0.09375, 0.125, 0.15625, 0.1875, 0.21875, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1, 1.25, 1.5, 1.75, 2]*u.inch
 
