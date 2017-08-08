@@ -59,5 +59,6 @@ def nu_coag(conc_coag,EN_coag):
 def flow_coag_max_est(flow_train,conc_coag_dose_max,conc_coag_stock_est):
     return flow_train*conc_coag_dose_max/conc_coag_stock_est
 
-def vol_coag_stock()
+def vol_coag_stock():
+    pass
     
