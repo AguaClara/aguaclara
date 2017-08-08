@@ -184,3 +184,26 @@ K_KOZENY = 5
 
 DIAM_DRILL_ENG = [0.03125, 0.0625, 0.09375, 0.125, 0.15625, 0.1875, 0.21875, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1, 1.25, 1.5, 1.75, 2]*u.inch
 
+DIAM_DRILL_MET = [0.5*u.mm]
+
+counter = 0
+
+
+while DIAM_DRILL_MET[counter] <= 4.98*u.mm:
+    counter+=1
+    DIAM_DRILL_MET.append(DIAM_DRILL_MET[counter-1] + 0.1*u.mm)
+    
+while DIAM_DRILL_MET[counter] < 20*u.mm:
+    counter+=1
+    DIAM_DRILL_MET.append(DIAM_DRILL_MET[counter-1] + 1*u.mm)
+    
+while DIAM_DRILL_MET[counter] < 50*u.mm:
+    counter+=1
+    DIAM_DRILL_MET.append(DIAM_DRILL_MET[counter-1] + 2*u.mm)
+
+def diam_drill(EN_DRILL_SERIES):
+    if EN_DRILL_SERIES  == 0:
+        DIAM_DRILL = DIAM_DRILL_ENG
+    else:
+        DIAM_DRILL = DIAM_DRILL_MET
+    return DIAM_DRILL
