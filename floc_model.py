@@ -17,9 +17,11 @@ import numpy as np
 try:
     from AguaClara_design.units import unit_registry as u
     from AguaClara_design import physchem as pc
+    from AguaClara_design import utility as ut
 except ModuleNotFoundError:
     from units import unit_registry as u
     import physchem as pc
+    import utility as ut
 
 
 u.enable_contexts('chem')
@@ -285,6 +287,7 @@ def gamma_coag(ConcClay, ConcAluminum, coag,
 
 
 @u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
+@ut.list_handler
 def gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag):
     return min(((ConcNatOrgMat / conc_precipitate(ConcAl, coag).magnitude)
                 * (coag.Density / NatOrgMat.Density)
