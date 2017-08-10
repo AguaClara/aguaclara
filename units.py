@@ -27,4 +27,7 @@ from os import path
 
 unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
 
-unit_registry.load_definitions(path.expanduser('~\\Documents\\GitHub\\AguaClara_design\\unit_definitions.txt'))
+filepath = path.join('~', 'Documents', 'GitHub', 'AguaClara_design', 
+                     'unit_definitions.txt')
+
+unit_registry.load_definitions(path.expanduser(filepath))
