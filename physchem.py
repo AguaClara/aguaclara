@@ -628,7 +628,8 @@ def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls.
     if KMinor == 0:
-        Diam = diam_pipeminor(FlowRate, HeadLoss, KMinor).magnitude
+        Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu, 
+                              PipeRough).magnitude
     else:
         Diam = max(diam_pipemajor(FlowRate, HeadLoss, 
                                   Length, Nu, PipeRough).magnitude,
