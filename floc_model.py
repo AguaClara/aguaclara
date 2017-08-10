@@ -73,14 +73,12 @@ Alum = Chemical('Alum', (70 * u.nm).to(u.m).magnitude, 2420, 0.59921,
 Alum.define_Precip((70 * u.nm).to(u.m).magnitude, 2420, 0.078, 1)
 
 
-HumicAcid = Chemical('Humic Acid', 36 * 10**-9, 1780, None, 'Humic Acid')
+HumicAcid = Chemical('Humic Acid', 72 * 10**-9, 1780, None, 'Humic Acid')
 
 
 ################### Necessary Constants ###################
 # Fractal diameter, based on data from Adachi.
 DIAM_FRACTAL = 2.3
-# Diameter of the clay particles in meters.
-DIAM_CLAY = 4 * 10**-6
 # Ratio of clay platelet height to diameter.
 RATIO_HEIGHT_DIAM = 0.1
 # Density of clay in kg/m**3.
@@ -156,13 +154,13 @@ def sep_dist_aluminum(ConcAluminum):
 
 @u.wraps(1/u.m**3, [u.kg/u.m**3, u.m], False)
 def num_clay(ConcClay, material):
-    return ConcClay / ((DENS_CLAY * np.pi * material.Diameter**3) / 6)
+    return ConcClay / ((material.Density * np.pi * material.Diameter**3) / 6)
 
 
 @u.wraps(u.m, [u.kg/u.m**3, u.m], False)
 def sep_dist_clay(ConcClay, material):
     """Return the separation distance between clay particles."""
-    return ((DENS_CLAY / ConcClay) * ((np.pi * material.Diameter**3) / 6))**(1/3)
+    return ((material.Density / ConcClay) * ((np.pi * material.Diameter**3) / 6))**(1/3)
 
 
 @u.wraps(1/u.m**3, [u.kg/u.m**3, None], False)
@@ -172,10 +170,10 @@ def num_nanoclusters(ConcAluminum, coag):
                             ))
 
 
-@u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None], False)
-def frac_vol_floc_initial(ConcAluminum, ConcClay, coag):
+@u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
+def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
     return ((conc_precipitate(ConcAluminum, coag).magnitude/coag.PrecipDensity)
-            + (ConcClay / DENS_CLAY))
+            + (ConcClay / material.Density))
 
 
 ####################### p functions #######################
@@ -211,7 +209,8 @@ def sep_dist_floc(ConcAluminum, ConcClay, coag, material,
     """Return separation distance as a function of floc size."""
     return (material.Diameter
             * (np.pi/(6
-                      * frac_vol_floc_initial(ConcAluminum, ConcClay, coag)
+                      * frac_vol_floc_initial(ConcAluminum, ConcClay,
+                                              coag, material)
                       ))**(1/3)
             * (DiamTarget / material.Diameter)**(DiamFractal / 3)
             )
@@ -222,19 +221,19 @@ def sep_dist_floc(ConcAluminum, ConcClay, coag, material,
 def frac_vol_floc(ConcAluminum, ConcClay, coag, DiamFractal,
                   material, DiamTarget):
     """Return the floc volume fraction."""
-    return (frac_vol_floc_initial(ConcAluminum, ConcClay, coag)
+    return (frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material)
             * (DiamTarget / material.Diameter)**(3-DiamFractal)
             )
 
 
-@u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, None], False)
-def dens_floc_init(ConcAluminum, ConcClay, coag):
+@u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
+def dens_floc_init(ConcAluminum, ConcClay, coag, material):
     """Return the density of the initial floc.
 
     Initial floc is made primarily of the primary colloid and nanoglobs.
     """
     return (conc_floc(ConcAluminum, ConcClay, coag).magnitude
-            / frac_vol_floc_initial(ConcAluminum, ConcClay, coag)
+            / frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material)
             )
 
 
@@ -279,10 +278,10 @@ def gamma_coag(ConcClay, ConcAluminum, coag, material,
     gradually approaching full coverage as coagulant dose increases.
     """
     return (1 - np.exp(
-                       ((- frac_vol_floc_initial(ConcAluminum, 0, coag)
+                       ((- frac_vol_floc_initial(ConcAluminum, 0, coag, material)
                          * material.Diameter
                          )
-                        / (frac_vol_floc_initial(0, ConcClay, coag)
+                        / (frac_vol_floc_initial(0, ConcClay, coag, material)
                            * coag.Diameter
                            )
                         )
@@ -301,7 +300,6 @@ def gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag):
     return min(((ConcNatOrgMat / conc_precipitate(ConcAl, coag).magnitude)
                 * (coag.Density / NatOrgMat.Density)
                 * (coag.Diameter / (4 * NatOrgMat.Diameter))
-                * (np.pi/6)**(2/3)
                 ),
                1)
 
@@ -340,8 +338,8 @@ def alpha_pacl_pacl(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                 None, None, None, u.dimensionless], False)
 def alpha_pacl_nat_org_mat(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, 
                            NatOrgMat, coag, material, RatioHeightDiameter):
-    PAClTerm = _pacl_term(DiamTube, material, ConcClay, ConcAl,
-                          ConcNatOrgMat, NatOrgMat, coag, RatioHeightDiameter)
+    PAClTerm = _pacl_term(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
+                          NatOrgMat, coag, material, RatioHeightDiameter)
     return (2 * PAClTerm
             * gamma_coag(ConcClay, ConcAl, coag, material, DiamTube,
                          RatioHeightDiameter)
@@ -352,15 +350,13 @@ def alpha_pacl_nat_org_mat(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                 None, None, None, u.dimensionless], False)
 def alpha(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, 
           NatOrgMat, coag, material, RatioHeightDiameter):
-    return (alpha_pacl_nat_org_mat(DiamTube, material, ConcClay, 
-                                   ConcAl, ConcNatOrgMat, NatOrgMat, coag, 
+    return (alpha_pacl_nat_org_mat(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, 
+                                   NatOrgMat, coag, material, 
                                    RatioHeightDiameter)
-            + alpha_pacl_pacl(DiamTube, material, ConcClay, 
-                              ConcAl, ConcNatOrgMat, NatOrgMat, coag, 
-                              RatioHeightDiameter)
-            + alpha_pacl_clay(DiamTube, material, ConcClay, 
-                              ConcAl, ConcNatOrgMat, NatOrgMat, coag, 
-                              RatioHeightDiameter)
+            + alpha_pacl_pacl(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, 
+                              NatOrgMat, coag, material, RatioHeightDiameter)
+            + alpha_pacl_clay(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, 
+                              NatOrgMat, coag, material, RatioHeightDiameter)
             )
 
 
@@ -375,9 +371,9 @@ def pc_viscous(EnergyDis, Temp, Time, DiamTube,
                        * np.sqrt(EnergyDis
                                  / (pc.viscosity_kinematic(Temp).magnitude)
                                  )
-                       * alpha(DiamTube, material, ConcClay,
-                               ConcAl, ConcNatOrgMat, NatOrgMat, coag,
-                               RatioHeightDiameter)
+                       * alpha(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, 
+                               NatOrgMat, coag, material, RatioHeightDiameter)
+                       * (np.pi/6)**(2/3)
                        * (material.Diameter
                           / sep_dist_clay(ConcClay, material).magnitude
                           ) ** 2
@@ -391,7 +387,9 @@ def pc_viscous(EnergyDis, Temp, Time, DiamTube,
 def dens_floc(ConcAl, ConcClay, DiamFractal, DiamTarget, coag, material, Temp):
     """Calculate floc density as a function of size."""
     WaterDensity = pc.density_water(Temp).magnitude
-    return ((dens_floc_init(ConcAl, ConcClay, coag).magnitude - WaterDensity)
+    return ((dens_floc_init(ConcAl, ConcClay, coag, material).magnitude
+             - WaterDensity
+             )
             * (material.Diameter / DiamTarget)**(3 - DiamFractal)
             + WaterDensity
             )
@@ -406,7 +404,7 @@ def vel_term_floc(ConcAl, ConcClay, coag, material, DiamFractal,
     return (((pc.gravity.magnitude * material.Diameter**2)
              / (18 * PHI_FLOC * pc.viscosity_kinematic(Temp).magnitude)
              )
-            * ((dens_floc_init(ConcAl, ConcClay, coag).magnitude
+            * ((dens_floc_init(ConcAl, ConcClay, coag, material).magnitude
                 - WaterDensity
                 )
                / WaterDensity
@@ -427,7 +425,8 @@ def diam_floc_vel_term(ConcAl, ConcClay, coag, material,
                          / (pc.gravity.magnitude * material.Diameter**2)
                          )
                          * (WaterDensity
-                            / (dens_floc_init(ConcAl, ConcClay, coag).magnitude
+                            / (dens_floc_init(ConcAl, ConcClay, coag, 
+                                              material).magnitude
                                - WaterDensity
                                )
                             )
@@ -445,7 +444,7 @@ def time_col_laminar(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
     Calculated as a function of floc size.
     """
     return (((1/6) * ((6/np.pi)**(1/3))
-             * frac_vol_floc_initial(ConcAl, ConcClay, coag)**(-2/3)
+             * frac_vol_floc_initial(ConcAl, ConcClay, coag, material)**(-2/3)
              * (pc.viscosity_kinematic(Temp).magnitude / EnergyDis)**(1/2)
              * (DiamTarget / material.Diameter)**(2*DiamFractal/3 - 2)
              )  # End of the numerator
@@ -464,7 +463,7 @@ def time_col_turbulent(EnergyDis, ConcAl, ConcClay, coag, material,
     Calculated as a function of floc size.
     """
     return((1/6) * (6/np.pi)**(1/9) * EnergyDis**(-1/3) * DiamTarget**(2/3)
-           * frac_vol_floc_initial(ConcAl, ConcClay, coag)**(-8/9)
+           * frac_vol_floc_initial(ConcAl, ConcClay, coag, material)**(-8/9)
            * (DiamTarget / material.Diameter)**((8*(DiamFractal-3)) / 9)
            )
 
@@ -489,7 +488,7 @@ def diam_kolmogorov(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
     """
     return (material.Diameter
             * ((eta_kolmogorov(EnergyDis, Temp).magnitude / material.Diameter)
-               * ((6 * frac_vol_floc_initial(ConcAl, ConcClay, coag))
+               * ((6 * frac_vol_floc_initial(ConcAl, ConcClay, coag, material))
                   / np.pi
                   )**(1/3)
                )**(3 / DiamFractal)
@@ -501,7 +500,7 @@ def diam_kolmogorov(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
 def diam_vel(EnergyDis, Temp, ConcAl, ConcClay, coag, material, DiamFractal):
     return (material.Diameter
             * ((lambda_vel(EnergyDis, Temp).magnitude / material.Diameter)
-               * ((6 * frac_vol_floc_initial(ConcAl,ConcClay,coag))
+               * ((6 * frac_vol_floc_initial(ConcAl, ConcClay, coag, material))
                   / np.pi
                   )**(1/3)
                )**(3/DiamFractal)
