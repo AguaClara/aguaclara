@@ -61,6 +61,9 @@ class Chemical(Material):
 
 ################## Material Definitions ##################
 # name, diameter in m, density in kg/m³, molecular weight in kg/mole
+Clay = Material('Clay', 7 * 10**-6, 2650, None)
+
+
 PACl = Chemical('PACl', (90 * u.nm).to(u.m).magnitude, 1138, 1.039,
                 'PACl', AluminumMPM=13)
 
@@ -72,8 +75,6 @@ Alum.define_Precip((70 * u.nm).to(u.m).magnitude, 2420, 0.078, 1)
 
 HumicAcid = Chemical('Humic Acid', 36 * 10**-9, 1780, None, 'Humic Acid')
 
-
-Clay = Material('Clay', 7 * 10**-6, 2650, None)
 
 ################### Necessary Constants ###################
 # Fractal diameter, based on data from Adachi.
