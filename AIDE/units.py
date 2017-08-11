@@ -20,11 +20,9 @@ unit registry `unit_registry` that can be used by any number of other
 modules.
 """
 
-
+import os
 import pint
-from os import path
-
 
 unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
 
-unit_registry.load_definitions(path.expanduser('~\\Documents\\GitHub\\AIDE\\unit_definitions.txt'))
+unit_registry.load_definitions(os.path.join(os.path.dirname(__file__), "unit_definitions.txt"))

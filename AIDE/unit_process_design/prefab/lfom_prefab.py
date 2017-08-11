@@ -13,18 +13,6 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 
-# sys and os give us access to operating system directory paths and to sys paths.
-import sys, os
-
-# If you place your GitHub directory in your documents folder and 
-# clone both the design challenge notebook and the AIDE repo, then this code should all work.
-# If you have your GitHub directory at a different location on your computer, 
-# then you will need to adjust the directory path below.
-# add the path to your GitHub directory so that python can find files in other contained folders.
-myGitHubdir=os.path.expanduser('~\\Documents\\GitHub')
-if myGitHubdir not in sys.path:
-    sys.path.append(myGitHubdir)
-
 # add imports for AguaClara code that will be needed
 # physchem has functions related to hydraulics, fractal flocs, flocculation, sedimentation, etc.
 from AIDE import physchem as pc
