@@ -8,8 +8,8 @@ Created on Mon Jun 26 11:55:37 2017
 
 
 try:
-    from AguaClara_design.units import unit_registry as u
-    from AguaClara_design import utility as ut
+    from AIDE.units import unit_registry as u
+    from AIDE import utility as ut
 except ModuleNotFoundError:
     from AIDE.units import unit_registry as u
     from AIDE import utility as ut

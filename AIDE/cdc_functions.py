@@ -10,13 +10,13 @@ import numpy as np
 
 import pandas as pd
 
-from AguaClara_design import physchem as pc
+from AIDE import physchem as pc
 
-from AguaClara_design.units import unit_registry as u 
+from AIDE.units import unit_registry as u
 
-from AguaClara_design import utility as ut
+from AIDE import utility as ut
 
-from AguaClara_design import expert_inputs as exp
+from AIDE import expert_inputs as exp
 
 #==============================================================================
 # Functions for Coagulant Viscosities and Selecting Available Tube Diameters

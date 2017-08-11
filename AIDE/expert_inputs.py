@@ -7,7 +7,7 @@ Created on Mon Jun 26 15:54:16 2017
 Last modified: Fri Jul 7 2017
 by: Sage Weber-Shirk
 """
-from AguaClara_design.units import unit_registry as u
+from AIDE.units import unit_registry as u
 
 #####tabulated constants
 

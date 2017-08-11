@@ -34,16 +34,16 @@ if myGitHubdir not in sys.path:
 
 # add imports for AguaClara code that will be needed
 # physchem has functions related to hydraulics, fractal flocs, flocculation, sedimentation, etc.
-from AguaClara_design import physchem as pc
+from AIDE import physchem as pc
 
 # pipedatabase has functions related to pipe diameters
-from AguaClara_design import pipedatabase as pipe
+from AIDE import pipedatabase as pipe
 
 # units allows us to include units in all of our calculations
-from AguaClara_design.units import unit_registry as u
+from AIDE.units import unit_registry as u
 
 # utility has the significant digit display function
-from AguaClara_design import utility as ut
+from AIDE import utility as ut
 ratio_VC_orifice= 0.62
 
 # The following constants need to go into the constants file

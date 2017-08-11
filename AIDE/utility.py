@@ -10,7 +10,7 @@ By: Sage Weber-Shirk
 import math
 
 try:
-    from AguaClara_design.units import unit_registry as u
+    from AIDE.units import unit_registry as u
 except ModuleNotFoundError:
     from AIDE.units import unit_registry as u
 
