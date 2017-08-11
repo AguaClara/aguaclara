@@ -12,7 +12,7 @@ import math
 try:
     from AguaClara_design.units import unit_registry as u
 except ModuleNotFoundError:
-    from units import unit_registry as u
+    from AIDE.units import unit_registry as u
 
 import numpy as np
 import functools

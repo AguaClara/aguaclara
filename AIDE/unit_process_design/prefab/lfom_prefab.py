@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import sys, os
 
 # If you place your GitHub directory in your documents folder and 
-# clone both the design challenge notebook and the AguaClara_design repo, then this code should all work.
+# clone both the design challenge notebook and the AIDE repo, then this code should all work.
 # If you have your GitHub directory at a different location on your computer, 
 # then you will need to adjust the directory path below.
 # add the path to your GitHub directory so that python can find files in other contained folders.

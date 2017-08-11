@@ -19,8 +19,8 @@ try:
     from AguaClara_design.units import unit_registry as u
     from AguaClara_design import utility as ut
 except ModuleNotFoundError:
-    from units import unit_registry as u
-    import utility as ut
+    from AIDE.units import unit_registry as u
+    from AIDE import utility as ut
 
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""

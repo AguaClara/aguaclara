@@ -18,9 +18,8 @@ try:
     from AguaClara_design.units import unit_registry as u
     from AguaClara_design import physchem as pc
 except ModuleNotFoundError:
-    from units import unit_registry as u
-    import physchem as pc
-
+    from AIDE.units import unit_registry as u
+    from AIDE import physchem as pc
 
 u.enable_contexts('chem')
 
