@@ -8,5 +8,5 @@ setup(name='AIDE',
       author_email='aguaclara@cornell.edu',
       license='MIT',
       packages=['AIDE'],
-      install_requires=['pint'],
+      install_requires=['pint','numpy','pandas','matplotlib'],
       zip_safe=False)
