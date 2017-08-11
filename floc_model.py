@@ -4,10 +4,8 @@ Created on Mon Jun 26 16:50:46 2017
 
 @author: Sage Weber-Shirk
 
-Last revised: Tue Aug 8 2017
+Last revised: Fri Aug 11 2017
 By: Sage Weber-Shirk
-
-dens_physical/chemical unit processes for AguaClara water treatment plants
 """
 
 ######################### Imports #########################
@@ -81,8 +79,6 @@ HumicAcid = Chemical('Humic Acid', 72 * 10**-9, 1780, None, 'Humic Acid')
 DIAM_FRACTAL = 2.3
 # Ratio of clay platelet height to diameter.
 RATIO_HEIGHT_DIAM = 0.1
-# Density of clay in kg/m**3.
-DENS_CLAY = 2650
 # Ration between inner viscous length scale and Kolmogorov length scale.
 RATIO_KOLMOGOROV = 50
 # Shape factor for drag on flocs used in terminal velocity equation.
