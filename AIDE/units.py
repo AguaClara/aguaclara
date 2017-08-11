@@ -3,8 +3,8 @@ Created on Thu Jun 8 2017
 
 @author: Monroe Weber-Shirk
 
-Last modified: Fri Jun 23 2017 
-By: Sage Weber-Shirk
+    Last modified: Fri Aug 11 2017
+By: Ethan Keller
 
 
 Module containing global `pint` unit registry.
