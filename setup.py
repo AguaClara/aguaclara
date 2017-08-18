@@ -9,4 +9,5 @@ setup(name='aide_design',
       license='MIT',
       packages=['aide_design'],
       install_requires=['pint','numpy','pandas','matplotlib'],
+      include_package_data=True,
       zip_safe=False)

@@ -25,4 +25,4 @@ import pint
 
 unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
 
-unit_registry.load_definitions(os.path.join(os.path.dirname(__file__), "unit_definitions.txt"))
+unit_registry.load_definitions(os.path.join(os.path.dirname(__file__), "data/unit_definitions.txt"))
