@@ -18,8 +18,8 @@ myGitHubdir = os.path.expanduser('~\\Documents\\GitHub')
 if myGitHubdir not in sys.path:
     sys.path.append(myGitHubdir)
 
-from AIDE.units import unit_registry as u
-from AIDE import physchem as pc
+from aide_design.units import unit_registry as u
+from aide_design import physchem as pc
 
 class GeometryTest(unittest.TestCase):
     """Test the circular area and diameter functions."""

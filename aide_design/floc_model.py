@@ -12,11 +12,11 @@ By: Sage Weber-Shirk
 import numpy as np
 
 try:
-    from AIDE.units import unit_registry as u
-    from AIDE import physchem as pc
+    from aide_design.units import unit_registry as u
+    from aide_design import physchem as pc
 except ModuleNotFoundError:
-    from AIDE.units import unit_registry as u
-    from AIDE import physchem as pc
+    from aide_design.units import unit_registry as u
+    from aide_design import physchem as pc
 
 u.enable_contexts('chem')
 

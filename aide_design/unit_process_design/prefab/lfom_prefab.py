@@ -15,16 +15,16 @@ import matplotlib.pyplot as plt
 
 # add imports for AguaClara code that will be needed
 # physchem has functions related to hydraulics, fractal flocs, flocculation, sedimentation, etc.
-from AIDE import physchem as pc
+from aide_design import physchem as pc
 
 # pipedatabase has functions related to pipe diameters
-from AIDE import pipedatabase as pipe
+from aide_design import pipedatabase as pipe
 
 # units allows us to include units in all of our calculations
-from AIDE.units import unit_registry as u
+from aide_design.units import unit_registry as u
 
 # utility has the significant digit display function
-from AIDE import utility as ut
+from aide_design import utility as ut
 
 ##---##
 

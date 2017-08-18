@@ -10,13 +10,13 @@ import numpy as np
 
 import pandas as pd
 
-from AIDE import physchem as pc
+from aide_design import physchem as pc
 
-from AIDE.units import unit_registry as u
+from aide_design.units import unit_registry as u
 
-from AIDE import utility as ut
+from aide_design import utility as ut
 
-from AIDE import expert_inputs as exp
+from aide_design import expert_inputs as exp
 
 #==============================================================================
 # Functions for Coagulant Viscosities and Selecting Available Tube Diameters

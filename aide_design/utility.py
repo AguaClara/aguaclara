@@ -10,9 +10,9 @@ By: Sage Weber-Shirk
 import math
 
 try:
-    from AIDE.units import unit_registry as u
+    from aide_design.units import unit_registry as u
 except ModuleNotFoundError:
-    from AIDE.units import unit_registry as u
+    from aide_design.units import unit_registry as u
 
 import numpy as np
 import functools

@@ -10,7 +10,7 @@ By: Sage Weber-Shirk
 
 #Let's begin to create the pipe database
 # https://docs.python.org/2/library/csv.html
-from AIDE.units import unit_registry as u
+from aide_design.units import unit_registry as u
 import numpy as np
 # We will use Pandas
 import pandas as pd

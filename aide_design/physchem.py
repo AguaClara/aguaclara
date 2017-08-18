@@ -16,11 +16,11 @@ import numpy as np
 from scipy import interpolate, integrate
 
 try:
-    from AIDE.units import unit_registry as u
-    from AIDE import utility as ut
+    from aide_design.units import unit_registry as u
+    from aide_design import utility as ut
 except ModuleNotFoundError:
-    from AIDE.units import unit_registry as u
-    from AIDE import utility as ut
+    from aide_design.units import unit_registry as u
+    from aide_design import utility as ut
 
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""
