@@ -4,10 +4,10 @@ from aide_design import pipedatabase as pipe
 
 class PipeTest(unittest.TestCase):
     def test_OD(self):
-        checks = [[1.0 * u.inch, 1.315 * u.m]]
+        checks = [[1.0 * u.inch, 1.315 * u.inch]]
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(pipe.OD(i[0]).magnitude, i[1])
+                self.assertEqual(pipe.OD(i[0]), i[1])
 
 if __name__ == '__main__':
     unittest.main()
