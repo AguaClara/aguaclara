@@ -5,7 +5,7 @@ Contains all design files for the AguaClara Infrastructure Design Engine (AIDE).
 If you'd like to install across your whole machine, you can open the cmd (Windows) or teminal (mac) and type `$pip install aide_design` (where $ signifies the beginning of the command.) If you get a permission denied error, you probably want to install it instead to your particular user with `$pip install aide_design --user`. This will install the latest 
 
 ## Installing as a developer
-If you want to be able to edit the source code, you need to clone this repo with git, then run the 'setup.py' folder in the top level directory: `$python setup.py install`. Whenever you make a change to the code, you need to run this command to ensure that the change has been successfully packaged.
+If you want to be able to edit the source code, you need to clone this repo with git, then run the 'setup.py' folder in the top level directory: `$python setup.py install`. Whenever you make a change to the code, you need to run this command to ensure that the change has been successfully packaged. Now you should be able to import aide_design into python: `import aide_design`
 
 ## Updating the production version (v0.0.1 -> v0.1.0) 
 When the master branch updates with some new Pull Requests, there are several steps that need to be taken to keep all the production outlets in sync. Here are the steps:
