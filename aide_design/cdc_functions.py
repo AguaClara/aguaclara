@@ -130,12 +130,11 @@ def _flow_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
                    DiamTubeAvail, HeadlossCDC):
     
     (_flow_chem_stock(FlowPlant, ConcDoseMax, ConcStock)
-     ) / (_n_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
+     ) / (_n_tube_array(FlowPlant, ConcDoseMax, ConcStock, DiamTubeAvail, HeadlossCDC)
     return (_flow_chem_stock(FlowPlant, ConcDoseMax, ConcStock).magnitude
             ) / (_n_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
-                        DiamTubeAvail, HeadlossCDC)
-          )
-                ) 
+                        DiamTubeAvail, HeadlossCDC))
+    )
     
     
 # Calculate the length of each diameter tube given the corresponding flow rate
