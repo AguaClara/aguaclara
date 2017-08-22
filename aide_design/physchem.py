@@ -29,6 +29,7 @@ gravity = 9.80665 * u.m/u.s**2
 """A few equations for useful geometry.
 Is there a geometry package that we should be using?"""
 
+@u.wraps(u.m**2, u.m, False)
 def area_circle(DiamCircle):
     """Return the area of a circle."""
     ut.check_range([DiamCircle, ">0", "DiamCircle"])
