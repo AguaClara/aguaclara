@@ -380,7 +380,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
     ut.check_range([Diam, ">0", "Diameter"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > 0:
-        return (RatioVCOrifice * area_circle(Diam) 
+        return (RatioVCOrifice * area_circle(Diam).magnitude
                 * np.sqrt(2 * gravity.magnitude * Height))
     else:
         return 0
@@ -411,7 +411,7 @@ def head_orifice(Diam, RatioVCOrifice, FlowRate):
     ut.check_range([Diam, ">0", "Diameter"], [FlowRate, ">0", "Flow rate"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     return ((FlowRate 
-             / (RatioVCOrifice * area_circle(Diam))
+             / (RatioVCOrifice * area_circle(Diam).magnitude)
              )**2 
             / (2*gravity.magnitude)
             )
@@ -433,8 +433,7 @@ def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
     #functions this function calls.
     return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice, 
                                  FlowPlant).magnitude
-                    / area_circle(DiamOrifice)
-                    )
+                    / area_circle(DiamOrifice).magnitude)
 
 
 # Here we define functions that return the flow rate.
@@ -503,7 +502,7 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
     #functions this function calls.
     ut.check_range([HeadLossExpans, ">=0", "Headloss due to expansion"], 
                    [KMinor, ">0", "K minor"])
-    return (area_circle(Diam) * np.sqrt(2 * gravity.magnitude 
+    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity.magnitude
                                                   * HeadLossExpans 
                                                   / KMinor)
             )
@@ -526,16 +525,16 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
                                   PipeRough).magnitude
     else:
         FlowRatePrev = 0
-        err = 1
-        FlowRate = min(flow_pipemajor(Diam, HeadLoss, Length, 
-                                      Nu, PipeRough).magnitude, 
+        err = 1.0
+        FlowRate = min(flow_pipemajor(Diam, HeadLoss, Length,
+                                      Nu, PipeRough).magnitude,
                        flow_pipeminor(Diam, HeadLoss, KMinor).magnitude
                        )
         while err > 0.01:
             FlowRatePrev = FlowRate
             HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length, 
                                                   Nu, PipeRough).magnitude 
-                         / (headloss_fric(FlowRate, Diam, Length, 
+                         / (headloss_fric(FlowRate, Diam, Length,
                                           Nu, PipeRough).magnitude
                             + headloss_exp(FlowRate, Diam, KMinor).magnitude
                             )
@@ -543,7 +542,7 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
             FlowRate = flow_pipemajor(Diam, HLFricNew, Length, 
                                       Nu, PipeRough).magnitude
             if FlowRate == 0:
-                err = 0
+                err = 0.0
             else:
                 err = (abs(FlowRate - FlowRatePrev) 
                        / ((FlowRate + FlowRatePrev) / 2)

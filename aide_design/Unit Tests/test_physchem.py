@@ -19,8 +19,16 @@ class GeometryTest(unittest.TestCase):
     """Test the circular area and diameter functions."""
     def test_area_circle(self):
         """area_circle should  should give known result with known input."""
-        checks = ((1, 0.7853981633974483), 
-                  (495.6, 192908.99423885669))
+        checks = ((1, 0.7853981633974483*u.m**2),
+                  (495.6, 192908.99423885669*u.m**2))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertEqual(pc.area_circle(i[0]), i[1])
+
+    def test_area_circle_units(self):
+        """area_circle should  should give known result with known input and correct units"""
+        checks = ((1*u.m, 7853.981633974483*u.cm**2),
+                  (495.6*u.cm, 19.290899423885669*u.m**2))
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.area_circle(i[0]), i[1])
@@ -651,8 +659,8 @@ class OrificeFuncsTest(unittest.TestCase):
     
     def test_flow_orifice_vert(self):
         """flow_orifice_vert should return known values for known inputs."""
-        checks = (([1, 3, 0.4], 2.4077258053173907), 
-                  ([0.3, 4, 0.67], 0.41946278400781867), ([2, -4, 0.2], 0))
+        checks = (([1, 3, 0.4], 2.4077258053173911),
+                  ([0.3, 4, 0.67], 0.41946278400781861), ([2, -4, 0.2], 0))
         for i in checks:
             with self.subTest(i=i):
                 self.assertEqual(pc.flow_orifice_vert(*i[0]).magnitude, i[1])
