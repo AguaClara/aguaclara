@@ -3,8 +3,8 @@ Created on Thu Jun 8 2017
 
 @author: Monroe Weber-Shirk
 
-Last modified: Fri Jun 23 2017 
-By: Sage Weber-Shirk
+    Last modified: Fri Aug 11 2017
+By: Ethan Keller
 
 
 Module containing global `pint` unit registry.
@@ -20,14 +20,9 @@ unit registry `unit_registry` that can be used by any number of other
 modules.
 """
 
-
+import os
 import pint
-from os import path
-
 
 unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
 
-filepath = path.join('~', 'Documents', 'GitHub', 'AguaClara_design', 
-                     'unit_definitions.txt')
-
-unit_registry.load_definitions(path.expanduser(filepath))
+unit_registry.load_definitions(os.path.join(os.path.dirname(__file__), "data/unit_definitions.txt"))

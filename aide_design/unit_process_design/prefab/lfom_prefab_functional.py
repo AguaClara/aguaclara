@@ -20,30 +20,18 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 
-# sys and os give us access to operating system directory paths and to sys paths.
-import sys, os
-
-# If you place your GitHub directory in your documents folder and 
-# clone both the design challenge notebook and the AguaClara_design repo, then this code should all work.
-# If you have your GitHub directory at a different location on your computer, 
-# then you will need to adjust the directory path below.
-# add the path to your GitHub directory so that python can find files in other contained folders.
-myGitHubdir=os.path.expanduser('~\\Documents\\GitHub')
-if myGitHubdir not in sys.path:
-    sys.path.append(myGitHubdir)
-
 # add imports for AguaClara code that will be needed
 # physchem has functions related to hydraulics, fractal flocs, flocculation, sedimentation, etc.
-from AguaClara_design import physchem as pc
+from aide_design import physchem as pc
 
 # pipedatabase has functions related to pipe diameters
-from AguaClara_design import pipedatabase as pipe
+from aide_design import pipedatabase as pipe
 
 # units allows us to include units in all of our calculations
-from AguaClara_design.units import unit_registry as u
+from aide_design.units import unit_registry as u
 
 # utility has the significant digit display function
-from AguaClara_design import utility as ut
+from aide_design import utility as ut
 ratio_VC_orifice= 0.62
 
 # The following constants need to go into the constants file

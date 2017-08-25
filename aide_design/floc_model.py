@@ -10,16 +10,9 @@ By: Sage Weber-Shirk
 
 ######################### Imports #########################
 import numpy as np
-
-try:
-    from AguaClara_design.units import unit_registry as u
-    from AguaClara_design import physchem as pc
-    from AguaClara_design import utility as ut
-except ModuleNotFoundError:
-    from units import unit_registry as u
-    import physchem as pc
-    import utility as ut
-
+from aide_design import utility as ut
+from aide_design.units import unit_registry as u
+from aide_design import physchem as pc
 
 u.enable_contexts('chem')
 

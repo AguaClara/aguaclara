@@ -5,18 +5,14 @@ Created on Mon Jun 26 11:55:37 2017
 @author: kn348
 """
 ########################## Imports ##########################
-import math
-from scipy import constants, interpolate
-import numpy as np
 
 
 try:
-    from AguaClara_design.units import unit_registry as u
-    from AguaClara_design import utility as ut
+    from aide_design.units import unit_registry as u
+    from aide_design import utility as ut
 except ModuleNotFoundError:
-    from units import unit_registry as u
-    import utility as ut
-
+    from aide_design.units import unit_registry as u
+    from aide_design import utility as ut
 
 g=9.80665*(u.m/(u.s**2))
 #==============================================================================

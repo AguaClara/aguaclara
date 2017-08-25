@@ -16,11 +16,11 @@ import numpy as np
 from scipy import interpolate, integrate
 
 try:
-    from AguaClara_design.units import unit_registry as u
-    from AguaClara_design import utility as ut
+    from aide_design.units import unit_registry as u
+    from aide_design import utility as ut
 except ModuleNotFoundError:
-    from units import unit_registry as u
-    import utility as ut
+    from aide_design.units import unit_registry as u
+    from aide_design import utility as ut
 
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""
@@ -29,6 +29,7 @@ gravity = 9.80665 * u.m/u.s**2
 """A few equations for useful geometry.
 Is there a geometry package that we should be using?"""
 
+@u.wraps(u.m**2, u.m, False)
 def area_circle(DiamCircle):
     """Return the area of a circle."""
     ut.check_range([DiamCircle, ">0", "DiamCircle"])

@@ -4,22 +4,16 @@ Created on Fri Jul  7 11:51:51 2017
 
 @author: Sage Weber-Shirk
 
-Last modified: Mon Aug 7 2017
-By: Sage Weber-Shirk
+Last modified: Mon Aug 17 2017
+By: Ethan Keller
 """
 
 #Note: All answer values in this file should be checked against MathCad
 #before this file is released to the Master branch!
 
+from aide_design.units import unit_registry as u
+from aide_design import physchem as pc
 import unittest
-
-import sys, os
-myGitHubdir = os.path.expanduser('~\\Documents\\GitHub')
-if myGitHubdir not in sys.path:
-    sys.path.append(myGitHubdir)
-
-from AguaClara_design.units import unit_registry as u
-from AguaClara_design import physchem as pc
 
 class GeometryTest(unittest.TestCase):
     """Test the circular area and diameter functions."""

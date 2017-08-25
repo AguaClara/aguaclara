@@ -10,7 +10,7 @@ By: Sage Weber-Shirk
 
 #Let's begin to create the pipe database
 # https://docs.python.org/2/library/csv.html
-from AguaClara_design.units import unit_registry as u
+from aide_design.units import unit_registry as u
 import numpy as np
 # We will use Pandas
 import pandas as pd
@@ -18,7 +18,7 @@ import pandas as pd
     
 import os.path    
 dir_path = os.path.dirname(__file__)
-csv_path = os.path.join(dir_path, 'pipedatabase.csv')
+csv_path = os.path.join(dir_path, 'data/pipedatabase.csv')
 with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
     
