@@ -10,15 +10,9 @@ Created on Wed Jun 21 17:16:46 2017
 # although math is "built in" it needs to be imported so it's functions can be used.
 import math
 
-from scipy import constants, interpolate
-
 #see numpy cheat sheet https://www.dataquest.io/blog/images/cheat-sheets/numpy-cheat-sheet.pdf
 #The numpy import is needed because it is renamed here as np.
 import numpy as np
-
-import pandas as pd
-
-import matplotlib.pyplot as plt
 
 # add imports for AguaClara code that will be needed
 # physchem has functions related to hydraulics, fractal flocs, flocculation, sedimentation, etc.
@@ -40,7 +34,7 @@ Pi_LFOM_safety = 1.2
 SDR_LFOM = 26
 
 def width_stout(HL_LFOM,z):
-    return 2/((2*u.g_0*z)**(1/2)*math.pi*HL_LFOM)
+    return 2/((2*u.g_0*z)**(1/2)*np.pi*HL_LFOM)
 
 def n_lfom_rows(Q,HL_LFOM):
     N_estimated = (HL_LFOM*math.pi/(2*width_stout(HL_LFOM,HL_LFOM)*Q)).to(u.dimensionless)
