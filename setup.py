@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='aide_design',
       version='v0.0.2',
@@ -7,7 +7,7 @@ setup(name='aide_design',
       author='AguaClara at Cornell',
       author_email='aguaclara@cornell.edu',
       license='MIT',
-      packages=['aide_design'],
+      packages=find_packages(),
       install_requires=['pint','numpy','pandas','matplotlib'],
       include_package_data=True,
       zip_safe=False)
