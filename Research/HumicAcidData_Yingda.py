@@ -12,20 +12,15 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-try:
-    from AguaClara_design.units import unit_registry as u
-    from AguaClara_design import floc_model as floc
-except ModuleNotFoundError:
-    try:
-        import floc_model as floc
-        from units import unit_registry as u
-    except ModuleNotFoundError:
-        import sys, os
-        GitPath = os.path.join('~', 'Documents', 'GitHub')
-        myGitHubdir=os.path.expanduser(GitPath)
-        sys.path.append(myGitHubdir)
-        from AguaClara_design.units import unit_registry as u
-        from AguaClara_design import floc_model as floc
+from aide_design import floc_model as floc
+
+from aide_design.units import unit_registry as u
+
+import sys, os
+GitPath = os.path.join('~', 'Documents', 'GitHub')
+myGitHubdir=os.path.expanduser(GitPath)
+sys.path.append(myGitHubdir)
+
 
 k = 0.24
 coag = np.array([0.53, 1.06, 1.59, 2.11, 2.56]) * u.mg/u.L
