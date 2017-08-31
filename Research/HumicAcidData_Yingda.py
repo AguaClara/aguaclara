@@ -12,20 +12,15 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-try:
-    from AguaClara_design.units import unit_registry as u
-    from AguaClara_design import floc_model as floc
-except ModuleNotFoundError:
-    try:
-        import floc_model as floc
-        from units import unit_registry as u
-    except ModuleNotFoundError:
-        import sys, os
-        GitPath = os.path.join('~', 'Documents', 'GitHub')
-        myGitHubdir=os.path.expanduser(GitPath)
-        sys.path.append(myGitHubdir)
-        from AguaClara_design.units import unit_registry as u
-        from AguaClara_design import floc_model as floc
+from aide_design import floc_model as floc
+
+from aide_design.units import unit_registry as u
+
+import sys, os
+GitPath = os.path.join('~', 'Documents', 'GitHub')
+myGitHubdir=os.path.expanduser(GitPath)
+sys.path.append(myGitHubdir)
+
 
 k = 0.24
 coag = np.array([0.53, 1.06, 1.59, 2.11, 2.56]) * u.mg/u.L
@@ -68,9 +63,10 @@ plt.ylabel('pC*')
 plt.xlabel('coagulant dosage (mg/L)')
 
 
+
 plt.plot(coag, Data50NTU['0 mg/L'], 'r.', coag, Data50NTU['3 mg/L'], 'b.',
          coag, Data50NTU['6 mg/L'], 'g.', coag, Data50NTU['9 mg/L'], 'm.',
-         coag, Data50NTU['12 mg/L'], 'c.', coag, Data50NTU['12 mg/L'], 'y.')
+         coag, Data50NTU['12 mg/L'], 'c.', coag, Data50NTU['15 mg/L'], 'y.')
 
 # I wish there was a cleaner way to assign these but I can't think
 # of what it would be.
@@ -102,6 +98,10 @@ line15mg50 = floc.pc_viscous(enerDis, temperature, resTime, tubeDiam,
 x = coagGraph.to(u.mg/u.L)
 plt.plot(x, line0mg50, 'r', x, line3mg50, 'b', x, line6mg50, 'g',
          x, line9mg50, 'm', x, line12mg50, 'c', x, line15mg50, 'y')
+
+plt.legend(['0 mg/L', '3 mg/L', '6 mg/L', '9 mg/L','12 mg/L','15 mg/L'], loc = 'best')
+plt.show()
+
 
 
 # Begin graphing the 100NTU datasets
@@ -143,6 +143,5 @@ x = coagGraph.to(u.mg/u.L)
 plt.plot(x, line0mg100, 'r', x, line3mg100, 'b', x, line6mg100, 'g',
          x, line9mg100, 'm', x, line12mg100, 'c', x, line15mg100, 'y')
 
-
-# And now we display our graph!
+plt.legend(['0 mg/L', '3 mg/L', '6 mg/L', '9 mg/L','12 mg/L','15 mg/L'], loc = 'best')
 plt.show()
