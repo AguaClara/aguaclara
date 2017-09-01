@@ -164,8 +164,6 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM):
     FLOW_ramp_local = flow_ramp(FLOW,HL_LFOM)
     n_orifices_max =n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM)
     n_rows = (n_lfom_rows(FLOW,HL_LFOM))
-    print('here is the flow ramp')
-    print(FLOW_ramp_local)
     D_LFOM_Orifices = orifice_diameter(FLOW,HL_LFOM,drill_series_uom)
     # H is distance from the elevation between two rows of orifices down to the center of the orifices
     H=dist_center_lfom_rows(FLOW,HL_LFOM)-D_LFOM_Orifices*0.5
