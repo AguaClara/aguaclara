@@ -128,8 +128,12 @@ def height_lfom_orifices(FLOW,HL_LFOM,drill_bits):
     point of the LFOM so that the flow goes to zero when the water height
     is at zero.
     """
-    return np.arange(orifice_diameter(FLOW,HL_LFOM,drill_bits)*0.5,HL_LFOM,dist_center_lfom_rows(FLOW,HL_LFOM),dtype= object)
+    
+    return (np.arange(((orifice_diameter(FLOW,HL_LFOM,drill_bits)*0.5).to(u.m)).magnitude,
+                      (HL_LFOM.to(u.m)).magnitude,
+                      ((dist_center_lfom_rows(FLOW,HL_LFOM)).to(u.m)).magnitude))*u.m
 
+#print(height_lfom_orifices(10*u.L/u.s,20*u.cm,[0.75]*u.inch))
 
 def flow_lfom_actual(FLOW,HL_LFOM,drill_bits,Row_Index_Submerged,N_LFOM_Orifices):
     """Calculates the flow for a given number of submerged rows of orifices
