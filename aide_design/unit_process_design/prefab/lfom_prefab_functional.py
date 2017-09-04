@@ -61,9 +61,14 @@ def n_lfom_rows(FLOW,HL_LFOM):
     rows and thus increase the diameter of the orifices. This spacing function 
     also sets the lower depth on the high flow rate LFOM with no accurate 
     flows below a depth equal to the first row height.
+    
+    But it might be better to always set then number of rows to 10.
+    The challenge is to figure out a reasonable system of constraints that
+    reliably returns a valid solution.
     """
     N_estimated = (HL_LFOM*np.pi/(2*width_stout(HL_LFOM,HL_LFOM)*FLOW))
-    return min(10,max(4,math.trunc(N_estimated.magnitude)))
+    #variablerow=min(10,max(4,math.trunc(N_estimated.magnitude)))
+    return 10
 
 
 def dist_center_lfom_rows(FLOW,HL_LFOM):
@@ -95,61 +100,41 @@ def area_lfom_orifices_max(FLOW,HL_LFOM):
 def d_lfom_orifices_max(FLOW,HL_LFOM):
     return (pc.diam_circle(area_lfom_orifices_max(FLOW,HL_LFOM)))
 
-from enum import Enum
-class uomeasure(Enum):
-    english = 0
-    metric = 1
-
-drill_series_uom=uomeasure
-
-def drill_series(uomeasure):
-    if uomeasure is uomeasure.english:
-        ds=np.arange(1/32, 1/4, 1/32)
-        ds=np.append(ds,np.arange(1/4, 1, 1/8))
-        ds=np.append(ds,np.arange(1, 3.25, 1/4))
-        ds=ds*u.inch
-    else:
-        ds=np.arange(0.5, 5, 0.1)
-        ds=np.append(ds,np.arange(5, 19, 1))
-        ds=np.append(ds,np.arange(20, 50, 2))
-        ds=ds*u.mm
-    return ds
-
-def orifice_diameter(FLOW,HL_LFOM,drill_series_uom):
+def orifice_diameter(FLOW,HL_LFOM,drill_bits):
     maxdrill = (min((dist_center_lfom_rows(FLOW,HL_LFOM)).to(u.m).magnitude,(d_lfom_orifices_max(FLOW,HL_LFOM)).to(u.m).magnitude))*u.m
-    return ut.floor_nearest(maxdrill,drill_series(drill_series_uom))
+    return ut.floor_nearest(maxdrill,drill_bits)
 
 
-def drillbit_area(FLOW,HL_LFOM,drill_series_uom):
-    return pc.area_circle(orifice_diameter(FLOW,HL_LFOM,drill_series_uom))
+def drillbit_area(FLOW,HL_LFOM,drill_bits):
+    return pc.area_circle(orifice_diameter(FLOW,HL_LFOM,drill_bits))
 
 
 
-def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM):
+def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
     """A bound on the number of orifices allowed in each row.  
     The distance between consecutive orifices must be enough to retain 
     structural integrity of the pipe.
     """
     S_lfom_orifices_Min= 3*u.mm
-    return math.floor(math.pi*(pipe.ID_SDR(nom_diam_lfom_pipe(FLOW,HL_LFOM,Pi_LFOM_safety,SDR_LFOM),SDR_LFOM))/(orifice_diameter(FLOW,HL_LFOM,drill_series_uom)+S_lfom_orifices_Min))
+    return math.floor(math.pi*(pipe.ID_SDR(nom_diam_lfom_pipe(FLOW,HL_LFOM,Pi_LFOM_safety,SDR_LFOM),SDR_LFOM))/(orifice_diameter(FLOW,HL_LFOM,drill_bits)+S_lfom_orifices_Min))
 
 def flow_ramp(FLOW,HL_LFOM):
     n_rows = n_lfom_rows(FLOW,HL_LFOM)
     return np.linspace(FLOW.magnitude/n_rows,FLOW.magnitude,n_rows)*FLOW.units
             
-def height_lfom_orifices(FLOW,HL_LFOM,drill_series_uom):
+def height_lfom_orifices(FLOW,HL_LFOM,drill_bits):
     """Calculates the height of the center of each row of orifices.
     The bottom of the bottom row orifices is at the zero elevation
     point of the LFOM so that the flow goes to zero when the water height
     is at zero.
     """
-    return np.arange(orifice_diameter(FLOW,HL_LFOM,drill_series_uom.metric)*0.5,HL_LFOM,dist_center_lfom_rows(FLOW,HL_LFOM),dtype= object)
+    return np.arange(orifice_diameter(FLOW,HL_LFOM,drill_bits)*0.5,HL_LFOM,dist_center_lfom_rows(FLOW,HL_LFOM),dtype= object)
 
 
-def flow_lfom_actual(FLOW,HL_LFOM,drill_series_uom,Row_Index_Submerged,N_LFOM_Orifices):
+def flow_lfom_actual(FLOW,HL_LFOM,drill_bits,Row_Index_Submerged,N_LFOM_Orifices):
     """Calculates the flow for a given number of submerged rows of orifices
     """
-    D_LFOM_Orifices=orifice_diameter(FLOW,HL_LFOM,drill_series_uom)
+    D_LFOM_Orifices=orifice_diameter(FLOW,HL_LFOM,drill_bits)
     row_height=dist_center_lfom_rows(FLOW,HL_LFOM)
     #harray is the distance from the water level to the center of the orifices when the water is at the max level 
     harray = (np.linspace(row_height.to(u.mm),HL_LFOM.to(u.mm),n_lfom_rows(FLOW,HL_LFOM)))*u.mm -0.5* D_LFOM_Orifices 
@@ -160,11 +145,11 @@ def flow_lfom_actual(FLOW,HL_LFOM,drill_series_uom,Row_Index_Submerged,N_LFOM_Or
 
 
 #Calculate number of orifices at each level given a diameter
-def n_lfom_orifices(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM):
+def n_lfom_orifices(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
     FLOW_ramp_local = flow_ramp(FLOW,HL_LFOM)
-    n_orifices_max =n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM)
+    n_orifices_max =n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits,SDR_LFOM)
     n_rows = (n_lfom_rows(FLOW,HL_LFOM))
-    D_LFOM_Orifices = orifice_diameter(FLOW,HL_LFOM,drill_series_uom)
+    D_LFOM_Orifices = orifice_diameter(FLOW,HL_LFOM,drill_bits)
     # H is distance from the elevation between two rows of orifices down to the center of the orifices
     H=dist_center_lfom_rows(FLOW,HL_LFOM)-D_LFOM_Orifices*0.5
     n=[]                       
@@ -172,7 +157,7 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM):
         #place zero in the row that we are going to calculate the required number of orifices
         n=np.append(n,0)
         #calculate the ideal number of orifices at the current row without constraining to an integer
-        n_orifices_real=((FLOW_ramp_local[i]-flow_lfom_actual(FLOW,HL_LFOM,drill_series_uom,i,n))/
+        n_orifices_real=((FLOW_ramp_local[i]-flow_lfom_actual(FLOW,HL_LFOM,drill_bits,i,n))/
                                   pc.flow_orifice_vert(D_LFOM_Orifices,H,ratio_VC_orifice)).to(u.dimensionless).magnitude
         #constrain number of orifices to be less than the max per row and greater or equal to 0                 
         n[i]=min((max(0,round(n_orifices_real))),n_orifices_max)
@@ -181,11 +166,11 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM):
 
 #This function calculates the error of the design based on the differences between the predicted flow rate
 #and the actual flow rate through the LFOM.
-def flow_lfom_error(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM):
-    N_lfom_orifices=n_lfom_orifices(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM)
+def flow_lfom_error(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
+    N_lfom_orifices=n_lfom_orifices(FLOW,HL_LFOM,drill_bits,SDR_LFOM)
     FLOW_lfom_error=[]
     for j in range (len(N_lfom_orifices)-1):
-        FLOW_lfom_error.append((flow_lfom_actual(FLOW,HL_LFOM,drill_series_uom,j,N_lfom_orifices)-flow_ramp(FLOW,HL_LFOM)[j])/FLOW)
+        FLOW_lfom_error.append((flow_lfom_actual(FLOW,HL_LFOM,drill_bits,j,N_lfom_orifices)-flow_ramp(FLOW,HL_LFOM)[j])/FLOW)
     return FLOW_lfom_error
 
 
@@ -195,10 +180,10 @@ def flow_lfom_ideal(FLOW,HL_LFOM,H):
     return flow_lfom_ideal
 
 
-def flow_lfom(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM,H):
-    D_lfom_orifices=orifice_diameter(FLOW,HL_LFOM,drill_series_uom)
+def flow_lfom(FLOW,HL_LFOM,drill_bits,SDR_LFOM,H):
+    D_lfom_orifices=orifice_diameter(FLOW,HL_LFOM,drill_bits)
     H_submerged=np.arange(H-0.5*D_lfom_orifices,HL_LFOM,H-dist_center_lfom_rows(FLOW,HL_LFOM),dtype=object)
-    N_lfom_orifices=n_lfom_orifices(FLOW,HL_LFOM,drill_series_uom,SDR_LFOM)
+    N_lfom_orifices=n_lfom_orifices(FLOW,HL_LFOM,drill_bits,SDR_LFOM)
     flow=[]
     for i in range (len(H_submerged)):
         flow.append(pc.flow_orifice_vert(D_lfom_orifices,H_submerged[i],ratio_VC_orifice)*N_lfom_orifices[i])
