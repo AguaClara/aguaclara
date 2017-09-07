@@ -3,8 +3,9 @@
 Created on Wed Jun 28 13:57:23 2017
 
 @author: cc2467
+
+This file does not follow PEP naming conventions for variables. - mw24
 """
-import math
 
 import numpy as np
 
@@ -14,7 +15,6 @@ from aide_design.units import unit_registry as u
 
 from aide_design import utility as ut
 
-from aide_design import expert_inputs as exp
 
 #==============================================================================
 # Functions for Coagulant Viscosities and Selecting Available Tube Diameters
@@ -40,6 +40,9 @@ def viscosity_kinematic_alum(conc_alum, temp):
     
     If given units, the function will automatically convert to Kelvin.
     If not given units, the function will assume Kelvin.
+    This function assumes that the temperature dependence can be explained 
+    based on the effect on water and that there is no confounding effect from 
+    the coagulant.
     """
     nu = (1 + (4.255 * 10**-6) * conc_alum**2.289) * pc.viscosity_kinematic(temp).magnitude
     return nu
@@ -51,6 +54,9 @@ def viscosity_kinematic_pacl(conc_pacl, temp):
     
     If given units, the function will automatically convert to Kelvin.
     If not given units, the function will assume Kelvin.
+    This function assumes that the temperature dependence can be explained 
+    based on the effect on water and that there is no confounding effect from 
+    the coagulant.
     """
     nu = (1 + (2.383 * 10**-5) * conc_pacl**1.893) * pc.viscosity_kinematic(temp).magnitude
     return nu
@@ -98,13 +104,13 @@ def max_linear_flow(Diam, HeadlossCDC, Ratio_Linear_CDC_Error, KMinor):
 # Length of tube required to get desired head loss at maximum flow based on 
 # the Hagen-Poiseuille equation.    
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, None], False)
-def _len_tube(Flow, Diam, HeadLoss, Nu, KMinor):
+def _len_tube(Flow, Diam, HeadLoss, conc_chem, temp, en_chem, KMinor):
     """Length of tube required to get desired head loss at maximum flow based on 
     the Hagen-Poiseuille equation."""
     num1 = pc.gravity.magnitude * HeadLoss * np.pi * (Diam**4)
-    denom1 = 128 * Nu * Flow
+    denom1 = 128 * viscosity_kinematic_chem(conc_chem, temp, en_chem) * Flow
     num2 = Flow * KMinor
-    denom2 = 16 * np.pi * Nu
+    denom2 = 16 * np.pi * viscosity_kinematic_chem(conc_chem, temp, en_chem)
     len = ((num1/denom1) - (num2/denom2))
     return len
 
@@ -144,15 +150,14 @@ def _flow_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
 # 
 @u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.degK, None, None], False)
 def _length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
-                           DiamTubeAvail, HeadlossCDC, temp, ENCoag, MinorLossCDCTube):
+                           DiamTubeAvail, HeadlossCDC, temp, en_chem, MinorLossCDCTube):
     """Calculate the length of each diameter tube given the corresponding flow rate
     and coagulant. Choose the tube that is shorter than the maximum length tube."""
     
     Flow = _flow_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, DiamTubeAvail, HeadlossCDC).magnitude
-    Nu =  viscosity_kinematic_chem(ConcStock, temp, ENCoag).magnitude
                   
     
-    return _len_tube(Flow, DiamTubeAvail, HeadlossCDC, Nu, MinorLossCDCTube).magnitude
+    return _len_tube(Flow, DiamTubeAvail, HeadlossCDC, ConcStock, temp, en_chem, MinorLossCDCTube).magnitude
     
 
 # Find the index of that tube
@@ -185,16 +190,16 @@ def i_cdc(FlowPlant, ConcDoseMax, ConcStock,
 
 @u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
 def len_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
-                 DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                 ENCoag, MinorLossCDCTube):
+                 DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp, 
+                 en_chem, MinorLossCDCTube):
    """The length of tubing may be longer than the max specified if the stock 
    concentration is too high to give a viable solution with the specified 
    length of tubing."""
    index = i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
-                DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                ENCoag, MinorLossCDCTube)
+                DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp,
+                en_chem, MinorLossCDCTube)
    len_cdc_tube = (_length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
-                                        DiamTubeAvail, HeadlossCDC, ENCoag, 
+                                        DiamTubeAvail, HeadlossCDC, temp, en_chem, 
                                         MinorLossCDCTube))[index].magnitude
    
    return len_cdc_tube
@@ -203,11 +208,11 @@ def len_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
 @u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)
 def diam_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
                   DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                  ENCoag, MinorLossCDCTube):
+                  temp, en_chem, MinorLossCDCTube):
      
     index = i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
                    DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                   ENCoag, MinorLossCDCTube)
+                   temp, en_chem, MinorLossCDCTube)
     
     diam_cdc_tube = DiamTubeAvail[index]
      
@@ -217,11 +222,11 @@ def diam_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
 @u.wraps(None, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, None, None], False)    
 def n_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, 
           DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-          ENCoag, MinorLossCDCTube):
+          temp, en_chem, MinorLossCDCTube):
     
     index = i_cdc(FlowPlant, ConcDoseMax, ConcStock, 
                   DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, 
-                  ENCoag, MinorLossCDCTube)
+                  temp, en_chem, MinorLossCDCTube)
     
     n_cdc_tube = _n_tube_array(FlowPlant, ConcDoseMax, ConcStock, 
                   DiamTubeAvail, HeadlossCDC)[index]
