@@ -188,7 +188,7 @@ DIAM_DRILL_ENG = [0.03125, 0.0625, 0.09375, 0.125, 0.15625, 0.1875, 0.21875, 0.2
 DIAM_DRILL_MET = [0.5*u.mm]
 
 counter = 0
-
+# these drill series should have been created using arange.
 
 while DIAM_DRILL_MET[counter] <= 4.98*u.mm:
     counter+=1
