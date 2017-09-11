@@ -1,13 +1,14 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='aide_design',
-      version='v0.0.2',
+      version='0.0.3',
       description='AguaClara Infrastructure Design Engine',
       url='https://github.com/AguaClara/aguaclara_design',
       author='AguaClara at Cornell',
       author_email='aguaclara@cornell.edu',
       license='MIT',
-      packages=['aide_design'],
+      packages=find_packages(),
       install_requires=['pint','numpy','pandas','matplotlib'],
       include_package_data=True,
+      test_suite="tests",
       zip_safe=False)
