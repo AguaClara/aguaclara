@@ -10,4 +10,5 @@ setup(name='aide_design',
       packages=find_packages(),
       install_requires=['pint','numpy','pandas','matplotlib'],
       include_package_data=True,
+      test_suite="tests",
       zip_safe=False)
