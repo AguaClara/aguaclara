@@ -4,6 +4,7 @@ from aide_design import physchem as pc
 import aide_design.expert_inputs as exp
 import aide_design.materials_database as mats
 import numpy as np
+import aide_design.utility as ut
 """ Minor Loss Coefficients of Reductions Module.
 
 This module includes all minor loss coefficient calculations for common complex geometries.
@@ -14,7 +15,9 @@ Note: there are several other cases listed in the above resource that should eve
 These are thin sharp orifices, and thick orifices.
 """
 
+
 @u.wraps(None, [u.inch, u.inch, u.L/u.s])
+@ut.list_handler
 def k_value_expansion(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC, theta=180, ROUNDED=False) -> float:
     """This function calculates the minor loss coefficient of a square, tapered or rounded expansion in a pipe
      using the equation defined here, where Re is the reynolds number on the inlet side, D_in and D_out are the inner diameter
@@ -67,7 +70,9 @@ def k_value_expansion(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, R
 
     return k
 
+
 @u.wraps(None, [u.inch, u.inch, u.L/u.s])
+@ut.list_handler
 def k_value_reduction(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC, theta=180, ROUNDED=False) -> float:
     """This function calculates the minor loss coefficient of a square, tapered or round reduction in a pipe
      using the equation defined here, where Re is the reynolds number on the inlet side, D_in and D_out are the inner diameter
@@ -129,7 +134,6 @@ def k_value_reduction(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, R
 ######### Reductions:
 
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
 def _k_value_square_reduction(id_entrance: float, id_exit: float, re: float, f: float) -> float:
     # Calculate minor loss coefficient for square reducer
     if re < 2500:
@@ -139,7 +143,6 @@ def _k_value_square_reduction(id_entrance: float, id_exit: float, re: float, f: 
     return k
 
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
 def _k_value_tapered_reduction(id_entrance: float, id_exit: float, re: float, f, theta: float) -> float:
     # Calculate minor loss coefficient for a tapered reducer
     k_square = _k_value_square_reduction(id_entrance, id_exit, re, f)
@@ -152,14 +155,12 @@ def _k_value_tapered_reduction(id_entrance: float, id_exit: float, re: float, f,
     return k
 
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
 def _k_value_rounded_reduction(id_entrance: float, id_exit: float, re: float) -> float:
     return (0.1 + (50 / re)) * ((id_entrance / id_exit) ** 4 - 1)
 
 ######### Expansions:
 
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
 def _k_value_square_expansion(id_entrance: float, id_exit: float, re: float, f: float) -> float:
     # Calculate minor loss coefficient for square expansion
     if re < 4000:
@@ -169,7 +170,6 @@ def _k_value_square_expansion(id_entrance: float, id_exit: float, re: float, f: 
     return k
 
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
 def _k_value_tapered_expansion(id_entrance: float, id_exit: float, re: float, f, theta: float) -> float:
     # Calculate minor loss coefficient for a tapered expansion
     k_square = _k_value_square_expansion(id_entrance, id_exit, re, f)
@@ -181,6 +181,5 @@ def _k_value_tapered_expansion(id_entrance: float, id_exit: float, re: float, f,
         raise ValueError('The reducer angle cannot be outside the [0,180] range')
     return k
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
 def _k_value_rounded_expansion(id_entrance: float, id_exit: float, re: float, f: float) -> float:
     return _k_value_square_expansion(id_entrance, id_exit, re, f)
