@@ -14,7 +14,7 @@ https://neutrium.net/fluid_flow/pressure-loss-from-fittings-expansion-and-reduct
 """
 
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
+@u.wraps(u.dimensionless, [u.m, u.m, u.L/u.s])
 @ut.list_handler
 def k_value_expansion(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC, theta=180, ROUNDED=False) -> float:
     """This function calculates the minor loss coefficient of a square, tapered or rounded expansion in a pipe
@@ -69,7 +69,7 @@ def k_value_expansion(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, R
     return k
 
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
+@u.wraps(u.dimensionless, [u.m, u.m, u.L/u.s])
 @ut.list_handler
 def k_value_reduction(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC, theta=180, ROUNDED=False) -> float:
     """This function calculates the minor loss coefficient of a square, tapered or round reduction in a pipe
@@ -128,9 +128,9 @@ def k_value_reduction(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, R
     return k
 
 
-@u.wraps(None, [u.inch, u.inch, u.L/u.s])
+@u.wraps(u.dimensionless, [u.m, u.m, u.m, u.m**3/u.s])
 @ut.list_handler
-def k_value_orifice(id_pipe: float, id_orifice: float, length_orifice: float, flow, NU=exp.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC) -> float:
+def k_value_orifice(id_pipe: float, id_orifice: float, length_orifice: float, flow: float, NU=exp.NU_WATER) -> float:
     """This function calculates the minor loss coefficient of a thick and thin orifice plate in a pipe
      using the equation defined here, where Re is the reynolds number on the inlet side, and D_pipe and D_orifice are
      the inner diameter of the enclosing pipe and orifice, respectively, and L is the length of the orifice:
@@ -166,22 +166,29 @@ def k_value_orifice(id_pipe: float, id_orifice: float, length_orifice: float, fl
             k (float): the dimensionless minor loss coefficient (k value) of the orifice.
         """
 
+    # The orifice cannot be larger than the enclosing pipe:
+    if id_orifice > id_pipe:
+        raise ValueError('The orifice cannot be larger than the enclosing pipe.')
+
     # Calculate constants
     # determine reynolds number in entrance pipe
     re = pc.re_pipe(flow, id_pipe, NU)
 
     # The orifice is thin
     if length_orifice == 0:
-        k = _k_value_thin_sharp_orifice(id_pipe, id_orifice, re)
+            k = _k_value_thin_sharp_orifice(id_pipe, id_orifice, re)
 
     # The orifice is thick
     elif length_orifice/id_orifice < 5:
         k = _k_value_thick_orifice(id_pipe, id_orifice, length_orifice, re)
 
-    # The orifice is too thick to be considered an orifice
+    # The orifice is too thick to be considered an orifice, square reduction and expansion is used to model
     else:
-        raise ValueError('For an orifice that is so long such that length_orifice/id_orifice > 5, use a'
-                         'reduction and expansion to determine the k value')
+        k = k_value_reduction(id_pipe * u.m, id_orifice * u.m, flow * u.m**3/u.s) + k_value_expansion(id_orifice * u.m,
+                                                                                                      id_pipe * u.m,
+                                                                                                      flow * u.m**3/u.s)
+        # raise ValueError('For an orifice that is so long such that length_orifice/id_orifice > 5, use a'
+        #                  ' reduction and expansion to determine the k value')
 
     return k
 
