@@ -25,7 +25,18 @@ import pint
 
 unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
 
-# default formatting includes 2 significant digits. This can be overridden with print('{:.3f}'.format(3*ureg.m /9))
-unit_registry.default_format = '.2f'
+# default formatting includes 4 significant digits. This can be overridden on a per-print basis
+#  with print('{:.3f}'.format(3*ureg.m /9))
+unit_registry.default_format = '.4g'
+
+
+def set_sig_fig(n: int):
+    """Set the default number of significant figures used to print pint 
+    quantities. Defaults to 4.
+    
+    Args:
+        n: number of significant figures to display
+    """
+    unit_registry.default_format = '.' + str(n) + 'g'
 
 unit_registry.load_definitions(os.path.join(os.path.dirname(__file__), "data/unit_definitions.txt"))
