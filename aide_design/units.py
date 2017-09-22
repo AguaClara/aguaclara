@@ -25,4 +25,7 @@ import pint
 
 unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
 
+# default formatting includes 2 significant digits. This can be overridden with print('{:.3f}'.format(3*ureg.m /9))
+unit_registry.default_format = '.2f'
+
 unit_registry.load_definitions(os.path.join(os.path.dirname(__file__), "data/unit_definitions.txt"))
