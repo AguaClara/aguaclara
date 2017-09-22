@@ -244,3 +244,5 @@ def check_range(*args):
             if 'boolean' in arg[1] and type(i) != bool:
                 raise TypeError("{1} is {0} but must be a "
                                 "boolean.".format(i, arg[2]))
+
+from aide_design import play_aide as a
