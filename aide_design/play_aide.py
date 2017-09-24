@@ -5,30 +5,71 @@ It imports all commonly used aide packages with one line, ensures Python is run 
 virtual environment, sets sig figs correctly and provides any additional environment
 massaging to get to designing as quickly as possible. This should NOT be used by other
 modules within aide_design as it results in unnecessary imports.
+
+Usage:
+
+    * Import all into your global namespace with: `from aide_design.play_aide import *`
+    * Setup defaults to aide_design defaults with: 'setup_aide()'
+
+Now you should be able to execute:
+    *`np.array([1,2,3,4])
+And your numbers should be limited to four significant figures  when printed.
 """
 
-def setup():
+# Third-party imports
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib
+
+# AIDE imports
+import aide_design
+import aide_design.pipedatabase as pipe
+from aide_design.units import unit_registry as u
+from aide_design import physchem as pc
+import aide_design.expert_inputs as exp
+import aide_design.materials_database as mat
+import aide_design.utility as ut
+import aide_design.k_value_of_reductions_utility as k
+import aide_design.pipeline_utility as pipeline
+
+
+def setup_aide():
     """
     This is the public function that should be called to completely setup the aide environment
     in a jupyter notebook.
     :return:
     """
+    matplotlib.style.use('ggplot')
+    set_sig_fig()
+    ensure_in_a_virtual_environment()
 
 
-def imports():
-    """
-    imports all commonly used modules.
-    :return:
-    """
-    import numpy as np
+def set_sig_fig(n: int = 4):
+    """Set the default number of significant figures used to print pint, pandas and numpy values
+    quantities. Defaults to 4.
 
+    Args:
+        n: number of significant figures to display
 
-def set_sig_figs():
+    Example:
+        import aide_design
+        from aide_design.units import unit_registry as u
+        h=2.5532532522352543*u.m
+        e = 25532532522352543*u.m
+        print('h before sigfig adjustment: ',h)
+        print('e before sigfig adjustment: ',e)
+        aide_design.units.set_sig_fig(10)
+        print('h after sigfig adjustment: ',h)
+        print('e after sigfig adjustment: ',e)
+
+        h before sigfig adjustment:  2.553 meter
+        e before sigfig adjustment:  2.553e+16 meter
+        h after sigfig adjustment:  2.553253252 meter
+        e after sigfig adjustment:  2.553253252e+16 meter
     """
-    This should set the appropriate number of sigfigs to be displayed with pint, pandas and numpy,
-    and any additional packages aide uses that are in charge of printing numbers
-    """
-    return 0
+    u.default_format = '.' + str(n) + 'g'
+    pd.options.display.float_format = ('{:,.' + str(n) + '}').format
 
 
 def ensure_in_a_virtual_environment():
