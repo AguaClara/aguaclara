@@ -29,7 +29,10 @@ from aide_design.units import unit_registry as u
 
 # utility has the significant digit display function
 from aide_design import utility as ut
-ratio_VC_orifice= 0.62
+
+# import export inputs and define the VC coefficient
+from aide_design import expert_inputs as exp
+ratio_VC_orifice= exp.RATIO_VC_ORIFICE
 
 # The following constants need to go into the constants file
 Pi_LFOM_safety = 1.2
@@ -141,7 +144,7 @@ def flow_lfom_actual(FLOW,HL_LFOM,drill_bits,Row_Index_Submerged,N_LFOM_Orifices
     D_LFOM_Orifices=orifice_diameter(FLOW,HL_LFOM,drill_bits)
     row_height=dist_center_lfom_rows(FLOW,HL_LFOM)
     #harray is the distance from the water level to the center of the orifices when the water is at the max level 
-    harray = (np.linspace(row_height.to(u.mm),HL_LFOM.to(u.mm),n_lfom_rows(FLOW,HL_LFOM)))*u.mm -0.5* D_LFOM_Orifices 
+    harray = (np.linspace(row_height.to(u.mm).magnitude,HL_LFOM.to(u.mm).magnitude,n_lfom_rows(FLOW,HL_LFOM)))*u.mm -0.5* D_LFOM_Orifices 
     FLOW_new=0*u.m**3/u.s
     for i in range(Row_Index_Submerged+1):   
         FLOW_new = FLOW_new + (N_LFOM_Orifices[i]*(pc.flow_orifice_vert(D_LFOM_Orifices,harray[Row_Index_Submerged-i],ratio_VC_orifice)))
