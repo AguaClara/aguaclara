@@ -8,8 +8,8 @@ modules within aide_design as it results in unnecessary imports.
 
 Usage:
 
-    * Import all into your global namespace with: `from aide_design.play_aide import *`
-    * Setup defaults to aide_design defaults with: 'setup_aide()'
+    * Import all into your global namespace with: `from aide_design.play *`
+    * setup_aide() should run during import.
 
 Now you should be able to execute:
     *`np.array([1,2,3,4])
@@ -32,6 +32,7 @@ import aide_design.materials_database as mat
 import aide_design.utility as ut
 import aide_design.k_value_of_reductions_utility as k
 import aide_design.pipeline_utility as pipeline
+import warnings
 
 
 def setup_aide():
@@ -42,8 +43,8 @@ def setup_aide():
     """
     matplotlib.style.use('ggplot')
     set_sig_fig()
-    ensure_in_a_virtual_environment()
-
+    #ensure_in_a_virtual_environment()
+        # Don't want to scare the kiddos with virtual environments yet! TODO.
 
 def set_sig_fig(n: int = 4):
     """Set the default number of significant figures used to print pint, pandas and numpy values
@@ -82,3 +83,6 @@ def ensure_in_a_virtual_environment():
         raise UserWarning("aide_design should always be run in a virtual environment to ensure"
                           "that all dependencies are correctly installed. Please refer to the"
                           "readme for virtual environment setup instructions.")
+
+# Run when imported
+setup_aide()
