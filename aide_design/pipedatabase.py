@@ -23,7 +23,7 @@ with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
     
 
-
+@u.wraps(u.inch, u.inch, False)
 def OD(ND):
     """Return a pipe's outer diameter according to its nominal diameter.
  
@@ -31,16 +31,14 @@ def OD(ND):
     given nominal diameter have the same outer diameter.
     
     Steps:
-    1. Extract the magnitude in inches from the nominal diameter.
-    2. Find the index of the closest nominal diameter.
+    1. Find the index of the closest nominal diameter.
        (Should this be changed to find the next largest ND?)
-    3. Take the values of the array, subtract the ND, take the absolute 
+    2. Take the values of the array, subtract the ND, take the absolute
        value, find the index of the minimium value.
     """
-    myindex = (np.abs(np.array(pipedb['NDinch']) 
-                      - (ND.to(u.inch)).magnitude)
-                     ).argmin()
-    return pipedb.iloc[myindex, 1] * u.inch
+    index = (np.abs(np.array(pipedb['NDinch'])
+                      - (ND))).argmin()
+    return pipedb.iloc[index, 1]
 
 
 def ID_SDR(ND, SDR):
@@ -52,7 +50,7 @@ def ID_SDR(ND, SDR):
     ID = OD(ND) * (SDR-2) / SDR
     return ID
 
-
+@u.wraps(u.inch, u.inch, False)
 def ID_sch40(ND):
     """Return the inner diameter for schedule 40 pipes. 
     
@@ -62,9 +60,9 @@ def ID_sch40(ND):
     value, find the index of the minimium value.
     """
     myindex = (np.abs(np.array(pipedb['NDinch']) 
-                      - (ND.to(u.inch)).magnitude)
+                      - (ND))
                       ).argmin()
-    return (pipedb.iloc[myindex, 1] - 2*(pipedb.iloc[myindex,5])) * u.inch
+    return (pipedb.iloc[myindex, 1] - 2*(pipedb.iloc[myindex,5]))
 
 
 def ND_all_available():
