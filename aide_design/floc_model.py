@@ -176,42 +176,42 @@ def invp(pC, Cprime):
 
 #################### Fractal functions ####################
 @u.wraps(u.m, [u.dimensionless, u.m, u.dimensionless], False)
-def diam_fractal(DiamFractal, DiamInitial, NumCol):
+def diam_fractal(DimFractal, DiamInitial, NumCol):
     """Return the diameter of a floc given NumCol doubling collisions."""
-    return DiamInitial * 2**(NumCol / DiamFractal)
+    return DiamInitial * 2**(NumCol / DimFractal)
 
 
 @u.wraps(None, [u.dimensionless, None, u.m], False)
-def num_coll_reqd(DiamFractal, material, DiamTarget):
+def num_coll_reqd(DimFractal, material, DiamTarget):
     """Return the number of doubling collisions required.
 
     Calculates the number of doubling collisions required to produce
     a floc of diameter DiamTarget.
     """
-    return DiamFractal * np.log2(DiamTarget/material.Diameter)
+    return DimFractal * np.log2(DiamTarget/material.Diameter)
 
 
 @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None,
                u.dimensionless, u.m], False)
 def sep_dist_floc(ConcAluminum, ConcClay, coag, material,
-                  DiamFractal, DiamTarget):
+                  DimFractal, DiamTarget):
     """Return separation distance as a function of floc size."""
     return (material.Diameter
             * (np.pi/(6
                       * frac_vol_floc_initial(ConcAluminum, ConcClay,
                                               coag, material)
                       ))**(1/3)
-            * (DiamTarget / material.Diameter)**(DiamFractal / 3)
+            * (DiamTarget / material.Diameter)**(DimFractal / 3)
             )
 
 
 @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, u.dimensionless,
                None, u.m], False)
-def frac_vol_floc(ConcAluminum, ConcClay, coag, DiamFractal,
+def frac_vol_floc(ConcAluminum, ConcClay, coag, DimFractal,
                   material, DiamTarget):
     """Return the floc volume fraction."""
     return (frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material)
-            * (DiamTarget / material.Diameter)**(3-DiamFractal)
+            * (DiamTarget / material.Diameter)**(3-DimFractal)
             )
 
 
@@ -373,20 +373,20 @@ def pc_viscous(EnergyDis, Temp, Time, DiamTube,
 
 @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, u.dimensionless, u.m,
                        None, None, u.degK], False)
-def dens_floc(ConcAl, ConcClay, DiamFractal, DiamTarget, coag, material, Temp):
+def dens_floc(ConcAl, ConcClay, DimFractal, DiamTarget, coag, material, Temp):
     """Calculate floc density as a function of size."""
     WaterDensity = pc.density_water(Temp).magnitude
     return ((dens_floc_init(ConcAl, ConcClay, coag, material).magnitude
              - WaterDensity
              )
-            * (material.Diameter / DiamTarget)**(3 - DiamFractal)
+            * (material.Diameter / DiamTarget)**(3 - DimFractal)
             + WaterDensity
             )
 
 
 @u.wraps(u.m/u.s, [u.kg/u.m**3, u.kg/u.m**3, None, None, u.dimensionless,
                    u.m, u.degK], False)
-def vel_term_floc(ConcAl, ConcClay, coag, material, DiamFractal,
+def vel_term_floc(ConcAl, ConcClay, coag, material, DimFractal,
                   DiamTarget, Temp):
     """Calculate floc terminal velocity."""
     WaterDensity = pc.density_water(Temp).magnitude
@@ -398,14 +398,14 @@ def vel_term_floc(ConcAl, ConcClay, coag, material, DiamFractal,
                 )
                / WaterDensity
                )
-            * (DiamTarget / material.Diameter) ** (DiamFractal - 1)
+            * (DiamTarget / material.Diameter) ** (DimFractal - 1)
             )
 
 
 @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None,
                u.dimensionless, u.m/u.s, u.degK], False)
 def diam_floc_vel_term(ConcAl, ConcClay, coag, material,
-                       DiamFractal, VelTerm, Temp):
+                       DimFractal, VelTerm, Temp):
     """Calculate floc diamter as a function of terminal velocity."""
     WaterDensity = pc.density_water(Temp).magnitude
     return (material.Diameter * (((18 * VelTerm * PHI_FLOC
@@ -419,7 +419,7 @@ def diam_floc_vel_term(ConcAl, ConcClay, coag, material,
                                - WaterDensity
                                )
                             )
-                        ) ** (1 / (DiamFractal - 1))
+                        ) ** (1 / (DimFractal - 1))
             )
 
 
@@ -427,7 +427,7 @@ def diam_floc_vel_term(ConcAl, ConcClay, coag, material,
                u.m, u.m, u.dimensionless, u.dimensionless],
          False)
 def time_col_laminar(EnergyDis, Temp, ConcAl, ConcClay, coag, material, 
-                     DiamTarget, DiamTube, DiamFractal, RatioHeightDiameter):
+                     DiamTarget, DiamTube, DimFractal, RatioHeightDiameter):
     """Calculate single collision time for laminar flow mediated collisions.
 
     Calculated as a function of floc size.
@@ -435,7 +435,7 @@ def time_col_laminar(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
     return (((1/6) * ((6/np.pi)**(1/3))
              * frac_vol_floc_initial(ConcAl, ConcClay, coag, material)**(-2/3)
              * (pc.viscosity_kinematic(Temp).magnitude / EnergyDis)**(1/2)
-             * (DiamTarget / material.Diameter)**(2*DiamFractal/3 - 2)
+             * (DiamTarget / material.Diameter)**(2*DimFractal/3 - 2)
              )  # End of the numerator
             / (gamma_coag(ConcClay, ConcAl, coag, material, DiamTube,
                           RatioHeightDiameter)
@@ -446,14 +446,14 @@ def time_col_laminar(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
 @u.wraps(u.s, [u.W/u.kg, u.kg/u.m**3, u.kg/u.m**3, None, None,
                u.m, u.dimensionless], False)
 def time_col_turbulent(EnergyDis, ConcAl, ConcClay, coag, material,
-                       DiamTarget, DiamFractal):
+                       DiamTarget, DimFractal):
     """Calculate single collision time for turbulent flow mediated collisions.
 
     Calculated as a function of floc size.
     """
     return((1/6) * (6/np.pi)**(1/9) * EnergyDis**(-1/3) * DiamTarget**(2/3)
            * frac_vol_floc_initial(ConcAl, ConcClay, coag, material)**(-8/9)
-           * (DiamTarget / material.Diameter)**((8*(DiamFractal-3)) / 9)
+           * (DiamTarget / material.Diameter)**((8*(DimFractal-3)) / 9)
            )
 
 
@@ -471,7 +471,7 @@ def lambda_vel(EnergyDis, Temp):
 @u.wraps(u.m, [u.W/u.kg, u.degK, u.kg/u.m**3, u.kg/u.m**3, None, None, 
                u.dimensionless], False)
 def diam_kolmogorov(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
-                    DiamFractal):
+                    DimFractal):
     """Return the size of the floc with separation distances equal to
     the Kolmogorov length and the inner viscous length scale.
     """
@@ -480,19 +480,19 @@ def diam_kolmogorov(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
                * ((6 * frac_vol_floc_initial(ConcAl, ConcClay, coag, material))
                   / np.pi
                   )**(1/3)
-               )**(3 / DiamFractal)
+               )**(3 / DimFractal)
             )
 
 
 @u.wraps(u.m, [u.W/u.kg, u.degK, u.kg/u.m**3, u.kg/u.m**3, None, None, 
                u.dimensionless], False)
-def diam_vel(EnergyDis, Temp, ConcAl, ConcClay, coag, material, DiamFractal):
+def diam_vel(EnergyDis, Temp, ConcAl, ConcClay, coag, material, DimFractal):
     return (material.Diameter
             * ((lambda_vel(EnergyDis, Temp).magnitude / material.Diameter)
                * ((6 * frac_vol_floc_initial(ConcAl, ConcClay, coag, material))
                   / np.pi
                   )**(1/3)
-               )**(3/DiamFractal)
+               )**(3/DimFractal)
             )
 
 
