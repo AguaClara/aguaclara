@@ -18,9 +18,11 @@ from scipy import interpolate, integrate
 try:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
+    from aide_design import expert_inputs as exp
 except ModuleNotFoundError:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
+    from aide_design import expert_inputs as exp
 
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""
@@ -43,7 +45,7 @@ def diam_circle(AreaCircle):
     return np.sqrt(4 * AreaCircle / np.pi)
 
 ######################### Hydraulics #########################
-RATIO_VC_ORIFICE = 0.62
+RATIO_VC_ORIFICE = exp.RATIO_VC_ORIFICE
 
 RE_TRANSITION_PIPE = 2100
 
