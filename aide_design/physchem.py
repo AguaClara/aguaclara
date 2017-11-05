@@ -105,7 +105,7 @@ def re_pipe(FlowRate, Diam, Nu):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Diam, ">0", "Diameter"],
                    [Nu, ">0", "Nu"])
-    return (4 * FlowRate) / (np.pi * Diam * Nu)
+    return (4 * FlowRate) / (np.pi * Diam**2 * Nu)
 
 
 @u.wraps(u.m, [u.m, u.m, u.dimensionless], False)
@@ -357,7 +357,7 @@ def headloss_gen(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough):
                                      Length, Nu, PipeRough).magnitude)
 
 
-@u.wraps(u.m, [u.m**2/u.s, u.m, u.m, u.dimensionless, 
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.dimensionless, 
                u.m**2/u.s, u.m, u.dimensionless], False)
 def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets):
     """Return the total head loss through the manifold."""
