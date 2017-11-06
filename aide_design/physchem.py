@@ -105,7 +105,7 @@ def re_pipe(FlowRate, Diam, Nu):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Diam, ">0", "Diameter"],
                    [Nu, ">0", "Nu"])
-    return (4 * FlowRate) / (np.pi * Diam**2 * Nu)
+    return (4 * FlowRate) / (np.pi * Diam * Nu)
 
 
 @u.wraps(u.m, [u.m, u.m, u.dimensionless], False)
