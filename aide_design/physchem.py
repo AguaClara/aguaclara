@@ -357,7 +357,7 @@ def headloss_gen(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough):
                                      Length, Nu, PipeRough).magnitude)
 
 
-@u.wraps(u.m, [u.m**2/u.s, u.m, u.m, u.dimensionless, 
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.dimensionless, 
                u.m**2/u.s, u.m, u.dimensionless], False)
 def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets):
     """Return the total head loss through the manifold."""
