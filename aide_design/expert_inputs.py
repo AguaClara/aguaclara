@@ -9,6 +9,9 @@ by: Sage Weber-Shirk
 """
 from aide_design.units import unit_registry as u
 
+GRAVITY = 9.80665 * u.m/u.s**2
+"""Define the gravitational constant, in m/s²."""
+
 #####tabulated constants
 
 #Density of water
@@ -20,7 +23,7 @@ NU_WATER = 1 * 10**-6 * u.m**2/u.s
 #The influence of viscosity on mixing in jet reactors
 RATIO_JET_ROUND = 0.5
 
-#This is an estimate for plane jets as created in the flocculator and 
+#This is an estimate for plane jets as created in the flocculator and
 # in the sed tank jet reverser.
 RATIO_JET_PLANE = 0.225
 
@@ -47,7 +50,7 @@ FLOW_PLANT_MAX_LF = 16.1 * u.L/u.s
 
 WIDTH_HUMAN_MIN = 0.5 * u.m
 
-#The height of the walkway above the drain channel bottom so that 
+#The height of the walkway above the drain channel bottom so that
 # someone can walk through the drain channel.
 HEIGHT_HUMAN_ACCESS = 1.5 * u.m
 
@@ -61,14 +64,14 @@ SPACE_FITTING = 5 * u.cm
 #Minimum channel width for constructability
 WIDTH_CHANNEL_MIN = 15 * u.cm
 
-#RATIO_RECTANGULAR is defined as the optimum "height over width ratio" 
+#RATIO_RECTANGULAR is defined as the optimum "height over width ratio"
 # (1/2) for a rectangular open channel
-RATIO_RECTANGULAR = 0.5 
+RATIO_RECTANGULAR = 0.5
 
 ##Equals 1 to draw boxes showing max water levels, 0 normally
 #EN_WATER=0 #ASK Monroe
 
-##If EN_WATER is set to 1, this controls the filter operation mode for 
+##If EN_WATER is set to 1, this controls the filter operation mode for
 # which water/sand elevations are drawn. 0 for terminal, 1 for clean bed,
 # and 2 for backwash.
 #EN_WATER=2 #ASK Monroe
@@ -77,7 +80,7 @@ WIDTH_DOOR = 1 * u.m
 
 THICKNESS_ACRYLIC = 1 * u.cm
 
-#Due to a 24 in LFOM because that's the biggest pipe we have in our 
+#Due to a 24 in LFOM because that's the biggest pipe we have in our
 # database right now. if we need a bigger single train, we can do that
 # by adding that pipe size into the pipe database
 FLOW_TRAIN_MAX = 150.1 * u.L/u.s
@@ -148,7 +151,7 @@ def en_lfom_pipe(flow_plant):
 ANGLE_ENT_TANK_SLOPE = 45 * u.deg
 
 #Extra space around the float (increase in effective diameter) to ensure
-# that float has free travel 
+# that float has free travel
 SPACE_ENT_TANK_FLOAT = 5 * u.cm
 
 #Increased to get better mixing (10/10/2015 by Monroe)
@@ -199,8 +202,8 @@ NOM_DIAM_ENT_TANK_PLATE_SUPPORT = 3 * u.inch
 M_COAG_SACK = 25 * u.kg
 
 #The coagulant stock is relatively stable and can last many days. Here we
-# set the minimum time the coagulant stock will last when applying the 
-# maximum possible dose to size the stock tanks. In general the dose will 
+# set the minimum time the coagulant stock will last when applying the
+# maximum possible dose to size the stock tanks. In general the dose will
 # be less than this and the stock will last much longer.
 TIME_COAG_STOCK_MIN_EST = 1 * u.day
 
@@ -225,11 +228,11 @@ P_CHLOR = 0.7
 # rate through the float valve orifice in the CHT.
 #It is treated as constant here to ensure a practical elevation difference
 # is left between the stock tanks and the CHT even when a float valve is
-# selected which requires very little hydraulic head to deliver the 
+# selected which requires very little hydraulic head to deliver the
 # required maximum chemical flow rate.
 HEIGHT_COAG_TANK_ABOVE_HEAD_TANK = 30 * u.cm
 
-#This is the distance from the bottom of the stock tanks to the outlets 
+#This is the distance from the bottom of the stock tanks to the outlets
 # to allow space for solids to settle.
 DIST_CENTER_STOCK_OUTLET = 10 * u.cm
 
@@ -240,15 +243,15 @@ SPACE_CHEM_TANK_BORDER = 5 * u.cm
 # the constant head tank and the top of the entrance tank wall.
 #The constant head tank water level is the same as the elevation of the
 # outlet of the dosing tube when the lever arm is horizontal (zero flow).
-#Therefore this height depends only on the hardware used to make the 
-# slider/drop tube assembly and to mount the lever arm to the entrance 
+#Therefore this height depends only on the hardware used to make the
+# slider/drop tube assembly and to mount the lever arm to the entrance
 # tank wall.
-#Note that this will vary depending on hardware used, and is only 
-# defined here to calculate the elevation of the stock tanks, which can 
+#Note that this will vary depending on hardware used, and is only
+# defined here to calculate the elevation of the stock tanks, which can
 # be approximate.
 HEIGHT_DOSER_ASSEMBLY = 6.77 * u.cm
 
-#Maximum error allowed between a linear flow vs tube head loss 
+#Maximum error allowed between a linear flow vs tube head loss
 # relationship and the actual performance (which is affected by non-linear
 # minor losses), assuming calibration at the maximum flow rate.
 RATIO_LINEAR_CDC_ERROR = 0.1
@@ -282,11 +285,11 @@ NOM_DIAM_COAG_PIPE = 0.5 * u.inch
 VOL_CHEM_TANK_AVAIL = [5 * u.gal, 35 * u.gal, 55 * u.gal,
                        450 * u.L, 750 * u.L, 1100 * u.L, 2500 * u.L]
 
-DIAM__CHEM_TANK_AVAIL = [11.875 * u.inch, 20.75 * u.inch, 22.5 * u.inch, 
+DIAM__CHEM_TANK_AVAIL = [11.875 * u.inch, 20.75 * u.inch, 22.5 * u.inch,
                          0.85 * u.m, 1.10 * u.m, 1.10 * u.m, 1.55 * u.m]
 
-HEIGHT_CHEM_TANK_AVAIL = [17.75 * u.inch, 31.75 * u.inch, 33.5 * u.inch, 
-                          0.99 * u.inch, 1.02 * u.inch, 1.39 * u.inch, 
+HEIGHT_CHEM_TANK_AVAIL = [17.75 * u.inch, 31.75 * u.inch, 33.5 * u.inch,
+                          0.99 * u.inch, 1.02 * u.inch, 1.39 * u.inch,
                           1.65 * u.inch]
 
 ####Chemical dose controller dimensions (based on inserted drawings)
@@ -356,7 +359,7 @@ HEIGHT_LEVER_HOLE = 0.0132 * u.m - (0.0095/2 * u.m)
 
 DIAM_CABLE = 0.1 * u.inch
 
-#Edited DLABOrigintoLAOriginZ to accommodate dimensions from McMaster 
+#Edited DLABOrigintoLAOriginZ to accommodate dimensions from McMaster
 # vs Inserted Drawing
 DIAM_LAB_ORIGIN_TO_LA_ORIGIN_Z = 0.0245 * u.m
 
@@ -367,26 +370,26 @@ LENGTH_LA_ORIGIN_TO_DT_Y = 0.7812 * u.m
 #Distance from the lever arm origin to the drop tube in the z direction.
 LENGTH_LA_ORIGIN_TO_DT_Z = 0.0429 * u.m
 
-#Distance from the lever arm origin to the center of the drop tube in the 
+#Distance from the lever arm origin to the center of the drop tube in the
 #x direction.
 LENGTH_LA_ORIGIN_TO_DT_CENTER_X = 0.0290 * u.m
 
 #Measured from CDC research team's apparatus.
 THICKNESS_CDC_REDUCER = 9.5 * u.mm
 
-#Distance from the lever arm origin to the center of the reducer in the 
+#Distance from the lever arm origin to the center of the reducer in the
 # x direction.
 LENGTH_LA_ORIGIN_TO_REDUCER_X = 0.0290 * u.m
 
-#Distance from the lever arm origin to the outside center of the top part 
+#Distance from the lever arm origin to the outside center of the top part
 # of the reducer in the y direction.
 LENGTH_LA_ORIGIN_TO_REDUCER_Y = 0.7135 * u.cm
 
-#Distance from the lever arm origin to the center of the reducer in the 
+#Distance from the lever arm origin to the center of the reducer in the
 # x direction.
 LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_X = 0.0290 * u.m
 
-#Distance from the lever arm origin to the center of the reducer in the 
+#Distance from the lever arm origin to the center of the reducer in the
 # y direction.
 LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_Y = 0.7919 * u.m
 
@@ -414,7 +417,7 @@ LENGTH_DROPTUBE = 0.61 * u.m
 
 #The length of the drop tube needs to be calculated. The drop tube must be
 # as long as the supercritical flow.
-#Thus the drop tube must extend down to the elevation of the sed tank 
+#Thus the drop tube must extend down to the elevation of the sed tank
 # effluent weir. This constant should be removed!
 
 #Outer diameter of fitting- measured from CDC research team's fittin
@@ -454,9 +457,9 @@ LENGTH_CHLOR_AIR_RELEASE_PIPE = 30 * u.cm #Arbitratily selected
 
 ####Flocculator
 ##The minor loss coefficient is 2. According to measurements at Agalteca
-# and according to 
+# and according to
 # https://confluence.cornell.edu/display/AGUACLARA/PAHO+Water+Treatment+Publications
-# (page 100 in chapter on flocculation)  
+# (page 100 in chapter on flocculation)
 HEIGHT_FLOC_OPTION = 0
 
 ##Increased both to provide a safety margin on flocculator head loss and
@@ -509,7 +512,7 @@ VEL_SED_CONC_BOD = 0.12 * u.mm/u.s
 
 ANGLE_SED_SLOPE = 50 * u.deg
 
-##This slope needs to be verified for functionality in the field. 
+##This slope needs to be verified for functionality in the field.
 # A steeper slope may be required in the floc hopper.
 ANGLE_SED_HOPPER_SLOPE = 45 * u.deg
 
@@ -523,14 +526,14 @@ SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/17360490
 # segments can be used for the inlet and outlet manifoldS
 LENGTH_SED_UP_FLOW_MAX = 5.8 * u.m
 
-   
+
 ##Inlet channel
 HEADLOSS_SED_WEIR_MAX = 5 * u.cm
 
 ##Height of the inlet channel overflow weir above the normal water level
 # in the inlet channel so that the far side of the overflow weir does not
 # fill with water under normal operating conditions. This means the water
-# level in the inlet channel will increase when the inlet overflow weir 
+# level in the inlet channel will increase when the inlet overflow weir
 # is in use.
 HEIGHT_SED_INLET_WEIR_FREE_BOARD = 2 * u.cm
 
@@ -544,7 +547,7 @@ RATIO_FLOW_LAUNDER_ORIFICES = 0.80
 ##Center to center spacing of orifices in the launder
 DIST_CENTER_SED_LAUNDER_EST = 10 * u.cm
 
-##The additional length needed in the launder cap pipe that is to be 
+##The additional length needed in the launder cap pipe that is to be
 # inserted into the launder coupling
 LENGTH_SED_LAUNDER_CAP_EXCESS = 3 * u.cm
 
@@ -596,7 +599,7 @@ RATIO_FLOW_SED_INLET = 0.8
 
 NOM_DIAMETER_SED_MANIFOLD_MAX = 8 * u.inch
 
-##This is the minimum distance between the inlet manifold and the slope 
+##This is the minimum distance between the inlet manifold and the slope
 # of the sed tank.
 SPACE_SED_INLET_MAN_SLOPE = 10 * u.cm
 
@@ -604,7 +607,7 @@ SPACE_SED_INLET_MAN_SLOPE = 10 * u.cm
 # free portion of the inlet manifold is attached with a flexible coupling.
 LENGTH_SED_MAN_CONNECTION_STUB = 4 * u.cm
 
-##Space between the end of the manifold pipe and the edge of the first 
+##Space between the end of the manifold pipe and the edge of the first
 # diffuser's hole, or the first manifold orifice.
 
 LENGTH_SED_MANIFOLD_FIRST_DIFFUSER_GAP = 3 * u.cm
@@ -622,14 +625,14 @@ RATIO_PVC_STRETCH = 1.2
 
 LENGTH_SED_WALL_TO_DIFFUSER_GAP_MIN = 3 * u.cm
 
-##Diameter of the holes drilled in the manifold so that the molded 1" 
-# diffuser pipes can fit tightly in place (normal OD of a 1" pipe is 
+##Diameter of the holes drilled in the manifold so that the molded 1"
+# diffuser pipes can fit tightly in place (normal OD of a 1" pipe is
 # close to 1-5/16")
 DIAM_SED_MANIFOLD_PORT = 1.25 * u.inch
 
 ##Outlet to filter
-#If the plant has two trains, the current design shows the exit channel 
-# continuing from one set of sed tanks into the filter inlet channel. 
+#If the plant has two trains, the current design shows the exit channel
+# continuing from one set of sed tanks into the filter inlet channel.
 #The execution of this extended channel involves a few calculations.
 HEADLOSS_SED_TO_FILTER_PIPE_MAX = 10 * u.cm
 #==============================================================================
@@ -637,15 +640,15 @@ HEADLOSS_SED_TO_FILTER_PIPE_MAX = 10 * u.cm
 #     K_SED_EXIT = 1
 # else:
 #     K_SED_EXIT = 0
-# 
-# 
-# if EN_DOUBLE_TRAIN == 1: 
+#
+#
+# if EN_DOUBLE_TRAIN == 1:
 #    HEIGTH_EXIT_FREE = 5 * u.cm
 # else:
 #    HEIGTH_EXIT_FREE = 0 * u.cm
 #==============================================================================
 
-##added 12/5/16 by mrf222 ensures weir does not overtop backwards if 
+##added 12/5/16 by mrf222 ensures weir does not overtop backwards if
 # filter weir is too high
 HEIGHT_SED_WEIR_FREE_BOARD = 5 * u.cm
 
@@ -654,7 +657,7 @@ HEIGHT_SED_WEIR_FREE_BOARD = 5 * u.cm
 ##Stacked rapid sand filter
 ####Construction and Design Inputs
 
-#Design guidelines say 11 mm/s. The success of lab-scale backwashing at 
+#Design guidelines say 11 mm/s. The success of lab-scale backwashing at
 # 10 mm/s suggests that this is a reasonable and conservative value
 VEL_FILTER_Bw_ = 11 * u.mm/u.s
 
@@ -697,7 +700,7 @@ NOM_DIAMETER_FILTER_SAND_OUTLET = 2 * u.inch
 ##Height of the barrier between the exit box and distribution box.
 HEIGHT_FILTER_DIST_BARRIER = 10 * u.cm
 
-##Length that the siphon pipe extends up into the plant drain channel. 
+##Length that the siphon pipe extends up into the plant drain channel.
 #Being able to shorten the stub from which the siphon discharges into the
 # main plant drain channel allows for some flexibility in the hydraulic design.
 LENGTH_FILTER_SIPHON_CHANNEL_STUB_MIN = 20 * u.cm
@@ -732,7 +735,7 @@ FLOW_FILTER_MIN = 8 * u.L/u.s
 
 LENGTH_FILTER_MAN_FEMCO_COUPLING = 6 * u.cm
 
-##Nominal diameter of the spacer tees in the four corners of the filter 
+##Nominal diameter of the spacer tees in the four corners of the filter
 # manifold assembly.
 NOM_DIAMETER_FILTER_MAN_WING_SPACER = 2 * u.inch
 
@@ -830,4 +833,3 @@ K_MINOR_PIPE_ENTRANCE = 0.5
 K_MINOR_PIPE_EXIT = 1
 
 K_MINOR_RM_GATE_VIN = 25
-
