@@ -12,12 +12,12 @@ import numpy as np
 try:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
+    from aide_design import expert_inputs as exp
 except ModuleNotFoundError:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
+    from aide_design import expert_inputs as exp
 
-gravity = 9.80665 * u.m/u.s**2
-"""Define the gravitational constant, in m/s²."""
 
 ########### Materials Constants - general ############
 
@@ -29,8 +29,8 @@ RHO_CONCRETE = 2400*(u.kg/(u.m**3)) #used in the sed tank drawing
 
 THICKNESS_CONCRETE_MIN = 5*u.cm  #used throughout the code
 
-#0 is English, 1 is metric, drill series is needed for the 
-#drill series at the bottom of this sheet and tube series 
+#0 is English, 1 is metric, drill series is needed for the
+#drill series at the bottom of this sheet and tube series
 #is needed for the Cdc code
 EN_DRILL_SERIES = 0
 
@@ -63,9 +63,9 @@ THICKNESS_RAPID_MIX_ORIFICE_PLATE = 2*u.cm
 NOM_DIAM_RAPID_MIX_AIR_RELEASE = 1*u.inch
 
  ############ Material constants - chem storage tanks  ############
- 
+
 THICKNESS_CHEM_TANK_WALL = 5*u.mm
- 
+
  #Supplier Information:
 #http://www.rotoplas.com/assets/files/industria/catalogo.pdf
 
@@ -73,8 +73,8 @@ THICKNESS_CHEM_TANK_WALL = 5*u.mm
 
 VOL_SUPPLIER_CHEM_TANK = [208.198, 450, 600, 750, 1100, 2500]*u.L
 
-#the following array is a 2D array in which 
-#in each element, the first element is tank diameter 
+#the following array is a 2D array in which
+#in each element, the first element is tank diameter
 #and the second element is tank height
 
 DIMENSIONS_SUPPLIER_CHEM_TANK = [[0.571, 0.851], [0.85, 0.99], [0.96, 1.10], [1.10, 1.02], [1.10, 1.39], [1.55, 1.65]]*u.m
@@ -111,7 +111,7 @@ ANGLE_SED_PLATE = 60*u.deg
 
 THICKNESS_SED_WEIR = 5*u.cm
 
-#Maximum length of sed plate sticking out past module pipes without any 
+#Maximum length of sed plate sticking out past module pipes without any
 #additional support. The goal is to prevent floppy modules that don't maintain
 # constant distances between the plates
 
@@ -151,13 +151,13 @@ NOM_DIAM_FILTER_BRANCH_HOLDER = 2*u.inch
 
 NOM_DIAM_FILTER_BACKWASH_BRANCH_HOLDER = 2*u.inch
 
-#Minimum vertical spacing between trunk line pipes going through 
+#Minimum vertical spacing between trunk line pipes going through
 #the filter wall for concrete construction
 SPACE_FILTER_TRUNK_MIN = 3*u.cm
 
-#Space between the ends of the branch receiver pipes and the walls so that 
+#Space between the ends of the branch receiver pipes and the walls so that
 #the manifold assemblies are easy to lower into the filter boxes
-# (if the branch receivers extended the entire length of the box they would 
+# (if the branch receivers extended the entire length of the box they would
 #just barely fit and it would be hard to get into place)
 SPACE_FILTER_MANIFOLD_ASSEMBLY = 1*u.cm
 
@@ -193,11 +193,11 @@ counter = 0
 while DIAM_DRILL_MET[counter] <= 4.98*u.mm:
     counter+=1
     DIAM_DRILL_MET.append(DIAM_DRILL_MET[counter-1] + 0.1*u.mm)
-    
+
 while DIAM_DRILL_MET[counter] < 20*u.mm:
     counter+=1
     DIAM_DRILL_MET.append(DIAM_DRILL_MET[counter-1] + 1*u.mm)
-    
+
 while DIAM_DRILL_MET[counter] < 50*u.mm:
     counter+=1
     DIAM_DRILL_MET.append(DIAM_DRILL_MET[counter-1] + 2*u.mm)

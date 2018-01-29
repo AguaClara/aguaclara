@@ -8,7 +8,7 @@ By: Sage Weber-Shirk
 
 
 This file contains unit process functions pertaining to the design of
-physical/chemical unit processes for water treatment plants.
+physical/chemical unit processes for AguaClara water treatment plants.
 """
 
 ########################## Imports ##########################
@@ -18,9 +18,13 @@ from scipy import interpolate, integrate
 try:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
+    from aide_design import expert_inputs as exp
+    from aide_design import materials_database as mat
 except ModuleNotFoundError:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
+    from aide_design import expert_inputs as exp
+    from aide_design import materials_database as mat
 
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""
@@ -43,11 +47,11 @@ def diam_circle(AreaCircle):
     return np.sqrt(4 * AreaCircle / np.pi)
 
 ######################### Hydraulics #########################
-RATIO_VC_ORIFICE = 0.62
+RATIO_VC_ORIFICE = exp.RATIO_VC_ORIFICE
 
 RE_TRANSITION_PIPE = 2100
 
-K_KOZENY=5
+K_KOZENY = mat.K_KOZENY
 
 
 WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15,
@@ -357,7 +361,7 @@ def headloss_gen(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough):
                                      Length, Nu, PipeRough).magnitude)
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.dimensionless,
+@u.wraps(u.m, [u.m**2/u.s, u.m, u.m, u.dimensionless,
                u.m**2/u.s, u.m, u.dimensionless], False)
 def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets):
     """Return the total head loss through the manifold."""
