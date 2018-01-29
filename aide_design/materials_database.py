@@ -18,7 +18,6 @@ except ModuleNotFoundError:
     from aide_design import utility as ut
     from aide_design import expert_inputs as exp
 
-gravity = exp.GRAVITY
 
 ########### Materials Constants - general ############
 

@@ -26,7 +26,8 @@ except ModuleNotFoundError:
     from aide_design import expert_inputs as exp
     from aide_design import materials_database as mat
 
-gravity = exp.GRAVITY
+gravity = 9.80665 * u.m/u.s**2
+"""Define the gravitational constant, in m/s²."""
 
 ###################### Simple geometry ######################
 """A few equations for useful geometry.

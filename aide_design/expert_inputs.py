@@ -9,9 +9,6 @@ by: Sage Weber-Shirk
 """
 from aide_design.units import unit_registry as u
 
-GRAVITY = 9.80665 * u.m/u.s**2
-"""Define the gravitational constant, in m/s²."""
-
 #####tabulated constants
 
 #Density of water
