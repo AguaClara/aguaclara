@@ -615,16 +615,16 @@ class HeadlossFuncsTest(unittest.TestCase):
     def test_headloss_manifold_units(self):
         """headloss_manifold should handle units correctly."""
         base = pc.headloss_manifold(2, 6, 40, 5, 1.1, 0.04, 6).magnitude
-        unitchecks = ([2 * u.m**2/u.s, 6 * u.m, 40 * u.m, 5* u.dimensionless,
+        unitchecks = ([2 * u.m**3/u.s, 6 * u.m, 40 * u.m, 5* u.dimensionless,
                        1.1 * u.m**2/u.s, 0.04 * u.m, 6* u.dimensionless],
-                      [20000 * u.cm**2/u.s, 6, 40, 5, 1.1, 0.04, 6],
+                      [2000000 * u.cm**3/u.s, 6, 40, 5, 1.1, 0.04, 6],
                       [2, 6000 * u.mm, 40, 5, 1.1, 0.04, 6],
                       [2, 6, 0.04 * u.km, 5, 1.1, 0.04, 6],
                       [2, 6, 40, 5, 11000 * u.cm**2/u.s, 0.04, 6],
                       [2, 6, 40, 5, 1.1, 4 * u.cm, 6])
         for i in unitchecks:
             with self.subTest(i=i):
-                self.assertEqual(pc.headloss_manifold(*i).magnitude, base)
+                self.assertAlmostEqual(pc.headloss_manifold(*i).magnitude, base)
 
 
 class OrificeFuncsTest(unittest.TestCase):
