@@ -472,9 +472,14 @@ SPACE_FLOC_BAFFLE_SET_BACK_PLASTIC= 2 * u.cm
 ###Target flocculator collision potential basis of design
 COLL_POT_FLOC_BOD = 75 * u.m**(2/3)
 
-##Minimum J/S ratio for flocculator geometry that will provide optimal
-# efficiency.
-RATIO_J_S_OPT_MIN = 3
+##Minimum width of flocculator channel required for constructability based
+# on the width of the human hip
+FLOC_WIDTH_MIN_CONST = 45 * u.cm
+
+##Minimum and maximum distance between expansions to baffle spacing ratio for
+#flocculator geometry that will provide optimal efficiency.
+RATIO_HS_MIN = 3
+RATIO_HS_MAX = 6
 
 ##Ratio of the width of the gap between the baffle and the wall and the
 # spacing between the baffles.
@@ -643,9 +648,9 @@ HEADLOSS_SED_TO_FILTER_PIPE_MAX = 10 * u.cm
 #
 #
 # if EN_DOUBLE_TRAIN == 1:
-#    HEIGTH_EXIT_FREE = 5 * u.cm
+#    HEIGHT_EXIT_FREE = 5 * u.cm
 # else:
-#    HEIGTH_EXIT_FREE = 0 * u.cm
+#    HEIGHT_EXIT_FREE = 0 * u.cm
 #==============================================================================
 
 ##added 12/5/16 by mrf222 ensures weir does not overtop backwards if
@@ -726,7 +731,7 @@ SPACE_FILTER_BRANCH_TO_WALL = 5 * u.cm
 FILTER_GATE_VALUE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Fi-Scaled-Gate-Valve-Threaded.dwg"
 FILTER_BALL_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/FiMetalBallValve.dwg"
 
-HEIGTH_FILTER_WALL_TO_PLANT_FLOOR_MIN = 10 * u.cm
+HEIGHT_FILTER_WALL_TO_PLANT_FLOOR_MIN = 10 * u.cm
 
 HEADLOSS_FILTER_INLET_WEIR_MAX = 5 * u.cm
 
@@ -751,25 +756,25 @@ LENGTH_FILTER_SAND_OUTLET_PIPE = 20 * u.cm
 
 ##Minimum depth in the entrance box during backwash such that there is
 # standing water over the inlet.
-HEIGTH_FILTER_BACKWASH_NO_SUCK_AIR = 20 * u.cm
+HEIGHT_FILTER_BACKWASH_NO_SUCK_AIR = 20 * u.cm
 
 ##Minimum water depth over the orifices in the siphon manifold so that air
 # is not entrained.
-HEIGTH_FILTER_SIPHON_NO_SUCK_AIR = 10 * u.cm
+HEIGHT_FILTER_SIPHON_NO_SUCK_AIR = 10 * u.cm
 
-HEIGTH_FILTER_FLUIDIZED_BED_TO_SIPHON = 20 * u.cm
+HEIGHT_FILTER_FLUIDIZED_BED_TO_SIPHON = 20 * u.cm
 
-HEIGTH_FILTER_FORWARD_NO_SUCK_AIR = 10 * u.cm
+HEIGHT_FILTER_FORWARD_NO_SUCK_AIR = 10 * u.cm
 
-HEIGTH_FILTER_WEIR_FREEFALL = 3 * u.cm
+HEIGHT_FILTER_WEIR_FREEFALL = 3 * u.cm
 
-HEIGTH_FILTER_AIR_REMOVAL_BLOCK_SUBMERGED = 5 * u.cm
+HEIGHT_FILTER_AIR_REMOVAL_BLOCK_SUBMERGED = 5 * u.cm
 
-HEIGTH_FILTER_BYPASS_SAFETY = 10 * u.cm
+HEIGHT_FILTER_BYPASS_SAFETY = 10 * u.cm
 
-HEIGTH_DRAIN_OUTLET_SAFETY = 10 * u.cm
+HEIGHT_DRAIN_OUTLET_SAFETY = 10 * u.cm
 
-HEIGTH_FILTER_OVERFLOW_WEIR_FREEFALL = 10 * u.cm
+HEIGHT_FILTER_OVERFLOW_WEIR_FREEFALL = 10 * u.cm
 
 
 
@@ -833,8 +838,3 @@ K_MINOR_PIPE_ENTRANCE = 0.5
 K_MINOR_PIPE_EXIT = 1
 
 K_MINOR_RM_GATE_VIN = 25
-
-#######Flocculator design
-# ratios of distance between expansions to baffle spacing
-RATIO_HS_MIN = 3
-RATIO_HS_MAX = 6
