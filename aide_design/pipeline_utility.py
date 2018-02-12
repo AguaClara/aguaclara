@@ -5,13 +5,13 @@ design.
 
 from aide_design.units import unit_registry as u
 from aide_design import physchem as pc
-import aide_design.expert_inputs as exp
+import aide_design.constants as con
 import aide_design.materials_database as mats
 import numpy as numpy
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)
 def flow_pipeline(diameters: numpy.ndarray, lengths: numpy.ndarray, k_minors: numpy.ndarray, target_headloss: float,
-                  nu=exp.NU_WATER, pipe_rough=mats.PIPE_ROUGH_PVC):
+                  nu=con.NU_WATER, pipe_rough=mats.PIPE_ROUGH_PVC):
     """
     This function takes a single pipeline with multiple sections, each potentially with different diameters,
     lengths and minor loss coefficients and determines the flow rate for a given headloss.

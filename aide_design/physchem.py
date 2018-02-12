@@ -18,12 +18,12 @@ from scipy import interpolate, integrate
 try:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
-    from aide_design import expert_inputs as exp
+    from aide_design import constants as con
     from aide_design import materials_database as mat
 except ModuleNotFoundError:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
-    from aide_design import expert_inputs as exp
+    from aide_design import constants as con
     from aide_design import materials_database as mat
 
 gravity = 9.80665 * u.m/u.s**2
@@ -47,7 +47,7 @@ def diam_circle(AreaCircle):
     return np.sqrt(4 * AreaCircle / np.pi)
 
 ######################### Hydraulics #########################
-RATIO_VC_ORIFICE = exp.RATIO_VC_ORIFICE
+RATIO_VC_ORIFICE = con.RATIO_VC_ORIFICE
 
 RE_TRANSITION_PIPE = 2100
 

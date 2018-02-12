@@ -31,8 +31,8 @@ from aide_design.units import unit_registry as u
 from aide_design import utility as ut
 
 # import export inputs and define the VC coefficient
-from aide_design import expert_inputs as exp
-ratio_VC_orifice= exp.RATIO_VC_ORIFICE
+from aide_design import constants as con
+ratio_VC_orifice= con.RATIO_VC_ORIFICE
 
 # The following constants need to go into the constants file
 Pi_LFOM_safety = 1.2
@@ -57,14 +57,14 @@ def width_stout(HL_LFOM,z):
 @u.wraps(None, [u.m**3/u.s,u.m], False)
 def n_lfom_rows(FLOW,HL_LFOM):
     """This equation states that the open area corresponding to one row can be
-    set equal to two orifices of diameter=row height. If there are more than 
-    two orifices per row at the top of the LFOM then there are more orifices 
-    than are convenient to drill and more than necessary for good accuracy. 
-    Thus this relationship can be used to increase the spacing between the 
-    rows and thus increase the diameter of the orifices. This spacing function 
-    also sets the lower depth on the high flow rate LFOM with no accurate 
+    set equal to two orifices of diameter=row height. If there are more than
+    two orifices per row at the top of the LFOM then there are more orifices
+    than are convenient to drill and more than necessary for good accuracy.
+    Thus this relationship can be used to increase the spacing between the
+    rows and thus increase the diameter of the orifices. This spacing function
+    also sets the lower depth on the high flow rate LFOM with no accurate
     flows below a depth equal to the first row height.
-    
+
     But it might be better to always set then number of rows to 10.
     The challenge is to figure out a reasonable system of constraints that
     reliably returns a valid solution.
@@ -79,7 +79,7 @@ def dist_center_lfom_rows(FLOW,HL_LFOM):
 
 
 def vel_lfom_pipe_critical(HL_LFOM):
-    """The average vertical velocity of the water inside the LFOM pipe 
+    """The average vertical velocity of the water inside the LFOM pipe
     at the very bottom of the bottom row of orifices
     The speed of falling water is 0.841 m/s for all linear flow orifice meters
     of height 20 cm, independent of total plant flow rate."""
@@ -114,8 +114,8 @@ def drillbit_area(FLOW,HL_LFOM,drill_bits):
 
 
 def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
-    """A bound on the number of orifices allowed in each row.  
-    The distance between consecutive orifices must be enough to retain 
+    """A bound on the number of orifices allowed in each row.
+    The distance between consecutive orifices must be enough to retain
     structural integrity of the pipe.
     """
     S_lfom_orifices_Min= 3*u.mm
@@ -124,14 +124,14 @@ def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
 def flow_ramp(FLOW,HL_LFOM):
     n_rows = n_lfom_rows(FLOW,HL_LFOM)
     return np.linspace(FLOW.magnitude/n_rows,FLOW.magnitude,n_rows)*FLOW.units
-            
+
 def height_lfom_orifices(FLOW,HL_LFOM,drill_bits):
     """Calculates the height of the center of each row of orifices.
     The bottom of the bottom row orifices is at the zero elevation
     point of the LFOM so that the flow goes to zero when the water height
     is at zero.
     """
-    
+
     return (np.arange(((orifice_diameter(FLOW,HL_LFOM,drill_bits)*0.5).to(u.m)).magnitude,
                       (HL_LFOM.to(u.m)).magnitude,
                       ((dist_center_lfom_rows(FLOW,HL_LFOM)).to(u.m)).magnitude))*u.m
@@ -143,10 +143,10 @@ def flow_lfom_actual(FLOW,HL_LFOM,drill_bits,Row_Index_Submerged,N_LFOM_Orifices
     """
     D_LFOM_Orifices=orifice_diameter(FLOW,HL_LFOM,drill_bits)
     row_height=dist_center_lfom_rows(FLOW,HL_LFOM)
-    #harray is the distance from the water level to the center of the orifices when the water is at the max level 
-    harray = (np.linspace(row_height.to(u.mm).magnitude,HL_LFOM.to(u.mm).magnitude,n_lfom_rows(FLOW,HL_LFOM)))*u.mm -0.5* D_LFOM_Orifices 
+    #harray is the distance from the water level to the center of the orifices when the water is at the max level
+    harray = (np.linspace(row_height.to(u.mm).magnitude,HL_LFOM.to(u.mm).magnitude,n_lfom_rows(FLOW,HL_LFOM)))*u.mm -0.5* D_LFOM_Orifices
     FLOW_new=0*u.m**3/u.s
-    for i in range(Row_Index_Submerged+1):   
+    for i in range(Row_Index_Submerged+1):
         FLOW_new = FLOW_new + (N_LFOM_Orifices[i]*(pc.flow_orifice_vert(D_LFOM_Orifices,harray[Row_Index_Submerged-i],ratio_VC_orifice)))
     return FLOW_new
 
@@ -159,17 +159,17 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
     D_LFOM_Orifices = orifice_diameter(FLOW,HL_LFOM,drill_bits)
     # H is distance from the elevation between two rows of orifices down to the center of the orifices
     H=dist_center_lfom_rows(FLOW,HL_LFOM)-D_LFOM_Orifices*0.5
-    n=[]                       
+    n=[]
     for i in range(n_rows):
         #place zero in the row that we are going to calculate the required number of orifices
         n=np.append(n,0)
         #calculate the ideal number of orifices at the current row without constraining to an integer
         n_orifices_real=((FLOW_ramp_local[i]-flow_lfom_actual(FLOW,HL_LFOM,drill_bits,i,n))/
                                   pc.flow_orifice_vert(D_LFOM_Orifices,H,ratio_VC_orifice)).to(u.dimensionless).magnitude
-        #constrain number of orifices to be less than the max per row and greater or equal to 0                 
+        #constrain number of orifices to be less than the max per row and greater or equal to 0
         n[i]=min((max(0,round(n_orifices_real))),n_orifices_max)
     return n
-                     
+
 
 #This function calculates the error of the design based on the differences between the predicted flow rate
 #and the actual flow rate through the LFOM.
@@ -195,5 +195,3 @@ def flow_lfom(FLOW,HL_LFOM,drill_bits,SDR_LFOM,H):
     for i in range (len(H_submerged)):
         flow.append(pc.flow_orifice_vert(D_lfom_orifices,H_submerged[i],ratio_VC_orifice)*N_lfom_orifices[i])
     return sum (flow)
-
-
