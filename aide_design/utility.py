@@ -1,11 +1,8 @@
-"""
-Created on Sun Jun 11
+"""This file provides basic utility functions such as significant figures which
+can be used throughout the plant design.
 
-@author: Monroe Weber-Shirk
-
-Last modified: Fri Aug 5 2017 
-By: Sage Weber-Shirk
 """
+
 # units allows us to include units in all of our calculations
 import math
 
@@ -21,8 +18,8 @@ import functools
 #that are not significant.
 def sig(x,n):
     """Return the 1st input reduced to a number of significant digits.
-    
-    x is a number that may include units. n is the number of significant 
+
+    x is a number that may include units. n is the number of significant
     digits to display.
     """
     # Check to see if the quantity x includes units so we can strip the
@@ -33,7 +30,7 @@ def sig(x,n):
         if n==1 and xmag>=1:
              req = round(xmag)
              return '{:~P}'.format(u.Quantity(req,xunit))
-            
+
     else:
         xmag = x
     if xmag == 0.:
@@ -79,7 +76,7 @@ def sig(x,n):
         out.append("0.")
         out.extend(["0"] * -(e + 1))
         out.append(m)
-    
+
     if type(x) == type(1 * u.m):
         req = "".join(out)
         return '{:~P}'.format(u.Quantity(req,xunit))
@@ -89,7 +86,7 @@ def sig(x,n):
 
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
-    equal to 'param' and outputs the result in Pint units. 
+    equal to 'param' and outputs the result in Pint units.
     This function is unit-aware and functions without requiring translation
     so long as 'param' and 'unit' are of the same dimensionality.
     """
@@ -116,19 +113,19 @@ def list_handler(func):
     @functools.wraps(func)
     def wrapper(*args, HandlerResult="nparray", **kwargs):
         """Run through the wrapped function once for each array element.
-        
+
         :param HandlerResult: output type. Defaults to numpy arrays.
         """
         sequences = []
         enumsUnitCheck = enumerate(args)
         argsList = list(args)
-        #This for loop identifies pint unit objects and strips them 
+        #This for loop identifies pint unit objects and strips them
         #of their units.
         for num, arg in enumsUnitCheck:
             if type(arg) == type(1 * u.m):
                 argsList[num] = arg.to_base_units().magnitude
         enumsUnitless = enumerate(argsList)
-        #This for loop identifies arguments that are sequences and 
+        #This for loop identifies arguments that are sequences and
         #adds their index location to the list 'sequences'.
         for num, arg in enumsUnitless:
             if isinstance(arg, (list, tuple, np.ndarray)):
@@ -138,9 +135,9 @@ def list_handler(func):
         if len(sequences) == 0:
             result = func(*args, **kwargs)
         else:
-            #iterant keeps track of how many times we've iterated and 
+            #iterant keeps track of how many times we've iterated and
             #limiter stops the loop once we've iterated as many times
-            #as there are list elements. Without this check, a few 
+            #as there are list elements. Without this check, a few
             #erroneous runs will occur, appending the last couple values
             #to the end of the list multiple times.
             #
@@ -156,18 +153,18 @@ def list_handler(func):
                         break
                     #We can safely replace the entire list argument
                     #with a single element from it because of the looping
-                    #we're doing. We redefine the object, but that 
+                    #we're doing. We redefine the object, but that
                     #definition remains within this namespace and does
                     #not penetrate further up the function.
                     argsList[num] = arg
                     #Here we dive down the rabbit hole. This ends up
                     #creating a multi-dimensional array shaped by the
                     #sizes and shapes of the lists passed.
-                    result.append(wrapper(*argsList, 
+                    result.append(wrapper(*argsList,
                                           HandlerResult=HandlerResult, **kwargs))
                     iterant += 1
-            #HandlerResult allows the user to specify what type to 
-            #return the generated sequence as. It defaults to numpy 
+            #HandlerResult allows the user to specify what type to
+            #return the generated sequence as. It defaults to numpy
             #arrays because functions tend to handle them better, but if
             #the user does not wish to import numpy the base Python options
             #are available to them.
@@ -183,17 +180,17 @@ def list_handler(func):
 
 def check_range(*args):
     """Check whether passed paramters fall within approved ranges.
-    
+
     Does not return anything, but will raise an error if a parameter falls
     outside of its defined range.
-    
+
     Input should be passed as an array of sequences, with each sequence
     having three elements:
         [0] is the value being checked,
         [1] is the range parameter(s) within which the value should fall, and
         [2] is the name of the parameter, for better error messages.
     If [2] is not supplied, "Input" will be appended as a generic name.
-    
+
     Range requests that this function understands are listed in the
     knownChecks sequence.
     """
@@ -202,8 +199,8 @@ def check_range(*args):
         #Converts arg to a mutable list
         arg = [*arg]
         if len(arg) == 1:
-            #arg[1] details what range the parameter should fall within; if 
-            #len(arg) is 1 that means a validity was not specified and the 
+            #arg[1] details what range the parameter should fall within; if
+            #len(arg) is 1 that means a validity was not specified and the
             #parameter should not have been passed in its current form
             raise TypeError("No range-validity parameter provided.")
         elif len(arg) == 2:
@@ -213,7 +210,7 @@ def check_range(*args):
         #This ensures that all whitespace is removed before checking if the
         #request is understood
         arg[1] = "".join(arg[1].lower().split())
-        #This block checks that each range request is understood. 
+        #This block checks that each range request is understood.
         #If the request is a compound one, it must be separated into individual
         #requests for validity comprehension
         for i in arg[1].split(","):

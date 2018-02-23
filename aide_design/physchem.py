@@ -1,14 +1,6 @@
-"""
-Created on Thu Jun 15 14:07:28 2017
-
-@author: Karan Newatia
-
-Last modified: Mon Aug 7 2017
-By: Sage Weber-Shirk
-
-
-This file contains unit process functions pertaining to the design of
+"""This file contains unit process functions pertaining to the design of
 physical/chemical unit processes for AguaClara water treatment plants.
+
 """
 
 ########################## Imports ##########################
@@ -47,12 +39,9 @@ def diam_circle(AreaCircle):
     return np.sqrt(4 * AreaCircle / np.pi)
 
 ######################### Hydraulics #########################
-RATIO_VC_ORIFICE = con.RATIO_VC_ORIFICE
-
 RE_TRANSITION_PIPE = 2100
 
 K_KOZENY = mat.K_KOZENY
-
 
 WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15,
                         323.15, 333.15, 343.15, 353.15, 363.15, 373.15
@@ -664,7 +653,7 @@ def width_rect_weir(FlowRate, Height):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Height, ">0", "Height"])
     return ((3 / 2) * FlowRate
-            / (RATIO_VC_ORIFICE * np.sqrt(2*gravity.magnitude) * Height**(3/2))
+            / (con.RATIO_VC_ORIFICE * np.sqrt(2*gravity.magnitude) * Height**(3/2))
             )
 
 
@@ -677,7 +666,7 @@ def headloss_weir(FlowRate, Width):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
     return (((3/2) * FlowRate
-             / (RATIO_VC_ORIFICE * np.sqrt(2*gravity.magnitude) * Width)
+             / (con.RATIO_VC_ORIFICE * np.sqrt(2*gravity.magnitude) * Width)
              ) ** (2/3))
 
 
@@ -686,7 +675,7 @@ def flow_rect_weir(Height, Width):
     """Return the flow of a rectangular weir."""
     #Checking input validity
     ut.check_range([Height, ">0", "Height"], [Width, ">0", "Width"])
-    return ((2/3) * RATIO_VC_ORIFICE
+    return ((2/3) * con.RATIO_VC_ORIFICE
             * (np.sqrt(2*gravity.magnitude) * Height**(3/2))
             * Width)
 

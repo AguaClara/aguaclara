@@ -1,6 +1,6 @@
-"""
-This utility is used to provide useful functions for all things related to pipeline
-design.
+"""This utility is used to provide useful functions for all things related to
+pipeline design.
+
 """
 
 from aide_design.units import unit_registry as u

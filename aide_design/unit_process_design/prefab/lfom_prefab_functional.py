@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Edited on September 1, 2017
-@author: Monroe Weber-Shirk
+"""This file contains all the functions needed to design the linear flow
+orifice meter (LFOM) for an AguaClara plant.
 
-Created on Wed Jun 21 17:16:46 2017
-
-@author: cc2467
 """
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
@@ -30,16 +26,14 @@ from aide_design.units import unit_registry as u
 # utility has the significant digit display function
 from aide_design import utility as ut
 
-# import export inputs and define the VC coefficient
+# import constants and define the VC coefficient
 from aide_design import constants as con
-ratio_VC_orifice= con.RATIO_VC_ORIFICE
 
 # The following constants need to go into the constants file
 Pi_LFOM_safety = 1.2
 # pipe schedule for LFOM
 #SDR_LFOM = 26
 #FLOW = 10*u.L/u.s
-#HL_LFOM = 20*u.cm
 
 #primary outputs from this file are
 #Nominal diameter nom_diam_lfom_pipe(FLOW,HL_LFOM,Pi_LFOM_safety,SDR_LFOM)
@@ -51,7 +45,7 @@ Pi_LFOM_safety = 1.2
 # output is width per flow rate.
 @u.wraps(u.s/(u.m**2), [u.m,u.m], False)
 def width_stout(HL_LFOM,z):
-    return (2/((2*pc.gravity*z)**(1/2)*ratio_VC_orifice*np.pi*HL_LFOM)).magnitude
+    return (2/((2*pc.gravity*z)**(1/2)*con.RATIO_VC_ORIFICE*np.pi*HL_LFOM)).magnitude
 
 
 @u.wraps(None, [u.m**3/u.s,u.m], False)

@@ -1,3 +1,11 @@
+""" Minor Loss Coefficients of Reductions Module.
+
+This module includes all minor loss coefficient calculations for common complex
+geometries. For reductions and expansions, the following resource is used:
+https://neutrium.net/fluid_flow/pressure-loss-from-fittings-expansion-and-reduction-in-pipe-size/
+
+"""
+
 import aide_design.pipedatabase as pipe
 from aide_design.units import unit_registry as u
 from aide_design import physchem as pc
@@ -5,13 +13,6 @@ import aide_design.constants as con
 import aide_design.materials_database as mats
 import numpy as np
 import aide_design.utility as ut
-""" Minor Loss Coefficients of Reductions Module.
-
-This module includes all minor loss coefficient calculations for common complex geometries.
-For reductions and expansions, the following resource is used:
-https://neutrium.net/fluid_flow/pressure-loss-from-fittings-expansion-and-reduction-in-pipe-size/
-
-"""
 
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.L/u.s])

@@ -1,14 +1,7 @@
 #-*- coding: utf-8 -*-
-"""
-Created on Mon Jun 26 15:54:16 2017
+"""This file contains constants which represent physical properties and
+scientific principles which will be used in AguaClara plant design.
 
-@author: Karan Newatia
-
-Last modified: Fri Jul 7 2017
-by: Sage Weber-Shirk
-
-This file contains constants which represent physical properties and scientific
-principles which will be used in AguaClara plant design.
 """
 from aide_design.units import unit_registry as u
 

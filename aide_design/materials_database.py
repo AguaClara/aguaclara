@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug  7 12:05:59 2017
 
-@author: kn348
+"""
+
 """
 
 import math
