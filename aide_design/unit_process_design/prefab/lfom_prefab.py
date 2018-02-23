@@ -67,11 +67,11 @@ def ceil_nearest(x,array):
     myindex = np.argmax(array >= x)
     return array[myindex]
 
-class LFOM: 
+class LFOM:
 
     def __init__(self, flow, hl, ratio_safety, sdr, drill_series_uom):
         self.flow = flow
-        self.hl = hl 
+        self.hl = hl
         self.ratio_safety = ratio_safety
         self.sdr = sdr
         self.drill_series_uom = drill_series_uom
@@ -102,7 +102,7 @@ class LFOM:
     def __dist_center_rows(self):
         return self.hl / self.__n_rows()
 
-    # average vertical velocity of the water inside the LFOM pipe 
+    # average vertical velocity of the water inside the LFOM pipe
     # at the very bottom of the bottom row of orifices
     # The speed of falling water is 0.841 m/s for all linear flow orifice meters of height 20cm,
     # independent of total plant flow rate.
@@ -132,7 +132,7 @@ class LFOM:
     def __drillbit_area(self):
         return pc.area_circle(self.drillbit_diameter())
 
-    ##A bound on the number of orifices allowed in each row.  
+    ##A bound on the number of orifices allowed in each row.
     ##The distance between consecutive orifices must be enough to retain structural integrity of the pipe
     def __n_orifices_per_row_max(self):
         S_lfom_orifices_Min= 3 * u.mm
@@ -196,7 +196,7 @@ class LFOM:
     def __flow_ideal(self, height):
         __flow_ideal=(self.flow * height) / self.hl
         return __flow_ideal
-    
+
     def flow_lfom(self, height):
         D_lfom_orifices = self.drillbit_diameter()
         H_submerged = np.arange(height - 0.5 * D_lfom_orifices, self.hl, height - self.__dist_center_rows(), dtype=object)

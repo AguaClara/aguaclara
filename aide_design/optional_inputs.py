@@ -13,7 +13,7 @@ L_ET_MAX = 2.2*u.m
 HL_LFOM = 20*u.cm
 
 # Flocculator
-FLOC_HEADLOSS = 0.4*u.m
+HL_FLOC = 0.4*u.m
 
 COLL_POT = 37000 # collision potential, also referred to as Gt
 
