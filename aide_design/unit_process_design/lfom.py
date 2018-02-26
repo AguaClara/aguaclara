@@ -149,7 +149,7 @@ def flow_lfom_actual(FLOW,HL_LFOM,drill_bits,Row_Index_Submerged,N_LFOM_Orifices
     harray = (np.linspace(row_height.to(u.mm).magnitude,HL_LFOM.to(u.mm).magnitude,n_lfom_rows(FLOW,HL_LFOM)))*u.mm -0.5* D_LFOM_Orifices
     FLOW_new=0*u.m**3/u.s
     for i in range(Row_Index_Submerged+1):
-        FLOW_new = FLOW_new + (N_LFOM_Orifices[i]*(pc.flow_orifice_vert(D_LFOM_Orifices,harray[Row_Index_Submerged-i],ratio_VC_orifice)))
+        FLOW_new = FLOW_new + (N_LFOM_Orifices[i]*(pc.flow_orifice_vert(D_LFOM_Orifices,harray[Row_Index_Submerged-i],con.RATIO_VC_ORIFICE)))
     return FLOW_new
 
 
@@ -167,7 +167,7 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
         n=np.append(n,0)
         #calculate the ideal number of orifices at the current row without constraining to an integer
         n_orifices_real=((FLOW_ramp_local[i]-flow_lfom_actual(FLOW,HL_LFOM,drill_bits,i,n))/
-                                  pc.flow_orifice_vert(D_LFOM_Orifices,H,ratio_VC_orifice)).to(u.dimensionless).magnitude
+                                  pc.flow_orifice_vert(D_LFOM_Orifices,H,con.RATIO_VC_ORIFICE)).to(u.dimensionless).magnitude
         #constrain number of orifices to be less than the max per row and greater or equal to 0
         n[i]=min((max(0,round(n_orifices_real))),n_orifices_max)
     return n
@@ -196,5 +196,5 @@ def flow_lfom(FLOW,HL_LFOM,drill_bits,SDR_LFOM,H):
     N_lfom_orifices=n_lfom_orifices(FLOW,HL_LFOM,drill_bits,SDR_LFOM)
     flow=[]
     for i in range (len(H_submerged)):
-        flow.append(pc.flow_orifice_vert(D_lfom_orifices,H_submerged[i],ratio_VC_orifice)*N_lfom_orifices[i])
+        flow.append(pc.flow_orifice_vert(D_lfom_orifices,H_submerged[i],con.RATIO_VC_ORIFICE)*N_lfom_orifices[i])
     return sum (flow)
