@@ -64,9 +64,17 @@ def n_lfom_rows(FLOW,HL_LFOM):
     reliably returns a valid solution.
     """
     N_estimated = (HL_LFOM*np.pi/(2*width_stout(HL_LFOM,HL_LFOM)*FLOW))
-    #variablerow=min(10,max(4,math.trunc(N_estimated.magnitude)))
-    return 10
-
+    variablerow = min(10,max(4,math.trunc(N_estimated.magnitude)))
+    # Forcing the LFOM to either have 4 or 8 rows, for design purposes
+    # If the hydraulic calculation finds that there should be 4 rows, then there
+    # will be 4 rows. If anything other besides 4 rows is found, then assign 8
+    # rows.
+    # This can be improved in the future.
+    if variablerow == 4:
+        variablerow = 4
+    else:
+        variablerow = 8
+    return variablerow
 
 def dist_center_lfom_rows(FLOW,HL_LFOM):
     return HL_LFOM/n_lfom_rows(FLOW,HL_LFOM)
@@ -163,6 +171,7 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
         #constrain number of orifices to be less than the max per row and greater or equal to 0
         n[i]=min((max(0,round(n_orifices_real))),n_orifices_max)
     return n
+
 
 
 #This function calculates the error of the design based on the differences between the predicted flow rate

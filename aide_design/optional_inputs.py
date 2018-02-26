@@ -12,6 +12,9 @@ L_ET_MAX = 2.2*u.m
 # LFOM
 HL_LFOM = 20*u.cm
 
+S_LFOM_ORIFICE = 1 * u.cm # minimum wall distance between orifices, for lfom structural stability 
+
+
 # Flocculator
 HL_FLOC = 0.4*u.m
 
