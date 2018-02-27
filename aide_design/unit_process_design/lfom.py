@@ -5,30 +5,7 @@ orifice meter (LFOM) for an AguaClara plant.
 """
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
-
-# although math is "built in" it needs to be imported so it's functions can be used.
-import math
-
-#see numpy cheat sheet https://www.dataquest.io/blog/images/cheat-sheets/numpy-cheat-sheet.pdf
-#The numpy import is needed because it is renamed here as np.
-import numpy as np
-
-# add imports for AguaClara code that will be needed
-# physchem has functions related to hydraulics, fractal flocs, flocculation, sedimentation, etc.
-from aide_design import physchem as pc
-
-# pipedatabase has functions related to pipe diameters
-from aide_design import pipedatabase as pipe
-
-# units allows us to include units in all of our calculations
-from aide_design.units import unit_registry as u
-
-# utility has the significant digit display function
-from aide_design import utility as ut
-
-# import constants and optional_inputs
-from aide_design import constants as con
-from aide_design import optional_inputs as opt
+from aide_design.play import*
 
 # The following constants need to go into the constants file
 Pi_LFOM_safety = 1.2
