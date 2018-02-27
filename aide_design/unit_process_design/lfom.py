@@ -120,8 +120,9 @@ def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
     The distance between consecutive orifices must be enough to retain
     structural integrity of the pipe.
     """
-    S_lfom_orifices_Min= 3*u.mm
-    return math.floor(math.pi*(pipe.ID_SDR(nom_diam_lfom_pipe(FLOW,HL_LFOM,Pi_LFOM_safety,SDR_LFOM),SDR_LFOM))/(orifice_diameter(FLOW,HL_LFOM,drill_bits)+S_lfom_orifices_Min))
+    return math.floor(math.pi*(pipe.ID_SDR(
+        nom_diam_lfom_pipe(FLOW,HL_LFOM,Pi_LFOM_safety,SDR_LFOM),SDR_LFOM))
+        /(orifice_diameter(FLOW,HL_LFOM,drill_bits)+opt.S_LFOM_ORIFICE))
 
 def flow_ramp(FLOW,HL_LFOM):
     n_rows = n_lfom_rows(FLOW,HL_LFOM)
