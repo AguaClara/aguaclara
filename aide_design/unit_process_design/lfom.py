@@ -26,8 +26,9 @@ from aide_design.units import unit_registry as u
 # utility has the significant digit display function
 from aide_design import utility as ut
 
-# import constants and define the VC coefficient
+# import constants and optional_inputs
 from aide_design import constants as con
+from aide_design import optional_inputs as opt
 
 # The following constants need to go into the constants file
 Pi_LFOM_safety = 1.2
@@ -172,6 +173,28 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_bits,SDR_LFOM):
         #constrain number of orifices to be less than the max per row and greater or equal to 0
         n[i]=min((max(0,round(n_orifices_real))),n_orifices_max)
     return n
+
+#This function takes the output of n_lfom_orifices and converts it to a list with 8
+#entries that corresponds to the 8 possible rows. This is necessary to make the lfom
+# easier to construct in Fusion using patterns
+def n_lfom_orifices_fusion(FLOW,HL_LFOM,drill_bits,SDR_LFOM,num_rows):
+    num_orifices_per_row = n_lfom_orifices(FLOW, HL_LFOM, drill_bits, SDR_LFOM)
+    num_orifices_final = np.zeros(8)
+    centerline = np.zeros(8)
+    center = True
+    for i in range(8):
+        if i % 2 == 1 and num_rows == 4:
+            centerline[i] = int(center)
+        elif num_rows == 4:
+            num_orifices_final[i] = num_orifices_per_row[i/2]
+            centerline[i] = int(center)
+            center = not center
+        else:
+            num_orifices_final[i] = num_orifices_per_row[i]
+            centerline[i] = int(center)
+            center = not center
+
+    return num_orifices_final, centerline
 
 
 
