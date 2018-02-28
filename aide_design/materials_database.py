@@ -38,6 +38,8 @@ DIAM_REBAR = (1/2)*u.inch
 
 ########### Material constants - entrance tank ############
 
+SDR_LFOM = 26
+
 THICKNESS_LFOM_SHEET = THICKNESS_CONCRETE_MIN
 
 NOM_DIAM_ENT_TANK_FLOAT =  8*u.inch
