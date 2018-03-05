@@ -6,7 +6,7 @@ from aide_design.units import unit_registry as u
 
 import warnings
 warnings.warn("The module expert_inputs.py is deprecated. Please use constants"
-              + ".py which is imported as con instead. Some global variables +
+              + ".py which is imported as con instead. Some global variables" +
               "have been moved to optional_inputs.py which is imported as opt",
               DeprecationWarning)
 
