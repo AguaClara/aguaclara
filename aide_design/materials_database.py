@@ -203,7 +203,7 @@ while DIAM_DRILL_MET[counter] < 50*u.mm:
     DIAM_DRILL_MET.append(DIAM_DRILL_MET[counter-1] + 2*u.mm)
 
 def diam_drill(EN_DRILL_SERIES):
-    if EN_DRILL_SERIES  == 0:
+    if EN_DRILL_SERIES == 0:
         DIAM_DRILL = DIAM_DRILL_ENG
     else:
         DIAM_DRILL = DIAM_DRILL_MET
