@@ -505,9 +505,14 @@ THICKNESS_FLOC_BAFFLE = 2 * u.mm
 
 VEL_SED_UP_BOD = 1 * u.mm/u.s
 
-##Plate settler capture velocity
-VEL_SED_CONC_BOD = 0.12 * u.mm/u.s
+##Plate settler
+VEL_SED_CONC_BOD = 0.12 * u.mm/u.s # capture velocity
 
+ANGLE_SED_PLATE = 60 * u.deg
+
+SPACE_SED_PLATE = 2.5*u.cm
+
+# Bottom of channel
 ANGLE_SED_SLOPE = 50 * u.deg
 
 ##This slope needs to be verified for functionality in the field.
@@ -534,6 +539,8 @@ HEADLOSS_SED_WEIR_MAX = 5 * u.cm
 # level in the inlet channel will increase when the inlet overflow weir
 # is in use.
 HEIGHT_SED_INLET_WEIR_FREE_BOARD = 2 * u.cm
+
+THICKNESS_SED_WEIR = 5*u.cm
 
 ##Exit launder
 ##Target headloss through the launder orifices

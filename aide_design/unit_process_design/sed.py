@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Aug 10 15:29:47 2017
+"""This file contains all the functions needed to design a sedimentation tank
+for an AguaClara plant.
 
-@author: cc2467
 """
-
+from aide_design.play import*

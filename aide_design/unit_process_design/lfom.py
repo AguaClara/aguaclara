@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """This file contains all the functions needed to design the linear flow
 orifice meter (LFOM) for an AguaClara plant.
 

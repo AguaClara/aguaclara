@@ -100,17 +100,6 @@ NOM_DIAM_FLOC_MODULES_MAIN = (1/2)*u.inch
 NOM_DIAM_FLOC_MODULES_LARGE = 1.5*u.inch
 
 ############ Material constants - sedimentation  #############
-
-WIDTH_SED_PLATE = 1.06*u.m
-
-THICKNESS_SED_PLATE = 0.2*u.cm
-
-SPACE_SED_PLATE = 2.5*u.cm
-
-ANGLE_SED_PLATE = 60*u.deg
-
-THICKNESS_SED_WEIR = 5*u.cm
-
 #Maximum length of sed plate sticking out past module pipes without any
 #additional support. The goal is to prevent floppy modules that don't maintain
 # constant distances between the plates
