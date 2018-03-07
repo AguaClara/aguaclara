@@ -62,10 +62,37 @@ def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
 def area_ent_tank(q_plant, hl, Gt, T, depth_end):
-    """Return the planview area of the entrance tank.
+    """Return the maximum number of plate settlers possible given the center
+    to center distance.
 
-    This uses an iterative method to calculate the entrance tank area repeatedly
-    until it stabilizes to within 1% of the previous iteration."""
+    Parameters
+    ----------
+    var1 : float
+        Plant flow rate
+
+    var2 : float
+        Headloss through the flocculator
+
+    var3 : float
+        Target collision potential
+
+    var4 : float
+        Design temperature
+
+    var5 : float
+        The depth of water at the end of the flocculator
+
+    Returns
+    -------
+    float
+        The planview area of the entrance tank
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>>
+
+    """
     # guess the planview area before starting iteration
     A_new = 1*u.m**2
     A_ratio = 0
