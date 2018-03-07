@@ -99,13 +99,14 @@ def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits):
     structural integrity of the pipe.
     """
     return math.floor(math.pi*(pipe.ID_SDR(
-        nom_diam_lfom_pipe(FLOW,HL_LFOM,con.RATIO_LFOM_SAFETY,mat.SDR_LFOM).magnitude,mat.SDR_LFOM).magnitude)
-        /(orifice_diameter(FLOW,HL_LFOM,drill_bits).magnitude+opt.S_LFOM_ORIFICE))
+        nom_diam_lfom_pipe(FLOW, HL_LFOM), mat.SDR_LFOM).magnitude)
+        / (orifice_diameter(FLOW, HL_LFOM, drill_bits).magnitude +
+            opt.S_LFOM_ORIFICE.magnitude))
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m], False)
 def flow_ramp(FLOW,HL_LFOM):
     n_rows = n_lfom_rows(FLOW,HL_LFOM)
-    return np.linspace(FLOW.magnitude/n_rows,FLOW.magnitude,n_rows)
+    return np.linspace(FLOW/n_rows,FLOW,n_rows)
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.inch], False)
 def height_lfom_orifices(FLOW,HL_LFOM,drill_bits):
@@ -139,7 +140,7 @@ def flow_lfom_actual(FLOW,HL_LFOM,drill_bits,Row_Index_Submerged,N_LFOM_Orifices
 @u.wraps(None, [u.m**3/u.s, u.m, u.inch], False)
 def n_lfom_orifices(FLOW,HL_LFOM,drill_bits):
     FLOW_ramp_local = flow_ramp(FLOW,HL_LFOM).magnitude
-    n_orifices_max =n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits,mat.SDR_LFOM)
+    n_orifices_max =n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits)
     n_rows = (n_lfom_rows(FLOW,HL_LFOM))
     D_LFOM_Orifices = orifice_diameter(FLOW,HL_LFOM,drill_bits).magnitude
     # H is distance from the elevation between two rows of orifices down to the center of the orifices
@@ -160,7 +161,7 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_bits):
 # easier to construct in Fusion using patterns
 @u.wraps(None, [u.m**3/u.s, u.m, u.inch, None], False)
 def n_lfom_orifices_fusion(FLOW,HL_LFOM,drill_bits,num_rows):
-    num_orifices_per_row = n_lfom_orifices(FLOW, HL_LFOM, drill_bits, mat.SDR_LFOM)
+    num_orifices_per_row = n_lfom_orifices(FLOW, HL_LFOM, drill_bits)
     num_orifices_final = np.zeros(8)
     centerline = np.zeros(8)
     center = True

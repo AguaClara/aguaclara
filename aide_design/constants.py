@@ -512,6 +512,8 @@ ANGLE_SED_PLATE = 60 * u.deg
 
 SPACE_SED_PLATE = 2.5*u.cm
 
+N_SED_MODULE_PLATES_MIN = 8
+
 # This is moved to template because THICKNESS_SED_PLATE is in materials.yaml
 # DIST_CENTER_SED_PLATE = SPACE_SED_PLATE + THICKNESS_SED_PLATE
 

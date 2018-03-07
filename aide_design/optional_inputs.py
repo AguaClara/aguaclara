@@ -14,7 +14,6 @@ HL_LFOM = 20*u.cm
 
 S_LFOM_ORIFICE = 1 * u.cm  # minimum wall distance between orifices, for lfom structural stability
 
-
 # Flocculator
 HL_FLOC = 0.4*u.m
 
@@ -25,4 +24,6 @@ FREEBOARD = 10*u.cm
 # Sedimentation tank
 THICKNESS_PLANT_FLOOR = 0.2 * u.m  # plant floor slab thickness
 
-THICKNESS_SED_DIVID_WALL = 0.15 * u.m  # thickness of sed tank dividing wall
+THICKNESS_SED_WALL = 0.15 * u.m  # thickness of sed tank dividing wall
+
+FLOC_BLANKET_HEIGHT = 0.25 * u.m # vertical height of floc blanket from peak of slope to weir
