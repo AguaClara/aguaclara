@@ -505,6 +505,33 @@ THICKNESS_FLOC_BAFFLE = 2 * u.mm
 
 VEL_SED_UP_BOD = 1 * u.mm/u.s
 
+## The are following are design constants for the sed tank diffuser and jet reverser
+ND_JET_REVERSER = 3 * u.inch  # nominal diameter of pipe used for jet reverser in bottom of set tank
+
+ND_DIFFUSER_PIPE = 4 * u.cm  # nominal diameter of pipe used to make diffusers
+
+Pi_PVC_stretch = 1.2  # stretch factor applied to the diffuser PVC pipes as they are heated and molded
+
+SDR_DIFFUSER = 26  # SDR of diffuser pipe
+
+T_DIFFUSER = ((pipe.OD(ND_DIFFUSER_PIPE) -
+                        pipe.ID_SDR(ND_DIFFUSER_PIPE, SDR_DIFFUSER))
+                              / (2 * Pi_PVC_stretch))
+
+W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
+
+W_DIFFUSER_OUTER = W_DIFFUSER_INNER + T_DIFFUSER
+
+L_DIFFUSER_INNER = 1 * u.cm  # NEED VALUE BECAUSE THIS IS A GUESS
+
+L_DIFFUSER_OUTER = L_DIFFUSER_INNER + T_DIFFUSER
+
+L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
+
+
+
+B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
+
 ##Plate settler
 VEL_SED_CONC_BOD = 0.12 * u.mm/u.s # capture velocity
 
@@ -533,7 +560,6 @@ SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/17360490
 ##Max length of the active part of the sed tank so that single pipe
 # segments can be used for the inlet and outlet manifoldS
 LENGTH_SED_UP_FLOW_MAX = 5.8 * u.m
-
 
 ##Inlet channel
 HEADLOSS_SED_WEIR_MAX = 5 * u.cm
