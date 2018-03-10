@@ -528,8 +528,6 @@ L_DIFFUSER_OUTER = L_DIFFUSER_INNER + T_DIFFUSER
 
 L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
 
-
-
 B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
 
 ##Plate settler
