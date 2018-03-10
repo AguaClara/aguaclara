@@ -36,9 +36,6 @@ def diffuser_max_flow(W_sed_tank):
     var1 : float
         Width of the sedimentation tank
 
-    var2 : float
-        Outer length of the diffusers
-
     Returns
     -------
     float
@@ -50,4 +47,33 @@ def diffuser_max_flow(W_sed_tank):
     >>>
 
     """
-    return con.VEL_SED_UP_BOD * W_sed * con.L_DIFFUSER_OUTER
+    return con.VEL_SED_UP_BOD.magnitude * W_sed_tank * con.L_DIFFUSER_OUTER.magnitude
+
+@u.wraps(u.m, [u.m], False)
+def w_diffuser_inner_min(W_sed_tank):
+    """Return the minimum inner width of each diffuser in the sedimentation tank.
+
+    Parameters
+    ----------
+    var1 : float
+        Width of the sedimentation tank
+
+    Returns
+    -------
+    float
+        Minimum inner width of each diffuser in the sedimentation tank
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>>
+
+    """
+    return (con.VEL_SED_UP_BOD.magnitude / con.V_SED_DIFFUSER_MAX.magnitude) * W_sed_tank
+
+
+W_DIFFUSER_OUTER = W_DIFFUSER_INNER + (2 * T_DIFFUSER)
+
+L_DIFFUSER_OUTER = ((AREA_PVC_DIFFUSER / (2 * T_DIFFUSER)) - W_DIFFUSER_INNER)
+
+L_DIFFUSER_INNER = L_DIFFUSER_OUTER - (2 * T_DIFFUSER)

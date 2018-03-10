@@ -5,6 +5,7 @@ scientific principles which will be used in AguaClara plant design.
 """
 from aide_design.units import unit_registry as u
 import aide_design.pipedatabase as pipe
+import aide_design.physchem as pc
 import numpy as np
 
 #####tabulated constants
@@ -548,6 +549,8 @@ HEIGHT_SED_INLET_WEIR_FREE_BOARD = 2 * u.cm
 
 THICKNESS_SED_WEIR = 5*u.cm
 
+HL_SED_INLET_MAX = 1 * u.cm
+
 ##Exit launder
 ##Target headloss through the launder orifices
 HEADLOSS_SED_LAUNDER_BOD = 4 * u.cm
@@ -661,11 +664,9 @@ T_DIFFUSER = ((pipe.OD(ND_DIFFUSER_PIPE) -
 
 W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
 
-W_DIFFUSER_OUTER = W_DIFFUSER_INNER + T_DIFFUSER
-
-L_DIFFUSER_OUTER = ((AREA_PVC_DIFFUSER / (2 * T_DIFFUSER)) - W_DIFFUSER_INNER)
-
-L_DIFFUSER_INNER = L_DIFFUSER_OUTER - (2 * T_DIFFUSER)
+V_SED_DIFFUSER_MAX = (np.sqrt((2 * pc.gravity * HL_SED_INLET_MAX)
+                                  .to(u.m ** 2 / u.s ** 2).magnitude)
+                        * (u.m / u.s))
 
 L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
 
