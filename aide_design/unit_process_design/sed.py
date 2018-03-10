@@ -27,10 +27,8 @@ def n_sed_plates_max(dist_center_sed_plate):
     """
     return math.floor((mat.LENGTH_SED_PLATE_CANTILEVERED/dist_center_sed_plate * np.tan(con.ANGLE_SED_PLATE.to(u.rad).magnitude)) + 1)
 
-print(n_sed_plates_max(2.5*u.cm))
-
-@u.wraps(u.L/u.s, [u.m, u.m], False)
-def diffuser_max_flow(W_sed_tank, L_sed_diffuser_outer):
+@u.wraps(u.L/u.s, [u.m], False)
+def diffuser_max_flow(W_sed_tank):
     """Return the flow through each diffuser.
 
     Parameters
@@ -52,4 +50,4 @@ def diffuser_max_flow(W_sed_tank, L_sed_diffuser_outer):
     >>>
 
     """
-    return con.VEL_SED_UP_BOD * W_sed * L_sed_diffuser_outer
+    return con.VEL_SED_UP_BOD * W_sed * con.L_DIFFUSER_OUTER

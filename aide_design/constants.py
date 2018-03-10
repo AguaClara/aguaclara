@@ -4,6 +4,8 @@ scientific principles which will be used in AguaClara plant design.
 
 """
 from aide_design.units import unit_registry as u
+import aide_design.pipedatabase as pipe
+import numpy as np
 
 #####tabulated constants
 
@@ -505,33 +507,8 @@ THICKNESS_FLOC_BAFFLE = 2 * u.mm
 
 VEL_SED_UP_BOD = 1 * u.mm/u.s
 
-## The are following are design constants for the sed tank diffuser and jet reverser
-ND_JET_REVERSER = 3 * u.inch  # nominal diameter of pipe used for jet reverser in bottom of set tank
-
-ND_DIFFUSER_PIPE = 4 * u.cm  # nominal diameter of pipe used to make diffusers
-
-Pi_PVC_stretch = 1.2  # stretch factor applied to the diffuser PVC pipes as they are heated and molded
-
-SDR_DIFFUSER = 26  # SDR of diffuser pipe
-
-T_DIFFUSER = ((pipe.OD(ND_DIFFUSER_PIPE) -
-                        pipe.ID_SDR(ND_DIFFUSER_PIPE, SDR_DIFFUSER))
-                              / (2 * Pi_PVC_stretch))
-
-W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
-
-W_DIFFUSER_OUTER = W_DIFFUSER_INNER + T_DIFFUSER
-
-L_DIFFUSER_INNER = 1 * u.cm  # NEED VALUE BECAUSE THIS IS A GUESS
-
-L_DIFFUSER_OUTER = L_DIFFUSER_INNER + T_DIFFUSER
-
-L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
-
-B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
-
 ##Plate settler
-VEL_SED_CONC_BOD = 0.12 * u.mm/u.s # capture velocity
+VEL_SED_CONC_BOD = 0.12 * u.mm/u.s  # capture velocity
 
 ANGLE_SED_PLATE = 60 * u.deg
 
@@ -599,6 +576,8 @@ NOM_DIAMETER_SED_MOD = 0.5 * u.inch
 # 1/2" pipe and are between the plates
 NOM_DIAMETER_SED_MOD_SPACER = 0.75 * u.inch
 
+SDR_SED_MOD_SPACER = 17
+
 ##This is the vertical thickness of the lip where the lamella support sits. mrf222
 THICKNESS_SED_LAMELLA_LEDGE = 8 * u.cm
 
@@ -654,15 +633,43 @@ HEIGHT_JET_REVERSER_TO_DIFFUSERS = 3 * u.cm
 # tank to be able to install the pipe
 LENGTH_SED_MANIFOLD_PIPE_FROM_TANK_END = 2  *u.cm
 
-##Assumed stretch of the PVC pipes as they are heated and molded
-RATIO_PVC_STRETCH = 1.2
-
 LENGTH_SED_WALL_TO_DIFFUSER_GAP_MIN = 3 * u.cm
 
 ##Diameter of the holes drilled in the manifold so that the molded 1"
 # diffuser pipes can fit tightly in place (normal OD of a 1" pipe is
 # close to 1-5/16")
 DIAM_SED_MANIFOLD_PORT = 1.25 * u.inch
+
+ND_JET_REVERSER = 3 * u.inch  # nominal diameter of pipe used for jet reverser in bottom of set tank
+
+SDR_REVERSER = 26  # SDR of jet reverser pipe
+
+## Diffuser geometry
+SDR_DIFFUSER = 26  # SDR of diffuser pipe
+
+ND_DIFFUSER_PIPE = 4 * u.cm  # nominal diameter of pipe used to make diffusers
+
+AREA_PVC_DIFFUSER = (np.pi/4) * ((pipe.OD(ND_DIFFUSER_PIPE)**2)
+                          - (pipe.ID_SDR(ND_DIFFUSER_PIPE, SDR_DIFFUSER)**2)
+                          )
+
+RATIO_PVC_STRETCH = 1.2  # stretch factor applied to the diffuser PVC pipes as they are heated and molded
+
+T_DIFFUSER = ((pipe.OD(ND_DIFFUSER_PIPE) -
+                        pipe.ID_SDR(ND_DIFFUSER_PIPE, SDR_DIFFUSER))
+                              / (2 * RATIO_PVC_STRETCH))
+
+W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
+
+W_DIFFUSER_OUTER = W_DIFFUSER_INNER + T_DIFFUSER
+
+L_DIFFUSER_OUTER = ((AREA_PVC_DIFFUSER / (2 * T_DIFFUSER)) - W_DIFFUSER_INNER)
+
+L_DIFFUSER_INNER = L_DIFFUSER_OUTER - (2 * T_DIFFUSER)
+
+L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
+
+B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
 
 ##Outlet to filter
 #If the plant has two trains, the current design shows the exit channel
