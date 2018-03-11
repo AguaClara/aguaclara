@@ -6,8 +6,8 @@ from aide_design.play import*
 
 @u.wraps(None, [u.cm], False)
 def n_sed_plates_max(dist_center_sed_plate):
-    """Return the maximum number of plate settlers possible given the center
-    to center distance.
+    """Return the maximum possible number of plate settlers in a module given
+    the center to center distance between plates.
 
     Parameters
     ----------
@@ -22,13 +22,17 @@ def n_sed_plates_max(dist_center_sed_plate):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> n_sed_plates_max(1*u.cm)
+    35
+    >>> n_sed_plates_max(2.52*u.cm)
+    14
 
     """
-    return math.floor((mat.LENGTH_SED_PLATE_CANTILEVERED/dist_center_sed_plate * np.tan(con.ANGLE_SED_PLATE.to(u.rad).magnitude)) + 1)
+    return math.floor((mat.LENGTH_SED_PLATE_CANTILEVERED.magnitude/dist_center_sed_plate
+                      * np.tan(con.ANGLE_SED_PLATE.to(u.rad).magnitude)) + 1)
 
 @u.wraps(u.m, [u.m], False)
-def w_diffuser_inner_min(W_sed_tank):
+def w_diffuser_inner_min(w_tank):
     """Return the minimum inner width of each diffuser in the sedimentation tank.
 
     Parameters
@@ -44,13 +48,16 @@ def w_diffuser_inner_min(W_sed_tank):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> w_diffuser_inner_min(42*u.inch)
+
 
     """
-    return (con.VEL_SED_UP_BOD.magnitude / con.V_SED_DIFFUSER_MAX.magnitude) * W_sed_tank
+    return (con.VEL_SED_UP_BOD.magnitude / con.V_SED_DIFFUSER_MAX.magnitude) * w_tank
+
+    w_diffuser_inner_min(42*u.inch)
 
 @u.wraps(u.m, [u.m], False)
-def w_diffuser_inner(W_sed_tank):
+def w_diffuser_inner(w_tank):
     """Return the inner width of each diffuser in the sedimentation tank.
 
     Parameters
@@ -69,10 +76,10 @@ def w_diffuser_inner(W_sed_tank):
     >>>
 
     """
-    return ut.ceil_nearest(w_diffuser_inner_min(W_sed_tank).magnitude, (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
+    return ut.ceil_nearest(w_diffuser_inner_min(w_tank).magnitude, (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
 
 @u.wraps(u.m, [u.m], False)
-def w_diffuser_outer(W_sed_tank):
+def w_diffuser_outer(w_tank):
     """Return the outer width of each diffuser in the sedimentation tank.
 
     Parameters
@@ -91,10 +98,10 @@ def w_diffuser_outer(W_sed_tank):
     >>>
 
     """
-    return w_diffuser_inner_min(W_sed_tank).magnitude + (2 * con.T_DIFFUSER)
+    return w_diffuser_inner_min(w_tank).magnitude + (2 * con.T_DIFFUSER)
 
 @u.wraps(u.m, [u.m], False)
-def L_diffuser_outer(W_sed_tank):
+def L_diffuser_outer(w_tank):
     """Return the outer length of each diffuser in the sedimentation tank.
 
     Parameters
@@ -113,10 +120,10 @@ def L_diffuser_outer(W_sed_tank):
     >>>
 
     """
-    return con.AREA_PVC_DIFFUSER.magnitude / (2 * con.T_DIFFUSER.magnitude) - w_diffuser_inner(W_sed_tank).magnitude
+    return con.AREA_PVC_DIFFUSER.magnitude / (2 * con.T_DIFFUSER.magnitude) - w_diffuser_inner(w_tank).magnitude
 
 @u.wraps(u.m, [u.m], False)
-def L_diffuser_inner(W_sed_tank):
+def L_diffuser_inner(w_tank):
     """Return the inner length of each diffuser in the sedimentation tank.
 
     Parameters
@@ -135,10 +142,10 @@ def L_diffuser_inner(W_sed_tank):
     >>>
 
     """
-    return L_diffuser_outer(W_sed_tank).magnitude - (2 * con.T_DIFFUSER.magnitude)
+    return L_diffuser_outer(w_tank).magnitude - (2 * con.T_DIFFUSER.magnitude)
 
-@u.wraps(u.L/u.s, [u.m], False)
-def flow_diffuser_max(W_sed_tank):
+@u.wraps(u.m**3/u.s, [u.m], False)
+def q_diffuser_max(w_tank):
     """Return the flow through each diffuser.
 
     Parameters
@@ -157,12 +164,12 @@ def flow_diffuser_max(W_sed_tank):
     >>>
 
     """
-    return con.VEL_SED_UP_BOD.magnitude * W_sed_tank * L_diffuser_outer(W_sed_tank).magnitude
+    return con.VEL_SED_UP_BOD.magnitude * w_sed_tank * L_diffuser_outer(w_tank).magnitude
 
 # still need to calculate V_sed_diffuser
-@u.wraps(u.L/u.s, [u.m], False)
-def V_sed_diffuser(W_sed_tank):
-    """Return the flow through each diffuser.
+@u.wraps(u.m/u.s, [u.m], False)
+def v_sed_diffuser(w_tank):
+    """Return the velocity through each diffuser.
 
     Parameters
     ----------
@@ -180,5 +187,89 @@ def V_sed_diffuser(W_sed_tank):
     >>>
 
     """
-    return (flow_diffuser_max(W_sed_tank).magnitude
-                    / (w_diffuser_inner(W_sed_tank) * L_diffuser_inner(W_sed_tank)).magnitude)
+    return (q_diffuser_max(w_tank).magnitude
+            / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
+
+@u.wraps(u.m**3/u.s, [u.m, u.m], False)
+def q_tank_max(w_tank, L_upflow_max):
+    """Return the maximum flow throughout one sedimentation tank.
+
+    Parameters
+    ----------
+    var1 : float
+        Width of the sedimentation tank
+
+    var2 : float
+        Length of the active part of the sedimentation tank
+
+    Returns
+    -------
+    float
+        Maximum flow through one sedimentation tank
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>>
+
+    """
+    return (L_upflow_max * con.VEL_SED_UP_BOD * w_tank)
+
+
+@u.wraps(None, [u.m**3/u.s, u.m, u.m], False)
+def n_tanks(q_plant, w_tank, L_upflow_max):
+    """Return the number of sedimentation tanks required for a given flow rate.
+
+    Parameters
+    ----------
+    var1 : float
+        Total plant flow rate
+
+    var2 : float
+        Width of the sedimentation tank
+
+    var3 : float
+        Length of the active part of the sedimentation tank
+
+    Returns
+    -------
+    int
+        Number of sedimentation tanks required for a given flow rate.
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>>
+
+    """
+    q_max = q_tank_max(w_tank, L_upflow_max).magnitude
+    return (int(np.ceil(q_plant / q_max)))
+
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m], False)
+def L_channel(q_plant, w_tank, L_upflow_max):
+    """Return the length of the inlet and exit channels for the sedimentation tank.
+
+    Parameters
+    ----------
+    var1 : float
+        Total plant flow rate
+
+    var2 : float
+        Width of the sedimentation tank
+
+    var3 : float
+        Length of the active part of the sedimentation tank
+
+    Returns
+    -------
+    float
+        Length of the inlet and exit channels for the sedimentation tank.
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>>
+
+    """
+    n_tanks = n_tanks(q_plant, w_tank, L_upflow_max).magnitude
+    return ((n_tanks * w_tank) + opt.THICKNESS_SED_WALL + ((n_tanks-1) * opt.THICKNESS_SED_WALL))
