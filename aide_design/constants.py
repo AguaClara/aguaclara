@@ -533,10 +533,6 @@ SED_GATE_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604
 
 SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/173604905/PlateSettlerSupportBolt.dwg"
 
-##Max length of the active part of the sed tank so that single pipe
-# segments can be used for the inlet and outlet manifoldS
-LENGTH_SED_UP_FLOW_MAX = 5.8 * u.m
-
 ##Inlet channel
 HEADLOSS_SED_WEIR_MAX = 5 * u.cm
 
