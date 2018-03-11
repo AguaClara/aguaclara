@@ -5,10 +5,11 @@ scientific principles which will be used in AguaClara plant design.
 """
 from aide_design.units import unit_registry as u
 import aide_design.pipedatabase as pipe
-import aide_design.physchem as pc
 import numpy as np
 
 #####tabulated constants
+
+GRAVITY = 9.80665 * u.m/u.s**2
 
 #Density of water
 DENSITY_WATER = 1000 * u.kg/u.m**3
@@ -547,6 +548,9 @@ THICKNESS_SED_WEIR = 5*u.cm
 
 HL_SED_INLET_MAX = 1 * u.cm
 
+# ratio of the height to the width of the sedimentation tank inlet channel.
+RATIO_FLOW_SED_INLET
+
 ##Exit launder
 ##Target headloss through the launder orifices
 HEADLOSS_SED_LAUNDER_BOD = 4 * u.cm
@@ -661,7 +665,7 @@ T_DIFFUSER = ((pipe.OD(ND_DIFFUSER_PIPE) -
 W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
 
 # Calculating using a minor loss equation with K = 1
-V_SED_DIFFUSER_MAX = (np.sqrt((2 * pc.gravity * HL_SED_INLET_MAX)
+V_SED_DIFFUSER_MAX = (np.sqrt((2 * GRAVITY * HL_SED_INLET_MAX)
                                   .to(u.m ** 2 / u.s ** 2).magnitude)
                         * (u.m / u.s))
 
