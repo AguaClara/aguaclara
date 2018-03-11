@@ -549,7 +549,7 @@ THICKNESS_SED_WEIR = 5*u.cm
 HL_SED_INLET_MAX = 1 * u.cm
 
 # ratio of the height to the width of the sedimentation tank inlet channel.
-RATIO_FLOW_SED_INLET
+RATIO_HW_SED_INLET = 0.95
 
 ##Exit launder
 ##Target headloss through the launder orifices
@@ -672,6 +672,8 @@ V_SED_DIFFUSER_MAX = (np.sqrt((2 * GRAVITY * HL_SED_INLET_MAX)
 L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
 
 B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
+
+HEADLOSS_SED_DIFFUSER = 0.001 * u.m # Headloss through the diffusers to ensure uniform flow between sed tanks
 
 ##Outlet to filter
 #If the plant has two trains, the current design shows the exit channel
