@@ -609,7 +609,9 @@ ENERGY_DIS_SED_INT_MAX = 150 * u.mW/u.kg
 ##Ratio of min to max flow through the inlet manifold diffusers
 RATIO_FLOW_SED_INLET = 0.8
 
-NOM_DIAMETER_SED_MANIFOLD_MAX = 8 * u.inch
+ND_SED_MANIFOLD_MAX = 8 * u.inch
+
+SDR_SED_MANIFOLD = 41  # SDR of pipe for sed tank inlet manifold
 
 ##This is the minimum distance between the inlet manifold and the slope
 # of the sed tank.
