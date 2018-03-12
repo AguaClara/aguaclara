@@ -271,5 +271,5 @@ def L_channel(q_plant, w_tank, L_upflow_max):
     >>>
 
     """
-    n_tanks = n_tanks(q_plant, w_tank, L_upflow_max).magnitude
+    n_tanks = n_tanks(q_plant, w_tank, L_upflow_max)
     return ((n_tanks * w_tank) + opt.THICKNESS_SED_WALL + ((n_tanks-1) * opt.THICKNESS_SED_WALL))

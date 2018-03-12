@@ -18,7 +18,7 @@ except ModuleNotFoundError:
     from aide_design import constants as con
     from aide_design import materials_database as mat
 
-gravity = 9.80665 * u.m/u.s**2
+gravity = con.GRAVITY
 """Define the gravitational constant, in m/s²."""
 
 ###################### Simple geometry ######################
