@@ -11,7 +11,7 @@ def n_sed_plates_max(dist_center_sed_plate):
 
     Parameters
     ----------
-    var1 : float
+    dist_center_sed_plate : float
         Center to center distance between plate settlers
 
     Returns
@@ -37,7 +37,7 @@ def w_diffuser_inner_min(w_tank):
 
     Parameters
     ----------
-    var1 : float
+    w_tank : float
         Width of the sedimentation tank
 
     Returns
@@ -62,7 +62,7 @@ def w_diffuser_inner(w_tank):
 
     Parameters
     ----------
-    var1 : float
+    w_tank : float
         Width of the sedimentation tank
 
     Returns
@@ -84,7 +84,7 @@ def w_diffuser_outer(w_tank):
 
     Parameters
     ----------
-    var1 : float
+    w_tank : float
         Width of the sedimentation tank
 
     Returns
@@ -106,7 +106,7 @@ def L_diffuser_outer(w_tank):
 
     Parameters
     ----------
-    var1 : float
+    w_tank : float
         Width of the sedimentation tank
 
     Returns
@@ -128,7 +128,7 @@ def L_diffuser_inner(w_tank):
 
     Parameters
     ----------
-    var1 : float
+    w_tank : float
         Width of the sedimentation tank
 
     Returns
@@ -150,7 +150,7 @@ def q_diffuser_max(w_tank):
 
     Parameters
     ----------
-    var1 : float
+    w_tank : float
         Width of the sedimentation tank
 
     Returns
@@ -173,7 +173,7 @@ def v_sed_diffuser(w_tank):
 
     Parameters
     ----------
-    var1 : float
+    w_tank : float
         Width of the sedimentation tank
 
     Returns
@@ -196,10 +196,10 @@ def q_tank_max(w_tank, L_upflow_max):
 
     Parameters
     ----------
-    var1 : float
+    w_tank : float
         Width of the sedimentation tank
 
-    var2 : float
+    L_upflow_max : float
         Length of the active part of the sedimentation tank
 
     Returns
