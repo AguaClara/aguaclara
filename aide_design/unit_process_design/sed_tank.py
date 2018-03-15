@@ -5,13 +5,13 @@ for an AguaClara plant.
 from aide_design.play import*
 
 @u.wraps(None, [u.cm], False)
-def n_sed_plates_max(dist_center_sed_plate):
+def n_sed_plates_max(B_sed_plate):
     """Return the maximum possible number of plate settlers in a module given
     the center to center distance between plates.
 
     Parameters
     ----------
-    dist_center_sed_plate : float
+    B_sed_plate : float
         Center to center distance between plate settlers
 
     Returns
@@ -31,13 +31,13 @@ def n_sed_plates_max(dist_center_sed_plate):
     return math.floor((mat.LENGTH_SED_PLATE_CANTILEVERED.magnitude/dist_center_sed_plate
                       * np.tan(con.ANGLE_SED_PLATE.to(u.rad).magnitude)) + 1)
 
-@u.wraps(u.m, [u.m], False)
-def w_diffuser_inner_min(w_tank):
+@u.wraps(u.inch, [u.inch], False)
+def w_diffuser_inner_min(W_tank):
     """Return the minimum inner width of each diffuser in the sedimentation tank.
 
     Parameters
     ----------
-    w_tank : float
+    W_tank : float
         Width of the sedimentation tank
 
     Returns
@@ -49,12 +49,11 @@ def w_diffuser_inner_min(w_tank):
     --------
     >>> from aide_design.play import*
     >>> w_diffuser_inner_min(42*u.inch)
-
+    0.09483615870787537 inch
 
     """
-    return (con.VEL_SED_UP_BOD.magnitude / con.V_SED_DIFFUSER_MAX.magnitude) * w_tank
-
-    w_diffuser_inner_min(42*u.inch)
+    return ((con.VEL_SED_UP_BOD.to(u.inch/u.s).magnitude /
+             con.V_SED_DIFFUSER_MAX.to(u.inch/u.s).magnitude) * W_tank)
 
 @u.wraps(u.m, [u.m], False)
 def w_diffuser_inner(w_tank):

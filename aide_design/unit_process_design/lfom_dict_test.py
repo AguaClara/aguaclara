@@ -21,8 +21,10 @@ LFOM_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
 # output is width per flow rate.
 @u.wraps(u.s/(u.m**2), [u.m,u.m], False)
 def width_stout(hl, Z, lfom_inputs=LFOM_dict):
-    return (2/((2 * lfom_inputs.gravity*Z)**(1/2)
-            * lfom_inputs.ratio_vc_orifice*np.pi*hl)).magnitude
+    return (2/((2 * lfom_inputs['GRAVITY']*Z)**(1/2)
+            * lfom_inputs['RATIO_VC_ORIFICE']*np.pi*hl)).magnitude
+
+width_stout(20*u.cm, 20*u.cm, LFOM_dict)
 
 @u.wraps(None, [u.m**3/u.s,u.m], False)
 def n_lfom_rows(Q, hl, lfom_inputs=LFOM_dict):

@@ -667,9 +667,7 @@ T_DIFFUSER = ((pipe.OD(ND_DIFFUSER_PIPE) -
 W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
 
 # Calculating using a minor loss equation with K = 1
-V_SED_DIFFUSER_MAX = (np.sqrt((2 * GRAVITY * HL_SED_INLET_MAX)
-                                  .to(u.m ** 2 / u.s ** 2).magnitude)
-                        * (u.m / u.s))
+V_SED_DIFFUSER_MAX = np.sqrt(2 * GRAVITY * HL_SED_INLET_MAX).to(u.mm/u.s)
 
 L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
 
