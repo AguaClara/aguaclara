@@ -62,7 +62,7 @@ def vel_lfom_pipe_critical(hl, lfom_inputs=LFOM_dict):
     at the very bottom of the bottom row of orifices
     The speed of falling water is 0.841 m/s for all linear flow orifice meters
     of height 20 cm, independent of total plant flow rate."""
-    return 4/(3*math.pi)*(2*lfom_inputs.gravity.magnitude*hl)**(1/2)
+    return 4/(3*math.pi)*(2*lfom_inputs['GRAVITY'].magnitude*hl)**(1/2)
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_pipe_min(Q, hl, lfom_inputs=LFOM_dict):
@@ -71,7 +71,7 @@ def area_lfom_pipe_min(Q, hl, lfom_inputs=LFOM_dict):
 @u.wraps(u.inch, [u.m**3/u.s, u.m], False)
 def nom_diam_lfom_pipe(Q, hl, lfom_inputs=LFOM_dict):
     ID = pc.diam_circle(area_lfom_pipe_min(Q, hl, lfom_inputs))
-    return pipe.ND_SDR_available(ID, lfom_inputs.sdr).magnitude
+    return pipe.ND_SDR_available(ID, lfom_inputs['sdr']).magnitude
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_orifices_top(Q, hl, lfom_inputs=LFOM_dict):
@@ -109,7 +109,7 @@ def n_lfom_orifices_per_row_max(Q, hl, drill_bits, lfom_inputs=LFOM_dict):
     return math.floor(math.pi*(pipe.ID_SDR(
         nom_diam_lfom_pipe(Q, hl, lfom_inputs)).magnitude)
         / (orifice_diameter(Q, hl, drill_bits, lfom_inputs).magnitude +
-            lfom_inputs.S_orifice.magnitude))
+            lfom_inputs['S_orifice'].magnitude))
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m], False)
 def flow_ramp(Q, hl, lfom_inputs=LFOM_dict):
@@ -140,7 +140,7 @@ def flow_lfom_actual(Q, hl, drill_bits, Row_Index_Submerged, N_LFOM_Orifices, lf
         Q_new = Q_new + (N_LFOM_Orifices[i]*(
             pc.flow_orifice_vert(D_LFOM_Orifices,
                                  harray[Row_Index_Submerged-i],
-                                 lfom_inputs.RATIO_VC_ORIFICE).magnitude))
+                                 lfom_inputs['RATIO_VC_ORIFICE']).magnitude))
     return Q_new
 
 
@@ -159,7 +159,7 @@ def n_lfom_orifices(Q, hl, drill_bits, lfom_inputs=LFOM_dict):
         n = np.append(n, 0)
         #calculate the ideal number of orifices at the current row without constraining to an integer
         N_orifices_real = ((Q_ramp_local[i] - flow_lfom_actual(Q, hl, drill_bits, i, n, lfom_inputs).magnitude) /
-                           pc.flow_orifice_vert(D_LFOM_Orifices, H, lfom_inputs.RATIO_VC_ORIFICE)).magnitude
+                           pc.flow_orifice_vert(D_LFOM_Orifices, H, lfom_inputs['RATIO_VC_ORIFICE']).magnitude
         #constrain number of orifices to be less than the max per row and greater or equal to 0
         n[i] = min((max(0, round(N_orifices_real))), N_orifices_max)
     return n
@@ -213,6 +213,6 @@ def flow_lfom(Q, hl, drill_bits, H, lfom_inputs=LFOM_dict):
     Q = []
     for i in range(len(H_submerged)):
         Q.append(pc.flow_orifice_vert(D_lfom_orifices, H_submerged[i],
-                                      lfom_inputs.RATIO_VC_ORIFICE) *
+                                      lfom_inputs['RATIO_VC_ORIFICE']) *
                  N_lfom_orifices[i])
     return sum(Q)
