@@ -21,10 +21,38 @@ LFOM_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
 # output is width per flow rate.
 @u.wraps(u.s/(u.m**2), [u.m,u.m], False)
 def width_stout(hl, Z, lfom_inputs=LFOM_dict):
+    """?
+
+    Parameters
+    ----------
+    hl : float
+        headloss through the LFOM
+
+    Z : float
+        ?
+
+    lfom_inputs : dict
+        ?
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> LFOM_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'GRAVITY': 9.80665*u.m/u.s**2,
+    ...              'hl': 20*u.cm}
+    >>> width_stout(40*u.cm, 40*u.cm):
+    0.9019329453483474 second/meter²
+    >>> width_stout(20*u.cm, 1*u.cm, LFOM_dict)
+    11.408649616179787 second/meter²
+
+    """
     return (2/((2 * lfom_inputs['GRAVITY']*Z)**(1/2)
             * lfom_inputs['RATIO_VC_ORIFICE']*np.pi*hl)).magnitude
-
-width_stout(20*u.cm, 20*u.cm, LFOM_dict)
 
 @u.wraps(None, [u.m**3/u.s,u.m], False)
 def n_lfom_rows(Q, hl, lfom_inputs=LFOM_dict):
