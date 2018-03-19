@@ -68,6 +68,29 @@ def n_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
     But it might be better to always set then number of rows to 10.
     The challenge is to figure out a reasonable system of constraints that
     reliably returns a valid solution.
+
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
     """
     N_est = (hl*np.pi/(2*width_stout(hl, hl, lfom_inputs)*Q))
     variablerow = min(10, max(4, math.trunc(N_est)))
@@ -81,6 +104,19 @@ def n_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
     return variablerow
 
 @u.wraps(u.m, [u.m**3/u.s, u.m], False)
+"""
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+"""
 def dist_center_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
     return hl/n_lfom_rows(Q, hl, lfom_inputs)
 
