@@ -584,7 +584,7 @@ SDR_SED_MOD_SPACER = 17
 ##This is the vertical thickness of the lip where the lamella support sits. mrf222
 THICKNESS_SED_LAMELLA_LEDGE = 8 * u.cm
 
-SPACE_SED_LAMILLA_PIPE_TO_EDGE = 5 * u.cm
+SPACE_SED_LAMELLA_PIPE_TO_EDGE = 5 * u.cm
 
 ##Approximate x-dimension spacing between cross pipes in the plate settler
 # support frame.
