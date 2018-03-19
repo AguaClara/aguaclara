@@ -31,19 +31,19 @@ def OD(ND):
     2. Take the values of the array, subtract the ND, take the absolute
        value, find the index of the minimium value.
     """
-    index = (np.abs(np.array(pipedb['NDinch'])
-                      - (ND))).argmin()
+    index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
     return pipedb.iloc[index, 1]
 
-@u.wraps(u.inch, None, False)
+    OD(4*u.cm)
+
+@u.wraps(u.inch, [u.inch, None], False)
 def ID_SDR(ND, SDR):
     """Return the inner diameter for SDR(standard diameter ratio) pipes.
 
     For these pipes the wall thickness is the outer diameter divided by
     the SDR.
     """
-    ID = OD(ND) * (SDR-2) / SDR
-    return ID
+    return OD(ND).magnitude * (SDR-2) / SDR
 
 @u.wraps(u.inch, u.inch, False)
 def ID_sch40(ND):

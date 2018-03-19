@@ -655,8 +655,7 @@ SDR_DIFFUSER = 26  # SDR of diffuser pipe
 ND_DIFFUSER_PIPE = 4 * u.cm  # nominal diameter of pipe used to make diffusers
 
 AREA_PVC_DIFFUSER = (np.pi/4) * ((pipe.OD(ND_DIFFUSER_PIPE)**2)
-                          - (pipe.ID_SDR(ND_DIFFUSER_PIPE, SDR_DIFFUSER)**2)
-                          )
+                                 - (pipe.ID_SDR(ND_DIFFUSER_PIPE, SDR_DIFFUSER))**2)
 
 RATIO_PVC_STRETCH = 1.2  # stretch factor applied to the diffuser PVC pipes as they are heated and molded
 
