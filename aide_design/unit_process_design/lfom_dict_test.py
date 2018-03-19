@@ -29,10 +29,11 @@ def width_stout(hl, Z, lfom_inputs=lfom_dict):
         headloss through the LFOM
 
     Z : float
-        ?
+        depth of water
 
     lfom_inputs : dict
-        ?
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
 
     Returns
     -------
