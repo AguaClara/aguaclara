@@ -104,7 +104,8 @@ def n_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
     return variablerow
 
 @u.wraps(u.m, [u.m**3/u.s, u.m], False)
-"""
+def dist_center_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
+    """
     Parameters
     ----------
     Q: float
@@ -116,9 +117,25 @@ def n_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
     lfom_inputs : dict
         a dictionary of all of the constant inputs needed for LFOM calculations
         can be found in lfom.yaml
-"""
-def dist_center_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> dist_center_lfom_rows(20*u.cm, 20*u.cm)
+    0.9019329453483474 second/meter²
+    >>> dist_center_lfom_rows(20*u.cm, 1*u.cm, lfom_dict)
+    11.408649616179787 second/meter²
+    """
     return hl/n_lfom_rows(Q, hl, lfom_inputs)
+
+dist_center_lfom_rows(20*u.L/u.s, 20*u.m)
 
 @u.wraps(u.m/u.s, [u.m], False)
 def vel_lfom_pipe_critical(hl, lfom_inputs=lfom_dict):
