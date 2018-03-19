@@ -17,7 +17,6 @@ csv_path = os.path.join(dir_path, 'data/pipedatabase.csv')
 with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
 
-
 @u.wraps(u.inch, u.inch, False)
 def OD(ND):
     """Return a pipe's outer diameter according to its nominal diameter.
@@ -33,8 +32,6 @@ def OD(ND):
     """
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
     return pipedb.iloc[index, 1]
-
-    OD(4*u.cm)
 
 @u.wraps(u.inch, [u.inch, None], False)
 def ID_SDR(ND, SDR):

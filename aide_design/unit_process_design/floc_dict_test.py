@@ -7,7 +7,7 @@ from aide_design.play import*
 floc_dict = {'RATIO_VC_ORIFICE': 0.63, 'GRAVITY': 9.80665*u.m/u.s**2,
              'L_ent_tank_max': 2.2*u.m, 'L_sed': 5.8*u.m, 'hl': 40*u.cm,
              'coll_pot': 37000, 'freeboard': 10*u.cm, 'ratio_HS_min': 3,
-             'ratio_HS_max': 6, 'W_min_construct': 45*u.cm, 'K_minor': }
+             'ratio_HS_max': 6, 'W_min_construct': 45*u.cm, 'K_minor': 2.31}
 
 @u.wraps(1/u.s, [u.m, None, u.degK], False)
 def G_avg(hl, Gt, T):
