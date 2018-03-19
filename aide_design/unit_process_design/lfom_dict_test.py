@@ -16,7 +16,7 @@ from aide_design.play import*
 
 # will eventually define this by rendering a template, but we'll get to that later:
 lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
-             'S_orifice': 1*u.cm, 'GRAVITY': 9.80665*u.m/u.s**2, 'hl': 20*u.cm}
+             'S_orifice': 1*u.cm, 'hl': 20*u.cm}
 
 # output is width per flow rate.
 @u.wraps(u.s/(u.m**2), [u.m,u.m], False)
@@ -43,15 +43,14 @@ def width_stout(hl, Z, lfom_inputs=lfom_dict):
     --------
     >>> from aide_design.play import*
     >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
-    ...              'S_orifice': 1*u.cm, 'GRAVITY': 9.80665*u.m/u.s**2,
-    ...              'hl': 20*u.cm}
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
     >>> width_stout(40*u.cm, 40*u.cm)
     0.9019329453483474 second/meter²
     >>> width_stout(20*u.cm, 1*u.cm, lfom_dict)
     11.408649616179787 second/meter²
 
     """
-    return (2/((2 * lfom_inputs['GRAVITY'].magnitude*Z)**(1/2)
+    return (2/((2 * pc.gravity.magnitude*Z)**(1/2)
             * lfom_inputs['RATIO_VC_ORIFICE']*np.pi*hl))
 
 @u.wraps(None, [u.m**3/u.s,u.m], False)
@@ -90,7 +89,7 @@ def vel_lfom_pipe_critical(hl, lfom_inputs=lfom_dict):
     at the very bottom of the bottom row of orifices
     The speed of falling water is 0.841 m/s for all linear flow orifice meters
     of height 20 cm, independent of total plant flow rate."""
-    return 4/(3*math.pi)*(2*lfom_inputs['GRAVITY'].magnitude*hl)**(1/2)
+    return 4/(3*math.pi)*(2*pc.gravity.magnitude*hl)**(1/2)
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_pipe_min(Q, hl, lfom_inputs=lfom_dict):

@@ -4,20 +4,20 @@ an AguaClara plant.
 """
 from aide_design.play import*
 
-floc_dict = {'RATIO_VC_ORIFICE': 0.63, 'GRAVITY': 9.80665*u.m/u.s**2,
-             'L_ent_tank_max': 2.2*u.m, 'L_sed': 5.8*u.m, 'hl': 40*u.cm,
-             'coll_pot': 37000, 'freeboard': 10*u.cm, 'ratio_HS_min': 3,
-             'ratio_HS_max': 6, 'W_min_construct': 45*u.cm, 'K_minor': 2.31}
+floc_dict = {'RATIO_VC_ORIFICE': 0.63, 'L_ent_tank_max': 2.2*u.m,
+             'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+             'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+             'W_min_construct': 45*u.cm, 'K_minor': 2.31}
 
 @u.wraps(1/u.s, [u.m, None, u.degK], False)
-def G_avg(hl, Gt, T):
+def G_avg(hl, coll_pot, temp):
     """Return the average velocity gradient of a flocculator given head
     loss, collision potential and temperature. """
-    G = (pc.gravity.magnitude * hl) / (Gt * pc.viscosity_kinematic(T).magnitude)
+    G = (pc.gravity.magnitude * hl) / (coll_pot * pc.viscosity_kinematic(T).magnitude)
     return G
 
 @u.wraps(u.m**3, [u.m**3/u.s, u.m, None, u.degK], False)
-def vol_floc(q_plant, hl, Gt, T):
+def vol_floc(Q_plant, hl, coll_pot, temp):
     """Return the total volume of the flocculator using plant flow rate, head
     loss, collision potential and temperature.
 
@@ -25,11 +25,11 @@ def vol_floc(q_plant, hl, Gt, T):
     in water depth caused by head loss in the flocculator.) Volume does not take
     into account the extra volume that the flocculator will have due to changing
     water level caused by head loss."""
-    vol = (Gt / G_avg(hl, Gt, T).magnitude)*q_plant
+    vol = (coll_pot / G_avg(hl, coll_pot, temp).magnitude)*Q_plant
     return vol
 
 @u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def width_HS_min(q_plant, hl, Gt, T, depth_end):
+def width_HS_min(Q_plant, hl, coll_pot, temp, depth_end, floc_inputs=floc_dict):
     """Return the minimum channel width required to achieve H/S > 3.
 
     The channel can be wider than this, but this is the absolute minimum width
@@ -65,37 +65,38 @@ def width_HS_min(q_plant, hl, Gt, T, depth_end):
     >>> width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
     0.1074 centimeter
     """
-    nu = pc.viscosity_kinematic(T).magnitude
+    nu = pc.viscosity_kinematic(temp).magnitude
 
-    w = con.RATIO_HS_MIN*((K_e/(2 * depth_end * (G_avg(hl, Gt, T).magnitude**2)
-    * nu))**(1/3))*q_plant/depth_end
+    w = (floc_inputs['ratio_HS_min'] *
+         ((floc_inputs['K_minor'] /
+          (2 * depth_end * (G_avg(hl, coll_pot, temp).magnitude**2)
+          * nu))**(1/3))*Q_plant/depth_end)
     return w
 
-
-
 @u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def width_floc_min(q_plant, hl, Gt, T, depth_end):
+def width_floc_min(Q_plant, hl, coll_pot, temp, depth_end, floc_inputs=floc_dict):
     """Return the minimum channel width required.
 
     This takes the maximum of the minimum required to achieve H/S > 3 and the
     minimum required for constructability based on the width of the human hip.
     """
-    return max(width_HS_min(q_plant, hl, Gt, T, depth_end).magnitude, con.FLOC_WIDTH_MIN_CONST.magnitude)
+    return max(width_HS_min(Q_plant, hl, coll_pot, temp, depth_end, floc_inputs).magnitude,
+               floc_inputs['W_min_construct'].magnitude)
 
 @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m], False)
-def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):
+def num_channel(Q_plant, hl, coll_pot, temp, W_tot, depth_end, floc_inputs=floc_dict):
     """Return the number of channels in the entrance tank/flocculator (ETF).
 
     This takes the total width of the flocculator and divides it by the minimum
     channel width. A floor function is used to ensure that there are an even
     number of channels."""
-    num = W_tot/(width_floc_min(q_plant, hl, Gt, T, depth_end).magnitude)
+    N = W_tot/(width_floc_min(Q_plant, hl, coll_pot, temp, depth_end, floc_inputs).magnitude)
     # floor function with step size 2
-    num = np.floor(num/2)*2
-    return int(max(num, 2))
+    N = np.floor(num/2)*2
+    return int(max(N, 2))
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def area_ent_tank(q_plant, hl, Gt, T, depth_end):
+def area_ent_tank(Q_plant, hl, coll_pot, temp, depth_end, floc_inputs=floc_dict):
     """Return the planview area of the entrance tank given plant flow rate,
     headloss, target collision potential, design temperature, and depth of
     water at the end of the flocculator.
@@ -135,18 +136,18 @@ def area_ent_tank(q_plant, hl, Gt, T, depth_end):
     while (A_ratio) > 1.01 and (A_ET_PV/A_new) < 0.99:
         A_ET_PV = A_new
 
-        vol_floc = vol_floc(q_plant, hl, Gt, T)
+        vol_floc = vol_floc(Q_plant, hl, coll_pot, temp)
         A_floc_PV = vol_floc/(depth_end + hl/2)
         A_ETF_PV = A_ET_PV + A_floc_PV
 
-        W_min = width_floc_min(q_plant, hl, Gt, T, depth_end)
+        W_min = width_floc_min(Q_plant, hl, coll_pot, temp, depth_end, lfom_inputs)
 
-        W_tot = A_ETF_PV/opt.L_sed
+        W_tot = A_ETF_PV/lfom_inputs['L_sed']
 
-        num_chan = num_channel(q_plant, hl, Gt, T, W_tot)
+        num_chan = num_channel(Q_plant, hl, coll_pot, temp, W_tot, floc_inputs)
         W_chan = W_tot/num_chan
 
-        A_new = opt.L_ET_max*W_chan
+        A_new = floc_inputs['L_ent_tank_max']*W_chan
 
         A_ratio = A_new/A_ET_PV
 
@@ -154,42 +155,42 @@ def area_ent_tank(q_plant, hl, Gt, T, depth_end):
 
 ### Baffle calculations
 @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def exp_dist_max(q_plant, hl, Gt, T, W_chan):
+def expansion_dist_max(Q_plant, hl, coll_pot, temp, W_chan, floc_inputs=floc_dict):
     """"Return the maximum distance between expansions for the largest
     allowable H/S ratio."""
-    g_avg = G_avg(hl, Gt, T).magnitude
-    nu = pc.viscosity_kinematic(T).magnitude
-    term1 = (K_e/(2 * (g_avg**2) * nu))**(1/4)
-    term2 = (con.RATIO_HS_MAX*q_plant/W_chan)**(3/4)
+    g_avg = G_avg(hl, coll_pot, temp).magnitude
+    nu = pc.viscosity_kinematic(temp).magnitude
+    term1 = (floc_inputs['K_minor']/(2 * (g_avg**2) * nu))**(1/4)
+    term2 = (floc_inputs['ratio_HS_max']*Q_plant/W_chan)**(3/4)
     exp_dist_max = term1*term2
     return exp_dist_max
 
 @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def num_expansions(q_plant, hl, Gt, T, depth_end):
+def num_expansions(Q_plant, hl, coll_pot, temp, depth_end, floc_inputs=floc_dict):
     """"Return the minimum number of expansions per baffle space."""
-    return int(np.ceil(depth_end/(exp_dist_max(q_plant, hl, Gt, T)).magnitude))
+    return int(np.ceil(depth_end/(expansion_dist_max(Q_plant, hl, coll_pot, temp, floc_inputs)).magnitude))
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def height_exp(q_plant, hl, Gt, T, depth_end):
+def height_exp(Q_plant, hl, coll_pot, temp, depth_end, floc_inputs=floc_dict):
     """Return the actual distance between expansions given the integer
     requirement for the number of expansions per flocculator depth."""
-    return depth_end/num_expansions(q_plant, hl, Gt, T)
+    return depth_end/num_expansions(Q_plant, hl, coll_pot, temp, floc_inputs)
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def baffle_spacing(q_plant, hl, Gt, T, W_chan):
+def baffle_spacing(Q_plant, hl, coll_pot, temp, W_chan, floc_inputs=floc_dict):
     """Return the spacing between baffles based on the target velocity gradient
     ."""
-    g_avg = G_avg(hl, Gt, T).magnitude
-    nu = pc.viscosity_kinematic(T).magnitude
-    term1 = (K_e/(2 * exp_dist_max(q_plant, hl, Gt, T, W_chan).magnitude * (g_avg**2) * nu))**(1/3)
-    return term1 * q_plant/W_chan
+    g_avg = G_avg(hl, coll_pot, temp).magnitude
+    nu = pc.viscosity_kinematic(temp).magnitude
+    term1 = (floc_inputs['K_minor']/(2 * expansion_dist_max(Q_plant, hl, coll_pot, temp, W_chan, floc_inputs).magnitude * (g_avg**2) * nu))**(1/3)
+    return term1 * Q_plant/W_chan
 
 @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m, u.m], False)
-def num_baffles(q_plant, hl, Gt, T, W_chan, L, baffle_thickness):
+def num_baffles(Q_plant, hl, coll_pot, temp, W_chan, L, baffle_thickness, lfom_inputs=floc_dict):
     """Return the number of baffles that would fit in the channel given the
     channel length and spacing between baffles."""
-    num = round((L / (baffle_spacing(q_plant, hl, Gt, T, W_chan).magnitude + baffle_thickness)))
+    N = round((L / (baffle_spacing(Q_plant, hl, coll_pot, temp, W_chan, lfom_inputs).magnitude + baffle_thickness)))
     # the one is subtracted because the equation for num gives the number of
     # baffle spaces and there is always one less baffle than baffle spaces due
     # to geometry
-    return int(num) - 1
+    return int(N) - 1
