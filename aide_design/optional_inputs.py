@@ -28,4 +28,4 @@ THICKNESS_SED_WALL = 0.15 * u.m  # thickness of sed tank dividing wall
 
 FLOC_BLANKET_HEIGHT = 0.25 * u.m  # vertical height of floc blanket from peak of slope to weir
 
-HL_OUTLET_MAN = 5 * u.cm  # head loss through the outlet manifold
+HL_OUTLET_MAN = 4 * u.cm  # head loss through the outlet manifold
