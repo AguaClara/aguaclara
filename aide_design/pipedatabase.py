@@ -35,7 +35,7 @@ def OD(ND):
                       - (ND))).argmin()
     return pipedb.iloc[index, 1]
 
-
+@u.wraps(u.inch, None, False)
 def ID_SDR(ND, SDR):
     """Return the inner diameter for SDR(standard diameter ratio) pipes.
 
@@ -54,10 +54,8 @@ def ID_sch40(ND):
     Take the values of the array, subtract the ND, take the absolute
     value, find the index of the minimium value.
     """
-    myindex = (np.abs(np.array(pipedb['NDinch'])
-                      - (ND))
-                      ).argmin()
-    return (pipedb.iloc[myindex, 1] - 2*(pipedb.iloc[myindex,5]))
+    myindex = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
+    return (pipedb.iloc[myindex, 1] - 2*(pipedb.iloc[myindex, 5]))
 
 
 def ND_all_available():
@@ -86,7 +84,7 @@ def ID_SDR_all_available(SDR):
     return ID * u.inch
 
 
-def ND_SDR_available(ID,SDR):
+def ND_SDR_available(ID, SDR):
     """ Return an available ND given an ID and a schedule.
 
     Takes the values of the array, compares to the ID, and finds the index

@@ -20,7 +20,7 @@ def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
                ent_tank_dict['K_MINOR_PIPE_EXIT'] + ent_tank_dict['K_MINOR_EL90'])
     drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, ent_tank_dict['PIPE_ROUGH_PVC'], K_minor)
     drain_ND = pipe.ND_SDR_available(drain_ID, ent_tank_dict['sdr'])
-    return pipe.OD(drain_ND).magnitude
+    return pipe.OD(drain_ND)
 
 @u.wraps(None, [u.m**3/u.s, u.m], False)
 def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
