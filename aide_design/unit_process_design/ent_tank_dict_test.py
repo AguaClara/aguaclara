@@ -22,7 +22,7 @@ def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
     drain_ND = pipe.ND_SDR_available(drain_ID, ent_tank_dict['sdr'])
     return pipe.OD(drain_ND)
 
-@u.wraps(None, [u.m**3/u.s, u.m], False)
+@u.wraps(None, [u.m**3/u.s, u.m, None], False)
 def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
     """Return the number of plates in the entrance tank.
 
@@ -32,7 +32,7 @@ def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
                        np.sin(ent_tank_dict['angle_plate'].to(u.rad).magnitude))))
     return N_plates
 
-@u.wraps(u.m, [u.m**3/u.s, u.m], False)
+@u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
 def L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
     """Return the length of the plates in the entrance tank."""
     L_plate = ((q_plant/(num_plates_ent_tank(q_plant, W_chan) * W_chan *
@@ -41,3 +41,10 @@ def L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
                - (ent_tank_dict['S_plate'].to(u.m).magnitude *
                np.tan(ent_tank_dict['angle_plate'].to(u.rad).magnitude)))
     return L_plate
+
+@u.wraps([u.inch, None, u.m], [u.m**3/u.s, u.degK, u.m, u.m, None], False)
+def ent_tank(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict):
+    ND_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict).magnitude
+    N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict).magnitude
+    L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict).magnitude
+    return ND_drain, N_plates, L_plate
