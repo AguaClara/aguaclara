@@ -128,25 +128,75 @@ def dist_center_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
     >>> from aide_design.play import*
     >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
-    >>> dist_center_lfom_rows(20*u.cm, 20*u.cm)
-    0.9019329453483474 second/meter²
-    >>> dist_center_lfom_rows(20*u.cm, 1*u.cm, lfom_dict)
-    11.408649616179787 second/meter²
+    >>> dist_center_lfom_rows(20*u.m**3/u.s, 20*u.m)
+    ?
     """
     return hl/n_lfom_rows(Q, hl, lfom_inputs)
 
-dist_center_lfom_rows(20*u.L/u.s, 20*u.m)
+
 
 @u.wraps(u.m/u.s, [u.m], False)
 def vel_lfom_pipe_critical(hl, lfom_inputs=lfom_dict):
-    """The average vertical velocity of the water inside the LFOM pipe
+    """
+    The average vertical velocity of the water inside the LFOM pipe
     at the very bottom of the bottom row of orifices
     The speed of falling water is 0.841 m/s for all linear flow orifice meters
-    of height 20 cm, independent of total plant flow rate."""
+    of height 20 cm, independent of total plant flow rate.
+
+    Parameters
+    ----------
+    hl: float
+        headloss through the LFOM
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> vel_lfom_pipe_critical(20*u.cm)
+    0.8405802802312778 meter/second
+    >>> vel_lfom_pipe_critical(60*u.cm)
+    1.4559277532010582 meter/second
+    """
     return 4/(3*math.pi)*(2*pc.gravity.magnitude*hl)**(1/2)
+
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_pipe_min(Q, hl, lfom_inputs=lfom_dict):
+    """
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> dist_center_lfom_rows(20*u.m**3/u.s, 20*u.m)
+    """
     return (lfom_inputs.ratio_safety*Q/vel_lfom_pipe_critical(hl, lfom_inputs).magnitude)
 
 @u.wraps(u.inch, [u.m**3/u.s, u.m], False)
