@@ -19,16 +19,19 @@ lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
 
 # output is width per flow rate.
-@u.wraps(u.s/(u.m**2), [u.m,u.m], False)
-def width_stout(hl, Z, lfom_inputs=lfom_dict):
-    """?
+@u.wraps(u.s/(u.m**2), [u.m, u.m], False)
+def width_stout(hl, depth, lfom_inputs=lfom_dict):
+    """This equation relates the LFOM to a stout weir. A stout weir controls
+    flow through the width of a stout. The specific weir we reference is the
+    sutro weir, which is designed to linearly relate flow to height of water.
+    The LFOM mimics this linear relationship through a series of orifices.
 
     Parameters
     ----------
     hl : float
         headloss through the LFOM
 
-    Z : float
+    depth : float
         depth of water
 
     lfom_inputs : dict
@@ -37,8 +40,8 @@ def width_stout(hl, Z, lfom_inputs=lfom_dict):
 
     Returns
     -------
-    float
-        ?
+    width_stout: float
+        equivalent width of stout in width per flow rate
 
     Examples
     --------
@@ -51,7 +54,7 @@ def width_stout(hl, Z, lfom_inputs=lfom_dict):
     11.408649616179787 second/meter²
 
     """
-    return (2/((2 * pc.gravity.magnitude*Z)**(1/2)
+    return (2/((2 * pc.gravity.magnitude*depth)**(1/2)
             * lfom_inputs['RATIO_VC_ORIFICE']*np.pi*hl))
 
 @u.wraps(None, [u.m**3/u.s,u.m], False)
@@ -83,8 +86,8 @@ def n_lfom_rows(Q, hl, lfom_inputs=lfom_dict):
 
     Returns
     -------
-    float
-        ?
+    n_lfom_rows : int
+        number of rows the LFOM should contain
 
     Examples
     --------

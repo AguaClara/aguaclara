@@ -142,7 +142,7 @@ def area_ent_tank(Q_plant, hl, coll_pot, temp, depth_end, floc_inputs=floc_dict)
 
         W_min = width_floc_min(Q_plant, hl, coll_pot, temp, depth_end, lfom_inputs)
 
-        W_tot = A_ETF_PV/lfom_inputs['L_sed']
+        W_tot = A_ETF_PV/floc_inputs['L_sed']
 
         num_chan = num_channel(Q_plant, hl, coll_pot, temp, W_tot, floc_inputs)
         W_chan = W_tot/num_chan
