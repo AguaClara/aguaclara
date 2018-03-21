@@ -9,7 +9,7 @@ ent_tank_dict = {'sdr': 26, 'K_MINOR_PIPE_ENTRANCE': 0.5,
                  'K_MINOR_PIPE_EXIT': 1, 'K_MINOR_EL90': 0.9,
                  'S_plate': 2.5*u.cm, 'angle_plate': 50*u.deg,
                  'vel_capture': 8 * u.mm/u.s, 'L_max': 2.2*u.m,
-                 'PIPE_ROUGH_PVC': 0.12*u.mm}
+                 'PIPE_ROUGH_PVC': 0.12*u.mm, 'thickness_plate': 2*u.mm}
 
 @u.wraps(u.inch, [u.m**3/u.s, u.degK, u.m, None], False)
 def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
