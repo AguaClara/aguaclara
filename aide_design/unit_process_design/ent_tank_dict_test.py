@@ -7,9 +7,9 @@ from aide_design.play import*
 # document what's in ent_tank_dict here
 ent_tank_dict = {'sdr': 26, 'K_MINOR_PIPE_ENTRANCE': 0.5,
                  'K_MINOR_PIPE_EXIT': 1, 'K_MINOR_EL90': 0.9,
-                 'B_plate': 2.52*u.cm, 'S_plate': 2.5*u.cm,
+                 'S_plate': 2.5*u.cm, 'angle_plate': 50*u.deg,
                  'vel_capture': 8 * u.mm/u.s, 'L_max': 2.2*u.m,
-                 'PIPE_ROUGH_PVC': 0.12*u.mm, 'angle_plate': 50*u.deg}
+                 'PIPE_ROUGH_PVC': 0.12*u.mm}
 
 @u.wraps(u.inch, [u.m**3/u.s, u.degK, u.m, None], False)
 def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
@@ -29,7 +29,7 @@ def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
 
     This number minimizes the total length of the plate settler unit."""
     B_plate = ent_tank_inputs['S_plate'] + ent_tank_inputs['thickness_plate']
-    N_plates = np.ceil(np.sqrt(q_plant/(ent_tank_inputs['B_plate'].to(u.m).magnitude
+    N_plates = np.ceil(np.sqrt(q_plant/B_plate.to(u.m).magnitude
                        * W_chan * ent_tank_inputs['vel_capture'].to(u.m/u.s).magnitude *
                        np.sin(ent_tank_inputs['angle_plate'].to(u.rad).magnitude))))
     return N_plates
