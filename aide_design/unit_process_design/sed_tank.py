@@ -28,8 +28,9 @@ def n_sed_plates_max(B_sed_plate):
     14
 
     """
-    return math.floor((mat.LENGTH_SED_PLATE_CANTILEVERED.magnitude/dist_center_sed_plate
+    return math.floor((mat.LENGTH_SED_PLATE_CANTILEVERED.magnitude/B_sed_plate
                       * np.tan(con.ANGLE_SED_PLATE.to(u.rad).magnitude)) + 1)
+
 
 @u.wraps(u.inch, [u.inch], False)
 def w_diffuser_inner_min(W_tank):
