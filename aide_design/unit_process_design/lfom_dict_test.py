@@ -2,6 +2,23 @@
 """This file contains all the functions needed to design the linear flow
 orifice meter (LFOM) for an AguaClara plant.
 
+Input Dictionary Contents
+-------------------------
+sdr: int
+    Ratio between outer diameter and wall thickness
+
+RATIO_VC_ORIFICE : float
+    Vena contracta coefficient
+
+ratio_safety :  float
+    Factor of safety
+
+S_orifice : float
+    Edge to edge spacing between orifices
+
+hl : float
+    Headloss through the LFOM
+
 """
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
