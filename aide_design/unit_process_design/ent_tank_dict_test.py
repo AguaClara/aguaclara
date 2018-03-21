@@ -4,6 +4,7 @@ an AguaClara plant.
 """
 from aide_design.play import*
 
+# document what's in ent_tank_dict here
 ent_tank_dict = {'sdr': 26, 'K_MINOR_PIPE_ENTRANCE': 0.5,
                  'K_MINOR_PIPE_EXIT': 1, 'K_MINOR_EL90': 0.9,
                  'B_plate': 2.52*u.cm, 'S_plate': 2.5*u.cm,
@@ -48,4 +49,5 @@ def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict
     OD_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs).magnitude
     N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
     L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
-    return OD_drain, N_plates, L_plate
+    return ent_tank_inputs.update({'OD_drain': OD_drain, 'N_plates': N_plates,
+                                   'L_plate': L_plate})
