@@ -361,6 +361,39 @@ def orifice_diameter(Q, hl, drill_bits, lfom_inputs=lfom_dict):
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m, u.inch], False)
 def drillbit_area(Q, hl, drill_bits, lfom_inputs=lfom_dict):
+    """
+    ?
+
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    drill_bits: array of floats
+        an array of potential drill bit sizes to create the orifices
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> drillbit_area(20*u.L/u.s,20*u.cm,mat.DIAM_DRILL_ENG)
+    3.142 meter ** 2 meter2
+    >>> drillbit_area(60*u.L/u.s,60*u.cm,mat.DIAM_DRILL_ENG)
+    0.000767 meter ** 2 meter2
+    """
     return pc.area_circle(
             orifice_diameter(Q, hl, drill_bits, lfom_inputs).magnitude)
 
@@ -369,6 +402,34 @@ def n_lfom_orifices_per_row_max(Q, hl, drill_bits, lfom_inputs=lfom_dict):
     """A bound on the number of orifices allowed in each row.
     The distance between consecutive orifices must be enough to retain
     structural integrity of the pipe.
+
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    drill_bits: array of floats
+        an array of potential drill bit sizes to create the orifices
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> n_lfom_orifices_per_row_max(20*u.L/u.s,20*u.cm,mat.DIAM_DRILL_ENG)
+    ?
     """
     return math.floor(math.pi*(pipe.ID_SDR(
         nom_diam_lfom_pipe(Q, hl, lfom_inputs)).magnitude)
@@ -377,8 +438,39 @@ def n_lfom_orifices_per_row_max(Q, hl, drill_bits, lfom_inputs=lfom_dict):
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m], False)
 def flow_ramp(Q, hl, lfom_inputs=lfom_dict):
+    """
+    ?
+
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> flow_ramp(20*u.L/u.s,20*u.cm)
+    \[\begin{pmatrix}0.0025 & 0.005 & 0.0075 & 0.01 & 0.0125 & 0.015000000000000001 & 0.017499999999999998 & 0.02\end{pmatrix} meter3/second\]
+    >>> flow_ramp(60*u.L/u.s,60*u.cm)
+    \[\begin{pmatrix}0.0075 & 0.015 & 0.0225 & 0.03 & 0.0375 & 0.045 & 0.0525 & 0.06\end{pmatrix} meter3/second\]
+    """
     n_rows = n_lfom_rows(Q, hl, lfom_inputs)
     return np.linspace(Q/n_rows, Q, n_rows)
+
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.inch], False)
 def height_lfom_orifices(Q, hl, drill_bits, lfom_inputs=lfom_dict):
@@ -386,9 +478,40 @@ def height_lfom_orifices(Q, hl, drill_bits, lfom_inputs=lfom_dict):
     The bottom of the bottom row orifices is at the zero elevation
     point of the LFOM so that the flow goes to zero when the water height
     is at zero.
+
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    drill_bits: array of floats
+        an array of potential drill bit sizes to create the orifices
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> height_lfom_orifices(20*u.L/u.s,20*u.cm,mat.DIAM_DRILL_ENG)
+    3.142 meter ** 2 meter2
+    >>> drillbit_area(60*u.L/u.s,60*u.cm,mat.DIAM_DRILL_ENG)
+    0.000767 meter ** 2 meter2
     """
     return (np.arange((orifice_diameter(Q, hl, drill_bits, lfom_inputs)*0.5),
                       hl, (dist_center_lfom_rows(Q, hl, lfom_inputs))))
+
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m, u.inch, None, None], False)
 def flow_lfom_actual(Q, hl, drill_bits, Row_Index_Submerged, N_lfom_Orifices, lfom_inputs=lfom_dict):
