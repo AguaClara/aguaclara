@@ -414,6 +414,8 @@ def drillbit_area(Q, hl, drill_bits, lfom_inputs=lfom_dict):
     return pc.area_circle(
             orifice_diameter(Q, hl, drill_bits, lfom_inputs).magnitude)
 
+drillbit_area(20*u.L/u.s,20*u.cm,mat.DIAM_DRILL_ENG)
+
 @u.wraps(None, [u.m**3/u.s, u.m, u.inch], False)
 def n_lfom_orifices_per_row_max(Q, hl, drill_bits, lfom_inputs=lfom_dict):
     """A bound on the number of orifices allowed in each row.
@@ -529,7 +531,6 @@ def height_lfom_orifices(Q, hl, drill_bits, lfom_inputs=lfom_dict):
     """
     return (np.arange((orifice_diameter(Q, hl, drill_bits, lfom_inputs)*0.5),
                       hl, (dist_center_lfom_rows(Q, hl, lfom_inputs))))
-
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m, u.inch, None, None], False)
 def flow_lfom_actual(Q, hl, drill_bits, Row_Index_Submerged, N_lfom_Orifices, lfom_inputs=lfom_dict):
@@ -700,11 +701,70 @@ def flow_lfom_error(Q, hl, drill_bits, lfom_inputs=lfom_dict):
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m, u.m], False)
 def flow_lfom_ideal(Q, hl, H):
+    """?
+
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    H: float
+        height (includes freeboard)
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> flow_lfom_ideal(20*u.L/u.s,20*u.cm,20*u.cm)
+    0.02 meter3 / second
+    """
     Q_lfom_ideal = (Q*H)/hl
     return Q_lfom_ideal
 
+
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m, u.inch, u.m], False)
 def flow_lfom(Q, hl, drill_bits, H, lfom_inputs=lfom_dict):
+    """?
+
+    Parameters
+    ----------
+    Q: float
+        flow through the LFOM
+
+    hl: float
+        headloss through the LFOM
+
+    drill_bits: array of floats
+        an array of potential drill bit sizes to create the orifices
+
+    H: float
+        height (includes freeboard)
+
+    lfom_inputs : dict
+        a dictionary of all of the constant inputs needed for LFOM calculations
+        can be found in lfom.yaml
+
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> lfom_dict = {'sdr': 26, 'RATIO_VC_ORIFICE': 0.63, 'ratio_safety':  1.5,
+    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    ?
+    """
     D_lfom_orifices = orifice_diameter(Q, hl, drill_bits, lfom_inputs).magnitude
     H_submerged = np.arange(H-0.5*D_lfom_orifices, hl,
                             H-dist_center_lfom_rows(Q, hl, lfom_inputs).magnitude, dtype=object)

@@ -77,6 +77,34 @@ def width_floc_min(q_plant, hl, Gt, T, depth_end):
 
     This takes the maximum of the minimum required to achieve H/S > 3 and the
     minimum required for constructability based on the width of the human hip.
+
+    Parameters
+    ----------
+    q_plant: float
+        Plant flow rate
+
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    depth_end: float
+        The depth of water at the end of the flocculator
+
+    Returns
+    -------
+    float
+        The minimum channel width required to achieve H/S > 3
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+    45 centimeter
     """
     return max(width_HS_min(q_plant, hl, Gt, T, depth_end).magnitude, con.FLOC_WIDTH_MIN_CONST.magnitude)
 
