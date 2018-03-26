@@ -10,7 +10,29 @@ K_e = (1 / con.RATIO_VC_ORIFICE**2 - 1)**2
 @u.wraps(1/u.s, [u.m, None, u.degK], False)
 def G_avg(hl, Gt, T):
     """Return the average velocity gradient of a flocculator given head
-    loss, collision potential and temperature. """
+    loss, collision potential and temperature.
+
+    Parameters
+    ----------
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    Returns
+    -------
+    ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>>G_avg(40*u.cm, 37000, 25*u.degC)
+    118.715 1/second
+    """
     G = (pc.gravity.magnitude * hl) / (Gt * pc.viscosity_kinematic(T).magnitude)
     return G
 
@@ -22,7 +44,32 @@ def vol_floc(q_plant, hl, Gt, T):
     Uses an estimation of flocculator residence time (ignoring the decrease
     in water depth caused by head loss in the flocculator.) Volume does not take
     into account the extra volume that the flocculator will have due to changing
-    water level caused by head loss."""
+    water level caused by head loss.
+
+    Parameters
+    ----------
+    q_plant: float
+        Plant flow rate
+
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    Returns
+    -------
+    ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>>vol_floc(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
+    6.233 meter3
+    """
     vol = (Gt / G_avg(hl, Gt, T).magnitude)*q_plant
     return vol
 
@@ -37,19 +84,19 @@ def width_HS_min(q_plant, hl, Gt, T, depth_end):
 
     Parameters
     ----------
-    var1 : float
+    q_plant: float
         Plant flow rate
 
-    var2 : float
+    hl: float
         Headloss through the flocculator
 
-    var3 : float
+    Gt: float
         Target collision potential
 
-    var4 : float
+    T: float
         Design temperature
 
-    var5 : float
+    depth_end: float
         The depth of water at the end of the flocculator
 
     Returns
@@ -114,11 +161,43 @@ def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):
 
     This takes the total width of the flocculator and divides it by the minimum
     channel width. A floor function is used to ensure that there are an even
-    number of channels."""
+    number of channels.
+
+    Parameters
+    ----------
+    q_plant: float
+        Plant flow rate
+
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    W_tot: float
+        Total width
+
+    depth_end: float
+        The depth of water at the end of the flocculator
+
+    Returns
+    -------
+    ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
+    2
+    """
     num = W_tot/(width_floc_min(q_plant, hl, Gt, T, depth_end).magnitude)
     # floor function with step size 2
     num = np.floor(num/2)*2
     return int(max(num, 2))
+
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
 def area_ent_tank(q_plant, hl, Gt, T, depth_end):
@@ -128,19 +207,19 @@ def area_ent_tank(q_plant, hl, Gt, T, depth_end):
 
     Parameters
     ----------
-    var1 : float
+    q_plant: float
         Plant flow rate
 
-    var2 : float
+    hl: float
         Headloss through the flocculator
 
-    var3 : float
+    Gt: float
         Target collision potential
 
-    var4 : float
+    T: float
         Design temperature
 
-    var5 : float
+    depth_end: float
         The depth of water at the end of the flocculator
 
     Returns
@@ -182,7 +261,35 @@ def area_ent_tank(q_plant, hl, Gt, T, depth_end):
 @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
 def exp_dist_max(q_plant, hl, Gt, T, W_chan):
     """"Return the maximum distance between expansions for the largest
-    allowable H/S ratio."""
+    allowable H/S ratio.
+
+    Parameters
+    ----------
+    q_plant: float
+        Plant flow rate
+
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    W_chan: float
+        Channel width
+
+    Returns
+    -------
+    ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+    0.375 meter
+    """
     g_avg = G_avg(hl, Gt, T).magnitude
     nu = pc.viscosity_kinematic(T).magnitude
     term1 = (K_e/(2 * (g_avg**2) * nu))**(1/4)
@@ -192,28 +299,146 @@ def exp_dist_max(q_plant, hl, Gt, T, W_chan):
 
 @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
 def num_expansions(q_plant, hl, Gt, T, depth_end):
-    """"Return the minimum number of expansions per baffle space."""
+    """"Return the minimum number of expansions per baffle space.
+
+    Parameters
+    ----------
+    q_plant: float
+        Plant flow rate
+
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    depth_end: float
+        The depth of water at the end of the flocculator
+
+    Returns
+    -------
+    ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    ???
+    """
     return int(np.ceil(depth_end/(exp_dist_max(q_plant, hl, Gt, T)).magnitude))
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
 def height_exp(q_plant, hl, Gt, T, depth_end):
     """Return the actual distance between expansions given the integer
-    requirement for the number of expansions per flocculator depth."""
+    requirement for the number of expansions per flocculator depth.
+
+    Parameters
+    ----------
+    q_plant: float
+        Plant flow rate
+
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    depth_end: float
+        The depth of water at the end of the flocculator
+
+    Returns
+    -------
+    ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    ???
+    """
     return depth_end/num_expansions(q_plant, hl, Gt, T)
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
 def baffle_spacing(q_plant, hl, Gt, T, W_chan):
     """Return the spacing between baffles based on the target velocity gradient
+
+    Parameters
+    ----------
+    q_plant: float
+        Plant flow rate
+
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    W_chan: float
+        Channel width
+
+    Returns
+    -------
+    ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> baffle_spacing(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+    0.063 meter
     ."""
     g_avg = G_avg(hl, Gt, T).magnitude
     nu = pc.viscosity_kinematic(T).magnitude
     term1 = (K_e/(2 * exp_dist_max(q_plant, hl, Gt, T, W_chan).magnitude * (g_avg**2) * nu))**(1/3)
     return term1 * q_plant/W_chan
+baffle_spacing(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
 
 @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m, u.m], False)
 def num_baffles(q_plant, hl, Gt, T, W_chan, L, baffle_thickness):
     """Return the number of baffles that would fit in the channel given the
-    channel length and spacing between baffles."""
+    channel length and spacing between baffles.
+
+    Parameters
+    ----------
+    q_plant: float
+        Plant flow rate
+
+    hl: float
+        Headloss through the flocculator
+
+    Gt: float
+        Target collision potential
+
+    T: float
+        Design temperature
+
+    W_chan: float
+        Channel width
+
+    L: float
+        Length
+
+    baffle_thickness: float
+        Baffle thickness
+
+    Returns
+    -------
+    ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> num_baffles(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
+    0
+    >>> num_baffles(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
+    -1
+    """
     num = round((L / (baffle_spacing(q_plant, hl, Gt, T, W_chan).magnitude + baffle_thickness)))
     # the one is subtracted because the equation for num gives the number of
     # baffle spaces and there is always one less baffle than baffle spaces due
