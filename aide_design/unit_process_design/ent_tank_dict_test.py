@@ -1,15 +1,33 @@
 """This file contains all the functions needed to design an entrance tank for
 an AguaClara plant.
 
+Attributes
+----------
+sdr : int
+    Ratio between outer diameter and wall thickness
+
+S_plate : float
+    Edge to edge distance between plates in the plate settler module
+
+angle_plate : float
+    Angle of plates in the plate settler module
+
+vel_capture : floats
+    Design capture velocity
+
+L_max : float
+    Maximum length of the entire entrance tank
+
+thickness_plate : float
+    thickness of plates in the plate settelr module
+
 """
 from aide_design.play import*
 
 # document what's in ent_tank_dict here
-ent_tank_dict = {'sdr': 26, 'K_MINOR_PIPE_ENTRANCE': 0.5,
-                 'K_MINOR_PIPE_EXIT': 1, 'K_MINOR_EL90': 0.9,
-                 'S_plate': 2.5*u.cm, 'angle_plate': 50*u.deg,
+ent_tank_dict = {'sdr': 26, 'S_plate': 2.5*u.cm, 'angle_plate': 50*u.deg,
                  'vel_capture': 8 * u.mm/u.s, 'L_max': 2.2*u.m,
-                 'PIPE_ROUGH_PVC': 0.12*u.mm, 'thickness_plate': 2*u.mm}
+                 'thickness_plate': 2*u.mm}
 
 @u.wraps(u.inch, [u.m**3/u.s, u.degK, u.m, None], False)
 def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
@@ -17,9 +35,9 @@ def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
     end of the flocculator is used for headloss and length calculation inputs in
     the diam_pipe calculation."""
     nu = pc.viscosity_kinematic(temp)
-    K_minor = (ent_tank_inputs['K_MINOR_PIPE_ENTRANCE'] +
-               ent_tank_inputs['K_MINOR_PIPE_EXIT'] + ent_tank_inputs['K_MINOR_EL90'])
-    drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, ent_tank_inputs['PIPE_ROUGH_PVC'], K_minor)
+    K_minor = (con.K_MINOR_PIPE_ENTRANCE
+               con.K_MINOR_PIPE_EXIT + con.K_MINOR_EL90)
+    drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, mat.PIPE_ROUGH_PVC, K_minor)
     drain_ND = pipe.ND_SDR_available(drain_ID, ent_tank_inputs['sdr'])
     return pipe.OD(drain_ND)
 

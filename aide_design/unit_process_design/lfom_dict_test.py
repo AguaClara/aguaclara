@@ -2,8 +2,8 @@
 """This file contains all the functions needed to design the linear flow
 orifice meter (LFOM) for an AguaClara plant.
 
-Input Dictionary Contents
--------------------------
+Attributes
+----------
 sdr: int
     Ratio between outer diameter and wall thickness
 
