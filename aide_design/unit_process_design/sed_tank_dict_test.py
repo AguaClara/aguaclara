@@ -1,6 +1,81 @@
 """This file contains all the functions needed to design a sedimentation tank
 for an AguaClara plant.
 
+Attributes
+----------
+thickness_wall : float
+    Thickness of walls in the sedimentation unit process
+
+plate_settlers : dict
+    A dictionary containing variables relating to the plate settlers
+
+    Attributes
+    ----------
+    angle : int
+        Angle of plate settlers (relative to being completely horizontal)
+
+    S : float
+        Edge to edge distance between plates
+
+    thickness : float
+        Thickness of PVC sheet used to make plate settlers
+
+    L_cantilevered : float
+        Maximum length of sed plate sticking out past module pipes without any
+        additional support. The goal is to prevent floppy modules that don't
+        maintain constant distances between the plates
+
+tank : dict
+    A dictionary containing variables relating to the concrete portion of the
+    sedimentation tank
+
+    Attributes
+    ----------
+    W : float
+        Width of the sedimentation tank. Based off of the width of the PVC
+        sheet used to make plate settlers
+
+    L : float
+        Length of the sedimentation tank. Based off of the length of a manifold
+        pipe
+
+    vel_up : float
+        Upflow velocity through a sedimentation tank used as basis of design
+
+manifold : dict
+    A dictionary containg variables relating to the inlet manifold,
+    exit manifold, and diffusers
+
+    Attributes
+    ----------
+    ratio_Q_orifice : float
+        Acceptable ratio of min to max flow through the manifold orifices
+
+    diffuser : dict
+        A dictionary containing variables relating to the diffuser
+
+        Attributes
+        ----------
+        thickness_wall : float
+            Wall thickness of a diffuser
+
+        vel_max : float
+            Maximum velocity through a diffuser
+
+        A : float
+            Area of a diffuser when viewed down the length of the manifold
+
+    exit_man : dict
+        A dictionary containing variables relating to the exit manifold
+
+        Attributes
+        ----------
+        hl_orifice : float
+            Headloss through an orifice in the exit manifold
+
+        N_orifices : int
+            Number of orifices in the exit manifold
+
 """
 from aide_design.play import*
 
@@ -10,22 +85,18 @@ sed_dict = {
             'plate_settlers': {
                 'angle': 60*u.deg, 'S': 2.5*u.cm,
                 'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
-                'plate_modules': {}
                 },
             'tank': {
-                'W': 42*u.inch, 'vel_up': 1*u.mm/u.s, 'L': 5.8*u.m
+                'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
             },
             'manifold': {
                 'ratio_Q_man_orifice': 0.8,
-                'inlet_man': {
-
-                },
                 'diffuser': {
                     'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
                     'A': 0.419*u.inch**2
                 },
                 'exit_man': {
-                'hl_orifice': 4*u.cm, 'N_orifices': 58
+                    'hl_orifice': 4*u.cm, 'N_orifices': 58
                 }
             }
 }
@@ -378,7 +449,7 @@ def ID_exit_man(Q_plant, temp, sed_inputs=sed_dict):
     hl = sed_input['manifold']['exit_man']['hl_orifice'].to(u.m)
     L = sed_ipnut['manifold']['tank']['L']
     N_orifices = sed_inputs['manifold']['exit_man']['N_orifices']
-    K_minor = sed_inputs['K_MINOR_PIPE_EXIT']
+    K_minor = con.K_MINOR_PIPE_EXIT
     pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
 
     D = max(diam_pipemajor(Q_plant, hl, L, nu, pipe_rough).magnitude,
