@@ -35,7 +35,7 @@ def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
     end of the flocculator is used for headloss and length calculation inputs in
     the diam_pipe calculation."""
     nu = pc.viscosity_kinematic(temp)
-    K_minor = (con.K_MINOR_PIPE_ENTRANCE
+    K_minor = (con.K_MINOR_PIPE_ENTRANCE +
                con.K_MINOR_PIPE_EXIT + con.K_MINOR_EL90)
     drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, mat.PIPE_ROUGH_PVC, K_minor)
     drain_ND = pipe.ND_SDR_available(drain_ID, ent_tank_inputs['sdr'])
@@ -49,7 +49,7 @@ def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
     B_plate = ent_tank_inputs['S_plate'] + ent_tank_inputs['thickness_plate']
     N_plates = np.ceil(np.sqrt(q_plant/B_plate.to(u.m).magnitude
                        * W_chan * ent_tank_inputs['vel_capture'].to(u.m/u.s).magnitude *
-                       np.sin(ent_tank_inputs['angle_plate'].to(u.rad).magnitude))))
+                       np.sin(ent_tank_inputs['angle_plate'].to(u.rad).magnitude)))
     return N_plates
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
