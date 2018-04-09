@@ -43,7 +43,32 @@ floc_dict = {'L_ent_tank_max': 2.2*u.m,
 @u.wraps(1/u.s, [u.m, None, u.degK], False)
 def G_avg(hl, coll_pot, temp):
     """Return the average velocity gradient of a flocculator given head
-    loss, collision potential and temperature. """
+    loss, collision potential and temperature.
+
+    Parameters
+    ----------
+    hl: float
+        Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    temp: float
+        Design temperature
+
+    Returns
+    -------
+    float
+        average velocity gradient of a flocculator given head
+        loss, collision potential and temperature.
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+
+
+
+    """
     G = (pc.gravity.magnitude * hl) / (coll_pot * pc.viscosity_kinematic(T).magnitude)
     return G
 
