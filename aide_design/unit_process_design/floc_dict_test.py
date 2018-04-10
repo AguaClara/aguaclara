@@ -65,8 +65,12 @@ def G_avg(hl, coll_pot, temp):
     Examples
     --------
     >>> from aide_design.play import*
-
-
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
+    >>> G_avg(40*u.cm, 10, 40 * u.degK)
+    T not defined..?
 
     """
     G = (pc.gravity.magnitude * hl) / (coll_pot * pc.viscosity_kinematic(T).magnitude)
@@ -80,7 +84,35 @@ def vol_floc(Q_plant, hl, coll_pot, temp):
     Uses an estimation of flocculator residence time (ignoring the decrease
     in water depth caused by head loss in the flocculator.) Volume does not take
     into account the extra volume that the flocculator will have due to changing
-    water level caused by head loss."""
+    water level caused by head loss.
+
+    Parameters
+    ----------
+    hl: float
+        Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    temp: float
+        Design temperature
+
+    Returns
+    -------
+    float
+        total volume of the flocculator given head
+        loss, collision potential and temperature.
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
+    >>> vol_floc(40*u.L/u.s, 10, 40 * u.degK)
+
+    """
     vol = (coll_pot / G_avg(hl, coll_pot, temp).magnitude)*Q_plant
     return vol
 
