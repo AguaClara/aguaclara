@@ -95,7 +95,26 @@ def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
 def L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
-    """Return the length of the plates in the entrance tank."""
+    """Return the length of the plates in the entrance tank.
+
+    Parameters
+    ----------
+    q_plant : float
+        Plant flow rate
+
+    W_chan : float
+        Width of channel
+
+    Returns
+    -------
+    float
+        the length of the plates in the entrance tank
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> ???
+    """
     L_plate = ((q_plant/(num_plates_ent_tank(q_plant, W_chan) * W_chan *
                ent_tank_inputs['vel_capture'].to(u.m/u.s).magnitude *
                np.cos(ent_tank_inputs['angle_plate'].to(u.rad).magnitude)))
@@ -105,6 +124,31 @@ def L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
 
 @u.wraps([u.inch, None, u.m], [u.m**3/u.s, u.degK, u.m, u.m, None], False)
 def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict):
+"""
+Parameters
+----------
+q_plant : float
+    Plant flow rate
+
+temp: float
+    Design temperature
+
+depth_end: float
+    The depth of water at the end of the flocculator
+
+W_chan: float
+    The width of the channel
+
+Returns
+-------
+float
+    ?
+
+Examples
+--------
+>>> from aide_design.play import*
+>>> ???
+""""
     OD_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs).magnitude
     N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
     L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
