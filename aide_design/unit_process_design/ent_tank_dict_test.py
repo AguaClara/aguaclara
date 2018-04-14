@@ -33,7 +33,29 @@ ent_tank_dict = {'sdr': 26, 'S_plate': 2.5*u.cm, 'angle_plate': 50*u.deg,
 def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
     """Return the outer diameter of the entrance tank drain pipe. Depth at the
     end of the flocculator is used for headloss and length calculation inputs in
-    the diam_pipe calculation."""
+    the diam_pipe calculation.
+
+    Parameters
+    ----------
+    q_plant : float
+        Plant flow rate
+
+    temp: float
+        Design temperature
+
+    depth_end: float
+        The depth of water at the end of the flocculator
+
+    Returns
+    -------
+    float
+        the outer diameter of the entrance tank drain pipe
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> ???
+    """
     nu = pc.viscosity_kinematic(temp)
     K_minor = (con.K_MINOR_PIPE_ENTRANCE
                con.K_MINOR_PIPE_EXIT + con.K_MINOR_EL90)
@@ -45,11 +67,30 @@ def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
 def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
     """Return the number of plates in the entrance tank.
 
-    This number minimizes the total length of the plate settler unit."""
+    This number minimizes the total length of the plate settler unit.
+
+    Parameters
+    ----------
+    q_plant : float
+        Plant flow rate
+
+    W_chan : float
+        Width of channel
+
+    Returns
+    -------
+    float
+        the number of plates in the entrance tank
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> ???
+    """
     B_plate = ent_tank_inputs['S_plate'] + ent_tank_inputs['thickness_plate']
     N_plates = np.ceil(np.sqrt(q_plant/B_plate.to(u.m).magnitude
                        * W_chan * ent_tank_inputs['vel_capture'].to(u.m/u.s).magnitude *
-                       np.sin(ent_tank_inputs['angle_plate'].to(u.rad).magnitude))))
+                       np.sin(ent_tank_inputs['angle_plate'].to(u.rad).magnitude)))
     return N_plates
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
