@@ -102,6 +102,7 @@ def n_lfom_rows(Q, lfom_inputs=lfom_dict):
     8
     >>> n_lfom_rows(60 *u.L/u.s)
     4
+
     """
     N_est = lfom_inputs['hl'].to(u.m).magnitude*np.pi/(2*width_stout(lfom_inputs['hl'], lfom_inputs).magnitude*Q)
     variablerow = min(10, max(4, math.trunc(N_est)))
@@ -139,11 +140,11 @@ def dist_center_lfom_rows(Q, lfom_inputs=lfom_dict):
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
     >>> dist_center_lfom_rows(20*u.L/u.s)
-    2.5 centimeter
+    0.025 meter
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 60*u.cm}
     >>> dist_center_lfom_rows(60*u.L/u.s, lfom_dict)
-    7.5 centimeter
+    0.075 centimeter
     """
     return lfom_inputs['hl'].to(u.m).magnitude/n_lfom_rows(Q, lfom_inputs)
 
@@ -211,6 +212,7 @@ def area_lfom_pipe_min(Q, lfom_inputs=lfom_dict):
     ...              'S_orifice': 1*u.cm, 'hl': 60*u.cm}
     >>> area_lfom_pipe_min(60*u.L/u.s, lfom_dict)
     0.061816254139068764 meter2
+
     """
     return (lfom_inputs['ratio_safety']*Q/vel_lfom_pipe_critical(lfom_inputs).magnitude)
 
@@ -313,7 +315,7 @@ def d_lfom_orifices_max(Q, lfom_inputs=lfom_dict):
     0.04095499380586013 meter
     """
     return (pc.diam_circle(
-            area_lfom_orifices_top(Q, lfom_inputs).magnitude).magnitude)
+            area_lfom_orifices_top(Q, lfom_inputs)).magnitude)
 
 @u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
 def orifice_diameter(Q, drill_bits, lfom_inputs=lfom_dict):
@@ -342,12 +344,16 @@ def orifice_diameter(Q, drill_bits, lfom_inputs=lfom_dict):
     >>> from aide_design.play import*
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
-    >>> orifice_diameter(20*u.L/u.s,mat.DIAM_DRILL_ENG)
-    2.0 meter
+    >>> orifice_diameter(20*u.L/u.s, mat.DIAM_DRILL_ENG)
+    0.022224999999999998 meter
+
     """
     maxdrill = (min((dist_center_lfom_rows(Q, lfom_inputs).magnitude),
                 (d_lfom_orifices_max(Q, lfom_inputs).magnitude)))
-    return ut.floor_nearest(maxdrill, drill_bits)
+
+    return (ut.floor_nearest(maxdrill, (drill_bits * u.inch).to(u.m).magnitude))
+
+    orifice_diameter(20*u.L/u.s, mat.DIAM_DRILL_ENG)
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.inch, None], False)
 def drillbit_area(Q, drill_bits, lfom_inputs=lfom_dict):
@@ -377,10 +383,11 @@ def drillbit_area(Q, drill_bits, lfom_inputs=lfom_dict):
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
     >>> drillbit_area(20*u.L/u.s,mat.DIAM_DRILL_ENG)
-    3.142 meter ** 2 meter2
+    0.00038794791368402165 meter2
+
     """
     return pc.area_circle(
-            orifice_diameter(Q, drill_bits, lfom_inputs).magnitude)
+            orifice_diameter(Q, drill_bits, lfom_inputs)).magnitude
 
 @u.wraps(None, [u.m**3/u.s, u.inch, None], False)
 def n_lfom_orifices_per_row_max(Q, drill_bits, lfom_inputs=lfom_dict):
@@ -411,7 +418,8 @@ def n_lfom_orifices_per_row_max(Q, drill_bits, lfom_inputs=lfom_dict):
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
     >>> n_lfom_orifices_per_row_max(20*u.L/u.s,mat.DIAM_DRILL_ENG)
-    10
+    30
+
     """
     return math.floor(math.pi*(pipe.ID_SDR(
         nom_diam_lfom_pipe(Q, lfom_inputs), lfom_inputs['sdr']).magnitude)
@@ -441,12 +449,13 @@ def flow_ramp(Q, lfom_inputs=lfom_dict):
     --------
     >>> from aide_design.play import*
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
-    ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
-    >>> flow_ramp(20*u.L/u.s)
-    \[\*begin{pmatrix}0.0075 & 0.015 & 0.0225 & 0.03 & 0.0375 & 0.045 & 0.0525 & 0.06\end{pmatrix} meter3/second\]
+    ...              'S_orifice': 1*u.cm, 'hl': 40*u.cm}
+    >>> flow_ramp(20*u.L/u.s,lfom_dict)
+    \\[\\begin{pmatrix}0.0025 & 0.005 & 0.0075 & 0.01 & 0.0125 & 0.015000000000000001 & 0.017499999999999998 & 0.02\\end{pmatrix} meter3/second\\]
     """
     n_rows = n_lfom_rows(Q, lfom_inputs)
     return np.linspace(Q/n_rows, Q, n_rows)
+
 
 @u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
 def height_lfom_orifices(Q, drill_bits, lfom_inputs=lfom_dict):
@@ -478,11 +487,12 @@ def height_lfom_orifices(Q, drill_bits, lfom_inputs=lfom_dict):
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
     >>> height_lfom_orifices(20*u.L/u.s,mat.DIAM_DRILL_ENG)
-    3.142 meter ** 2 meter2
+    \\[\\begin{pmatrix}0.011112499999999999 & 0.0361125 & 0.0611125 & 0.08611250000000001 & 0.1111125 & 0.1361125 & 0.16111250000000002 & 0.18611250000000001\\end{pmatrix} meter\\]
+
     """
-    return (np.arange((orifice_diameter(Q, drill_bits, lfom_inputs)*0.5),
+    return (np.arange((orifice_diameter(Q, drill_bits, lfom_inputs).magnitude*0.5),
                       lfom_inputs['hl'].to(u.m).magnitude,
-                      (dist_center_lfom_rows(Q, lfom_inputs))))
+                      (dist_center_lfom_rows(Q, lfom_inputs)).magnitude))
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.inch, None, None, None], False)
 def flow_lfom_actual(Q, drill_bits, Row_Index_Submerged, N_lfom_Orifices, lfom_inputs=lfom_dict):
@@ -498,9 +508,13 @@ def flow_lfom_actual(Q, drill_bits, Row_Index_Submerged, N_lfom_Orifices, lfom_i
     drill_bits: array of floats
         an array of potential drill bit sizes to create the orifices
 
-    Row_Index_Submerged:
+    Row_Index_Submerged : int
+        index of the row in the n_lfom_orifices array up to which the orifices
+        are submerged
 
     N_lfom_Orifices:
+        list with each entry being the number of orifices in that row of the
+        LFOM
 
     lfom_inputs : dict
         a dictionary of all of the constant inputs needed for LFOM calculations
@@ -516,24 +530,30 @@ def flow_lfom_actual(Q, drill_bits, Row_Index_Submerged, N_lfom_Orifices, lfom_i
     >>> from aide_design.play import*
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
-    >>> flow_lfom_actual(20*u.L/u.s,mat.DIAM_DRILL_ENG,2,2)
-    ?
+    >>> flow_lfom_actual(20*u.L/u.s, mat.DIAM_DRILL_ENG, 1, [1,1])
+    0.00033756816936411334 meter3/second
+
     """
     D_lfom_Orifices = orifice_diameter(Q, drill_bits, lfom_inputs).magnitude
     row_height = dist_center_lfom_rows(Q, lfom_inputs).magnitude
     harray = (np.linspace(row_height, lfom_inputs['hl'].to(u.m).magnitude,
               n_lfom_rows(Q, lfom_inputs))) - 0.5 * D_lfom_Orifices
-    Q_new =0
+    Q_new = 0
     for i in range(Row_Index_Submerged+1):
         Q_new = Q_new + (N_lfom_Orifices[i]*(
             pc.flow_orifice_vert(D_lfom_Orifices,
                                  harray[Row_Index_Submerged-i],
-                                 lfom_inputs['RATIO_VC_ORIFICE']).magnitude))
-    return Q_new
+                                 con.RATIO_VC_ORIFICE)))
+    return Q_new.magnitude
+
+    flow_lfom_actual(20*u.L/u.s, mat.DIAM_DRILL_ENG, 1, [1,1])
 
 #Calculate number of orifices at each level given a diameter
 @u.wraps(None, [u.m**3/u.s, u.inch, None], False)
 def n_lfom_orifices(Q, drill_bits, lfom_inputs=lfom_dict):
+    Q = 20*u.L/u.s
+    drill_bits = mat.DIAM_DRILL_ENG
+    lfom_inputs = lfom_dict
     Q_ramp_local = flow_ramp(Q, lfom_inputs).magnitude
     N_orifices_max = n_lfom_orifices_per_row_max(Q, drill_bits, lfom_inputs)
     N_rows = (n_lfom_rows(Q, lfom_inputs))
@@ -546,7 +566,7 @@ def n_lfom_orifices(Q, drill_bits, lfom_inputs=lfom_dict):
         n = np.append(n, 0)
         #calculate the ideal number of orifices at the current row without constraining to an integer
         N_orifices_real = ((Q_ramp_local[i] - flow_lfom_actual(Q, drill_bits, i, n, lfom_inputs).magnitude) /
-                        pc.flow_orifice_vert(D_lfom_Orifices, H, lfom_inputs['RATIO_VC_ORIFICE']).magnitude
+                            pc.flow_orifice_vert(D_lfom_Orifices, H, con.RATIO_VC_ORIFICE).magnitude)
         #constrain number of orifices to be less than the max per row and greater or equal to 0
         n[i] = min((max(0, round(N_orifices_real))), N_orifices_max)
     return n
@@ -585,15 +605,19 @@ def n_lfom_orifices_fusion(Q, drill_bits, num_rows, lfom_inputs=lfom_dict):
     >>> from aide_design.play import*
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
+    >>> n_lfom_orifices_fusion(20*u.L/u.s, mat.DIAM_DRILL_ENG, 8, lfom_dict)
+    (array([20.,  6.,  6.,  5.,  4.,  5.,  3.,  3.]),
+    array([1., 0., 1., 0., 1., 0., 1., 0.]))
+
     """
     N_orifices_per_row = n_lfom_orifices(Q, drill_bits, lfom_inputs)
     N_orifices_final = np.zeros(8)
     centerline = np.zeros(8)
     center = True
     for i in range(8):
-        if i % 2 == 1 and N_rows == 4:
+        if i % 2 == 1 and num_rows == 4:
             centerline[i] = int(center)
-        elif N_rows == 4:
+        elif num_rows == 4:
             N_orifices_final[i] = N_orifices_per_row[i/2]
             centerline[i] = int(center)
             center = not center
@@ -603,6 +627,7 @@ def n_lfom_orifices_fusion(Q, drill_bits, num_rows, lfom_inputs=lfom_dict):
             center = not center
 
     return N_orifices_final, centerline
+
 #This function calculates the error of the design based on the differences between the predicted flow rate
 #and the actual flow rate through the LFOM.
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.inch, None], False)
@@ -631,8 +656,8 @@ def flow_lfom_error(Q, drill_bits, lfom_inputs=lfom_dict):
     >>> from aide_design.play import*
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
-    >>> flow_lfom_error(20*u.L/u.s,mat.DIAM_DRILL_ENG)
-    3.142 meter ** 2 meter2
+    >>> flow_lfom_error(20*u.L/u.s, mat.DIAM_DRILL_ENG)
+    \\[\\begin{pmatrix}-0.0003291229516060772 & 0.00029855543023757543 & -0.00040128229002386884 & -0.00041467605669878727 & -0.0029056699882666973 & 0.001701216757524042 & 0.000898141605292814\\end{pmatrix} meter3/second\\]
     """
     N_lfom_orifices = n_lfom_orifices(Q, drill_bits, lfom_inputs)
     Q_lfom_error = []
@@ -641,7 +666,6 @@ def flow_lfom_error(Q, drill_bits, lfom_inputs=lfom_dict):
             Q, drill_bits, j, N_lfom_orifices, lfom_inputs).magnitude -
             flow_ramp(Q, lfom_inputs)[j].magnitude)/Q)
     return Q_lfom_error
-
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m, None], False)
 def flow_lfom_ideal(Q, H, lfom_inputs=lfom_dict):
@@ -672,7 +696,7 @@ def flow_lfom_ideal(Q, H, lfom_inputs=lfom_dict):
     >>> flow_lfom_ideal(20*u.L/u.s,20*u.cm)
     0.02 meter3 / second
     """
-    Q_lfom_ideal = (Q*H)/lfom_intpus['hl'].to(u.m).magnitude
+    Q_lfom_ideal = (Q*H)/lfom_inputs['hl'].to(u.m).magnitude
     return Q_lfom_ideal
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.inch, u.m, None], False)
@@ -682,13 +706,13 @@ def flow_lfom(Q, drill_bits, H, lfom_inputs=lfom_dict):
     Parameters
     ----------
     Q: float
-        flow through the LFOM
+        designed flow through the LFOM
 
-    drill_bits: array of floats
+    drill_bits : array of floats
         an array of potential drill bit sizes to create the orifices
 
-    H: float
-        height (includes freeboard)
+    H : float
+        depth of the water
 
     lfom_inputs : dict
         a dictionary of all of the constant inputs needed for LFOM calculations
@@ -704,15 +728,17 @@ def flow_lfom(Q, drill_bits, H, lfom_inputs=lfom_dict):
     >>> from aide_design.play import*
     >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
-    ?
+    >>> flow_lfom(20*u.L/u.s, mat.DIAM_DRILL_ENG, 20*u.cm, lfom_dict)
+    0.00940749311972628 meter3/second
+
     """
     D_lfom_orifices = orifice_diameter(Q, drill_bits, lfom_inputs).magnitude
-    H_submerged = np.arange(H-0.5*D_lfom_orifices, lfom_inputs['hl'].to(u.m),
-                            H-dist_center_lfom_rows(Q, lfom_inputs).magnitude, dtype=object)
+    H_submerged = np.arange(H - 0.5 * D_lfom_orifices, lfom_inputs['hl'].to(u.m).magnitude,
+                            H - dist_center_lfom_rows(Q, lfom_inputs).magnitude, dtype=object)
     N_lfom_orifices = n_lfom_orifices(Q, drill_bits, lfom_inputs)
     Q = []
     for i in range(len(H_submerged)):
         Q.append(pc.flow_orifice_vert(D_lfom_orifices, H_submerged[i],
-                                      lfom_inputs['RATIO_VC_ORIFICE']) *
+                                      con.RATIO_VC_ORIFICE) *
                  N_lfom_orifices[i])
-    return sum(Q)
+    return sum(Q).magnitude
