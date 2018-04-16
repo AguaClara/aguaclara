@@ -54,14 +54,16 @@ def drain_OD(q_plant, temp, depth_end, ent_tank_inputs=ent_tank_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> ???
+    >>> drain_OD(20*u.L/u.s, 15*u.degC, 2*u.m)
+    4.5 inch
+
     """
     nu = pc.viscosity_kinematic(temp)
     K_minor = (con.K_MINOR_PIPE_ENTRANCE +
                con.K_MINOR_PIPE_EXIT + con.K_MINOR_EL90)
     drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, mat.PIPE_ROUGH_PVC, K_minor)
     drain_ND = pipe.ND_SDR_available(drain_ID, ent_tank_inputs['sdr'])
-    return pipe.OD(drain_ND)
+    return pipe.OD(drain_ND).magnitude
 
 @u.wraps(None, [u.m**3/u.s, u.m, None], False)
 def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
@@ -124,31 +126,33 @@ def L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
 
 @u.wraps([u.inch, None, u.m], [u.m**3/u.s, u.degK, u.m, u.m, None], False)
 def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict):
-"""
-Parameters
-----------
-q_plant : float
-    Plant flow rate
+    """Aggregates the entrance tank functions into a single function which
+    outputs a dictionary of all the necessary design parameters.
 
-temp: float
-    Design temperature
+    Parameters
+    ----------
+    q_plant : float
+        Plant flow rate
 
-depth_end: float
-    The depth of water at the end of the flocculator
+    temp: float
+        Design temperature
 
-W_chan: float
-    The width of the channel
+    depth_end: float
+        The depth of water at the end of the flocculator
 
-Returns
--------
-float
-    ?
+    W_chan: float
+        The width of the channel
 
-Examples
---------
->>> from aide_design.play import*
->>> ???
-""""
+    Returns
+    -------
+    float
+        ?
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> ???
+    """
     OD_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs).magnitude
     N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
     L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
