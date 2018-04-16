@@ -124,7 +124,7 @@ def vol_floc(Q_plant, temp, floc_inputs=floc_dict):
     vol = (floc_dict['coll_pot'] / G_avg(temp, floc_inputs).magnitude)*Q_plant
     return vol
 
-@u.wraps(u.cm, [u.m**3/u.s, u.degK, u.m, None], False)
+@u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, None], False)
 def width_HS_min(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     """Return the minimum channel width required to achieve H/S > 3.
 
@@ -161,9 +161,9 @@ def width_HS_min(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> width_HS_min(20*u.L/u.s, 25*u.degC, 2*u.m, floc_dict)
-    0.10740157183590993 centimeter
+    0.10740157183590993 meter
     >>> width_HS_min(40*u.L/u.s, 15*u.degC, 5*u.m, floc_dict)
-    0.06861475664688545 centimeter
+    0.06861475664688545 meter
 
     """
     nu = pc.viscosity_kinematic(temp).magnitude
@@ -214,7 +214,7 @@ def width_floc_min(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     45 centimeter
 
     """
-    return max(width_HS_min(Q_plant, temp, depth_end, floc_inputs).magnitude,
+    return max(width_HS_min(Q_plant, temp, depth_end, floc_inputs).to(u.cm).magnitude,
                floc_inputs['W_min_construct'].magnitude)
 
 @u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.cm, None], False)
@@ -549,3 +549,24 @@ def num_baffles(Q_plant, temp, W_chan, L, floc_inputs=floc_dict):
     # baffle spaces and there is always one less baffle than baffle spaces due
     # to geometry
     return int(N) - 1
+
+@u.wraps([], [u.m**3/u.s], False)
+def floc_agg(Q_plant, temp, depth_end, floc_inputs=floc_dict):
+    """
+
+    """
+    A_ET_PV = area_ent_tank(Q_plant, temp, depth_end, floc_inputs)
+    L_tank = floc['L']
+    W_tot = A_ETF_PV/L_tank
+    num_chan = num_channel(Q_plant, temp, depth_end, W_tot, floc_inputs)
+    W_chan = W_tot/num_chan
+    h_chan = depth_end + floc['hl'] + floc['freeboard']
+    baffle_spacing = baffle_spacing(Q_plant, temp, W_chan, floc_inputs)
+    num_baffles_chan_1 = num_baffles(Q_plant, temp, W_chan, L_tank, materials['thickness_PVC_sheet'], floc_inputs)
+    num_baffles_chan_n = num_baffles(Q_plant, temp, W_chan, L _tank - floc['L_ent_tank_max'], materials['thickness_PVC_sheet'], floc_inputs)
+    if Q_plant > 0.05:
+        obstacles_bool = 0
+    else:
+        obstacles_bool = 1
+    l_top_baffle = h_chan - baffle_spacing
+    l_bottom_baffle = depth_end - baffle_spacing
