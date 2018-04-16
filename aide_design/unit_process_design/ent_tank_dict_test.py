@@ -172,8 +172,11 @@ def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict
     'vel_capture': <Quantity(8.0, 'millimeter / second')>}
 
     """
+    # calculate the outer diameter of the drain pipe
     OD_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs)
+    # calculate the number of plates in the plate settler module
     N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs)
+    # calculate the length of of a plate in the entrance tank
     L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs)
     ent_tank_inputs.update({'OD_drain': OD_drain, 'N_plates': N_plates,
                             'L_plate': L_plate})

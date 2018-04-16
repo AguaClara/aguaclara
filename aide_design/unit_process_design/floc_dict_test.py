@@ -552,10 +552,44 @@ def num_baffles(Q_plant, temp, W_chan, L, floc_inputs=floc_dict):
     # to geometry
     return int(N) - 1
 
-@u.wraps([None], [u.m**3/u.s, u.degK, u.m, None], False)
+@u.wraps(None, [u.m**3/u.s, u.degK, u.m, None], False)
 def floc_agg(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     """Aggregates the floc tank functions into a single function which
     outputs a dictionary of all the necessary design parameters.
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
+    >>> floc_agg(20*u.L/u.s, 15*u.degC, 2*u.m, floc_dict)
+    {'K_minor': 2.31,
+    'L_bottom_baffle': 1.7767028781699596,
+    'L_ent_tank_max': <Quantity(2.2, 'meter')>,
+    'L_sed': <Quantity(5.8, 'meter')>,
+    'L_top_baffle': 2.2767028781699596,
+    'W_chan': 0.39719005468709884,
+    'W_min_construct': <Quantity(45, 'centimeter')>,
+    'baffle_spacing': 0.22329712183004025,
+    'baffle_thickness': <Quantity(15, 'centimeter')>,
+    'coll_pot': 37000,
+    'freeboard': <Quantity(10, 'centimeter')>,
+    'h_chan': 2.5,
+    'hl': <Quantity(40, 'centimeter')>,
+    'num_baffles_chan_1': 15,
+    'num_baffles_chan_n': 9,
+    'num_chan': 2,
+    'obstacles_bool': 1,
+    'ratio_HS_max': 6,
+    'ratio_HS_min': 3}
 
     """
     # calculate planview area of the entrance tank
