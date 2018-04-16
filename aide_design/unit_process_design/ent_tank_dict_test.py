@@ -87,7 +87,10 @@ def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> ???
+    >>> num_plates_ent_tank(20*u.L/u.s,0.25*u.m)
+    >>> 1.0
+    >>> num_plates_ent_tank(120*u.L/u.s,125*u.m)
+    >>> 2.0
     """
     B_plate = ent_tank_inputs['S_plate'] + ent_tank_inputs['thickness_plate']
     N_plates = np.ceil(np.sqrt(q_plant/B_plate.to(u.m).magnitude
@@ -95,7 +98,7 @@ def num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
                        np.sin(ent_tank_inputs['angle_plate'].to(u.rad).magnitude)))
     return N_plates
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
+"@u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
 def L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
     """Return the length of the plates in the entrance tank.
 
@@ -115,7 +118,10 @@ def L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> ???
+    >>> L_plate_ent_tank(20*u.L/u.s,0.25*u.m)
+    >>> 15.527444428789268 meter
+    >>> L_plate_ent_tank(30*u.L/u.s,125*u.m)
+    >>> 0.016877874990957113 meter
     """
     L_plate = ((q_plant/(num_plates_ent_tank(q_plant, W_chan) * W_chan *
                ent_tank_inputs['vel_capture'].to(u.m/u.s).magnitude *
@@ -124,7 +130,7 @@ def L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs=ent_tank_dict):
                np.tan(ent_tank_inputs['angle_plate'].to(u.rad).magnitude)))
     return L_plate
 
-@u.wraps([u.inch, None, u.m], [u.m**3/u.s, u.degK, u.m, u.m, None], False)
+@u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, None], False)
 def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict):
     """Aggregates the entrance tank functions into a single function which
     outputs a dictionary of all the necessary design parameters.
@@ -154,7 +160,7 @@ def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict
     >>> ???
     """
     OD_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs).magnitude
-    N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
+    N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs)
     L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
     return ent_tank_inputs.update({'OD_drain': OD_drain, 'N_plates': N_plates,
                                    'L_plate': L_plate})
