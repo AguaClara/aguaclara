@@ -130,11 +130,31 @@ def n_sed_plates_max(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> n_sed_plates_max()
+    13
     """
     B_plate = sed_inputs['plate_settlers']['S'] + sed_inputs['plate_settlers']['thickness']
-    return math.floor((sed_inputs['plate_settlers']['L_cantilevered'].magnitude / B_plate.magnitude
+    return math.floor((sed_inputs['plate_settlers']['L_cantilevered'].magnitude / B_plate.magnitude \
                       * np.tan(sed_inputs['plate_settlers']['angle'].to(u.rad).magnitude)) + 1)
 
 @u.wraps(u.inch, [None], False)
