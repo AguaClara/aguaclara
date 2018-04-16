@@ -162,19 +162,19 @@ def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict
     ...                  'thickness_plate': 2*u.mm}
     >>> ent_tank_agg(20*u.L/u.s, 20*u.degC, 2*u.m, 45*u.cm, ent_tank_dict)
     {'L_max': <Quantity(2.2, 'meter')>,
-    'L_plate': 8.613116309409655,
-    'N_plates': 1.0,
-    'OD_drain': 4.5,
+    'L_plate': <Quantity(8.613116309409655, 'meter')>
+    'N_plates': 1.0
+    'OD_drain': <Quantity(4.5, 'inch')>
     'S_plate': <Quantity(2.5, 'centimeter')>,
     'angle_plate': <Quantity(50, 'degree')>,
     'sdr': 26,
     'thickness_plate': <Quantity(2, 'millimeter')>,
     'vel_capture': <Quantity(8.0, 'millimeter / second')>}
-    
+
     """
-    OD_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs).magnitude
+    OD_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs)
     N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs)
-    L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs).magnitude
+    L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs)
     ent_tank_inputs.update({'OD_drain': OD_drain, 'N_plates': N_plates,
                             'L_plate': L_plate})
     return ent_tank_inputs
