@@ -115,9 +115,9 @@ def vol_floc(Q_plant, temp, floc_inputs=floc_dict):
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
-    >>> vol_floc(40*u.L/u.s, 15*u.degC)
+    >>> vol_floc(40*u.L/u.s, 15*u.degC,floc_dict)
     15.872580391229524 meter3
-    >>> vol_floc(40*u.L/u.s, 20*u.degC)
+    >>> vol_floc(40*u.L/u.s, 20*u.degC,floc_dict)
     14.009544668698396 meter3
 
     """
@@ -212,7 +212,6 @@ def width_floc_min(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     45 centimeter
     >>> width_floc_min(40*u.L/u.s, 15*u.degC, 2*u.m, floc_dict)
     45 centimeter
-
     """
     return max(width_HS_min(Q_plant, temp, depth_end, floc_inputs).to(u.cm).magnitude,
                floc_inputs['W_min_construct'].magnitude)
@@ -300,10 +299,10 @@ def area_ent_tank(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
-    >>> area_ent_tank(20*u.L/u.s, 25*u.degC, 2*u.m)
+    >>> area_ent_tank(20*u.L/u.s, 25*u.degC, 2*u.m, floc_dict)
     1 meter ** 2
-    >>> area_ent_tank(40*u.L/u.s, 15*u.degC, 2*u.m)
-    1 meter2
+    >>> area_ent_tank(40*u.L/u.s, 15*u.degC, 2*u.m, floc_dict)
+    1 meter ** 2
     """
     # guess the planview area before starting iteration
     A_new = 1*u.m**2
@@ -328,6 +327,7 @@ def area_ent_tank(Q_plant, temp, depth_end, floc_inputs=floc_dict):
         A_ratio = A_new/A_ET_PV
 
     return A_new.to(u.m**2).magnitude
+
 
 ### Baffle calculations
 @u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, None], False)
@@ -363,10 +363,11 @@ def expansion_dist_max(Q_plant, temp, W_chan, floc_inputs=floc_dict):
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
-    >>> expansion_dist_max(20*u.L/u.s, 15*u.degC, 0.45*u.m)
+    >>> expansion_dist_max(20*u.L/u.s, 15*u.degC, 0.45*u.m, floc_dict)
     1.2200391430074593 meter
-    >>> expansion_dist_max(40*u.L/u.s, 25*u.degC, 0.45*u.m)
+    >>> expansion_dist_max(40*u.L/u.s, 25*u.degC, 0.45*u.m, floc_dict)
     1.931628399157619 meter
+
     """
     g_avg = G_avg(temp, floc_inputs).magnitude
     nu = pc.viscosity_kinematic(temp).magnitude
@@ -409,14 +410,15 @@ def num_expansions(Q_plant, temp, depth_end, W_chan, floc_inputs=floc_dict):
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
-    >>> num_expansions(20*u.L/u.s, 15*u.degC, 2*u.m, 0.45*u.m)
+    >>> num_expansions(20*u.L/u.s, 15*u.degC, 2*u.m, 0.45*u.m, floc_dict)
     2
-    >>> num_expansions(40*u.L/u.s, 25*u.degC, 4*u.m, 0.45*u.m)
+    >>> num_expansions(40*u.L/u.s, 25*u.degC, 4*u.m, 0.45*u.m, floc_dict)
     3
 
     """
     return int(np.ceil(depth_end /
                (expansion_dist_max(Q_plant, temp, W_chan, floc_inputs)).magnitude))
+
 
 @u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, u.m, None], False)
 def height_exp(Q_plant, temp, depth_end, W_chan, floc_inputs=floc_dict):
@@ -453,9 +455,9 @@ def height_exp(Q_plant, temp, depth_end, W_chan, floc_inputs=floc_dict):
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
-    >>> height_exp(20*u.L/u.s, 15*u.degC, 2*u.m, 0.45*u.m)
+    >>> height_exp(20*u.L/u.s, 15*u.degC, 2*u.m, 0.45*u.m, floc_dict)
     1.0 meter
-    >>> height_exp(40*u.L/u.s, 25*u.degC, 4*u.m, 0.45*u.m)
+    >>> height_exp(40*u.L/u.s, 25*u.degC, 4*u.m, 0.45*u.m, floc_dict)
     1.3333333333333333 meter
 
     """
@@ -492,9 +494,9 @@ def baffle_spacing(Q_plant, temp, W_chan, floc_inputs=floc_dict):
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
-    >>> baffle_spacing(40*u.L/u.s, 25*u.degC, 0.45*u.m)
+    >>> baffle_spacing(40*u.L/u.s, 25*u.degC, 0.45*u.m, floc_dict)
     0.3219380665262699 meter
-    >>> baffle_spacing(20*u.L/u.s, 15*u.degC, 0.45*u.m)
+    >>> baffle_spacing(20*u.L/u.s, 15*u.degC, 0.45*u.m, floc_dict)
     0.2033398571679099 meter
     """
     g_avg = G_avg(temp, floc_inputs).magnitude
@@ -537,9 +539,9 @@ def num_baffles(Q_plant, temp, W_chan, L, floc_inputs=floc_dict):
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
-    >>> num_baffles(20*u.L/u.s, 15*u.degC, 0.45*u.m, 6*u.m)
+    >>> num_baffles(20*u.L/u.s, 15*u.degC, 0.45*u.m, 6*u.m, floc_dict)
     16
-    >>> num_baffles(40*u.L/u.s, 25*u.degC, 0.45*u.m, 6*u.m)
+    >>> num_baffles(40*u.L/u.s, 25*u.degC, 0.45*u.m, 6*u.m, floc_dict)
     12
 
     """

@@ -256,8 +256,8 @@ def L_diffuser_inner(sed_inputs=sed_dict):
     >>>
 
     """
-    return L_diffuser_outer(sed_inputs['tank']['W']) -
-            (2 * (sed_inputs['manifold']['diffuser']['thickness_wall']).to(u.m)).magnitude)
+    return L_diffuser_outer(sed_inputs['tank']['W']) - \
+    (2 * (sed_inputs['manifold']['diffuser']['thickness_wall']).to(u.m)).magnitude
 
 @u.wraps(u.m**3/u.s, [None], False)
 def q_diffuser(sed_inputs=sed_dict):
@@ -305,7 +305,7 @@ def vel_sed_diffuser(sed_inputs=sed_dict):
     >>>
 
     """
-    return (q_diffuser(sed_inputs).magnitude
+    return (q_diffuser(sed_inputs).magnitude \
             / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
 
 @u.wraps(u.m**3/u.s, [None], False)
@@ -329,7 +329,7 @@ def q_tank(sed_inputs=sed_dict):
     >>>
 
     """
-    return (sed_inputs['tank']['L'] * sed_inputs['tank']['vel_up'].to(u.m/u.s) *
+    return (sed_inputs['tank']['L'] * sed_inputs['tank']['vel_up'].to(u.m/u.s) * \
             sed_inputs['tank']['W'].to(u.m)).magnitude
 
 @u.wraps(u.m/u.s, [None], False)
@@ -353,8 +353,8 @@ def vel_inlet_man_max(sed_inputs=sed_dict):
     >>>
 
     """
-    vel_manifold_max = (sed_inputs['diffuser']['vel_max'].to(u.m/u.s).magnitude *
-        sqrt(2*((1-(sed_inputs['manifold']['ratio_Q_man_orifice'])**2)) /
+    vel_manifold_max = (sed_inputs['diffuser']['vel_max'].to(u.m/u.s).magnitude * \
+        sqrt(2*((1-(sed_inputs['manifold']['ratio_Q_man_orifice'])**2)) / \
         (((sed_inputs['manifold']['ratio_Q_man_orifice'])**2)+1)))
     return vel_manifold_max
 
@@ -410,7 +410,7 @@ def L_channel(Q_plant, sed_inputs=sed_dict):
 
     """
     n_tanks = n_tanks(Q_plant, sed_inputs)
-    return ((n_tanks * sed_inputs['tank']['W']) + sed_inputs['thickness_wall'] +
+    return ((n_tanks * sed_inputs['tank']['W']) + sed_inputs['thickness_wall'] + \
             ((n_tanks-1) * sed_inputs['thickness_wall']))
 
 @u.wraps(u.m, [u.m**3/u.s, u.degK, None], False)
@@ -447,7 +447,7 @@ def ID_exit_man(Q_plant, temp, sed_inputs=sed_dict):
     #functions this function calls.
     nu = pc.viscosity_dynamic(temp)
     hl = sed_input['manifold']['exit_man']['hl_orifice'].to(u.m)
-    L = sed_ipnut['manifold']['tank']['L']
+    L = sed_input['manifold']['tank']['L']
     N_orifices = sed_inputs['manifold']['exit_man']['N_orifices']
     K_minor = con.K_MINOR_PIPE_EXIT
     pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
@@ -518,8 +518,8 @@ def L_sed_plate(sed_inputs=sed_dict):
     >>>
 
     """
-    L_sed_plate = ((sed_input['plate_settlers']['S'] * ((sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture'])-1)
-                  + sed_input['plate_settlers']['thickness'] * (sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture']))
-                 / (np.sin(sed_input['plate_settlers']['angle']) * np.cos(sed_input['plate_settlers']['angle']))
+    L_sed_plate = ((sed_input['plate_settlers']['S'] * ((sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture'])-1) \
+                 + sed_input['plate_settlers']['thickness'] * (sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture'])) \
+                 / (np.sin(sed_input['plate_settlers']['angle']) * np.cos(sed_input['plate_settlers']['angle'])) \
                  ).to(u.m)
     return L_sed_plate
