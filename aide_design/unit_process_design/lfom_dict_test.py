@@ -141,10 +141,10 @@ def dist_center_lfom_rows(Q, lfom_inputs=lfom_dict):
     ...              'S_orifice': 1*u.cm, 'hl': 20*u.cm}
     >>> dist_center_lfom_rows(20*u.L/u.s)
     0.025 meter
-    >>> lfom_dict = {'sdr': 26, ratio_safety':  1.5,
+    >>> lfom_dict = {'sdr': 26, 'ratio_safety':  1.5,
     ...              'S_orifice': 1*u.cm, 'hl': 60*u.cm}
     >>> dist_center_lfom_rows(60*u.L/u.s, lfom_dict)
-    0.075 centimeter
+    0.075 meter
     """
     return lfom_inputs['hl'].to(u.m).magnitude/n_lfom_rows(Q, lfom_inputs)
 
