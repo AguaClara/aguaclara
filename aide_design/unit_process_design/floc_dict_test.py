@@ -32,10 +32,13 @@ W_min_construct : float
 K_minor : float
     Minor loss coefficient used in flocculator design
 
+baffle_thickness : float
+    Thickness of a baffle
+
 """
 from aide_design.play import*
 
-floc_dict = {'L_ent_tank_max': 2.2*u.m,
+floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
              'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
              'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
              'W_min_construct': 45*u.cm, 'K_minor': 2.31}
@@ -63,12 +66,14 @@ def G_avg(temp, floc_inputs=floc_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m,
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> G_avg(15 * u.degC)
     93.24255814245437 1/second
+    >>> G_avg(20 * u.degC)
+    105.64226282862515 1/second
 
     """
     G = ((pc.gravity.magnitude * floc_inputs['hl'].to(u.m).magnitude) /
@@ -106,12 +111,14 @@ def vol_floc(Q_plant, temp, floc_inputs=floc_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m,
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> vol_floc(40*u.L/u.s, 15*u.degC)
     15.872580391229524 meter3
+    >>> vol_floc(40*u.L/u.s, 20*u.degC)
+    14.009544668698396 meter3
 
     """
     vol = (floc_dict['coll_pot'] / G_avg(temp, floc_inputs).magnitude)*Q_plant
@@ -149,12 +156,14 @@ def width_HS_min(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m,
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> width_HS_min(20*u.L/u.s, 25*u.degC, 2*u.m, floc_dict)
     0.10740157183590993 centimeter
+    >>> width_HS_min(40*u.L/u.s, 15*u.degC, 5*u.m, floc_dict)
+    0.06861475664688545 centimeter
 
     """
     nu = pc.viscosity_kinematic(temp).magnitude
@@ -195,11 +204,13 @@ def width_floc_min(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m,
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> width_floc_min(20*u.L/u.s, 25*u.degC, 2*u.m, floc_dict)
+    45 centimeter
+    >>> width_floc_min(40*u.L/u.s, 15*u.degC, 2*u.m, floc_dict)
     45 centimeter
 
     """
@@ -241,12 +252,14 @@ def num_channel(Q_plant, temp, depth_end, W_tot, floc_inputs=floc_dict):
     --------
     >>> from aide_design.play import*
     >>> from aide_design.play import*
-    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m,
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
     ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
     ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
     ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> num_channel(20*u.L/u.s, 25*u.degC, 2*u.m, 5*u.m, floc_dict)
     10
+    >>> num_channel(40*u.L/u.s, 15*u.degC, 4*u.m, 10*u.m, floc_dict)
+    22
 
     """
     num = W_tot/(width_floc_min(Q_plant, temp, depth_end, floc_inputs).magnitude)
@@ -283,9 +296,14 @@ def area_ent_tank(Q_plant, temp, depth_end, floc_inputs=floc_dict):
     Examples
     --------
     >>> from aide_design.play import*
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> area_ent_tank(20*u.L/u.s, 25*u.degC, 2*u.m)
     1 meter ** 2
-
+    >>> area_ent_tank(40*u.L/u.s, 15*u.degC, 2*u.m)
+    1 meter2
     """
     # guess the planview area before starting iteration
     A_new = 1*u.m**2
@@ -341,9 +359,14 @@ def expansion_dist_max(Q_plant, temp, W_chan, floc_inputs=floc_dict):
     Examples
     --------
     >>> from aide_design.play import*
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> expansion_dist_max(20*u.L/u.s, 15*u.degC, 0.45*u.m)
     1.2200391430074593 meter
-
+    >>> expansion_dist_max(40*u.L/u.s, 25*u.degC, 0.45*u.m)
+    1.931628399157619 meter
     """
     g_avg = G_avg(temp, floc_inputs).magnitude
     nu = pc.viscosity_kinematic(temp).magnitude
@@ -367,6 +390,9 @@ def num_expansions(Q_plant, temp, depth_end, W_chan, floc_inputs=floc_dict):
     depth_end: float
         The depth of water at the end of the flocculator
 
+    W_chan: float
+        Channel width
+
     floc_inputs : dict
         a dictionary of all of the constant inputs needed for flocculator
         calculations
@@ -379,8 +405,14 @@ def num_expansions(Q_plant, temp, depth_end, W_chan, floc_inputs=floc_dict):
     Examples
     --------
     >>> from aide_design.play import*
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
     >>> num_expansions(20*u.L/u.s, 15*u.degC, 2*u.m, 0.45*u.m)
     2
+    >>> num_expansions(40*u.L/u.s, 25*u.degC, 4*u.m, 0.45*u.m)
+    3
 
     """
     return int(np.ceil(depth_end /
@@ -389,24 +421,130 @@ def num_expansions(Q_plant, temp, depth_end, W_chan, floc_inputs=floc_dict):
 @u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, u.m, None], False)
 def height_exp(Q_plant, temp, depth_end, W_chan, floc_inputs=floc_dict):
     """Return the actual distance between expansions given the integer
-    requirement for the number of expansions per flocculator depth."""
+    requirement for the number of expansions per flocculator depth.
+
+    Parameters
+    ----------
+    Q_plant: float
+        Plant flow rate
+
+    temp: float
+        Design temperature
+
+    depth_end: float
+        The depth of water at the end of the flocculator
+
+    W_chan: float
+        Channel width
+
+    floc_inputs : dict
+        a dictionary of all of the constant inputs needed for flocculator
+        calculations
+
+    Returns
+    -------
+    float
+        the actual distance between expansions
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
+    >>> height_exp(20*u.L/u.s, 15*u.degC, 2*u.m, 0.45*u.m)
+    1.0 meter
+    >>> height_exp(40*u.L/u.s, 25*u.degC, 4*u.m, 0.45*u.m)
+    1.3333333333333333 meter
+
+    """
     return depth_end/num_expansions(Q_plant, temp, depth_end, W_chan, floc_inputs)
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
+@u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, None], False)
 def baffle_spacing(Q_plant, temp, W_chan, floc_inputs=floc_dict):
     """Return the spacing between baffles based on the target velocity gradient
 
+    Parameters
+    ----------
+    Q_plant: float
+        Plant flow rate
+
+    temp: float
+        Design temperature
+
+    W_chan: float
+        Channel width
+
+    floc_inputs : dict
+        a dictionary of all of the constant inputs needed for flocculator
+        calculations
+
+    Returns
+    -------
+    float
+        the spacing between baffles
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
+    >>> baffle_spacing(40*u.L/u.s, 25*u.degC, 0.45*u.m)
+    0.3219380665262699 meter
+    >>> baffle_spacing(20*u.L/u.s, 15*u.degC, 0.45*u.m)
+    0.2033398571679099 meter
     """
     g_avg = G_avg(temp, floc_inputs).magnitude
     nu = pc.viscosity_kinematic(temp).magnitude
     term1 = (floc_inputs['K_minor']/(2 * expansion_dist_max(Q_plant, temp, W_chan, floc_inputs).magnitude * (g_avg**2) * nu))**(1/3)
     return term1 * Q_plant/W_chan
 
-@u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, u.m, None], False)
-def num_baffles(Q_plant, temp, W_chan, L, baffle_thickness, lfom_inputs=floc_dict):
+@u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, None], False)
+def num_baffles(Q_plant, temp, W_chan, L, floc_inputs=floc_dict):
     """Return the number of baffles that would fit in the channel given the
-    channel length and spacing between baffles."""
-    N = round(L / (baffle_spacing(Q_plant, temp, W_chan, floc_inputs).magnitude + baffle_thickness))
+    channel length and spacing between baffles.
+
+    Parameters
+    ----------
+    Q_plant: float
+        Plant flow rate
+
+    temp: float
+        Design temperature
+
+    W_chan: float
+        Channel width
+
+    L : float
+        Length of the flocculator
+
+    floc_inputs : dict
+        a dictionary of all of the constant inputs needed for flocculator
+        calculations
+
+    Returns
+    -------
+    int
+        the number of baffles that would fit in the channel
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> floc_dict = {'L_ent_tank_max': 2.2*u.m, 'baffle_thickness' : 15*u.cm,
+    ...          'L_sed': 5.8*u.m, 'hl': 40*u.cm, 'coll_pot': 37000,
+    ...          'freeboard': 10*u.cm, 'ratio_HS_min': 3, 'ratio_HS_max': 6,
+    ...          'W_min_construct': 45*u.cm, 'K_minor': 2.31}
+    >>> num_baffles(20*u.L/u.s, 15*u.degC, 0.45*u.m, 6*u.m)
+    16
+    >>> num_baffles(40*u.L/u.s, 25*u.degC, 0.45*u.m, 6*u.m)
+    12
+
+    """
+    N = round(L / (baffle_spacing(Q_plant, temp, W_chan, floc_inputs).magnitude
+        + floc_inputs['baffle_thickness'].to(u.m).magnitude))
     # the one is subtracted because the equation for num gives the number of
     # baffle spaces and there is always one less baffle than baffle spaces due
     # to geometry
