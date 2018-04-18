@@ -579,7 +579,7 @@ def diam_swamee(FlowRate, HeadLossFric, Length, Nu, PipeRough):
     return 0.66 * (a+b)**0.04
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.kg/(u.m*u.s), u.m], False)
 @ut.list_handler
 def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
     """Return the pipe IDiam that would result in given major losses.
@@ -595,6 +595,7 @@ def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
         return diam_swamee(FlowRate, HeadLossFric, Length,
                            Nu, PipeRough).magnitude
 
+diam_pipemajor(20*u.L/u.s, 40*u.cm, 5.8 * u.m, 0.001002 *u.kg/u.m/u.s, 0.00012*u.m)
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.dimensionless], False)
 def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
