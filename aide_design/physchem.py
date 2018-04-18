@@ -169,9 +169,6 @@ def fric(FlowRate, Diam, Nu, PipeRough):
         f = 64 / re_pipe(FlowRate, Diam, Nu)
     return f
 
-fric(20*u.L/u.s, 1*u.m, 0.001002 *u.kg/u.m/u.s, 0.00012*u.m)
-
-
 @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, u.dimensionless], False)
 @ut.list_handler
 def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
