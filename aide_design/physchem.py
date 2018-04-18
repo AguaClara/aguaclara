@@ -595,8 +595,6 @@ def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
         return diam_swamee(FlowRate, HeadLossFric, Length,
                            Nu, PipeRough).magnitude
 
-diam_pipemajor(20*u.L/u.s, 40*u.cm, 5.8 * u.m, 0.001002 *u.kg/u.m/u.s, 0.00012*u.m)
-
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.dimensionless], False)
 def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
     """Return the pipe ID that would result in the given minor losses.
