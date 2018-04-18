@@ -147,7 +147,7 @@ def re_general(Vel, Area, PerimWetted, Nu):
     return 4 * radius_hydraulic_general(Area, PerimWetted).magnitude * Vel / Nu
 
 
-@u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
+@u.wraps(None, [u.m**3/u.s, u.m, u.kg/u.m/u.s, u.m], False)
 @ut.list_handler
 def fric(FlowRate, Diam, Nu, PipeRough):
     """Return the friction factor for pipe flow.
@@ -168,6 +168,8 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     else:
         f = 64 / re_pipe(FlowRate, Diam, Nu)
     return f
+
+fric(20*u.L/u.s, 1*u.m, 0.001002 *u.kg/u.m/u.s, 0.00012*u.m)
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, u.dimensionless], False)
