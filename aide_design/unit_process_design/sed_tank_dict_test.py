@@ -196,11 +196,11 @@ def w_diffuser_inner_min(sed_inputs=sed_dict):
     ...         }
     ... }
     >>> w_diffuser_inner_min()
-    0.09483 inch inch
+    0.09482953262587492 inch
     """
     return ((sed_inputs['tank']['vel_up'].to(u.inch/u.s).magnitude /
              sed_inputs['manifold']['diffuser']['vel_max'].to(u.inch/u.s).magnitude)
-             * sed_inputs['tank']['W'])
+             * sed_inputs['tank']['W'].magnitude)
 
 @u.wraps(u.m, [None], False)
 def w_diffuser_inner(sed_inputs=sed_dict):

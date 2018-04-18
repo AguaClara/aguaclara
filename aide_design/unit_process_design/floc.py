@@ -1,39 +1,79 @@
 """This file contains all the functions needed to design a flocculator for
 an AguaClara plant.
 
+Attributes
+----------
+L_ent_tank_max : float
+    The maximum length of the entrance tank
+
+L_sed : float
+    The length of the sedimentation tank
+
+hl : float
+    Headloss through the flocculator
+
+coll_pot : int
+    Desired collision potential in the flocculator
+
+freeboard: float
+    The height between the water and top of the flocculator channels
+
+ratior_HS_min : int
+    Minimum allowable ratio between the water depth and edge to edge distance
+    between baffles
+
+ratio_HS_max : int
+    Maximum allowable ratio between the water depth and edge to edge distance
+    between baffles
+
+W_min_construct : float
+    Minimum width of a flocculator channel based on the width of the human hip
+
+K_minor : float
+    Minor loss coefficient used in flocculator design
+
+baffle_thickness : float
+    Thickness of a baffle
+
 """
 from aide_design.play import*
 
 # expansion minor loss coefficient for 180 degree bend
 K_e = (1 / con.RATIO_VC_ORIFICE**2 - 1)**2
 
-@u.wraps(1/u.s, [u.m, None, u.degK], False)
-def G_avg(hl, Gt, T):
+@u.wraps(1/u.s, [u.degK, u.m, None], False)
+def G_avg(temp, hl, coll_pot):
     """Return the average velocity gradient of a flocculator given head
     loss, collision potential and temperature.
 
     Parameters
     ----------
-    hl: float
-        Headloss through the flocculator
-
-    Gt: float
-        Target collision potential
-
-    T: float
+    temp : float
         Design temperature
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    hl : float
+        Headloss through the flocculator
 
     Returns
     -------
-    ?
+    float
+        average velocity gradient of a flocculator given head
+        loss, collision potential and temperature.
 
     Examples
     --------
     >>> from aide_design.play import*
-    >>>G_avg(40*u.cm, 37000, 25*u.degC)
-    118.715 1/second
+    >>> G_avg(15 * u.degC, 40*u.cm, 37000)
+    93.24255814245437 1/second
+    >>> G_avg(20 * u.degC)
+    105.64226282862515 1/second
+
     """
-    G = (pc.gravity.magnitude * hl) / (Gt * pc.viscosity_kinematic(T).magnitude)
+    G = ((pc.gravity.magnitude * hl) /
+         (coll_pot * pc.viscosity_kinematic(temp).magnitude))
     return G
 
 @u.wraps(u.m**3, [u.m**3/u.s, u.m, None, u.degK], False)
