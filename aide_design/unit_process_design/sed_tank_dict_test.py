@@ -175,12 +175,12 @@ def w_diffuser_inner_min(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> w_diffuser_inner_min()
+    0.09482953262587492 inch
     """
     return ((sed_inputs['tank']['vel_up'].to(u.inch/u.s).magnitude /
              sed_inputs['manifold']['diffuser']['vel_max'].to(u.inch/u.s).magnitude)
-             * sed_inputs['tank']['W'])
+             * sed_inputs['tank']['W'].magnitude)
 
 @u.wraps(u.m, [None], False)
 def w_diffuser_inner(sed_inputs=sed_dict):
@@ -200,11 +200,11 @@ def w_diffuser_inner(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> w_diffuser_inner()
+    0.125 meter
     """
     return ut.ceil_nearest(w_diffuser_inner_min(sed_inputs).magnitude,
-                           (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
+                           ((np.arange(1/16, 1/4, 1/16))*u.inch).magnitude)
 
 @u.wraps(u.m, [None], False)
 def w_diffuser_outer(sed_inputs=sed_dict):
