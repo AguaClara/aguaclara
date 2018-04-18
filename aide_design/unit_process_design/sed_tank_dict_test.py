@@ -460,28 +460,48 @@ def ID_exit_man(Q_plant, temp, sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> ID_exit_man(20*u.L/u.s, 20*u.degC)
+    0.21247905143432252 meter
     """
     #Inputs do not need to be checked here because they are checked by
     #functions this function calls.
     nu = pc.viscosity_dynamic(temp)
-    hl = sed_input['manifold']['exit_man']['hl_orifice'].to(u.m)
-    L = sed_input['manifold']['tank']['L']
+    hl = sed_inputs['manifold']['exit_man']['hl_orifice'].to(u.m)
+    L = sed_inputs['tank']['L']
     N_orifices = sed_inputs['manifold']['exit_man']['N_orifices']
     K_minor = con.K_MINOR_PIPE_EXIT
     pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
 
-    D = max(diam_pipemajor(Q_plant, hl, L, nu, pipe_rough).magnitude,
-                   diam_pipeminor(Q_plant, hl, K_minor).magnitude)
+    D = max(pc.diam_pipemajor(Q_plant, hl, L, nu, pipe_rough).magnitude,
+                   pc.diam_pipeminor(Q_plant, hl, K_minor).magnitude)
     err = 1.00
     while err > 0.01:
             D_prev = D
             f = pc.fric(Q_plant, D_prev, nu, pipe_rough)
-            D = ((8*Q_plant**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
-                    (((f*L/D_prev + K_minor) * (1/3 * 1/) *
+            D = ((8*Q_plant**2 / pc.GRAVITY.magnitude * np.pi**2 * hl.magnitude) *
+                    (1 + ((f*L.magnitude/D_prev + K_minor) *
                     (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
-                    / (1 - sed_inputs['manifold']['ratio_Q_orifice']**2)))**0.25
+                    / (1 - sed_inputs['manifold']['ratio_Q_man_orifice']**2)))**0.25
             err = abs(D_prev - D) / ((D + D_prev) / 2)
     return D
 
