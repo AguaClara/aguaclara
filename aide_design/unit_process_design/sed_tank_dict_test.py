@@ -175,8 +175,28 @@ def w_diffuser_inner_min(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> w_diffuser_inner_min()
+    0.09483 inch inch
     """
     return ((sed_inputs['tank']['vel_up'].to(u.inch/u.s).magnitude /
              sed_inputs['manifold']['diffuser']['vel_max'].to(u.inch/u.s).magnitude)
@@ -200,11 +220,31 @@ def w_diffuser_inner(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> w_diffuser_inner()
+    0.125 inch meter
     """
     return ut.ceil_nearest(w_diffuser_inner_min(sed_inputs).magnitude,
-                           (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
+                           (np.arange(1/16,1/4,1/16)*u.inch))
 
 @u.wraps(u.m, [None], False)
 def w_diffuser_outer(sed_inputs=sed_dict):
@@ -224,8 +264,28 @@ def w_diffuser_outer(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> w_diffuser_outer()
+    ?
     """
     return (w_diffuser_inner_min(sed_inputs['tank']['W']) +
             (2 * sed_inputs['manifold']['diffuser']['thickness_wall'])).to(u.m).magnitude
@@ -248,8 +308,28 @@ def L_diffuser_outer(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> L_diffuser_outer()
+    ?
     """
     return ((sed_inputs['manifold']['diffuser']['A'] /
            (2 * sed_inputs['manifold']['diffuser']['thickness_wall']))
@@ -273,8 +353,28 @@ def L_diffuser_inner(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
-
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> L_diffuser_inner()
+    ?
     """
     return L_diffuser_outer(sed_inputs['tank']['W']) - \
     (2 * (sed_inputs['manifold']['diffuser']['thickness_wall']).to(u.m)).magnitude
@@ -297,7 +397,28 @@ def q_diffuser(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> q_diffuser()
+    ?
 
     """
     return (sed_inputs['tank']['vel_up'].to(u.m/u.s) *
@@ -322,7 +443,28 @@ def vel_sed_diffuser(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> vel_sed_diffuser()
+    ?
 
     """
     return (q_diffuser(sed_inputs).magnitude \
@@ -346,7 +488,28 @@ def q_tank(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> q_tank()
+    0.00618744 meter3/second
 
     """
     return (sed_inputs['tank']['L'] * sed_inputs['tank']['vel_up'].to(u.m/u.s) * \
@@ -370,7 +533,28 @@ def vel_inlet_man_max(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> vel_inlet_man_max()
+    ?
 
     """
     vel_manifold_max = (sed_inputs['diffuser']['vel_max'].to(u.m/u.s).magnitude * \
@@ -399,7 +583,28 @@ def n_tanks(Q_plant, sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> n_tanks()
+    ?
 
     """
     q = q_tank(sed_inputs).magnitude
@@ -426,7 +631,28 @@ def L_channel(Q_plant, sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> L_channel()
+    ?
 
     """
     n_tanks = n_tanks(Q_plant, sed_inputs)
@@ -529,14 +755,35 @@ def D_exit_man_orifice(Q_plant, drill_bits, sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> D_exit_man_orifice(20*u.L/u.s, 20*u.inch)
+    ?
     """
-    Q_orifice = Q_plant/sed_input['exit_man']['N_orifices']
+    Q_orifice = Q_plant/sed_dict['exit_man']['N_orifices']
     D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * sed_input['exit_man']['hl_orifice'].magnitude))
     return ut.ceil_nearest(D_orifice, drill_bits)
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
+@u.wraps(u.m, [None], False)
 def L_sed_plate(sed_inputs=sed_dict):
     """Return the length of a single plate in the plate settler module based on
     achieving the desired capture velocity
@@ -555,7 +802,28 @@ def L_sed_plate(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>>
+    >>> sed_dict = {
+    ...         'thickness_wall': 0.15*u.m,
+    ...         'plate_settlers': {
+    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
+    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             },
+    ...         'tank': {
+    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
+    ...         },
+    ...         'manifold': {
+    ...             'ratio_Q_man_orifice': 0.8,
+    ...             'diffuser': {
+    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+    ...                 'A': 0.419*u.inch**2
+    ...             },
+    ...             'exit_man': {
+    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
+    ...             }
+    ...         }
+    ... }
+    >>> L_sed_plate()
+    ?
 
     """
     L_sed_plate = ((sed_input['plate_settlers']['S'] * ((sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture'])-1) \
