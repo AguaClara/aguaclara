@@ -29,9 +29,6 @@ ratio_HS_max : int
 W_min_construct : float
     Minimum width of a flocculator channel based on the width of the human hip
 
-K_minor : float
-    Minor loss coefficient used in flocculator design
-
 baffle_thickness : float
     Thickness of a baffle
 
@@ -51,11 +48,11 @@ def G_avg(temp, hl, coll_pot):
     temp : float
         Design temperature
 
-    coll_pot : int
-        Desired collision potential in the flocculator
-
     hl : float
         Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
 
     Returns
     -------
@@ -68,16 +65,16 @@ def G_avg(temp, hl, coll_pot):
     >>> from aide_design.play import*
     >>> G_avg(15 * u.degC, 40*u.cm, 37000)
     93.24255814245437 1/second
-    >>> G_avg(20 * u.degC)
+    >>> G_avg(20 * u.degC, 40*u.cm, 37000)
     105.64226282862515 1/second
 
     """
-    G = ((pc.gravity.magnitude * hl) /
+    G = ((con.GRAVITY.magnitude * hl) /
          (coll_pot * pc.viscosity_kinematic(temp).magnitude))
     return G
 
-@u.wraps(u.m**3, [u.m**3/u.s, u.m, None, u.degK], False)
-def vol_floc(q_plant, hl, Gt, T):
+@u.wraps(u.m**3, [u.m**3/u.s, u.degK, u.m, None], False)
+def vol_floc(Q_plant, temp, hl, coll_pot):
     """Return the total volume of the flocculator using plant flow rate, head
     loss, collision potential and temperature.
 
@@ -88,33 +85,38 @@ def vol_floc(q_plant, hl, Gt, T):
 
     Parameters
     ----------
-    q_plant: float
-        Plant flow rate
+    Q_plant: float
+        Flow through the plant
 
-    hl: float
+    temp: float
+        Design temperature
+
+    hl : float
         Headloss through the flocculator
 
-    Gt: float
-        Target collision potential
-
-    T: float
-        Design temperature
+    coll_pot : int
+        Desired collision potential in the flocculator
 
     Returns
     -------
-    ?
+    float
+        total volume of the flocculator given head
+        loss, collision potential and temperature.
 
     Examples
     --------
     >>> from aide_design.play import*
-    >>>vol_floc(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
-    6.233 meter3
+    >>> vol_floc(40*u.L/u.s, 15*u.degC, 40*u.cm, 37000)
+    15.872580391229524 meter3
+    >>> vol_floc(40*u.L/u.s, 20*u.degC, 40*u.cm, 37000)
+    14.009544668698396 meter3
+
     """
-    vol = (Gt / G_avg(hl, Gt, T).magnitude)*q_plant
+    vol = (coll_pot / G_avg(temp, hl, coll_pot).magnitude)*Q_plant
     return vol
 
-@u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def width_HS_min(q_plant, hl, Gt, T, depth_end):
+@u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, u.m, None, None], False)
+def width_HS_min(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3):
     """Return the minimum channel width required to achieve H/S > 3.
 
     The channel can be wider than this, but this is the absolute minimum width
@@ -124,20 +126,24 @@ def width_HS_min(q_plant, hl, Gt, T, depth_end):
 
     Parameters
     ----------
-    q_plant: float
+    Q_plant : float
         Plant flow rate
 
-    hl: float
-        Headloss through the flocculator
-
-    Gt: float
-        Target collision potential
-
-    T: float
+    temp: float
         Design temperature
 
     depth_end: float
         The depth of water at the end of the flocculator
+
+    hl : float
+        Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    ratio_HS_min : int
+        Minimum allowable ratio between the water depth and edge to edge distance
+        between baffles
 
     Returns
     -------
@@ -147,19 +153,22 @@ def width_HS_min(q_plant, hl, Gt, T, depth_end):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-    0.1074 centimeter
-    """
-    nu = pc.viscosity_kinematic(T).magnitude
+    >>> width_HS_min(20*u.L/u.s, 25*u.degC, 2*u.m, 40*u.cm, 37000, 3)
+    0.10740157183590993 meter
+    >>> width_HS_min(40*u.L/u.s, 15*u.degC, 2*u.m, 40*u.cm, 37000, 3)
+    0.06861475664688545 meter
 
-    w = con.RATIO_HS_MIN*((K_e/(2 * depth_end * (G_avg(hl, Gt, T).magnitude**2)
-    * nu))**(1/3))*q_plant/depth_end
+    """
+    nu = pc.viscosity_kinematic(temp).magnitude
+
+    w = (ratio_HS_min *
+         ((con.K_MINOR_FLOC_BAFFLE /
+          (2 * depth_end * (G_avg(temp, hl, coll_pot).magnitude**2)
+          * nu))**(1/3))*Q_plant/depth_end)
     return w
 
-
-
-@u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-def width_floc_min(q_plant, hl, Gt, T, depth_end):
+@u.wraps(u.cm, [u.m**3/u.s, u.degK, u.m, u.m, None, None, u.m], False)
+def width_floc_min(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min, W_min_construct):
     """Return the minimum channel width required.
 
     This takes the maximum of the minimum required to achieve H/S > 3 and the
@@ -167,36 +176,47 @@ def width_floc_min(q_plant, hl, Gt, T, depth_end):
 
     Parameters
     ----------
-    q_plant: float
+    Q_plant : float
         Plant flow rate
 
-    hl: float
-        Headloss through the flocculator
-
-    Gt: float
-        Target collision potential
-
-    T: float
+    temp: float
         Design temperature
 
     depth_end: float
         The depth of water at the end of the flocculator
 
+    hl : float
+        Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    ratio_HS_min : int
+        Minimum allowable ratio between the water depth and edge to edge distance
+        between baffles
+
+    W_min_construct : float
+        Minimum width of a flocculator channel based on the width of the human hip
+
     Returns
     -------
     float
-        The minimum channel width required to achieve H/S > 3
+        minimum channel width required.
 
     Examples
     --------
     >>> from aide_design.play import*
-    >>> width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+    >>> width_floc_min(20*u.L/u.s, 25*u.degC, 2*u.m, 40*u.cm, 37000, 3, 45*u.cm)
+    width_floc_min(Q_plant, temp, depth_end, hl, coll_pot
+    45 centimeter
+    >>> width_floc_min(40*u.L/u.s, 15*u.degC, 2*u.m, 40*u.cm, 37000, 3, 45*u.cm)
     45 centimeter
     """
-    return max(width_HS_min(q_plant, hl, Gt, T, depth_end).magnitude, con.FLOC_WIDTH_MIN_CONST.magnitude)
+    return max(width_HS_min(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3).to(u.cm).magnitude,
+               W_min_construct)
 
-@u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m], False)
-def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):
+@u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, None, u.m, None, u.m], False)
+def num_channel(Q_plant, temp, depth_end, hl, coll_pot, W_tot, ratio_HS_min, W_min_construct):
     """Return the number of channels in the entrance tank/flocculator (ETF).
 
     This takes the total width of the flocculator and divides it by the minimum
@@ -205,35 +225,47 @@ def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):
 
     Parameters
     ----------
-    q_plant: float
+    Q_plant : float
         Plant flow rate
 
-    hl: float
-        Headloss through the flocculator
-
-    Gt: float
-        Target collision potential
-
-    T: float
+    temp: float
         Design temperature
-
-    W_tot: float
-        Total width
 
     depth_end: float
         The depth of water at the end of the flocculator
 
+    hl : float
+        Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    W_tot: float
+        Total width
+
+    ratio_HS_min : int
+        Minimum allowable ratio between the water depth and edge to edge distance
+        between baffles
+
+    W_min_construct : float
+        Minimum width of a flocculator channel based on the width of the human hip
+
     Returns
     -------
-    ?
+    int
+        the number of channels in the entrance tank/flocculator (ETF)
 
     Examples
     --------
     >>> from aide_design.play import*
-    >>> num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
-    2
+    >>> num_channel(20*u.L/u.s, 25*u.degC, 2*u.m, 40*u.cm, 37000, 5*u.m, 3, 45*u.cm)
+    10
+    >>> num_channel(40*u.L/u.s, 15*u.degC, 4*u.m, 40*u.cm, 37000, 10*u.m, 3, 45*u.cm)
+    22
+
     """
-    num = W_tot/(width_floc_min(q_plant, hl, Gt, T, depth_end).magnitude)
+    num = W_tot/((width_floc_min(Q_plant, temp, depth_end, hl, coll_pot,
+                                ratio_HS_min, W_min_construct)).magnitude)
     # floor function with step size 2
     num = np.floor(num/2)*2
     return int(max(num, 2))

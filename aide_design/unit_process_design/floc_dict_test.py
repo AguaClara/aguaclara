@@ -18,7 +18,7 @@ coll_pot : int
 freeboard: float
     The height between the water and top of the flocculator channels
 
-ratior_HS_min : int
+ratio_HS_min : int
     Minimum allowable ratio between the water depth and edge to edge distance
     between baffles
 
@@ -76,7 +76,7 @@ def G_avg(temp, floc_inputs=floc_dict):
     105.64226282862515 1/second
 
     """
-    G = ((pc.gravity.magnitude * floc_inputs['hl'].to(u.m).magnitude) /
+    G = ((con.GRAVITY.magnitude * floc_inputs['hl'].to(u.m).magnitude) /
          (floc_inputs['coll_pot'] * pc.viscosity_kinematic(temp).magnitude))
     return G
 
