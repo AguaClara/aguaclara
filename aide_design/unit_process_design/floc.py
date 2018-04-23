@@ -270,10 +270,9 @@ def num_channel(Q_plant, temp, depth_end, hl, coll_pot, W_tot, ratio_HS_min=3, W
     num = np.floor(num/2)*2
     return int(max(num, 2))
 
-
 @u.wraps(u.m**2, [u.m**3/u.s, u.degK, u.m, u.m, None, None], False)
 def area_ent_tank(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3,
-                  W_min_construct=45*u.cm, L_sed=5.8*u.m, L_ent_tank_max=2.2*u.m):
+                  W_min_construct=45*u.cm, L_sed=7.25*u.m, L_ent_tank_max=2.2*u.m):
     """Return the planview area of the entrance tank given plant flow rate,
     headloss, target collision potential, design temperature, and depth of
     water at the end of the flocculator.
@@ -303,7 +302,8 @@ def area_ent_tank(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3,
         Minimum width of a flocculator channel based on the width of the human hip
 
     L_sed : float
-        The length of the sedimentation tank
+        The length of the sedimentation unit process, including tank length,
+        inlet and exit channel width, inlet weir thickness, and tank wall thickness
 
     L_ent_tank_max : float
         The maximum length of the entrance tank
