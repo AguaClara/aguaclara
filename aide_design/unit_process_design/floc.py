@@ -491,8 +491,8 @@ def height_exp(Q_plant, temp, depth_end, W_chan, hl, coll_pot, ratio_HS_max=6):
     return depth_end / num_expansions(Q_plant, temp, depth_end, W_chan, hl,
                                       coll_pot, ratio_HS_max)
 
-@u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, None], False)
-def baffle_spacing(Q_plant, temp, W_chan, floc_inputs=floc_dict):
+@u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, u.m, None, None], False)
+def baffle_spacing(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max=6):
     """Return the spacing between baffles based on the target velocity gradient
 
     Parameters
@@ -506,9 +506,15 @@ def baffle_spacing(Q_plant, temp, W_chan, floc_inputs=floc_dict):
     W_chan: float
         Channel width
 
-    floc_inputs : dict
-        a dictionary of all of the constant inputs needed for flocculator
-        calculations
+    hl : float
+        Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    ratio_HS_max : int
+        Maximum allowable ratio between the water depth and edge to edge distance
+        between baffles
 
     Returns
     -------
@@ -518,62 +524,68 @@ def baffle_spacing(Q_plant, temp, W_chan, floc_inputs=floc_dict):
     Examples
     --------
     >>> from aide_design.play import*
-
-    >>> baffle_spacing(40*u.L/u.s, 25*u.degC, 0.45*u.m, floc_dict)
-    0.3219380665262699 meter
-    >>> baffle_spacing(20*u.L/u.s, 15*u.degC, 0.45*u.m, floc_dict)
-    0.2033398571679099 meter
+    >>> baffle_spacing(40*u.L/u.s, 25*u.degC, 0.45*u.m, 40*u.cm, 37000)
+    0.3283630936317887 meter
+    >>> baffle_spacing(20*u.L/u.s, 15*u.degC, 0.45*u.m, 40*u.cm, 37000)
+    0.2073979796137361 meter
     """
-    g_avg = G_avg(temp, floc_inputs).magnitude
+    g_avg = G_avg(temp, hl, coll_pot).magnitude
     nu = pc.viscosity_kinematic(temp).magnitude
     term1 = (con.K_MINOR_FLOC_BAFFLE /
-            (2 * expansion_dist_max(Q_plant, temp, W_chan, floc_inputs).magnitude
+            (2 * expansion_dist_max(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max).magnitude
                 * (g_avg**2) * nu)
             )**(1/3)
     return term1 * Q_plant/W_chan
 
-@u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m, u.m], False)
-def num_baffles(q_plant, hl, Gt, T, W_chan, L, baffle_thickness):
+@u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, u.m, None, None, None], False)
+def num_baffles(Q_plant, temp, W_chan, L, hl, coll_pot, ratio_HS_max=6, baffle_thickness=2*u.mm):
     """Return the number of baffles that would fit in the channel given the
     channel length and spacing between baffles.
 
     Parameters
     ----------
-    q_plant: float
+    Q_plant: float
         Plant flow rate
 
-    hl: float
-        Headloss through the flocculator
-
-    Gt: float
-        Target collision potential
-
-    T: float
+    temp: float
         Design temperature
 
     W_chan: float
         Channel width
 
-    L: float
-        Length
+    L : float
+        Length of the flocculator
 
-    baffle_thickness: float
-        Baffle thickness
+    hl : float
+        Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    ratio_HS_max : int
+        Maximum allowable ratio between the water depth and edge to edge distance
+        between baffles
+
+    baffle_thickness : float
+        Thickness of a baffle
 
     Returns
     -------
-    ?
+    int
+        the number of baffles that would fit in the channel
 
     Examples
     --------
     >>> from aide_design.play import*
-    >>> num_baffles(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
-    0
-    >>> num_baffles(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
-    -1
+    >>> num_baffles(20*u.L/u.s, 15*u.degC, 0.45*u.m, 6*u.m, 40*u.cm, 37000)
+    16
+    >>> num_baffles(40*u.L/u.s, 25*u.degC, 0.45*u.m, 6*u.m, 40*u.cm, 37000)
+    17
+
     """
-    num = round((L / (baffle_spacing(q_plant, hl, Gt, T, W_chan).magnitude + baffle_thickness)))
+    N = round(L / (baffle_spacing(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max).magnitude
+        + baffle_thickness.to(u.m).magnitude))
     # the one is subtracted because the equation for num gives the number of
     # baffle spaces and there is always one less baffle than baffle spaces due
     # to geometry
-    return int(num) - 1
+    return int(N) - 1
