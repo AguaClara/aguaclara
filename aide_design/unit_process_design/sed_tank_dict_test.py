@@ -161,7 +161,7 @@ def n_sed_plates_max(sed_inputs=sed_dict):
     13
     """
     B_plate = sed_inputs['plate_settlers']['S'] + sed_inputs['plate_settlers']['thickness']
-    return math.floor((sed_inputs['plate_settlers']['L_cantilevered'].magnitude / B_plate.magnitude \
+    return math.floor((sed_inputs['plate_settlers']['L_cantilevered'].magnitude / B_plate.magnitude
                       * np.tan(sed_inputs['plate_settlers']['angle'].to(u.rad).magnitude)) + 1)
 
 @u.wraps(u.inch, [None], False)
@@ -250,10 +250,10 @@ def w_diffuser_inner(sed_inputs=sed_dict):
     ...         }
     ... }
     >>> w_diffuser_inner()
-    0.125 inch meter
+    0.003175 meter
     """
-    return ut.ceil_nearest(w_diffuser_inner_min(sed_inputs).magnitude,
-                           (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
+    return ut.ceil_nearest(w_diffuser_inner_min(sed_inputs),
+                           (np.arange(1/16,1/4,1/16)*u.inch)).to(u.m).magnitude
 
 @u.wraps(u.m, [None], False)
 def w_diffuser_outer(sed_inputs=sed_dict):
@@ -860,3 +860,16 @@ def L_sed_plate(sed_inputs=sed_dict):
                  / (np.sin(sed_inputs['plate_settlers']['angle']) * np.cos(sed_inputs['plate_settlers']['angle'])) \
                  ).to(u.m).magnitude
     return L_sed_plate
+
+@u.wraps(u.m, [u.m**3/u.s, u.degK], False)
+def depth_inlet_chan(Q_train, temp, hl_exit_man=4*u.cm, vel_max=442.9*u.mm/u.s,
+                     S_fitting=5*u.cm, ratio_Q_tanks=0.95, depth_inlet_chan_max=50*u.cm,
+                     sed_inputs=sed_dict):
+    """
+
+    """
+    hl_diffuser = (vel_max**2/(2*con.GRAVITY)).to(u.m)
+    hl_inlet_chan_max = (hl_exit_man + hl_diffuser) * (1 - ratio_Q_tanks**2)
+    L_chan = L_channel(Q_plant, sed_inputs)
+    hl_weir_exit = pc.headloss_weir(Q_train, L_chan)
+    W_inlet_chan_preweir_min_plumbing =
