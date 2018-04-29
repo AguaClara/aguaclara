@@ -25,6 +25,11 @@ plate_settlers : dict
         additional support. The goal is to prevent floppy modules that don't
         maintain constant distances between the plates
 
+    vel_capture : float
+        Capture velocity of the plate settlers. Capture velocity is the velocity
+        of the floc that is only barely settled-out, or "captured", during the
+        sedimentation process
+
 tank : dict
     A dictionary containing variables relating to the concrete portion of the
     sedimentation tank
@@ -85,6 +90,7 @@ sed_dict = {
             'plate_settlers': {
                 'angle': 60*u.deg, 'S': 2.5*u.cm,
                 'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+                'vel_capture': 0.12*u.mm/u.s
                 },
             'tank': {
                 'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -135,6 +141,7 @@ def n_sed_plates_max(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -180,6 +187,7 @@ def w_diffuser_inner_min(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -225,6 +233,7 @@ def w_diffuser_inner(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -269,6 +278,7 @@ def w_diffuser_outer(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -287,8 +297,8 @@ def w_diffuser_outer(sed_inputs=sed_dict):
     >>> w_diffuser_outer()
     0.06184467012869722 meter
     """
-    return (w_diffuser_inner_min(sed_inputs) +
-            (2 * sed_inputs['manifold']['diffuser']['thickness_wall'])).to(u.m).magnitude
+    return (w_diffuser_inner_min(sed_inputs).to(u.m).magnitude +
+            (2 * sed_inputs['manifold']['diffuser']['thickness_wall']).to(u.m).magnitude)
 
 @u.wraps(u.m, [None], False)
 def L_diffuser_outer(sed_inputs=sed_dict):
@@ -313,6 +323,7 @@ def L_diffuser_outer(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -329,7 +340,7 @@ def L_diffuser_outer(sed_inputs=sed_dict):
     ...         }
     ... }
     >>> L_diffuser_outer()
-    ?
+    -0.12045188034188034 meter
     """
     return ((sed_inputs['manifold']['diffuser']['A'] /
            (2 * sed_inputs['manifold']['diffuser']['thickness_wall']))
@@ -358,6 +369,7 @@ def L_diffuser_inner(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -374,10 +386,10 @@ def L_diffuser_inner(sed_inputs=sed_dict):
     ...         }
     ... }
     >>> L_diffuser_inner()
-    ?
+    -0.17988788034188033 meter
     """
-    return L_diffuser_outer(sed_inputs['tank']['W']) - \
-    (2 * (sed_inputs['manifold']['diffuser']['thickness_wall']).to(u.m)).magnitude
+    return (L_diffuser_outer(sed_inputs) - \
+    (2 * (sed_inputs['manifold']['diffuser']['thickness_wall']).to(u.m))).magnitude
 
 @u.wraps(u.m**3/u.s, [None], False)
 def q_diffuser(sed_inputs=sed_dict):
@@ -402,6 +414,7 @@ def q_diffuser(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -418,12 +431,12 @@ def q_diffuser(sed_inputs=sed_dict):
     ...         }
     ... }
     >>> q_diffuser()
-    ?
+    -0.00012849806594871792 meter3/second
 
     """
     return (sed_inputs['tank']['vel_up'].to(u.m/u.s) *
              sed_inputs['tank']['W'].to(u.m) *
-             L_diffuser_outer(sed_inputs)).magnitude
+             L_diffuser_outer(sed_inputs).to(u.m)).magnitude
 
 @u.wraps(u.m/u.s, [None], False)
 def vel_sed_diffuser(sed_inputs=sed_dict):
@@ -448,6 +461,7 @@ def vel_sed_diffuser(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -464,11 +478,12 @@ def vel_sed_diffuser(sed_inputs=sed_dict):
     ...         }
     ... }
     >>> vel_sed_diffuser()
-    ?
+    0.005714584693732781 meter/second
 
     """
-    return (q_diffuser(sed_inputs).magnitude \
-            / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
+    return (q_diffuser(sed_inputs).to(u.m**3/u.s).magnitude \
+            / (w_diffuser_inner(sed_inputs).to(u.m) *
+            L_diffuser_inner(sed_inputs).to(u.m)).magnitude)
 
 @u.wraps(u.m**3/u.s, [None], False)
 def q_tank(sed_inputs=sed_dict):
@@ -493,6 +508,7 @@ def q_tank(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -538,6 +554,7 @@ def vel_inlet_man_max(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -554,11 +571,11 @@ def vel_inlet_man_max(sed_inputs=sed_dict):
     ...         }
     ... }
     >>> vel_inlet_man_max()
-    ?
+    0.29346073739129713 meter/second
 
     """
-    vel_manifold_max = (sed_inputs['manifold']['diffuser']['vel_max'].to(u.m/u.s).magnitude *
-        math.sqrt(2*((1-(sed_inputs['manifold']['ratio_Q_man_orifice'])**2)) /
+    vel_manifold_max = (sed_inputs['manifold']['diffuser']['vel_max'].to(u.m/u.s).magnitude * \
+        np.sqrt(2*((1-(sed_inputs['manifold']['ratio_Q_man_orifice'])**2)) / \
         (((sed_inputs['manifold']['ratio_Q_man_orifice'])**2)+1)))
     return vel_manifold_max
 
@@ -588,6 +605,7 @@ def n_tanks(Q_plant, sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -603,8 +621,10 @@ def n_tanks(Q_plant, sed_inputs=sed_dict):
     ...             }
     ...         }
     ... }
-    >>> n_tanks()
-    ?
+    >>> n_tanks(20*u.L/u.s)
+    4
+    >>> n_tanks(60*u.L/u.s)
+    10
 
     """
     q = q_tank(sed_inputs).magnitude
@@ -636,6 +656,7 @@ def L_channel(Q_plant, sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -651,13 +672,15 @@ def L_channel(Q_plant, sed_inputs=sed_dict):
     ...             }
     ...         }
     ... }
-    >>> L_channel()
-    ?
+    >>> L_channel(20*u.L/u.s)
+    4.8672 meter
+    >>> L_channel(60*u.L/u.s)
+    12.168 meter
 
     """
-    n_tanks = n_tanks(Q_plant, sed_inputs)
-    return ((n_tanks * sed_inputs['tank']['W']) + sed_inputs['thickness_wall'] + \
-            ((n_tanks-1) * sed_inputs['thickness_wall']))
+    n_tank = n_tanks(Q_plant, sed_inputs)
+    return ((n_tank * sed_inputs['tank']['W'].to(u.m)) + sed_inputs['thickness_wall'].to(u.m) + \
+            ((n_tank-1) * sed_inputs['thickness_wall'].to(u.m))).magnitude
 
 @u.wraps(u.m, [u.m**3/u.s, u.degK, None], False)
 @ut.list_handler
@@ -691,6 +714,7 @@ def ID_exit_man(Q_plant, temp, sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -713,7 +737,7 @@ def ID_exit_man(Q_plant, temp, sed_inputs=sed_dict):
     #functions this function calls.
     nu = pc.viscosity_dynamic(temp)
     hl = sed_inputs['manifold']['exit_man']['hl_orifice'].to(u.m)
-    L = sed_inputs['tank']['L']
+    L = sed_inputs['tank']['L'].to(u.m)
     N_orifices = sed_inputs['manifold']['exit_man']['N_orifices']
     K_minor = con.K_MINOR_PIPE_EXIT
     pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
@@ -724,7 +748,7 @@ def ID_exit_man(Q_plant, temp, sed_inputs=sed_dict):
     while err > 0.01:
             D_prev = D
             f = pc.fric(Q_plant, D_prev, nu, pipe_rough)
-            D = ((8*Q_plant**2 / pc.GRAVITY.magnitude * np.pi**2 * hl.magnitude) *
+            D = ((8*Q_plant**2 / con.GRAVITY.magnitude * np.pi**2 * hl.magnitude) *
                     (1 + ((f*L.magnitude/D_prev + K_minor) *
                     (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
                     / (1 - sed_inputs['manifold']['ratio_Q_man_orifice']**2)))**0.25
@@ -760,6 +784,7 @@ def D_exit_man_orifice(Q_plant, drill_bits, sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -775,11 +800,14 @@ def D_exit_man_orifice(Q_plant, drill_bits, sed_inputs=sed_dict):
     ...             }
     ...         }
     ... }
-    >>> D_exit_man_orifice(20*u.L/u.s, 20*u.inch)
-    ?
+    >>> D_exit_man_orifice(20*u.L/u.s, mat.DIAM_DRILL_ENG)
+    0.03125 meter
+
     """
-    Q_orifice = Q_plant/sed_dict['exit_man']['N_orifices']
-    D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * sed_input['exit_man']['hl_orifice'].magnitude))
+    Q_orifice = Q_plant/sed_inputs['manifold']['exit_man']['N_orifices']
+    D_orifice = np.sqrt(Q_orifice**4)/(np.pi *
+                con.RATIO_VC_ORIFICE * np.sqrt(2 * con.GRAVITY.magnitude *
+                sed_inputs['manifold']['exit_man']['hl_orifice'].to(u.m).magnitude))
     return ut.ceil_nearest(D_orifice, drill_bits)
 
 
@@ -807,6 +835,7 @@ def L_sed_plate(sed_inputs=sed_dict):
     ...         'plate_settlers': {
     ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
     ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    ...             'vel_capture': 0.12*u.mm/u.s
     ...             },
     ...         'tank': {
     ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
@@ -823,13 +852,13 @@ def L_sed_plate(sed_inputs=sed_dict):
     ...         }
     ... }
     >>> L_sed_plate()
-    ?
+    0.4618802153517006 meter
 
     """
-    L_sed_plate = ((sed_input['plate_settlers']['S'] * ((sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture'])-1)
-                 + sed_input['plate_settlers']['thickness'] * (sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture']))
-                 / (np.sin(sed_input['plate_settlers']['angle']) * np.cos(sed_input['plate_settlers']['angle']))
-                 ).to(u.m)
+    L_sed_plate = ((sed_inputs['plate_settlers']['S'] * ((sed_inputs['tank']['vel_up']/sed_inputs['plate_settlers']['vel_capture'])-1) \
+                 + sed_inputs['plate_settlers']['thickness'] * (sed_inputs['tank']['vel_up']/sed_inputs['plate_settlers']['vel_capture'])) \
+                 / (np.sin(sed_inputs['plate_settlers']['angle']) * np.cos(sed_inputs['plate_settlers']['angle'])) \
+                 ).to(u.m).magnitude
     return L_sed_plate
 
 @u.wraps(u.m, [u.m**3/u.s, u.degK], False)
