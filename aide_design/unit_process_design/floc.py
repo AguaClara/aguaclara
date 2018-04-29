@@ -113,7 +113,7 @@ def vol_floc(Q_plant, temp, hl, coll_pot):
 
     """
     vol = (coll_pot / G_avg(temp, hl, coll_pot).magnitude)*Q_plant
-    return vol
+    return vol.magnitude
 
 @u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, u.m, None, None], False)
 def width_HS_min(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3):
@@ -272,7 +272,7 @@ def num_channel(Q_plant, temp, depth_end, hl, coll_pot, W_tot, ratio_HS_min=3, W
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.degK, u.m, u.m, None, None], False)
 def area_ent_tank(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3,
-                  W_min_construct=45*u.cm, L_sed=7.25*u.m, L_ent_tank_max=2.2*u.m):
+                  W_min_construct=45*u.cm, L_sed=7.35*u.m, L_ent_tank_max=2.2*u.m):
     """Return the planview area of the entrance tank given plant flow rate,
     headloss, target collision potential, design temperature, and depth of
     water at the end of the flocculator.
@@ -316,13 +316,13 @@ def area_ent_tank(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3,
     Examples
     --------
     >>> from aide_design.play import*
-    >>> area_ent_tank(20*u.L/u.s, 25*u.degC, 2*u.m, 40*u.cm, 37000)
+    >>> area_ent_tank(20*u.L/u.s, 25*u.degC, 2*u.m, 40*u.cm, 37000, 3, 45*u.cm, 7.35*u.m, 2.2*u.cm)
     1 meter ** 2
     >>> area_ent_tank(40*u.L/u.s, 15*u.degC, 2*u.m, 40*u.cm, 37000)
     1 meter ** 2
     """
-    L_sed = L_sed.to(u.m).magnitude
-    L_ent_tank_max = L_ent_tank_max.to(u.m).magnitude
+    L_sed = L_sed.to(u.m)
+    L_ent_tank_max = L_ent_tank_max.to(u.m)
 
     # guess the planview area before starting iteration
     A_new = 1*u.m**2
@@ -348,7 +348,7 @@ def area_ent_tank(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3,
 
         A_ratio = A_new / A_ET_PV
 
-    return A_new.to(u.m**2).magnitude
+    return A_new.magnitude
 
 ### Baffle calculations
 @u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, u.m, None, None], False)
