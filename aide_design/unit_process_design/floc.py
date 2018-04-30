@@ -535,7 +535,7 @@ def baffle_spacing(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max=6):
             (2 * expansion_dist_max(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max).magnitude
                 * (g_avg**2) * nu)
             )**(1/3)
-    return term1 * Q_plant/W_chan
+    return (term1 * Q_plant/W_chan).magnitude
 
 @u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, u.m, None, None, None], False)
 def num_baffles(Q_plant, temp, W_chan, L, hl, coll_pot, ratio_HS_max=6, baffle_thickness=2*u.mm):
