@@ -107,8 +107,9 @@ sed_dict = {
             }
 }
 
-@u.wraps(None, [None], False)
-def n_sed_plates_max(sed_inputs=sed_dict):
+@u.wraps(None, [], False)
+def n_sed_plates_max(S_plate=2.5*u.cm, thickness_plate=2*u.mm,
+                     angle_plate=60*u.deg, L_plate_cantilevered=20*u.cm):
     """Return the maximum possible number of plate settlers in a module given
     plate spacing, thickness, angle, and unsupported length of plate settler.
 
@@ -120,7 +121,7 @@ def n_sed_plates_max(sed_inputs=sed_dict):
     thickness_plate : float
         Thickness of PVC sheet used to make plate settlers
 
-    L_sed_plate_cantilevered : float
+    L_plate_cantilevered : float
         Maximum length of sed plate sticking out past module pipes without any
         additional support. The goal is to prevent floppy modules that don't
         maintain constant distances between the plates
@@ -136,43 +137,34 @@ def n_sed_plates_max(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> sed_dict = {
-    ...         'thickness_wall': 0.15*u.m,
-    ...         'plate_settlers': {
-    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
-    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
-    ...             'vel_capture': 0.12*u.mm/u.s
-    ...             },
-    ...         'tank': {
-    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
-    ...         },
-    ...         'manifold': {
-    ...             'ratio_Q_man_orifice': 0.8,
-    ...             'diffuser': {
-    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
-    ...                 'A': 0.419*u.inch**2
-    ...             },
-    ...             'exit_man': {
-    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
-    ...             }
-    ...         }
-    ... }
     >>> n_sed_plates_max()
     13
     """
-    B_plate = sed_inputs['plate_settlers']['S'] + sed_inputs['plate_settlers']['thickness']
-    return math.floor((sed_inputs['plate_settlers']['L_cantilevered'].magnitude / B_plate.magnitude
-                      * np.tan(sed_inputs['plate_settlers']['angle'].to(u.rad).magnitude)) + 1)
+    angle_plate = angle_plate.to(u.rad).magnitude
+    S_plate = S_plate.to(u.cm).magnitude
+    L_plate_cantilevered = L_plate_cantilevered.to(u.cm).magnitude
+    thickness_plate = thickness_plate.to(u.cm).magnitude
 
-@u.wraps(u.inch, [None], False)
-def w_diffuser_inner_min(sed_inputs=sed_dict):
+    B_plate = S_plate + thickness_plate
+    return math.floor(((L_plate_cantilevered / B_plate)
+                      * np.tan(angle_plate)) + 1)
+
+@u.wraps(u.inch, [], False)
+def w_diffuser_inner_min(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
+                         W_tank=42*u.inch):
     """Return the minimum inner width of each diffuser in the sedimentation tank.
 
     Parameters
     ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations. Can be found in sed.yaml
+    vel_up : float
+        Upflow velocity through a sedimentation tank used as basis of design
+
+    vel_max_diffuser : float
+        Maximum velocity through a diffuser
+
+    W_tank : float
+        Width of the sedimentation tank. Based off of the width of the PVC
+        sheet used to make plate settlers
 
     Returns
     -------
@@ -182,43 +174,29 @@ def w_diffuser_inner_min(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> sed_dict = {
-    ...         'thickness_wall': 0.15*u.m,
-    ...         'plate_settlers': {
-    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
-    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
-    ...             'vel_capture': 0.12*u.mm/u.s
-    ...             },
-    ...         'tank': {
-    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
-    ...         },
-    ...         'manifold': {
-    ...             'ratio_Q_man_orifice': 0.8,
-    ...             'diffuser': {
-    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
-    ...                 'A': 0.419*u.inch**2
-    ...             },
-    ...             'exit_man': {
-    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
-    ...             }
-    ...         }
-    ... }
     >>> w_diffuser_inner_min()
     0.09482953262587492 inch
     """
-    return ((sed_inputs['tank']['vel_up'].to(u.inch/u.s).magnitude /
-             sed_inputs['manifold']['diffuser']['vel_max'].to(u.inch/u.s).magnitude)
-             * sed_inputs['tank']['W'].magnitude)
+    return ((vel_up.to(u.inch/u.s).magnitude /
+             vel_max_diffuser.to(u.inch/u.s).magnitude)
+             * W_tank.to(u.inch).magnitude)
 
-@u.wraps(u.m, [None], False)
-def w_diffuser_inner(sed_inputs=sed_dict):
+@u.wraps(u.m, [], False)
+def w_diffuser_inner(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
+                     W_tank=42*u.inch):
     """Return the inner width of each diffuser in the sedimentation tank.
 
     Parameters
     ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
+    vel_up : float
+        Upflow velocity through a sedimentation tank used as basis of design
+
+    vel_max_diffuser : float
+        Maximum velocity through a diffuser
+
+    W_tank : float
+        Width of the sedimentation tank. Based off of the width of the PVC
+        sheet used to make plate settlers
 
     Returns
     -------
@@ -228,42 +206,32 @@ def w_diffuser_inner(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> sed_dict = {
-    ...         'thickness_wall': 0.15*u.m,
-    ...         'plate_settlers': {
-    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
-    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
-    ...             'vel_capture': 0.12*u.mm/u.s
-    ...             },
-    ...         'tank': {
-    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
-    ...         },
-    ...         'manifold': {
-    ...             'ratio_Q_man_orifice': 0.8,
-    ...             'diffuser': {
-    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
-    ...                 'A': 0.419*u.inch**2
-    ...             },
-    ...             'exit_man': {
-    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
-    ...             }
-    ...         }
-    ... }
     >>> w_diffuser_inner()
     0.003175 meter
     """
-    return ut.ceil_nearest(w_diffuser_inner_min(sed_inputs),
+    return ut.ceil_nearest(w_diffuser_inner_min(vel_up, vel_max_diffuser,
+                                                W_tank),
                            (np.arange(1/16,1/4,1/16)*u.inch)).to(u.m).magnitude
 
-@u.wraps(u.m, [None], False)
-def w_diffuser_outer(sed_inputs=sed_dict):
+@u.wraps(u.m, [], False)
+def w_diffuser_outer(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
+                     W_tank=42*u.inch, thickness_diffuser_wall=1.17*u.inch):
     """Return the outer width of each diffuser in the sedimentation tank.
 
     Parameters
     ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
+    vel_up : float
+        Upflow velocity through a sedimentation tank used as basis of design
+
+    vel_max_diffuser : float
+        Maximum velocity through a diffuser
+
+    W_tank : float
+        Width of the sedimentation tank. Based off of the width of the PVC
+        sheet used to make plate settlers
+
+    thickness_diffuser_wall : float
+        Wall thickness of a diffuser
 
     Returns
     -------
@@ -273,42 +241,35 @@ def w_diffuser_outer(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> sed_dict = {
-    ...         'thickness_wall': 0.15*u.m,
-    ...         'plate_settlers': {
-    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
-    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
-    ...             'vel_capture': 0.12*u.mm/u.s
-    ...             },
-    ...         'tank': {
-    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
-    ...         },
-    ...         'manifold': {
-    ...             'ratio_Q_man_orifice': 0.8,
-    ...             'diffuser': {
-    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
-    ...                 'A': 0.419*u.inch**2
-    ...             },
-    ...             'exit_man': {
-    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
-    ...             }
-    ...         }
-    ... }
     >>> w_diffuser_outer()
     0.06184467012869722 meter
     """
-    return (w_diffuser_inner_min(sed_inputs).to(u.m).magnitude +
-            (2 * sed_inputs['manifold']['diffuser']['thickness_wall']).to(u.m).magnitude)
+    return (w_diffuser_inner_min(vel_up, vel_max_diffuser, W_tank).to(u.m).magnitude +
+            (2 * thickness_diffuser_wall).to(u.m).magnitude)
 
-@u.wraps(u.m, [None], False)
-def L_diffuser_outer(sed_inputs=sed_dict):
+@u.wraps(u.m, [], False)
+def L_diffuser_outer(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
+                     W_tank=42*u.inch, thickness_diffuser_wall=1.17*u.inch,
+                     A_diffuser=0.419*u.inch**2):
     """Return the outer length of each diffuser in the sedimentation tank.
 
     Parameters
     ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
+    vel_up : float
+        Upflow velocity through a sedimentation tank used as basis of design
+
+    vel_max_diffuser : float
+        Maximum velocity through a diffuser
+
+    W_tank : float
+        Width of the sedimentation tank. Based off of the width of the PVC
+        sheet used to make plate settlers
+
+    thickness_diffuser_wall : float
+        Wall thickness of a diffuser
+
+    A_diffuser : float
+        Area of a diffuser when viewed down the length of the manifold
 
     Returns
     -------
@@ -318,33 +279,12 @@ def L_diffuser_outer(sed_inputs=sed_dict):
     Examples
     --------
     >>> from aide_design.play import*
-    >>> sed_dict = {
-    ...         'thickness_wall': 0.15*u.m,
-    ...         'plate_settlers': {
-    ...             'angle': 60*u.deg, 'S': 2.5*u.cm,
-    ...             'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
-    ...             'vel_capture': 0.12*u.mm/u.s
-    ...             },
-    ...         'tank': {
-    ...             'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
-    ...         },
-    ...         'manifold': {
-    ...             'ratio_Q_man_orifice': 0.8,
-    ...             'diffuser': {
-    ...                 'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
-    ...                 'A': 0.419*u.inch**2
-    ...             },
-    ...             'exit_man': {
-    ...                 'hl_orifice': 4*u.cm, 'N_orifices': 58
-    ...             }
-    ...         }
-    ... }
     >>> L_diffuser_outer()
-    -0.12045188034188034 meter
+    0.001373119658119658 meter
     """
-    return ((sed_inputs['manifold']['diffuser']['A'] /
-           (2 * sed_inputs['manifold']['diffuser']['thickness_wall']))
-           - w_diffuser_inner(sed_inputs).to(u.inch)).to(u.m).magnitude
+    return ((A_diffuser / (2 * thickness_diffuser_wall))
+           - w_diffuser_inner(vel_up, vel_max_diffuser,
+                              W_tank).to(u.inch)).to(u.m).magnitude
 
 @u.wraps(u.m, [None], False)
 def L_diffuser_inner(sed_inputs=sed_dict):
@@ -861,15 +801,18 @@ def L_sed_plate(sed_inputs=sed_dict):
                  ).to(u.m).magnitude
     return L_sed_plate
 
-@u.wraps(u.m, [u.m**3/u.s, u.degK], False)
-def depth_inlet_chan(Q_train, temp, hl_exit_man=4*u.cm, vel_max=442.9*u.mm/u.s,
-                     S_fitting=5*u.cm, ratio_Q_tanks=0.95, depth_inlet_chan_max=50*u.cm,
-                     sed_inputs=sed_dict):
-    """
-
-    """
-    hl_diffuser = (vel_max**2/(2*con.GRAVITY)).to(u.m)
-    hl_inlet_chan_max = (hl_exit_man + hl_diffuser) * (1 - ratio_Q_tanks**2)
-    L_chan = L_channel(Q_plant, sed_inputs)
-    hl_weir_exit = pc.headloss_weir(Q_train, L_chan)
-    W_inlet_chan_preweir_min_plumbing =
+@u.wraps(u.m, [], False)
+def depth_end_floc(Q_plant, temp, sdr = 26, depth_above_exit_man = 5*u.cm,
+                   plate_settler_to_exit_man = 5*u.cm,
+                   angle_plate_settler = 60*u.deg,
+                   floc_blanket_to_plate_settler = 10*u.cm,
+                   depth_floc_blanket = 25 *u.cm,
+                   angle_bottom_tank = 50*u.deg,
+                   w_tank = 42*u.inch
+                   sed_inputs=sed_dict):
+    ID_exit_man_ = ID_exit_man(Q_plant, temp, sed_inputs=sed_dict)
+    OD_exit_man_ = OD(ND_SDR_available(ID, sdr))
+    L_sed_plate_ = L_sed_plate(sed_inputs=sed_dict)
+    return (w_tank*np.tan(angle_bottom_tank)/2) + depth_floc_blanket +
+            floc_blanket_to_plate_settler + (L_sed_plate_*np.sin(angle_plate_settler)
+            + plate_settler_to_exit_man + OD_exit_man_ + depth_above_exit_man)
