@@ -32,7 +32,7 @@ class LfomTest(unittest.TestCase):
                   (40 * u.cm, 40 * u.cm, 0.902 * u.s/u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.width_stout(i[0], i[1]), i[2])
+                self.assertAlmostEqual(lfom.width_stout(i[0], i[1]), i[2])
 
     def test_n_lfom_rows(self):
         """"n_lfom_rows should give known result with known input.
@@ -46,7 +46,7 @@ class LfomTest(unittest.TestCase):
                   (1 * u.L/s, 40 * u.cm, 8))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.n_lfom_rows(i[0], i[1]), i[2])
+                self.assertAlmostEqual(lfom.n_lfom_rows(i[0], i[1]), i[2])
 
     def test_dist_center_lfom_rows(self):
         """dist_center_lfom_rows should give known result with known input.
@@ -58,7 +58,7 @@ class LfomTest(unittest.TestCase):
                   (1 * u.L/s, 40 * u.cm, 0.05 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.dist_center_lfom_rows(i[0], i[1]), i[2])
+                self.assertAlmostEqual(lfom.dist_center_lfom_rows(i[0], i[1]), i[2])
 
     def test_vel_lfom_pipe_critical(self):
         """vel_lfom_pipe_critical should give known result with known input.
@@ -69,7 +69,7 @@ class LfomTest(unittest.TestCase):
                   (40 * u.cm, 1.189 * u.m/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.vel_lfom_pipe_critical(i[0]), i[1])
+                self.assertAlmostEqual(lfom.vel_lfom_pipe_critical(i[0]), i[1])
 
     def test_area_lfom_pipe_min(self):
         """area_lfom_pipe_min should give known result with known input.
@@ -82,7 +82,7 @@ class LfomTest(unittest.TestCase):
                   (20 * u.L/u.s, 40 * u.cm, 0.025 * u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.area_lfom_pipe_min(i[0], i[1]), i[2])
+                self.assertAlmostEqual(lfom.area_lfom_pipe_min(i[0], i[1]), i[2])
 
     def test_nom_diam_lfom_pipe(self):
         """nom_diam_lfom_pipe should give known result with known input.
@@ -97,7 +97,7 @@ class LfomTest(unittest.TestCase):
                   (20 * u.L/u.s, 40 * u.cm, 8.0 * u.inch))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.nom_diam_lfom_pipe(i[0], i[1]), i[2])
+                self.assertAlmostEqual(lfom.nom_diam_lfom_pipe(i[0], i[1]), i[2])
 
 ##### Below here is not finished
     def test_area_lfom_orifices_top(self):
@@ -113,7 +113,7 @@ class LfomTest(unittest.TestCase):
                   (20 * u.L/u.s, 40 * u.cm,  * u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.area_lfom_orifices_top(i[0], i[1]), i[2])
+                self.assertAlmostEqual(lfom.area_lfom_orifices_top(i[0], i[1]), i[2])
 
     def test_d_lfom_orifices_max(self):
         """d_lfom_orifices_max should give known result with known input.
@@ -128,7 +128,7 @@ class LfomTest(unittest.TestCase):
                   (20 * u.L/u.s, 40 * u.cm,  * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.d_lfom_orifices_max(i[0], i[1]), i[2])
+                self.assertAlmostEqual(lfom.d_lfom_orifices_max(i[0], i[1]), i[2])
 
     def test_orifice_diameter(self):
         """orifice_diameter should give known result with known input.
@@ -143,7 +143,7 @@ class LfomTest(unittest.TestCase):
                   (20 * u.L/u.s, 40 * u.cm, mat.DIAM_DRILL_ENG, * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.orifice_diameter(i[0], i[1], i[2]), i[3])
+                self.assertAlmostEqual(lfom.orifice_diameter(i[0], i[1], i[2]), i[3])
 
     def test_drillbit_area(self):
         """drillbit_area should give known result with known input.
@@ -158,7 +158,7 @@ class LfomTest(unittest.TestCase):
                   (20 * u.L/u.s, 40 * u.cm, mat.DIAM_DRILL_ENG, * u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(lfom.drillbit_area(i[0], i[1], i[2]), i[3])
+                self.assertAlmostEqual(lfom.drillbit_area(i[0], i[1], i[2]), i[3])
 
 
 
@@ -167,7 +167,7 @@ class LfomTest(unittest.TestCase):
         FLOW = 31 * u.L / u.s
         HL_LFOM = 20 * u.cm
         drill_bits = np.arange(5, 25, 5) * u.mm
-        self.assertEqual(lfom.orifice_diameter(FLOW,HL_LFOM,drill_bits), 15* u.mm)
+        self.assertAlmostEqual(lfom.orifice_diameter(FLOW,HL_LFOM,drill_bits), 15* u.mm)
 
 
 if __name__ == '__main__':
