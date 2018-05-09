@@ -1,19 +1,15 @@
+#-*- coding: utf-8 -*-
 """This file contains constants which represent physical properties and
 scientific principles which will be used in AguaClara plant design.
 
 """
-from aide_design.units import unit_registry as u
-
-import warnings
-warnings.simplefilter('default')
-warnings.warn(
-              "The module expert_inputs.py is deprecated. Please use constants"
-              + ".py which is imported as con instead. Some global variables" +
-              "have been moved to optional_inputs.py which is imported as opt",
-              DeprecationWarning
-              )
+from aide_design.shared.units import unit_registry as u
+import aide_design.shared.pipedatabase as pipe
+import numpy as np
 
 #####tabulated constants
+
+GRAVITY = 9.80665 * u.m/u.s**2
 
 #Density of water
 DENSITY_WATER = 1000 * u.kg/u.m**3
@@ -513,9 +509,19 @@ THICKNESS_FLOC_BAFFLE = 2 * u.mm
 
 VEL_SED_UP_BOD = 1 * u.mm/u.s
 
-##Plate settler capture velocity
-VEL_SED_CONC_BOD = 0.12 * u.mm/u.s
+##Plate settler
+VEL_SED_CONC_BOD = 0.12 * u.mm/u.s  # capture velocity
 
+ANGLE_SED_PLATE = 60 * u.deg
+
+SPACE_SED_PLATE = 2.5*u.cm
+
+N_SED_MODULE_PLATES_MIN = 8
+
+# This is moved to template because THICKNESS_SED_PLATE is in materials.yaml
+# DIST_CENTER_SED_PLATE = SPACE_SED_PLATE + THICKNESS_SED_PLATE
+
+# Bottom of channel
 ANGLE_SED_SLOPE = 50 * u.deg
 
 ##This slope needs to be verified for functionality in the field.
@@ -528,11 +534,6 @@ SED_GATE_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604
 
 SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/173604905/PlateSettlerSupportBolt.dwg"
 
-##Max length of the active part of the sed tank so that single pipe
-# segments can be used for the inlet and outlet manifoldS
-LENGTH_SED_UP_FLOW_MAX = 5.8 * u.m
-
-
 ##Inlet channel
 HEADLOSS_SED_WEIR_MAX = 5 * u.cm
 
@@ -542,6 +543,13 @@ HEADLOSS_SED_WEIR_MAX = 5 * u.cm
 # level in the inlet channel will increase when the inlet overflow weir
 # is in use.
 HEIGHT_SED_INLET_WEIR_FREE_BOARD = 2 * u.cm
+
+THICKNESS_SED_WEIR = 5*u.cm
+
+HL_SED_INLET_MAX = 1 * u.cm
+
+# ratio of the height to the width of the sedimentation tank inlet channel.
+RATIO_HW_SED_INLET = 0.95
 
 ##Exit launder
 ##Target headloss through the launder orifices
@@ -571,10 +579,12 @@ NOM_DIAMETER_SED_MOD = 0.5 * u.inch
 # 1/2" pipe and are between the plates
 NOM_DIAMETER_SED_MOD_SPACER = 0.75 * u.inch
 
+SDR_SED_MOD_SPACER = 17
+
 ##This is the vertical thickness of the lip where the lamella support sits. mrf222
 THICKNESS_SED_LAMELLA_LEDGE = 8 * u.cm
 
-SPACE_SED_LAMILLA_PIPE_TO_EDGE = 5 * u.cm
+SPACE_SED_LAMELLA_PIPE_TO_EDGE = 5 * u.cm
 
 ##Approximate x-dimension spacing between cross pipes in the plate settler
 # support frame.
@@ -603,7 +613,9 @@ ENERGY_DIS_SED_INT_MAX = 150 * u.mW/u.kg
 ##Ratio of min to max flow through the inlet manifold diffusers
 RATIO_FLOW_SED_INLET = 0.8
 
-NOM_DIAMETER_SED_MANIFOLD_MAX = 8 * u.inch
+ND_SED_MANIFOLD_MAX = 8 * u.inch
+
+SDR_SED_MANIFOLD = 41  # SDR of pipe for sed tank inlet manifold
 
 ##This is the minimum distance between the inlet manifold and the slope
 # of the sed tank.
@@ -626,15 +638,41 @@ HEIGHT_JET_REVERSER_TO_DIFFUSERS = 3 * u.cm
 # tank to be able to install the pipe
 LENGTH_SED_MANIFOLD_PIPE_FROM_TANK_END = 2  *u.cm
 
-##Assumed stretch of the PVC pipes as they are heated and molded
-RATIO_PVC_STRETCH = 1.2
-
 LENGTH_SED_WALL_TO_DIFFUSER_GAP_MIN = 3 * u.cm
 
 ##Diameter of the holes drilled in the manifold so that the molded 1"
 # diffuser pipes can fit tightly in place (normal OD of a 1" pipe is
 # close to 1-5/16")
 DIAM_SED_MANIFOLD_PORT = 1.25 * u.inch
+
+ND_JET_REVERSER = 3 * u.inch  # nominal diameter of pipe used for jet reverser in bottom of set tank
+
+SDR_REVERSER = 26  # SDR of jet reverser pipe
+
+## Diffuser geometry
+SDR_DIFFUSER = 26  # SDR of diffuser pipe
+
+ND_DIFFUSER_PIPE = 4 * u.cm  # nominal diameter of pipe used to make diffusers
+
+AREA_PVC_DIFFUSER = (np.pi/4) * ((pipe.OD(ND_DIFFUSER_PIPE)**2)
+                                 - (pipe.ID_SDR(ND_DIFFUSER_PIPE, SDR_DIFFUSER))**2)
+
+RATIO_PVC_STRETCH = 1.2  # stretch factor applied to the diffuser PVC pipes as they are heated and molded
+
+T_DIFFUSER = ((pipe.OD(ND_DIFFUSER_PIPE) -
+                        pipe.ID_SDR(ND_DIFFUSER_PIPE, SDR_DIFFUSER))
+                              / (2 * RATIO_PVC_STRETCH))
+
+W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
+
+# Calculating using a minor loss equation with K = 1
+V_SED_DIFFUSER_MAX = np.sqrt(2 * GRAVITY * HL_SED_INLET_MAX).to(u.mm/u.s)
+
+L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
+
+B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
+
+HEADLOSS_SED_DIFFUSER = 0.001 * u.m # Headloss through the diffusers to ensure uniform flow between sed tanks
 
 ##Outlet to filter
 #If the plant has two trains, the current design shows the exit channel

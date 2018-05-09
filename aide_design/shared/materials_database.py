@@ -8,13 +8,13 @@ import math
 import numpy as np
 
 try:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
-    from aide_design import constants as con
+    from aide_design.shared.units import unit_registry as u
+    from aide_design.shared import utility as ut
+    from aide_design.shared import constants as con
 except ModuleNotFoundError:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
-    from aide_design import constants as con
+    from aide_design.sharedunits import unit_registry as u
+    from aide_design.shared import utility as ut
+    from aide_design.shared import constants as con
 
 
 ########### Materials Constants - general ############

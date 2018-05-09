@@ -5,14 +5,7 @@ Created on Mon Jun 26 11:55:37 2017
 @author: kn348
 """
 ########################## Imports ##########################
-
-
-try:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
-except ModuleNotFoundError:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
+from aide_design.play import *
 
 g=9.80665*(u.m/(u.s**2))
 #==============================================================================
@@ -48,4 +41,3 @@ def flow_coag_max_est(flow_train,conc_coag_dose_max,conc_coag_stock_est):
 
 def vol_coag_stock():
     pass
-    

@@ -22,7 +22,7 @@ thickness_plate : float
     thickness of plates in the plate settelr module
 
 """
-from aide_design.play import*
+from aide_design.play import *
 
 # document what's in ent_tank_dict here
 ent_tank_dict = {'sdr': 26, 'S_plate': 2.5*u.cm, 'angle_plate': 50*u.deg,

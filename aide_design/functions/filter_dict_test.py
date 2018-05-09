@@ -5,5 +5,3 @@ Attributes
 ----------
 
 """
-
-vel_man_trunk

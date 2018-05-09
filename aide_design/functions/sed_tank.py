@@ -2,30 +2,8 @@
 for an AguaClara plant.
 
 """
-from aide_design.play import*
+from aide_design.play import *
 
-# again we will change this to an important statment from the URL of  aide_template repo
-sed_dict = {
-            'thickness_wall': 0.15*u.m,
-            'plate_settlers': {
-                'angle': 60*u.deg, 'S': 2.5*u.cm,
-                'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
-                'vel_capture': 0.12*u.mm/u.s
-                },
-            'tank': {
-                'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
-            },
-            'manifold': {
-                'ratio_Q_man_orifice': 0.8,
-                'diffuser': {
-                    'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
-                    'A': 0.419*u.inch**2
-                },
-                'exit_man': {
-                    'hl_orifice': 4*u.cm, 'N_orifices': 58
-                }
-            }
-}
 
 @u.wraps(None, [], False)
 def n_sed_plates_max(S_plate=2.5*u.cm, thickness_plate=2*u.mm,

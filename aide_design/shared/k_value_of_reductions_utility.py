@@ -6,13 +6,13 @@ https://neutrium.net/fluid_flow/pressure-loss-from-fittings-expansion-and-reduct
 
 """
 
-import aide_design.pipedatabase as pipe
-from aide_design.units import unit_registry as u
-from aide_design import physchem as pc
-import aide_design.constants as con
-import aide_design.materials_database as mats
+import aide_design.shared.pipedatabase as pipe
+from aide_design.shared.units import unit_registry as u
+import aide_design.shared.physchem as pc
+import aide_design.shared.constants as con
+import aide_design.shared.materials_database as mats
 import numpy as np
-import aide_design.utility as ut
+import aide_design.shared.utility as ut
 
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.L/u.s])

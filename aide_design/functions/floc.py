@@ -2,7 +2,7 @@
 an AguaClara plant.
 
 """
-from aide_design.play import*
+from aide_design.play import *
 
 
 @u.wraps(1/u.s, [u.degK, u.m, None], False)

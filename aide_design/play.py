@@ -27,15 +27,15 @@ import matplotlib
 
 # AIDE imports
 import aide_design
-import aide_design.pipedatabase as pipe
-from aide_design.units import unit_registry as u
-from aide_design import physchem as pc
-import aide_design.constants as con
-import aide_design.materials_database as mat
-import aide_design.utility as ut
-import aide_design.k_value_of_reductions_utility as k
-import aide_design.pipeline_utility as pipeline
-import aide_design.optional_inputs as opt
+import aide_design.shared.pipedatabase as pipe
+from aide_design.shared.units import unit_registry as u
+import aide_design.shared.physchem as pc
+import aide_design.shared.constants as con
+import aide_design.shared.materials_database as mat
+import aide_design.shared.utility as ut
+import aide_design.shared.k_value_of_reductions_utility as k
+import aide_design.shared.pipeline_utility as pipeline
+import aide_design.shared.optional_inputs as opt
 import warnings
 
 # deprecated imports

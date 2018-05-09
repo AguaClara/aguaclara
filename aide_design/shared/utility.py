@@ -7,9 +7,9 @@ can be used throughout the plant design.
 import math
 
 try:
-    from aide_design.units import unit_registry as u
+    from aide_design.shared.units import unit_registry as u
 except ModuleNotFoundError:
-    from aide_design.units import unit_registry as u
+    from aide_design.shared.units import unit_registry as u
 
 import numpy as np
 import functools
