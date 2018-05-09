@@ -1,0 +1,28 @@
+language: python
+python:
+- '3.5'
+- '3.6'
+install:
+- pip install -r requirements-dev.txt
+matrix:
+  fast_finish: true
+script:
+- pytest
+after_success:
+- curl -Lo travis_after_all.py https://git.io/travis_after_all
+- python travis_after_all.py
+- export $(cat .to_export_back)
+- |
+  if [ "$BUILD_LEADER" = "YES" ]; then
+    if [ "$BUILD_AGGREGATE_STATUS" = "others_succeeded" ]; then
+      python setup.py coverage && codecov
+    fi
+  fi
+deploy:
+  provider: pypi
+  user: aguaclara
+  password:
+    secure: g/pNzWYdJV1o7Xx5FqXD4brqm2fi5EGD3GpsaneGI+yoLGJ5uo2tCZHsfbVDE8lx9B749qMwgGCw7zBRaza4bxQDzNlgGyu/O0DKat77Bc2QrE5edH2FMk0l6hnhjEGuk9Wepiwe7Utt0Xzzvx+A+yWc0cQ39Yj6cJ7guNBGg14qxb02ezwh6+Xb9UT39Wol3Y816D/NFqv4hlmKG9ilRhkPamOziy4v0SWihWxLkVMNIEfNcyZgIuMMzoThktBoQZ4MvdCbJdyE/kcjq31tdqKjj1YYtrncxUG5UUITxBBN28vhJq8VYJPrm+tgx2f2FSqYn6J4jmb6Ug1ivQGVxbe8C5uqaphYYvtZYUz3RKqYHHrHp3O13wUvAuDVUeesOGS3iM5k07G02PJCx0SZ4kRH4tF5Nhs523Sd1YQLZDt7IuCMmxoagpx5+wbUVwY1rfO7eHHA14/y8smvlBP6c2SDH/ZPihPHGoFS2KheYLXnV8VxPRPH0vvJifFBvlO3KzmUXGE2NC/yTlPhhZgcyRmBfz3xUDD+cV8r+/eNjlbWLL2sl3CMDSlw2iMl7mzk2E7/TbUafilqKd3ZBCnT381jnhmi6Sxo+i+qABnAq7NI+dEWHlTG56wN+LWcsYhyaSh+on1CuXrh4MrjMixHA6U8pB2o3t6B67j8wv7h06Q=
+  on:
+    branch: master
+    tags: true
