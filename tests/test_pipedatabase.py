@@ -7,7 +7,7 @@ class PipeTest(unittest.TestCase):
         checks = [[1.0 * u.inch, 1.315 * u.inch]]
         for i in checks:
             with self.subTest(i=i):
-                self.assertEqual(pipe.OD(i[0]), i[1])
+                self.assertAlmostEqual(pipe.OD(i[0]), i[1])
 
 if __name__ == '__main__':
     unittest.main()

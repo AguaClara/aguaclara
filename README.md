@@ -43,3 +43,7 @@ the production outlets in sync. Here are the steps:
     * Update your package through pip and ensure the version number has changed: `$pip install aide_design --upgrade` 
     and `$pip list` 
     * If the version number now matches, you've successfully upgraded the pip package. 
+    
+    
+## Organizational Vision
+<Insert XML document>

@@ -1,10 +1,11 @@
-"""
-This module is intended to provide easy set up for an aide design playground/environment.
+"""This module is intended to provide easy set up for an aide design playground
+/environment.
 
-It imports all commonly used aide packages with one line, ensures Python is run in the correct
-virtual environment, sets sig figs correctly and provides any additional environment
-massaging to get to designing as quickly as possible. This should NOT be used by other
-modules within aide_design as it results in unnecessary imports.
+It imports all commonly used aide packages with one line, ensures Python is
+run in the correct virtual environment, sets sig figs correctly and provides
+any additional environment massaging to get to designing as quickly as
+possible. This should NOT be used by other modules within aide_design as it
+results in unnecessary imports.
 
 Usage:
 
@@ -14,9 +15,11 @@ Usage:
 Now you should be able to execute:
     *`np.array([1,2,3,4])
 And your numbers should be limited to four significant figures  when printed.
+
 """
 
 # Third-party imports
+import math
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -27,12 +30,16 @@ import aide_design
 import aide_design.pipedatabase as pipe
 from aide_design.units import unit_registry as u
 from aide_design import physchem as pc
-import aide_design.expert_inputs as exp
+import aide_design.constants as con
 import aide_design.materials_database as mat
 import aide_design.utility as ut
 import aide_design.k_value_of_reductions_utility as k
 import aide_design.pipeline_utility as pipeline
+import aide_design.optional_inputs as opt
 import warnings
+
+# deprecated imports
+import aide_design.expert_inputs as exp
 
 
 def setup_aide():

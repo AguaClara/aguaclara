@@ -1,22 +1,23 @@
-import aide_design.pipedatabase as pipe
-from aide_design.units import unit_registry as u
-from aide_design import physchem as pc
-import aide_design.expert_inputs as exp
-import aide_design.materials_database as mats
-import numpy as np
-import aide_design.utility as ut
 """ Minor Loss Coefficients of Reductions Module.
 
-This module includes all minor loss coefficient calculations for common complex geometries.
-For reductions and expansions, the following resource is used: 
+This module includes all minor loss coefficient calculations for common complex
+geometries. For reductions and expansions, the following resource is used:
 https://neutrium.net/fluid_flow/pressure-loss-from-fittings-expansion-and-reduction-in-pipe-size/
 
 """
 
+import aide_design.pipedatabase as pipe
+from aide_design.units import unit_registry as u
+from aide_design import physchem as pc
+import aide_design.constants as con
+import aide_design.materials_database as mats
+import numpy as np
+import aide_design.utility as ut
+
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.L/u.s])
 @ut.list_handler
-def k_value_expansion(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC, theta=180, ROUNDED=False) -> float:
+def k_value_expansion(id_entrance:float, id_exit:float, flow, NU=con.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC, theta=180, ROUNDED=False) -> float:
     """This function calculates the minor loss coefficient of a square, tapered or rounded expansion in a pipe
      using the equation defined here, where Re is the reynolds number on the inlet side, D_in and D_out are the inner diameter
      of the entrance pipe and exit pipe, respectively, and f_in is the Darcy friction factor of the inlet pipe:
@@ -71,7 +72,7 @@ def k_value_expansion(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, R
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.L/u.s])
 @ut.list_handler
-def k_value_reduction(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC, theta=180, ROUNDED=False) -> float:
+def k_value_reduction(id_entrance:float, id_exit:float, flow, NU=con.NU_WATER, ROUGHNESS=mats.PIPE_ROUGH_PVC, theta=180, ROUNDED=False) -> float:
     """This function calculates the minor loss coefficient of a square, tapered or round reduction in a pipe
      using the equation defined here, where Re is the reynolds number on the inlet side, D_in and D_out are the inner diameter
      of the entrance pipe and exit pipe, respectively, and f_in is the Darcy friction factor of the inlet pipe:
@@ -130,7 +131,7 @@ def k_value_reduction(id_entrance:float, id_exit:float, flow, NU=exp.NU_WATER, R
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.m, u.m**3/u.s])
 @ut.list_handler
-def k_value_orifice(id_pipe: float, id_orifice: float, length_orifice: float, flow: float, NU=exp.NU_WATER) -> float:
+def k_value_orifice(id_pipe: float, id_orifice: float, length_orifice: float, flow: float, NU=con.NU_WATER) -> float:
     """This function calculates the minor loss coefficient of a thick and thin orifice plate in a pipe
      using the equation defined here, where Re is the reynolds number on the inlet side, and D_pipe and D_orifice are
      the inner diameter of the enclosing pipe and orifice, respectively, and L is the length of the orifice:
