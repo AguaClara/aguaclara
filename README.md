@@ -25,3 +25,8 @@ The editable flag makes it so that you don't have to continuously install with p
 
 ## Updating the production version (v0.0.1 -> v0.1.0) 
 We use Travis CI to automate deployment and integration. To release a new version, make a pull request to master. If the tests pass, Travis will let you merge. Once merged into master, make a tagged release. Once this tag release is pushed, Travis will rerun tests and push the source distribution (sdist) to pip at [pypi](https://pypi.org/search/?q=aide_design).
+
+## Changelog
+**aide_design design is in RAPID development. Things will shange significantly!**
+
+We're not tracking changes at the moment here. Once development is at a more reasonable pace, we'll start tracking improvements and bug fixes more carefully!
