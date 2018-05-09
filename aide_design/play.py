@@ -39,7 +39,7 @@ import aide_design.optional_inputs as opt
 import warnings
 
 # deprecated imports
-import aide_design.expert_inputs as exp
+#import aide_design.expert_inputs as exp
 
 
 def setup_aide():

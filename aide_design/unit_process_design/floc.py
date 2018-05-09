@@ -1,42 +1,9 @@
 """This file contains all the functions needed to design a flocculator for
 an AguaClara plant.
 
-Attributes
-----------
-L_ent_tank_max : float
-    The maximum length of the entrance tank
-
-L_sed : float
-    The length of the sedimentation tank
-
-hl : float
-    Headloss through the flocculator
-
-coll_pot : int
-    Desired collision potential in the flocculator
-
-freeboard: float
-    The height between the water and top of the flocculator channels
-
-ratior_HS_min : int
-    Minimum allowable ratio between the water depth and edge to edge distance
-    between baffles
-
-ratio_HS_max : int
-    Maximum allowable ratio between the water depth and edge to edge distance
-    between baffles
-
-W_min_construct : float
-    Minimum width of a flocculator channel based on the width of the human hip
-
-baffle_thickness : float
-    Thickness of a baffle
-
 """
 from aide_design.play import*
 
-# expansion minor loss coefficient for 180 degree bend
-K_e = (1 / con.RATIO_VC_ORIFICE**2 - 1)**2
 
 @u.wraps(1/u.s, [u.degK, u.m, None], False)
 def G_avg(temp, hl, coll_pot):
