@@ -90,7 +90,7 @@ def orifice_diameter(FLOW,HL_LFOM,drill_bits):
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m, u.inch], False)
 def drillbit_area(FLOW,HL_LFOM,drill_bits):
-    return pc.area_circle(orifice_diameter(FLOW,HL_LFOM,drill_bits).magnitude)
+    return pc.area_circle(orifice_diameter(FLOW,HL_LFOM,drill_bits)).magnitude
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.inch], False)
 def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits):
