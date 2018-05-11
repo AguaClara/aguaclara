@@ -5,6 +5,7 @@ python:
 - '3.6'
 install:
 - pip install -r requirements-dev.txt
+- pip install --user codecov
 matrix:
   fast_finish: true
 script:
@@ -28,12 +29,4 @@ jobs:
         branch: master
       distributions: sdist
 after_success:
-- curl -Lo travis_after_all.py https://git.io/travis_after_all
-- python travis_after_all.py
-- export $(cat .to_export_back)
-- |-
-  if [ "$BUILD_LEADER" = "YES" ]; then
-    if [ "$BUILD_AGGREGATE_STATUS" = "others_succeeded" ]; then
-      python setup.py coverage && codecov
-    fi
-  fi
+  - codecov
