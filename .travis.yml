@@ -1,4 +1,5 @@
 language: python
+sudo: false
 python:
 - '3.5'
 - '3.6'
@@ -8,21 +9,31 @@ matrix:
   fast_finish: true
 script:
 - pytest
+stages:
+- test
+- deploy
+jobs:
+  include:
+  - stage: deploy
+    python: 3.6
+    install: skip
+    script: skip
+    deploy:
+      provider: pypi
+      user: aguaclara
+      password:
+        secure: AQFPBl5JmwL1QAERDplPUP0bDi6zVxu9rjUdRsAqIhk8ieCnZmEuzeHnCH8hvlLbOo8xZhx6hIF4V/0AhOsfC2E8bvrdt/TuWcIvp2dyknh3Nkd+jScojyDW0h6mEHMmKqNONq9EjUc2d/6fpn8nOm4oYTxyqaeOzcwCp7XayUCCB9eqGFHh1kVrPC7ba7MvbmqM+te8iZUrErtdr7RmlThOrvEDAF6sUOsZfX1sJLfkJdLZwdIpaGXt4QBIrvUeSyUJGayIiXVqJp+zfPUS2tcV7KT6UgHx55lFTd1b+Pe5VGkkWuoku9KO5lFbnkKjLXHzEHHteUyG7xN9E1jSf7i44ft91EOR8BPLTFIuav5WKOOXFUq3/wP5EoMKzJg/CuBdCPJIX/+Ay9FvyXFx5GUAHZfae7kEi+azZ64r1g53E9J0tD0hc/JpWh4tYwHQG+t33+FQqkNk4iITgxE+oumNOEuLy0xlx9qjP/4UcIBU0NkOHbEAMiafPGjlMQSG2xi2ft3bH/kgi8cojfbucaarobbT69+skVNpMoOESASpic1pL6K07rlsXcNVitA4ncOE/ExU5CGaL8RC7IXMcsRyzt6Q9mqU7JM3oyD+joZ46QsKVCMYmhxexGha3zBVXyJP7Xt6jDAp//9SxzBh4dbdSdd1uu8GgvNMOo485u4=
+      on:
+        tags: true
+        branch: master
+      distributions: sdist
 after_success:
 - curl -Lo travis_after_all.py https://git.io/travis_after_all
 - python travis_after_all.py
 - export $(cat .to_export_back)
-- |
+- |-
   if [ "$BUILD_LEADER" = "YES" ]; then
     if [ "$BUILD_AGGREGATE_STATUS" = "others_succeeded" ]; then
       python setup.py coverage && codecov
     fi
   fi
-deploy:
-  provider: pypi
-  user: aguaclara
-  password:
-    secure: YxI4bY0vJu69uvXxkHgOx1WfBZbzBXAAzhflg5zWsGK32Y711KFIgGiAgtfux8777qmxD0N/m+88RoChRKMVCriYWSzzmPflyH2cOA2oUqaGXGtJMnBRA1X4rlfVw1ONnUOg09GqI/Bg1cusutB/heo3itS+XNAKsqgQ0hYuAvLkuk8skzFqa6XNCFLZ9E6XOteaek3G+AqTrrhWYipugw+1LTV6uakWXqt7XB80pOHB8KGSA/ZDFdMKl43+TzzWzcJjZWJkjVyEP2B4ax1KMliZ/1eY/Ltcf/vW0PMY/2B5xXsZvsQRonWNOfQt8WCVNjQnRGJB9WWiorbNfn75k9QHLCXQiOlgZ+6ZXURam5kyHkVuuBWVGp9JSav6RQwwIlKbbV3WqZx5LhDPhuiGOV10ENk/9TwUmnwf4KjtX9WjAmelVrjIxgjoLZt2Rm00YnfigtJ9aXuXdkA+CNI25OczoYZRkeZU8S5wCqf/jtIDRK/iWiBPtAYobAKBYpNXjjFA2KmTMEj1230OwTT9/4wTt9eVuj4MWNrLvs2gSTXjIzfrqe1mivOd7VQf/JV0Gm38ibbMhVmz/NU40y2/xVZnQG7oor9quJTL4c7q2VWvnG+5XX88RzGeaXTa7PSfTx9yQFbwor55Gvpl+aUAql863gqC/RgUPrxw2UNMtBE=
-  on:
-    branch: master
-    tags: true
