@@ -104,3 +104,6 @@ docs/_build/
 venv/
 *.iml
 .idea/
+
+# Pytest
+.pytest_cache/
