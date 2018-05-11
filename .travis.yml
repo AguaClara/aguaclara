@@ -8,7 +8,7 @@ install:
 matrix:
   fast_finish: true
 script:
-- pytest
+- pytest --cov=./
 stages:
 - test
 - deploy
