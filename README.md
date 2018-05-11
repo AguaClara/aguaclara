@@ -23,8 +23,19 @@ pip install --editable . -U --user
 ```
 The editable flag makes it so that you don't have to continuously install with pip to make the changes you just made visible.
 
-## Updating the production version (v0.0.1 -> v0.1.0) 
-We use Travis CI to automate deployment and integration. To release a new version, make a pull request to master. If the tests pass, Travis will let you merge. Once merged into master, make a tagged release. Once this tag release is pushed, Travis will rerun tests and push the source distribution (sdist) to pip at [pypi](https://pypi.org/search/?q=aide_design).
+## Contributing: (v0.0.1 -> v0.1.0)
+1. Write your code!
+2. When you are ready to commit it, make a new branch that describes your changes and push it to github:
+    ```bash
+    $ git add . #add local files to staging area
+    $ git checkout -b the_name_of_my_new_branch #create new branch locally and move to it
+    $ git commit -m "my detailed commit message describing what I did" #commit to the new branch
+    $ git push -u origin the_name_of_my_new_branch #push the new branch and all the commits you made to GitHub.
+    ```
+3. Keep making changes and committing them as you finish your feature. Once you are ready to push your code to the master branch, go online and make a pull request to the master branch.
+4. The pull request will initiate several 'checks.' This will take about 5 minutes to run. The first is the Travis CI check. Travis is a cloud-based continuous integration tool that automatically runs all defined tests. Once the tests pass, Travis generates a coverage report. This report analyzed what percentage of the code was "hit" during the testing process, also known as what percentage was 'covered'.
+5. If all the checks passed, you can ping a repo manager to ask them to accept your pull request.
+6. If the repo manager accepts the request, then the next time a version of master is tagged as a release version, the code will be packaged as a source distribution (sdist) and sent off to [pypi](https://pypi.org/search/?q=aide_design).
 
 ## Changelog
 **aide_design design is in RAPID development. Things will shange significantly!**
