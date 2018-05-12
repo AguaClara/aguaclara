@@ -41,3 +41,33 @@ The editable flag makes it so that you don't have to continuously install with p
 **aide_design design is in RAPID development. Things will shange significantly!**
 
 We're not tracking changes at the moment here. Once development is at a more reasonable pace, we'll start tracking improvements and bug fixes more carefully!
+
+## Structure
+The aide_design package has three distinct levels that work together to design a plant. The first level is composed of base classes that define chemicals, quantities, and other parameters. These classes are created and used within the functional layer to define some basic engineering equations. Lastly, the component classes correspond to objects that are modeled in Fusion 360.
+
+    +----------------------------+
+    | COMPONENT CLASSES (.parts) |
+    +-------------+              |
+    | Classes that correspond to |
+    | Fusion components.         |    ^
+    +------------+---------------+    |
+                 ^                    |
+                 |                    |
+    +-----------------------+         |
+    |  FUNCTIONAL|LAYER     |         | Each layer
+    +--------------+        |         | depends on the
+    |  This layer has only  |         | layers below
+    |  functions that rely  |         | it to function.
+    |  on quantity class    |         |
+    |  inputs.              |         |
+    +------------+----------+         |
+                 ^                    |
+                 |                    |
+    +------------+---------------+    |
+    |BASE CLASSES                |    |
+    +-----------                 |    |
+    |Classes needed to make the  |    |
+    |functional and component    |    +
+    |class layers work. Such as  |
+    |Quantity, HP and DP.        |
+    +----------------------------+
