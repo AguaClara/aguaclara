@@ -232,7 +232,7 @@ def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
     #functions this function calls.
     ut.check_range([Length, ">0", "Length"])
     return (fric(FlowRate, Diam, Nu, PipeRough)
-            * 8 / (GRAVITY.magnitude * np.pi**2)
+            * 8 / (con.GRAVITY.magnitude * np.pi**2)
             * (Length * FlowRate**2) / Diam**5
             )
 
@@ -701,6 +701,6 @@ def headloss_kozeny(Length, Diam, Vel, Porosity, Nu):
                    [Vel, ">0", "Velocity"], [Nu, ">0", "Nu"],
                    [Porosity, "0-1", "Porosity"])
     return (K_KOZENY * Length * Nu
-            / GRAVITY.magnitude * (1-Porosity)**2
+            / con.GRAVITY.magnitude * (1-Porosity)**2
             / Porosity**3 * 36 * Vel
             / Diam ** 2)

@@ -1,1 +1,1 @@
-recursive-include aide_design/data *
+recursive-include aide_design/shared/data *

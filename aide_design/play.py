@@ -35,7 +35,6 @@ import aide_design.shared.materials_database as mat
 import aide_design.shared.utility as ut
 import aide_design.shared.k_value_of_reductions_utility as k
 import aide_design.shared.pipeline_utility as pipeline
-import aide_design.shared.optional_inputs as opt
 import warnings
 
 # deprecated imports
