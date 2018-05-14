@@ -1,4 +1,5 @@
-# aide_design
+# aide_design [![Travis Build Status](https://travis-ci.org/AguaClara/aide_design.svg?branch=master)](https://travis-ci.org/AguaClara/aide_design) [![codecov](https://codecov.io/gh/AguaClara/aide_design/branch/master/graph/badge.svg)](https://codecov.io/gh/AguaClara/aide_design)
+
 Design an AguaClara Water Treatment Plant with just a couple lines of code! Or just design a few components - your choice with aide_design. Aide_design parametrically designs plant components from basic physics equations. In a nutshell, you can generate a design yaml for a whole plant and print it to your console stream like so:
 
 ```python
