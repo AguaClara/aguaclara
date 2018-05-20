@@ -63,7 +63,7 @@ class LFOM:
 
     ############### METHODS #################
     # Methods I import that are already defined in the functional layer.
-    from aide_design.unit_process_design.lfom import (
+    from aide_design.functions.lfom import (
         n_lfom_rows,
         nom_diam_lfom_pipe,
         orifice_diameter,

@@ -120,7 +120,7 @@ class Flocculator:
     ent_tank_overhang_length = HP(0.6363, u.m)
 
     ############### METHODS #################
-    from aide_design.unit_process_design.floc import (
+    from aide_design.functions.floc import (
         area_ent_tank,
         vol_floc,
         width_floc_min,

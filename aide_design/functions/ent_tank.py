@@ -44,9 +44,8 @@ def drain_OD(q_plant, temp, depth_end, sdr=26):
     return pipe.OD(drain_ND).magnitude
 
 @u.wraps(None, [u.m**3/u.s, u.m], False)
-def num_plates_ent_tank(q_plant, W_chan, S_plate=2.5*u.cm,
-                        thickness_plate=2*u.mm, vel_capture=8*u.mm/u.s,
-                        angle_plate=50*u.deg):
+def num_plates(q_plant, W_chan, S_plate=2.5*u.cm, thickness_plate=2*u.mm,
+               vel_capture=8*u.mm/u.s, angle_plate=50*u.deg):
     """Return the number of plates in the entrance tank.
 
     This number minimizes the total length of the plate settler unit.
@@ -93,8 +92,8 @@ def num_plates_ent_tank(q_plant, W_chan, S_plate=2.5*u.cm,
     return N_plates
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, None], False)
-def L_plate_ent_tank(q_plant, W_chan, S_plate=2.5*u.cm, vel_capture=8*u.mm/u.s,
-                     angle_plate=50*u.deg):
+def L_plate(q_plant, W_chan, S_plate=2.5*u.cm, vel_capture=8*u.mm/u.s,
+            angle_plate=50*u.deg):
     """Return the length of the plates in the entrance tank.
 
     Parameters
@@ -179,7 +178,7 @@ def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict
 
     """
     # calculate the outer diameter of the drain pipe
-    OD_drain = drain_OD(q_plant, temp, depth_end, ent_tank_inputs)
+    OD_drain = drain_OD(q_plant, temp, depth_end, sdr)
     # calculate the number of plates in the plate settler module
     N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs)
     # calculate the length of of a plate in the entrance tank
