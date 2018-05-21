@@ -82,8 +82,12 @@ def vol_floc(Q_plant, temp, hl, coll_pot):
     14.009544668698396 meter3
 
     """
-    vol = (coll_pot / G_avg(temp, hl, coll_pot))*Q_plant*u.m**3/u.s
-    return vol.magnitude
+    try:
+        vol = ((coll_pot / G_avg(temp, hl, coll_pot).magnitude)*Q_plant).magnitude
+    except AttributeError:
+        vol = (coll_pot / G_avg(temp, hl, coll_pot).magnitude)*Q_plant
+    finally:
+        return vol
 
 @u.wraps(u.s, [u.m**3/u.s, u.degK, u.m, None], False)
 def res_time(Q_plant, temp, hl, coll_pot):
@@ -526,7 +530,7 @@ def baffle_spacing(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max=6):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aide_design.play import *
     >>> baffle_spacing(40*u.L/u.s, 25*u.degC, 0.45*u.m, 40*u.cm, 37000)
     0.3283630936317887 meter
     >>> baffle_spacing(20*u.L/u.s, 15*u.degC, 0.45*u.m, 40*u.cm, 37000)
@@ -536,9 +540,11 @@ def baffle_spacing(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max=6):
     nu = pc.viscosity_kinematic(temp).magnitude
     term1 = (con.K_MINOR_FLOC_BAFFLE /
             (2 * expansion_dist_max(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max).magnitude
-                * (g_avg**2) * nu)
-            )**(1/3)
-    return (term1 * Q_plant/W_chan).magnitude
+                * (g_avg**2) * nu))**(1/3)
+    try:
+        return (term1 * Q_plant/W_chan).magnitude
+    except AttributeError:
+        return (term1 * Q_plant/W_chan)
 
 @u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, u.m, None, None, None], False)
 def num_baffles(Q_plant, temp, W_chan, L, hl, coll_pot, ratio_HS_max=6, baffle_thickness=2*u.mm):

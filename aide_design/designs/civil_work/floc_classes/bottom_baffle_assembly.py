@@ -1,5 +1,5 @@
 from aide_design.shared.units import unit_registry as u
-from bottom_baffle import *
+from aide_design.designs.civil_work.floc_classes.bottom_baffle import *
 from aide_render.builder_classes import DP, HP
 
 

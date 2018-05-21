@@ -1,5 +1,5 @@
 from aide_design.shared.units import unit_registry as u
-from floc_classes import *
+from aide_design.designs.civil_work.floc_classes import *
 from aide_render.builder_classes import DP, HP
 
 
@@ -209,27 +209,27 @@ class Flocculator:
         else:
             self.obstacles_bool = HP(1)
 
-        self.BottomBaffles_Assembly = dict(vars(BottomBaffles_Assembly(self.L_ent_tank_max,
+        self.BottomBaffles_Assembly = dict(vars(bottom_baffle_assembly.BottomBaffles_Assembly(self.L_ent_tank_max,
             self.L_sed, self.L_bottom_baffle, self.baffle_thickness, self.W_chan,
             self.num_chan, self.num_baffles_chan_1, self.num_baffles_chan_n,
             self.baffle_spacing_, self.wall_thickness)))
 
-        self.ConcreteChannels = dict(vars(ConcreteChannels(self.num_chan, self.L_ent_tank_max,
+        self.ConcreteChannels = dict(vars(floc_concrete_chan.ConcreteChannels(self.num_chan, self.L_ent_tank_max,
             self.h_chan, self.L_sed, self.W_chan, self.ent_tank_overhang_length,
             self.wall_thickness, self.floor_thickness)))
 
-        self.EntFlocBaffleSupport = dict(vars(EntFlocBaffleSupport(self.L_bottom_baffle,
+        self.EntFlocBaffleSupport = dict(vars(ent_floc_baffle_support.EntFlocBaffleSupport(self.L_bottom_baffle,
             self.L_top_baffle, self.baffle_thickness, self.W_chan,
             self.num_baffles_chan_1, self.num_baffles_chan_n)))
 
-        self.MainFlocBaffleSupport = dict(vars(MainFlocBaffleSupport(self.baffle_thickness,
+        self.MainFlocBaffleSupport = dict(vars(main_floc_baffle_support.MainFlocBaffleSupport(self.baffle_thickness,
             self.num_baffles_chan_1, self.num_baffles_chan_n)))
 
-        self.Obstacles_Assembly = dict(vars(Obstacles_Assembly(self.obstacles_bool,
+        self.Obstacles_Assembly = dict(vars(obstacle_assembly.Obstacles_Assembly(self.obstacles_bool,
             self.baffle_thickness, self.W_chan, self.num_chan, self.num_baffles_chan_1,
             self.num_baffles_chan_n, self.baffle_spacing_, self.wall_thickness)))
 
-        self.TopBaffles_Assembly = dict(vars(TopBaffles_Assembly(self.L_ent_tank_max,
+        self.TopBaffles_Assembly = dict(vars(top_baffle_assembly.TopBaffles_Assembly(self.L_ent_tank_max,
             self.L_sed, self.L_top_baffle, self.baffle_thickness, self.W_chan,
             self.num_chan, self.baffle_spacing_, self.wall_thickness)))
 

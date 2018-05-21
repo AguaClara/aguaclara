@@ -1,5 +1,5 @@
 from aide_design.shared.units import unit_registry as u
-from floc_chan import *
+from aide_design.designs.civil_work.floc_classes.floc_chan import *
 from aide_render.builder_classes import DP, HP
 
 
