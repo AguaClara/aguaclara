@@ -1,4 +1,4 @@
-from aide_design.units import unit_registry as u
+from aide_design.shared.units import unit_registry as u
 from bottom_baffle import *
 from top_baffle import *
 from obstacle import *

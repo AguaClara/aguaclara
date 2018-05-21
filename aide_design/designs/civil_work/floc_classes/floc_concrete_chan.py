@@ -1,4 +1,4 @@
-from aide_design.units import unit_registry as u
+from aide_design.shared.units import unit_registry as u
 from floc_chan import *
 from aide_render.builder_classes import DP, HP
 
