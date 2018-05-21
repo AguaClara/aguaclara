@@ -82,8 +82,41 @@ def vol_floc(Q_plant, temp, hl, coll_pot):
     14.009544668698396 meter3
 
     """
-    vol = (coll_pot / G_avg(temp, hl, coll_pot).magnitude)*Q_plant
+    vol = (coll_pot / G_avg(temp, hl, coll_pot))*Q_plant*u.m**3/u.s
     return vol.magnitude
+
+@u.wraps(u.s, [u.m**3/u.s, u.degK, u.m, None], False)
+def res_time(Q_plant, temp, hl, coll_pot):
+    """Return the residence time of water in the flocculator using flow rate and
+    volume.
+
+    Parameters
+    ----------
+    Q_plant: float
+        Flow through the plant
+
+    temp: float
+        Design temperature
+
+    hl : float
+        Headloss through the flocculator
+
+    coll_pot : int
+        Desired collision potential in the flocculator
+
+    Returns
+    -------
+    float
+        residence time of water in flocculator
+
+    Examples
+    --------
+    >>> from aide_design.play import*
+    >>> res_time(40*u.L/u.s, 15*u.degC, 40*u.cm, 37000)
+    396.8145097807381 second
+
+    """
+    return vol_floc(Q_plant, temp, hl, coll_pot).magnitude/Q_plant
 
 @u.wraps(u.m, [u.m**3/u.s, u.degK, u.m, u.m, None, None], False)
 def width_HS_min(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3):
