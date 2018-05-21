@@ -19,7 +19,13 @@ hl : float
 """
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
-from aide_design.play import *
+import numpy as np
+import math
+from aide_design.shared.units import unit_registry as u
+import aide_design.shared.utility as ut
+import aide_design.shared.physchem as pc
+import aide_design.shared.constants as con
+import aide_design.shared.materials_database as mat
 
 #primary outputs from this file are
 #Nominal diameter nom_diam_lfom_pipe(FLOW,HL_LFOM,con.RATIO_LFOM_SAFETY)

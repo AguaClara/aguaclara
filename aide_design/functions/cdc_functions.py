@@ -3,7 +3,10 @@ controller of an AguaClara plant.
 
 """
 
-from aide_design.play import *
+import numpy as np
+from aide_design.shared.units import unit_registry as u
+import aide_design.shared.utility as ut
+import aide_design.shared.physchem as pc
 
 #==============================================================================
 # Functions for Coagulant Viscosities and Selecting Available Tube Diameters

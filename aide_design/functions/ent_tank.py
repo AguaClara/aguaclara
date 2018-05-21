@@ -2,7 +2,11 @@
 an AguaClara plant.
 
 """
-from aide_design.play import *
+import numpy as np
+from aide_design.shared.units import unit_registry as u
+import aide_design.shared.physchem as pc
+import aide_design.shared.constants as con
+import aide_design.shared.materials_database as mat
 
 @u.wraps(u.inch, [u.m**3/u.s, u.degK, u.m, None], False)
 def drain_OD(q_plant, temp, depth_end, sdr=26):

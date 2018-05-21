@@ -5,7 +5,8 @@ Created on Mon Jun 26 11:55:37 2017
 @author: kn348
 """
 ########################## Imports ##########################
-from aide_design.play import *
+import numpy as np
+from aide_design.shared.units import unit_registry as u
 
 g=9.80665*(u.m/(u.s**2))
 #==============================================================================

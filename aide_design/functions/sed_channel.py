@@ -2,5 +2,3 @@
 for an AguaClara plant.
 
 """
-
-from aide_design.play import *

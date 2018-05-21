@@ -2,7 +2,10 @@
 an AguaClara plant.
 
 """
-from aide_design.play import *
+import numpy as np
+from aide_design.shared.units import unit_registry as u
+import aide_design.shared.physchem as pc
+import aide_design.shared.constants as con
 
 
 @u.wraps(1/u.s, [u.degK, u.m, None], False)

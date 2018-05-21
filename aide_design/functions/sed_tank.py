@@ -2,7 +2,13 @@
 for an AguaClara plant.
 
 """
-from aide_design.play import *
+import numpy as np
+import math
+from aide_design.shared.units import unit_registry as u
+import aide_design.shared.utility as ut
+import aide_design.shared.physchem as pc
+import aide_design.shared.constants as con
+import aide_design.shared.materials_database as mat
 
 
 @u.wraps(None, [], False)
@@ -77,7 +83,7 @@ def w_diffuser_inner_min(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
     """
     return ((vel_up.to(u.inch/u.s).magnitude /
              vel_max_diffuser.to(u.inch/u.s).magnitude)
-             * W_tank.to(u.inch).magnitude)
+            * W_tank.to(u.inch).magnitude)
 
 @u.wraps(u.m, [], False)
 def w_diffuser_inner(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
@@ -181,8 +187,8 @@ def L_diffuser_outer(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
     0.001373119658119658 meter
     """
     return ((A_diffuser / (2 * thickness_diffuser_wall))
-           - w_diffuser_inner(vel_up, vel_max_diffuser,
-                              W_tank).to(u.inch)).to(u.m).magnitude
+            - w_diffuser_inner(vel_up, vel_max_diffuser,
+                               W_tank).to(u.inch)).to(u.m).magnitude
 
 @u.wraps(u.m, [], False)
 def L_diffuser_inner(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
@@ -221,7 +227,7 @@ def L_diffuser_inner(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
     """
     return (L_diffuser_outer(vel_up, vel_max_diffuser, W_tank,
                              thickness_diffuser_wall, A_diffuser) -
-    (2 * (thickness_diffuser_wall).to(u.m))).magnitude
+                            (2 * (thickness_diffuser_wall).to(u.m))).magnitude
 
 @u.wraps(u.m**3/u.s, [None], False)
 def q_diffuser(vel_up=1*u.mm/u.s, vel_max_diffuser=442.9*u.mm/u.s,
