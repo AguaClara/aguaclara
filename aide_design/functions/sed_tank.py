@@ -9,6 +9,7 @@ import aide_design.shared.utility as ut
 import aide_design.shared.physchem as pc
 import aide_design.shared.constants as con
 import aide_design.shared.materials_database as mat
+import aide_design.shared.pipedatabase as pipe
 
 
 @u.wraps(None, [], False)
