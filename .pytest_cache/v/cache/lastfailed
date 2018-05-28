@@ -1,9 +1,0 @@
-{
-  "aide_design/functions/ent_tank_dict_test.py": true,
-  "aide_design/functions/lfom_dict_test.py": true,
-  "tests/test_k_value_of_reductions_utility.py": true,
-  "tests/test_lfom.py": true,
-  "tests/test_physchem.py": true,
-  "tests/test_pipedatabase.py": true,
-  "tests/test_pipeline_utility.py": true
-}
