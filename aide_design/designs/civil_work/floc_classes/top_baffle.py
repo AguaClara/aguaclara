@@ -3,8 +3,12 @@ from aide_render.builder_classes import DP, HP
 
 
 class TopBaffle:
-    """This is a top baffle class. It's called by the top baffles assembly
-    class so that the hierarchy of objects in Python is the same as in Fusion.
+    """This is a top baffle class. It includes information of length,
+    thickness, and width of the baffles on the top of the flocculator.
+    Baffles are obstructions in the channel of a flocculator to force the
+    flow to switch directions by 180°. Baffles in AguaClara plants are 
+    plastic sheets, and all of the baffles in one flocculator channel are
+    connected to form a baffle module.
 
     """
 

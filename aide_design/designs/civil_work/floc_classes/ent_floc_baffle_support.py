@@ -6,9 +6,9 @@ from aide_render.builder_classes import DP, HP
 
 
 class EntFlocBaffleSupport:
-    """This is a entrance tank, flocculator, and baffle support class.
-    It's called by the flocculator class so that the hierarchy of
-    objects in Python is the same as in Fusion.
+    """This is a entrance tank, flocculator, and baffle support class. The
+    baffle module supports each individual baffle and obstacle in the entrance
+    tank and flocculator.
 
     """
 

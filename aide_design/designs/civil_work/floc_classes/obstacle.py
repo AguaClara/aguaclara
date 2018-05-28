@@ -3,8 +3,11 @@ from aide_render.builder_classes import DP, HP
 
 
 class Obstacle:
-    """This is the obstacle class. It's called by the obstacles assemby class
-    so that the hierarchy of objects in Python is the same as in Fusion.
+    """This is the obstacle class. Obstacles are half-pipes to contract the flow
+    after the flow expands around one baffle and before it reaches the next
+    baffle. The purpose of these obstacles is to provide extra head loss in
+    between baffles. They generate head loss via minor losses, and one obstacle
+    is designed to have the same minor loss as one baffle.
 
     """
 

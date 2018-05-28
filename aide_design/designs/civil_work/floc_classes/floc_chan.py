@@ -3,8 +3,8 @@ from aide_render.builder_classes import DP, HP
 
 
 class Channel:
-    """This is a channel class. It's called by the flocculator class so
-    that the hierarchy of objects in Python is the same as in Fusion.
+    """This is a channel class to describe the physical parameters of the channel.
+    The channel is what the baffle module sits inside.
 
     Attributes
     ----------

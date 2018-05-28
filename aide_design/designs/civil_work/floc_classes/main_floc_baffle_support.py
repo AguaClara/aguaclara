@@ -3,9 +3,9 @@ from aide_render.builder_classes import DP, HP
 
 
 class MainFlocBaffleSupport:
-    """This is the main flocculator baffle support class.
-    It's called by the flocculator class so that the hierarchy of
-    objects in Python is the same as in Fusion.
+    """This is a main flocculator and baffle support class. The baffle module
+    supports each individual baffle and obstacle in the entrance tank and
+    flocculator.
 
     """
 
