@@ -1,0 +1,31 @@
+language: python
+sudo: false
+python:
+- '3.5'
+- '3.6'
+install:
+- pip install -r requirements-dev.txt
+matrix:
+  fast_finish: true
+script:
+- pytest --cov=./
+stages:
+- test
+- deploy
+jobs:
+  include:
+  - stage: deploy
+    python: 3.6
+    install: skip
+    script: skip
+    deploy:
+      provider: pypi
+      user: aguaclara
+      password:
+        secure: m6R5a2SgJeKoRz4tzlywZTvXQXnjtcWA6j21y0Gfh0hAamsm4Ah2Vpcg5tG6HdaMcV5AQwL6WRO3wMJjCUwcOf3XplzwSZ8O9jdaTbA56xh8u4E+/NJXJ0OBxrHkZ256StT9sBo1VmBdBeAwyD+vVde4NPf9acJEt0imMBFuIPOUVviB0x++7UnK0lfHBaIfgYoTSOf6Csv4HR2T7SMNee3TBMVcakq2bQEeBR2ZnhSnrLHvsFrNf9H7ImwXt51qCJoUOu74p4Z/X+PVommAcGo3KbPtSM1C7HTjfcnsvbUQ1JR5LneKMKLjWXv286p2xMcFckw6DjlOKqiUtQZFeqidPiYUBT+FT595HnAtsHPqaZTIx9L7m48e6M5mdaybfpVlZH5Gx4iZZCUh7/8qLYEm24VkDfs97FYQGbaAuE9RlUIBWD2eBd/aINWCSwh8flpZw0JFs+HCPk1aoxtUTmGFq+yvreV+p5PqHMCIdUNsvHuJsfRS0CKnBv/I2EHXAxmv/nlZE686QT6rhUieWxJmdPg32oS33i1NEugAHn7z6vkRbDKOdeXRfmFfXTfEFz45JPAKKvPw5rd2qwy5IYGIPW9i2OcUwahvEe+qh8LtlVzSOhs81fRLGa0nJ19/rT1I7l3ePw24TLCClb51VHaLR3gagB+JX7qQDlvZP1E=
+      on:
+        tags: true
+        branch: master
+      distributions: sdist
+after_success:
+  - codecov
