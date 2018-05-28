@@ -9,6 +9,7 @@ By: Sage Weber-Shirk
 """
 
 equivalents = [equivalency] = eq
+rev = turn
 NTU = 1.7 * (mg / L)
 dollar = [money] = USD
 lempira = dollar * 0.0427 = HNL
