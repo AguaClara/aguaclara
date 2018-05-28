@@ -5,21 +5,21 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 
-from aide_design import physchem as pc
+from aide_design.shared import physchem as pc
 
-from aide_design import utility as ut
+from aide_design.shared import utility as ut
 
-from aide_design import optional_inputs as opt
+from aide_design.shared import optional_inputs as opt
 
-from aide_design import pipedatabase as pipe
+from aide_design.shared import pipedatabase as pipe
 
-from aide_design import materials_database as mat
+from aide_design.shared import materials_database as mat
 
-from aide_design import constants as con
+from aide_design.shared import constants as con
 
-from aide_design.units import unit_registry as u
+from aide_design.shared.units import unit_registry as u
 
-from aide_design.unit_process_design import lfom
+from aide_design.functions import lfom
 
 
 class LfomTest(unittest.TestCase):
