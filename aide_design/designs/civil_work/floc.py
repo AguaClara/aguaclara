@@ -82,6 +82,7 @@ class Flocculator:
     >>> my_floc = Flocculator(HP(20, u.L/u.s), HP(2, u.m))
     >>> from aide_render.builder import extract_types
     >>> floc_design_dict = extract_types(my_floc, [DP], [dict])
+    floc_design_dict
     >>> from aide_render.yaml import load, dump
     >>> dump(floc_design_dict)
     "BottomBaffles_Assembly:\n  BottomBaffle: {Height: !DP '1.728 meter', Thickness: !DP '2 millimeter', Width: !DP '0.3134\n      meter'}\n  EntTank_Length: !DP '2.2 meter'\n  Length: !DP '7.35 meter'\n  Num_Exit: !DP '18 '\n  Num_Inlet: !DP '26 '\n  Spacing: !DP '0.272 meter'\n  Thickness: !DP '2 millimeter'\n  TotalNum: !DP '2 '\n  WallThickness: !DP '0.15 meter'\n  Width: !DP '0.3134 meter'\nConcreteChannels:\n  Channel: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter', FloorThickness: !DP '0.2\n      meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter', TotalNum: !DP '2 ',\n    WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  EntTank_Length: !DP '2.2 meter'\n  EvenWall: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter', FloorThickness: !DP '0.2\n      meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter', TotalNum: !DP '2 ',\n    WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  FirstChannel: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter',\n    FloorThickness: !DP '0.2 meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter',\n    TotalNum: !DP '2 ', WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  FirstLength: !DP '5.786 meter'\n  FloorThickness: !DP '0.2 meter'\n  Height: !DP '2.5 meter'\n  LastChannel: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter', FloorThickness: !DP '0.2\n      meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter', TotalNum: !DP '2 ',\n    WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  Length: !DP '7.35 meter'\n  OddWall: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter', FloorThickness: !DP '0.2\n      meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter', TotalNum: !DP '2 ',\n    WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  TotalNum: !DP '2 '\n  WallThickness: !DP '0.15 meter'\n  Width: !DP '0.3134 meter'\nEntFlocBaffleSupport:\n  BottomBaffle: {Height: !DP '1.728 meter', Thickness: !DP '2 millimeter', Width: !DP '0.3134\n      meter'}\n  TopBaffle: {Height: !DP '2.228 meter', Thickness: !DP '2 millimeter', Width: !DP '0.3134\n      meter'}\n  bafflethickness: !DP '2 millimeter'\n  numberbaffles: !DP '18 '\n  numberentbaffles: !DP '26 '\nMainFlocBaffleSupport: {bafflethickness: !DP '2 millimeter', numberbaffles: !DP '18 ',\n  numberentbaffles: !DP '26 '}\nObstacles_Assembly:\n  Num_Exit: !DP '26 '\n  Num_Inlet: !DP '18 '\n  Obstacle: {Width: !DP '0.3134 meter'}\n  Spacing: !DP '0.272 meter'\n  Thickness: !DP '2 millimeter'\n  TotalNum: !DP '2 '\n  WallThickness: !DP '0.15 meter'\n  Width: !DP '0.3134 meter'\nTopBaffles_Assembly:\n  EntTank_Length: !DP '2.2 meter'\n  Length: !DP '7.35 meter'\n  Spacing: !DP '0.272 meter'\n  Thickness: !DP '2 millimeter'\n  TopBaffle: {Height: !DP '2.228 meter', Thickness: !DP '2 millimeter', Width: !DP '0.3134\n      meter'}\n  TotalNum: !DP '2 '\n  WallThickness: !DP '0.15 meter'\n  Width: !DP '0.3134 meter'\nnumberrows: !DP '1 '\n"
@@ -98,7 +99,7 @@ class Flocculator:
 
     ############## ATTRIBUTES ################
     hl = HP(40, u.cm)
-    coll_pot = HP(37000)
+    coll_pot = DP(37000)
     freeboard = HP(10, u.cm)
     ratio_HS_min = HP(3)
     ratio_HS_max = HP(6)
@@ -161,20 +162,27 @@ class Flocculator:
             for k, v in bod.items():
                 setattr(self, k, v)
 
-        # calculate planview area of the entrance tank
-        A_ET_PV = self.area_ent_tank(q, self.temp, depth_end, self.hl, self.coll_pot,
-                                     self.ratio_HS_min, self.W_min_construct,
-                                     self.L_sed, self.L_ent_tank_max)
+        while True:
+            # calculate planview area of the entrance tank
+            A_ET_PV = self.area_ent_tank(q, self.temp, depth_end, self.hl, self.coll_pot,
+                                         self.ratio_HS_min, self.W_min_construct,
+                                         self.L_sed, self.L_ent_tank_max)
 
-        # now calculate planview area of entrance tank + flocculator combined
-        volume_floc = self.vol_floc(q, self.temp, self.hl, self.coll_pot)
-        A_floc_PV = volume_floc/(depth_end + self.hl/2)
-        A_ETF_PV = (A_ET_PV + A_floc_PV).to(u.m**2)
+            # now calculate planview area of entrance tank + flocculator combined
+            volume_floc = self.vol_floc(q, self.temp, self.hl, self.coll_pot)
+            A_floc_PV = volume_floc/(depth_end + self.hl/2)
+            A_ETF_PV = (A_ET_PV + A_floc_PV).to(u.m**2)
 
-        # calculate width of the flocculator channels and entrance tank
-        W_min = self.width_floc_min(q, self.temp, depth_end, self.hl, self.coll_pot,
-                                    self.ratio_HS_min, self.W_min_construct).to(u.m)
-        W_tot = A_ETF_PV/self.L_sed
+            # calculate width of the flocculator channels and entrance tank
+            W_min = self.width_floc_min(q, self.temp, depth_end, self.hl, self.coll_pot,
+                                        self.ratio_HS_min, self.W_min_construct).to(u.m)
+            W_tot = A_ETF_PV/self.L_sed
+
+            if W_tot.to(u.m).magnitude > (2*self.W_min_construct).to(u.m).magnitude:
+                break
+
+            self.coll_pot += 500
+
         self.num_chan = HP(self.num_channel(q, self.temp, depth_end, self.hl,
                                             self.coll_pot, W_tot,
                                             self.ratio_HS_min, self.W_min_construct))
