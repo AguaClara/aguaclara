@@ -8,47 +8,109 @@ class Flocculator:
     such as constants that go in the class attribute section (defaults), and methods.
     As well as an instantiation process that can be used to set custom values.
 
+    The design algorithm is as follows:
+    - the planview area of the entrance tank is calculated
+    - the planview area of the entrance tank and the flocculator is calculated
+    - the total width of the flocculator and entrance tank is calculated
+    - the number of channels and their widths are calculated
+    - the height of the channel is calculated
+    - the number of baffles, their spacing, and heights are calculated
+    - the presence of obstacles is determined
+
     Attributes
     ----------
     These are the default values for a flocculator. To overwrite, pass these
     into the bod (Basis Of Design) variable into the constructor.
 
-    temp : float
-        Design temperature
+        temp : float
+            Design temperature
 
-    L_ent_tank_max : float
-        The maximum length of the entrance tank
+        L_ent_tank_max : float
+            The maximum length of the entrance tank
 
-    L_sed : float
-        The length of the sedimentation unit process, including channels
+        L_sed : float
+            The length of the sedimentation unit process, including channels
 
-    hl : float
-        Headloss through the flocculator
+        hl : float
+            Headloss through the flocculator
 
-    coll_pot : int
-        Desired collision potential in the flocculator
+        coll_pot : int
+            Desired collision potential in the flocculator
 
-    freeboard: float
-        The height between the water and top of the flocculator channels
+        freeboard: float
+            The height between the water and top of the flocculator channels
 
-    ratior_HS_min : int
-        Minimum allowable ratio between the water depth and edge to edge distance
-        between baffles
+        ratio_HS_min : int
+            Minimum allowable ratio between the water depth and edge to edge distance
+            between baffles
 
-    ratio_HS_max : int
-        Maximum allowable ratio between the water depth and edge to edge distance
-        between baffles
+        ratio_HS_max : int
+            Maximum allowable ratio between the water depth and edge to edge distance
+            between baffles
 
-    W_min_construct : float
-        Minimum width of a flocculator channel based on the width of the human hip
+        W_min_construct : float
+            Minimum width of a flocculator channel based on the width of the human hip
 
-    baffle_thickness : float
-        Thickness of a baffle
+        baffle_thickness : float
+            Thickness of a baffle
+
+    These are the values calculated when an instance of the class is initialized.
+
+        num_chan : int
+            Number of channels for the entrance tank and flocculator
+
+        W_chan : float
+            Width of the channels for the entrance tank and flocculator
+
+        H_chan : float
+            Height of the channels for the entrance tank and flocculator
+
+        baffle_spacing_ : float
+            Spacing between baffles in the flocculator
+
+        num_baffles_chan_1 : int
+            Number of baffles in the first channel of the flocculator (the channel
+            which includes the entrance tank and the start to the flocculator)
+
+        num_baffles_chan_n : int
+            Number of baffles in the channels of the flocculator (excluding the
+            first channel)
+
+        L_top_baffle : float
+            The vertical length of the baffles attached to the top of the flocculator
+
+        L_bottom_baffle : float
+            The vertical length of the baffles attached to the bottom of the flocculator
+
+        obstacles_bool : int
+            1 if there are obstacles in the flocculator, 0 otherwise
+
+    The following are dictionaries created to follow the hierarchy of Fusion
+    assemblies for plant design.
+
+        BottomBaffles_Assembly : dict
+            Dictionary of parameters required to assemble the bottom baffles
+
+        ConcreteChannels : dict
+            Dictionary of parameters required to create the channels themselves
+
+        EntFlocBaffleSupport : dict
+            Dictionary of parameters required to assemble the baffle supports
+            in the first channel of the flocculator
+
+        MainFlocBaffleSupport : dict
+            Dictionary of parameters required to assemble the baffle supports
+            in all but the first channel of the flocculator
+
+        Obstacles_Assembly : dict
+            Dictionary of parameters required to assemble the obstacles
+
+        TopBaffles_Assembly : dict
+            Dictionary of parameters required to assemble the top baffles
 
     Methods
     -------
     All these methods are just imported from the aide_design flocculator.
-    This would replace that.
 
     area_ent_tank(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3,
                   W_min_construct=45*u.cm, L_sed=7.35*u.m, L_ent_tank_max=2.2*u.m)
@@ -82,7 +144,6 @@ class Flocculator:
     >>> my_floc = Flocculator(HP(20, u.L/u.s), HP(2, u.m))
     >>> from aide_render.builder import extract_types
     >>> floc_design_dict = extract_types(my_floc, [DP], [dict])
-    floc_design_dict
     >>> from aide_render.yaml import load, dump
     >>> dump(floc_design_dict)
     "BottomBaffles_Assembly:\n  BottomBaffle: {Height: !DP '1.728 meter', Thickness: !DP '2 millimeter', Width: !DP '0.3134\n      meter'}\n  EntTank_Length: !DP '2.2 meter'\n  Length: !DP '7.35 meter'\n  Num_Exit: !DP '18 '\n  Num_Inlet: !DP '26 '\n  Spacing: !DP '0.272 meter'\n  Thickness: !DP '2 millimeter'\n  TotalNum: !DP '2 '\n  WallThickness: !DP '0.15 meter'\n  Width: !DP '0.3134 meter'\nConcreteChannels:\n  Channel: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter', FloorThickness: !DP '0.2\n      meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter', TotalNum: !DP '2 ',\n    WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  EntTank_Length: !DP '2.2 meter'\n  EvenWall: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter', FloorThickness: !DP '0.2\n      meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter', TotalNum: !DP '2 ',\n    WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  FirstChannel: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter',\n    FloorThickness: !DP '0.2 meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter',\n    TotalNum: !DP '2 ', WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  FirstLength: !DP '5.786 meter'\n  FloorThickness: !DP '0.2 meter'\n  Height: !DP '2.5 meter'\n  LastChannel: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter', FloorThickness: !DP '0.2\n      meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter', TotalNum: !DP '2 ',\n    WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  Length: !DP '7.35 meter'\n  OddWall: {EntTank_Length: !DP '2.2 meter', FirstLength: !DP '5.786 meter', FloorThickness: !DP '0.2\n      meter', Height: !DP '2.5 meter', Length: !DP '7.35 meter', TotalNum: !DP '2 ',\n    WallThickness: !DP '0.15 meter', Width: !DP '0.3134 meter'}\n  TotalNum: !DP '2 '\n  WallThickness: !DP '0.15 meter'\n  Width: !DP '0.3134 meter'\nEntFlocBaffleSupport:\n  BottomBaffle: {Height: !DP '1.728 meter', Thickness: !DP '2 millimeter', Width: !DP '0.3134\n      meter'}\n  TopBaffle: {Height: !DP '2.228 meter', Thickness: !DP '2 millimeter', Width: !DP '0.3134\n      meter'}\n  bafflethickness: !DP '2 millimeter'\n  numberbaffles: !DP '18 '\n  numberentbaffles: !DP '26 '\nMainFlocBaffleSupport: {bafflethickness: !DP '2 millimeter', numberbaffles: !DP '18 ',\n  numberentbaffles: !DP '26 '}\nObstacles_Assembly:\n  Num_Exit: !DP '26 '\n  Num_Inlet: !DP '18 '\n  Obstacle: {Width: !DP '0.3134 meter'}\n  Spacing: !DP '0.272 meter'\n  Thickness: !DP '2 millimeter'\n  TotalNum: !DP '2 '\n  WallThickness: !DP '0.15 meter'\n  Width: !DP '0.3134 meter'\nTopBaffles_Assembly:\n  EntTank_Length: !DP '2.2 meter'\n  Length: !DP '7.35 meter'\n  Spacing: !DP '0.272 meter'\n  Thickness: !DP '2 millimeter'\n  TopBaffle: {Height: !DP '2.228 meter', Thickness: !DP '2 millimeter', Width: !DP '0.3134\n      meter'}\n  TotalNum: !DP '2 '\n  WallThickness: !DP '0.15 meter'\n  Width: !DP '0.3134 meter'\nnumberrows: !DP '1 '\n"
@@ -190,7 +251,7 @@ class Flocculator:
 
         # calculate the height of the channel using depth at the end of the
         # flocculator, headloss, and freeboard
-        self.h_chan = HP((depth_end + self.hl + self.freeboard).to(u.m).magnitude, u.m)
+        self.H_chan = HP((depth_end + self.hl + self.freeboard).to(u.m).magnitude, u.m)
 
         # calculate baffle spacing and number of baffles in the flocculator
         self.baffle_spacing_ = HP(self.baffle_spacing(q, self.temp, self.W_chan, self.hl,
@@ -208,7 +269,7 @@ class Flocculator:
         # The distance between baffles is the same as the vertical distance between
         # the top baffle and the bottom of the channel, which is the same vertical
         # distance as the bottom baffle and the free surface at the end of the flocculator
-        self.L_top_baffle = HP((self.h_chan - self.baffle_spacing_).to(u.m).magnitude, u.m)
+        self.L_top_baffle = HP((self.H_chan - self.baffle_spacing_).to(u.m).magnitude, u.m)
         self.L_bottom_baffle = HP((depth_end - self.baffle_spacing_).to(u.m).magnitude, u.m)
 
         # determine if there are obstacles in the flocculator
@@ -223,7 +284,7 @@ class Flocculator:
             self.baffle_spacing_, self.wall_thickness)))
 
         self.ConcreteChannels = dict(vars(floc_concrete_chan.ConcreteChannels(self.num_chan, self.L_ent_tank_max,
-            self.h_chan, self.L_sed, self.W_chan, self.ent_tank_overhang_length,
+            self.H_chan, self.L_sed, self.W_chan, self.ent_tank_overhang_length,
             self.wall_thickness, self.floor_thickness)))
 
         self.EntFlocBaffleSupport = dict(vars(ent_floc_baffle_support.EntFlocBaffleSupport(self.L_bottom_baffle,

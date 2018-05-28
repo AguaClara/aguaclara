@@ -22,7 +22,7 @@ class Obstacles_Assembly:
         ----------
 
         obstacles_bool : int
-            1 if there are obstacles in the plant, 0 otherwise
+            1 if there are obstacles in the flocculator, 0 otherwise
 
         baffle_thickness : float
             Thickness of a baffle

@@ -14,7 +14,7 @@ class ConcreteChannels:
 
     """
 
-    def __init__(self, num_chan, L_ent_tank_max, h_chan, L_sed, W_chan,
+    def __init__(self, num_chan, L_ent_tank_max, H_chan, L_sed, W_chan,
                  ent_tank_overhang_length, wall_thickness, floor_thickness):
         """This is where the "instantiation" occurs. Think of this as "rendering the
         template" or "using the cookie-cutter to make the cookie". Here is where we
@@ -29,7 +29,7 @@ class ConcreteChannels:
         L_ent_tank_max : float
             The maximum length of the entrance tank
 
-        h_chan : float
+        H_chan : float
             The height of the flocculator channel
 
         L_sed : float
@@ -51,29 +51,29 @@ class ConcreteChannels:
 
         self.EntTank_Length = DP(L_ent_tank_max.magnitude, L_ent_tank_max.units)
         self.FirstLength = DP((L_sed - L_ent_tank_max + ent_tank_overhang_length).to(u.m).magnitude, u.m)
-        self.Height = DP(h_chan.magnitude, h_chan.units)
+        self.Height = DP(H_chan.magnitude, H_chan.units)
         self.Length = DP(L_sed.magnitude, L_sed.units)
         self.TotalNum = DP(num_chan.magnitude, num_chan.units)
         self.Width = DP(W_chan.magnitude, W_chan.units)
         self.WallThickness = DP(wall_thickness.magnitude, wall_thickness.units)
         self.FloorThickness = DP(floor_thickness.magnitude, floor_thickness.units)
 
-        self.Channel = dict(vars(Channel(num_chan, L_ent_tank_max, h_chan, L_sed, W_chan,
+        self.Channel = dict(vars(Channel(num_chan, L_ent_tank_max, H_chan, L_sed, W_chan,
                                ent_tank_overhang_length, wall_thickness,
                                floor_thickness)))
 
-        self.EvenWall = dict(vars(Channel(num_chan, L_ent_tank_max, h_chan, L_sed,
+        self.EvenWall = dict(vars(Channel(num_chan, L_ent_tank_max, H_chan, L_sed,
                                 W_chan, ent_tank_overhang_length,
                                 wall_thickness, floor_thickness)))
 
-        self.OddWall = dict(vars(Channel(num_chan, L_ent_tank_max, h_chan, L_sed, W_chan,
+        self.OddWall = dict(vars(Channel(num_chan, L_ent_tank_max, H_chan, L_sed, W_chan,
                                ent_tank_overhang_length, wall_thickness,
                                floor_thickness)))
 
-        self.FirstChannel = dict(vars(Channel(num_chan, L_ent_tank_max, h_chan, L_sed,
+        self.FirstChannel = dict(vars(Channel(num_chan, L_ent_tank_max, H_chan, L_sed,
                                     W_chan, ent_tank_overhang_length,
                                     wall_thickness, floor_thickness)))
 
-        self.LastChannel = dict(vars(Channel(num_chan, L_ent_tank_max, h_chan, L_sed,
+        self.LastChannel = dict(vars(Channel(num_chan, L_ent_tank_max, H_chan, L_sed,
                                    W_chan, ent_tank_overhang_length,
                                    wall_thickness, floor_thickness)))
