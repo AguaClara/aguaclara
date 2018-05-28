@@ -9,8 +9,6 @@ from aide_design.shared import physchem as pc
 
 from aide_design.shared import utility as ut
 
-from aide_design.shared import optional_inputs as opt
-
 from aide_design.shared import pipedatabase as pipe
 
 from aide_design.shared import materials_database as mat
