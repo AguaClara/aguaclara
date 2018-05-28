@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jun 28 13:57:23 2017
+"""This file is used to calculate the design paramters for the chemical dose
+controller of an AguaClara plant.
 
-@author: cc2467
-
-This file does not follow PEP naming conventions for variables. - mw24
 """
 
 import numpy as np

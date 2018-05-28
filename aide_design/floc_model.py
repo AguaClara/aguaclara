@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jun 26 16:50:46 2017
+"""This file contains functions which can be used to model the behavior of
+flocs based on the chemical interactions of clay, coagulant, and humic acid.
 
-@author: Sage Weber-Shirk
-
-Last revised: Fri Aug 11 2017
-By: Sage Weber-Shirk
 """
 
 ######################### Imports #########################
@@ -65,11 +61,14 @@ HumicAcid = Chemical('Humic Acid', 72 * 10**-9, 1780, None, 'Humic Acid')
 
 
 ################### Necessary Constants ###################
-# Fractal diameter, based on data from Adachi.
+# Fractal dimension, based on data from published in Environmental Engineering
+# Science, "Fractal Models for Floc Density, Sedimentation Velocity, and Floc
+# Volume Fraction for High Peclet Number Reactors" by Monroe Weber-Shirk and
+# Leonard Lion (2015).
 DIM_FRACTAL = 2.3
 # Ratio of clay platelet height to diameter.
 RATIO_HEIGHT_DIAM = 0.1
-# Ration between inner viscous length scale and Kolmogorov length scale.
+# Ratio between inner viscous length scale and Kolmogorov length scale.
 RATIO_KOLMOGOROV = 50
 # Shape factor for drag on flocs used in terminal velocity equation.
 PHI_FLOC = 45/24
@@ -281,7 +280,23 @@ def gamma_coag(ConcClay, ConcAluminum, coag, material,
 @u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
 @ut.list_handler
 def gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag):
-    """"""
+    """Return the fraction of the coagulant that is coated with humic acid.
+
+    Parameters
+    ----------
+    var1 : float
+        Concentration of alumninum in solution
+    var2 : float
+        Concentration of natural organic matter in solution
+    var3 : ?
+    var4 : ?
+
+    Returns
+    -------
+    float
+        fraction of the coagulant that is coated with humic acid
+
+    """
     return min(((ConcNatOrgMat / conc_precipitate(ConcAl, coag).magnitude)
                 * (coag.Density / NatOrgMat.Density)
                 * (coag.Diameter / (4 * NatOrgMat.Diameter))
@@ -293,7 +308,31 @@ def gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag):
                 None, None, u.dimensionless], False)
 def pacl_term(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, NatOrgMat,
                coag, material, RatioHeightDiameter):
-    """"""
+    """Return the fraction of the surface area that is covered with coagulant
+    that is not covered with humic acid.
+
+    Parameters
+    ----------
+    var1 : float
+        Diameter of the dosing tube
+    var2 : float
+        Concentration of clay in solution
+    var3 : float
+        Concentration of alumninum in solution
+    var4 : float
+        Concentration of natural organic matter in solution
+    var5 : ?
+    var6 : ?
+    var7 : float
+        Ratio between inner viscous length scale and Kolmogorov length scale
+
+    Returns
+    -------
+    float
+        fraction of the surface area that is covered with coagulant that is not
+        covered with humic acid
+
+    """
     return (gamma_coag(ConcClay, ConcAl, coag, material, DiamTube,
                        RatioHeightDiameter)
             * (1 - gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat,

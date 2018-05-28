@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug  7 12:05:59 2017
 
-@author: kn348
+"""
+
 """
 
 import math
@@ -12,11 +10,11 @@ import numpy as np
 try:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
-    from aide_design import expert_inputs as exp
+    from aide_design import constants as con
 except ModuleNotFoundError:
     from aide_design.units import unit_registry as u
     from aide_design import utility as ut
-    from aide_design import expert_inputs as exp
+    from aide_design import constants as con
 
 
 ########### Materials Constants - general ############
@@ -39,6 +37,8 @@ EN_TUBE_SERIES = 0
 DIAM_REBAR = (1/2)*u.inch
 
 ########### Material constants - entrance tank ############
+
+SDR_LFOM = 26
 
 THICKNESS_LFOM_SHEET = THICKNESS_CONCRETE_MIN
 
@@ -100,28 +100,11 @@ NOM_DIAM_FLOC_MODULES_MAIN = (1/2)*u.inch
 NOM_DIAM_FLOC_MODULES_LARGE = 1.5*u.inch
 
 ############ Material constants - sedimentation  #############
-
-WIDTH_SED_PLATE = 1.06*u.m
-
-THICKNESS_SED_PLATE = 0.2*u.cm
-
-SPACE_SED_PLATE = 2.5*u.cm
-
-ANGLE_SED_PLATE = 60*u.deg
-
-THICKNESS_SED_WEIR = 5*u.cm
-
 #Maximum length of sed plate sticking out past module pipes without any
 #additional support. The goal is to prevent floppy modules that don't maintain
 # constant distances between the plates
 
 LENGTH_SED_PLATE_CANTILEVERED = 20*u.cm
-
-DIST_CENTER_SED_PLATE = SPACE_SED_PLATE + THICKNESS_SED_PLATE
-
-N_SED_MODULE_PLATES_MAX = math.floor((LENGTH_SED_PLATE_CANTILEVERED/DIST_CENTER_SED_PLATE*np.tan(ANGLE_SED_PLATE ))+1)
-
-N_SED_MODULE_PLATES_MIN = 8
 
 NOM_DIAM_SED_HOPPER_DRAIN = 1*u.inch
 
@@ -203,7 +186,7 @@ while DIAM_DRILL_MET[counter] < 50*u.mm:
     DIAM_DRILL_MET.append(DIAM_DRILL_MET[counter-1] + 2*u.mm)
 
 def diam_drill(EN_DRILL_SERIES):
-    if EN_DRILL_SERIES  == 0:
+    if EN_DRILL_SERIES == 0:
         DIAM_DRILL = DIAM_DRILL_ENG
     else:
         DIAM_DRILL = DIAM_DRILL_MET
