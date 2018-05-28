@@ -3,9 +3,13 @@ from aide_render.builder_classes import DP, HP
 
 
 class BottomBaffle:
-    """This is a bottom baffle class. It's called by the bottom baffles assembly
-    class so that the hierarchy of objects in Python is the same as in Fusion.
-
+    """This is a bottom baffle class. It includes information of length,
+    thickness, and width of the baffles on the bottom of the flocculator. 
+    Baffles are obstructions in the channel of a flocculator to force the 
+    flow to switch directions by 180°. Baffles in AguaClara plants are 
+    plastic sheets, and all of the baffles in one flocculator channel are 
+    connected to form a baffle module.
+   
     """
 
     def __init__(self, L_bottom_baffle, baffle_thickness, W_chan):
