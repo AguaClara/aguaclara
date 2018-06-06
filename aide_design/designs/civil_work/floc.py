@@ -141,7 +141,7 @@ class Flocculator:
     Examples
     --------
 
-    >>> my_floc = Flocculator(HP(20, u.L/u.s), HP(2, u.m))
+    >>> my_floc = Flocculator(HP(20, u.L/u.s), HP(15, u.degC), HP(2, u.m))
     >>> from aide_render.builder import extract_types
     >>> floc_design_dict = extract_types(my_floc, [DP], [dict])
     >>> from aide_render.yaml import load, dump
@@ -176,7 +176,6 @@ class Flocculator:
     L_ent_tank_max = HP(2.2, u.m)
     L_sed = HP(7.35, u.m)
     baffle_thickness = HP(2, u.mm)
-    temp = HP(15, u.degC)
     wall_thickness = HP(0.15, u.m)
     floor_thickness = HP(0.2, u.m)
     ent_tank_overhang_length = HP(0.6363, u.m)
@@ -198,7 +197,7 @@ class Flocculator:
     baffle_spacing = staticmethod(baffle_spacing)
     num_baffles = staticmethod(num_baffles)
 
-    def __init__(self, q, depth_end, bod=None):
+    def __init__(self, q, temp, depth_end, bod=None):
         """
         This is where the "instantiation" occurs. Think of this as "rendering the
         template" or "using the cookie-cutter to make the cookie". Here is where we
