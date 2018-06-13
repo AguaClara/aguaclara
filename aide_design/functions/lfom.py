@@ -5,6 +5,8 @@ orifice meter (LFOM) for an AguaClara plant.
 """
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
+
+from aide_design.play import*
 import numpy as np
 import math
 from aide_design.shared.units import unit_registry as u
@@ -46,9 +48,10 @@ def width_stout(hl, depth):
     --------
     >>> from aide_design.play import*
     >>> width_stout(40*u.cm, 40*u.cm)
-    0.9019329453483474 second/meter²
+    <Quantity(0.9019329453483474, 'second / meter ** 2')>
     >>> width_stout(20*u.cm, 1*u.cm)
-    11.408649616179787 second/meter²
+    <Quantity(11.408649616179787, 'second / meter ** 2')>
+
 
     """
     return (2/((2*con.GRAVITY*depth)**(1/2) *
@@ -127,9 +130,9 @@ def dist_center_lfom_rows(Q, hl):
     --------
     >>> from aide_design.play import*
     >>> dist_center_lfom_rows(20*u.L/u.s, 20*u.cm)
-    0.025 meter
+    <Quantity(0.025, 'meter')>
     >>> dist_center_lfom_rows(60*u.L/u.s, 60*u.cm)
-    0.075 meter
+    <Quantity(0.075, 'meter')>
     """
     return hl/n_lfom_rows(Q, hl)
 
@@ -156,9 +159,9 @@ def vel_lfom_pipe_critical(hl):
     --------
     >>> from aide_design.play import*
     >>> vel_lfom_pipe_critical(20*u.cm)
-    0.8405802802312778 meter/second
+    <Quantity(0.8405802802312778, 'meter / second')>
     >>> vel_lfom_pipe_critical(60*u.cm)
-    1.4559277532010582 meter/second
+    <Quantity(1.4559277532010582, 'meter / second')>
     """
     return 4/(3*math.pi)*(2*con.GRAVITY.magnitude*hl)**(1/2)
 
@@ -184,9 +187,9 @@ def area_lfom_pipe_min(Q, hl):
     --------
     >>> from aide_design.play import*
     >>> area_lfom_pipe_min(20*u.L/u.s, 20*u.cm)
-    0.035689630967485675 meter2
+    <Quantity(0.035689630967485675, 'meter ** 2')>
     >>> area_lfom_pipe_min(60*u.L/u.s, 60*u.cm)
-    0.061816254139068764 meter2
+    <Quantity(0.061816254139068764, 'meter ** 2')>
 
     """
     return (con.RATIO_LFOM_SAFETY*Q/vel_lfom_pipe_critical(hl).magnitude)
@@ -214,9 +217,9 @@ def nom_diam_lfom_pipe(Q, hl):
     --------
     >>> from aide_design.play import*
     >>> nom_diam_lfom_pipe(20*u.L/u.s, 20*u.cm)
-    10.0 inch
+    <Quantity(10.0, 'inch')>
     >>> nom_diam_lfom_pipe(60*u.L/u.s, 60*u.cm)
-    12.0 inch
+    <Quantity(12.0, 'inch')>
     """
     ID = pc.diam_circle(area_lfom_pipe_min(Q, hl))
     return pipe.ND_SDR_available(ID, mat.SDR_LFOM).magnitude
@@ -246,9 +249,9 @@ def area_lfom_orifices_top(Q, hl):
     --------
     >>> from aide_design.play import*
     >>> area_lfom_orifices_top(20*u.L/u.s, 20*u.cm)
-    0.0013173573853983045 meter2
+    <Quantity(0.0013173573853983045, 'meter ** 2')>
     >>> area_lfom_orifices_top(60*u.L/u.s, 60*u.cm)
-    0.002281729923235958 meter2
+    <Quantity(0.002281729923235958, 'meter ** 2')>
     """
     return ((Q*width_stout(hl*u.m, hl*u.m - 0.5 *
              dist_center_lfom_rows(Q, hl)).magnitude *
@@ -277,7 +280,7 @@ def d_lfom_orifices_max(Q, hl):
     --------
     >>> from aide_design.play import*
     >>> d_lfom_orifices_max(20*u.L/u.s, 20*u.cm)
-    0.04095499380586013 meter
+    <Quantity(0.04095499380586013, 'meter')>
     """
     return (pc.diam_circle(area_lfom_orifices_top(Q, hl).magnitude).magnitude)
 
@@ -307,7 +310,7 @@ def orifice_diameter(Q, hl, drill_bits=mat.DIAM_DRILL_ENG):
     --------
     >>> from aide_design.play import*
     >>> orifice_diameter(20*u.L/u.s, 20*u.cm)
-    0.022224999999999998 meter
+    <Quantity(0.022224999999999998, 'meter')>
 
     """
     maxdrill = (min((dist_center_lfom_rows(Q, hl).magnitude),
@@ -340,7 +343,7 @@ def drillbit_area(Q, hl, drill_bits=mat.DIAM_DRILL_ENG):
     --------
     >>> from aide_design.play import*
     >>> drillbit_area(20*u.L/u.s, 20*u.cm, mat.DIAM_DRILL_ENG)
-    0.00038794791368402165 meter2
+    <Quantity(0.00038794791368402165, 'meter ** 2')>
 
     """
     return pc.area_circle(orifice_diameter(Q, hl, drill_bits)).magnitude
@@ -406,7 +409,7 @@ def flow_ramp(Q, hl):
     --------
     >>> from aide_design.play import*
     >>> flow_ramp(20*u.L/u.s, 40*u.cm)
-    \\[\\begin{pmatrix}0.0025 & 0.005 & 0.0075 & 0.01 & 0.0125 & 0.015000000000000001 & 0.017499999999999998 & 0.02\\end{pmatrix} meter3/second\\]
+    <Quantity([ 0.0025  0.005   0.0075  0.01    0.0125  0.015   0.0175  0.02  ], 'meter ** 3 / second')>
     """
     n_rows = n_lfom_rows(Q, hl)
     return np.linspace(Q/n_rows, Q, n_rows)
@@ -439,7 +442,8 @@ def height_lfom_orifices(Q, hl, drill_bits=mat.DIAM_DRILL_ENG):
     --------
     >>> from aide_design.play import*
     >>> height_lfom_orifices(20*u.L/u.s, 20*u.cm, mat.DIAM_DRILL_ENG)
-    \\[\\begin{pmatrix}0.011112499999999999 & 0.0361125 & 0.0611125 & 0.08611250000000001 & 0.1111125 & 0.1361125 & 0.16111250000000002 & 0.18611250000000001\\end{pmatrix} meter\\]
+    <Quantity([ 0.0111125  0.0361125  0.0611125  0.0861125  0.1111125  0.1361125
+      0.1611125  0.1861125], 'meter')>
 
     """
     return (np.arange((orifice_diameter(Q, hl, drill_bits).magnitude*0.5),
@@ -483,7 +487,7 @@ def flow_lfom_actual(Q, hl, Row_Index_Submerged, N_lfom_orifices,
     --------
     >>> from aide_design.play import*
     >>> flow_lfom_actual(20*u.L/u.s, 20*u.cm, 1, [1,1])
-    0.00033756816936411334 meter3/second
+    <Quantity(0.00033756816936411334, 'meter ** 3 / second')>
 
     """
     D_lfom_orifices = orifice_diameter(Q, hl, drill_bits).magnitude
@@ -527,7 +531,7 @@ def n_lfom_orifices(Q, hl, drill_bits=mat.DIAM_DRILL_ENG, S_orifice=1*u.cm):
     --------
     >>> from aide_design.play import*
     >>> n_lfom_orifices(20*u.L/u.s, 20*u.cm, mat.DIAM_DRILL_ENG, 1*u.cm)
-    array([20.,  6.,  6.,  5.,  4.,  5.,  3.,  3.])
+    array([ 20.,   6.,   6.,   5.,   4.,   5.,   3.,   3.])
 
     """
     q_ramp_local = flow_ramp(Q, hl).magnitude
@@ -587,8 +591,7 @@ def n_lfom_orifices_fusion(Q, hl, num_rows, drill_bits=mat.DIAM_DRILL_ENG,
     --------
     >>> from aide_design.play import*
     >>> n_lfom_orifices_fusion(20*u.L/u.s, 20*u.cm, 8, mat.DIAM_DRILL_ENG, 1*u.cm)
-    (array([20.,  6.,  6.,  5.,  4.,  5.,  3.,  3.]),
-    array([1., 0., 1., 0., 1., 0., 1., 0.]))
+    (array([ 20.,   6.,   6.,   5.,   4.,   5.,   3.,   3.]), array([ 1.,  0.,  1.,  0.,  1.,  0.,  1.,  0.]))
 
     """
     num_orifices_per_row = n_lfom_orifices(Q, hl, drill_bits, S_orifice)
@@ -638,7 +641,8 @@ def flow_lfom_error(Q, hl, drill_bits, S_orifice):
     --------
     >>> from aide_design.play import*
     >>> flow_lfom_error(20*u.L/u.s, 20*u.cm, mat.DIAM_DRILL_ENG, 1*u.cm)
-    \\[\\begin{pmatrix}-0.0003291229516060772 & 0.00029855543023757543 & -0.00040128229002386884 & -0.00041467605669878727 & -0.0029056699882666973 & 0.001701216757524042 & 0.000898141605292814\\end{pmatrix} meter3/second\\]
+    <Quantity([-0.00032912  0.00029856 -0.00040128 -0.00041468 -0.00290567  0.00170122
+      0.00089814], 'meter ** 3 / second')>
     """
     N_lfom_orifices = n_lfom_orifices(Q, hl, drill_bits, S_orifice)
     Q_lfom_error = []
@@ -674,14 +678,14 @@ def flow_lfom_ideal(Q, hl, H):
     --------
     >>> from aide_design.play import*
     >>> flow_lfom_ideal(20*u.L/u.s, 20*u.cm, 20*u.cm)
-    0.02 meter3 / second
+    <Quantity(0.02, 'meter ** 3 / second')>
 
     """
     flow_lfom_ideal = (Q*H)/hl
     return flow_lfom_ideal
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m, u.m], False)
-def flow_lfom(q, hl, H, drill_bits=mat.DIAM_DRILL_ENG, S_orifice=1*u.cm):
+def flow_lfom(Q, hl, H, drill_bits=mat.DIAM_DRILL_ENG, S_orifice=1*u.cm):
     """Calculates the total flow from the LFOM under the given conditions
 
     Parameters
@@ -710,7 +714,7 @@ def flow_lfom(q, hl, H, drill_bits=mat.DIAM_DRILL_ENG, S_orifice=1*u.cm):
     --------
     >>> from aide_design.play import*
     >>> flow_lfom(20*u.L/u.s, 20*u.cm, 20*u.cm)
-    0.00940749311972628 meter3/second
+    <Quantity(0.00940749311972628, 'meter ** 3 / second')>
 
     """
     D_lfom_orifices = orifice_diameter(Q, hl, drill_bits).magnitude
