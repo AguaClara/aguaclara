@@ -409,7 +409,7 @@ def flow_ramp(Q, hl):
     --------
     >>> from aide_design.play import*
     >>> flow_ramp(20*u.L/u.s, 40*u.cm)
-    <Quantity([ 0.0025  0.005   0.0075  0.01    0.0125  0.015   0.0175  0.02  ], 'meter ** 3 / second')>
+    <Quantity([0.0025 0.005  0.0075 0.01   0.0125 0.015  0.0175 0.02  ], 'meter ** 3 / second')>
     """
     n_rows = n_lfom_rows(Q, hl)
     return np.linspace(Q/n_rows, Q, n_rows)
@@ -442,8 +442,8 @@ def height_lfom_orifices(Q, hl, drill_bits=mat.DIAM_DRILL_ENG):
     --------
     >>> from aide_design.play import*
     >>> height_lfom_orifices(20*u.L/u.s, 20*u.cm, mat.DIAM_DRILL_ENG)
-    <Quantity([ 0.0111125  0.0361125  0.0611125  0.0861125  0.1111125  0.1361125
-      0.1611125  0.1861125], 'meter')>
+    <Quantity([0.0111125 0.0361125 0.0611125 0.0861125 0.1111125 0.1361125 0.1611125
+     0.1861125], 'meter')>
 
     """
     return (np.arange((orifice_diameter(Q, hl, drill_bits).magnitude*0.5),
@@ -531,7 +531,7 @@ def n_lfom_orifices(Q, hl, drill_bits=mat.DIAM_DRILL_ENG, S_orifice=1*u.cm):
     --------
     >>> from aide_design.play import*
     >>> n_lfom_orifices(20*u.L/u.s, 20*u.cm, mat.DIAM_DRILL_ENG, 1*u.cm)
-    array([ 20.,   6.,   6.,   5.,   4.,   5.,   3.,   3.])
+    array([20.,  6.,  6.,  5.,  4.,  5.,  3.,  3.])
 
     """
     q_ramp_local = flow_ramp(Q, hl).magnitude
@@ -591,7 +591,7 @@ def n_lfom_orifices_fusion(Q, hl, num_rows, drill_bits=mat.DIAM_DRILL_ENG,
     --------
     >>> from aide_design.play import*
     >>> n_lfom_orifices_fusion(20*u.L/u.s, 20*u.cm, 8, mat.DIAM_DRILL_ENG, 1*u.cm)
-    (array([ 20.,   6.,   6.,   5.,   4.,   5.,   3.,   3.]), array([ 1.,  0.,  1.,  0.,  1.,  0.,  1.,  0.]))
+    (array([20.,  6.,  6.,  5.,  4.,  5.,  3.,  3.]), array([1., 0., 1., 0., 1., 0., 1., 0.]))
 
     """
     num_orifices_per_row = n_lfom_orifices(Q, hl, drill_bits, S_orifice)
