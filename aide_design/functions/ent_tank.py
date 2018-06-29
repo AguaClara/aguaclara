@@ -140,6 +140,7 @@ def L_plate(q_plant, W_chan, S_plate=2.5*u.cm, vel_capture=8*u.mm/u.s,
                np.tan(angle_plate.to(u.rad).magnitude)))
     return L_plate
 
+# TODO: ent_tank_inputs=ent_tank_dict is throwing a NameError since ent_tank_dict is not defined at that point. ent_tank_dict should be either declared globally or passed explicitly in the function declaration. (Not sure which to do! -Oliver)
 @u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, None], False)
 def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict):
     """Aggregates the entrance tank functions into a single function which
