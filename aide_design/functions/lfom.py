@@ -319,13 +319,13 @@ def orifice_diameter(Q, hl, drill_bits=mat.DIAM_DRILL_ENG):
     # Make a new list, convert drill bit sizes to metric, then populate the list.
     drill_bits_metric = []
     for drill_bit in drill_bits:
-        new_drill_bits.append(drill_bit.to(u.m).magnitude)
+        drill_bits_metric.append(drill_bit.to(u.m).magnitude)
     
     # Temporarily make the list a Quantity so it can be compared by ut.floor_nearest().
-    drill_bits_metric = new_drill_bits * u('meter')
+    drill_bits_metric = drill_bits_metric * u('meter')
 
     # .magnitude prevents it from returning '0.022222 meter' within the magnitude value.
-    return ut.floor_nearest(maxdrill, new_drill_bits).magnitude
+    return ut.floor_nearest(maxdrill, drill_bits_metric).magnitude
 
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
