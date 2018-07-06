@@ -34,9 +34,9 @@ def G_avg(temp, hl, coll_pot):
     --------
     >>> from aide_design.play import*
     >>> G_avg(15 * u.degC, 40*u.cm, 37000)
-    93.24255814245437 1/second
+    <Quantity(93.24255814245437, '1 / second')>
     >>> G_avg(20 * u.degC, 40*u.cm, 37000)
-    105.64226282862515 1/second
+    <Quantity(105.64226282862515, '1 / second')>
 
     """
     G = ((con.GRAVITY.magnitude * hl) /
@@ -77,9 +77,9 @@ def vol_floc(Q_plant, temp, hl, coll_pot):
     --------
     >>> from aide_design.play import*
     >>> vol_floc(40*u.L/u.s, 15*u.degC, 40*u.cm, 37000)
-    15.872580391229524 meter3
+    <Quantity(15.872580391229524, 'meter ** 3')>
     >>> vol_floc(40*u.L/u.s, 20*u.degC, 40*u.cm, 37000)
-    14.009544668698396 meter3
+    <Quantity(14.009544668698396, 'meter ** 3')>
 
     """
     try:
@@ -117,7 +117,7 @@ def res_time(Q_plant, temp, hl, coll_pot):
     --------
     >>> from aide_design.play import*
     >>> res_time(40*u.L/u.s, 15*u.degC, 40*u.cm, 37000)
-    396.8145097807381 second
+    <Quantity(396.8145097807381, 'second')>
 
     """
     return vol_floc(Q_plant, temp, hl, coll_pot).magnitude/Q_plant
@@ -161,9 +161,9 @@ def width_HS_min(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3):
     --------
     >>> from aide_design.play import*
     >>> width_HS_min(20*u.L/u.s, 25*u.degC, 2*u.m, 40*u.cm, 37000)
-    0.11026896890543642 meter
+    <Quantity(0.11026896890543642, 'meter')>
     >>> width_HS_min(40*u.L/u.s, 15*u.degC, 5*u.m, 40*u.cm, 37000, 3)
-    0.07044662697031184 meter
+    <Quantity(0.07044662697031184, 'meter')>
 
     """
     nu = pc.viscosity_kinematic(temp).magnitude
@@ -214,9 +214,9 @@ def width_floc_min(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3, W_min
     --------
     >>> from aide_design.play import*
     >>> width_floc_min(20*u.L/u.s, 25*u.degC, 2*u.m, 40*u.cm, 37000)
-    45 centimeter
+    <Quantity(45, 'centimeter')>
     >>> width_floc_min(40*u.L/u.s, 15*u.degC, 2*u.m, 40*u.cm, 37000)
-    45 centimeter
+    <Quantity(45, 'centimeter')>
     """
     W_min_construct = W_min_construct.to(u.cm).magnitude
     return max(width_HS_min(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min).to(u.cm).magnitude,
@@ -324,9 +324,9 @@ def area_ent_tank(Q_plant, temp, depth_end, hl, coll_pot, ratio_HS_min=3,
     --------
     >>> from aide_design.play import*
     >>> area_ent_tank(20*u.L/u.s, 25*u.degC, 2*u.m, 40*u.cm, 37000, 3, 45*u.cm, 7.35*u.m, 2.2*u.cm)
-    1 meter ** 2
+    <Quantity(1, 'meter ** 2')>
     >>> area_ent_tank(40*u.L/u.s, 15*u.degC, 2*u.m, 40*u.cm, 37000)
-    1 meter ** 2
+    <Quantity(1, 'meter ** 2')>
     """
     L_sed = L_sed.to(u.m)
     L_ent_tank_max = L_ent_tank_max.to(u.m)
@@ -394,9 +394,9 @@ def expansion_dist_max(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max=6):
     --------
     >>> from aide_design.play import*
     >>> expansion_dist_max(20*u.L/u.s, 15*u.degC, 0.45*u.m, 40*u.cm, 37000)
-    1.244387877682417 meter
+    <Quantity(1.244387877682417, 'meter')>
     >>> expansion_dist_max(40*u.L/u.s, 25*u.degC, 0.45*u.m, 40*u.cm, 37000)
-    1.9701785617907324 meter
+    <Quantity(1.9701785617907324, 'meter')>
 
     """
     g_avg = G_avg(temp, hl, coll_pot).magnitude
@@ -490,9 +490,9 @@ def height_exp(Q_plant, temp, depth_end, W_chan, hl, coll_pot, ratio_HS_max=6):
     --------
     >>> from aide_design.play import*
     >>> height_exp(20*u.L/u.s, 15*u.degC, 2*u.m, 0.45*u.m, 40*u.cm, 37000)
-    1.0 meter
+    <Quantity(1.0, 'meter')>
     >>> height_exp(40*u.L/u.s, 25*u.degC, 4*u.m, 0.45*u.m, 40*u.cm, 37000)
-    1.3333333333333333 meter
+    <Quantity(1.3333333333333333, 'meter')>
 
     """
     return depth_end / num_expansions(Q_plant, temp, depth_end, W_chan, hl,
@@ -532,9 +532,9 @@ def baffle_spacing(Q_plant, temp, W_chan, hl, coll_pot, ratio_HS_max=6):
     --------
     >>> from aide_design.play import *
     >>> baffle_spacing(40*u.L/u.s, 25*u.degC, 0.45*u.m, 40*u.cm, 37000)
-    0.3283630936317887 meter
+    <Quantity(0.3283630936317887, 'meter')>
     >>> baffle_spacing(20*u.L/u.s, 15*u.degC, 0.45*u.m, 40*u.cm, 37000)
-    0.2073979796137361 meter
+    <Quantity(0.2073979796137361, 'meter')>
     """
     g_avg = G_avg(temp, hl, coll_pot).magnitude
     nu = pc.viscosity_kinematic(temp).magnitude
