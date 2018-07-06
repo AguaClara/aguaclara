@@ -596,7 +596,7 @@ def depth_end_floc(Q_plant, temp, depth_above_exit_man=5*u.cm, sdr_exit_man=26,
                    plate_settler_to_exit_man=5*u.cm, angle_plate=60*u.deg,
                    floc_blanket_to_plate_settler=10*u.cm,
                    depth_floc_blanket=25*u.cm, angle_bottom_tank=50*u.deg,
-                   W_tank=42*u.inch, L_tank=5.8*u.m, hl_orifice_exit_man=4*u.cm
+                   W_tank=42*u.inch, L_tank=5.8*u.m, hl_orifice_exit_man=4*u.cm,
                    N_orifices_exit_man=58, ratio_Q_man_orifice=0.8, S_plate=2.5*u.cm,
                    vel_up=1*u.mm/u.s, vel_capture=0.12*u.mm/u.s, thickness_plate=2*u.mm,
                    sed_bottom_to_floc_bottom=0.194*u.m):

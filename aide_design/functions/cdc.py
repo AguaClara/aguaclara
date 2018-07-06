@@ -16,24 +16,22 @@ g=9.80665*(u.m/(u.s**2))
 
 NU_WATER = 1* u.mm**2/u.s
 
-# TODO: Should this really be a class? I don't think it's instantiated anywhere. -Oliver
 #==============================================================================
 # #coagulant viscosity
 #==============================================================================
-class nu:
-    def nu_alum(ConcAlum):
-        ConcAlum = ConcAlum.to(1/u.kg/(u.m**3))
-        return (1 + (4.255 * 10**(-6) * (ConcAlum)**2.289))*NU_WATER
+def nu_alum(ConcAlum):
+    ConcAlum = ConcAlum.to(1/u.kg/(u.m**3))
+    return (1 + (4.255 * 10**(-6) * (ConcAlum)**2.289))*NU_WATER
 
-    def nu_pacl(ConcPacl):
-        ConcPacl = ConcPacl.to(1/u.kg/(u.m**3))
-        return (1 + (2.383 * 10**(-5) * (ConcPacl)**1.893))*NU_WATER
+def nu_pacl(ConcPacl):
+    ConcPacl = ConcPacl.to(1/u.kg/(u.m**3))
+    return (1 + (2.383 * 10**(-5) * (ConcPacl)**1.893))*NU_WATER
 
-    def nu_coag(ConcCoag, ENCoag):
-        if ENCoag == 0:
-            return nu_alum(ConcCoag)
-        elif ENCoag == 1:
-            return nu_pacl(ConcCoag)
+def nu_coag(ConcCoag, ENCoag):
+    if ENCoag == 0:
+        return nu_alum(ConcCoag)
+    elif ENCoag == 1:
+        return nu_pacl(ConcCoag)
 
 #==============================================================================
 # stock volume and concentration
