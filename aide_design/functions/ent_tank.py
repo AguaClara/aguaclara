@@ -38,7 +38,7 @@ def drain_OD(q_plant, temp, depth_end, sdr=26):
     --------
     >>> from aide_design.play import*
     >>> drain_OD(20*u.L/u.s, 15*u.degC, 2*u.m)
-    4.5 inch
+    <Quantity(4.5, 'inch')>
 
     """
     nu = pc.viscosity_kinematic(temp)
@@ -85,10 +85,10 @@ def num_plates(q_plant, W_chan, S_plate=2.5*u.cm, thickness_plate=2*u.mm,
     Examples
     --------
     >>> from aide_design.play import *
-    >>> num_plates_ent_tank(20*u.L/u.s,0.25*u.m)
-    >>> 1.0
-    >>> num_plates_ent_tank(120*u.L/u.s,125*u.m)
-    >>> 2.0
+    >>> num_plates(20*u.L/u.s,0.25*u.m)
+    1.0
+    >>> num_plates(120*u.L/u.s,125*u.m)
+    2.0
     """
     B_plate = S_plate + thickness_plate
     N_plates = np.ceil(np.sqrt(q_plant/B_plate.to(u.m).magnitude
@@ -128,67 +128,14 @@ def L_plate(q_plant, W_chan, S_plate=2.5*u.cm, vel_capture=8*u.mm/u.s,
     Examples
     --------
     >>> from aide_design.play import *
-    >>> L_plate_ent_tank(20*u.L/u.s, 0.25*u.m)
-    >>> 15.527444428789268 meter
-    >>> L_plate_ent_tank(30*u.L/u.s, 125*u.m)
-    >>> 0.016877874990957113 meter
+    >>> L_plate(20*u.L/u.s, 0.25*u.m)
+    <Quantity(15.527444428789268, 'meter')>
+    >>> L_plate(30*u.L/u.s, 125*u.m)
+    <Quantity(0.016877874990957113, 'meter')>
     """
-    L_plate = ((q_plant/(num_plates_ent_tank(q_plant, W_chan) * W_chan *
+    L_plate = ((q_plant/(num_plates(q_plant, W_chan) * W_chan *
                vel_capture.to(u.m/u.s).magnitude *
                np.cos(angle_plate.to(u.rad).magnitude)))
                - (S_plate.to(u.m).magnitude *
                np.tan(angle_plate.to(u.rad).magnitude)))
     return L_plate
-
-# TODO: ent_tank_inputs=ent_tank_dict is throwing a NameError since ent_tank_dict is not defined at that point. ent_tank_dict should be either declared globally or passed explicitly in the function declaration. (Not sure which to do! -Oliver)
-@u.wraps(None, [u.m**3/u.s, u.degK, u.m, u.m, None], False)
-def ent_tank_agg(q_plant, temp, depth_end, W_chan, ent_tank_inputs=ent_tank_dict):
-    """Aggregates the entrance tank functions into a single function which
-    outputs a dictionary of all the necessary design parameters.
-
-    Parameters
-    ----------
-    q_plant : float
-        Plant flow rate
-
-    temp: float
-        Design temperature
-
-    depth_end: float
-        The depth of water at the end of the flocculator
-
-    W_chan: float
-        The width of the channel
-
-    Returns
-    -------
-    float
-        ?
-
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>> ent_tank_dict = {'sdr': 26, 'S_plate': 2.5*u.cm, 'angle_plate': 50*u.deg,
-    ...                  'vel_capture': 8 * u.mm/u.s, 'L_max': 2.2*u.m,
-    ...                  'thickness_plate': 2*u.mm}
-    >>> ent_tank_agg(20*u.L/u.s, 20*u.degC, 2*u.m, 45*u.cm, ent_tank_dict)
-    {'L_max': <Quantity(2.2, 'meter')>,
-    'L_plate': <Quantity(8.613116309409655, 'meter')>
-    'N_plates': 1.0
-    'OD_drain': <Quantity(4.5, 'inch')>
-    'S_plate': <Quantity(2.5, 'centimeter')>,
-    'angle_plate': <Quantity(50, 'degree')>,
-    'sdr': 26,
-    'thickness_plate': <Quantity(2, 'millimeter')>,
-    'vel_capture': <Quantity(8.0, 'millimeter / second')>}
-
-    """
-    # calculate the outer diameter of the drain pipe
-    OD_drain = drain_OD(q_plant, temp, depth_end, sdr)
-    # calculate the number of plates in the plate settler module
-    N_plates = num_plates_ent_tank(q_plant, W_chan, ent_tank_inputs)
-    # calculate the length of of a plate in the entrance tank
-    L_plate = L_plate_ent_tank(q_plant, W_chan, ent_tank_inputs)
-    ent_tank_inputs.update({'OD_drain': OD_drain, 'N_plates': N_plates,
-                            'L_plate': L_plate})
-    return ent_tank_inputs
