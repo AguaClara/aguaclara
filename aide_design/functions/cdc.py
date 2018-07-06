@@ -16,6 +16,7 @@ g=9.80665*(u.m/(u.s**2))
 
 NU_WATER = 1* u.mm**2/u.s
 
+# TODO: Should this really be a class? I don't think it's instantiated anywhere. -Oliver
 #==============================================================================
 # #coagulant viscosity
 #==============================================================================
