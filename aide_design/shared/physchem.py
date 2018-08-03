@@ -226,7 +226,8 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
 def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
     """Return the major head loss (due to wall shear) in a pipe.
 
-    This equation applies to both laminar and turbulent flows.
+    This equation is an implementation of the Darcy-Weisbach equation,
+    and applies to both laminar and turbulent flows.
     """
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
