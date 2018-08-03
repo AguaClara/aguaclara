@@ -1,6 +1,6 @@
 import unittest
-from aide_design.units import unit_registry as u
-from aide_design import pipedatabase as pipe
+from aide_design.shared.units import unit_registry as u
+from aide_design.shared import pipedatabase as pipe
 
 class PipeTest(unittest.TestCase):
     def test_OD(self):

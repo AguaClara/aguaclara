@@ -1,7 +1,7 @@
 import unittest
-from aide_design.units import unit_registry as u
+from aide_design.shared.units import unit_registry as u
 import numpy as np
-import aide_design.pipeline_utility as pipeline
+import aide_design.shared.pipeline_utility as pipeline
 
 
 
