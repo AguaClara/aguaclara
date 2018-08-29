@@ -9,7 +9,7 @@ from aguaclara.play import*
 
 #primary outputs from this file are
 #Nominal diameter nom_diam_lfom_pipe(FLOW,HL_LFOM,con.RATIO_LFOM_SAFETY)
-#number of rows n_lfom_rows(FLOW,HL_LFOM)
+#number of rows n_rows(FLOW,HL_LFOM)
 #orifice diameter orifice_diameter(FLOW,HL_LFOM,drill_series_uom)
 #number of orifices in each row n_lfom_orifices(FLOW,HL_LFOM,drill_series_uom)
 #height of the center of each row height_lfom_orifices(FLOW,HL_LFOM,drill_series_uom)

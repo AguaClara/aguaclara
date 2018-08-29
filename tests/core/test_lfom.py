@@ -21,7 +21,7 @@ class LfomTest(unittest.TestCase):
                 self.assertAlmostEqual(lfom.width_stout(i[0], i[1]), i[2], places=3)
 
     def test_n_lfom_rows(self):
-        """"n_lfom_rows should give known result with known input.
+        """"n_rows should give known result with known input.
         Test cases were calculated using outputs from original Mathcad code.
 
         """
@@ -35,7 +35,7 @@ class LfomTest(unittest.TestCase):
                 self.assertAlmostEqual(lfom.n_lfom_rows(i[0], i[1]), i[2])
 
     def test_dist_center_lfom_rows(self):
-        """dist_center_lfom_rows should give known result with known input.
+        """b_rows should give known result with known input.
         Test cases were calculated using outputs from original Mathcad code.
 
         """
@@ -47,7 +47,7 @@ class LfomTest(unittest.TestCase):
                 self.assertAlmostEqual(lfom.dist_center_lfom_rows(i[0], i[1]), i[2])
 
     def test_vel_lfom_pipe_critical(self):
-        """vel_lfom_pipe_critical should give known result with known input.
+        """vel_critical should give known result with known input.
         Test cases were calculated using outputs from original Mathcad code.
 
         """
