@@ -3,10 +3,10 @@ pipeline design.
 
 """
 
-from aguaclara.units import unit_registry as u
-from aguaclara import physchem as pc
-import aguaclara.constants as con
-import aguaclara.materials_database as mats
+from aguaclara.core.units import unit_registry as u
+from aguaclara.core import physchem as pc
+import aguaclara.core.constants as con
+import aguaclara.core.materials_database as mats
 import numpy as numpy
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)

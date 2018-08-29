@@ -2,7 +2,7 @@
 for design parameters of AguaClara plants.
 
 """
-from aguaclara.units import unit_registry as u
+from aguaclara.core.units import unit_registry as u
 
 ## ETLF
 

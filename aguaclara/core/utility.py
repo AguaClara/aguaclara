@@ -7,9 +7,9 @@ can be used throughout the plant design.
 import math
 
 try:
-    from aguaclara.units import unit_registry as u
+    from aguaclara.core.units import unit_registry as u
 except ModuleNotFoundError:
-    from aguaclara.units import unit_registry as u
+    from aguaclara.core.units import unit_registry as u
 
 import numpy as np
 import functools

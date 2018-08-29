@@ -5,7 +5,7 @@ outer diameters of pipes based on their standard dimension ratio (SDR).
 
 #Let's begin to create the pipe database
 # https://docs.python.org/2/library/csv.html
-from aguaclara.units import unit_registry as u
+from aguaclara.core.units import unit_registry as u
 import numpy as np
 # We will use Pandas
 import pandas as pd

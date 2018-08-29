@@ -6,9 +6,8 @@ flocs based on the chemical interactions of clay, coagulant, and humic acid.
 
 ######################### Imports #########################
 import numpy as np
-from aguaclara import utility as ut
-from aguaclara.units import unit_registry as u
-from aguaclara import physchem as pc
+from aguaclara.core.units import unit_registry as u
+from aguaclara.core import physchem as pc, utility as ut
 
 u.enable_contexts('chem')
 

@@ -1,7 +1,7 @@
 import unittest
-from aguaclara.units import unit_registry as u
+from aguaclara.core.units import unit_registry as u
 import numpy as np
-import aguaclara.pipeline_utility as pipeline
+import aguaclara.core.pipeline_utility as pipeline
 
 
 

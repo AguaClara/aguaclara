@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "87f76a61d92314bb7eb807c80a7b5b7c68280af745464965a2202cda1239e29d"
+            "sha256": "88937ef026e1545b6693e1a21a15447ecbc7a053789cf58fab9978d8d2d7a6a9"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -139,7 +139,7 @@
         }
     },
     "develop": {
-        "aide-design": {
+        "aguaclara": {
             "editable": true,
             "path": "."
         },

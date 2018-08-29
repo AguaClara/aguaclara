@@ -5,11 +5,9 @@ controller of an AguaClara plant.
 
 import numpy as np
 
-from aguaclara import physchem as pc
+from aguaclara.core import physchem as pc, utility as ut
 
-from aguaclara.units import unit_registry as u
-
-from aguaclara import utility as ut
+from aguaclara.core.units import unit_registry as u
 
 
 #==============================================================================

@@ -6,13 +6,12 @@ https://neutrium.net/fluid_flow/pressure-loss-from-fittings-expansion-and-reduct
 
 """
 
-import aguaclara.pipedatabase as pipe
-from aguaclara.units import unit_registry as u
-from aguaclara import physchem as pc
-import aguaclara.constants as con
-import aguaclara.materials_database as mats
+from aguaclara.core.units import unit_registry as u
+from aguaclara.core import physchem as pc
+import aguaclara.core.constants as con
+import aguaclara.core.materials_database as mats
 import numpy as np
-import aguaclara.utility as ut
+import aguaclara.core.utility as ut
 
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.L/u.s])

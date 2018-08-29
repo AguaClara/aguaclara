@@ -8,12 +8,10 @@ import numpy as np
 from scipy import interpolate, integrate
 
 try:
-    from aguaclara.units import unit_registry as u
-    from aguaclara import utility as ut
-    from aguaclara import constants as con
-    from aguaclara import materials_database as mat
+    from aguaclara.core.units import unit_registry as u
+    from aguaclara.core import materials_database as mat, constants as con, utility as ut
 except ModuleNotFoundError:
-    from aguaclara.units import unit_registry as u
+    from aguaclara.core.units import unit_registry as u
     from aguaclara import utility as ut
     from aguaclara import constants as con
     from aguaclara import materials_database as mat

@@ -8,10 +8,10 @@ Created on Mon Jun 26 11:55:37 2017
 
 
 try:
-    from aguaclara.units import unit_registry as u
-    from aguaclara import utility as ut
+    from aguaclara.core.units import unit_registry as u
+    from aguaclara.core import utility as ut
 except ModuleNotFoundError:
-    from aguaclara.units import unit_registry as u
+    from aguaclara.core.units import unit_registry as u
     from aguaclara import utility as ut
 
 g=9.80665*(u.m/(u.s**2))
