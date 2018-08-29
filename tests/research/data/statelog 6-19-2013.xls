@@ -1,0 +1,38 @@
+Day fraction since midnight on 6/19/2013	 State ID	 State name	 Rule that caused previous state to end
+0.81951648	1	1. Backwash entire system	Operator changed the state
+0.82041173	0	OFF	Operator changed the state
+0.82092447	1	1. Backwash entire system	State Time
+0.82400305	2	2. Loading State	State Time
+0.83239646	3	3. Pump Ramp Down	State Time
+0.83257076	4	4. Shutoff Ball Valve	Flow sufficiently low (TIME)
+0.83264368	5	5. Settle State	State Time
+0.85347956	6	6. Open Ball Valve	State Time
+0.8535519	1	1. Backwash entire system	State Time
+0.85663048	2	2. Loading State	State Time
+0.86502331	3	3. Pump Ramp Down	State Time
+0.86519808	4	4. Shutoff Ball Valve	Flow sufficiently low (TIME)
+0.86527157	5	5. Settle State	State Time
+0.88610803	6	6. Open Ball Valve	State Time
+0.88618106	1	1. Backwash entire system	State Time
+0.88926081	2	2. Loading State	State Time
+0.89765305	3	3. Pump Ramp Down	State Time
+0.89782724	4	4. Shutoff Ball Valve	Flow sufficiently low (TIME)
+0.89790074	5	5. Settle State	State Time
+0.91873604	6	6. Open Ball Valve	State Time
+0.91880791	1	1. Backwash entire system	State Time
+0.92188708	2	2. Loading State	State Time
+0.9302799	3	3. Pump Ramp Down	State Time
+0.93045467	4	4. Shutoff Ball Valve	Flow sufficiently low (TIME)
+0.93052701	5	5. Settle State	State Time
+0.95136231	6	6. Open Ball Valve	State Time
+0.95143523	1	1. Backwash entire system	State Time
+0.95451451	2	2. Loading State	State Time
+0.96290734	3	3. Pump Ramp Down	State Time
+0.96308153	4	4. Shutoff Ball Valve	Flow sufficiently low (TIME)
+0.96315386	5	5. Settle State	State Time
+0.98399044	6	6. Open Ball Valve	State Time
+0.98406266	1	1. Backwash entire system	State Time
+0.98714252	2	2. Loading State	State Time
+0.99553592	3	3. Pump Ramp Down	State Time
+0.99571069	4	4. Shutoff Ball Valve	Flow sufficiently low (TIME)
+0.99578245	5	5. Settle State	State Time
