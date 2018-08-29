@@ -1,4 +1,4 @@
-{% set name = "aide_design" %}
+{% set name = "aguaclara" %}
 {% set version = "0.0.0" %}
 {% set hash_type = "sha256" %}
 {% set hash_value = "6cf7b6b98bed2337af42f679c072fd9815538b478cca03df309cc1b2c659ab79" %}
@@ -33,7 +33,7 @@ requirements:
 
 test:
   imports:
-    - aide_design
+    - aguaclara
 
 about:
   home: https://github.com/AguaClara/aguaclara_design

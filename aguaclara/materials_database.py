@@ -8,13 +8,13 @@ import math
 import numpy as np
 
 try:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
-    from aide_design import constants as con
+    from aguaclara.units import unit_registry as u
+    from aguaclara import utility as ut
+    from aguaclara import constants as con
 except ModuleNotFoundError:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
-    from aide_design import constants as con
+    from aguaclara.units import unit_registry as u
+    from aguaclara import utility as ut
+    from aguaclara import constants as con
 
 
 ########### Materials Constants - general ############

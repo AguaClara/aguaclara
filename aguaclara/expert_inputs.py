@@ -2,7 +2,7 @@
 scientific principles which will be used in AguaClara plant design.
 
 """
-from aide_design.units import unit_registry as u
+from aguaclara.units import unit_registry as u
 
 import warnings
 warnings.simplefilter('default')

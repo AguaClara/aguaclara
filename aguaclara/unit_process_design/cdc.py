@@ -8,11 +8,11 @@ Created on Mon Jun 26 11:55:37 2017
 
 
 try:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
+    from aguaclara.units import unit_registry as u
+    from aguaclara import utility as ut
 except ModuleNotFoundError:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
+    from aguaclara.units import unit_registry as u
+    from aguaclara import utility as ut
 
 g=9.80665*(u.m/(u.s**2))
 #==============================================================================

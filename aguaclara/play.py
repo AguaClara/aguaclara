@@ -4,12 +4,12 @@
 It imports all commonly used aide packages with one line, ensures Python is
 run in the correct virtual environment, sets sig figs correctly and provides
 any additional environment massaging to get to designing as quickly as
-possible. This should NOT be used by other modules within aide_design as it
+possible. This should NOT be used by other modules within aguaclara as it
 results in unnecessary imports.
 
 Usage:
 
-    * Import all into your global namespace with: `from aide_design.play *`
+    * Import all into your global namespace with: `from aguaclara.play *`
     * setup_aide() should run during import.
 
 Now you should be able to execute:
@@ -26,20 +26,20 @@ import matplotlib.pyplot as plt
 import matplotlib
 
 # AIDE imports
-import aide_design
-import aide_design.pipedatabase as pipe
-from aide_design.units import unit_registry as u
-from aide_design import physchem as pc
-import aide_design.constants as con
-import aide_design.materials_database as mat
-import aide_design.utility as ut
-import aide_design.k_value_of_reductions_utility as k
-import aide_design.pipeline_utility as pipeline
-import aide_design.optional_inputs as opt
+import aguaclara
+import aguaclara.pipedatabase as pipe
+from aguaclara.units import unit_registry as u
+from aguaclara import physchem as pc
+import aguaclara.constants as con
+import aguaclara.materials_database as mat
+import aguaclara.utility as ut
+import aguaclara.k_value_of_reductions_utility as k
+import aguaclara.pipeline_utility as pipeline
+import aguaclara.optional_inputs as opt
 import warnings
 
 # deprecated imports
-import aide_design.expert_inputs as exp
+import aguaclara.expert_inputs as exp
 
 
 def setup_aide():
@@ -61,13 +61,13 @@ def set_sig_fig(n: int = 4):
         n: number of significant figures to display
 
     Example:
-        import aide_design
-        from aide_design.units import unit_registry as u
+        import aguaclara
+        from aguaclara.units import unit_registry as u
         h=2.5532532522352543*u.m
         e = 25532532522352543*u.m
         print('h before sigfig adjustment: ',h)
         print('e before sigfig adjustment: ',e)
-        aide_design.units.set_sig_fig(10)
+        aguaclara.units.set_sig_fig(10)
         print('h after sigfig adjustment: ',h)
         print('e after sigfig adjustment: ',e)
 
@@ -87,7 +87,7 @@ def ensure_in_a_virtual_environment():
     import sys
     # way to test for virtual environment: https://stackoverflow.com/a/1883251/5136799
     if hasattr(sys, 'real_prefix'):
-        raise UserWarning("aide_design should always be run in a virtual environment to ensure"
+        raise UserWarning("aguaclara should always be run in a virtual environment to ensure"
                           "that all dependencies are correctly installed. Please refer to the"
                           "readme for virtual environment setup instructions.")
 

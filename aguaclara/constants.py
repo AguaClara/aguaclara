@@ -3,8 +3,8 @@
 scientific principles which will be used in AguaClara plant design.
 
 """
-from aide_design.units import unit_registry as u
-import aide_design.pipedatabase as pipe
+from aguaclara.units import unit_registry as u
+import aguaclara.pipedatabase as pipe
 import numpy as np
 
 #####tabulated constants

@@ -2,7 +2,7 @@
 an AguaClara plant.
 
 """
-from aide_design.play import*
+from aguaclara.play import*
 
 # expansion minor loss coefficient for 180 degree bend
 K_e = (1 / con.RATIO_VC_ORIFICE**2 - 1)**2
@@ -29,7 +29,7 @@ def G_avg(hl, Gt, T):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>>G_avg(40*u.cm, 37000, 25*u.degC)
     118.715 1/second
     """
@@ -66,7 +66,7 @@ def vol_floc(q_plant, hl, Gt, T):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>>vol_floc(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
     6.233 meter3
     """
@@ -106,7 +106,7 @@ def width_HS_min(q_plant, hl, Gt, T, depth_end):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
     0.1074 centimeter
     """
@@ -149,7 +149,7 @@ def width_floc_min(q_plant, hl, Gt, T, depth_end):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
     45 centimeter
     """
@@ -189,7 +189,7 @@ def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
     2
     """
@@ -229,7 +229,7 @@ def area_ent_tank(q_plant, hl, Gt, T, depth_end):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> area_ent_tank(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
     1 meter ** 2
     """
@@ -286,7 +286,7 @@ def exp_dist_max(q_plant, hl, Gt, T, W_chan):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
     0.375 meter
     """
@@ -324,7 +324,7 @@ def num_expansions(q_plant, hl, Gt, T, depth_end):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     ???
     """
     return int(np.ceil(depth_end/(exp_dist_max(q_plant, hl, Gt, T)).magnitude))
@@ -357,7 +357,7 @@ def height_exp(q_plant, hl, Gt, T, depth_end):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     ???
     """
     return depth_end/num_expansions(q_plant, hl, Gt, T)
@@ -389,7 +389,7 @@ def baffle_spacing(q_plant, hl, Gt, T, W_chan):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> baffle_spacing(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
     0.063 meter
     ."""
@@ -433,7 +433,7 @@ def num_baffles(q_plant, hl, Gt, T, W_chan, L, baffle_thickness):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> num_baffles(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
     0
     >>> num_baffles(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)

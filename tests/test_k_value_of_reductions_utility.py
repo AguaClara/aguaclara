@@ -1,7 +1,7 @@
 import unittest
-import aide_design.k_value_of_reductions_utility as k
-from aide_design.units import unit_registry as u
-from aide_design import pipedatabase as pipe
+import aguaclara.k_value_of_reductions_utility as k
+from aguaclara.units import unit_registry as u
+from aguaclara import pipedatabase as pipe
 
 """ There are still many cases to test."""
 

@@ -2,7 +2,7 @@
 an AguaClara plant.
 
 """
-from aide_design.play import*
+from aguaclara.play import*
 
 @u.wraps(u.inch, [u.m**3/u.s, u.degK, u.m, None], False)
 def drain_OD(q_plant, T, depth_end, SDR):
@@ -31,7 +31,7 @@ def drain_OD(q_plant, T, depth_end, SDR):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     ??
     """
     nu = pc.viscosity_kinematic(T)
@@ -61,7 +61,7 @@ def num_plates_ET(q_plant, W_chan):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> num_plates_ET(20*u.L/u.s,2*u.m)
     1.0
     """
@@ -88,7 +88,7 @@ def L_plate_ET(q_plant, W_chan):
 
     Examples
     --------
-    >>> from aide_design.play import*
+    >>> from aguaclara.play import*
     >>> L_plate_ET(20*u.L/u.s,2*u.m)
     0.00194
     """

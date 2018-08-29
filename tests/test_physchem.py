@@ -11,8 +11,8 @@ By: Ethan Keller
 #Note: All answer values in this file should be checked against MathCad
 #before this file is released to the Master branch!
 
-from aide_design.units import unit_registry as u
-from aide_design import physchem as pc
+from aguaclara.units import unit_registry as u
+from aguaclara import physchem as pc
 import unittest
 
 class GeometryTest(unittest.TestCase):

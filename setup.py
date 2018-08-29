@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='aide_design',
+setup(name='aguaclara',
       version='0.0.12',
       description='AguaClara Infrastructure Design Engine',
       url='https://github.com/AguaClara/aguaclara_design',

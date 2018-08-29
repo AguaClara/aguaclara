@@ -32,13 +32,13 @@ def set_sig_fig(n: int):
         n: number of significant figures to display
 
     Example:
-        import aide_design
-        from aide_design.units import unit_registry as u
+        import aguaclara
+        from aguaclara.units import unit_registry as u
         h=2.5532532522352543*u.m
         e = 25532532522352543*u.m
         print('h before sigfig adjustment: ',h)
         print('e before sigfig adjustment: ',e)
-        aide_design.units.set_sig_fig(10)
+        aguaclara.units.set_sig_fig(10)
         print('h after sigfig adjustment: ',h)
         print('e after sigfig adjustment: ',e)
 

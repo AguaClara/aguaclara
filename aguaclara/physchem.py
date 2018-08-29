@@ -8,15 +8,15 @@ import numpy as np
 from scipy import interpolate, integrate
 
 try:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
-    from aide_design import constants as con
-    from aide_design import materials_database as mat
+    from aguaclara.units import unit_registry as u
+    from aguaclara import utility as ut
+    from aguaclara import constants as con
+    from aguaclara import materials_database as mat
 except ModuleNotFoundError:
-    from aide_design.units import unit_registry as u
-    from aide_design import utility as ut
-    from aide_design import constants as con
-    from aide_design import materials_database as mat
+    from aguaclara.units import unit_registry as u
+    from aguaclara import utility as ut
+    from aguaclara import constants as con
+    from aguaclara import materials_database as mat
 
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""
