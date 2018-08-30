@@ -1,0 +1,1 @@
+Search.setIndex({docnames:["index"],envversion:53,filenames:["index.rst"],objects:{},objnames:{},objtypes:{},terms:{The:0,code:0,design:0,drink:0,govern:0,hold:0,packag:0,plant:0,python:0,treatment:0,water:0},titles:["Welcome to the AguaClara Documentation!"],titleterms:{aguaclara:0,document:0,welcom:0}})
