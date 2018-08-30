@@ -17,6 +17,6 @@ def test_lfom(lfom):
     assert lfom.flow_ramp[5] == 0.6 *u.L/u.s
     assert lfom.flow_actual(2, [4,3,2]) == 0.0001962543726011661 * u.m**3/u.s
     assert lfom.n_orifices_per_row[0] == 8
-    assert np.average(lfom.error_per_row) == 0.005194582036259183
+    assert -0.001 < (np.average(lfom.error_per_row) - 0.005194582036259183) <0.001
     lfom.draw()
     assert lfom.cad.measurements["d"].to(u.mm).magnitude - (lfom.b_rows*2 + lfom.orifice_diameter).to(u.mm).magnitude < 1
