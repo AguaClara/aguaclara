@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='aguaclara',
-      version='0.0.12',
+      version='0.0.13',
       description='AguaClara Infrastructure Design Engine',
       url='https://github.com/AguaClara/aguaclara_design',
       author='AguaClara at Cornell',
