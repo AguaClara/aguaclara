@@ -8,6 +8,7 @@ import aguaclara.core.pipedatabase as pipe
 import aguaclara.core.materials_database as mat
 import aguaclara.core.utility as ut
 import aguaclara.core.optional_inputs as opt
+from onshapepy.part import Part
 
 
 class LFOM:
@@ -16,6 +17,7 @@ class LFOM:
     sdr = 26
     drill_bits = mat.DIAM_DRILL_ENG
     s_orfice = 1*u.cm
+    cad = Part("https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d")
 
     def __init__(self, q=20*u.L/u.s, hl=20*u.cm):
         self.q = q
@@ -166,15 +168,20 @@ class LFOM:
             n[i] = min((max(0, round(n_orifices_real))), self.n_orifices_per_row_max)
         return n
 
-    # This function calculates the error of the design based on the differences between the predicted flow rate
-    # and the actual flow rate through the LFOM.
     @property
     def error_per_row(self):
+        """This function calculates the error of the design based on the differences between the predicted flow rate
+        and the actual flow rate through the LFOM."""
         FLOW_lfom_error = []
         for i in range(self.n_rows-1):
             actual_flow = self.flow_actual(i, self.n_orifices_per_row)
             row_error = (actual_flow - self.flow_ramp[i]) / self.q
             FLOW_lfom_error.append(row_error.to(u.dimensionless))
         return FLOW_lfom_error
+
+    def draw(self):
+        """Draw the LFOM in CAD."""
+        self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
+                           "OD": self.nom_diam_pipe, "bRows": self.b_rows}
 
 

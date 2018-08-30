@@ -5,13 +5,13 @@ scientific principles which will be used in AguaClara plant design.
 from aguaclara.core.units import unit_registry as u
 
 import warnings
-warnings.simplefilter('default')
-warnings.warn(
-              "The module expert_inputs.py is deprecated. Please use constants"
-              + ".py which is imported as con instead. Some global variables" +
-              "have been moved to optional_inputs.py which is imported as opt",
-              DeprecationWarning
-              )
+# warnings.simplefilter('default')
+# warnings.warn(
+#               "The module expert_inputs.py is deprecated. Please use constants"
+#               + ".py which is imported as con instead. Some global variables" +
+#               "have been moved to optional_inputs.py which is imported as opt",
+#               DeprecationWarning
+#               )
 
 #####tabulated constants
 

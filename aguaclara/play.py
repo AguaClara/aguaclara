@@ -25,7 +25,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
 
-# AIDE imports
+# Design imports
+from aguaclara.design.lfom import LFOM
+
+# Core imports
 import aguaclara
 import aguaclara.core.pipedatabase as pipe
 from aguaclara.core.units import unit_registry as u
@@ -37,6 +40,7 @@ import aguaclara.core.k_value_of_reductions_utility as k
 import aguaclara.core.pipeline_utility as pipeline
 import aguaclara.core.optional_inputs as opt
 import warnings
+
 
 # deprecated imports
 import aguaclara.core.expert_inputs as exp
