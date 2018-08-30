@@ -27,7 +27,7 @@ class LFOM:
         """Return the width of a Stout weir at elevation z. More info
         `here. <https://confluence.cornell.edu/display/AGUACLARA/LFOM+sutro+weir+research>`_"""
         w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) * con.RATIO_VC_ORIFICE * np.pi * self.hl)
-        return w_per_flow*(u.L/u.s)
+        return w_per_flow*self.q
 
     @property
     def n_rows(self):
@@ -111,108 +111,70 @@ class LFOM:
 
         return math.floor(c/b)
 
-    @u.wraps(u.m ** 3 / u.s, [u.m ** 3 / u.s, u.m], False)
-    def flow_ramp(FLOW, HL_LFOM):
-        n_rows = n_lfom_rows(FLOW, HL_LFOM)
-        return np.linspace(FLOW / n_rows, FLOW, n_rows)
+    @property
+    def flow_ramp(self):
+        """An equally spaced array representing flow at each row."""
+        return np.linspace(self.q / self.n_rows, self.q, self.n_rows)*self.q.units
 
-    @u.wraps(u.m, [u.m ** 3 / u.s, u.m, u.inch], False)
-    def height_lfom_orifices(FLOW, HL_LFOM, drill_bits):
+    @property
+    def height_orifices(self):
         """Calculates the height of the center of each row of orifices.
         The bottom of the bottom row orifices is at the zero elevation
         point of the LFOM so that the flow goes to zero when the water height
         is at zero.
         """
-        return (np.arange((orifice_diameter(FLOW, HL_LFOM, drill_bits) * 0.5),
-                          HL_LFOM,
-                          (dist_center_lfom_rows(FLOW, HL_LFOM))))
+        return np.arange((self.orifice_diameter * 0.5), self.hl, self.q)
 
-    @u.wraps(u.m ** 3 / u.s, [u.m ** 3 / u.s, u.m, u.inch, None, None], False)
-    def flow_lfom_actual(FLOW, HL_LFOM, drill_bits, Row_Index_Submerged, N_LFOM_Orifices):
+    def flow_actual(self, Row_Index_Submerged, N_LFOM_Orifices):
         """Calculates the flow for a given number of submerged rows of orifices
         harray is the distance from the water level to the center of the orifices
-        when the water is at the max level
+        when the water is at the max level.
+
+        Parameters
+        ----------
+        Row_Index_Submerged: int
+            The index of the submerged row. All rows below and including this index are submerged.
+        N_LFOM_Orifices: [int]
+            The number of orifices at each row.
+
+        Returns
+        --------
+        The flow through all of the orifices that are submerged.
+
         """
-        D_LFOM_Orifices = orifice_diameter(FLOW, HL_LFOM, drill_bits).magnitude
-        row_height = dist_center_lfom_rows(FLOW, HL_LFOM).magnitude
-        harray = (np.linspace(row_height, HL_LFOM, n_lfom_rows(FLOW, HL_LFOM))) - 0.5 * D_LFOM_Orifices
+        harray = (np.linspace(self.b_rows, self.hl, self.n_rows))*self.hl.units - 0.5 * self.orifice_diameter
         FLOW_new = 0
         for i in range(Row_Index_Submerged + 1):
             FLOW_new = FLOW_new + (N_LFOM_Orifices[i] * (
-                pc.flow_orifice_vert(D_LFOM_Orifices, harray[Row_Index_Submerged - i],
-                                     con.RATIO_VC_ORIFICE).magnitude))
+                pc.flow_orifice_vert(self.orifice_diameter, harray[Row_Index_Submerged - i],
+                                     con.RATIO_VC_ORIFICE)))
         return FLOW_new
 
-    # Calculate number of orifices at each level given a diameter
-    @u.wraps(None, [u.m ** 3 / u.s, u.m, u.inch], False)
-    def n_lfom_orifices(FLOW, HL_LFOM, drill_bits):
-        FLOW_ramp_local = flow_ramp(FLOW, HL_LFOM).magnitude
-        n_orifices_max = n_lfom_orifices_per_row_max(FLOW, HL_LFOM, drill_bits)
-        n_rows = (n_lfom_rows(FLOW, HL_LFOM))
-        D_LFOM_Orifices = orifice_diameter(FLOW, HL_LFOM, drill_bits).magnitude
-        # H is distance from the elevation between two rows of orifices down to the center of the orifices
-        H = dist_center_lfom_rows(FLOW, HL_LFOM).magnitude - D_LFOM_Orifices * 0.5
-        n = []
-        for i in range(n_rows):
-            # place zero in the row that we are going to calculate the required number of orifices
-            n = np.append(n, 0)
+    @property
+    def n_orifices_per_row(self):
+        """Calculate number of orifices at each level given a diameter.
+        """
+        # H is distance from the elevation between two rows of orifices down to the bottom of the orifices
+        H = self.b_rows/2 + 0.5*self.orifice_diameter
+        flow_per_orifice = pc.flow_orifice_vert(self.orifice_diameter, H, con.RATIO_VC_ORIFICE)
+        n = np.zeros(self.n_rows)
+        for i in range(self.n_rows):
             # calculate the ideal number of orifices at the current row without constraining to an integer
-            n_orifices_real = ((FLOW_ramp_local[i] - flow_lfom_actual(FLOW, HL_LFOM, drill_bits, i, n).magnitude) /
-                               pc.flow_orifice_vert(D_LFOM_Orifices, H, con.RATIO_VC_ORIFICE)).magnitude
+            flow_needed = self.flow_ramp[i] - self.flow_actual(i, n)
+            n_orifices_real = (flow_needed / flow_per_orifice).to(u.dimensionless)
             # constrain number of orifices to be less than the max per row and greater or equal to 0
-            n[i] = min((max(0, round(n_orifices_real))), n_orifices_max)
+            n[i] = min((max(0, round(n_orifices_real))), self.n_orifices_per_row_max)
         return n
-
-    # This function takes the output of n_lfom_orifices and converts it to a list with 8
-    # entries that corresponds to the 8 possible rows. This is necessary to make the lfom
-    # easier to construct in Fusion using patterns
-    @u.wraps(None, [u.m ** 3 / u.s, u.m, u.inch, None], False)
-    def n_lfom_orifices_fusion(FLOW, HL_LFOM, drill_bits, num_rows):
-        num_orifices_per_row = n_lfom_orifices(FLOW, HL_LFOM, drill_bits)
-        num_orifices_final = np.zeros(8)
-        centerline = np.zeros(8)
-        center = True
-        for i in range(8):
-            if i % 2 == 1 and num_rows == 4:
-                centerline[i] = int(center)
-            elif num_rows == 4:
-                num_orifices_final[i] = num_orifices_per_row[i / 2]
-                centerline[i] = int(center)
-                center = not center
-            else:
-                num_orifices_final[i] = num_orifices_per_row[i]
-                centerline[i] = int(center)
-                center = not center
-
-        return num_orifices_final, centerline
 
     # This function calculates the error of the design based on the differences between the predicted flow rate
     # and the actual flow rate through the LFOM.
-    @u.wraps(u.m ** 3 / u.s, [u.m ** 3 / u.s, u.m, u.inch], False)
-    def flow_lfom_error(FLOW, HL_LFOM, drill_bits):
-        N_lfom_orifices = n_lfom_orifices(FLOW, HL_LFOM, drill_bits, mat.SDR_LFOM)
+    @property
+    def error_per_row(self):
         FLOW_lfom_error = []
-        for j in range(len(N_lfom_orifices) - 1):
-            FLOW_lfom_error.append((flow_lfom_actual(
-                FLOW, HL_LFOM, drill_bits, j, N_lfom_orifices).magnitude - flow_ramp(
-                FLOW, HL_LFOM)[j].magnitude) / FLOW)
+        for i in range(self.n_rows-1):
+            actual_flow = self.flow_actual(i, self.n_orifices_per_row)
+            row_error = (actual_flow - self.flow_ramp[i]) / self.q
+            FLOW_lfom_error.append(row_error.to(u.dimensionless))
         return FLOW_lfom_error
-
-    @u.wraps(u.m ** 3 / u.s, [u.m ** 3 / u.s, u.m, u.m], False)
-    def flow_lfom_ideal(FLOW, HL_LFOM, H):
-        flow_lfom_ideal = (FLOW * H) / HL_LFOM
-        return flow_lfom_ideal
-
-    @u.wraps(u.m ** 3 / u.s, [u.m ** 3 / u.s, u.m, u.inch, u.m], False)
-    def flow_lfom(FLOW, HL_LFOM, drill_bits, H):
-        D_lfom_orifices = orifice_diameter(FLOW, HL_LFOM, drill_bits).magnitude
-        H_submerged = np.arange(H - 0.5 * D_lfom_orifices, HL_LFOM, H - dist_center_lfom_rows(FLOW, HL_LFOM).magnitude,
-                                dtype=object)
-        N_lfom_orifices = n_lfom_orifices(FLOW, HL_LFOM, drill_bits, mat.SDR_LFOM)
-        flow = []
-        for i in range(len(H_submerged)):
-            flow.append(
-                pc.flow_orifice_vert(D_lfom_orifices, H_submerged[i], con.RATIO_VC_ORIFICE) * N_lfom_orifices[i])
-        return sum(flow)
 
 
