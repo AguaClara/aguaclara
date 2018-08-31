@@ -22,8 +22,9 @@ And your numbers should be limited to four significant figures  when printed.
 import math
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
 
 # Design imports
 from aguaclara.design.lfom import LFOM
