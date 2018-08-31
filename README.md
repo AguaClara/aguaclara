@@ -1,4 +1,5 @@
-# aguaclara [![Travis Build Status](https://travis-ci.org/AguaClara/aguaclara.svg?branch=master)](https://travis-ci.org/AguaClara/aguaclara) [![codecov](https://codecov.io/gh/AguaClara/aguaclara/branch/master/graph/badge.svg)](https://codecov.io/gh/AguaClara/aguaclara)
+# aguaclara [![Travis Build Status](https://travis-ci.org/AguaClara/aguaclara.svg?branch=master)](https://travis-ci.org/AguaClara/aguaclara) [![codecov](https://codecov.io/gh/AguaClara/aguaclara/branch/master/graph/badge.svg)](https://codecov.io/gh/AguaClara/aguaclara) [![Build status](https://ci.appveyor.com/api/projects/status/txn3txtef7p0p6hd?svg=true)](https://ci.appveyor.com/project/ethan92429/aguaclara)
+
 
 Design an AguaClara Water Treatment Plant with just a couple lines of code! Or just design a few components - your choice with aguaclara. aguaclara parametrically designs plant components from basic physics equations. In a nutshell, you can generate a design yaml for a whole plant and print it to your console stream like so:
 
