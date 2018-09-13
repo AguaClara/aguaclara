@@ -10,6 +10,10 @@ import aguaclara.core.utility as ut
 import aguaclara.core.optional_inputs as opt
 from onshapepy.part import Part
 
+from core.units import unit_registry as u
+
+HL_MIN = 20 * u.cm
+HL_MAX = 40 * u.cm
 
 class LFOM:
 
@@ -183,5 +187,3 @@ class LFOM:
         """Draw the LFOM in CAD."""
         self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
                            "OD": self.nom_diam_pipe, "bRows": self.b_rows}
-
-

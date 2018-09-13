@@ -116,10 +116,8 @@ RATIO_LFOM_SAFETY = 1.5
 RATIO_LFOM_SAFETY_MIN = 1.15
 
 #Minimum head loss through linear orifice meter
-HEADLOSS_LFOM_MIN = 20 * u.cm
 
 #Maximum head loss through linear orifice meter to be used as needed for high flow plants.
-HEADLOSS_LFOM_MAX = 40 * u.cm
 
 #Changed from 12 in by pc479 because this is not a constraint anymore
 # because we don't have an elbow constraining us. LFOM still needs to fit
