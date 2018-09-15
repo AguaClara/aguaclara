@@ -5,7 +5,7 @@ an AguaClara plant.
 from aguaclara.play import*
 
 # expansion minor loss coefficient for 180 degree bend
-K_e = (1 / con.RATIO_VC_ORIFICE**2 - 1)**2
+K_e = (1 / con.VC_ORIFICE_RATIO ** 2 - 1) ** 2
 
 @u.wraps(1/u.s, [u.m, None, u.degK], False)
 def G_avg(hl, Gt, T):

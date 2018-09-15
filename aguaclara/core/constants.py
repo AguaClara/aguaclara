@@ -1,72 +1,63 @@
 #-*- coding: utf-8 -*-
-"""This file contains constants which represent physical properties and
-scientific principles which will be used in AguaClara plant design.
-
 """
+Constants which represent physical properties and scientific principles
+which will be used in AguaClara plant design.
+"""
+
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.pipedatabase as pipe
 import numpy as np
 
-#####tabulated constants
-
 GRAVITY = 9.80665 * u.m/u.s**2
 
-#Density of water
+# Water
 DENSITY_WATER = 1000 * u.kg/u.m**3
-
-#The kinematic viscosity of water
 NU_WATER = 1 * 10**-6 * u.m**2/u.s
 
-#The influence of viscosity on mixing in jet reactors
-RATIO_JET_ROUND = 0.5
-
-#This is an estimate for plane jets as created in the flocculator and
-# in the sed tank jet reverser.
-RATIO_JET_PLANE = 0.225
-
-RATIO_VC_ORIFICE = 0.63
-
+# Air
 P_ATM = 1*u.atm
+NU_AIR = 12 * u.mm**2/u.s  # Needed for the filter siphon design
+RHO_AIR = 1.204 * u.kg/u.mm**3  # "                            "
 
-#Needed for the filter siphon design
-NU_AIR = 12 *u.mm**2/u.s
+# The influence of viscosity on mixing in jet reactors
+JET_ROUND_RATIO = 0.5
 
-#Needed for the filter siphon design
-RHO_AIR = 1.204 * u.kg/u.mm**3
+# This is an estimate for plane jets as created in the flocculator and
+# in the sed tank jet reverser.
+JET_PLANE_RATIO = 0.225
 
-####General assumptions and constants
+# Everything above this line has been accounted for by me. Everything
+# below needs to be checked. - Oliver
+################################
 
-PLANT_ORIGIN=[0, 0, 0] * u.m
+# TODO: What does "vc" mean? This doesn't follow the standard naming conventions.
+VC_ORIFICE_RATIO = 0.63
 
-COUNTRY = 0
+# Prompts the transition to a low flow plant
+LFP_FLOW_MAX = 16.1 * u.L / u.s
 
-LANGUAGE = 0
+HUMAN_W_MIN = 0.5 * u.m
 
-#Prompts the transition to a low flow plant
-FLOW_PLANT_MAX_LF = 16.1 * u.L/u.s
-
-WIDTH_HUMAN_MIN = 0.5 * u.m
-
-#The height of the walkway above the drain channel bottom so that
+# The height of the walkway above the drain channel bottom so that
 # someone can walk through the drain channel.
 HEIGHT_HUMAN_ACCESS = 1.5 * u.m
 
-#Used to set the minimum height of entrance, floc, and sed walls
+# Used to set the minimum height of entrance, floc, and sed walls
 HEIGHT_PLANT_FREE_BOARD = 0.1 * u.m
 
-#Minimum space between fittings in a tank or fittings and the wall of
+# Minimum space between fittings in a tank or fittings and the wall of
 # the tank.
 SPACE_FITTING = 5 * u.cm
 
-#Minimum channel width for constructability
+# Minimum channel width for constructability
 WIDTH_CHANNEL_MIN = 15 * u.cm
 
-#RATIO_RECTANGULAR is defined as the optimum "height over width ratio"
+# RATIO_RECTANGULAR is defined as the optimum "height over width ratio"
 # (1/2) for a rectangular open channel
 RATIO_RECTANGULAR = 0.5
 
-##Equals 1 to draw boxes showing max water levels, 0 normally
-#EN_WATER=0 #ASK Monroe
+# Equals 1 to draw boxes showing max water levels, 0 normally
+# EN_WATER=0 #ASK Monroe
 
 ##If EN_WATER is set to 1, this controls the filter operation mode for
 # which water/sand elevations are drawn. 0 for terminal, 1 for clean bed,
@@ -875,3 +866,12 @@ K_MINOR_PIPE_ENTRANCE = 0.5
 K_MINOR_PIPE_EXIT = 1
 
 K_MINOR_RM_GATE_VIN = 25
+
+# Everything below this line needs to be checked whether it is still
+# necessary.
+##################################
+
+# General assumptions and constants
+PLANT_ORIGIN = [0, 0, 0] * u.m
+COUNTRY = 0
+LANGUAGE = 0

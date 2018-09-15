@@ -651,7 +651,7 @@ def width_rect_weir(FlowRate, Height):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Height, ">0", "Height"])
     return ((3 / 2) * FlowRate
-            / (con.RATIO_VC_ORIFICE * np.sqrt(2*gravity.magnitude) * Height**(3/2))
+            / (con.VC_ORIFICE_RATIO * np.sqrt(2 * gravity.magnitude) * Height ** (3 / 2))
             )
 
 
@@ -664,7 +664,7 @@ def headloss_weir(FlowRate, Width):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
     return (((3/2) * FlowRate
-             / (con.RATIO_VC_ORIFICE * np.sqrt(2*gravity.magnitude) * Width)
+             / (con.VC_ORIFICE_RATIO * np.sqrt(2 * gravity.magnitude) * Width)
              ) ** (2/3))
 
 
@@ -673,7 +673,7 @@ def flow_rect_weir(Height, Width):
     """Return the flow of a rectangular weir."""
     #Checking input validity
     ut.check_range([Height, ">0", "Height"], [Width, ">0", "Width"])
-    return ((2/3) * con.RATIO_VC_ORIFICE
+    return ((2/3) * con.VC_ORIFICE_RATIO
             * (np.sqrt(2*gravity.magnitude) * Height**(3/2))
             * Width)
 
