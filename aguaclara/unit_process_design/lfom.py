@@ -5,6 +5,7 @@ orifice meter (LFOM) for an AguaClara plant.
 """
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
+import aguaclara.design.lfom
 from aguaclara.play import*
 
 #primary outputs from this file are
@@ -98,10 +99,10 @@ def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits):
     The distance between consecutive orifices must be enough to retain
     structural integrity of the pipe.
     """
-    return math.floor(math.pi*(pipe.ID_SDR(
+    return math.floor(math.pi * (pipe.ID_SDR(
         nom_diam_lfom_pipe(FLOW, HL_LFOM), mat.SDR_LFOM).magnitude)
-        / (orifice_diameter(FLOW, HL_LFOM, drill_bits).magnitude +
-            opt.S_LFOM_ORIFICE.magnitude))
+                      / (orifice_diameter(FLOW, HL_LFOM, drill_bits).magnitude +
+                         aguaclara.design.lfom.ORIFICE_S.magnitude))
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m], False)
 def flow_ramp(FLOW,HL_LFOM):

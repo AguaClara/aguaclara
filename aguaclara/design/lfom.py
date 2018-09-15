@@ -14,6 +14,9 @@ from core.units import unit_registry as u
 
 HL_MIN = 20 * u.cm
 HL_MAX = 40 * u.cm
+HL = 20 * u.cm
+ORIFICE_S = 1 * u.cm    # minimum wall distance between orifices, for lfom structural stability
+
 
 class LFOM:
 
@@ -187,3 +190,5 @@ class LFOM:
         """Draw the LFOM in CAD."""
         self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
                            "OD": self.nom_diam_pipe, "bRows": self.b_rows}
+
+
