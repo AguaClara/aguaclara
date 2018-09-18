@@ -13,7 +13,7 @@ from onshapepy.part import Part
 from core.units import unit_registry as u
 
 HL_MIN = 20 * u.cm
-HL_MAX = 40 * u.cm
+HL_MAX = 40 * u.cm  # For high flow plants
 HL = 20 * u.cm
 ORIFICE_S = 1 * u.cm    # minimum wall distance between orifices, for lfom structural stability
 

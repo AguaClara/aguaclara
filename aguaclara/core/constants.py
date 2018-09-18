@@ -106,10 +106,6 @@ RATIO_LFOM_SAFETY = 1.5
 #It may be possible to eliminate this if we switch to plate LFOM at 50 Lp
 RATIO_LFOM_SAFETY_MIN = 1.15
 
-#Minimum head loss through linear orifice meter
-
-#Maximum head loss through linear orifice meter to be used as needed for high flow plants.
-
 #Changed from 12 in by pc479 because this is not a constraint anymore
 # because we don't have an elbow constraining us. LFOM still needs to fit
 # in the entrance tank. Need to check this constraint (mrf222)
