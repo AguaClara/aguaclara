@@ -63,7 +63,8 @@ def vel_lfom_pipe_critical(HL_LFOM):
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_pipe_min(FLOW, HL_LFOM):
-    return (con.RATIO_LFOM_SAFETY*FLOW/vel_lfom_pipe_critical(HL_LFOM).magnitude)
+    return (
+            aguaclara.design.lfom.SAFETY_RATIO * FLOW / vel_lfom_pipe_critical(HL_LFOM).magnitude)
 
 @u.wraps(u.inch, [u.m**3/u.s, u.m], False)
 def nom_diam_lfom_pipe(FLOW,HL_LFOM):

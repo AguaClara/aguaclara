@@ -94,24 +94,8 @@ def flow_train(flow_plant):
 
 #####Flow orifice meter
 
-#Maximum number of rows or orifices in lfom.
-RATIO_LFOM_ORIFICE = 10
 
-#Safety coefficient that ensures free fall at the bottom of the lfom pipe
-RATIO_LFOM_SAFETY = 1.5
 
-#Minimum safety coefficient for lfom pipe diameter; only reduced
-# between 55 L/s and 70 L/s - the intermediate zone between the using an
-# LFOM pipe and an LFOM channel.
-#It may be possible to eliminate this if we switch to plate LFOM at 50 Lp
-RATIO_LFOM_SAFETY_MIN = 1.15
-
-#Changed from 12 in by pc479 because this is not a constraint anymore
-# because we don't have an elbow constraining us. LFOM still needs to fit
-# in the entrance tank. Need to check this constraint (mrf222)
-NOM_DIAM_LFOM_PIPE_MAX = 36 * u.inch
-
-HEIGHT_LFOM_FREEFALL = 10 * u.cm
 
 #Enumerated type that selects between pipe(1) and plate(0) for the LFOM
 def en_lfom_pipe(flow_plant):

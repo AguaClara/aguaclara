@@ -16,17 +16,20 @@ import os
 import pint
 import pandas as pd
 
-unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
+unit_registry = pint.UnitRegistry(
+    system='mks', autoconvert_offset_to_baseunit=True
+)
 
-# default formatting includes 4 significant digits. This can be overridden on a per-print basis
-#  with print('{:.3f}'.format(3*ureg.m /9))
+# default formatting includes 4 significant digits.
+# This can be overridden on a per-print basis with
+# print('{:.3f}'.format(3 * ureg.m / 9)).
 unit_registry.default_format = '.4g'
 pd.options.display.float_format = '{:,.4g}'.format
 
 
 def set_sig_fig(n: int):
-    """Set the default number of significant figures used to print pint, pandas and numpy values
-    quantities. Defaults to 4.
+    """Set the default number of significant figures used to print pint,
+    pandas and numpy values quantities. Defaults to 4.
 
     Args:
         n: number of significant figures to display
@@ -50,4 +53,7 @@ def set_sig_fig(n: int):
     unit_registry.default_format = '.' + str(n) + 'g'
     pd.options.display.float_format = ('{:,.' + str(n) + '}').format
 
-unit_registry.load_definitions(os.path.join(os.path.dirname(__file__), "data/unit_definitions.txt"))
+
+unit_registry.load_definitions(
+    os.path.join(os.path.dirname(__file__), "data/unit_definitions.txt")
+)
