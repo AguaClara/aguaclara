@@ -16,59 +16,74 @@ import functools
 
 #We need to fix the formatting so that it doesn't display trailing zeroes
 #that are not significant.
-def sig(x,n):
-    """Return the 1st input reduced to a number of significant digits.
+def sig(measurement, digits):
+    """Return measurement reduced to a number of significant digits.
 
-    x is a number that may include units. n is the number of significant
+    measurement is a number that may include units. digits is the number of significant
     digits to display.
     """
     # Check to see if the quantity x includes units so we can strip the
     # units and then reattach them at the end.
-    if type(x) == type(1 * u.m):
-        xunit = x.units
-        xmag = float(x.magnitude)
-        if n==1 and xmag>=1:
+    if type(measurement) == type(1 * u.m):
+        xunit = measurement.units
+        xmag = float(measurement.magnitude)
+
+        if digits==1 and xmag>=1:
              req = round(xmag)
              return '{:~P}'.format(u.Quantity(req,xunit))
-
     else:
-        xmag = x
+        xmag = measurement
+
     if xmag == 0.:
-        return "0." + "0" * (n-1)
-    if n == 1 and type(x)!=type(1 * u.m):
+        return "0." + "0" * (digits - 1)
+
+    if digits == 1 and type(measurement)!=type(1 * u.m):
         return round(xmag)
 
     out = []
+
     if xmag < 0:
         out.append("-")
         xmag = -xmag
+
     e = int(math.log10(xmag))
-    tens = math.pow(10, e - n + 1)
+    tens = math.pow(10, e - digits + 1)
     y = math.floor(xmag / tens)
-    if y < math.pow(10, n - 1):
+
+    if y < math.pow(10, digits - 1):
         e = e -1
-        tens = math.pow(10, e - n+1)
+        tens = math.pow(10, e - digits + 1)
         y = math.floor(xmag / tens)
+
     if abs((y + 1.) * tens - xmag) <= abs(y * tens -xmag):
         y = y + 1
-    if y >= math.pow(10,n):
+
+    if y >= math.pow(10, digits):
         y = y / 10.
         e = e + 1
 
-    m = "%.*g" % (n, y)
-    if e < -2 or e >= n:
+    m = "%.*g" % (digits, y)
+
+    if e < -2 or e >= digits:
         out.append(m[0])
-        if n > 1:
+
+        if digits > 1:
             out.append(".")
-            out.extend(m[1 : n])
+            out.extend(m[1: digits])
+
         out.append('e')
+
         if e > 0:
             out.append("+")
+
         out.append(str(e))
-    elif e == (n - 1):
+
+    elif e == (digits - 1):
         out.append(m)
+
     elif e >= 0:
         out.append(m[:e + 1])
+
         if e+1 < len(m):
             out.append(".")
             out.extend(m[e + 1:])
@@ -77,9 +92,10 @@ def sig(x,n):
         out.extend(["0"] * -(e + 1))
         out.append(m)
 
-    if type(x) == type(1 * u.m):
+    if type(measurement) == type(1 * u.m):
         req = "".join(out)
         return '{:~P}'.format(u.Quantity(req,xunit))
+    
     else:
         return "".join(out)
 
