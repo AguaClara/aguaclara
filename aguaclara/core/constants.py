@@ -20,11 +20,11 @@ NU_AIR = 12 * u.mm**2/u.s  # Needed for the filter siphon design
 RHO_AIR = 1.204 * u.kg/u.mm**3  # "                            "
 
 # The influence of viscosity on mixing in jet reactors
-JET_ROUND_RATIO = 0.5
+JET_ROUND_RATIO = 0.08
 
 # This is an estimate for plane jets as created in the flocculator and
 # in the sed tank jet reverser.
-JET_PLANE_RATIO = 0.225
+JET_PLANE_RATIO = 0.0124
 
 # Everything above this line has been accounted for by me. Everything
 # below needs to be checked. - Oliver
