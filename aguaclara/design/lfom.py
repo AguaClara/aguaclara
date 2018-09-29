@@ -77,15 +77,17 @@ class LFOM:
 
     @property
     def b_rows(self):
-        """The distance center to center between each row of orifices."""
+        """The distance center to center between each row of orifices.
+        Message how long it took to load everything (minus packages)"""
         return self.hl / self.n_rows
+
 
     @property
     def vel_critical(self):
         """The average vertical velocity of the water inside the LFOM pipe
-        at the very bottom of the bottom row of orifices
-        The speed of falling water is 0.841 m/s for all linear flow orifice meters
-        of height 20 cm, independent of total plant flow rate."""
+        at the very bottom of the bottom row of orifices The speed of
+        falling water is 0.841 m/s for all linear flow orifice meters of
+        height 20 cm, independent of total plant flow rate. """
         return 4 / (3 * math.pi) * (2 * pc.gravity * self.hl) ** (1 / 2)
 
     @property
