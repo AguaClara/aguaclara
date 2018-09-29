@@ -37,18 +37,18 @@ VC_ORIFICE_RATIO = 0.63
 # Prompts the transition to a low flow plant
 LFP_FLOW_MAX = 16.1 * u.L / u.s
 
-W_HUMAN_MIN = 0.5 * u.m
+HUMAN_W_MIN = 0.5 * u.m
 
 # The height of the walkway above the drain channel bottom so that
 # someone can walk through the drain channel.
-H_HUMAN_ACCESS = 1.5 * u.m
+HUMAN_ACCESS_H = 1.5 * u.m
 
 # Used to set the minimum height of entrance, floc, and sed walls
-H_PLANT_MIN = 0.1 * u.m
+PLANT_H_MIN = 0.1 * u.m
 
 # Minimum space between fittings in a tank or fittings and the wall of
 # the tank.
-S_FITTING_MIN = 5 * u.cm
+FITTING_S_MIN = 5 * u.cm
 
 # Minimum channel width for constructability
 CHANNEL_W_MIN = 15 * u.cm
