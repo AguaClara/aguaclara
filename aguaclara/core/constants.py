@@ -325,7 +325,7 @@ D_CDC_CHT = 6 * u.inch
 
 #Distance from the top of the entrance tank to the to the middle of the
 # lever arm hole for the cable - (minus the) radius of the hole.
-HEIGHT_LEVER_HOLE = 0.0132 * u.m - (0.0095/2 * u.m)
+H_LEVER_HOLE = 0.0132 * u.m - (0.0095/2 * u.m)
 
 DIAM_CABLE = 0.1 * u.inch
 
@@ -363,7 +363,7 @@ LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_X = 0.0290 * u.m
 # y direction.
 LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_Y = 0.7919 * u.m
 
-WIDTH_LEVER_BRACKET = 0.625 * u.inch
+W_LEVER_BRACKET = 0.625 * u.inch
 
 LENGTH_LEVER_BRAKCET = 1.5 * u.inch
 
@@ -377,11 +377,11 @@ LENGTH_LA_BAR = 4 * u.inch
 
 LENGTH_SLIDER = 3 * u.inch
 
-WIDTH_SLIDER = 3.2 * 10**-3 * u.m
+W_SLIDER = 3.2 * 10**-3 * u.m
 
-NOM_DIAM_DROPTUBE = 0.5 * u.inch
+ND_DROPTUBE = 0.5 * u.inch
 
-HEIGHT_SLIDER = 0.625 * u.inch
+H_SLIDER = 0.625 * u.inch
 
 LENGTH_DROPTUBE = 0.61 * u.m
 
@@ -406,11 +406,11 @@ L_CDC_FITTING = 0.75 * u.inch
 
 DIAM_CHT = 10 * u.cm
 
-HEIGHT_CHT = 37/3 * u.cm
+H_CHT = 37/3 * u.cm
 
 THICKNESS_CHT_WALL = 1/3 * u.cm
 
-NOM_DIAM_DELIVERY_PIPE = 0.6 * u.inch
+ND_DELIVERY_PIPE = 0.6 * u.inch
 
 PIPE_SCHEDULE_FLEX_TUBE = 2
 
@@ -430,7 +430,7 @@ LENGTH_CHLOR_AIR_RELEASE_PIPE = 30 * u.cm #Arbitratily selected
 # and according to
 # https://confluence.cornell.edu/display/AGUACLARA/PAHO+Water+Treatment+Publications
 # (page 100 in chapter on flocculation)
-HEIGHT_FLOC_OPTION = 0
+H_FLOC_OPTION = 0
 
 ##Increased both to provide a safety margin on flocculator head loss and
 # to simultaneously scale back on the actual collision potential we are
@@ -444,7 +444,7 @@ COLL_POT_FLOC_BOD = 75 * u.m**(2/3)
 
 ##Minimum width of flocculator channel required for constructability based
 # on the width of the human hip
-FLOC_WIDTH_MIN_CONST = 45 * u.cm
+FLOC_W_MIN_CONST = 45 * u.cm
 
 ##Minimum and maximum distance between expansions to baffle spacing ratio for
 #flocculator geometry that will provide optimal efficiency.
@@ -460,13 +460,13 @@ ENERGY_DIS_FLOC_BOD = 10* u.mW/u.kg
 
 TIME_FLOC_DRAIN = 15 * u.min
 
-NOM_DIAM_FLOC_MOD = 0.5 * u.inch
+ND_FLOC_MOD = 0.5 * u.inch
 
-NOM_DIAM_FLOC_SPACER = 0.75 * u.inch
+ND_FLOC_SPACER = 0.75 * u.inch
 
 SPACE_FLOC_MOD_EDGE_TO_LAST_PIPE = 10 * u.cm
 
-NOM_DIAM_FLOC_RM_RESTRAINER = 0.5 * u.inch
+ND_FLOC_RM_RESTRAINER = 0.5 * u.inch
 
 ###Height that the drain stub extends above the top of the flocculator wall
 LENGTH_FLOC_DRAIN_STUB_EXT = 20 * u.cm
@@ -501,7 +501,7 @@ ANGLE_SED_SLOPE = 50 * u.deg
 # A steeper slope may be required in the floc hopper.
 ANGLE_SED_HOPPER_SLOPE = 45 * u.deg
 
-HEIGHT_WATER_SED_EST = 2 * u.m
+H_WATER_SED_EST = 2 * u.m
 
 SED_GATE_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Sed-Scaled-Gate-Valve-Threaded.dwg"
 
@@ -515,7 +515,7 @@ HEADLOSS_SED_WEIR_MAX = 5 * u.cm
 # fill with water under normal operating conditions. This means the water
 # level in the inlet channel will increase when the inlet overflow weir
 # is in use.
-HEIGHT_SED_INLET_WEIR_FREE_BOARD = 2 * u.cm
+H_SED_INLET_WEIR_FREE_BOARD = 2 * u.cm
 
 THICKNESS_SED_WEIR = 5*u.cm
 
@@ -540,17 +540,17 @@ LENGTH_SED_LAUNDER_CAP_EXCESS = 3 * u.cm
 
 ##Space between the top of the plate settlers and the bottom of the
 # launder pipe
-HEIGHT_LAMELLA_TO_LAUNDER = 5 * u.cm
+H_LAMELLA_TO_LAUNDER = 5 * u.cm
 
 ##The additional length needed in the launder cap pipe that is to be
 # inserted into the launder coupling
 
 ##Diameter of the pipe used to hold the plate settlers together
-NOM_DIAMETER_SED_MOD = 0.5 * u.inch
+NDETER_SED_MOD = 0.5 * u.inch
 
 ##Diameter of the pipe used to create spacers. The spacers slide over the
 # 1/2" pipe and are between the plates
-NOM_DIAMETER_SED_MOD_SPACER = 0.75 * u.inch
+NDETER_SED_MOD_SPACER = 0.75 * u.inch
 
 SDR_SED_MOD_SPACER = 17
 
@@ -568,13 +568,13 @@ DIST_CENTER_SED_PLATE_FRAME_CROSS_EST = 0.8 * u.m
 LENGTH_SED_PLATE_EST = 60 * u.cm
 
 ##Pipe size of the support frame that holds up the plate settler modules
-NOM_DIAMETER_SED_PLATE_FRAME = 1.5 * u.inch
+NDETER_SED_PLATE_FRAME = 1.5 * u.inch
 
 ##Floc weir
 
 #Vertical distance from the top of the floc weir to the bottom of the pipe
 # frame that holds up the plate settler modules
-HEIGHT_FLOC_WEIR_TO_PLATE_FRAME = 10 * u.cm
+H_FLOC_WEIR_TO_PLATE_FRAME = 10 * u.cm
 
 ##Minimum length (X dimension) of the floc hopper
 LENGTH_SED_HOPPER_MIN = 50 * u.cm
@@ -605,7 +605,7 @@ LENGTH_SED_MANIFOLD_FIRST_DIFFUSER_GAP = 3 * u.cm
 
 ##Vertical distance from the edge of the jet reverser half-pipe to the tip
 # of the inlet manifold diffusers
-HEIGHT_JET_REVERSER_TO_DIFFUSERS = 3 * u.cm
+H_JET_REVERSER_TO_DIFFUSERS = 3 * u.cm
 
 ##Gap between the end of the inlet manifold pipe and the end wall of the
 # tank to be able to install the pipe
@@ -660,14 +660,14 @@ HEADLOSS_SED_TO_FILTER_PIPE_MAX = 10 * u.cm
 #
 #
 # if EN_DOUBLE_TRAIN == 1:
-#    HEIGHT_EXIT_FREE = 5 * u.cm
+#    H_EXIT_FREE = 5 * u.cm
 # else:
-#    HEIGHT_EXIT_FREE = 0 * u.cm
+#    H_EXIT_FREE = 0 * u.cm
 #==============================================================================
 
 ##added 12/5/16 by mrf222 ensures weir does not overtop backwards if
 # filter weir is too high
-HEIGHT_SED_WEIR_FREE_BOARD = 5 * u.cm
+H_SED_WEIR_FREE_BOARD = 5 * u.cm
 
 
 
@@ -684,7 +684,7 @@ VEL_FILTER_LAYER = 1.833 * u.mm/u.s ##VEL_FIBER_DIST_CENTER_/N_FIBER_LAYER
 
 ##Minimum thickness of each filter layer (can be increased to accomodate
 # larger pipe diameters in the bottom layer)
-HEIGHT_FILTER_LAYER_MIN = 20 * u.cm
+H_FILTER_LAYER_MIN = 20 * u.cm
 
 ##center to center distance for slotted pipes
 DIST_CENTER_FILTER_MANIFOLD_BRANCH = 10 * u.cm
@@ -712,10 +712,10 @@ HEADLOSS_FIBER_BACKWASH_STEADY_FLOW = 20 * u.cm
 HEADLOSS_FILTER_SIPHON_MAX = 35 * u.cm
 
 ##Diameter of sand drain pipe
-NOM_DIAMETER_FILTER_SAND_OUTLET = 2 * u.inch
+NDETER_FILTER_SAND_OUTLET = 2 * u.inch
 
 ##Height of the barrier between the exit box and distribution box.
-HEIGHT_FILTER_DIST_BARRIER = 10 * u.cm
+H_FILTER_DIST_BARRIER = 10 * u.cm
 
 ##Length that the siphon pipe extends up into the plant drain channel.
 #Being able to shorten the stub from which the siphon discharges into the
@@ -724,9 +724,9 @@ LENGTH_FILTER_SIPHON_CHANNEL_STUB_MIN = 20 * u.cm
 
 HEADLOSS_FILTER_ENTRANCE_PIPE_MAX = 10 * u.cm
 
-NOM_DIAMETER_FILTER_TRUNK_MAX = 6 * u.inch
+NDETER_FILTER_TRUNK_MAX = 6 * u.inch
 
-NOM_DIAMETER_FILTER_BACK_WASH_SIPHON_MAX = 8 * u.inch
+NDETER_FILTER_BACK_WASH_SIPHON_MAX = 8 * u.inch
 
 ##Purge valves on the trunk lines are angled downwards so that sediment is
 # cleared more effectively. This angle allows the tees to fit on top of one
@@ -743,7 +743,7 @@ SPACE_FILTER_BRANCH_TO_WALL = 5 * u.cm
 FILTER_GATE_VALUE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Fi-Scaled-Gate-Valve-Threaded.dwg"
 FILTER_BALL_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/FiMetalBallValve.dwg"
 
-HEIGHT_FILTER_WALL_TO_PLANT_FLOOR_MIN = 10 * u.cm
+H_FILTER_WALL_TO_PLANT_FLOOR_MIN = 10 * u.cm
 
 HEADLOSS_FILTER_INLET_WEIR_MAX = 5 * u.cm
 
@@ -754,7 +754,7 @@ LENGTH_FILTER_MAN_FEMCO_COUPLING = 6 * u.cm
 
 ##Nominal diameter of the spacer tees in the four corners of the filter
 # manifold assembly.
-NOM_DIAMETER_FILTER_MAN_WING_SPACER = 2 * u.inch
+NDETER_FILTER_MAN_WING_SPACER = 2 * u.inch
 
 ##Length of the vertical pipe segment following the valve on the filter
 # sand drain. This stub can be capped to allow the sand in the valve to
@@ -768,25 +768,25 @@ LENGTH_FILTER_SAND_OUTLET_PIPE = 20 * u.cm
 
 ##Minimum depth in the entrance box during backwash such that there is
 # standing water over the inlet.
-HEIGHT_FILTER_BACKWASH_NO_SUCK_AIR = 20 * u.cm
+H_FILTER_BACKWASH_NO_SUCK_AIR = 20 * u.cm
 
 ##Minimum water depth over the orifices in the siphon manifold so that air
 # is not entrained.
-HEIGHT_FILTER_SIPHON_NO_SUCK_AIR = 10 * u.cm
+H_FILTER_SIPHON_NO_SUCK_AIR = 10 * u.cm
 
-HEIGHT_FILTER_FLUIDIZED_BED_TO_SIPHON = 20 * u.cm
+H_FILTER_FLUIDIZED_BED_TO_SIPHON = 20 * u.cm
 
-HEIGHT_FILTER_FORWARD_NO_SUCK_AIR = 10 * u.cm
+H_FILTER_FORWARD_NO_SUCK_AIR = 10 * u.cm
 
-HEIGHT_FILTER_WEIR_FREEFALL = 3 * u.cm
+H_FILTER_WEIR_FREEFALL = 3 * u.cm
 
-HEIGHT_FILTER_AIR_REMOVAL_BLOCK_SUBMERGED = 5 * u.cm
+H_FILTER_AIR_REMOVAL_BLOCK_SUBMERGED = 5 * u.cm
 
-HEIGHT_FILTER_BYPASS_SAFETY = 10 * u.cm
+H_FILTER_BYPASS_SAFETY = 10 * u.cm
 
-HEIGHT_DRAIN_OUTLET_SAFETY = 10 * u.cm
+H_DRAIN_OUTLET_SAFETY = 10 * u.cm
 
-HEIGHT_FILTER_OVERFLOW_WEIR_FREEFALL = 10 * u.cm
+H_FILTER_OVERFLOW_WEIR_FREEFALL = 10 * u.cm
 
 
 
@@ -801,14 +801,14 @@ LENGTH_CHEM_LEVER_ARM_SPACE = 75 * u.cm
 ###Operator access
 
 ##combine walkway assumptions!
-WIDTH_MP_WALKWAY_MIN = 1 * u.m
+W_MP_WALKWAY_MIN = 1 * u.m
 
 ##Width of the walkway above the main plant drain channel
-WIDTH_DC_WALKWAY = 1.2 * u.m
+W_DC_WALKWAY = 1.2 * u.m
 
 ##Width of the floor space between the flocculator and the rapid mix pipe
 # floor cutout next to the entrance tank.
-WIDTH_ET_WALKWAY = 1 * u.m
+W_ET_WALKWAY = 1 * u.m
 
 ##for high flow, double train situations
 W_TRAIN_WALKWAY = 1.5 * u.m
