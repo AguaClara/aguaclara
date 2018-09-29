@@ -36,7 +36,7 @@ def drain_OD(q_plant, T, depth_end, SDR):
     """
     nu = pc.viscosity_kinematic(T)
     K_minor = con.K_MINOR_PIPE_ENTRANCE + con.K_MINOR_PIPE_EXIT + con.K_MINOR_EL90
-    drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, mat.PIPE_ROUGH_PVC, K_minor)
+    drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, mat.PVC_PIPE_ROUGH, K_minor)
     drain_ND = pipe.ND_SDR_available(drain_ID, SDR)
     return pipe.OD(drain_ND).magnitude
 

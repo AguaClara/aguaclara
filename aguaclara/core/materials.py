@@ -1,26 +1,20 @@
-
+#-*- coding: utf-8 -*-
+"""
+Data for materials that are used in the constrution of AguaClara water
+treatment plants
 """
 
-"""
-
-try:
-    from aguaclara.core.units import unit_registry as u
-    from aguaclara.core import constants as con, utility as ut
-except ModuleNotFoundError:
-    from aguaclara.core.units import unit_registry as u
-    from aguaclara import utility as ut
-    from aguaclara import constants as con
-
+from aguaclara.core.units import unit_registry as u
 
 ########### Materials Constants - general ############
 
-PIPE_ROUGH_PVC = 0.12*u.mm
+PVC_PIPE_ROUGH = 0.12 * u.mm
 
-PIPE_ROUGH_CONCRETE = 2*u.mm
+CONCRETE_PIPE_ROUGH = 2 * u.mm
 
-RHO_CONCRETE = 2400*(u.kg/(u.m**3)) #used in the sed tank drawing
+CONCRETE_RHO = 2400 * (u.kg / u.m ** 3)
 
-THICKNESS_CONCRETE_MIN = 5*u.cm  #used throughout the code
+THICKNESS_CONCRETE_MIN = 5*u.cm
 
 #0 is English, 1 is metric, drill series is needed for the
 #drill series at the bottom of this sheet and tube series
