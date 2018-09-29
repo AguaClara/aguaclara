@@ -35,7 +35,7 @@ import aguaclara.core.pipedatabase as pipe
 from aguaclara.core.units import unit_registry as u
 from aguaclara.core import physchem as pc
 import aguaclara.core.constants as con
-import aguaclara.core.materials_database as mat
+import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
 import aguaclara.core.minor_loss as k
 import aguaclara.core.pipeline_utility as pipeline
