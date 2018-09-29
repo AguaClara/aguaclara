@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from aguaclara.core import materials_database as mat
+from aguaclara.core import materials as mat
 
 from aguaclara.core.units import unit_registry as u
 

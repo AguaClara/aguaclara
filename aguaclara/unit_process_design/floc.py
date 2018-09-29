@@ -153,7 +153,7 @@ def width_floc_min(q_plant, hl, Gt, T, depth_end):
     >>> width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
     45 centimeter
     """
-    return max(width_HS_min(q_plant, hl, Gt, T, depth_end).magnitude, con.FLOC_WIDTH_MIN_CONST.magnitude)
+    return max(width_HS_min(q_plant, hl, Gt, T, depth_end).magnitude, con.FLOC_W_MIN_CONST.magnitude)
 
 @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m], False)
 def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):

@@ -1,26 +1,20 @@
-
+#-*- coding: utf-8 -*-
+"""
+Data for materials that are used in the constrution of AguaClara water
+treatment plants
 """
 
-"""
-
-try:
-    from aguaclara.core.units import unit_registry as u
-    from aguaclara.core import constants as con, utility as ut
-except ModuleNotFoundError:
-    from aguaclara.core.units import unit_registry as u
-    from aguaclara import utility as ut
-    from aguaclara import constants as con
-
+from aguaclara.core.units import unit_registry as u
 
 ########### Materials Constants - general ############
 
-PIPE_ROUGH_PVC = 0.12*u.mm
+PVC_PIPE_ROUGH = 0.12 * u.mm
 
-PIPE_ROUGH_CONCRETE = 2*u.mm
+CONCRETE_PIPE_ROUGH = 2 * u.mm
 
-RHO_CONCRETE = 2400*(u.kg/(u.m**3)) #used in the sed tank drawing
+CONCRETE_RHO = 2400 * (u.kg / u.m ** 3)
 
-THICKNESS_CONCRETE_MIN = 5*u.cm  #used throughout the code
+THICKNESS_CONCRETE_MIN = 5*u.cm
 
 #0 is English, 1 is metric, drill series is needed for the
 #drill series at the bottom of this sheet and tube series
@@ -37,17 +31,17 @@ SDR_LFOM = 26
 
 THICKNESS_LFOM_SHEET = THICKNESS_CONCRETE_MIN
 
-NOM_DIAM_ENT_TANK_FLOAT =  8*u.inch
+ND_ENT_TANK_FLOAT =  8*u.inch
 
 #Minimum pipe size to handle grit and to ensure that the pipe can be easily unclogged
-NOM_DIAM_ENT_TANK_DRAIN_MIN =  3*u.inch
+ND_ENT_TANK_DRAIN_MIN =  3*u.inch
 
-NOM_DIAM_ENT_TANK_DRAIN =  3*u.inch #This is constant for now
+ND_ENT_TANK_DRAIN =  3*u.inch #This is constant for now
 
 THICKNESS_ENT_TANK_REMOVABLE_WALL = 5*u.cm
 
 #Parameters are arbitrary - need to be calculated
-HEIGHT_ENT_TANK_REMOVABLE_WALL_SUPPORT = 4*u.cm
+H_ENT_TANK_REMOVABLE_WALL_SUPPORT = 4*u.cm
 
 THICKNESS_ENT_TANK_REMOVABLE_WALL_SUPPORT = 5*u.cm
 
@@ -55,7 +49,7 @@ THICKNESS_ENT_TANK_HOPPER_LEDGE = 15*u.cm
 
 THICKNESS_RAPID_MIX_ORIFICE_PLATE = 2*u.cm
 
-NOM_DIAM_RAPID_MIX_AIR_RELEASE = 1*u.inch
+ND_RAPID_MIX_AIR_RELEASE = 1*u.inch
 
  ############ Material constants - chem storage tanks  ############
 
@@ -86,13 +80,13 @@ DIAM_FLT_VLV_ORIFICES_AVAIL = [0.093, 0.187, 0.25, 0.312]*u.inch
 
 ############# Material constants - flocculator #####################
 
-THICKNESS_FLOC_BAFFLE_RIGID_HEIGHT = 15*u.cm
+THICKNESS_FLOC_BAFFLE_RIGID_H = 15*u.cm
 
 #The piping size for the main part of the floc modules
-NOM_DIAM_FLOC_MODULES_MAIN = (1/2)*u.inch
+ND_FLOC_MODULES_MAIN = (1/2)*u.inch
 
 #The diameter of the oversized cap used to assemble the floc modules
-NOM_DIAM_FLOC_MODULES_LARGE = 1.5*u.inch
+ND_FLOC_MODULES_LARGE = 1.5*u.inch
 
 ############ Material constants - sedimentation  #############
 #Maximum length of sed plate sticking out past module pipes without any
@@ -101,33 +95,33 @@ NOM_DIAM_FLOC_MODULES_LARGE = 1.5*u.inch
 
 LENGTH_SED_PLATE_CANTILEVERED = 20*u.cm
 
-NOM_DIAM_SED_HOPPER_DRAIN = 1*u.inch
+ND_SED_HOPPER_DRAIN = 1*u.inch
 
-NOM_DIAM_SED_HOPPER_VIEWER = 2*u.inch
+ND_SED_HOPPER_VIEWER = 2*u.inch
 
-NOM_DIAM_SED_HOPPER_SKIMMER = 2*u.inch
+ND_SED_HOPPER_SKIMMER = 2*u.inch
 
 ##Diffusers/Jet Reverser
 
-NOM_DIAM_SED_DIFFUSER = 1*u.inch
+ND_SED_DIFFUSER = 1*u.inch
 
-NOM_DIAM_SED_JET_REVERSER = 3*u.inch
+ND_SED_JET_REVERSER = 3*u.inch
 
 ############ Material constants - stacked rapid sand filter ############
 
 #We are going to take this pipe size for the slotted pipes as a given.
 # Larger pipes may block too much flow and they are harder to install.
-NOM_DIAM_FILTER_MANIFOLD_BRANCH = 1*u.inch
+ND_FILTER_MANIFOLD_BRANCH = 1*u.inch
 
-NOM_DIAM_FILTER_BACKWASH_MANIFOLD_BRANCH = 1.5*u.inch
+ND_FILTER_BACKWASH_MANIFOLD_BRANCH = 1.5*u.inch
 
 #A slot thickness of 0.008 in or 0.2 mm is selected so that sand
 # will not enter the slotted pipes.
-WIDTH_FILTER_MANIFOLD_SLOTS = 0.008*u.inch
+W_FILTER_MANIFOLD_SLOTS = 0.008*u.inch
 
-NOM_DIAM_FILTER_BRANCH_HOLDER = 2*u.inch
+ND_FILTER_BRANCH_HOLDER = 2*u.inch
 
-NOM_DIAM_FILTER_BACKWASH_BRANCH_HOLDER = 2*u.inch
+ND_FILTER_BACKWASH_BRANCH_HOLDER = 2*u.inch
 
 #Minimum vertical spacing between trunk line pipes going through
 #the filter wall for concrete construction

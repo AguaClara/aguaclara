@@ -1,13 +1,11 @@
 """Build an Linear Flow Orifice Meter"""
-from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import numpy as np
 import aguaclara.core.physchem as pc
 import math
 import aguaclara.core.pipedatabase as pipe
-import aguaclara.core.materials_database as mat
+import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
-import aguaclara.core.optional_inputs as opt
 from onshapepy.part import Part
 
 from core.units import unit_registry as u
@@ -15,7 +13,25 @@ from core.units import unit_registry as u
 HL_MIN = 20 * u.cm
 HL_MAX = 40 * u.cm  # For high flow plants
 HL = 20 * u.cm
-ORIFICE_S = 1 * u.cm    # minimum wall distance between orifices, for lfom structural stability
+H_FREEFALL = 10 * u.cm
+
+# min wall dist between orifices, for structural stability
+ORIFICE_S = 1 * u.cm
+ORIFICE_RATIO = 10
+
+# Safety coefficient that ensures free fall at bottom of the lfom pipe
+SAFETY_RATIO = 1.5
+
+# Minimum safety coefficient for lfom pipe diameter; only reduced
+# between 55 L/s and 70 L/s - the intermediate zone between the using an
+# LFOM pipe and an LFOM channel.
+# It may be possible to eliminate this if we switch to plate LFOM at 50 Lp
+SAFETY_RATIO_MIN = 1.15
+
+# Changed from 12 in by pc479 because this is not a constraint anymore
+# because we don't have an elbow constraining us. LFOM still needs to fit
+# in the entrance tank. Need to check this constraint (mrf222)
+ND_PIPE_MAX = 36 * u.inch
 
 
 class LFOM:
@@ -24,30 +40,32 @@ class LFOM:
     sdr = 26
     drill_bits = mat.DIAM_DRILL_ENG
     s_orfice = 1*u.cm
-    cad = Part("https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d")
+    cad = Part(
+        "https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d"
+    )
 
     def __init__(self, q=20*u.L/u.s, hl=20*u.cm):
         self.q = q
         self.hl = hl
 
-
-
     def width_stout(self, z):
         """Return the width of a Stout weir at elevation z. More info
-        `here. <https://confluence.cornell.edu/display/AGUACLARA/LFOM+sutro+weir+research>`_"""
+        here. <https://confluence.cornell.edu/display/AGUACLARA/LFOM+sutro+weir+research>
+        """
         w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) * con.VC_ORIFICE_RATIO * np.pi * self.hl)
         return w_per_flow*self.q
 
     @property
     def n_rows(self):
-        """This equation states that the open area corresponding to one row can be
-        set equal to two orifices of diameter=row height. If there are more than
-        two orifices per row at the top of the LFOM then there are more orifices
-        than are convenient to drill and more than necessary for good accuracy.
-        Thus this relationship can be used to increase the spacing between the
-        rows and thus increase the diameter of the orifices. This spacing function
-        also sets the lower depth on the high flow rate LFOM with no accurate
-        flows below a depth equal to the first row height.
+        """This equation states that the open area corresponding to one row
+        can be set equal to two orifices of diameter=row height. If there
+        are more than two orifices per row at the top of the LFOM then there
+        are more orifices than are convenient to drill and more than
+        necessary for good accuracy. Thus this relationship can be used to
+        increase the spacing between the rows and thus increase the diameter
+        of the orifices. This spacing function also sets the lower depth on
+        the high flow rate LFOM with no accurate flows below a depth equal
+        to the first row height.
 
         But it might be better to always set then number of rows to 10.
         The challenge is to figure out a reasonable system of constraints that
@@ -59,15 +77,17 @@ class LFOM:
 
     @property
     def b_rows(self):
-        """The distance center to center between each row of orifices."""
+        """The distance center to center between each row of orifices.
+        Message how long it took to load everything (minus packages)"""
         return self.hl / self.n_rows
+
 
     @property
     def vel_critical(self):
         """The average vertical velocity of the water inside the LFOM pipe
-        at the very bottom of the bottom row of orifices
-        The speed of falling water is 0.841 m/s for all linear flow orifice meters
-        of height 20 cm, independent of total plant flow rate."""
+        at the very bottom of the bottom row of orifices The speed of
+        falling water is 0.841 m/s for all linear flow orifice meters of
+        height 20 cm, independent of total plant flow rate. """
         return 4 / (3 * math.pi) * (2 * pc.gravity * self.hl) ** (1 / 2)
 
     @property
@@ -190,5 +210,3 @@ class LFOM:
         """Draw the LFOM in CAD."""
         self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
                            "OD": self.nom_diam_pipe, "bRows": self.b_rows}
-
-
