@@ -35,9 +35,9 @@ def drain_OD(q_plant, T, depth_end, SDR):
     ??
     """
     nu = pc.viscosity_kinematic(T)
-    K_minor = con.K_MINOR_PIPE_ENTRANCE + con.K_MINOR_PIPE_EXIT + con.K_MINOR_EL90
+    K_minor = con.PIPE_ENTRANCE_K_MINOR + con.PIPE_EXIT_K_MINOR + con.EL90_K_MINOR
     drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, mat.PVC_PIPE_ROUGH, K_minor)
-    drain_ND = pipe.ND_SDR_available(drain_ID, SDR)
+    drain_ND = pipe.SDR_available_ND(drain_ID, SDR)
     return pipe.OD(drain_ND).magnitude
 
 @u.wraps(None, [u.m**3/u.s, u.m], False)
@@ -65,7 +65,7 @@ def num_plates_ET(q_plant, W_chan):
     >>> num_plates_ET(20*u.L/u.s,2*u.m)
     1.0
     """
-    num_plates = np.ceil(np.sqrt(q_plant / (con.DIST_CENTER_ENT_TANK_PLATE.magnitude
+    num_plates = np.ceil(np.sqrt(q_plant / (con.CENTER_ENT_TANK_PLATE_DIST.magnitude
                                             * W_chan * con.ENT_TANK_CAPTURE_BOD_VEL.magnitude * np.sin(con.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude))))
     return num_plates
 
