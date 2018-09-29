@@ -66,7 +66,7 @@ def num_plates_ET(q_plant, W_chan):
     1.0
     """
     num_plates = np.ceil(np.sqrt(q_plant / (con.DIST_CENTER_ENT_TANK_PLATE.magnitude
-                                            * W_chan * con.VEL_ENT_TANK_CAPTURE_BOD.magnitude * np.sin(con.ANGLE_ENT_TANK_PLATE.to(u.rad).magnitude))))
+                                            * W_chan * con.ENT_TANK_CAPTURE_BOD_VEL.magnitude * np.sin(con.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude))))
     return num_plates
 
 @u.wraps(u.m, [u.m**3/u.s, u.m], False)
@@ -93,6 +93,6 @@ def L_plate_ET(q_plant, W_chan):
     0.00194
     """
     L_plate = (q_plant / (num_plates_ET(q_plant, W_chan) * W_chan *
-                          con.VEL_ENT_TANK_CAPTURE_BOD.magnitude * np.cos(con.ANGLE_ENT_TANK_PLATE.to(u.rad).magnitude)))
-    - (con.S_ENT_TANK_PLATE.magnitude * np.tan(con.ANGLE_ENT_TANK_PLATE.to(u.rad).magnitude))
+                          con.ENT_TANK_CAPTURE_BOD_VEL.magnitude * np.cos(con.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude)))
+    - (con.ENT_TANK_PLATE_S.magnitude * np.tan(con.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude))
     return L_plate

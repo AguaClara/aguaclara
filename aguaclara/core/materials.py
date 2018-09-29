@@ -14,7 +14,7 @@ CONCRETE_PIPE_ROUGH = 2 * u.mm
 
 CONCRETE_RHO = 2400 * (u.kg / u.m ** 3)
 
-THICKNESS_CONCRETE_MIN = 5*u.cm
+CONCRETE_THICKNESS_MIN = 5 * u.cm
 
 #0 is English, 1 is metric, drill series is needed for the
 #drill series at the bottom of this sheet and tube series
@@ -29,7 +29,7 @@ DIAM_REBAR = (1/2)*u.inch
 
 SDR_LFOM = 26
 
-THICKNESS_LFOM_SHEET = THICKNESS_CONCRETE_MIN
+LFOM_SHEET_THICKNESS = CONCRETE_THICKNESS_MIN
 
 ND_ENT_TANK_FLOAT =  8*u.inch
 
@@ -38,22 +38,22 @@ ND_ENT_TANK_DRAIN_MIN =  3*u.inch
 
 ND_ENT_TANK_DRAIN =  3*u.inch #This is constant for now
 
-THICKNESS_ENT_TANK_REMOVABLE_WALL = 5*u.cm
+ENT_TANK_REMOVABLE_WALL_THICKNESS = 5*u.cm
 
 #Parameters are arbitrary - need to be calculated
 H_ENT_TANK_REMOVABLE_WALL_SUPPORT = 4*u.cm
 
-THICKNESS_ENT_TANK_REMOVABLE_WALL_SUPPORT = 5*u.cm
+ENT_TANK_REMOVABLE_WALL_SUPPORT_THICKNESS = 5*u.cm
 
-THICKNESS_ENT_TANK_HOPPER_LEDGE = 15*u.cm
+ENT_TANK_HOPPER_LEDGE_THICKNESS = 15*u.cm
 
-THICKNESS_RAPID_MIX_ORIFICE_PLATE = 2*u.cm
+RAPID_MIX_ORIFICE_PLATE_THICKNESS = 2*u.cm
 
 ND_RAPID_MIX_AIR_RELEASE = 1*u.inch
 
  ############ Material constants - chem storage tanks  ############
 
-THICKNESS_CHEM_TANK_WALL = 5*u.mm
+CHEM_TANK_WALL_THICKNESS = 5*u.mm
 
  #Supplier Information:
 #http://www.rotoplas.com/assets/files/industria/catalogo.pdf
@@ -80,7 +80,7 @@ DIAM_FLT_VLV_ORIFICES_AVAIL = [0.093, 0.187, 0.25, 0.312]*u.inch
 
 ############# Material constants - flocculator #####################
 
-THICKNESS_FLOC_BAFFLE_RIGID_H = 15*u.cm
+FLOC_BAFFLE_RIGID_H_THICKNESS = 15*u.cm
 
 #The piping size for the main part of the floc modules
 ND_FLOC_MODULES_MAIN = (1/2)*u.inch

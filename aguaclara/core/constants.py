@@ -66,7 +66,7 @@ RATIO_RECTANGULAR = 0.5
 
 DOOR_W = 1 * u.m
 
-THICKNESS_ACRYLIC = 1 * u.cm
+ACRYLIC_THICKNESS = 1 * u.cm
 
 # Due to a 24 in LFOM because that's the biggest pipe we have in our
 # database right now. if we need a bigger single train, we can do that
@@ -115,35 +115,35 @@ def en_lfom_pipe(flow_plant):
 # EN_TWO_INLETS=0
 
 # Angle of the sloped walls of the entrance tank hoppers
-ANGLE_ENT_TANK_SLOPE = 45 * u.deg
+ENT_TANK_SLOPE_ANGLE = 45 * u.deg
 
 # Extra space around the float (increase in effective diameter) to ensure
 # that float has free travel
-S_ENT_TANK_FLOAT = 5 * u.cm
+ENT_TANK_FLOAT_S = 5 * u.cm
 
 # Increased to get better mixing (10/10/2015 by Monroe)
 EDR_RAPID_MIX = 3 * u.W / u.kg
 
 # Distance that the rapid mix coupling extends into the first floc channel
 # so that the RM orifice place can be fixed in place.
-L_FLOC_COUPLING_EXT = 5 * u.cm
+FLOC_COUPLING_EXT_L = 5 * u.cm
 
 ENT_TANK_HOPPER_PEAK_W = 3 * u.cm
 
 # Distance from the front wall to the pipe stubs in the hopper drains so
 # that an operator can easily reach them.
-L_ENT_TANK_WALLTODRAIN_MAX = 40 * u.cm
+ENT_TANK_WALLTODRAIN_L_MAX = 40 * u.cm
 
 # Entrance tank capture velocity
-VEL_ENT_TANK_CAPTURE_BOD = 8 * u.mm/u.s
+ENT_TANK_CAPTURE_BOD_VEL = 8 * u.mm / u.s
 
-ANGLE_ENT_TANK_PLATE = 50 * u.deg
+ENT_TANK_PLATE_ANGLE = 50 * u.deg
 
-S_ENT_TANK_PLATE = 2.5 * u.cm
+ENT_TANK_PLATE_S = 2.5 * u.cm
 
-THICKNESS_ENT_TANK_PLATE = 2 * u.mm
+ENT_TANK_PLATE_THICKNESS = 2 * u.mm
 
-DIST_CENTER_ENT_TANK_PLATE = S_ENT_TANK_PLATE + THICKNESS_ENT_TANK_PLATE
+DIST_CENTER_ENT_TANK_PLATE = ENT_TANK_PLATE_S + ENT_TANK_PLATE_THICKNESS
 
 ND_ENT_TANK_MOD = 0.5 * u.inch
 
@@ -151,9 +151,9 @@ ND_ENT_TANK_MOD_SPACER = 0.75 * u.inch
 
 # Thickness of the PVC disk used as the float for the chemical dose
 # controller lever arm.
-THICKNESS_ENT_TANK_FLOAT = 5 * u.cm
+ENT_TANK_FLOAT_THICKNESS = 5 * u.cm
 
-S_ENT_TANK_LAMINA_PIPETOEDGE = 5 * u.cm
+ENT_TANK_LAMINA_PIPETOEDGE_S = 5 * u.cm
 
 ND_RAPID_MIX_PLATE_RESTRAINER = 0.5 * u.inch
 
@@ -205,7 +205,7 @@ H_COAG_TANK_ABOVE_HEAD_TANK = 30 * u.cm
 DIST_CENTER_STOCK_OUTLET = 10 * u.cm
 
 # Distance between a tank and the border of the platform
-S_CHEM_TANK_BORDER = 5 * u.cm
+CHEM_TANK_BORDER_S = 5 * u.cm
 
 # This is the estimated elevation difference between the water level in
 # the constant head tank and the top of the entrance tank wall.
@@ -265,7 +265,7 @@ H_CHEM_TANK_AVAIL = [17.75 * u.inch, 31.75 * u.inch, 33.5 * u.inch,
 ####
 
 # st587 addition
-L_CDC_LEVER_ARM = 0.5 * u.m
+CDC_LEVER_ARM_L = 0.5 * u.m
 
 D_CDC_LEVER_CYLINDER1 = 1 * u.inch
 
@@ -273,49 +273,49 @@ D_CDC_LEVER_CYLINDER4 = 2 * u.inch
 
 D_CDC_LEVER_CYLINDER_2 = 0.5 * u.inch
 
-L_CDC_LEVER_PIVOTTO_CYLINDER2 = 6 * u.cm
+CDC_LEVER_PIVOTTO_CYLINDER2_L = 6 * u.cm
 
-L_CDC_LEVER_CYLINDER_2TO3 = 9.5 * u.cm
+CDC_LEVER_CYLINDER_2TO3_L = 9.5 * u.cm
 
-L_CDC_LEVER_PIVOT_BOX = 2 * u.inch
+CDC_LEVER_PIVOT_BOX_L = 2 * u.inch
 
 CDC_LEVER_PIVOT_BOX_W = 1 * u.inch
 
 H_CDC_LEVER_PIVOT_BOX = 1 * u.inch
 
-THICKNESS_CDC_LEVER_ARM = 0.125 * u.inch
+CDC_LEVER_ARM_THICKNESS = 0.125 * u.inch
 
 H_CDC_LEVER_ARM = 1 * u.inch
 
-L_CDC_LEVER_INNERBAR = 7 * u.inch
+CDC_LEVER_INNERBAR_L = 7 * u.inch
 
-L_CDC_LEVER_MOUNTING_PLATE = 6 * u.inch
+CDC_LEVER_MOUNTING_PLATE_L = 6 * u.inch
 
 CDC_LEVER_MOUNTING_PLATE_W = 0.5 * u.cm
 
 H_CDC_LEVER_MOUNTING_PLATE = 2 * u.inch
 
-S_LEVER_TO_ENT_TANK_Z_TOP = 1 * u.cm
+LEVER_TO_ENT_TANK_Z_TOP_S = 1 * u.cm
 
-THICKNESS_CDC_FLOAT = 5 * u.cm
+CDC_FLOAT_THICKNESS = 5 * u.cm
 
 D_CDC_FLOAT_CABLE = 0.5 * u.cm
 
-L_CDC_LEVER_SLIDER_ORIGIN_TO_SCREW = 1 * u.inch
+CDC_LEVER_SLIDER_ORIGIN_TO_SCREW_L = 1 * u.inch
 
-THICKNESS_CDC_LEVER_SLIDER = 0.25 * u.inch
+CDC_LEVER_SLIDER_THICKNESS = 0.25 * u.inch
 
 H_CDC_LEVER_SLIDER = 1.5 * u.inch
 
-L_CDC_LEVER_SLIDER = 3 * u.inch
+CDC_LEVER_SLIDER_L = 3 * u.inch
 
 H_CDC_LEVER_SLIDER_SHORT = 0.125 * u.inch
 
-L_CDC_LEVER_CYLINDER = 6 * u.inch
+CDC_LEVER_CYLINDER_L = 6 * u.inch
 
-L_ENT_TANK_FRONT_WALL_TO_CDC_FLOAT = 0.874 * u.m
+ENT_TANK_FRONT_WALL_TO_CDC_FLOAT_L = 0.874 * u.m
 
-L_CDC_LEVER = 0.5 * u.m #This may be obsolete now... mrf222 2/10/16
+CDC_LEVER_L = 0.5 * u.m #This may be obsolete now... mrf222 2/10/16
 
 LEVER_ARM_W = 0.0032 * u.m
 
@@ -335,47 +335,47 @@ DIAM_LAB_ORIGIN_TO_LA_ORIGIN_Z = 0.0245 * u.m
 
 #Distance from the lever arm origin to the outside center of the top part
 # of the drop tube in the y direction.
-LENGTH_LA_ORIGIN_TO_DT_Y = 0.7812 * u.m
+LA_ORIGIN_TO_DT_Y_L = 0.7812 * u.m
 
 #Distance from the lever arm origin to the drop tube in the z direction.
-LENGTH_LA_ORIGIN_TO_DT_Z = 0.0429 * u.m
+LA_ORIGIN_TO_DT_Z_L = 0.0429 * u.m
 
 #Distance from the lever arm origin to the center of the drop tube in the
 #x direction.
-LENGTH_LA_ORIGIN_TO_DT_CENTER_X = 0.0290 * u.m
+LA_ORIGIN_TO_DT_CENTER_X_L = 0.0290 * u.m
 
 #Measured from CDC research team's apparatus.
-THICKNESS_CDC_REDUCER = 9.5 * u.mm
+CDC_REDUCER_THICKNESS = 9.5 * u.mm
 
 #Distance from the lever arm origin to the center of the reducer in the
 # x direction.
-LENGTH_LA_ORIGIN_TO_REDUCER_X = 0.0290 * u.m
+LA_ORIGIN_TO_REDUCER_X_L = 0.0290 * u.m
 
 #Distance from the lever arm origin to the outside center of the top part
 # of the reducer in the y direction.
-LENGTH_LA_ORIGIN_TO_REDUCER_Y = 0.7135 * u.cm
+LA_ORIGIN_TO_REDUCER_Y_L = 0.7135 * u.cm
 
 #Distance from the lever arm origin to the center of the reducer in the
 # x direction.
-LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_X = 0.0290 * u.m
+LA_ORIGIN_TO_REDUCER_CENTER_X_L = 0.0290 * u.m
 
 #Distance from the lever arm origin to the center of the reducer in the
 # y direction.
-LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_Y = 0.7919 * u.m
+LA_ORIGIN_TO_REDUCER_CENTER_Y_L = 0.7919 * u.m
 
 LEVER_BRACKET_W = 0.625 * u.inch
 
-LENGTH_LEVER_BRAKCET = 1.5 * u.inch
+LEVER_BRAKCET_L = 1.5 * u.inch
 
 RADIUS_LA_BAR = 0.375 * u.inch
 
-THICKNESS_LEVER_BRACKET = 0.08 * u.inch
+LEVER_BRACKET_THICKNESS = 0.08 * u.inch
 
 DIAM_LA_BAR = 0.375 * u.inch
 
-LENGTH_LA_BAR = 4 * u.inch
+LA_BAR_L = 4 * u.inch
 
-LENGTH_SLIDER = 3 * u.inch
+SLIDER_L = 3 * u.inch
 
 SLIDER_W = 3.2 * 10**-3 * u.m
 
@@ -383,7 +383,7 @@ ND_DROPTUBE = 0.5 * u.inch
 
 H_SLIDER = 0.625 * u.inch
 
-LENGTH_DROPTUBE = 0.61 * u.m
+DROPTUBE_L = 0.61 * u.m
 
 #The length of the drop tube needs to be calculated. The drop tube must be
 # as long as the supercritical flow.
@@ -397,7 +397,7 @@ OUTER_D_CDC_FITTING = 5/32 * u.inch
 ID_CDC_FITTING = 0.126 * u.inch
 
 #Length of fitting - measured from CDC research team's fitting
-L_CDC_FITTING = 0.75 * u.inch
+CDC_FITTING_L = 0.75 * u.inch
 
 #st587 addition
 ##Constant Head Tank Dimensions
@@ -408,21 +408,21 @@ DIAM_CHT = 10 * u.cm
 
 H_CHT = 37/3 * u.cm
 
-THICKNESS_CHT_WALL = 1/3 * u.cm
+CHT_WALL_THICKNESS = 1/3 * u.cm
 
 ND_DELIVERY_PIPE = 0.6 * u.inch
 
 PIPE_SCHEDULE_FLEX_TUBE = 2
 
-LENGTH_PVC_BALL_VALVE = 0.1625/4 * u.cm
+PVC_BALL_VALVE_L = 0.1625/4 * u.cm
 
-THICKNESS_MOUNTING_BOARD = 1.5 * u.inch
+MOUNTING_BOARD_THICKNESS = 1.5 * u.inch
 
 ##Manifold Dimensions
 
 SPACE_CDC_LEVER_TO_MANIFOLD = 40 * u.cm
 
-LENGTH_CHLOR_AIR_RELEASE_PIPE = 30 * u.cm #Arbitratily selected
+CHLOR_AIR_RELEASE_PIPE_L = 30 * u.cm #Arbitratily selected
 
 
 ####Flocculator
@@ -469,11 +469,11 @@ SPACE_FLOC_MOD_EDGE_TO_LAST_PIPE = 10 * u.cm
 ND_FLOC_RM_RESTRAINER = 0.5 * u.inch
 
 ###Height that the drain stub extends above the top of the flocculator wall
-LENGTH_FLOC_DRAIN_STUB_EXT = 20 * u.cm
+FLOC_DRAIN_STUB_EXT_L = 20 * u.cm
 
 SPACE_FLOC_MOD_PIPE_TO_EDGE = 10 * u.cm
 
-THICKNESS_FLOC_BAFFLE = 2 * u.mm
+FLOC_BAFFLE_THICKNESS = 2 * u.mm
 
 
 
@@ -485,21 +485,21 @@ VEL_SED_UP_BOD = 1 * u.mm/u.s
 ##Plate settler
 VEL_SED_CONC_BOD = 0.12 * u.mm/u.s  # capture velocity
 
-ANGLE_SED_PLATE = 60 * u.deg
+SED_PLATE_ANGLE = 60 * u.deg
 
 SPACE_SED_PLATE = 2.5*u.cm
 
 N_SED_MODULE_PLATES_MIN = 8
 
-# This is moved to template because THICKNESS_SED_PLATE is in materials.yaml
-# DIST_CENTER_SED_PLATE = SPACE_SED_PLATE + THICKNESS_SED_PLATE
+# This is moved to template because SED_PLATE_THICKNESS is in materials.yaml
+# DIST_CENTER_SED_PLATE = SPACE_SED_PLATE + SED_PLATE_THICKNESS
 
 # Bottom of channel
-ANGLE_SED_SLOPE = 50 * u.deg
+SED_SLOPE_ANGLE = 50 * u.deg
 
 ##This slope needs to be verified for functionality in the field.
 # A steeper slope may be required in the floc hopper.
-ANGLE_SED_HOPPER_SLOPE = 45 * u.deg
+SED_HOPPER_SLOPE_ANGLE = 45 * u.deg
 
 H_WATER_SED_EST = 2 * u.m
 
@@ -517,7 +517,7 @@ HEADLOSS_SED_WEIR_MAX = 5 * u.cm
 # is in use.
 H_SED_INLET_WEIR_FREE_BOARD = 2 * u.cm
 
-THICKNESS_SED_WEIR = 5*u.cm
+SED_WEIR_THICKNESS = 5*u.cm
 
 HL_SED_INLET_MAX = 1 * u.cm
 
@@ -536,7 +536,7 @@ DIST_CENTER_SED_LAUNDER_EST = 10 * u.cm
 
 ##The additional length needed in the launder cap pipe that is to be
 # inserted into the launder coupling
-LENGTH_SED_LAUNDER_CAP_EXCESS = 3 * u.cm
+SED_LAUNDER_CAP_EXCESS_L = 3 * u.cm
 
 ##Space between the top of the plate settlers and the bottom of the
 # launder pipe
@@ -555,7 +555,7 @@ NDETER_SED_MOD_SPACER = 0.75 * u.inch
 SDR_SED_MOD_SPACER = 17
 
 ##This is the vertical thickness of the lip where the lamella support sits. mrf222
-THICKNESS_SED_LAMELLA_LEDGE = 8 * u.cm
+SED_LAMELLA_LEDGE_THICKNESS = 8 * u.cm
 
 SPACE_SED_LAMELLA_PIPE_TO_EDGE = 5 * u.cm
 
@@ -565,7 +565,7 @@ DIST_CENTER_SED_PLATE_FRAME_CROSS_EST = 0.8 * u.m
 
 ##Estimated plate length used to get an initial estimate of sedimentation
 # tank active length.
-LENGTH_SED_PLATE_EST = 60 * u.cm
+SED_PLATE_EST_L = 60 * u.cm
 
 ##Pipe size of the support frame that holds up the plate settler modules
 NDETER_SED_PLATE_FRAME = 1.5 * u.inch
@@ -577,7 +577,7 @@ NDETER_SED_PLATE_FRAME = 1.5 * u.inch
 H_FLOC_WEIR_TO_PLATE_FRAME = 10 * u.cm
 
 ##Minimum length (X dimension) of the floc hopper
-LENGTH_SED_HOPPER_MIN = 50 * u.cm
+SED_HOPPER_MIN_L = 50 * u.cm
 
 ##Inlet manifold
 ##Max energy dissipation rate in the sed diffuser outletS
@@ -596,12 +596,12 @@ SPACE_SED_INLET_MAN_SLOPE = 10 * u.cm
 
 ##Length of exposed manifold stub coming out of the floc weir to which the
 # free portion of the inlet manifold is attached with a flexible coupling.
-LENGTH_SED_MAN_CONNECTION_STUB = 4 * u.cm
+SED_MAN_CONNECTION_STUB_L = 4 * u.cm
 
 ##Space between the end of the manifold pipe and the edge of the first
 # diffuser's hole, or the first manifold orifice.
 
-LENGTH_SED_MANIFOLD_FIRST_DIFFUSER_GAP = 3 * u.cm
+SED_MANIFOLD_FIRST_DIFFUSER_GAP_L = 3 * u.cm
 
 ##Vertical distance from the edge of the jet reverser half-pipe to the tip
 # of the inlet manifold diffusers
@@ -609,9 +609,9 @@ H_JET_REVERSER_TO_DIFFUSERS = 3 * u.cm
 
 ##Gap between the end of the inlet manifold pipe and the end wall of the
 # tank to be able to install the pipe
-LENGTH_SED_MANIFOLD_PIPE_FROM_TANK_END = 2  *u.cm
+SED_MANIFOLD_PIPE_FROM_TANK_END_L = 2  *u.cm
 
-LENGTH_SED_WALL_TO_DIFFUSER_GAP_MIN = 3 * u.cm
+SED_WALL_TO_DIFFUSER_GAP_MIN_L = 3 * u.cm
 
 ##Diameter of the holes drilled in the manifold so that the molded 1"
 # diffuser pipes can fit tightly in place (normal OD of a 1" pipe is
@@ -641,7 +641,7 @@ W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
 # Calculating using a minor loss equation with K = 1
 V_SED_DIFFUSER_MAX = np.sqrt(2 * GRAVITY * HL_SED_INLET_MAX).to(u.mm/u.s)
 
-L_DIFFUSER = 15 * u.cm  # vertical length of diffuser
+DIFFUSER_L = 15 * u.cm  # vertical length of diffuser
 
 B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
 
@@ -690,7 +690,7 @@ H_FILTER_LAYER_MIN = 20 * u.cm
 DIST_CENTER_FILTER_MANIFOLD_BRANCH = 10 * u.cm
 
 ##How far the branch extends into the trunk line
-LENGTH_FILTER_MAN_BRANCH_EXT = 2 * u.cm
+FILTER_MAN_BRANCH_EXT_L = 2 * u.cm
 
 ##The time to drain the filter box of the water above the fluidized bed
 TIME_FIBER_BACKWASH_INITIATION_BOD = 3 * u.min
@@ -720,7 +720,7 @@ H_FILTER_DIST_BARRIER = 10 * u.cm
 ##Length that the siphon pipe extends up into the plant drain channel.
 #Being able to shorten the stub from which the siphon discharges into the
 # main plant drain channel allows for some flexibility in the hydraulic design.
-LENGTH_FILTER_SIPHON_CHANNEL_STUB_MIN = 20 * u.cm
+FILTER_SIPHON_CHANNEL_STUB_MIN_L = 20 * u.cm
 
 HEADLOSS_FILTER_ENTRANCE_PIPE_MAX = 10 * u.cm
 
@@ -731,12 +731,12 @@ NDETER_FILTER_BACK_WASH_SIPHON_MAX = 8 * u.inch
 ##Purge valves on the trunk lines are angled downwards so that sediment is
 # cleared more effectively. This angle allows the tees to fit on top of one
 # another at the filter wall.
-ANGLE_FILTER_TRUNK_VALVES = 25 * u.deg
+FILTER_TRUNK_VALVES_ANGLE = 25 * u.deg
 
 ##Purge valves on the trunk lines are angled downwards so that sediment is
 # cleared more effectively. This angle allows the tees to fit on top of one
 # another at the filter wall.
-THICKNESS_FILTER_WEIR = 5 * u.cm
+FILTER_WEIR_THICKNESS = 5 * u.cm
 
 SPACE_FILTER_BRANCH_TO_WALL = 5 * u.cm
 
@@ -750,7 +750,7 @@ HEADLOSS_FILTER_INLET_WEIR_MAX = 5 * u.cm
 ##Dimensions get too small for construction below a certain flow rate
 FLOW_FILTER_MIN = 8 * u.L/u.s
 
-LENGTH_FILTER_MAN_FEMCO_COUPLING = 6 * u.cm
+FILTER_MAN_FEMCO_COUPLING_L = 6 * u.cm
 
 ##Nominal diameter of the spacer tees in the four corners of the filter
 # manifold assembly.
@@ -759,7 +759,7 @@ NDETER_FILTER_MAN_WING_SPACER = 2 * u.inch
 ##Length of the vertical pipe segment following the valve on the filter
 # sand drain. This stub can be capped to allow the sand in the valve to
 # settle, so that the valve can be closed without damage from fluidized sand.
-LENGTH_FILTER_SAND_OUTLET_PIPE = 20 * u.cm
+FILTER_SAND_OUTLET_PIPE_L = 20 * u.cm
 
 
 
@@ -795,7 +795,7 @@ H_FILTER_OVERFLOW_WEIR_FREEFALL = 10 * u.cm
 ###Space beyond the entrance tank in the plant drain channel where the
 # drop pipes from the CDC lever arm can come down and be connected with
 # the chlorine and coagulant dosing points.
-LENGTH_CHEM_LEVER_ARM_SPACE = 75 * u.cm
+CHEM_LEVER_ARM_SPACE_L = 75 * u.cm
 
 
 ###Operator access
