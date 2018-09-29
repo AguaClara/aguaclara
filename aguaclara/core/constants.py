@@ -30,7 +30,8 @@ JET_PLANE_RATIO = 0.0124
 # below needs to be checked. - Oliver
 ################################
 
-# TODO: What does "vc" mean? This doesn't follow the standard naming conventions.
+# TODO: What does "vc" mean? This doesn't follow the standard naming
+# conventions.
 VC_ORIFICE_RATIO = 0.63
 
 # Prompts the transition to a low flow plant
@@ -50,7 +51,7 @@ HEIGHT_PLANT_FREE_BOARD = 0.1 * u.m
 SPACE_FITTING = 5 * u.cm
 
 # Minimum channel width for constructability
-WIDTH_CHANNEL_MIN = 15 * u.cm
+CHANNEL_W_MIN = 15 * u.cm
 
 # RATIO_RECTANGULAR is defined as the optimum "height over width ratio"
 # (1/2) for a rectangular open channel
@@ -64,7 +65,7 @@ RATIO_RECTANGULAR = 0.5
 # and 2 for backwash.
 #EN_WATER=2 #ASK Monroe
 
-WIDTH_DOOR = 1 * u.m
+DOOR_W = 1 * u.m
 
 THICKNESS_ACRYLIC = 1 * u.cm
 
@@ -127,7 +128,7 @@ ENERGY_DIS_RAPID_MIX = 3 * u.W/u.kg
 # so that the RM orifice place can be fixed in place.
 LENGTH_FLOC_COUPLING_EXT = 5 * u.cm
 
-WIDTH_ENT_TANK_HOPPER_PEAK = 3 * u.cm
+ENT_TANK_HOPPER_PEAK_W = 3 * u.cm
 
 #Distance from the front wall to the pipe stubs in the hopper drains so
 # that an operator can easily reach them.
@@ -275,7 +276,7 @@ LENGTH_CDC_LEVER_CYLINDER_2TO3 = 9.5 * u.cm
 
 LENGTH_CDC_LEVER_PIVOT_BOX = 2 * u.inch
 
-WIDTH_CDC_LEVER_PIVOT_BOX = 1 * u.inch
+CDC_LEVER_PIVOT_BOX_W = 1 * u.inch
 
 HEIGHT_CDC_LEVER_PIVOT_BOX = 1 * u.inch
 
@@ -287,7 +288,7 @@ LENGTH_CDC_LEVER_INNERBAR = 7 * u.inch
 
 LENGTH_CDC_LEVER_MOUNTING_PLATE = 6 * u.inch
 
-WIDTH_CDC_LEVER_MOUNTING_PLATE = 0.5 * u.cm
+CDC_LEVER_MOUNTING_PLATE_W = 0.5 * u.cm
 
 HEIGHT_CDC_LEVER_MOUNTING_PLATE = 2 * u.inch
 
@@ -313,7 +314,7 @@ LENGTH_ENT_TANK_FRONT_WALL_TO_CDC_FLOAT = 0.874 * u.m
 
 LENGTH_CDC_LEVER = 0.5 * u.m #This may be obsolete now... mrf222 2/10/16
 
-WIDTH_LEVER_ARM = 0.0032 * u.m
+LEVER_ARM_W = 0.0032 * u.m
 
 HEIGHT_LEVER_ARM = 0.0254 * u.m
 
@@ -359,7 +360,7 @@ LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_X = 0.0290 * u.m
 # y direction.
 LENGTH_LA_ORIGIN_TO_REDUCER_CENTER_Y = 0.7919 * u.m
 
-WIDTH_LEVER_BRACKET = 0.625 * u.inch
+LEVER_BRACKET_W = 0.625 * u.inch
 
 LENGTH_LEVER_BRAKCET = 1.5 * u.inch
 
@@ -373,7 +374,7 @@ LENGTH_LA_BAR = 4 * u.inch
 
 LENGTH_SLIDER = 3 * u.inch
 
-WIDTH_SLIDER = 3.2 * 10**-3 * u.m
+SLIDER_W = 3.2 * 10**-3 * u.m
 
 NOM_DIAM_DROPTUBE = 0.5 * u.inch
 
@@ -440,7 +441,7 @@ COLL_POT_FLOC_BOD = 75 * u.m**(2/3)
 
 ##Minimum width of flocculator channel required for constructability based
 # on the width of the human hip
-FLOC_WIDTH_MIN_CONST = 45 * u.cm
+FLOC_W_MIN_CONST = 45 * u.cm
 
 ##Minimum and maximum distance between expansions to baffle spacing ratio for
 #flocculator geometry that will provide optimal efficiency.
@@ -797,14 +798,14 @@ LENGTH_CHEM_LEVER_ARM_SPACE = 75 * u.cm
 ###Operator access
 
 ##combine walkway assumptions!
-WIDTH_MP_WALKWAY_MIN = 1 * u.m
+MP_WALKWAY_MIN_W = 1 * u.m
 
 ##Width of the walkway above the main plant drain channel
-WIDTH_DC_WALKWAY = 1.2 * u.m
+DC_WALKWAY_W = 1.2 * u.m
 
 ##Width of the floor space between the flocculator and the rapid mix pipe
 # floor cutout next to the entrance tank.
-WIDTH_ET_WALKWAY = 1 * u.m
+ET_WALKWAY_W = 1 * u.m
 
 ##for high flow, double train situations
 W_TRAIN_WALKWAY = 1.5 * u.m

@@ -123,7 +123,7 @@ NOM_DIAM_FILTER_BACKWASH_MANIFOLD_BRANCH = 1.5*u.inch
 
 #A slot thickness of 0.008 in or 0.2 mm is selected so that sand
 # will not enter the slotted pipes.
-WIDTH_FILTER_MANIFOLD_SLOTS = 0.008*u.inch
+FILTER_MANIFOLD_SLOTS_W = 0.008*u.inch
 
 NOM_DIAM_FILTER_BRANCH_HOLDER = 2*u.inch
 
