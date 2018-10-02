@@ -112,8 +112,8 @@ def width_HS_min(q_plant, hl, Gt, T, depth_end):
     """
     nu = pc.viscosity_kinematic(T).magnitude
 
-    w = con.RATIO_HS_MIN*((K_e/(2 * depth_end * (G_avg(hl, Gt, T).magnitude**2)
-    * nu))**(1/3))*q_plant/depth_end
+    w = con.HS_RATIO_MIN * ((K_e / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
+                                    * nu)) ** (1/3)) * q_plant / depth_end
     return w
 
 
@@ -293,7 +293,7 @@ def exp_dist_max(q_plant, hl, Gt, T, W_chan):
     g_avg = G_avg(hl, Gt, T).magnitude
     nu = pc.viscosity_kinematic(T).magnitude
     term1 = (K_e/(2 * (g_avg**2) * nu))**(1/4)
-    term2 = (con.RATIO_HS_MAX*q_plant/W_chan)**(3/4)
+    term2 = (con.HS_RATIO_MAX * q_plant / W_chan) ** (3 / 4)
     exp_dist_max = term1*term2
     return exp_dist_max
 

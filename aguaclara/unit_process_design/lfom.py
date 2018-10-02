@@ -9,6 +9,7 @@ import aguaclara.design.lfom
 from aguaclara.play import*
 
 #primary outputs from this file are
+#TODO: con.RATIO_LFOM_SAFETY has been moved
 #Nominal diameter nom_diam_lfom_pipe(FLOW,HL_LFOM,con.RATIO_LFOM_SAFETY)
 #number of rows n_rows(FLOW,HL_LFOM)
 #orifice diameter orifice_diameter(FLOW,HL_LFOM,drill_series_uom)
@@ -69,7 +70,7 @@ def area_lfom_pipe_min(FLOW, HL_LFOM):
 @u.wraps(u.inch, [u.m**3/u.s, u.m], False)
 def nom_diam_lfom_pipe(FLOW,HL_LFOM):
     ID = pc.diam_circle(area_lfom_pipe_min(FLOW, HL_LFOM))
-    return pipe.ND_SDR_available(ID, mat.SDR_LFOM).magnitude
+    return pipe.SDR_available_ND(ID, mat.SDR_LFOM).magnitude
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_orifices_top(FLOW,HL_LFOM):
