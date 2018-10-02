@@ -3,7 +3,7 @@ tests for the research package's ProCoDA parsing functions
 """
 
 import unittest
-from aguaclara.research.ProCoDA_Parser import *
+from aguaclara.research.procoda_parser import *
 
 class TestProCoDAParser(unittest.TestCase):
 
