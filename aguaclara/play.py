@@ -31,13 +31,13 @@ from aguaclara.design.lfom import LFOM
 
 # Core imports
 import aguaclara
-import aguaclara.core.pipedatabase as pipe
+import aguaclara.core.pipes as pipe
 from aguaclara.core.units import unit_registry as u
 from aguaclara.core import physchem as pc
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
-import aguaclara.core.minor_loss as k
+import aguaclara.core.head_loss as k
 import aguaclara.core.pipeline_utility as pipeline
 import aguaclara.core.optional_inputs as opt
 import warnings

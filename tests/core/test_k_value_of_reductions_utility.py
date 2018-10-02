@@ -1,7 +1,7 @@
 import unittest
-import aguaclara.core.minor_loss as k
+import aguaclara.core.head_loss as k
 from aguaclara.core.units import unit_registry as u
-from aguaclara.core import pipedatabase as pipe
+from aguaclara.core import pipes as pipe
 
 """ There are still many cases to test."""
 

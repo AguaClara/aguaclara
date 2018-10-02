@@ -150,6 +150,7 @@ RATIO_FILTER_FLUIDIZED = 1.3 #Bed expands 30% when fluidized
 #Carman-Kozeny coefficient
 K_KOZENY = 5
 
+# TODO: move to new drill file.
 ############## Drill Series ##############
 
 DIAM_DRILL_ENG = [0.03125, 0.0625, 0.09375, 0.125, 0.15625, 0.1875, 0.21875, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1, 1.25, 1.5, 1.75, 2]*u.inch
