@@ -1,19 +1,16 @@
 #-*- coding: utf-8 -*-
 """
 Data for materials that are used in the constrution of AguaClara water
-treatment plants
+treatment plants.
 """
 
 from aguaclara.core.units import unit_registry as u
-
-########### Materials Constants - general ############
+from core.units import unit_registry as u
 
 PVC_PIPE_ROUGH = 0.12 * u.mm
 
 CONCRETE_PIPE_ROUGH = 2 * u.mm
-
-CONCRETE_RHO = 2400 * (u.kg / u.m ** 3)
-
+CONCRETE_DENSITY = 2400 * (u.kg / u.m ** 3)
 CONCRETE_THICKNESS_MIN = 5 * u.cm
 
 #0 is English, 1 is metric, drill series is needed for the
@@ -180,3 +177,6 @@ def diam_drill(EN_DRILL_SERIES):
     else:
         DIAM_DRILL = DIAM_DRILL_MET
     return DIAM_DRILL
+
+
+ACRYLIC_THICKNESS = 1 * u.cm

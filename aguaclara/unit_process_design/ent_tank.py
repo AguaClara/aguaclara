@@ -2,6 +2,7 @@
 an AguaClara plant.
 
 """
+import design.ent_tank
 from aguaclara.play import*
 
 @u.wraps(u.inch, [u.m**3/u.s, u.degK, u.m, None], False)
@@ -65,8 +66,9 @@ def num_plates_ET(q_plant, W_chan):
     >>> num_plates_ET(20*u.L/u.s,2*u.m)
     1.0
     """
-    num_plates = np.ceil(np.sqrt(q_plant / (con.CENTER_ENT_TANK_PLATE_DIST.magnitude
-                                            * W_chan * con.ENT_TANK_CAPTURE_BOD_VEL.magnitude * np.sin(con.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude))))
+    num_plates = np.ceil(np.sqrt(q_plant / (design.ent_tank.CENTER_ENT_TANK_PLATE_DIST.magnitude
+                                            * W_chan * design.ent_tank.ENT_TANK_CAPTURE_BOD_VEL.magnitude * np.sin(
+                design.ent_tank.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude))))
     return num_plates
 
 @u.wraps(u.m, [u.m**3/u.s, u.m], False)
@@ -93,6 +95,7 @@ def L_plate_ET(q_plant, W_chan):
     0.00194
     """
     L_plate = (q_plant / (num_plates_ET(q_plant, W_chan) * W_chan *
-                          con.ENT_TANK_CAPTURE_BOD_VEL.magnitude * np.cos(con.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude)))
-    - (con.ENT_TANK_PLATE_S.magnitude * np.tan(con.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude))
+                          design.ent_tank.ENT_TANK_CAPTURE_BOD_VEL.magnitude * np.cos(
+                design.ent_tank.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude)))
+    - (design.ent_tank.ENT_TANK_PLATE_S.magnitude * np.tan(design.ent_tank.ENT_TANK_PLATE_ANGLE.to(u.rad).magnitude))
     return L_plate

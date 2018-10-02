@@ -281,3 +281,33 @@ def _get_orifice_type(orifice_l, orifice_id):
         return 'thick'
     else:
         return 'oversize'
+
+##90 deg elbow
+EL90_K_MINOR = 0.9
+
+EL45_K_MINOR = 0.45
+##The loss coefficient for the channel transition in a 90 degree turn
+RIGHT_ANGLE_K_MINOR = 0.4
+
+ANGLE_VALVE_K_MINOR = 4.3
+
+GLOBE_VALVE_K_MINOR = 10
+
+GATE_VALVE_K_MINOR = 0.39
+
+CHECK_VALVE_CONV_K_MINOR = 4
+
+CHECK_VALVE_BALL_K_MINOR = 4.5
+
+##headloss coefficient of jet
+EXP_K_MINOR = 1
+
+TEE_FLOW_RUN_K_MINOR = 0.6
+
+TEE_FLOW_BR_K_MINOR = 1.8
+
+PIPE_ENTRANCE_K_MINOR = 0.5
+
+PIPE_EXIT_K_MINOR = 1
+
+RM_GATE_VIN_K_MINOR = 25
