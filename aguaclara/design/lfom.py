@@ -31,7 +31,7 @@ SAFETY_RATIO_MIN = 1.15
 # Changed from 12 in by pc479 because this is not a constraint anymore
 # because we don't have an elbow constraining us. LFOM still needs to fit
 # in the entrance tank. Need to check this constraint (mrf222)
-ND_PIPE_MAX = 36 * u.inch
+PIPE_MAX_ND = 36 * u.inch
 
 
 class LFOM:
@@ -99,7 +99,7 @@ class LFOM:
     def nom_diam_pipe(self):
         """The nominal diameter of the LFOM pipe"""
         ID = pc.diam_circle(self.area_pipe_min)
-        return pipe.ND_SDR_available(ID, self.sdr)
+        return pipe.SDR_available_ND(ID, self.sdr)
 
     @property
     def area_top_orifice(self):

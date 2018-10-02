@@ -19,7 +19,7 @@ import numpy as np
 @ut.list_handler
 def k_value_expansion(ent_pipe_id, exit_pipe_id, q,
                       fitting_angle=180, rounded=False,
-                      nu=con.NU_WATER, pipe_rough=mats.PVC_PIPE_ROUGH):
+                      nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
     """Calculates the minor loss coefficient (k-value) of a square,
     tapered, or rounded expansion in a pipe. Defaults to square.
 
@@ -70,7 +70,7 @@ def k_value_expansion(ent_pipe_id, exit_pipe_id, q,
 @ut.list_handler
 def k_value_reduction(ent_pipe_id, exit_pipe_id, q,
                       fitting_angle=180, rounded=False,
-                      nu=con.NU_WATER, pipe_rough=mats.PVC_PIPE_ROUGH):
+                      nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
     """Calculates the minor loss coefficient (k-value) of a square,
     tapered, or rounded reduction in a pipe. Defaults to square.
 
@@ -120,7 +120,7 @@ def k_value_reduction(ent_pipe_id, exit_pipe_id, q,
 @u.wraps(u.dimensionless, [u.m, u.m, u.m, u.m ** 3 / u.s])
 @ut.list_handler
 def k_value_orifice(pipe_id, orifice_id, orifice_l, q,
-                    nu=con.NU_WATER):
+                    nu=con.WATER_NU):
     """Calculates the minor loss coefficient of an orifice plate in a
     pipe.
 
