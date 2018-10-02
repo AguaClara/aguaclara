@@ -5,100 +5,22 @@ can be used throughout the plant design.
 
 # units allows us to include units in all of our calculations
 import math
+from aguaclara.core.units import unit_registry as u
 
-try:
-    from aguaclara.core.units import unit_registry as u
-except ModuleNotFoundError:
-    from aguaclara.core.units import unit_registry as u
 
 import numpy as np
 import functools
 
-#We need to fix the formatting so that it doesn't display trailing zeroes
-#that are not significant.
-def sig(measurement, digits):
-    """Return measurement reduced to a number of significant digits.
+def round_sf(number, digits):
+    """Returns inputted value rounded to number
+    of significant figures desired.
 
-    measurement is a number that may include units. digits is the number of significant
-    digits to display.
-    """
-    # Check to see if the quantity x includes units so we can strip the
-    # units and then reattach them at the end.
-    if type(measurement) == type(1 * u.m):
-        xunit = measurement.units
-        xmag = float(measurement.magnitude)
-
-        if digits==1 and xmag>=1:
-             req = round(xmag)
-             return '{:~P}'.format(u.Quantity(req,xunit))
-    else:
-        xmag = measurement
-
-    if xmag == 0.:
-        return "0." + "0" * (digits - 1)
-
-    if digits == 1 and type(measurement)!=type(1 * u.m):
-        return round(xmag)
-
-    out = []
-
-    if xmag < 0:
-        out.append("-")
-        xmag = -xmag
-
-    e = int(math.log10(xmag))
-    tens = math.pow(10, e - digits + 1)
-    y = math.floor(xmag / tens)
-
-    if y < math.pow(10, digits - 1):
-        e = e -1
-        tens = math.pow(10, e - digits + 1)
-        y = math.floor(xmag / tens)
-
-    if abs((y + 1.) * tens - xmag) <= abs(y * tens -xmag):
-        y = y + 1
-
-    if y >= math.pow(10, digits):
-        y = y / 10.
-        e = e + 1
-
-    m = "%.*g" % (digits, y)
-
-    if e < -2 or e >= digits:
-        out.append(m[0])
-
-        if digits > 1:
-            out.append(".")
-            out.extend(m[1: digits])
-
-        out.append('e')
-
-        if e > 0:
-            out.append("+")
-
-        out.append(str(e))
-
-    elif e == (digits - 1):
-        out.append(m)
-
-    elif e >= 0:
-        out.append(m[:e + 1])
-
-        if e+1 < len(m):
-            out.append(".")
-            out.extend(m[e + 1:])
-    else:
-        out.append("0.")
-        out.extend(["0"] * -(e + 1))
-        out.append(m)
-
-    if type(measurement) == type(1 * u.m):
-        req = "".join(out)
-        return '{:~P}'.format(u.Quantity(req,xunit))
-    
-    else:
-        return "".join(out)
-
+    Parameters:
+       number: Value to be rounded
+       digits: number of significant digits
+       to be rounded to.
+   """
+    return round(number, digits - len(str(number)))
 
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
@@ -127,7 +49,7 @@ def ceil_nearest(x,array):
 def list_handler(func):
     """Wraps a function to handle list inputs."""
     @functools.wraps(func)
-    def wrapper(*args, HandlerResult="nparray", **kwargs):
+    def wrapper(HandlerResult="nparray", *args, **kwargs):
         """Run through the wrapped function once for each array element.
 
         :param HandlerResult: output type. Defaults to numpy arrays.
@@ -195,7 +117,7 @@ def list_handler(func):
 
 
 def check_range(*args):
-    """Check whether passed paramters fall within approved ranges.
+    Check whether passed paramters fall within approved ranges.
 
     Does not return anything, but will raise an error if a parameter falls
     outside of its defined range.
@@ -209,7 +131,7 @@ def check_range(*args):
 
     Range requests that this function understands are listed in the
     knownChecks sequence.
-    """
+    
     knownChecks = ('>0', '>=0', '0-1', '<0', '<=0', 'int', 'boolean')
     for arg in args:
         #Converts arg to a mutable list
@@ -257,3 +179,6 @@ def check_range(*args):
             if 'boolean' in arg[1] and type(i) != bool:
                 raise TypeError("{1} is {0} but must be a "
                                 "boolean.".format(i, arg[2]))
+
+
+
