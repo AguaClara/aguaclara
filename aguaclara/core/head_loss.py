@@ -13,7 +13,8 @@ import aguaclara.core.units.unit_registry as u
 import numpy as np
 
 
-# TODO: Add units to docstrings. - Oliver
+# TODO: Add units to docstrings. - Oliver Leung (oal22)
+
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s])
 @ut.list_handler
