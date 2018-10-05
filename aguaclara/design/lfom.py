@@ -8,6 +8,8 @@ import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
 from onshapepy.part import Part
 
+import core.drills
+from core.materials import CONCRETE_THICKNESS_MIN
 from core.units import unit_registry as u
 
 HL_MIN = 20 * u.cm
@@ -38,7 +40,7 @@ class LFOM:
 
     safety_factor = 1.5
     sdr = 26
-    drill_bits = mat.DIAM_DRILL_ENG
+    drill_bits = core.drills.DRILL_D_IMPERIAL
     s_orfice = 1*u.cm
     cad = Part(
         "https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d"
@@ -210,3 +212,7 @@ class LFOM:
         """Draw the LFOM in CAD."""
         self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
                            "OD": self.nom_diam_pipe, "bRows": self.b_rows}
+
+
+SDR_LFOM = 26
+LFOM_SHEET_THICKNESS = CONCRETE_THICKNESS_MIN

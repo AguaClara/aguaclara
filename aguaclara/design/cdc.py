@@ -488,3 +488,6 @@ SED_WEIR_FREE_BOARD_H = 5 * u.cm
 # drop pipes from the CDC lever arm can come down and be connected with
 # the chlorine and coagulant dosing points.
 CHEM_LEVER_ARM_SPACE_L = 75 * u.cm
+DIAM_TUBE_ENGLISH = [1, 2, 3 ,4 ,5 ,6, 7]*u.inch/16
+DIAM_TUBE_METRIC = [2, 3, 4, 6, 8, 10]*u.mm
+DIAM_FLT_VLV_ORIFICES_AVAIL = [0.093, 0.187, 0.25, 0.312]*u.inch

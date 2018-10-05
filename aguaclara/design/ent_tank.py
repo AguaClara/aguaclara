@@ -38,3 +38,22 @@ ENT_TANK_PLATE_SUPPORT_ND = 3 * u.inch
 RAPID_MIX_EDR = 3 * u.W / u.kg
 
 RAPID_MIX_PLATE_RESTRAINER_ND = 0.5 * u.inch
+
+ENT_TANK_FLOAT_ND =  8*u.inch
+
+#Minimum pipe size to handle grit and to ensure that the pipe can be easily unclogged
+ENT_TANK_DRAIN_MIN_ND =  3*u.inch
+
+ENT_TANK_DRAIN_ND =  3*u.inch #This is constant for now
+
+ENT_TANK_REMOVABLE_WALL_THICKNESS = 5*u.cm
+
+#Parameters are arbitrary - need to be calculated
+H_ENT_TANK_REMOVABLE_WALL_SUPPORT = 4*u.cm
+
+ENT_TANK_REMOVABLE_WALL_SUPPORT_THICKNESS = 5*u.cm
+
+ENT_TANK_HOPPER_LEDGE_THICKNESS = 15*u.cm
+ENT_TANK_WALKWAY_W = 1 * u.m
+RAPID_MIX_ORIFICE_PLATE_THICKNESS = 2*u.cm
+RAPID_MIX_AIR_RELEASE_ND = 1*u.inch

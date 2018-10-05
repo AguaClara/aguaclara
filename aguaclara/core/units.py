@@ -17,7 +17,8 @@ import pint
 import pandas as pd
 
 unit_registry = pint.UnitRegistry(
-    system='mks', autoconvert_offset_to_baseunit=True
+    system='mks',
+    autoconvert_offset_to_baseunit=True
 )
 
 # default formatting includes 4 significant digits.

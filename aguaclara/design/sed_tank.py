@@ -176,3 +176,21 @@ HEADLOSS_SED_DIFFUSER = 0.001 * u.m # Headloss through the diffusers to ensure u
 # continuing from one set of sed tanks into the filter inlet channel.
 #The execution of this extended channel involves a few calculations.
 HEADLOSS_SED_TO_FILTER_PIPE_MAX = 10 * u.cm
+
+#Maximum length of sed plate sticking out past module pipes without any
+#additional support. The goal is to prevent floppy modules that don't maintain
+# constant distances between the plates
+
+LENGTH_SED_PLATE_CANTILEVERED = 20*u.cm
+
+SED_HOPPER_DRAIN_ND = 1*u.inch
+
+SED_HOPPER_VIEWER_ND = 2*u.inch
+
+SED_HOPPER_SKIMMER_ND = 2*u.inch
+
+##Diffusers/Jet Reverser
+
+SED_DIFFUSER_ND = 1*u.inch
+
+SED_JET_REVERSER_ND = 3*u.inch

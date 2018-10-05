@@ -58,3 +58,11 @@ FLOC_DRAIN_STUB_EXT_L = 20 * u.cm
 SPACE_FLOC_MOD_PIPE_TO_EDGE = 10 * u.cm
 
 FLOC_BAFFLE_THICKNESS = 2 * u.mm
+
+FLOC_BAFFLE_RIGID_H_THICKNESS = 15*u.cm
+
+#The piping size for the main part of the floc modules
+FLOC_MODULES_MAIN_ND = (1/2)*u.inch
+
+#The diameter of the oversized cap used to assemble the floc modules
+FLOC_MODULES_LARGE_ND = 1.5*u.inch
