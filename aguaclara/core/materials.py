@@ -3,7 +3,7 @@
 Data for materials that are used in the constrution of AguaClara water
 treatment plants.
 """
-from core.units import unit_registry as u
+from aguaclara.core.units import unit_registry as u
 
 PVC_PIPE_ROUGH = 0.12 * u.mm
 

@@ -7,7 +7,7 @@ physical/chemical unit processes for AguaClara water treatment plants.
 import numpy as np
 from scipy import interpolate, integrate
 
-import core.constants
+import aguaclara.core.constants
 
 try:
     from aguaclara.core.units import unit_registry as u
@@ -41,7 +41,7 @@ def diam_circle(AreaCircle):
 ######################### Hydraulics #########################
 RE_TRANSITION_PIPE = 2100
 
-K_KOZENY = core.constants.K_KOZENY
+K_KOZENY = con.K_KOZENY
 
 WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15,
                         323.15, 333.15, 343.15, 353.15, 363.15, 373.15
@@ -111,7 +111,7 @@ def radius_hydraulic(Width, DistCenter, openchannel):
     ut.check_range([Width, ">0", "Width"], [DistCenter, ">0", "DistCenter"],
                    [openchannel, "boolean", "openchannel"])
     if openchannel:
-        return (Width*DistCenter) / (Width + 2*DistCenter)
+        return (Width*DistCenter)    / (Width + 2*DistCenter)
         # if openchannel is True, the channel is open. Otherwise, the channel
         # is assumed to have a top.
     else:

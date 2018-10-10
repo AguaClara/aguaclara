@@ -117,6 +117,7 @@ def list_handler(func):
 
 
 def check_range(*args):
+    """
     Check whether passed paramters fall within approved ranges.
 
     Does not return anything, but will raise an error if a parameter falls
@@ -131,7 +132,7 @@ def check_range(*args):
 
     Range requests that this function understands are listed in the
     knownChecks sequence.
-    
+    """
     knownChecks = ('>0', '>=0', '0-1', '<0', '<=0', 'int', 'boolean')
     for arg in args:
         #Converts arg to a mutable list
