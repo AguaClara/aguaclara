@@ -4,7 +4,6 @@ import numpy as np
 import aguaclara.core.physchem as pc
 import math
 import aguaclara.core.pipes as pipe
-import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
 from onshapepy.part import Part
 
