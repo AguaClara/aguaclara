@@ -6,13 +6,43 @@ pipeline design.
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.physchem as pc
 import aguaclara.core.constants as con
-import aguaclara.core.materials as mats
+import aguaclara.core.materials as mat
 
 import numpy as np
 
+# NOTE: This implementation of Pipeline presumes that Pipe has been
+# implemented with:
+# 1. id (inner diameter)
+# 2. l (length)
+# 3. minor_loss
+# 4. q() (flow rate)
+# Pipeline will work once that has been implemented.
+# - Oliver Leung (oal22), 10/11/18
+
+class Pipeline:
+
+    def __init__(self,
+                 pipes=np.array(), nu=con.WATER_NU, pipe_rough=mat.PVC_PIPE_ROUGH):
+        """Initializes a Pipeline.
+
+        Parameters:
+            pipes: NumPy array of Pipe objects that comprise the Pipeline.
+            nu: The pipeline fluid's kinematic viscosity.
+            pipe_rough: The roughness of the pipes in the Pipeline.
+        """
+        self.pipes = pipes
+        self.nu = nu
+        self.pipe_rough = pipe_rough
+
+    # TODO: Implement this with calculation instead of interpolation.
+    # Oliver Leung (oal22), 10/11/18
+    def q(self, hl):
+        """Gets the flow rate of a """
+
+
 @u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)
 def flow_pipeline(diameters: np.ndarray, lengths: np.ndarray, k_minors: np.ndarray, target_headloss: float,
-                  nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
+                  nu=con.WATER_NU, pipe_rough=mat.PVC_PIPE_ROUGH):
     """
     This function takes a single pipeline with multiple sections, each potentially with different diameters,
     lengths and minor loss coefficients and determines the flow rate for a given headloss.
