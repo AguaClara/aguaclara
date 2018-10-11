@@ -12,29 +12,6 @@ import core.drills
 from core.materials import CONCRETE_THICKNESS_MIN
 from core.units import unit_registry as u
 
-HL_MIN = 20 * u.cm
-HL_MAX = 40 * u.cm  # For high flow plants
-HL = 20 * u.cm
-H_FREEFALL = 10 * u.cm
-
-# min wall dist between orifices, for structural stability
-ORIFICE_S = 1 * u.cm
-ORIFICE_RATIO = 10
-
-# Safety coefficient that ensures free fall at bottom of the lfom pipe
-SAFETY_RATIO = 1.5
-
-# Minimum safety coefficient for lfom pipe diameter; only reduced
-# between 55 L/s and 70 L/s - the intermediate zone between the using an
-# LFOM pipe and an LFOM channel.
-# It may be possible to eliminate this if we switch to plate LFOM at 50 Lp
-SAFETY_RATIO_MIN = 1.15
-
-# Changed from 12 in by pc479 because this is not a constraint anymore
-# because we don't have an elbow constraining us. LFOM still needs to fit
-# in the entrance tank. Need to check this constraint (mrf222)
-PIPE_MAX_ND = 36 * u.inch
-
 
 class LFOM:
 
