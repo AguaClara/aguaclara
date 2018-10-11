@@ -124,10 +124,10 @@ class LfomTest(unittest.TestCase):
         been tested.
 
         """
-        checks = ((60 * u.L / u.s, 20 * u.cm, core.drills.DRILL_D_IMPERIAL, 1 * u.m),
-                  (60 * u.L / u.s, 40 * u.cm, core.drills.DRILL_D_IMPERIAL, 1 * u.m),
-                  (20 * u.L / u.s, 20 * u.cm, core.drills.DRILL_D_IMPERIAL, 1 * u.m),
-                  (20 * u.L / u.s, 40 * u.cm, core.drills.DRILL_D_IMPERIAL, 1 * u.m))
+        checks = ((60 * u.L / u.s, 20 * u.cm, core.drills.DRILL_BITS_D_IMPERIAL, 1 * u.m),
+                  (60 * u.L / u.s, 40 * u.cm, core.drills.DRILL_BITS_D_IMPERIAL, 1 * u.m),
+                  (20 * u.L / u.s, 20 * u.cm, core.drills.DRILL_BITS_D_IMPERIAL, 1 * u.m),
+                  (20 * u.L / u.s, 40 * u.cm, core.drills.DRILL_BITS_D_IMPERIAL, 1 * u.m))
         for i in checks:
             with self.subTest(i=i):
                 self.assertAlmostEqual(lfom.orifice_diameter(i[0], i[1], i[2]), i[3])
@@ -139,10 +139,10 @@ class LfomTest(unittest.TestCase):
         been tested.
 
         """
-        checks = ((60 * u.L / u.s, 20 * u.cm, core.drills.DRILL_D_IMPERIAL, 0.0007669903939428206 * u.m ** 2),
-                  (60 * u.L / u.s, 40 * u.cm, core.drills.DRILL_D_IMPERIAL, 0.0007669903939428206 * u.m ** 2),
-                  (20 * u.L / u.s, 20 * u.cm, core.drills.DRILL_D_IMPERIAL, 3.141592653589793 * u.m ** 2),
-                  (20 * u.L / u.s, 40 * u.cm, core.drills.DRILL_D_IMPERIAL, 0.0007669903939428206 * u.m ** 2))
+        checks = ((60 * u.L / u.s, 20 * u.cm, core.drills.DRILL_BITS_D_IMPERIAL, 0.0007669903939428206 * u.m ** 2),
+                  (60 * u.L / u.s, 40 * u.cm, core.drills.DRILL_BITS_D_IMPERIAL, 0.0007669903939428206 * u.m ** 2),
+                  (20 * u.L / u.s, 20 * u.cm, core.drills.DRILL_BITS_D_IMPERIAL, 3.141592653589793 * u.m ** 2),
+                  (20 * u.L / u.s, 40 * u.cm, core.drills.DRILL_BITS_D_IMPERIAL, 0.0007669903939428206 * u.m ** 2))
         for i in checks:
             with self.subTest(i=i):
                 self.assertAlmostEqual(lfom.drillbit_area(i[0], i[1], i[2]), i[3])

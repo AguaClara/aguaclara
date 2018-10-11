@@ -40,7 +40,7 @@ class LFOM:
 
     safety_factor = 1.5
     sdr = 26
-    drill_bits = core.drills.DRILL_D_IMPERIAL
+    drill_bits = core.drills.DRILL_BITS_D_IMPERIAL
     s_orfice = 1*u.cm
     cad = Part(
         "https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d"
