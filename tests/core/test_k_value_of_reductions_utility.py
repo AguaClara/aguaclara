@@ -1,7 +1,7 @@
 import unittest
-import aguaclara.core.k_value_of_reductions_utility as k
+import aguaclara.core.head_loss as k
 from aguaclara.core.units import unit_registry as u
-from aguaclara.core import pipedatabase as pipe
+from aguaclara.core import pipes as pipe
 
 """ There are still many cases to test."""
 
@@ -10,7 +10,7 @@ class KValuesCalculationTest(unittest.TestCase):
 
     # Test Reductions
     def test_k_value_reduction_square_turbulent(self):
-        self.assertAlmostEqual(k.k_value_reduction(pipe.OD(4), pipe.OD(2), 4 * u.L/u.s), 5.6677039356929662)
+        self.assertAlmostEqual(k.k_value_reduction(pipe.OD(4), pipe.OD(2), 4 * u.L / u.s), 5.6677039356929662)
 
     def test_k_value_reduction_laminar(self):
         self.assertAlmostEqual(k.k_value_reduction(pipe.OD(1), pipe.OD(0.5), 0.1 * u.L / u.s), 2.1802730749680945)

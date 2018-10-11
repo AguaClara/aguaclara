@@ -3,7 +3,7 @@ research tests.
 '''''
 
 import unittest
-from aguaclara.research.Environmental_Processes_Analysis import *
+from aguaclara.research.environmental_processes_analysis import *
 
 
 class TestEPA(unittest.TestCase):

@@ -6,12 +6,12 @@ pipeline design.
 from aguaclara.core.units import unit_registry as u
 from aguaclara.core import physchem as pc
 import aguaclara.core.constants as con
-import aguaclara.core.materials_database as mats
+import aguaclara.core.materials as mats
 import numpy as numpy
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)
 def flow_pipeline(diameters: numpy.ndarray, lengths: numpy.ndarray, k_minors: numpy.ndarray, target_headloss: float,
-                  nu=con.NU_WATER, pipe_rough=mats.PIPE_ROUGH_PVC):
+                  nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
     """
     This function takes a single pipeline with multiple sections, each potentially with different diameters,
     lengths and minor loss coefficients and determines the flow rate for a given headloss.

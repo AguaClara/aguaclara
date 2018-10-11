@@ -13,7 +13,7 @@ import pandas as pd
 
 import os.path
 dir_path = os.path.dirname(__file__)
-csv_path = os.path.join(dir_path, 'data/pipedatabase.csv')
+csv_path = os.path.join(dir_path, 'data/pipe_database.csv')
 with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
 

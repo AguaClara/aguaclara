@@ -31,13 +31,13 @@ from aguaclara.design.lfom import LFOM
 
 # Core imports
 import aguaclara
-import aguaclara.core.pipedatabase as pipe
+import aguaclara.core.pipes as pipe
 from aguaclara.core.units import unit_registry as u
 from aguaclara.core import physchem as pc
 import aguaclara.core.constants as con
-import aguaclara.core.materials_database as mat
+import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
-import aguaclara.core.k_value_of_reductions_utility as k
+import aguaclara.core.head_loss as k
 import aguaclara.core.pipeline_utility as pipeline
 import aguaclara.core.optional_inputs as opt
 import warnings
@@ -72,7 +72,7 @@ def set_sig_fig(n: int = 4):
         e = 25532532522352543*u.m
         print('h before sigfig adjustment: ',h)
         print('e before sigfig adjustment: ',e)
-        aguaclara.units.set_sig_fig(10)
+        aguaclara.units.set_sig_figs(10)
         print('h after sigfig adjustment: ',h)
         print('e after sigfig adjustment: ',e)
 

@@ -5,7 +5,7 @@ an AguaClara plant.
 from aguaclara.play import*
 
 # expansion minor loss coefficient for 180 degree bend
-K_e = (1 / con.RATIO_VC_ORIFICE**2 - 1)**2
+K_e = (1 / con.VENA_CONTRACTA_ORIFICE_RATIO ** 2 - 1) ** 2
 
 @u.wraps(1/u.s, [u.m, None, u.degK], False)
 def G_avg(hl, Gt, T):
@@ -112,8 +112,8 @@ def width_HS_min(q_plant, hl, Gt, T, depth_end):
     """
     nu = pc.viscosity_kinematic(T).magnitude
 
-    w = con.RATIO_HS_MIN*((K_e/(2 * depth_end * (G_avg(hl, Gt, T).magnitude**2)
-    * nu))**(1/3))*q_plant/depth_end
+    w = con.HS_RATIO_MIN * ((K_e / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
+                                    * nu)) ** (1/3)) * q_plant / depth_end
     return w
 
 
@@ -153,7 +153,7 @@ def width_floc_min(q_plant, hl, Gt, T, depth_end):
     >>> width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
     45 centimeter
     """
-    return max(width_HS_min(q_plant, hl, Gt, T, depth_end).magnitude, con.FLOC_WIDTH_MIN_CONST.magnitude)
+    return max(width_HS_min(q_plant, hl, Gt, T, depth_end).magnitude, con.FLOC_W_MIN_CONST.magnitude)
 
 @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m], False)
 def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):
@@ -293,7 +293,7 @@ def exp_dist_max(q_plant, hl, Gt, T, W_chan):
     g_avg = G_avg(hl, Gt, T).magnitude
     nu = pc.viscosity_kinematic(T).magnitude
     term1 = (K_e/(2 * (g_avg**2) * nu))**(1/4)
-    term2 = (con.RATIO_HS_MAX*q_plant/W_chan)**(3/4)
+    term2 = (con.HS_RATIO_MAX * q_plant / W_chan) ** (3 / 4)
     exp_dist_max = term1*term2
     return exp_dist_max
 
