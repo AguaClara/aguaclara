@@ -8,30 +8,30 @@ ENT_TANK_SLOPE_ANGLE = 45 * u.deg
 
 # Extra space around the float (increase in effective diameter) to ensure
 # that float has free travel
-ENT_TANK_FLOAT_S = 5 * u.cm
-ENT_TANK_HOPPER_PEAK_W = 3 * u.cm
-ENT_TANK_PLATE_S = 2.5 * u.cm
-ENT_TANK_PLATE_THICKNESS = 2 * u.mm
-CENTER_ENT_TANK_PLATE_DIST = ENT_TANK_PLATE_S + ENT_TANK_PLATE_THICKNESS
-ENT_TANK_MOD_ND = 0.5 * u.inch
+FLOAT_S = 5 * u.cm
+HOPPER_PEAK_W = 3 * u.cm
+PLATE_S = 2.5 * u.cm
+PLATE_THICKNESS = 2 * u.mm
+CENTER_PLATE_DIST = PLATE_S + PLATE_THICKNESS
+MOD_ND = 0.5 * u.inch
 
 # Distance from the front wall to the pipe stubs in the hopper drains so
 # that an operator can easily reach them.
-ENT_TANK_WALLTODRAIN_L_MAX = 40 * u.cm
+WALL_DRAIN_DIST_MAX = 40 * u.cm
 
 # Entrance tank capture velocity
-ENT_TANK_CAPTURE_BOD_VEL = 8 * u.mm / u.s
-ENT_TANK_PLATE_ANGLE = 50 * u.deg
-ENT_TANK_MOD_SPACER_ND = 0.75 * u.inch
+CAPTURE_BOD_VEL = 8 * u.mm / u.s
+PLATE_ANGLE = 50 * u.deg
+MOD_SPACER_ND = 0.75 * u.inch
 
 # Thickness of the PVC disk used as the float for the chemical dose
 # controller lever arm.
-ENT_TANK_FLOAT_THICKNESS = 5 * u.cm
-ENT_TANK_LAMINA_PIPETOEDGE_S = 5 * u.cm
+FLOAT_THICKNESS = 5 * u.cm
+LAMINA_PIPE_EDGE_S = 5 * u.cm
 
 # Nom diam of the pipes that are embedded in the entrance tank slope
 # to support the plate settler module
-ENT_TANK_PLATE_SUPPORT_ND = 3 * u.inch
+PLATE_SUPPORT_ND = 3 * u.inch
 
 
 # Increased to get better mixing (10/10/2015 by Monroe)
@@ -39,21 +39,21 @@ RAPID_MIX_EDR = 3 * u.W / u.kg
 
 RAPID_MIX_PLATE_RESTRAINER_ND = 0.5 * u.inch
 
-ENT_TANK_FLOAT_ND =  8*u.inch
+FLOAT_ND =  8*u.inch
 
 #Minimum pipe size to handle grit and to ensure that the pipe can be easily unclogged
-ENT_TANK_DRAIN_MIN_ND =  3*u.inch
+DRAIN_MIN_ND =  3*u.inch
 
-ENT_TANK_DRAIN_ND =  3*u.inch #This is constant for now
+DRAIN_ND =  3*u.inch #This is constant for now
 
-ENT_TANK_REMOVABLE_WALL_THICKNESS = 5*u.cm
+REMOVABLE_WALL_THICKNESS = 5*u.cm
 
 #Parameters are arbitrary - need to be calculated
-H_ENT_TANK_REMOVABLE_WALL_SUPPORT = 4*u.cm
+REMOVABLE_WALL_SUPPORT_H = 4 * u.cm
 
-ENT_TANK_REMOVABLE_WALL_SUPPORT_THICKNESS = 5*u.cm
+REMOVABLE_WALL_SUPPORT_THICKNESS = 5*u.cm
 
-ENT_TANK_HOPPER_LEDGE_THICKNESS = 15*u.cm
-ENT_TANK_WALKWAY_W = 1 * u.m
+HOPPER_LEDGE_THICKNESS = 15*u.cm
+WALKWAY_W = 1 * u.m
 RAPID_MIX_ORIFICE_PLATE_THICKNESS = 2*u.cm
 RAPID_MIX_AIR_RELEASE_ND = 1*u.inch
