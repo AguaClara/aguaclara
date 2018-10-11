@@ -4,13 +4,14 @@ pipeline design.
 """
 
 from aguaclara.core.units import unit_registry as u
-from aguaclara.core import physchem as pc
+import aguaclara.core.physchem as pc
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mats
-import numpy as numpy
+
+import numpy as np
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)
-def flow_pipeline(diameters: numpy.ndarray, lengths: numpy.ndarray, k_minors: numpy.ndarray, target_headloss: float,
+def flow_pipeline(diameters: np.ndarray, lengths: np.ndarray, k_minors: np.ndarray, target_headloss: float,
                   nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
     """
     This function takes a single pipeline with multiple sections, each potentially with different diameters,
