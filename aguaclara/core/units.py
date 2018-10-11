@@ -28,7 +28,7 @@ unit_registry.default_format = '.4g'
 pd.options.display.float_format = '{:,.4g}'.format
 
 
-def set_sig_fig(n: int):
+def set_sig_figs(n: int):
     """Set the default number of significant figures used to print pint,
     pandas and numpy values quantities. Defaults to 4.
 
@@ -42,7 +42,7 @@ def set_sig_fig(n: int):
         e = 25532532522352543*u.m
         print('h before sigfig adjustment: ',h)
         print('e before sigfig adjustment: ',e)
-        aguaclara.units.set_sig_fig(10)
+        aguaclara.units.set_sig_figs(10)
         print('h after sigfig adjustment: ',h)
         print('e after sigfig adjustment: ',e)
 

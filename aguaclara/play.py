@@ -72,7 +72,7 @@ def set_sig_fig(n: int = 4):
         e = 25532532522352543*u.m
         print('h before sigfig adjustment: ',h)
         print('e before sigfig adjustment: ',e)
-        aguaclara.units.set_sig_fig(10)
+        aguaclara.units.set_sig_figs(10)
         print('h after sigfig adjustment: ',h)
         print('e after sigfig adjustment: ',e)
 
