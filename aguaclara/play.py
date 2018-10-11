@@ -38,7 +38,7 @@ import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
 import aguaclara.core.head_loss as k
-import aguaclara.core.pipeline_utility as pipeline
+import aguaclara.core.pipeline as pipeline
 import aguaclara.core.optional_inputs as opt
 import warnings
 
