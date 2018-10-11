@@ -1,22 +1,22 @@
 """Build an Linear Flow Orifice Meter"""
 import aguaclara.core.constants as con
-import numpy as np
 import aguaclara.core.physchem as pc
-import math
 import aguaclara.core.pipes as pipe
 import aguaclara.core.utility as ut
+import aguaclara.core.drills as drills
+from aguaclara.core.units import unit_registry as u
+
 from onshapepy.part import Part
 
-import core.drills
-from core.materials import CONCRETE_THICKNESS_MIN
-from core.units import unit_registry as u
+import numpy as np
+import math
 
 
 class LFOM:
 
     safety_factor = 1.5
     sdr = 26
-    drill_bits = core.drills.DRILL_BITS_D_IMPERIAL
+    drill_bits = drills.DRILL_BITS_D_IMPERIAL
     s_orfice = 1*u.cm
     cad = Part(
         "https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d"
