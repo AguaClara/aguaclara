@@ -188,7 +188,3 @@ class LFOM:
         """Draw the LFOM in CAD."""
         self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
                            "OD": self.nom_diam_pipe, "bRows": self.b_rows}
-
-
-SDR_LFOM = 26
-LFOM_SHEET_THICKNESS = CONCRETE_THICKNESS_MIN
