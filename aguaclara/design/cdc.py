@@ -248,33 +248,33 @@ x=len_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
 #print(x)
 #print(diam_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp, en_chem, KMinor).to(u.inch))
 #print(n_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp, en_chem, KMinor))
-CDC_LEVER_ARM_L = 0.5 * u.m
-D_CDC_LEVER_CYLINDER1 = 1 * u.inch
-D_CDC_LEVER_CYLINDER4 = 2 * u.inch
-D_CDC_LEVER_CYLINDER_2 = 0.5 * u.inch
-CDC_LEVER_PIVOTTO_CYLINDER2_L = 6 * u.cm
-CDC_LEVER_CYLINDER_2TO3_L = 9.5 * u.cm
-CDC_LEVER_PIVOT_BOX_L = 2 * u.inch
-CDC_LEVER_PIVOT_BOX_W = 1 * u.inch
-CDC_LEVER_PIVOT_BOX_H = 1 * u.inch
-CDC_LEVER_ARM_THICKNESS = 0.125 * u.inch
-CDC_LEVER_ARM_H = 1 * u.inch
-CDC_LEVER_INNERBAR_L = 7 * u.inch
-CDC_LEVER_MOUNTING_PLATE_L = 6 * u.inch
-CDC_LEVER_MOUNTING_PLATE_W = 0.5 * u.cm
-CDC_LEVER_MOUNTING_PLATE_H = 2 * u.inch
+LEVER_ARM_L = 0.5 * u.m
+LEVER_CYLINDER_1_D = 1 * u.inch
+LEVER_CYLINDER_4_D = 2 * u.inch
+LEVER_CYLINDER_2_D = 0.5 * u.inch
+LEVER_CYLINDER_2_PIVOT_DIST = 6 * u.cm
+CYLINDER_2_CYLINDER_3_DIST = 9.5 * u.cm
+LEVER_PIVOT_BOX_L = 2 * u.inch
+LEVER_PIVOT_BOX_W = 1 * u.inch
+LEVER_PIVOT_BOX_H = 1 * u.inch
+LEVER_ARM_THICKNESS = 0.125 * u.inch
+LEVER_ARM_H = 1 * u.inch
+LEVER_INNERBAR_L = 7 * u.inch
+LEVER_MOUNTING_PLATE_L = 6 * u.inch
+LEVER_MOUNTING_PLATE_W = 0.5 * u.cm
+LEVER_MOUNTING_PLATE_H = 2 * u.inch
 LEVER_TO_ENT_TANK_Z_TOP_S = 1 * u.cm
-CDC_FLOAT_THICKNESS = 5 * u.cm
-D_CDC_FLOAT_CABLE = 0.5 * u.cm
-CDC_LEVER_SLIDER_ORIGIN_TO_SCREW_L = 1 * u.inch
-CDC_LEVER_SLIDER_THICKNESS = 0.25 * u.inch
-CDC_LEVER_SLIDER_H = 1.5 * u.inch
-CDC_LEVER_SLIDER_L = 3 * u.inch
-CDC_LEVER_SLIDER_SHORT_H = 0.125 * u.inch
-CDC_LEVER_CYLINDER_L = 6 * u.inch
+FLOAT_THICKNESS = 5 * u.cm
+FLOAT_CABLE_D = 0.5 * u.cm
+LEVER_SLIDER_ORIGIN_TO_SCREW_L = 1 * u.inch
+LEVER_SLIDER_THICKNESS = 0.25 * u.inch
+LEVER_SLIDER_H = 1.5 * u.inch
+LEVER_SLIDER_L = 3 * u.inch
+LEVER_SLIDER_SHORT_H = 0.125 * u.inch
+LEVER_CYLINDER_L = 6 * u.inch
 ENT_TANK_FRONT_WALL_TO_CDC_FLOAT_L = 0.874 * u.m
 
-CDC_LEVER_L = 0.5 * u.m #This may be obsolete now... mrf222 2/10/16
+LEVER_L = 0.5 * u.m #This may be obsolete now... mrf222 2/10/16
 
 LEVER_ARM_W = 0.0032 * u.m
 
@@ -452,11 +452,11 @@ CDC_TUBE_K_MINOR = 2
 # corresponds to the variation in water levels in the entrance tank and
 # the difference between the maximum and minimum elevation of the dosing
 # tube outlet attached to the lever arm.
-CDC_HL = 20 * u.cm
+HL = 20 * u.cm
 
 # Estimated distance between fluid level in constant head tank and float
 # valve orifice
-CDC_FLOAT_VALVE_H = 5 * u.cm
+FLOAT_VALVE_H = 5 * u.cm
 
 # Nominal diameter of the PVC plumbing for the chlorine dosing system.
 CHLOR_PIPE_ND = 0.5 * u.inch
