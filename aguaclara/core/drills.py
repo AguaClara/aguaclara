@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Drills!"""
+"""Lists of drill bit diameters."""
 from aguaclara.core.units import unit_registry as u
 
 import numpy as np
@@ -11,9 +11,11 @@ def get_drill_bits_d_imperial():
     step_8th = np.arange(0.25, 1.0, 0.125)
     step_4th = np.arange(1.0, 2.0, 0.25)
     maximum = [2.0]
-    return np.concatenate(
-        (step_32nd, step_8th, step_4th, maximum)
-    ) * u.inch
+
+    return np.concatenate((step_32nd,
+                           step_8th,
+                           step_4th,
+                           maximum)) * u.inch
 
 
 def get_drill_bits_d_metric():
