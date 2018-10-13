@@ -11,10 +11,12 @@ class PipelineUtilityTest(unittest.TestCase):
     def test_pipeline_flow(self):
         pipes = np.array([
             Pipe(3 * u.inch, 3 * u.m, 3 * u.m),
+            Pipe(4 * u.inch, 4 * u.m, 4 * u.m),
+            Pipe(5 * u.inch, 5 * u.m, 5 * u.m),
         ])
         pipeline = Pipeline(pipes)
-        flow = pipeline.flow_pipeline(np.array([3,4,5])*u.inch, np.array([3,4,5])*u.m, np.array([3,4,5]), 5 *u.m)
-        self.assertAlmostEqual(flow.magnitude, 0.018149097841279497 * u.m**3 / u.s)
+
+        self.assertAlmostEqual(pipeline.q(5 * u.m), 0.018149097841279497 * u.m**3 / u.s)
 
 
 if __name__ == '__main__':
