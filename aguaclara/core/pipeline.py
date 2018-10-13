@@ -18,7 +18,7 @@ import numpy as np
 # - Oliver Leung (oal22), 10/11/18
 class Pipeline:
 
-    def __init__(self, pipes=np.array()):
+    def __init__(self, pipes: np.array()):
         """Initializes a Pipeline from a NumPy array of Pipe objects."""
         self.pipes = pipes
 
