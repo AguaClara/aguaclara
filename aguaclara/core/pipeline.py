@@ -1,5 +1,8 @@
 """Defines a Pipeline class that combines Pipe objects."""
 import aguaclara.core.constants as con
+import aguaclara.core.physchem as pc
+import aguaclara.core.materials as mat
+from aguaclara.core.units import unit_registry as u
 
 import numpy as np
 
@@ -43,7 +46,6 @@ class Pipeline:
         return q
 
 
-@u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)
 def flow_pipeline(diameters: np.ndarray, lengths: np.ndarray, k_minors: np.ndarray, target_headloss: float,
                   nu=con.WATER_NU, pipe_rough=mat.PVC_PIPE_ROUGH):
     """
