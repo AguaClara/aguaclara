@@ -2,20 +2,22 @@ import unittest
 import os
 
 import pandas as pd
+import numpy as np
 
-from aguaclara.core import pipes
 from aguaclara.core.units import unit_registry as u
+from aguaclara.core import pipes
 
 
 class TestPipes(unittest.TestCase):
 
     def test_pipes(self):
-        pipe = Pipe(nd=(7.0 * u.inch), sdr=35.0)
+        pipe = pipes.Pipe(nd=(7.0 * u.inch), sdr=35.0)
         pipe_df = pd.read_csv(os.path.join(
             os.path.dirname(__file__),
-            'aguaclara/core/data/pipe_database.csv'
+            '../../aguaclara/core/data/pipe_database.csv'
         ))
-        unittest.assertAlmostEqual(
+        assert_list_almost_equal = np.vectorize(self.assertAlmostEqual)
+        assert_list_almost_equal(
             [
                 pipe.od(),
                 pipe.id_sdr(),
@@ -27,12 +29,12 @@ class TestPipes(unittest.TestCase):
                 7.023 * u.inch,
             ]
         )
-        unittest.assertAlmostEqual(
+        assert_list_almost_equal(
             [
-                pipes.nd_all_available(),
-                pipes.id_sdr_all_available(35.0),
-                pipes.nd_sdr_available(7.1892857, 35.0),
-                pipes.nd_available(4.7)
+                pipes.ND_all_available(),
+                pipes.ID_SDR_all_available(35.0),
+                pipes.ND_SDR_available(7.1892857 * u.inch, 35.0),
+                pipes.ND_available(4.7 * u.inch)
             ],
             [
                 (pipe_df[pipe_df['Used'] == 1]['NDinch'].values) * u.inch,
