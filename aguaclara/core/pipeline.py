@@ -32,6 +32,7 @@ class Pipeline:
             hl: The desired head loss through the pipeline.
             nu: The kinematic viscosity of the pipeline fluid.
         """
+        # Set an initial flow rate and error for use in interpolation.
         q = self.pipes[1].q(hl, nu)
         error = 1.0
 
@@ -46,6 +47,8 @@ class Pipeline:
         return q
 
 
+# Deprecated - will remove once the Pipeline class is properly implemented
+# with Pipe.
 def flow_pipeline(diameters: np.ndarray, lengths: np.ndarray, k_minors: np.ndarray, target_headloss: float,
                   nu=con.WATER_NU, pipe_rough=mat.PVC_PIPE_ROUGH):
     """
