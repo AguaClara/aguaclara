@@ -10,22 +10,16 @@ import numpy as np
 from scipy import interpolate, integrate
 
 
-###################### Simple geometry ######################
-"""A few equations for useful geometry.
-Is there a geometry package that we should be using?"""
-
-@u.wraps(u.m**2, u.m, False)
-def area_circle(DiamCircle):
+def circle_a(d):
     """Return the area of a circle."""
-    ut.check_range([DiamCircle, ">0", "DiamCircle"])
-    return np.pi / 4 * DiamCircle**2
+    ut.check_range([d, ">0", "d"])
+    return np.pi / 4 * d ** 2
 
 
-@u.wraps(u.m, u.m**2, False)
-def diam_circle(AreaCircle):
+def circle_d(a):
     """Return the diameter of a circle."""
-    ut.check_range([AreaCircle, ">0", "AreaCircle"])
-    return np.sqrt(4 * AreaCircle / np.pi)
+    ut.check_range([a, ">0", "a"])
+    return np.sqrt(4 * a / np.pi)
 
 ######################### Hydraulics #########################
 RE_TRANSITION_PIPE = 2100
@@ -362,7 +356,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
     ut.check_range([Diam, ">0", "Diameter"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > 0:
-        return (RatioVCOrifice * area_circle(Diam).magnitude
+        return (RatioVCOrifice * circle_a(Diam).magnitude
                 * np.sqrt(2 * con.GRAVITY.magnitude * Height))
     else:
         return 0
@@ -393,7 +387,7 @@ def head_orifice(Diam, RatioVCOrifice, FlowRate):
     ut.check_range([Diam, ">0", "Diameter"], [FlowRate, ">0", "Flow rate"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     return ((FlowRate
-             / (RatioVCOrifice * area_circle(Diam).magnitude)
+             / (RatioVCOrifice * circle_a(Diam).magnitude)
              )**2
             / (2*con.GRAVITY.magnitude)
             )
@@ -415,7 +409,7 @@ def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
     #functions this function calls.
     return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice,
                                  FlowPlant).magnitude
-                    / area_circle(DiamOrifice).magnitude)
+                   / circle_a(DiamOrifice).magnitude)
 
 
 # Here we define functions that return the flow rate.
@@ -484,9 +478,9 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
     #functions this function calls.
     ut.check_range([HeadLossExpans, ">=0", "Headloss due to expansion"],
                    [KMinor, ">0", "K minor"])
-    return (area_circle(Diam).magnitude * np.sqrt(2 * con.GRAVITY.magnitude
-                                                  * HeadLossExpans
-                                                  / KMinor)
+    return (circle_a(Diam).magnitude * np.sqrt(2 * con.GRAVITY.magnitude
+                                               * HeadLossExpans
+                                               / KMinor)
             )
 
 # Now we put all of the flow equations together and calculate the flow in a

@@ -18,45 +18,45 @@ import unittest
 class GeometryTest(unittest.TestCase):
     """Test the circular area and diameter functions."""
     def test_area_circle(self):
-        """area_circle should  should give known result with known input."""
+        """circle_a should  should give known result with known input."""
         checks = ((1, 0.7853981633974483*u.m**2),
                   (495.6, 192908.99423885669*u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.area_circle(i[0]), i[1])
+                self.assertAlmostEqual(pc.circle_a(i[0]), i[1])
 
     def test_area_circle_units(self):
-        """area_circle should  should give known result with known input and correct units"""
+        """circle_a should  should give known result with known input and correct units"""
         checks = ((1*u.m, 7853.981633974483*u.cm**2),
                   (495.6*u.cm, 19.290899423885669*u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.area_circle(i[0]), i[1])
+                self.assertAlmostEqual(pc.circle_a(i[0]), i[1])
 
     def test_area_circle_range(self):
-        """area_circle should return errors with inputs <= 0."""
+        """circle_a should return errors with inputs <= 0."""
         checks = (0, -3)
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.area_circle, i)
+                self.assertRaises(ValueError, pc.circle_a, i)
 
     def test_diam_circle(self):
-        """diam_circle should should give known result with known input."""
+        """circle_d should should give known result with known input."""
         checks = ((1, 1.1283791670955126), 
                   (0.1, 0.3568248232305542), 
                   (347, 21.019374919894773), 
                   (10000 * u.cm**2, 1.1283791670955126))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.diam_circle(i[0]).magnitude, i[1])
+                self.assertAlmostEqual(pc.circle_d(i[0]).magnitude, i[1])
 
     def test_diam_circle_range(self):
-        """diam_circle should return errors with inputs <= 0."""
+        """circle_d should return errors with inputs <= 0."""
         checks = ((0, ValueError), 
                   (-3, ValueError))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(i[1], pc.diam_circle, i[0])
+                self.assertRaises(i[1], pc.circle_d, i[0])
 
 
 class WaterPropertiesTest(unittest.TestCase):

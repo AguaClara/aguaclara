@@ -76,7 +76,7 @@ class LFOM:
     @property
     def nom_diam_pipe(self):
         """The nominal diameter of the LFOM pipe"""
-        ID = pc.diam_circle(self.area_pipe_min)
+        ID = pc.circle_d(self.area_pipe_min)
         return pipe.SDR_available_ND(ID, self.sdr)
 
     @property
@@ -94,7 +94,7 @@ class LFOM:
     @property
     def d_orifice_max(self):
         """Determine the maximum orifice diameter."""
-        return pc.diam_circle(self.area_top_orifice)
+        return pc.circle_d(self.area_top_orifice)
 
     @property
     def orifice_diameter(self):
@@ -105,7 +105,7 @@ class LFOM:
     @property
     def drillbit_area(self):
         """The area of the actual drill bit."""
-        return pc.area_circle(self.orifice_diameter)
+        return pc.circle_a(self.orifice_diameter)
 
     @property
     def n_orifices_per_row_max(self):

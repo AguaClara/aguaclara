@@ -70,7 +70,7 @@ def area_lfom_pipe_min(FLOW, HL_LFOM):
 
 @u.wraps(u.inch, [u.m**3/u.s, u.m], False)
 def nom_diam_lfom_pipe(FLOW,HL_LFOM):
-    ID = pc.diam_circle(area_lfom_pipe_min(FLOW, HL_LFOM))
+    ID = pc.circle_d(area_lfom_pipe_min(FLOW, HL_LFOM))
     return pipe.SDR_available_ND(ID, design.lfom.SDR_LFOM).magnitude
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
@@ -85,7 +85,7 @@ def area_lfom_orifices_top(FLOW,HL_LFOM):
 
 @u.wraps(u.m, [u.m**3/u.s, u.m], False)
 def d_lfom_orifices_max(FLOW, HL_LFOM):
-    return (pc.diam_circle(area_lfom_orifices_top(FLOW,HL_LFOM).magnitude).magnitude)
+    return (pc.circle_d(area_lfom_orifices_top(FLOW, HL_LFOM).magnitude).magnitude)
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.inch], False)
 def orifice_diameter(FLOW,HL_LFOM,drill_bits):
@@ -94,7 +94,7 @@ def orifice_diameter(FLOW,HL_LFOM,drill_bits):
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m, u.inch], False)
 def drillbit_area(FLOW,HL_LFOM,drill_bits):
-    return pc.area_circle(orifice_diameter(FLOW,HL_LFOM,drill_bits)).magnitude
+    return pc.circle_a(orifice_diameter(FLOW, HL_LFOM, drill_bits)).magnitude
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.inch], False)
 def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits):

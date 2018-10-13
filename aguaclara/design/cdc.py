@@ -87,7 +87,7 @@ def max_linear_flow(Diam, HeadlossCDC, Ratio_Error, KMinor):
     Maximum flow that can be put through a tube of a given diameter without
     exceeding the allowable deviation from linear head loss behavior
     """
-    flow = (pc.area_circle(Diam)).magnitude * np.sqrt((2 * Ratio_Error * HeadlossCDC * pc.gravity)/ KMinor)
+    flow = (pc.circle_a(Diam)).magnitude * np.sqrt((2 * Ratio_Error * HeadlossCDC * pc.gravity) / KMinor)
     return flow.magnitude
 
 
