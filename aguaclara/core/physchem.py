@@ -9,8 +9,6 @@ import aguaclara.core.utility as ut
 import numpy as np
 from scipy import interpolate, integrate
 
-gravity = 9.80665 * u.m/u.s**2
-"""Define the gravitational constant, in m/s²."""
 
 ###################### Simple geometry ######################
 """A few equations for useful geometry.
@@ -225,7 +223,7 @@ def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
     #functions this function calls.
     ut.check_range([Length, ">0", "Length"])
     return (fric(FlowRate, Diam, Nu, PipeRough)
-            * 8 / (gravity.magnitude * np.pi**2)
+            * 8 / (con.GRAVITY.magnitude * np.pi**2)
             * (Length * FlowRate**2) / Diam**5
             )
 
@@ -239,7 +237,7 @@ def headloss_exp(FlowRate, Diam, KMinor):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Diam, ">0", "Diameter"],
                    [KMinor, ">=0", "K minor"])
-    return KMinor * 8 / (gravity.magnitude * np.pi**2) * FlowRate**2 / Diam**4
+    return KMinor * 8 / (con.GRAVITY.magnitude * np.pi**2) * FlowRate**2 / Diam**4
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m, u.dimensionless], False)
@@ -268,7 +266,7 @@ def headloss_fric_rect(FlowRate, Width, DistCenter, Length, Nu, PipeRough, openc
             * Length
             / (4 * radius_hydraulic(Width, DistCenter, openchannel).magnitude)
             * FlowRate**2
-            / (2 * gravity.magnitude * (Width*DistCenter)**2)
+            / (2 * con.GRAVITY.magnitude * (Width*DistCenter)**2)
             )
 
 
@@ -282,7 +280,7 @@ def headloss_exp_rect(FlowRate, Width, DistCenter, KMinor):
     ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"],
                    [DistCenter, ">0", "DistCenter"], [KMinor, ">=0", "K minor"])
     return (KMinor * FlowRate**2
-            / (2 * gravity.magnitude * (Width*DistCenter)**2)
+            / (2 * con.GRAVITY.magnitude * (Width*DistCenter)**2)
             )
 
 
@@ -312,7 +310,7 @@ def headloss_fric_general(Area, PerimWetted, Vel, Length, Nu, PipeRough):
     ut.check_range([Length, ">0", "Length"])
     return (fric_general(Area, PerimWetted, Vel, Nu, PipeRough) * Length
             / (4 * radius_hydraulic_general(Area, PerimWetted).magnitude)
-            * Vel**2 / (2*gravity.magnitude)
+            * Vel**2 / (2*con.GRAVITY.magnitude)
             )
 
 
@@ -324,7 +322,7 @@ def headloss_exp_general(Vel, KMinor):
     """
     #Checking input validity
     ut.check_range([Vel, ">0", "Velocity"], [KMinor, '>=0', 'K minor'])
-    return KMinor * Vel**2 / (2*gravity.magnitude)
+    return KMinor * Vel**2 / (2*con.GRAVITY.magnitude)
 
 
 @u.wraps(u.m, [u.m**2, u.m/u.s, u.m, u.m, u.dimensionless, u.m**2/u.s, u.m], False)
@@ -365,7 +363,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > 0:
         return (RatioVCOrifice * area_circle(Diam).magnitude
-                * np.sqrt(2 * gravity.magnitude * Height))
+                * np.sqrt(2 * con.GRAVITY.magnitude * Height))
     else:
         return 0
 
@@ -383,7 +381,7 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
                                                    ),
                                                    - Diam / 2,
                                                    min(Diam/2, Height))
-        return flow_vert[0] * RatioVCOrifice * np.sqrt(2 * gravity.magnitude)
+        return flow_vert[0] * RatioVCOrifice * np.sqrt(2 * con.GRAVITY.magnitude)
     else:
         return 0
 
@@ -397,7 +395,7 @@ def head_orifice(Diam, RatioVCOrifice, FlowRate):
     return ((FlowRate
              / (RatioVCOrifice * area_circle(Diam).magnitude)
              )**2
-            / (2*gravity.magnitude)
+            / (2*con.GRAVITY.magnitude)
             )
 
 
@@ -407,7 +405,7 @@ def area_orifice(Height, RatioVCOrifice, FlowRate):
     #Checking input validity
     ut.check_range([Height, ">0", "Height"], [FlowRate, ">0", "Flow rate"],
                    [RatioVCOrifice, "0-1, >0", "VC orifice ratio"])
-    return FlowRate / (RatioVCOrifice * np.sqrt(2 * gravity.magnitude * Height))
+    return FlowRate / (RatioVCOrifice * np.sqrt(2 * con.GRAVITY.magnitude * Height))
 
 
 @u.wraps(None, [u.m**3/u.s, u.dimensionless, u.m, u.m], False)
@@ -439,7 +437,7 @@ def flow_hagen(Diam, HeadLossFric, Length, Nu):
     ut.check_range([Diam, ">0", "Diameter"], [Length, ">0", "Length"],
                    [HeadLossFric, ">=0", "Headloss due to friction"],
                    [Nu, ">0", "Nu"])
-    return (np.pi*Diam**4) / (128*Nu) * gravity.magnitude * HeadLossFric / Length
+    return (np.pi*Diam**4) / (128*Nu) * con.GRAVITY.magnitude * HeadLossFric / Length
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m], False)
@@ -450,13 +448,13 @@ def flow_swamee(Diam, HeadLossFric, Length, Nu, PipeRough):
                    [HeadLossFric, ">0", "Headloss due to friction"],
                    [Nu, ">0", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
     logterm = np.log10(PipeRough / (3.7 * Diam)
-                       + 2.51 * Nu * np.sqrt(Length / (2 * gravity.magnitude
+                       + 2.51 * Nu * np.sqrt(Length / (2 * con.GRAVITY.magnitude
                                                          * HeadLossFric
                                                          * Diam**3)
                                               )
                        )
     return ((-np.pi / np.sqrt(2)) * Diam**(5/2) * logterm
-            * np.sqrt(gravity.magnitude * HeadLossFric / Length)
+            * np.sqrt(con.GRAVITY.magnitude * HeadLossFric / Length)
             )
 
 
@@ -486,7 +484,7 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
     #functions this function calls.
     ut.check_range([HeadLossExpans, ">=0", "Headloss due to expansion"],
                    [KMinor, ">0", "K minor"])
-    return (area_circle(Diam).magnitude * np.sqrt(2 * gravity.magnitude
+    return (area_circle(Diam).magnitude * np.sqrt(2 * con.GRAVITY.magnitude
                                                   * HeadLossExpans
                                                   / KMinor)
             )
@@ -541,7 +539,7 @@ def diam_hagen(FlowRate, HeadLossFric, Length, Nu):
                    [HeadLossFric, ">0", "Headloss due to friction"],
                    [Nu, ">0", "Nu"])
     return ((128 * Nu * FlowRate * Length)
-            / (gravity.magnitude * HeadLossFric * np.pi)
+            / (con.GRAVITY.magnitude * HeadLossFric * np.pi)
             ) ** (1/4)
 
 
@@ -561,11 +559,11 @@ def diam_swamee(FlowRate, HeadLossFric, Length, Nu, PipeRough):
                    [Nu, ">0", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
     a = ((PipeRough ** 1.25)
          * ((Length * FlowRate**2)
-            / (gravity.magnitude * HeadLossFric)
+            / (con.GRAVITY.magnitude * HeadLossFric)
             )**4.75
          )
     b = (Nu * FlowRate**9.4
-         * (Length / (gravity.magnitude *  HeadLossFric)) ** 5.2
+         * (Length / (con.GRAVITY.magnitude *  HeadLossFric)) ** 5.2
          )
     return 0.66 * (a+b)**0.04
 
@@ -597,7 +595,7 @@ def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
     ut.check_range([FlowRate, ">0", "Flow rate"], [KMinor, ">=0", "K minor"],
                    [HeadLossExpans, ">0", "Headloss due to expansion"])
     return (np.sqrt(4 * FlowRate / np.pi)
-            * (KMinor / (2 * gravity.magnitude * HeadLossExpans)) ** (1/4)
+            * (KMinor / (2 * con.GRAVITY.magnitude * HeadLossExpans)) ** (1/4)
             )
 
 
@@ -644,7 +642,7 @@ def width_rect_weir(FlowRate, Height):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Height, ">0", "Height"])
     return ((3 / 2) * FlowRate
-            / (con.VENA_CONTRACTA_ORIFICE_RATIO * np.sqrt(2 * gravity.magnitude) * Height ** (3 / 2))
+            / (con.VENA_CONTRACTA_ORIFICE_RATIO * np.sqrt(2 * con.GRAVITY.magnitude) * Height ** (3 / 2))
             )
 
 
@@ -657,7 +655,7 @@ def headloss_weir(FlowRate, Width):
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
     return (((3/2) * FlowRate
-             / (con.VC_ORIFICE_RATIO * np.sqrt(2 * gravity.magnitude) * Width)
+             / (con.VC_ORIFICE_RATIO * np.sqrt(2 * con.GRAVITY.magnitude) * Width)
              ) ** (2/3))
 
 
@@ -667,7 +665,7 @@ def flow_rect_weir(Height, Width):
     #Checking input validity
     ut.check_range([Height, ">0", "Height"], [Width, ">0", "Width"])
     return ((2/3) * con.VC_ORIFICE_RATIO
-            * (np.sqrt(2*gravity.magnitude) * Height**(3/2))
+            * (np.sqrt(2*con.GRAVITY.magnitude) * Height**(3/2))
             * Width)
 
 
@@ -676,7 +674,7 @@ def height_water_critical(FlowRate, Width):
     """Return the critical local water depth."""
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
-    return (FlowRate / (Width * np.sqrt(gravity.magnitude))) ** (2/3)
+    return (FlowRate / (Width * np.sqrt(con.GRAVITY.magnitude))) ** (2/3)
 
 
 @u.wraps(u.m/u.s, u.m, False)
@@ -684,7 +682,7 @@ def vel_horizontal(HeightWaterCritical):
     """Return the horizontal velocity."""
     #Checking input validity
     ut.check_range([HeightWaterCritical, ">0", "Critical height of water"])
-    return np.sqrt(gravity.magnitude * HeightWaterCritical)
+    return np.sqrt(con.GRAVITY.magnitude * HeightWaterCritical)
 
 
 @u.wraps(u.m, [u.m, u.m, u.m/u.s, u.m, u.m**2/u.s], False)
@@ -695,6 +693,6 @@ def headloss_kozeny(Length, Diam, Vel, PipeRough, Nu):
                    [Vel, ">0", "Velocity"], [Nu, ">0", "Nu"],
                    [PipeRough, "0-1", "Pipe roughness"])
     return (K_KOZENY * Length * Nu
-            / gravity.magnitude * (1-PipeRough)**2
+            / con.GRAVITY.magnitude * (1-PipeRough)**2
             / PipeRough**3 * 36 * Vel
             / Diam ** 2)
