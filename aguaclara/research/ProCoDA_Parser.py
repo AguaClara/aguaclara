@@ -5,98 +5,141 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from pathlib import Path
+import datetime
 
-'''
+
+"""
 SECTION 1: GRAPHING PROCODA DATA USING START AND END TIMES
 ----------------------------------------------------------
-The functions in this section are for graphing data from ProCoDA datalogs
-based on user-specified starting and ending dates and times (of the experiment).
+The functions in this section are for extracting data from ProCoDA datalogs
+based on user-specified starting and ending date(s) and times (of the experiment).
 
 See the next section for graphing based on ProCoDA state changes.
-'''
+"""
 
 
-def time_to_day_fraction(time):
-    '''
+def get_data_by_time(directory, columns, start_date, start_time="00:00", end_date=None, end_time="23:59"):
+    """Extracts columns of data from a ProCoDA datalog based on starting and ending date(s) and times
+
+    Note: currently only works for 1 or 2 days of data, i.e. end_date must be unspecified or one day after start_date
+
     Parameters
     ----------
-    time
-    string in the form of hh:mm
-    '''
-    hour = int(time.split(":")[0])
-    minute = int(time.split(":")[1])
-    return hour/24 + minute/1440
+    directory : string
+        directory in which ProCoDA datalog is stored
+    columns : integer or list of integers, optional
+        a single index of a column of data to extract, or
+        a list of indices of columns to extract (Note: first column is 0)
+    start_date : string
+        starting date of data to extract, formatted 'M-D-YYYY'
+    start_time: string, optional
+        starting time of data to extract, formatted 'HH:MM' (24-hour time)
+    end_date : string, optional
+        ending date of data to extract, formatted 'M-D-YYYY'
+    end_time: string, optional
+        ending time of data to extract, formatted 'HH:MM' (24-hour time)
+
+    Return
+    ------
+    list, or list of lists
+        a list representing the single column of data to extract, or
+        a list of lists representing the columns to extract, corresponding with the indices given in the
+            variable columns
+
+    Examples
+    --------
+    get_data_by_time(directory='/Users/your-name/.../", columns=4, start_date='3-14-2015', start_time="9:26",
+        end_date='3-15-2015', end_time='17:35')
+    get_data_by_time(directory='/Users/your-name/.../", columns=[0,4], start_date='3-14-2015', start_time="9:26",
+        end_time='17:35')
+    get_data_by_time(directory='/Users/your-name/.../", columns=[0,3,4], start_date='3-14-2015', end_date='3-15-2015')
+    """
+
+    # Locate and read data file(s)
+    if directory[-1] != '/':
+        directory += '/'
+    paths = [directory + "datalog " + start_date + '.xls']
+    data = [remove_notes(pd.read_csv(paths[0], delimiter='\t'))]
+
+    if end_date is not None:
+        paths.append(directory + "datalog " + end_date + ".xls")
+        data.append(remove_notes(pd.read_csv(paths[1], delimiter='\t')))
+
+    # Calculate start index
+    time_column = pd.to_numeric(data[0].iloc[:, 0])
+    interval = time_column[2]-time_column[1]
+    start_idx = int(round((day_fraction(start_time) - time_column[1])/interval + .5)) #round up
+
+    # Calculate end index
+    time_column = pd.to_numeric(data[-1].iloc[:, 0])
+    end_idx = int(round((day_fraction(end_time) - time_column[1])/interval + .5)) #round up
+
+    # Get columns of interest
+    if len(paths) == 1:
+        if isinstance(columns, int):
+            result = list(pd.to_numeric(data[0].iloc[start_idx:end_idx, columns]))
+        else:
+            result = []
+            for c in columns:
+                result.append(list(pd.to_numeric(data[0].iloc[start_idx:end_idx, c])))
+    else:
+        if isinstance(columns, int):
+            result = list(pd.to_numeric(data[0].iloc[start_idx:, columns])) + \
+                     list(pd.to_numeric(data[1].iloc[:end_idx, columns]) + (1 if columns == 0 else 0))
+        else:
+            result = []
+            for c in columns:
+                result.append(list(pd.to_numeric(data[0].iloc[start_idx:, c])) +
+                              list(pd.to_numeric(data[1].iloc[:end_idx, c])+(1 if c == 0 else 0)))
+
+    return result
 
 
 def remove_notes(data):
-    '''
+    """Omits any rows containing text from a pandas.DataFrame object, except for headers
+
+    Text is defined as characters of the alphabet. The resulting DataFrame should have only headers and numerical data.
+
     Parameters
     ----------
-    data
-    pandas.DataFrame object
-    '''
+    data : pandas.DataFrame
+        DataFrame object to remove text from
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame object with no text, except for headers
+    """
     has_text = data.iloc[:, 0].astype(str).str.contains('[a-z]', '[A-Z]')
     text_rows = list(has_text.index[has_text])
     return data.drop(text_rows)
 
 
-def plot_columns(directory, extension, start_datetime, end_datetime, x_column, y_column):
-    '''
+def day_fraction(time):
+    """Converts a 24-hour time to a fraction of a day.
+
+    For example, midnight corresponds to 0.0, and noon to 0.5.
+
     Parameters
     ----------
-    start_datetime and end_datetime
-      must be in the format 'MM-DD-YYYY hh:mm' (24 hr time)
-    interval
-      in seconds, minutes, or hours
-    x_column and y_column
-      for now, only integer indices
-    directory
-      must end in '/'
-    extension
-      preceeded by '.', such as '.csv'
-    '''
-    # Locate data file(s)
-    start_date = start_datetime.split(' ')[0]
-    paths = [directory + "datalog " + start_date + extension]
-    data = [remove_notes(pd.read_csv(paths[0], delimiter='\t'))]
+    time : string
+        time in the form of 'HH:MM' (24-hour time)
 
-    end_date = end_datetime.split(' ')[0]
-    if start_date != end_date:
-        paths.append(directory + "datalog " + end_date + extension)
-        data.append(remove_notes(pd.read_csv(paths[1], delimiter='\t')))
+    Returns
+    -------
+    float
+        a day fraction
 
-    # Calculate start index
-    start_time = time_to_day_fraction(start_datetime.split(' ')[1])
-    time_column = pd.to_numeric(data[0].iloc[:, 0])
-    interval = time_column[2]-time_column[1]
-
-    start_idx = int(round((start_time - time_column[1])/interval + .5)) #round up
-
-    # Calculate end index and get columns of interest
-    end_time = time_to_day_fraction(end_datetime.split(' ')[1])
-    if len(paths) == 1:
-        end_idx = int(round((end_time - time_column[1])/interval + .5)) #round up
-        x = pd.to_numeric(data[0].iloc[start_idx:end_idx, x_column])
-        y = pd.to_numeric(data[0].iloc[start_idx:end_idx, y_column])
-
-    else:
-        time_column = pd.to_numeric(data[1].iloc[:, 0])
-        end_idx = int(round((end_time - time_column[1])/interval + .5)) #round up
-        x = list(pd.to_numeric(data[0].iloc[start_idx:, x_column]))
-        x += list(pd.to_numeric(data[1].iloc[:end_idx, x_column]) + 1)
-        y = list(pd.to_numeric(data[0].iloc[start_idx:, y_column]))
-        y += list(pd.to_numeric(data[1].iloc[:end_idx, y_column]))
-
-    plt.figure(figsize=(12, 4))
-    plt.plot(x, y, 'o', markersize=2)
-    plt.xlabel(list(data[0])[x_column])
-    plt.ylabel(list(data[0])[y_column])
-    # plt.ylim(0,60) #You can adjust the y-axis range here
-    plt.title(list(data[0])[y_column] + " vs " + list(data[0])[x_column])
-    plt.minorticks_on()
-    plt.grid(which='major')
-    plt.grid(which='minor')
-    plt.show()
+    Examples
+    --------
+    >>> day_fraction("00:21")
+    0.014583333333333334
+    >>> day_fraction("18:30")
+    0.7708333333333334
+    """
+    hour = int(time.split(":")[0])
+    minute = int(time.split(":")[1])
+    return hour/24 + minute/1440
 
 
 '''

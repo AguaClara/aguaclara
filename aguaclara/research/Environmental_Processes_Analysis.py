@@ -1,6 +1,7 @@
 from aguaclara.core.units import unit_registry as u
 from scipy import special
 from scipy.optimize import curve_fit
+from ProCoDA_Parser import *
 import collections
 import pandas as pd
 import numpy as np

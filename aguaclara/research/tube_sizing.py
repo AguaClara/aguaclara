@@ -1,4 +1,4 @@
-from research.units import unit_registry as u
+from aguaclara.research.units import unit_registry as u
 import numpy as np
 import pandas as pd
 

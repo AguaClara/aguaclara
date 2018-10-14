@@ -50,4 +50,4 @@ def set_sig_fig(n: int):
     unit_registry.default_format = '.' + str(n) + 'g'
     pd.options.display.float_format = ('{:,.' + str(n) + '}').format
 
-unit_registry.load_definitions(os.path.join(os.path.dirname(__file__), "data/unit_definitions.txt"))
+    unit_registry.load_definitions(os.path.dirname(__file__) / "data" / "unit_definitions.txt")
