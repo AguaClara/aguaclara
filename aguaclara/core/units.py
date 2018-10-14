@@ -16,17 +16,21 @@ import os
 import pint
 import pandas as pd
 
-unit_registry = pint.UnitRegistry(system='mks', autoconvert_offset_to_baseunit=True)
+unit_registry = pint.UnitRegistry(
+    system='mks',
+    autoconvert_offset_to_baseunit=True
+)
 
-# default formatting includes 4 significant digits. This can be overridden on a per-print basis
-#  with print('{:.3f}'.format(3*ureg.m /9))
+# default formatting includes 4 significant digits.
+# This can be overridden on a per-print basis with
+# print('{:.3f}'.format(3 * ureg.m / 9)).
 unit_registry.default_format = '.4g'
 pd.options.display.float_format = '{:,.4g}'.format
 
 
-def set_sig_fig(n: int):
-    """Set the default number of significant figures used to print pint, pandas and numpy values
-    quantities. Defaults to 4.
+def set_sig_figs(n: int):
+    """Set the default number of significant figures used to print pint,
+    pandas and numpy values quantities. Defaults to 4.
 
     Args:
         n: number of significant figures to display
@@ -38,7 +42,7 @@ def set_sig_fig(n: int):
         e = 25532532522352543*u.m
         print('h before sigfig adjustment: ',h)
         print('e before sigfig adjustment: ',e)
-        aguaclara.units.set_sig_fig(10)
+        aguaclara.units.set_sig_figs(10)
         print('h after sigfig adjustment: ',h)
         print('e after sigfig adjustment: ',e)
 

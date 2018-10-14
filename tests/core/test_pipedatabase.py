@@ -1,6 +1,6 @@
 import unittest
 from aguaclara.core.units import unit_registry as u
-from aguaclara.core import pipedatabase as pipe
+from aguaclara.core import pipes as pipe
 
 
 class PipeTest(unittest.TestCase):

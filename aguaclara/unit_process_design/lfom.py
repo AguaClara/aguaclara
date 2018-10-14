@@ -5,9 +5,12 @@ orifice meter (LFOM) for an AguaClara plant.
 """
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
+import aguaclara.design.lfom
+import design.lfom
 from aguaclara.play import*
 
 #primary outputs from this file are
+#TODO: con.RATIO_LFOM_SAFETY has been moved
 #Nominal diameter nom_diam_lfom_pipe(FLOW,HL_LFOM,con.RATIO_LFOM_SAFETY)
 #number of rows n_rows(FLOW,HL_LFOM)
 #orifice diameter orifice_diameter(FLOW,HL_LFOM,drill_series_uom)
@@ -17,7 +20,7 @@ from aguaclara.play import*
 # output is width per flow rate.
 @u.wraps(u.s/(u.m**2), [u.m,u.m], False)
 def width_stout(HL_LFOM,z):
-    return (2/((2*pc.gravity*z)**(1/2)*con.RATIO_VC_ORIFICE*np.pi*HL_LFOM)).magnitude
+    return (2 / ((2*pc.gravity*z) ** (1/2) * con.VENA_CONTRACTA_ORIFICE_RATIO * np.pi * HL_LFOM)).magnitude
 
 
 @u.wraps(None, [u.m**3/u.s,u.m], False)
@@ -62,12 +65,13 @@ def vel_lfom_pipe_critical(HL_LFOM):
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_pipe_min(FLOW, HL_LFOM):
-    return (con.RATIO_LFOM_SAFETY*FLOW/vel_lfom_pipe_critical(HL_LFOM).magnitude)
+    return (
+            aguaclara.design.lfom.SAFETY_RATIO * FLOW / vel_lfom_pipe_critical(HL_LFOM).magnitude)
 
 @u.wraps(u.inch, [u.m**3/u.s, u.m], False)
 def nom_diam_lfom_pipe(FLOW,HL_LFOM):
     ID = pc.diam_circle(area_lfom_pipe_min(FLOW, HL_LFOM))
-    return pipe.ND_SDR_available(ID, mat.SDR_LFOM).magnitude
+    return pipe.SDR_available_ND(ID, design.lfom.SDR_LFOM).magnitude
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_orifices_top(FLOW,HL_LFOM):
@@ -98,10 +102,10 @@ def n_lfom_orifices_per_row_max(FLOW,HL_LFOM,drill_bits):
     The distance between consecutive orifices must be enough to retain
     structural integrity of the pipe.
     """
-    return math.floor(math.pi*(pipe.ID_SDR(
-        nom_diam_lfom_pipe(FLOW, HL_LFOM), mat.SDR_LFOM).magnitude)
-        / (orifice_diameter(FLOW, HL_LFOM, drill_bits).magnitude +
-            opt.S_LFOM_ORIFICE.magnitude))
+    return math.floor(math.pi * (pipe.ID_SDR(
+        nom_diam_lfom_pipe(FLOW, HL_LFOM), design.lfom.SDR_LFOM).magnitude)
+                      / (orifice_diameter(FLOW, HL_LFOM, drill_bits).magnitude +
+                         aguaclara.design.lfom.ORIFICE_S.magnitude))
 
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m], False)
 def flow_ramp(FLOW,HL_LFOM):
@@ -130,9 +134,9 @@ def flow_lfom_actual(FLOW,HL_LFOM,drill_bits,Row_Index_Submerged,N_LFOM_Orifices
     harray = (np.linspace(row_height, HL_LFOM, n_lfom_rows(FLOW, HL_LFOM))) - 0.5 * D_LFOM_Orifices
     FLOW_new = 0
     for i in range(Row_Index_Submerged+1):
-        FLOW_new = FLOW_new + (N_LFOM_Orifices[i]*(
+        FLOW_new = FLOW_new + (N_LFOM_Orifices[i] * (
             pc.flow_orifice_vert(D_LFOM_Orifices, harray[Row_Index_Submerged-i],
-                con.RATIO_VC_ORIFICE).magnitude))
+                                 con.VENA_CONTRACTA_ORIFICE_RATIO).magnitude))
     return FLOW_new
 
 
@@ -150,8 +154,8 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_bits):
         #place zero in the row that we are going to calculate the required number of orifices
         n=np.append(n,0)
         #calculate the ideal number of orifices at the current row without constraining to an integer
-        n_orifices_real=((FLOW_ramp_local[i]-flow_lfom_actual(FLOW,HL_LFOM,drill_bits,i,n).magnitude)/
-                                  pc.flow_orifice_vert(D_LFOM_Orifices,H,con.RATIO_VC_ORIFICE)).magnitude
+        n_orifices_real=((FLOW_ramp_local[i]-flow_lfom_actual(FLOW,HL_LFOM,drill_bits,i,n).magnitude) /
+                         pc.flow_orifice_vert(D_LFOM_Orifices, H, con.VENA_CONTRACTA_ORIFICE_RATIO)).magnitude
         #constrain number of orifices to be less than the max per row and greater or equal to 0
         n[i]=min((max(0,round(n_orifices_real))),n_orifices_max)
     return n
@@ -185,7 +189,7 @@ def n_lfom_orifices_fusion(FLOW,HL_LFOM,drill_bits,num_rows):
 #and the actual flow rate through the LFOM.
 @u.wraps(u.m**3/u.s, [u.m**3/u.s, u.m, u.inch], False)
 def flow_lfom_error(FLOW,HL_LFOM,drill_bits):
-    N_lfom_orifices=n_lfom_orifices(FLOW,HL_LFOM,drill_bits,mat.SDR_LFOM)
+    N_lfom_orifices=n_lfom_orifices(FLOW, HL_LFOM, drill_bits, design.lfom.SDR_LFOM)
     FLOW_lfom_error=[]
     for j in range (len(N_lfom_orifices)-1):
         FLOW_lfom_error.append((flow_lfom_actual(
@@ -203,8 +207,8 @@ def flow_lfom_ideal(FLOW, HL_LFOM, H):
 def flow_lfom(FLOW,HL_LFOM,drill_bits,H):
     D_lfom_orifices=orifice_diameter(FLOW,HL_LFOM,drill_bits).magnitude
     H_submerged=np.arange(H-0.5*D_lfom_orifices, HL_LFOM, H-dist_center_lfom_rows(FLOW,HL_LFOM).magnitude,dtype=object)
-    N_lfom_orifices=n_lfom_orifices(FLOW,HL_LFOM,drill_bits,mat.SDR_LFOM)
+    N_lfom_orifices=n_lfom_orifices(FLOW, HL_LFOM, drill_bits, design.lfom.SDR_LFOM)
     flow=[]
     for i in range(len(H_submerged)):
-        flow.append(pc.flow_orifice_vert(D_lfom_orifices,H_submerged[i],con.RATIO_VC_ORIFICE)*N_lfom_orifices[i])
+        flow.append(pc.flow_orifice_vert(D_lfom_orifices, H_submerged[i], con.VENA_CONTRACTA_ORIFICE_RATIO) * N_lfom_orifices[i])
     return sum(flow)
