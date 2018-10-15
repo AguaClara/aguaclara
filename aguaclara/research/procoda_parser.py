@@ -1,12 +1,10 @@
 from aguaclara.core.units import unit_registry as u
-from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
 import os
 from pathlib import Path
-import datetime
-
 
 """
 SECTION 1: GRAPHING PROCODA DATA USING START AND END TIMES

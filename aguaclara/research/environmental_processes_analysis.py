@@ -1,10 +1,11 @@
+from aguaclara.research.procoda_parser import *
 from aguaclara.core.units import unit_registry as u
-from scipy import special
-from scipy.optimize import curve_fit
-from ProCoDA_Parser import *
-import collections
 import pandas as pd
 import numpy as np
+from scipy import special
+from scipy.optimize import curve_fit
+import collections
+
 
 # Carbonates
 # The following code defines the carbonate system and provides functions for

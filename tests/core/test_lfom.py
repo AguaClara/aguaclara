@@ -1,11 +1,8 @@
 import unittest
 import numpy as np
-
-import core.drills
+import aguaclara.core.drills
 from aguaclara.core import materials as mat
-
 from aguaclara.core.units import unit_registry as u
-
 from aguaclara.unit_process_design import lfom
 
 
