@@ -41,12 +41,12 @@ import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
 import aguaclara.core.head_loss as k
 import aguaclara.core.pipeline as pipeline
-import aguaclara.core.optional_inputs as opt
+# import aguaclara.core.optional_inputs as opt
 import warnings
 
 
 # deprecated imports
-import aguaclara.core.expert_inputs as exp
+# import aguaclara.core.expert_inputs as exp
 
 
 def setup_aide():
