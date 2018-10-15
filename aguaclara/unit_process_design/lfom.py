@@ -6,7 +6,6 @@ orifice meter (LFOM) for an AguaClara plant.
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
 import aguaclara.design.lfom
-import design.lfom
 from aguaclara.play import*
 
 #primary outputs from this file are
