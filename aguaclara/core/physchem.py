@@ -689,13 +689,13 @@ def vel_horizontal(HeightWaterCritical):
 
 
 @u.wraps(u.m, [u.m, u.m, u.m/u.s, u.m, u.m**2/u.s], False)
-def headloss_kozeny(Length, Diam, Vel, PipeRough, Nu):
+def headloss_kozeny(Length, Diam, Vel, Porosity, Nu):
     """Return the Carmen Kozeny Sand Bed head loss."""
     #Checking input validity
     ut.check_range([Length, ">0", "Length"], [Diam, ">0", "Diam"],
                    [Vel, ">0", "Velocity"], [Nu, ">0", "Nu"],
-                   [PipeRough, "0-1", "Pipe roughness"])
+                   [Porosity, "0-1", "Porosity"])
     return (K_KOZENY * Length * Nu
-            / gravity.magnitude * (1-PipeRough)**2
-            / PipeRough**3 * 36 * Vel
+            / gravity.magnitude * (1-Porosity)**2
+            / Porosity**3 * 36 * Vel
             / Diam ** 2)
