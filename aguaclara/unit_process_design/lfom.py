@@ -5,7 +5,7 @@ orifice meter (LFOM) for an AguaClara plant.
 """
 
 #Here we import packages that we will need for this notebook. You can find out about these packages in the Help menu.
-import aguaclara.design.lfom
+import aguaclara.design.lfom as lfom
 from aguaclara.play import*
 
 #primary outputs from this file are
@@ -70,7 +70,7 @@ def area_lfom_pipe_min(FLOW, HL_LFOM):
 @u.wraps(u.inch, [u.m**3/u.s, u.m], False)
 def nom_diam_lfom_pipe(FLOW,HL_LFOM):
     ID = pc.diam_circle(area_lfom_pipe_min(FLOW, HL_LFOM))
-    return pipe.SDR_available_ND(ID, design.lfom.SDR_LFOM).magnitude
+    return pipe.ND_SDR_available(ID, design.lfom.SDR_LFOM).magnitude
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_orifices_top(FLOW,HL_LFOM):
