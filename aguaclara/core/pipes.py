@@ -3,7 +3,7 @@ outer diameters of pipes based on their standard dimension ratio (SDR).
 
 """
 
-#Let's begin to create the pipe database
+# Let's begin to create the pipe database
 # https://docs.python.org/2/library/csv.html
 from aguaclara.core.units import unit_registry as u
 import numpy as np
@@ -18,22 +18,70 @@ with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
 
 """"""
+
+
 class Pipe:
 
-    def __init__(self, nd,sdr):
-        self.nd= nd
+    def __init__(self, nd, sdr):
+        self.nd = nd
         self.sdr = sdr
 
     def od(self):
-        index = (np.abs(np.array(pipedb['NDinch']) - (self.nd))).argmin()
-        return pipedb.iloc[index, 1]
+        """Return a pipe's outer diameter according to its nominal diameter.
+        The pipe schedule is not required here because all of the pipes of a
+        given nominal diameter have the same outer diameter.  Steps:
+
+            1. Find the index of the closest nominal diameter.  (Should this be
+               changed to find the next largest ND?)
+
+            2. Take the values of the array, subtract the ND, take the absolute
+               value, find the index of the minimium value.
+        """
+        if self.nd.units == 'inch':
+            column = 'NDinch'
+        elif self.nd.units == 'mm':
+            column = 'NDmm'
+        else:
+            raise Exception('Invalid argument')
+
+        index = (
+            np.abs(np.array(pipedb[column]) - (self.nd.magnitude))
+        ).argmin()
+        return pipedb.iloc[index, 1] * self.nd.units
 
     def id_sdr(self):
-        return self.od().magnitude * (self.sdr - 2) / self.sdr
+        """Return the inner diameter for SDR(standard diameter ratio) pipes.
+
+        For these pipes the wall thickness is the outer diameter divided by the
+        SDR.
+        """
+        return (
+            (self.od().magnitude * (self.sdr - 2) / self.sdr)
+            * self.nd.units
+        )
 
     def id_sch40(self):
-        myindex = (np.abs(np.array(pipedb['NDinch']) - (self.nd))).argmin()
-        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5]))
+        """Return the inner diameter for schedule 40 pipes.
+
+        The wall thickness for these pipes is in the pipedb.  Take the values
+        of the array, subtract the ND, take the absolute value, find the index
+        of the minimium value.
+        """
+        if self.nd.units == 'inch':
+            column = 'NDinch'
+        elif self.nd.units == 'mm':
+            column = 'NDmm'
+        else:
+            raise Exception('Invalid argument')
+
+        myindex = (
+            np.abs(np.array(pipedb[column]) - (self.nd.magnitude))
+        ).argmin()
+        return (
+            (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5]))
+            * self.nd.units
+        )
+
 
 @u.wraps(u.inch, u.inch, False)
 def OD(ND):
@@ -51,6 +99,7 @@ def OD(ND):
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
     return pipedb.iloc[index, 1]
 
+
 @u.wraps(u.inch, [u.inch, None], False)
 def ID_SDR(ND, SDR):
     """Return the inner diameter for SDR(standard diameter ratio) pipes.
@@ -59,6 +108,7 @@ def ID_SDR(ND, SDR):
     the SDR.
     """
     return OD(ND).magnitude * (SDR-2) / SDR
+
 
 @u.wraps(u.inch, u.inch, False)
 def ID_sch40(ND):

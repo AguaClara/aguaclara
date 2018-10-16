@@ -9,6 +9,7 @@ from aguaclara.core import pipes
 
 
 class TestPipes(unittest.TestCase):
+    # TODO: better test coverage (e.g. metric)
 
     def test_pipes(self):
         pipe = pipes.Pipe(nd=(7.0 * u.inch), sdr=35.0)
