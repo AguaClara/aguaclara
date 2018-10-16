@@ -19,7 +19,7 @@ from aguaclara.play import*
 # output is width per flow rate.
 @u.wraps(u.s/(u.m**2), [u.m,u.m], False)
 def width_stout(HL_LFOM,z):
-    return (2 / ((2*pc.gravity*z) ** (1/2) * con.VENA_CONTRACTA_ORIFICE_RATIO * np.pi * HL_LFOM)).magnitude
+    return (2 / ((2*pc.gravity*z) ** (1/2) * con.VC_ORIFICE_RATIO * np.pi * HL_LFOM)).magnitude
 
 
 @u.wraps(None, [u.m**3/u.s,u.m], False)
@@ -135,7 +135,7 @@ def flow_lfom_actual(FLOW,HL_LFOM,drill_bits,Row_Index_Submerged,N_LFOM_Orifices
     for i in range(Row_Index_Submerged+1):
         FLOW_new = FLOW_new + (N_LFOM_Orifices[i] * (
             pc.flow_orifice_vert(D_LFOM_Orifices, harray[Row_Index_Submerged-i],
-                                 con.VENA_CONTRACTA_ORIFICE_RATIO).magnitude))
+                                 con.VC_ORIFICE_RATIO).magnitude))
     return FLOW_new
 
 
@@ -154,7 +154,7 @@ def n_lfom_orifices(FLOW,HL_LFOM,drill_bits):
         n=np.append(n,0)
         #calculate the ideal number of orifices at the current row without constraining to an integer
         n_orifices_real=((FLOW_ramp_local[i]-flow_lfom_actual(FLOW,HL_LFOM,drill_bits,i,n).magnitude) /
-                         pc.flow_orifice_vert(D_LFOM_Orifices, H, con.VENA_CONTRACTA_ORIFICE_RATIO)).magnitude
+                         pc.flow_orifice_vert(D_LFOM_Orifices, H, con.VC_ORIFICE_RATIO)).magnitude
         #constrain number of orifices to be less than the max per row and greater or equal to 0
         n[i]=min((max(0,round(n_orifices_real))),n_orifices_max)
     return n
@@ -209,5 +209,5 @@ def flow_lfom(FLOW,HL_LFOM,drill_bits,H):
     N_lfom_orifices=n_lfom_orifices(FLOW, HL_LFOM, drill_bits, design.lfom.SDR_LFOM)
     flow=[]
     for i in range(len(H_submerged)):
-        flow.append(pc.flow_orifice_vert(D_lfom_orifices, H_submerged[i], con.VENA_CONTRACTA_ORIFICE_RATIO) * N_lfom_orifices[i])
+        flow.append(pc.flow_orifice_vert(D_lfom_orifices, H_submerged[i], con.VC_ORIFICE_RATIO) * N_lfom_orifices[i])
     return sum(flow)
