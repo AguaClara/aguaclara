@@ -1,22 +1,14 @@
-"""This file contains unit process functions pertaining to the design of
-physical/chemical unit processes for AguaClara water treatment plants.
-
+"""Contains unit process functions pertaining to the design of physical
+and chemical unit processes for AguaClara water treatment plants.
 """
 
-########################## Imports ##########################
+from aguaclara.core.units import unit_registry as u
+import aguaclara.core.materials as mat
+import aguaclara.core.constants as con
+import aguaclara.core.utility as ut
+
 import numpy as np
 from scipy import interpolate, integrate
-
-import aguaclara.core.constants
-
-try:
-    from aguaclara.core.units import unit_registry as u
-    from aguaclara.core import materials as mat, constants as con, utility as ut
-except ModuleNotFoundError:
-    from aguaclara.core.units import unit_registry as u
-    from aguaclara import utility as ut
-    from aguaclara import constants as con
-    from aguaclara import materials_database as mat
 
 gravity = 9.80665 * u.m/u.s**2
 """Define the gravitational constant, in m/s²."""
