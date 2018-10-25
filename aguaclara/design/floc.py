@@ -2,8 +2,6 @@ import numpy
 import aguaclara.core.constants as con
 from aguaclara.core.units import unit_registry as u
 
-HL = 0.4 * u.m
-COLL_POT = 37000  # collision potential, also referred to as Gt
 FREEBOARD = 10 * u.cm
 BLANKET_HEIGHT = 0.25 * u.m  # vertical height of floc blanket from peak of slope to weir
 
@@ -68,9 +66,15 @@ MODULES_MAIN_ND = (1/2)*u.inch
 #The diameter of the oversized cap used to assemble the floc modules
 MODULES_LARGE_ND = 1.5*u.inch
 
+
 class Flocculator:
 
     K_e = (1 / con.VC_ORIFICE_RATIO ** 2 - 1) ** 2
+
+    HL = 40 * u.cm
+    COLL_POT = 37000
+    END_WATER_HEIGHT = 2 * u.m
+    L_MAX = 6 * u.m
 
     @u.wraps(1/u.s, [u.m, None, u.degK], False)
     def G_avg(hl, Gt, T):
