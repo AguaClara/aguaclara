@@ -76,6 +76,13 @@ class Flocculator:
     END_WATER_HEIGHT = 2 * u.m
     L_MAX = 6 * u.m
 
+    def __init__(self, q=20*u.L/u.s):
+        """Initializer function to set flow rate
+        :param q: flow rate
+        """
+        self.q = q
+    
+
     @u.wraps(1/u.s, [u.m, None, u.degK], False)
     def G_avg(hl, Gt, T):
         """Return the average velocity gradient of a flocculator given head
