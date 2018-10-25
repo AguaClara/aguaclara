@@ -1,6 +1,7 @@
 import numpy
 import aguaclara.core.constants as con
 import aguaclara.core.physchem as pc
+import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
 
 
@@ -383,7 +384,7 @@ class Flocculator:
 
 
     @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-    def baffle_spacing(q_plant, hl, Gt, T, W_chan):
+    def baffle_space(self):
         """Return the spacing between baffles based on the target velocity gradient
 
         Parameters
@@ -413,14 +414,13 @@ class Flocculator:
         >>> baffle_spacing(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
         ."""
-        g_avg = G_avg(hl, Gt, T).magnitude
-        nu = pc.viscosity_kinematic(T).magnitude
-        term1 = (K_e/(2 * exp_dist_max(q_plant, hl, Gt, T, W_chan).magnitude * (g_avg**2) * nu))**(1/3)
-        return term1 * q_plant/W_chan
+        nu = pc.viscosity_kinematic(self.temp).magnitude
+        term1 = (self.K_e / (2 * self.exp_dist_max * (self.vel_gradient_avg() ** 2) * nu))**(1/3)
+        return term1 * self.q / ha.HUMAN_W_MIN
 
 
     @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m, u.m], False)
-    def num_baffles(q_plant, hl, Gt, T, W_chan, L, baffle_thickness):
+    def num_baffles(self, q_plant, hl, Gt, T, W_chan, L, baffle_thickness):
         """Return the number of baffles that would fit in the channel given the
         channel length and spacing between baffles.
 
@@ -459,7 +459,7 @@ class Flocculator:
         >>> num_baffles(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
         -1
         """
-        num = round((L / (baffle_spacing(q_plant, hl, Gt, T, W_chan).magnitude + baffle_thickness)))
+        num = round(L / self.baffle_space)
         # the one is subtracted because the equation for num gives the number of
         # baffle spaces and there is always one less baffle than baffle spaces due
         # to geometry
