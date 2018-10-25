@@ -1,6 +1,8 @@
 import numpy
 import aguaclara.core.constants as con
+import aguaclara.core.physchem as pc
 from aguaclara.core.units import unit_registry as u
+
 
 FREEBOARD = 10 * u.cm
 BLANKET_HEIGHT = 0.25 * u.m  # vertical height of floc blanket from peak of slope to weir
@@ -72,36 +74,21 @@ class Flocculator:
     K_e = (1 / con.VC_ORIFICE_RATIO ** 2 - 1) ** 2
 
     HL = 40 * u.cm
-    COLL_POT = 37000
+    GT = 37000
     END_WATER_HEIGHT = 2 * u.m
     L_MAX = 6 * u.m
 
-    def __init__(self, q=20*u.L/u.s):
-        """Initializer function to set flow rate
+    def __init__(self, q=20*u.L/u.s, temp=25*u.degC):
+        """Initializer function to set flow rate and temperature
         :param q: flow rate
+        :param temp: temperature
         """
         self.q = q
-    
+        self.temp = temp
 
-    @u.wraps(1/u.s, [u.m, None, u.degK], False)
-    def G_avg(hl, Gt, T):
+    def vel_gradient_avg(self):
         """Return the average velocity gradient of a flocculator given head
         loss, collision potential and temperature.
-
-        Parameters
-        ----------
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        Returns
-        -------
-        ?
 
         Examples
         --------
@@ -109,8 +96,8 @@ class Flocculator:
         >>>G_avg(40*u.cm, 37000, 25*u.degC)
         118.715 1/second
         """
-        G = (pc.gravity.magnitude * hl) / (Gt * pc.viscosity_kinematic(T).magnitude)
-        return G
+        return (pc.gravity.magnitude * self.HL) / \
+               (self.GT * pc.viscosity_kinematic(self.temp).magnitude)
 
 
     @u.wraps(u.m**3, [u.m**3/u.s, u.m, None, u.degK], False)
