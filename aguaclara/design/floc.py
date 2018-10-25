@@ -100,8 +100,7 @@ class Flocculator:
                (self.GT * pc.viscosity_kinematic(self.temp).magnitude)
 
 
-    @u.wraps(u.m**3, [u.m**3/u.s, u.m, None, u.degK], False)
-    def vol_floc(q_plant, hl, Gt, T):
+    def vol(self):
         """Return the total volume of the flocculator using plant flow rate, head
         loss, collision potential and temperature.
 
@@ -110,32 +109,13 @@ class Flocculator:
         into account the extra volume that the flocculator will have due to changing
         water level caused by head loss.
 
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        Returns
-        -------
-        ?
-
         Examples
         --------
         >>> from aguaclara.play import*
         >>>vol_floc(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
         6.233 meter3
         """
-        vol = (Gt / G_avg(hl, Gt, T).magnitude)*q_plant
-        return vol
+        return (self.GT * self.q) / self.vel_gradient_avg
 
 
     @u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
