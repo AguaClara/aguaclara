@@ -375,39 +375,11 @@ class Flocculator:
         """
         return int(np.ceil(depth_end/(exp_dist_max(q_plant, hl, Gt, T)).magnitude))
 
-
-    @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-    def height_exp(q_plant, hl, Gt, T, depth_end):
+    def expansion_h(self):
         """Return the actual distance between expansions given the integer
         requirement for the number of expansions per flocculator depth.
-
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        depth_end: float
-            The depth of water at the end of the flocculator
-
-        Returns
-        -------
-        ?
-
-        Examples
-        --------
-        >>> from aguaclara.play import*
-        ???
         """
-        return depth_end/num_expansions(q_plant, hl, Gt, T)
+        return self.END_WATER_HEIGHT / self.num_expansions
 
 
     @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
