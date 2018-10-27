@@ -1043,7 +1043,7 @@ class DiamFuncsTest(unittest.TestCase):
         """diam_pipe should handle units correctly."""
         base = pc.diam_pipe(0.007, 0.04, 0.75, 0.16, 0.0079, 0.8).magnitude
         checks = ([0.007 * u.m**3/u.s, 0.04 * u.m, 0.75 * u.m, 
-                   0.16 * u.m**2/u.s, 0.0079 * u.m, 0.8 * u.dimensionless], 
+                   0.16 * u.m**2/u.s, 0.0079 * u.m, 0.8],
                   [7 * u.L/u.s, 0.04, 0.75, 0.16, 0.0079, 0.8],
                   [0.007, 4 * u.cm, 0.75, 0.16, 0.0079, 0.8],
                   [0.007, 0.04, 75 * u.cm, 0.16, 0.0079, 0.8],

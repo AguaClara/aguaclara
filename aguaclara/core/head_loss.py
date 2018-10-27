@@ -17,7 +17,7 @@ import numpy as np
 
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s])
-@ut.list_handler
+@ut.list_handler()
 def k_value_expansion(ent_pipe_id, exit_pipe_id, q,
                       fitting_angle=180, rounded=False,
                       nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
@@ -68,7 +68,7 @@ def k_value_expansion(ent_pipe_id, exit_pipe_id, q,
 
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s])
-@ut.list_handler
+@ut.list_handler()
 def k_value_reduction(ent_pipe_id, exit_pipe_id, q,
                       fitting_angle=180, rounded=False,
                       nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
@@ -119,7 +119,7 @@ def k_value_reduction(ent_pipe_id, exit_pipe_id, q,
 
 
 @u.wraps(u.dimensionless, [u.m, u.m, u.m, u.m ** 3 / u.s])
-@ut.list_handler
+@ut.list_handler()
 def k_value_orifice(pipe_id, orifice_id, orifice_l, q,
                     nu=con.WATER_NU):
     """Calculates the minor loss coefficient of an orifice plate in a

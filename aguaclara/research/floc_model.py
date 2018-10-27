@@ -277,7 +277,7 @@ def gamma_coag(ConcClay, ConcAluminum, coag, material,
 
 
 @u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
-@ut.list_handler
+@ut.list_handler()
 def gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag):
     """Return the fraction of the coagulant that is coated with humic acid.
 
