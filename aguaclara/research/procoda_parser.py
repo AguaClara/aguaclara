@@ -647,7 +647,7 @@ def plot_state(dates, state, column, path="", extension=".xls"):
     ----------
     dates : string (list)
         A list of dates or single date for which data was recorded, in
-        the form "M-D-Y"
+        the form "M-D-YYYY"
 
     state : int
         The state ID number for which data should be plotted
@@ -697,7 +697,7 @@ def plot_state(dates, state, column, path="", extension=".xls"):
         # get the start and end times for the state
         state_start_idx = states[:, 1] == state
         state_start = states[state_start_idx, 0]
-        state_end_idx = np.append([False], state_start_idx[0:(np.size(state_start_idx)-1)])
+        state_end_idx = np.append([False], state_start_idx[0:(np.size(state_start_idx)-1)]) # could this be [0:-1]?
         state_end = states[state_end_idx, 0]
 
         if overnight:
@@ -705,7 +705,8 @@ def plot_state(dates, state, column, path="", extension=".xls"):
             state_end = np.insert(state_end, 0, states[0, 0])
 
         if state_start_idx[-1]:
-            state_end.append(data[0, -1])
+            # state_end.append(data[0, -1])
+            np.append(state_end, data[0, -1])
 
         # get the corresponding indices in the data array
         data_start = []
