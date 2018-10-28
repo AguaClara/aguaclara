@@ -393,7 +393,7 @@ class Flocculator:
             self.q / ha.HUMAN_W_MIN
 
     def baffles_n(self):
-        """Return the number of baffles a channel can fit.
+        """Return the number of baffles a channel can contain.
 
         Examples
         --------
