@@ -3,17 +3,17 @@ controller of an AguaClara plant.
 
 """
 
-import numpy as np
-
-from aguaclara.core import physchem as pc, utility as ut
-
+import aguaclara.core.physchem as pc
+import aguaclara.core.utility as ut
+import aguaclara.core.constants as con
 from aguaclara.core.units import unit_registry as u
+
+import numpy as np
 
 
 #==============================================================================
 # Functions for Coagulant Viscosities and Selecting Available Tube Diameters
 #==============================================================================
-from core.units import unit_registry as u
 
 
 def _DiamTubeAvail(en_tube_series = True):
@@ -87,7 +87,7 @@ def max_linear_flow(Diam, HeadlossCDC, Ratio_Error, KMinor):
     Maximum flow that can be put through a tube of a given diameter without
     exceeding the allowable deviation from linear head loss behavior
     """
-    flow = (pc.circle_a(Diam)).magnitude * np.sqrt((2 * Ratio_Error * HeadlossCDC * pc.gravity) / KMinor)
+    flow = (pc.circle_a(Diam)).magnitude * np.sqrt((2 * Ratio_Error * HeadlossCDC * con.GRAVITY) / KMinor)
     return flow.magnitude
 
 
@@ -103,7 +103,7 @@ def max_linear_flow(Diam, HeadlossCDC, Ratio_Error, KMinor):
 def _len_tube(Flow, Diam, HeadLoss, conc_chem, temp, en_chem, KMinor):
     """Length of tube required to get desired head loss at maximum flow based on
     the Hagen-Poiseuille equation."""
-    num1 = pc.gravity.magnitude * HeadLoss * np.pi * (Diam**4)
+    num1 = con.GRAVITY.magnitude * HeadLoss * np.pi * (Diam**4)
     denom1 = 128 * viscosity_kinematic_chem(conc_chem, temp, en_chem) * Flow
     num2 = Flow * KMinor
     denom2 = 16 * np.pi * viscosity_kinematic_chem(conc_chem, temp, en_chem)
