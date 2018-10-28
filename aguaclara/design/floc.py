@@ -4,6 +4,11 @@ from aguaclara.design import ent_tank as et
 import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
 
+# TODO: PLACEHOLDER constant for 'opt.L_sed'
+# We don't know what this constant actually is, and would like to find out.
+# 'opt' is alias for 'aguaclara.core.optional_inputs', which has been removed.
+# 'L_sed' was never in 'optional_inputs'.
+L_SED = 1 * u.m
 
 FREEBOARD = 10 * u.cm
 # vertical height of floc blanket from peak of slope to weir
@@ -280,15 +285,15 @@ class Flocculator:
         tolerance = 0.01
         while a_ratio > (1 + tolerance):
             a_et_pv = a_new
-            a_floc_pv = self.vol / (depth_end + (self.hl/2))
+            a_floc_pv = self.vol / (self.END_WATER_HEIGHT + (self.hl/2))
             a_etf_pv = a_et_pv + a_floc_pv
 
-            w_tot = a_etf_pv / opt.L_sed
+            w_tot = a_etf_pv / L_SED
             w_chan = w_tot / self.num_channel
 
-            a_new = ht.L_MAX * w_chan
+            a_new = et.L_MAX * w_chan
             a_ratio = a_new / a_et_pv
-        return A_new.to(u.m**2).magnitude
+        return a_new
 
     @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
     def exp_dist_max(q_plant, hl, Gt, T, W_chan):
