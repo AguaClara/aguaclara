@@ -98,7 +98,7 @@ class Flocculator:
         118.715 1/second
         """
         return (pc.gravity.magnitude * self.HL) / \
-               (self.GT * pc.viscosity_kinematic(self.temp).magnitude)
+               (self.GT * pc.nu(self.temp).magnitude)
 
 
     def vol(self):
@@ -156,7 +156,7 @@ class Flocculator:
         >>> width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.1074 centimeter
         """
-        nu = pc.viscosity_kinematic(T).magnitude
+        nu = pc.nu(T).magnitude
 
         w = con.HS_RATIO_MIN * ((K_e / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
                                         * nu)) ** (1/3)) * q_plant / depth_end
@@ -337,7 +337,7 @@ class Flocculator:
         0.375 meter
         """
         g_avg = G_avg(hl, Gt, T).magnitude
-        nu = pc.viscosity_kinematic(T).magnitude
+        nu = pc.nu(T).magnitude
         term1 = (K_e/(2 * (g_avg**2) * nu))**(1/4)
         term2 = (con.HS_RATIO_MAX * q_plant / W_chan) ** (3 / 4)
         exp_dist_max = term1*term2
@@ -388,10 +388,9 @@ class Flocculator:
         >>> from aguaclara.play import*
         >>> baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
-        ."""
-        nu = pc.viscosity_kinematic(self.temp)
-        term1 = (self.K_e / (2 * self.exp_dist_max * (self.vel_gradient_avg() ** 2) * nu))**(1/3)
-        return term1 * self.q / ha.HUMAN_W_MIN
+        """
+        return (self.K_e / (2 * self.exp_dist_max * (self.vel_gradient_avg() ** 2) * pc.nu(self.temp))) ** (1/3) * \
+            self.q / ha.HUMAN_W_MIN
 
     def baffles_n(self):
         """Return the number of baffles a channel can fit.
