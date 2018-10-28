@@ -383,30 +383,8 @@ class Flocculator:
         return self.END_WATER_HEIGHT / self.num_expansions
 
 
-    @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
     def baffle_space(self):
         """Return the spacing between baffles based on the target velocity gradient
-
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        W_chan: float
-            Channel width
-
-        Returns
-        -------
-        ?
 
         Examples
         --------
@@ -414,7 +392,7 @@ class Flocculator:
         >>> baffle_spacing(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
         ."""
-        nu = pc.viscosity_kinematic(self.temp).magnitude
+        nu = pc.viscosity_kinematic(self.temp)
         term1 = (self.K_e / (2 * self.exp_dist_max * (self.vel_gradient_avg() ** 2) * nu))**(1/3)
         return term1 * self.q / ha.HUMAN_W_MIN
 
