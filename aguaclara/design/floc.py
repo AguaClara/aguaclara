@@ -1,3 +1,5 @@
+import math
+
 import aguaclara.core.constants as con
 import aguaclara.core.physchem as pc
 from aguaclara.design import ent_tank as et
@@ -36,7 +38,7 @@ COLL_POT_BOD = 75 * u.m**(2/3)
 
 # Minimum width of flocculator channel required for constructability based
 # on the width of the human hip
-W_MIN = 45 * u.cm
+W_MIN = ha.HUMAN_W_MIN
 
 # Minimum and maximum distance between expansions to baffle spacing ratio for
 # flocculator geometry that will provide optimal efficiency.
@@ -82,7 +84,7 @@ class Flocculator:
 
     HL = 40 * u.cm
     GT = 37000
-    END_WATER_HEIGHT = 2 * u.m
+    END_WATER_HEIGHT = 2 * u.m  # replaces depth_end
     L_MAX = 6 * u.m
 
     def __init__(self, q=20*u.L/u.s, temp=25*u.degC):
@@ -251,28 +253,6 @@ class Flocculator:
         headloss, target collision potential, design temperature, and depth of
         water at the end of the flocculator.
 
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        depth_end: float
-            The depth of water at the end of the flocculator
-
-        Returns
-        -------
-        float
-            The planview area of the entrance tank
-
         Examples
         --------
         >>> from aguaclara.play import*
@@ -298,27 +278,7 @@ class Flocculator:
     def d_exp_max(self):
         """"Return the maximum distance between expansions for the largest
         allowable H/S ratio.
-
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        W_chan: float
-            Channel width
-
-        Returns
-        -------
-        ?
+        TODO: unfinished!
 
         Examples
         --------
@@ -333,37 +293,24 @@ class Flocculator:
         exp_dist_max = term1*term2
         return exp_dist_max
 
-    @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-    def num_expansions(q_plant, hl, Gt, T, depth_end):
-        """"Return the minimum number of expansions per baffle space.
-
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        depth_end: float
-            The depth of water at the end of the flocculator
-
-        Returns
-        -------
-        ?
-
-        Examples
-        --------
-        >>> from aguaclara.play import*
-        ???
+    def w_channel(self):
         """
-        return int(np.ceil(depth_end/(exp_dist_max(q_plant, hl, Gt, T)).magnitude))
+        The channel width of the flocculator.  See section 'Flocculation
+        Design' of textbook'
+        TODO: Unfinished!
+        """
+        h = self.END_WATER_HEIGHT
+        w_min_human = ha.HUMAN_W_MIN
+        # perf_metric is (d between flow exp / baffle_spacing)
+        w_min_perf_metric
+
+        w_tot = self.vol / (
+        n_chan=w_tot / w_min
+        w_chan=w_tot / n_chan
+
+    def exp_n(self):
+        """Return the minimum number of expansions per baffle space."""
+        return math.ceil(self.END_WATER_HEIGHT / self.exp_dist_max)
 
     def expansion_h(self):
         """Return the actual distance between expansions given the integer
@@ -380,8 +327,8 @@ class Flocculator:
         >>> baffle_spacing(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
         ."""
-        nu = pc.viscosity_kinematic(self.temp)
-        term1 = (self.K_e / (2 * self.exp_dist_max *
+        nu=pc.viscosity_kinematic(self.temp)
+        term1=(self.K_e / (2 * self.exp_dist_max *
                              (self.vel_gradient_avg() ** 2) * nu))**(1/3)
         return term1 * self.q / ha.HUMAN_W_MIN
 
@@ -425,7 +372,7 @@ class Flocculator:
         >>> num_baffles(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
         -1
         """
-        num = round(L / self.baffle_space)
+        num=round(L / self.baffle_space)
         # the one is subtracted because the equation for num gives the number of
         # baffle spaces and there is always one less baffle than baffle spaces due
         # to geometry
