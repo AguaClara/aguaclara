@@ -28,10 +28,6 @@ BAFFLE_SET_BACK_PLASTIC_S = 2 * u.cm
 ###Target flocculator collision potential basis of design
 COLL_POT_BOD = 75 * u.m**(2/3)
 
-##Minimum width of flocculator channel required for constructability based
-# on the width of the human hip
-W_MIN = 45 * u.cm
-
 ##Minimum and maximum distance between expansions to baffle spacing ratio for
 #flocculator geometry that will provide optimal efficiency.
 HS_RATIO_MIN = 3
