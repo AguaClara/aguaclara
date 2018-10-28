@@ -9,6 +9,7 @@ import aguaclara.core.utility as ut
 import numpy as np
 from scipy import interpolate, integrate
 
+gravity = 10
 
 def circle_a(d):
     """Return the area of a circle."""

@@ -30,7 +30,7 @@ class LFOM:
         """Return the width of a Stout weir at elevation z. More info
         here. <https://confluence.cornell.edu/display/AGUACLARA/LFOM+sutro+weir+research>
         """
-        w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) * con.VENA_CONTRACTA_ORIFICE_RATIO * np.pi * self.hl)
+        w_per_flow = 2 / ((2 * con.GRAVITY * z) ** (1 / 2) * con.VENA_CONTRACTA_ORIFICE_RATIO * np.pi * self.hl)
         return w_per_flow*self.q
 
     @property
@@ -66,7 +66,7 @@ class LFOM:
         at the very bottom of the bottom row of orifices The speed of
         falling water is 0.841 m/s for all linear flow orifice meters of
         height 20 cm, independent of total plant flow rate. """
-        return 4 / (3 * math.pi) * (2 * pc.gravity * self.hl) ** (1 / 2)
+        return 4 / (3 * math.pi) * (2 * con.GRAVITY * self.hl) ** (1 / 2)
 
     @property
     def area_pipe_min(self):
