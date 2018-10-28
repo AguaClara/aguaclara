@@ -20,7 +20,7 @@ from aguaclara.play import*
 # output is width per flow rate.
 @u.wraps(u.s/(u.m**2), [u.m,u.m], False)
 def width_stout(HL_LFOM,z):
-    return (2 / ((2*pc.gravity*z) ** (1/2) * con.VENA_CONTRACTA_ORIFICE_RATIO * np.pi * HL_LFOM)).magnitude
+    return (2 / ((2*con.GRAVITY*z) ** (1/2) * con.VENA_CONTRACTA_ORIFICE_RATIO * np.pi * HL_LFOM)).magnitude
 
 
 @u.wraps(None, [u.m**3/u.s,u.m], False)
@@ -61,7 +61,7 @@ def vel_lfom_pipe_critical(HL_LFOM):
     at the very bottom of the bottom row of orifices
     The speed of falling water is 0.841 m/s for all linear flow orifice meters
     of height 20 cm, independent of total plant flow rate."""
-    return 4/(3*math.pi)*(2*pc.gravity.magnitude*HL_LFOM)**(1/2)
+    return 4/(3*math.pi)*(2*con.GRAVITY.magnitude*HL_LFOM)**(1/2)
 
 @u.wraps(u.m**2, [u.m**3/u.s, u.m], False)
 def area_lfom_pipe_min(FLOW, HL_LFOM):
