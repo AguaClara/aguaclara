@@ -382,7 +382,6 @@ class Flocculator:
         """
         return self.END_WATER_HEIGHT / self.num_expansions
 
-
     def baffle_space(self):
         """Return the spacing between baffles based on the target velocity gradient
 
@@ -396,38 +395,10 @@ class Flocculator:
         term1 = (self.K_e / (2 * self.exp_dist_max * (self.vel_gradient_avg() ** 2) * nu))**(1/3)
         return term1 * self.q / ha.HUMAN_W_MIN
 
-
-    @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m, u.m], False)
-    def num_baffles(self, q_plant, hl, Gt, T, W_chan, L, baffle_thickness):
+    def num_baffles(self):
         """Return the number of baffles that would fit in the channel given the
         channel length and spacing between baffles.
 
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        W_chan: float
-            Channel width
-
-        L: float
-            Length
-
-        baffle_thickness: float
-            Baffle thickness
-
-        Returns
-        -------
-        ?
 
         Examples
         --------
@@ -437,8 +408,4 @@ class Flocculator:
         >>> num_baffles(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
         -1
         """
-        num = round(L / self.baffle_space)
-        # the one is subtracted because the equation for num gives the number of
-        # baffle spaces and there is always one less baffle than baffle spaces due
-        # to geometry
-        return int(num) - 1
+        return self.END_WATER_HEIGHT / self.baffle_space() - 1
