@@ -7,7 +7,7 @@ flocs based on the chemical interactions of clay, coagulant, and humic acid.
 ######################### Imports #########################
 import numpy as np
 from aguaclara.core.units import unit_registry as u
-from aguaclara.core import physchem as pc, utility as ut
+from aguaclara.core import physchem as pc, utility as ut, constants as con
 
 u.enable_contexts('chem')
 
@@ -428,7 +428,7 @@ def vel_term_floc(ConcAl, ConcClay, coag, material, DIM_FRACTAL,
                   DiamTarget, Temp):
     """Calculate floc terminal velocity."""
     WaterDensity = pc.density_water(Temp).magnitude
-    return (((pc.gravity.magnitude * material.Diameter**2)
+    return (((con.GRAVITY.magnitude * material.Diameter**2)
              / (18 * PHI_FLOC * pc.viscosity_kinematic(Temp).magnitude)
              )
             * ((dens_floc_init(ConcAl, ConcClay, coag, material).magnitude
@@ -449,7 +449,7 @@ def diam_floc_vel_term(ConcAl, ConcClay, coag, material,
     return (material.Diameter * (((18 * VelTerm * PHI_FLOC
                           * pc.viscosity_kinematic(Temp).magnitude
                           )
-                         / (pc.gravity.magnitude * material.Diameter**2)
+                         / (con.GRAVITY.magnitude * material.Diameter**2)
                          )
                          * (WaterDensity
                             / (dens_floc_init(ConcAl, ConcClay, coag,
