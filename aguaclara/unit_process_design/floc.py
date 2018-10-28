@@ -33,7 +33,7 @@ def G_avg(hl, Gt, T):
     >>>G_avg(40*u.cm, 37000, 25*u.degC)
     118.715 1/second
     """
-    G = (pc.gravity.magnitude * hl) / (Gt * pc.viscosity_kinematic(T).magnitude)
+    G = (con.GRAVITY.magnitude * hl) / (Gt * pc.viscosity_kinematic(T).magnitude)
     return G
 
 @u.wraps(u.m**3, [u.m**3/u.s, u.m, None, u.degK], False)
