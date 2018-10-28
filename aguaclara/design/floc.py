@@ -295,8 +295,7 @@ class Flocculator:
             a_ratio = a_new / a_et_pv
         return a_new
 
-    @u.wraps(u.m, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-    def exp_dist_max(q_plant, hl, Gt, T, W_chan):
+    def d_exp_max(self):
         """"Return the maximum distance between expansions for the largest
         allowable H/S ratio.
 
@@ -327,10 +326,10 @@ class Flocculator:
         >>> exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.375 meter
         """
-        g_avg = G_avg(hl, Gt, T).magnitude
-        nu = pc.viscosity_kinematic(T).magnitude
-        term1 = (K_e/(2 * (g_avg**2) * nu))**(1/4)
-        term2 = (con.HS_RATIO_MAX * q_plant / W_chan) ** (3 / 4)
+        g_avg = self.vel_gradient_avg
+        nu = pc.viscosity_kinematic(self.temp).magnitude
+        term1 = (self.K_e/(2 * (g_avg**2) * nu))**(1/4)
+        term2 = (con.HS_RATIO_MAX * self.q / W_chan) ** (3 / 4)
         exp_dist_max = term1*term2
         return exp_dist_max
 
