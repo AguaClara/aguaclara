@@ -16,7 +16,7 @@ import numpy as np
 # TODO: Add units to docstrings. - Oliver Leung (oal22)
 
 
-@u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s])
+@u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s], strict=False)
 @ut.list_handler()
 def k_value_expansion(ent_pipe_id, exit_pipe_id, q,
                       fitting_angle=180, rounded=False,
@@ -67,7 +67,7 @@ def k_value_expansion(ent_pipe_id, exit_pipe_id, q,
                          'Please set only either fitting_angle or rounded.')
 
 
-@u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s])
+@u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s], strict=False)
 @ut.list_handler()
 def k_value_reduction(ent_pipe_id, exit_pipe_id, q,
                       fitting_angle=180, rounded=False,
@@ -118,7 +118,7 @@ def k_value_reduction(ent_pipe_id, exit_pipe_id, q,
                          'Please set only either fitting_angle or rounded.')
 
 
-@u.wraps(u.dimensionless, [u.m, u.m, u.m, u.m ** 3 / u.s])
+@u.wraps(u.dimensionless, [u.m, u.m, u.m, u.m ** 3 / u.s], strict=False)
 @ut.list_handler()
 def k_value_orifice(pipe_id, orifice_id, orifice_l, q,
                     nu=con.WATER_NU):
@@ -152,7 +152,7 @@ def k_value_orifice(pipe_id, orifice_id, orifice_l, q,
         return _k_value_thick_orifice(pipe_id, orifice_id, orifice_l, re)
     elif orifice_type == 'oversize':
         return k_value_reduction(pipe_id, orifice_id, q) \
-               + k_value_expansion(orifice_id, pipe_id, q * u.m)
+               + k_value_expansion(orifice_id, pipe_id, q)
 
 
 def _k_value_square_reduction(ent_pipe_id, exit_pipe_id, re, f):
