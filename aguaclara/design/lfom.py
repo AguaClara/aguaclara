@@ -77,7 +77,7 @@ class LFOM:
     def nom_diam_pipe(self):
         """The nominal diameter of the LFOM pipe"""
         ID = pc.diam_circle(self.area_pipe_min)
-        return pipe.SDR_available_ND(ID, self.sdr)
+        return pipe.ND_SDR_available(ID, self.sdr)
 
     @property
     def area_top_orifice(self):
