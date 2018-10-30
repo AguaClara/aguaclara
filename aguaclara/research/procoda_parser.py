@@ -696,16 +696,15 @@ def plot_state(dates, state, column, path="", extension=".xls"):
 
         # get the start and end times for the state
         state_start_idx = states[:, 1] == state
-        state_start = states[state_start_idx, 0]
-        state_end_idx = np.append([False], state_start_idx[0:(np.size(state_start_idx)-1)]) # could this be [0:-1]?
-        state_end = states[state_end_idx, 0]
+        state_start = states[state_start_idx, 0]  # gives a list of all the start times that day
+        state_end_idx = np.append([False], state_start_idx[0:-1])
+        state_end = states[state_end_idx, 0]  # gives a list of all the end times that day
 
         if overnight:
             state_start = np.insert(state_start, 0, 0)
             state_end = np.insert(state_end, 0, states[0, 0])
 
         if state_start_idx[-1]:
-            # state_end.append(data[0, -1])
             np.append(state_end, data[0, -1])
 
         # get the corresponding indices in the data array
@@ -743,9 +742,9 @@ def plot_state(dates, state, column, path="", extension=".xls"):
         if state_start_idx[-1]:
             overnight = True
 
-    plt.figure()
+    # plt.figure()
     for i in data_agg:
-        t = i[:, 0] - i[0, 0]
+        t = i[:, 0]  # - i[0, 0]
         plt.plot(t, i[:, 1])
 
     plt.show()
