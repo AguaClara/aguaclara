@@ -118,8 +118,8 @@ class Flocculator:
         return (self.GT * self.q) / self.vel_gradient_avg
 
 
-    @u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-    def width_HS_min(q_plant, hl, Gt, T, depth_end):
+
+    def w_min_h_s_ratio(self):
         """Return the minimum channel width required to achieve H/S > 3.
 
         The channel can be wider than this, but this is the absolute minimum width
@@ -127,69 +127,23 @@ class Flocculator:
         baffle and thus the distance between expansions is the same as the depth of
         water at the end of the flocculator.
 
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        depth_end: float
-            The depth of water at the end of the flocculator
-
-        Returns
-        -------
-        float
-            The minimum channel width required to achieve H/S > 3
-
         Examples
         --------
         >>> from aguaclara.play import*
         >>> width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.1074 centimeter
         """
-        nu = pc.viscosity_kinematic(T).magnitude
+        nu = pc.viscosity_kinematic(self.temp).magnitude
 
-        w = con.HS_RATIO_MIN * ((K_e / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
-                                        * nu)) ** (1/3)) * q_plant / depth_end
-        return w
+        return HS_RATIO_MIN * ((self.K_e / (2 * self.END_WATER_HEIGHT * (self.vel_gradient_avg().magnitude ** 2)
+                                        * nu)) ** (1/3)) * self.q / self.END_WATER_HEIGHT
 
 
-    @u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
-    def width_floc_min(q_plant, hl, Gt, T, depth_end):
+    def w_min(self):
         """Return the minimum channel width required.
 
         This takes the maximum of the minimum required to achieve H/S > 3 and the
         minimum required for constructability based on the width of the human hip.
-
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        depth_end: float
-            The depth of water at the end of the flocculator
-
-        Returns
-        -------
-        float
-            The minimum channel width required to achieve H/S > 3
 
         Examples
         --------
@@ -197,11 +151,11 @@ class Flocculator:
         >>> width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         45 centimeter
         """
-        return max(width_HS_min(q_plant, hl, Gt, T, depth_end).magnitude, con.FLOC_W_MIN_CONST.magnitude)
+        return max(self.w_min_h_s_ratio().magnitude, W_MIN.magnitude)
 
 
-    @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m], False)
-    def num_channel(q_plant, hl, Gt, T, W_tot, depth_end):
+
+    def num_channel(self):
         """Return the number of channels in the entrance tank/flocculator (ETF).
 
         This takes the total width of the flocculator and divides it by the minimum
@@ -238,7 +192,7 @@ class Flocculator:
         >>> num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
         2
         """
-        num = W_tot/(width_floc_min(q_plant, hl, Gt, T, depth_end).magnitude)
+        num = self.W_tot/(self.w_min().magnitude)
         # floor function with step size 2
         num = np.floor(num/2)*2
         return int(max(num, 2))
