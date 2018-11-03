@@ -1,66 +1,57 @@
 from aguaclara.core.units import unit_registry as u
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import os
 from pathlib import Path
 
-"""
-SECTION 1: GRAPHING PROCODA DATA USING START AND END TIMES
-----------------------------------------------------------
-The functions in this section are for extracting data from ProCoDA datalogs
-based on user-specified starting and ending date(s) and times (of the experiment).
 
-See the next section for graphing based on ProCoDA state changes.
-"""
-
-
-def get_data_by_time(directory, columns, start_date, start_time="00:00", end_date=None, end_time="23:59"):
+def get_data_by_time(path, columns, start_date, start_time="00:00", end_date=None, end_time="23:59"):
     """Extracts columns of data from a ProCoDA datalog based on starting and ending date(s) and times
 
     Note: currently only works for 1 or 2 days of data, i.e. end_date must be unspecified or one day after start_date
 
     Parameters
     ----------
-    directory : string
-        directory in which ProCoDA datalog is stored
-    columns : integer or list of integers, optional
-        a single index of a column of data to extract, or
-        a list of indices of columns to extract (Note: first column is 0)
+    path : string
+        The path to the folder containing your ProCoDA data files
+    columns : int (list)
+        A single index of a column or a list of indices of columns of data to extract
+        Note: Column 0 is time. The first data column is column 1.
     start_date : string
-        starting date of data to extract, formatted 'M-D-YYYY'
+        Starting date of data to extract, formatted 'M-D-YYYY'
     start_time: string, optional
-        starting time of data to extract, formatted 'HH:MM' (24-hour time)
+        Starting time of data to extract, formatted 'HH:MM' (24-hour time)
     end_date : string, optional
-        ending date of data to extract, formatted 'M-D-YYYY'
+        Ending date of data to extract, formatted 'M-D-YYYY'
     end_time: string, optional
-        ending time of data to extract, formatted 'HH:MM' (24-hour time)
+        Ending time of data to extract, formatted 'HH:MM' (24-hour time)
 
     Return
     ------
-    list, or list of lists
-        a list representing the single column of data to extract, or
-        a list of lists representing the columns to extract, corresponding with the indices given in the
-            variable columns
+    list (2D list)
+        list :
+            contains the single column of data to extract
+        2D list:
+            a list of lists containing the columns to extract, in order of the indices given in the columns variable
 
     Examples
     --------
-    get_data_by_time(directory='/Users/your-name/.../", columns=4, start_date='3-14-2015', start_time="9:26",
-        end_date='3-15-2015', end_time='17:35')
-    get_data_by_time(directory='/Users/your-name/.../", columns=[0,4], start_date='3-14-2015', start_time="9:26",
-        end_time='17:35')
-    get_data_by_time(directory='/Users/your-name/.../", columns=[0,3,4], start_date='3-14-2015', end_date='3-15-2015')
+    get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, start_date='6-14-2018', start_time='12:20',
+        end_date='6-15-2018', end_time='10:50')
+    get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], start_date='6-14-2018', start_time='12:20',
+         end_time='23:59')
+    get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], start_date='6-14-2018', end_date='6-18-2018')
     """
 
     # Locate and read data file(s)
-    if directory[-1] != '/':
-        directory += '/'
-    paths = [directory + "datalog " + start_date + '.xls']
+    if path[-1] != '/':
+        path += '/'
+    paths = [path + "datalog " + start_date + '.xls']
     data = [remove_notes(pd.read_csv(paths[0], delimiter='\t'))]
 
     if end_date is not None:
-        paths.append(directory + "datalog " + end_date + ".xls")
+        paths.append(path + "datalog " + end_date + ".xls")
         data.append(remove_notes(pd.read_csv(paths[1], delimiter='\t')))
 
     # Calculate start index
@@ -121,12 +112,12 @@ def day_fraction(time):
     Parameters
     ----------
     time : string
-        time in the form of 'HH:MM' (24-hour time)
+        Time in the form of 'HH:MM' (24-hour time)
 
     Returns
     -------
     float
-        a day fraction
+        A day fraction
 
     Examples
     --------
@@ -140,17 +131,102 @@ def day_fraction(time):
     return hour/24 + minute/1440
 
 
-'''
-END OF SECTION 1
+def get_data_by_state(path, dates, columns, state):
+    """Extracts columns of data from a ProCoDA datalog for each iteration of the given state
 
-SECTION 2: GRAPHING PROCODA DATA USING STATES
----------------------------------------------
-The functions in this section are for graphing data from ProCoDA datalogs
-based on the duration of a user-specified ProCoDA state.
-'''
+    Parameters
+    ----------
+    path : string
+        The path to the folder containing your ProCoDA data files. Use "" for current directory.
+    dates : string (list)
+        A single date or list of dates for which data was recorded, in the form "M-D-YYYY"
+    state : int
+        The state number for which data should be plotted
+    columns : int (list)
+        A single index of a column or a list of indices of columns of data to extract.
+        Column 0, the time column, is automatically included. The first data column is column 1.
+
+    Returns
+    -------
+    2D list
+        A list of lists containing the columns to extract, in order of the indices given in the columns variable
+
+    Examples
+    --------
+    get_data_by_state(path='/Users/.../ProCoDA Data/', dates=["6-19-2013", "6-20-2013"], columns=[1, 3], state=1)
+    """
+    data_agg = []
+    day = 0
+    overnight = False
+    extension = '.xls'
+
+    if not isinstance(dates, list):
+        dates = [dates]
+
+    for d in dates:
+        state_file = path + "statelog " + d + extension
+        data_file = path + "datalog " + d + extension
+
+        states = pd.read_csv(state_file, delimiter='\t')
+        data = pd.read_csv(data_file, delimiter='\t')
+
+        states = np.array(states)
+        data = np.array(data)
+
+        # get the start and end times for the state
+        state_start_idx = states[:, 1] == state
+        state_start = states[state_start_idx, 0]  # gives a list of all the start times that day
+        state_end_idx = np.append([False], state_start_idx[0:-1])
+        state_end = states[state_end_idx, 0]  # gives a list of all the end times that day
+
+        if overnight:
+            state_start = np.insert(state_start, 0, 0)
+            state_end = np.insert(state_end, 0, states[0, 0])
+
+        if state_start_idx[-1]:
+            np.append(state_end, data[0, -1])
+
+        # get the corresponding indices in the data array
+        data_start = []
+        data_end = []
+        for i in range(np.size(state_start)):
+            add_start = True
+            for j in range(np.size(data[:, 0])):
+                if (data[j, 0] > state_start[i]) and add_start:
+                    data_start.append(j)
+                    add_start = False
+                if data[j, 0] > state_end[i]:
+                    data_end.append(j - 1)
+                    break
+
+        start_time = data[data_start[0], 0]
+
+        if isinstance(columns, int):
+            data_agg = [[], []]
+        else:
+            for i in range(len(columns) + 1):
+                data_agg.append([])
+
+        for i in range(np.size(data_start)):
+            t = list(data[data_start[i]:data_end[i], 0] + day - start_time)
+            data_agg[0] += t
+
+            if isinstance(columns, int):
+                col = list(data[data_start[i]:data_end[i], columns])
+                data_agg[1] += col
+            else:
+                for j in range(len(columns)):
+                    col = list(data[data_start[i]:data_end[i], columns[j]])
+                    data_agg[j+1] += col
+
+        day += 1
+        if state_start_idx[-1]:
+            overnight = True
+
+    return data_agg
 
 
-def ftime(data_file_path, start, end=-1):
+def column_of_time(data_file_path, start, end=-1):
     """This function extracts the column of times from a ProCoDA data file.
 
     Parameters
@@ -637,117 +713,6 @@ def perform_function_on_state(func, dates, state, column, units="", path="", ext
         return output*func(data_agg[i]*u(units)).units
     else:
         return output
-
-
-def plot_state(dates, state, column, path="", extension=".xls"):
-    """Reads a ProCoDA file and plots the data column for each iteration of
-    the given state.
-
-    Parameters
-    ----------
-    dates : string (list)
-        A list of dates or single date for which data was recorded, in
-        the form "M-D-YYYY"
-
-    state : int
-        The state ID number for which data should be plotted
-
-    column : int or string
-        int:
-            Index of the column that you want to extract. Column 0 is time.
-            The first data column is column 1.
-        string:
-            Name of the column header that you want to extract
-
-    path : string, optional
-        Optional argument of the path to the folder containing your ProCoDA
-        files. Defaults to the current directory if no argument is passed in
-
-    extension : string, optional
-        The file extension of the tab delimited file. Defaults to ".xls" if
-        no argument is passed in
-
-    Returns
-    -------
-    None
-
-    Examples
-    --------
-    plot_state(["6-19-2013", "6-20-2013"], 1, 28)
-
-    """
-    data_agg = []
-    day = 0
-    first_day = True
-    overnight = False
-
-    if not isinstance(dates, list):
-        dates = [dates]
-
-    for d in dates:
-        state_file = path + "statelog " + d + extension
-        data_file = path + "datalog " + d + extension
-
-        states = pd.read_csv(state_file, delimiter='\t')
-        data = pd.read_csv(data_file, delimiter='\t')
-
-        states = np.array(states)
-        data = np.array(data)
-
-        # get the start and end times for the state
-        state_start_idx = states[:, 1] == state
-        state_start = states[state_start_idx, 0]  # gives a list of all the start times that day
-        state_end_idx = np.append([False], state_start_idx[0:-1])
-        state_end = states[state_end_idx, 0]  # gives a list of all the end times that day
-
-        if overnight:
-            state_start = np.insert(state_start, 0, 0)
-            state_end = np.insert(state_end, 0, states[0, 0])
-
-        if state_start_idx[-1]:
-            np.append(state_end, data[0, -1])
-
-        # get the corresponding indices in the data array
-        data_start = []
-        data_end = []
-        for i in range(np.size(state_start)):
-            add_start = True
-            for j in range(np.size(data[:, 0])):
-                if (data[j, 0] > state_start[i]) and add_start:
-                    data_start.append(j)
-                    add_start = False
-                if (data[j, 0] > state_end[i]):
-                    data_end.append(j-1)
-                    break
-
-        if first_day:
-            start_time = data[1, 0]
-
-        # extract data at those times
-        for i in range(np.size(data_start)):
-            t = data[data_start[i]:data_end[i], 0] + day - start_time
-            if isinstance(column, int):
-                c = data[data_start[i]:data_end[i], column]
-            else:
-                c = data[column][data_start[i]:data_end[i]]
-            if overnight and i == 0:
-                data_agg = np.insert(data_agg[-1], np.size(data_agg[-1][:, 0]),
-                                     np.vstack((t, c)).T)
-            else:
-                data_agg.append(np.vstack((t, c)).T)
-
-        day += 1
-        if first_day:
-            first_day = False
-        if state_start_idx[-1]:
-            overnight = True
-
-    # plt.figure()
-    for i in data_agg:
-        t = i[:, 0]  # - i[0, 0]
-        plt.plot(t, i[:, 1])
-
-    plt.show()
 
 
 def read_state_with_metafile(func, state, column, path, metaids=[],
