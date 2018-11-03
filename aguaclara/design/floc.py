@@ -77,6 +77,7 @@ class Flocculator:
     GT = 37000
     END_WATER_HEIGHT = 2 * u.m
     L_MAX = 6 * u.m
+    CHANNEL_N_MIN = 2
 
     def __init__(self, q=20*u.L/u.s, temp=25*u.degC):
         """Initializer function to set flow rate and temperature
@@ -99,7 +100,6 @@ class Flocculator:
         return (pc.gravity.magnitude * self.HL) / \
                (self.GT * pc.nu(self.temp).magnitude)
 
-
     def vol(self):
         """Return the total volume of the flocculator using plant flow rate, head
         loss, collision potential and temperature.
@@ -117,6 +117,18 @@ class Flocculator:
         """
         return (self.GT * self.q) / self.vel_gradient_avg()
 
+    def l_max_vol(self):
+        """Return the maximum flocculator channel length that achieves the
+        target volume, while still allowing human access.
+        """
+        return self.vol() / (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_HEIGHT)
+
+    def channel_l(self):
+        """Return the length of the flocculator channel, as constrained by
+        the length of the sedimentation tank (self.L_MAX), and the target
+        volume and human access width (self.l_max_vol).
+        """
+        return min(self.L_MAX, self.l_max_vol())
 
     @u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
     def width_HS_min(q_plant, hl, Gt, T, depth_end):
