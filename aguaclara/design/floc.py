@@ -204,12 +204,14 @@ class Flocculator:
         exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.375 meter
         """
-        g_avg = self.vel_gradient_avg()
-        nu = pc.nu(self.temp).magnitude
-        term1 = (self.K_e/(2 * (g_avg**2) * nu))**(1/4)
-        term2 = (HS_RATIO_MAX * self.q / self.channel_w()) ** (3 / 4)
-        exp_dist_max = term1*term2
-        return exp_dist_max
+        G = self.vel_gradient_avg()
+        nu = pc.nu(self.temp)
+        pi = HS_RATIO_MAX
+        w = self.channel_w()
+        k = self.K_e
+        q = self.q
+
+        return ((k / (2*nu*(G**2))) * ((q*pi/w)**3)) ** (1/4)
 
     def channel_w(self):
         """
