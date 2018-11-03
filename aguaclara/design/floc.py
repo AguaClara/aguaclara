@@ -5,12 +5,6 @@ import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
 
-# TODO: PLACEHOLDER constant for 'opt.L_sed'
-# We don't know what this constant actually is, and would like to find out.
-# 'opt' is alias for 'aguaclara.core.optional_inputs', which has been removed.
-# 'L_sed' was never in 'optional_inputs'.
-L_SED = 1 * u.m
-
 FREEBOARD = 10 * u.cm
 # vertical height of floc blanket from peak of slope to weir
 BLANKET_HEIGHT = 0.25 * u.m
@@ -86,13 +80,14 @@ class Flocculator:
     END_WATER_HEIGHT = 2 * u.m  # replaces depth_end
     L_SED_MAX = 6 * u.m
 
-    def __init__(self, q=20*u.L/u.s, temp=25*u.degC):
+    def __init__(self, q=20*u.L/u.s, temp=25*u.degC, l_sed_max=6*u.m):
         """Initializer function to set flow rate and temperature
         :param q: flow rate
         :param temp: temperature
         """
         self.q = q
         self.temp = temp
+        self.l_sed_max = l_sed_max
 
     def vel_gradient_avg(self):
         """Return the average velocity gradient of a flocculator given head
@@ -100,8 +95,7 @@ class Flocculator:
 
         Examples
         --------
-        >>> from aguaclara.play import*
-        >>>G_avg(40*u.cm, 37000, 25*u.degC)
+        >>> (40*u.cm, 37000, 25*u.degC)
         118.715 1/second
         """
         return (pc.gravity.magnitude * self.HL) / \
@@ -118,12 +112,11 @@ class Flocculator:
 
         Examples
         --------
-        >>> from aguaclara.play import*
-        >>>vol_floc(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
+        vol(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
         6.233 meter3
 
         """
-        return (self.GT * self.q) / self.vel_gradient_avg
+        return (self.GT * self.q) / self.vel_gradient_avg()
 
     def w_min_h_s_ratio(self):
         """Return the minimum channel width required to achieve H/S > 3.
@@ -135,13 +128,23 @@ class Flocculator:
 
         Examples
         --------
-        >>> from aguaclara.play import*
-        >>> width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+        width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.1074 centimeter
 
         """
-        return HS_RATIO_MIN * ((self.K_e / (2 * self.END_WATER_HEIGHT * (self.vel_gradient_avg().magnitude ** 2)
-                                            * nu)) ** (1/3)) * self.q / self.END_WATER_HEIGHT
+        return (
+            HS_RATIO_MIN
+            * (
+                (
+                    self.K_e
+                    / (
+                        2 * self.END_WATER_HEIGHT
+                        * (self.vel_gradient_avg().magnitude ** 2)
+                        * pc.nu(self.temp)
+                    )
+                ) ** (1/3)
+            ) * self.q / self.END_WATER_HEIGHT
+        )
 
     def w_min(self):
         """Return the minimum channel width required.
@@ -152,8 +155,7 @@ class Flocculator:
 
         Examples
         --------
-        >>> from aguaclara.play import*
-        >>> width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+        width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         45 centimeter
         """
         return max(self.w_min_h_s_ratio().magnitude, W_MIN.magnitude)
@@ -163,68 +165,45 @@ class Flocculator:
 
         This takes the total width of the flocculator and divides it by the
         minimum channel width. A floor function is used to ensure that there
-        are an even number of channels.
-
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        W_tot: float
-            Total width
-
-        depth_end: float
-            The depth of water at the end of the flocculator
-
-        Returns
-        -------
-        ?
+        are an even number of channels.        ?
 
         Examples
         --------
-        >>> from aguaclara.play import*
-        >>> num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
+        num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
         2
 
         """
-        W_tot =
-        num = self.W_tot/(self.w_min().magnitude)
-        # floor function with step size 2
-        num = np.floor(num/2)*2
-        return int(max(num, 2))
+        # Unimplemented
+        pass
 
     def d_exp_max(self):
         """"Return the maximum distance between expansions for the largest
         allowable H/S ratio.
-        TODO: unfinished!
 
         Examples
         --------
-        >>> from aguaclara.play import*
-        >>> exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+        exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.375 meter
         """
-        g_avg = self.vel_gradient_avg
-        nu = pc.viscosity_kinematic(self.temp).magnitude
+        g_avg = self.vel_gradient_avg()
+        nu = pc.nu(self.temp).magnitude
         term1 = (self.K_e/(2 * (g_avg**2) * nu))**(1/4)
-        term2 = (con.HS_RATIO_MAX * self.q / self.w_channel) ** (3 / 4)
+        term2 = (HS_RATIO_MAX * self.q / self.channel_w()) ** (3 / 4)
         exp_dist_max = term1*term2
         return exp_dist_max
 
-    def w_channel(self):
+    def channel_l(self):
+        """
+        The flocculator length. See section 'Floccuation Design of textbook'
+        TODO: complete
+        """
+        # Unimplemented
+        return 0
+
+    def channel_w(self):
         """
         The channel width of the flocculator.  See section 'Flocculation
         Design' of textbook'
-        TODO: Unfinished!
         """
         w_min_human = ha.HUMAN_W_MIN
         # just assume it's 6
@@ -235,40 +214,39 @@ class Flocculator:
             * (
                 self.K_e / (
                     2 * self.END_WATER_HEIGHT
-                    * self.pc.viscosity_kinematic(self.temp)
-                    * (self.vel_gradient_avg ** 2)
+                    * pc.nu(self.temp)
+                    * (self.vel_gradient_avg() ** 2)
                 )
             ) ** (1/3)
         )
 
         w_min = max(w_min_human, w_min_perf_metric)
-        w_tot = self.vol / 1  # TODO: complete
+        w_tot = self.vol() / (self.channel_l() * self.END_WATER_HEIGHT)
         n_chan = w_tot / w_min
         w_chan = w_tot / n_chan
         return w_chan
 
     def exp_n(self):
         """Return the minimum number of expansions per baffle space."""
-        return math.ceil(self.END_WATER_HEIGHT / self.exp_dist_max)
+        return math.ceil(self.END_WATER_HEIGHT / self.d_exp_max())
 
     def expansions_h(self):
         """Returns the height between flow expansions."""
-        return self.END_WATER_HEIGHT / self.num_expansions
+        return self.END_WATER_HEIGHT / self.exp_n()
 
     def baffles_s(self):
         """Return the spacing between baffles.
 
         Examples
         --------
-        >>> from aguaclara.play import*
-        >>> baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+        baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
         ."""
         return (
             (
                 self.K_e
                 / (
-                    2 * self.exp_dist_max
+                    2 * self.d_exp_max()
                     * (self.vel_gradient_avg() ** 2)
                     * pc.nu(self.temp)
                 )
@@ -281,10 +259,9 @@ class Flocculator:
 
         Examples
         --------
-        >>> from aguaclara.play import*
-        >>> baffles_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
+        baffles_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
         0
-        >>> baffles_n(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
+        baffles_n(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
         -1
         """
         return self.END_WATER_HEIGHT / self.baffles_s() - 1
