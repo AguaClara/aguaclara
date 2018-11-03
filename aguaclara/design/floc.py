@@ -99,11 +99,15 @@ class Flocculator:
         return (pc.gravity.magnitude * self.HL) / \
                (self.GT * pc.nu(self.temp).magnitude)
 
+    def retention_time(self):
+        """Return the retention time of flocs in a flocculator."""
+        return self.GT / self.vel_gradient_avg()
+
     def vol(self):
         """Return the total volume of the flocculator using plant flow rate, head
         loss, collision potential and temperature.
 
-        Uses an estimation of flocculator residence time (ignoring the decrease
+        Uses an estimation of flocculator retention time (ignoring the decrease
         in water depth caused by head loss in the flocculator.) Volume does not take
         into account the extra volume that the flocculator will have due to changing
         water level caused by head loss.
@@ -114,7 +118,7 @@ class Flocculator:
         >>>vol_floc(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
         6.233 meter3
         """
-        return (self.GT * self.q) / self.vel_gradient_avg()
+        return self.retention_time() * self.q
 
     def l_max_vol(self):
         """Return the maximum flocculator channel length that achieves the
