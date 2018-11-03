@@ -1,4 +1,3 @@
-import numpy
 import aguaclara.core.constants as con
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
