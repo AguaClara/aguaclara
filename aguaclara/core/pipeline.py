@@ -46,7 +46,6 @@ class Pipeline:
 
         return q
 
-
 # Deprecated - will remove once the Pipeline class is properly implemented
 # with Pipe.
 def flow_pipeline(diameters: np.ndarray, lengths: np.ndarray, k_minors: np.ndarray, target_headloss: float,

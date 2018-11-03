@@ -30,7 +30,7 @@ class LFOM:
         """Return the width of a Stout weir at elevation z. More info
         here. <https://confluence.cornell.edu/display/AGUACLARA/LFOM+sutro+weir+research>
         """
-        w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) * con.VENA_CONTRACTA_ORIFICE_RATIO * np.pi * self.hl)
+        w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) * con.VC_ORIFICE_RATIO * np.pi * self.hl)
         return w_per_flow*self.q
 
     @property
@@ -154,7 +154,7 @@ class LFOM:
         for i in range(Row_Index_Submerged + 1):
             FLOW_new = FLOW_new + (N_LFOM_Orifices[i] * (
                 pc.flow_orifice_vert(self.orifice_diameter, harray[Row_Index_Submerged - i],
-                                     con.VENA_CONTRACTA_ORIFICE_RATIO)))
+                                     con.VC_ORIFICE_RATIO)))
         return FLOW_new
 
     @property
@@ -163,7 +163,7 @@ class LFOM:
         """
         # H is distance from the elevation between two rows of orifices down to the bottom of the orifices
         H = self.b_rows/2 + 0.5*self.orifice_diameter
-        flow_per_orifice = pc.flow_orifice_vert(self.orifice_diameter, H, con.VENA_CONTRACTA_ORIFICE_RATIO)
+        flow_per_orifice = pc.flow_orifice_vert(self.orifice_diameter, H, con.VC_ORIFICE_RATIO)
         n = np.zeros(self.n_rows)
         for i in range(self.n_rows):
             # calculate the ideal number of orifices at the current row without constraining to an integer
