@@ -5,9 +5,16 @@ import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
 
+
+HS_RATIO_MIN = 3
+HS_RATIO_MAX = 6
+
+# Unused constants - START \/
+
 FREEBOARD = 10 * u.cm
-# vertical height of floc blanket from peak of slope to weir
-BLANKET_HEIGHT = 0.25 * u.m
+
+# From slope peak to weir
+FLOC_BLANKET_H = 0.25 * u.m
 
 # Distance that the rapid mix coupling extends into the first floc channel
 # so that the RM orifice place can be fixed in place.
@@ -22,28 +29,23 @@ OPTION_H = 0
 # Increased both to provide a safety margin on flocculator head loss and
 # to simultaneously scale back on the actual collision potential we are
 # trying to achieve.
-BAFFLE_K_MINOR = 2.5
+BAFFLE_MINOR_LOSS = 2.5
 
 BAFFLE_SET_BACK_PLASTIC_S = 2 * u.cm
 
 # Target flocculator collision potential basis of design
-COLL_POT_BOD = 75 * u.m**(2/3)
 
 # Minimum width of flocculator channel required for constructability based
 # on the width of the human hip
 W_MIN = ha.HUMAN_W_MIN
-
-# Minimum and maximum distance between expansions to baffle spacing ratio for
-# flocculator geometry that will provide optimal efficiency.
-HS_RATIO_MIN = 3
-HS_RATIO_MAX = 6
+BOD_GT = 75 * u.m ** (2 / 3)
 
 # Ratio of the width of the gap between the baffle and the wall and the
 # spacing between the baffles.
 BAFFLE_RATIO = 1
 
 # Max energy dissipation rate in the flocculator, basis of design.
-ENERGY_DIS_FLOC_BOD = 10 * u.mW/u.kg
+BOD_ENERGY_DISSIPATION_MAX = 10 * u.mW / u.kg
 
 DRAIN_TIME = 15 * u.min
 
@@ -70,6 +72,8 @@ MODULES_MAIN_ND = (1/2)*u.inch
 # The diameter of the oversized cap used to assemble the floc modules
 MODULES_LARGE_ND = 1.5*u.inch
 
+# Unused constants - END /\
+
 
 class Flocculator:
 
@@ -77,8 +81,9 @@ class Flocculator:
 
     HL = 40 * u.cm
     GT = 37000
-    END_WATER_HEIGHT = 2 * u.m  # replaces depth_end
-    L_SED_MAX = 6 * u.m
+    END_WATER_HEIGHT = 2 * u.m
+    L_MAX = 6 * u.m
+    CHANNEL_N_MIN = 2
 
     def __init__(self, q=20*u.L/u.s, temp=25*u.degC, l_sed_max=6*u.m):
         """Initializer function to set flow rate and temperature
@@ -114,9 +119,24 @@ class Flocculator:
         --------
         vol(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
         6.233 meter3
-
         """
         return (self.GT * self.q) / self.vel_gradient_avg()
+
+    def l_max_vol(self):
+        """Return the maximum flocculator channel length that achieves the
+        target volume, while still allowing human access.
+        """
+        return (
+            self.vol()
+            / (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_HEIGHT)
+        )
+
+    def channel_l(self):
+        """Return the length of the flocculator channel, as constrained by
+        the length of the sedimentation tank (self.L_MAX), and the target
+        volume and human access width (self.l_max_vol).
+        """
+        return min(self.L_MAX, self.l_max_vol())
 
     def w_min_h_s_ratio(self):
         """Return the minimum channel width required to achieve H/S > 3.
@@ -130,7 +150,6 @@ class Flocculator:
         --------
         width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.1074 centimeter
-
         """
         return (
             HS_RATIO_MIN
@@ -191,14 +210,6 @@ class Flocculator:
         term2 = (HS_RATIO_MAX * self.q / self.channel_w()) ** (3 / 4)
         exp_dist_max = term1*term2
         return exp_dist_max
-
-    def channel_l(self):
-        """
-        The flocculator length. See section 'Floccuation Design of textbook'
-        TODO: complete
-        """
-        # Unimplemented
-        return 0
 
     def channel_w(self):
         """
