@@ -71,8 +71,7 @@ MODULES_LARGE_ND = 1.5*u.inch
 
 class Flocculator:
 
-    K_e = (1 / con.VC_ORIFICE_RATIO ** 2 - 1) ** 2
-
+    K = (1 / con.VC_ORIFICE_RATIO ** 2 - 1) ** 2
     HL = 40 * u.cm
     GT = 37000
     END_WATER_HEIGHT = 2 * u.m
@@ -169,8 +168,8 @@ class Flocculator:
         """
         nu = pc.nu(T).magnitude
 
-        w = HS_RATIO_MIN * ((K_e / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
-                                        * nu)) ** (1/3)) * q_plant / depth_end
+        w = HS_RATIO_MIN * ((K / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
+                                  * nu)) ** (1/3)) * q_plant / depth_end
         return w
 
 
@@ -349,7 +348,7 @@ class Flocculator:
         """
         g_avg = G_avg(hl, Gt, T).magnitude
         nu = pc.nu(T).magnitude
-        term1 = (K_e/(2 * (g_avg**2) * nu))**(1/4)
+        term1 = (K / (2 * (g_avg ** 2) * nu)) ** (1 / 4)
         term2 = (con.HS_RATIO_MAX * q_plant / W_chan) ** (3 / 4)
         exp_dist_max = term1*term2
         return exp_dist_max
@@ -400,8 +399,8 @@ class Flocculator:
         >>> baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
         """
-        return (self.K_e / (2 * self.exp_dist_max * (self.vel_gradient_avg() ** 2) * pc.nu(self.temp))) ** (1/3) * \
-            self.q / ha.HUMAN_W_MIN
+        return (self.K / (2 * self.exp_dist_max * (self.vel_gradient_avg() ** 2) * pc.nu(self.temp))) ** (1 / 3) * \
+               self.q / ha.HUMAN_W_MIN
 
     def baffles_n(self):
         """Return the number of baffles a channel can contain.
