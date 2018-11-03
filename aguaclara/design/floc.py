@@ -105,7 +105,7 @@ class Flocculator:
         118.715 1/second
         """
         return (pc.gravity.magnitude * self.HL) / \
-               (self.GT * pc.viscosity_kinematic(self.temp).magnitude)
+               (self.GT * pc.nu(self.temp).magnitude)
 
     def vol(self):
         """Return the total volume of the flocculator using plant flow rate, head
@@ -161,7 +161,7 @@ class Flocculator:
         >>> width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.1074 centimeter
         """
-        nu = pc.viscosity_kinematic(T).magnitude
+        nu = pc.nu(T).magnitude
 
         w = con.HS_RATIO_MIN * ((K_e / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
                                         * nu)) ** (1/3)) * q_plant / depth_end
@@ -285,68 +285,31 @@ class Flocculator:
         """Return the minimum number of expansions per baffle space."""
         return math.ceil(self.END_WATER_HEIGHT / self.exp_dist_max)
 
-    def expansion_h(self):
-        """Return the actual distance between expansions given the integer
-        requirement for the number of expansions per flocculator depth.
-        """
+    def expansions_h(self):
+        """Returns the height between flow expansions."""
         return self.END_WATER_HEIGHT / self.num_expansions
 
-    def baffle_space(self):
-        """Return the spacing between baffles based on the target velocity gradient
+    def baffles_s(self):
+        """Return the spacing between baffles.
 
         Examples
         --------
         >>> from aguaclara.play import*
-        >>> baffle_spacing(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+        >>> baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
         ."""
-        nu=pc.viscosity_kinematic(self.temp)
-        term1=(self.K_e / (2 * self.exp_dist_max *
-                             (self.vel_gradient_avg() ** 2) * nu))**(1/3)
-        return term1 * self.q / ha.HUMAN_W_MIN
+        return (self.K_e / (2 * self.exp_dist_max * (self.vel_gradient_avg() ** 2) * pc.nu(self.temp))) ** (1/3) *
+            self.q / ha.HUMAN_W_MIN
 
-    @u.wraps(None, [u.m**3/u.s, u.m, None, u.degK, u.m, u.m, u.m], False)
-    def num_baffles(self, q_plant, hl, Gt, T, W_chan, L, baffle_thickness):
-        """Return the number of baffles that would fit in the channel given the
-        channel length and spacing between baffles.
-
-        Parameters
-        ----------
-        q_plant: float
-            Plant flow rate
-
-        hl: float
-            Headloss through the flocculator
-
-        Gt: float
-            Target collision potential
-
-        T: float
-            Design temperature
-
-        W_chan: float
-            Channel width
-
-        L: float
-            Length
-
-        baffle_thickness: float
-            Baffle thickness
-
-        Returns
-        -------
-        ?
+    def baffles_n(self):
+        """Return the number of baffles a channel can contain.
 
         Examples
         --------
         >>> from aguaclara.play import*
-        >>> num_baffles(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
+        >>> baffles_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
         0
-        >>> num_baffles(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
+        >>> baffles_n(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
         -1
         """
-        num=round(L / self.baffle_space)
-        # the one is subtracted because the equation for num gives the number of
-        # baffle spaces and there is always one less baffle than baffle spaces due
-        # to geometry
-        return int(num) - 1
+        return self.END_WATER_HEIGHT / self.baffles_s() - 1
