@@ -4,40 +4,42 @@ import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
 
 
+HS_RATIO_MIN = 3
+HS_RATIO_MAX = 6
+
+# Unused constants - START \/
+
 FREEBOARD = 10 * u.cm
-BLANKET_HEIGHT = 0.25 * u.m  # vertical height of floc blanket from peak of slope to weir
+
+# From slope peak to weir
+FLOC_BLANKET_H = 0.25 * u.m
 
 # Distance that the rapid mix coupling extends into the first floc channel
 # so that the RM orifice place can be fixed in place.
 COUPLING_EXT_L = 5 * u.cm
 
-##The minor loss coefficient is 2. According to measurements at Agalteca
+# The minor loss coefficient is 2. According to measurements at Agalteca
 # and according to
 # https://confluence.cornell.edu/display/AGUACLARA/PAHO+Water+Treatment+Publications
 # (page 100 in chapter on flocculation)
 OPTION_H = 0
 
-##Increased both to provide a safety margin on flocculator head loss and
+# Increased both to provide a safety margin on flocculator head loss and
 # to simultaneously scale back on the actual collision potential we are
 # trying to achieve.
-BAFFLE_K_MINOR = 2.5
+BAFFLE_MINOR_LOSS = 2.5
 
 BAFFLE_SET_BACK_PLASTIC_S = 2 * u.cm
 
-###Target flocculator collision potential basis of design
-COLL_POT_BOD = 75 * u.m**(2/3)
+# Target flocculator collision potential basis of design
+BOD_GT = 75 * u.m ** (2 / 3)
 
-##Minimum and maximum distance between expansions to baffle spacing ratio for
-#flocculator geometry that will provide optimal efficiency.
-HS_RATIO_MIN = 3
-HS_RATIO_MAX = 6
-
-##Ratio of the width of the gap between the baffle and the wall and the
+# Ratio of the width of the gap between the baffle and the wall and the
 # spacing between the baffles.
 BAFFLE_RATIO = 1
 
-##Max energy dissipation rate in the flocculator, basis of design.
-ENERGY_DIS_FLOC_BOD = 10* u.mW/u.kg
+# Max energy dissipation rate in the flocculator, basis of design.
+BOD_ENERGY_DISSIPATION_MAX = 10 * u.mW / u.kg
 
 DRAIN_TIME = 15 * u.min
 
@@ -49,7 +51,7 @@ MOD_EDGE_LAST_PIPE_S = 10 * u.cm
 
 RM_RESTRAINER_ND = 0.5 * u.inch
 
-###Height that the drain stub extends above the top of the flocculator wall
+# Height that the drain stub extends above the top of the flocculator wall
 DRAIN_STUB_EXT_H = 20 * u.cm
 
 MOD_PIPE_EDGE_S = 10 * u.cm
@@ -58,11 +60,13 @@ BAFFLE_THICKNESS = 2 * u.mm
 
 BAFFLE_RIGID_H_THICKNESS = 15*u.cm  # Is this a height or a thickness?
 
-#The piping size for the main part of the floc modules
+# The piping size for the main part of the floc modules
 MODULES_MAIN_ND = (1/2)*u.inch
 
-#The diameter of the oversized cap used to assemble the floc modules
+# The diameter of the oversized cap used to assemble the floc modules
 MODULES_LARGE_ND = 1.5*u.inch
+
+# Unused constants - END /\
 
 
 class Flocculator:
@@ -111,7 +115,7 @@ class Flocculator:
         >>>vol_floc(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
         6.233 meter3
         """
-        return (self.GT * self.q) / self.vel_gradient_avg
+        return (self.GT * self.q) / self.vel_gradient_avg()
 
 
     @u.wraps(u.cm, [u.m**3/u.s, u.m, None, u.degK, u.m], False)
@@ -153,7 +157,7 @@ class Flocculator:
         """
         nu = pc.nu(T).magnitude
 
-        w = con.HS_RATIO_MIN * ((K_e / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
+        w = HS_RATIO_MIN * ((K_e / (2 * depth_end * (G_avg(hl, Gt, T).magnitude ** 2)
                                         * nu)) ** (1/3)) * q_plant / depth_end
         return w
 
