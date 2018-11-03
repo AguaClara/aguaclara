@@ -2,7 +2,6 @@ import math
 
 import aguaclara.core.constants as con
 import aguaclara.core.physchem as pc
-from aguaclara.design import ent_tank as et
 import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
 
@@ -85,7 +84,7 @@ class Flocculator:
     HL = 40 * u.cm
     GT = 37000
     END_WATER_HEIGHT = 2 * u.m  # replaces depth_end
-    L_MAX = 6 * u.m
+    L_SED_MAX = 6 * u.m
 
     def __init__(self, q=20*u.L/u.s, temp=25*u.degC):
         """Initializer function to set flow rate and temperature
@@ -248,33 +247,6 @@ class Flocculator:
         num = np.floor(num/2)*2
         return int(max(num, 2))
 
-    def a_ent_tank(self):
-        """Return the planview area of the entrance tank given plant flow rate,
-        headloss, target collision potential, design temperature, and depth of
-        water at the end of the flocculator.
-
-        Examples
-        --------
-        >>> from aguaclara.play import*
-        >>> area_ent_tank(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        1 meter ** 2
-        """
-        # first guess planview area
-        a_new = 1 * u.m**2
-        a_ratio = 0
-        tolerance = 0.01
-        while a_ratio > (1 + tolerance):
-            a_et_pv = a_new
-            a_floc_pv = self.vol / (self.END_WATER_HEIGHT + (self.hl/2))
-            a_etf_pv = a_et_pv + a_floc_pv
-
-            w_tot = a_etf_pv / L_SED
-            w_chan = w_tot / self.num_channel
-
-            a_new = et.L_MAX * w_chan
-            a_ratio = a_new / a_et_pv
-        return a_new
-
     def d_exp_max(self):
         """"Return the maximum distance between expansions for the largest
         allowable H/S ratio.
@@ -301,8 +273,9 @@ class Flocculator:
         """
         h = self.END_WATER_HEIGHT
         w_min_human = ha.HUMAN_W_MIN
+        # just assume it's 6
         # perf_metric is (d between flow exp / baffle_spacing)
-        w_min_perf_metric
+        w_min_perf_metric =
 
         w_tot = self.vol / (
         n_chan=w_tot / w_min
