@@ -6,7 +6,7 @@ import aguaclara.core.utility as ut
 import aguaclara.core.drills as drills
 from aguaclara.core.units import unit_registry as u
 
-from onshapepy.part import Part
+# from onshapepy.part import Part
 
 import numpy as np
 import math
@@ -18,9 +18,9 @@ class LFOM:
     sdr = 26
     drill_bits = drills.DRILL_BITS_D_IMPERIAL
     s_orfice = 1*u.cm
-    cad = Part(
-        "https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d"
-    )
+    # cad = Part(
+    #     "https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d"
+    # )
 
     def __init__(self, q=20*u.L/u.s, hl=20*u.cm):
         self.q = q
@@ -30,7 +30,7 @@ class LFOM:
         """Return the width of a Stout weir at elevation z. More info
         here. <https://confluence.cornell.edu/display/AGUACLARA/LFOM+sutro+weir+research>
         """
-        w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) * con.VENA_CONTRACTA_ORIFICE_RATIO * np.pi * self.hl)
+        w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) * con.VC_ORIFICE_RATIO * np.pi * self.hl)
         return w_per_flow*self.q
 
     @property
@@ -77,7 +77,7 @@ class LFOM:
     def nom_diam_pipe(self):
         """The nominal diameter of the LFOM pipe"""
         ID = pc.diam_circle(self.area_pipe_min)
-        return pipe.SDR_available_ND(ID, self.sdr)
+        return pipe.ND_SDR_available(ID, self.sdr)
 
     @property
     def area_top_orifice(self):
@@ -154,7 +154,7 @@ class LFOM:
         for i in range(Row_Index_Submerged + 1):
             FLOW_new = FLOW_new + (N_LFOM_Orifices[i] * (
                 pc.flow_orifice_vert(self.orifice_diameter, harray[Row_Index_Submerged - i],
-                                     con.VENA_CONTRACTA_ORIFICE_RATIO)))
+                                     con.VC_ORIFICE_RATIO)))
         return FLOW_new
 
     @property
@@ -163,7 +163,7 @@ class LFOM:
         """
         # H is distance from the elevation between two rows of orifices down to the bottom of the orifices
         H = self.b_rows/2 + 0.5*self.orifice_diameter
-        flow_per_orifice = pc.flow_orifice_vert(self.orifice_diameter, H, con.VENA_CONTRACTA_ORIFICE_RATIO)
+        flow_per_orifice = pc.flow_orifice_vert(self.orifice_diameter, H, con.VC_ORIFICE_RATIO)
         n = np.zeros(self.n_rows)
         for i in range(self.n_rows):
             # calculate the ideal number of orifices at the current row without constraining to an integer
@@ -184,7 +184,7 @@ class LFOM:
             FLOW_lfom_error.append(row_error.to(u.dimensionless))
         return FLOW_lfom_error
 
-    def draw(self):
-        """Draw the LFOM in CAD."""
-        self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
-                           "OD": self.nom_diam_pipe, "bRows": self.b_rows}
+    # def draw(self):
+    #     """Draw the LFOM in CAD."""
+    #     self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
+    #                        "OD": self.nom_diam_pipe, "bRows": self.b_rows}
