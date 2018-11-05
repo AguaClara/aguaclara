@@ -38,8 +38,8 @@ class KValuesCalculationTest(unittest.TestCase):
     def test_k_value_thin_orifice_regular_high_headloss(self):
         self.assertAlmostEqual(k.k_value_orifice(0.02 * u.m, 0.002 * u.m, 0 * u.m, 1*u.L/u.s), 1697.9866773221295)
 
-    def test_k_value_super_thick_orifice_high_headloss(self):
-        self.assertAlmostEqual(k.k_value_orifice(pipe.OD(6), pipe.OD(4), 60*u.inch, 1 * u.L / u.s), 1.8350488368427034)
+    # def test_k_value_super_thick_orifice_high_headloss(self):
+    #     self.assertAlmostEqual(k.k_value_orifice(pipe.OD(6), pipe.OD(4), 60*u.inch, 1 * u.L / u.s), 1.8350488368427034)
 
     def test_k_value_thin_orifice(self):
         self.assertAlmostEqual(k.k_value_orifice(pipe.OD(6), pipe.OD(4), 0*u.inch, 1 * u.L / u.s), 3.3497584836648246)

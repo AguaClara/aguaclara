@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 """
-Data for materials that are used in the constrution of AguaClara water
+Data for materials that are used in the construction of AguaClara water
 treatment plants.
 """
 from aguaclara.core.units import unit_registry as u
