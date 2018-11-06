@@ -75,7 +75,21 @@ MODULES_LARGE_ND = 1.5*u.inch
 
 
 class Flocculator:
-    """Calculates physical dimensions of an AguaClara flocculator."""
+    """Calculates physical dimensions of an AguaClara flocculator.
+
+    Constant instance attributes
+    ----------------------------
+    - BAFFLE_K (K or K_baffle): float
+        - The minor loss coefficient of the flocculator baffles.
+    - HL (h_L_floc): float * u.cm
+        - The target head loss in the flocculator.
+    - GT (G-bar-Theta): float
+        - The target collision potential of particles in the flocculator.
+    - END_WATER_H (H): float * u.m
+        - The height of water at the end of the flocculator.
+    - CHANNEL_N_MIN (n_Min, channel): int
+        - The minimum number of flocculator channels.
+    """
 
     BAFFLE_K = 2.56
     HL = 40 * u.cm
@@ -83,31 +97,39 @@ class Flocculator:
     END_WATER_H = 2 * u.m
     CHANNEL_N_MIN = 2
 
-    def __init__(self, q=20*u.L/u.s, temp=25*u.degC, sed_tank_l_max=6 * u.m):
+    def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC, sed_tank_l_max=6 * u.m):
         """Instantiate a Flocculator object, representing a real flocculator
         component.
 
-        :param q: Flow rate through the Flocculator.
-        :param temp: Water temperature of the Flocculator.
+        :param q: Flow rate of water through the flocculator.
+        :type q: float * u.L/u.s
+        :param temp: Water temperature of the flocculator.
+        :type temp: float * u.degC
         :param sed_tank_l_max: Maximum length of the sedimentation tank, used
         to calculate the length of the adjacent flocculator.
+        :type sed_tank_l_max: float * u.m
+        :returns: object
+        :rtype: Flocculator
         """
         self.q = q
         self.temp = temp
         self.sed_tank_l_max = sed_tank_l_max
 
     @property
-    def vel_gradient_avg(self):
-        """Return the average velocity gradient of a flocculator given head
-        loss, collision potential and temperature.
+    def vel_grad_avg(self):
+        """Calculate the average velocity gradient (G-bar) of water flowing
+        through the flocculator.
 
-        Examples
-        --------
-        >>> (40*u.cm, 37000, 25*u.degC)
-        118.715 1/second
+        :returns: Average velocity gradient (G-bar)
+        :rtype: float * second ** -1
         """
         return (pc.gravity.magnitude * self.HL) / \
                (self.GT * pc.nu(self.temp).magnitude)
+
+    @property
+    def retention_time(self):
+        """Calculate """
+        return
 
     @property
     def vol(self):
@@ -118,13 +140,8 @@ class Flocculator:
         in water depth caused by head loss in the flocculator.) Volume does not
         take into account the extra volume that the flocculator will have due
         to changing water level caused by head loss.
-
-        Examples
-        --------
-        vol(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
-        6.233 meter3
         """
-        return (self.GT * self.q) / self.vel_gradient_avg
+        return (self.GT * self.q) / self.vel_grad_avg
 
     @property
     def l_max_vol(self):
@@ -165,7 +182,7 @@ class Flocculator:
                     self.BAFFLE_K
                     / (
                         2 * self.END_WATER_H
-                        * (self.vel_gradient_avg.magnitude ** 2)
+                        * (self.vel_grad_avg.magnitude ** 2)
                         * pc.nu(self.temp)
                     )
                 ) ** (1/3)
@@ -214,7 +231,7 @@ class Flocculator:
         exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.375 meter
         """
-        G = self.vel_gradient_avg
+        G = self.vel_grad_avg
         nu = pc.nu(self.temp)
         pi = HS_RATIO_MAX
         w = self.channel_w
@@ -239,7 +256,7 @@ class Flocculator:
                     self.BAFFLE_K / (
                     2 * self.END_WATER_H
                     * pc.nu(self.temp)
-                    * (self.vel_gradient_avg ** 2)
+                    * (self.vel_grad_avg ** 2)
                 )
             ) ** (1/3)
         )
@@ -274,7 +291,7 @@ class Flocculator:
                 self.BAFFLE_K
                 / (
                     2 * self.d_exp_max
-                    * (self.vel_gradient_avg ** 2)
+                    * (self.vel_grad_avg ** 2)
                     * pc.nu(self.temp)
                 )
             ) ** (1/3)
