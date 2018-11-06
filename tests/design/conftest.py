@@ -9,8 +9,10 @@ class Utils:
         Tests equality of expected and actual, including unit equality, with
         specified precision.
         """
-        assert actual.magnitude == pytest.approx(expected.magnitude, precision)
-        assert actual.units == expected.units
+        converted = actual.to(expected.units)
+        assert converted.magnitude == (
+            pytest.approx(expected.magnitude, precision)
+        )
 
     # vectorized version of assert_unit_equality
     vaue = vectorize(assert_unit_equality)
