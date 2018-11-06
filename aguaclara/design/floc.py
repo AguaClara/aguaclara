@@ -85,7 +85,6 @@ class Flocculator:
     L_MAX = 6 * u.m
     CHANNEL_N_MIN = 2
 
-    @property
     def __init__(self, q=20*u.L/u.s, temp=25*u.degC, l_sed_max=6*u.m):
         """Initializer function to set flow rate and temperature
         :param q: flow rate
