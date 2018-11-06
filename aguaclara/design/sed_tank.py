@@ -141,24 +141,28 @@ MAN_PIPE_FROM_TANK_END_L = 2  *u.cm
 
 WALL_TO_DIFFUSER_GAP_L_MIN = 3 * u.cm
 
-##Diameter of the holes drilled in the manifold so that the molded 1"
+# Diameter of the holes drilled in the manifold so that the molded 1"
 # diffuser pipes can fit tightly in place (normal OD of a 1" pipe is
 # close to 1-5/16")
 MAN_PORT_D = 1.25 * u.inch
 
-JET_REVERSER_ND = 3 * u.inch  # nominal diameter of pipe used for jet reverser in bottom of set tank
+# nominal diameter of pipe used for jet reverser in bottom of set tank
+JET_REVERSER_ND = 3 * u.inch
 
 SDR_REVERSER = 26  # SDR of jet reverser pipe
 
-## Diffuser geometry
+# Diffuser geometry
 SDR_DIFFUSER = 26  # SDR of diffuser pipe
 
 DIFFUSER_PIPE_ND = 4 * u.cm  # nominal diameter of pipe used to make diffusers
 
-AREA_PVC_DIFFUSER = (np.pi/4) * ((pipe.OD(DIFFUSER_PIPE_ND)**2)
-                                 - (pipe.ID_SDR(DIFFUSER_PIPE_ND, SDR_DIFFUSER))**2)
-
-PVC_STRETCH_RATIO = 1.2  # stretch factor applied to the diffuser PVC pipes as they are heated and molded
+AREA_PVC_DIFFUSER = (
+    (np.pi/4) * ((pipe.OD(DIFFUSER_PIPE_ND)**2)
+    - (pipe.ID_SDR(DIFFUSER_PIPE_ND, SDR_DIFFUSER))**2)
+)
+# stretch factor applied to the diffuser PVC pipes as they are heated
+# and molded
+PVC_STRETCH_RATIO = 1.2
 
 T_DIFFUSER = ((pipe.OD(DIFFUSER_PIPE_ND) -
                         pipe.ID_SDR(DIFFUSER_PIPE_ND, SDR_DIFFUSER))
@@ -173,16 +177,17 @@ DIFFUSER_L = 15 * u.cm  # vertical length of diffuser
 
 B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
 
-DIFFUSER_HL = 0.001 * u.m # Headloss through the diffusers to ensure uniform flow between sed tanks
+# Headloss through the diffusers to ensure uniform flow between sed tanks
+DIFFUSER_HL = 0.001 * u.m
 
-##Outlet to filter
-#If the plant has two trains, the current design shows the exit channel
+# Outlet to filter
+# If the plant has two trains, the current design shows the exit channel
 # continuing from one set of sed tanks into the filter inlet channel.
-#The execution of this extended channel involves a few calculations.
+# The execution of this extended channel involves a few calculations.
 FILTER_OUTLET_HL_MAX = 10 * u.cm
 
-#Maximum length of sed plate sticking out past module pipes without any
-#additional support. The goal is to prevent floppy modules that don't maintain
+# Maximum length of sed plate sticking out past module pipes without any
+# additional support. The goal is to prevent floppy modules that don't maintain
 # constant distances between the plates
 
 PLATE_CANTILEVERED_L = 20 * u.cm
@@ -193,8 +198,9 @@ HOPPER_VIEWER_ND = 2*u.inch
 
 HOPPER_SKIMMER_ND = 2*u.inch
 
-##Diffusers/Jet Reverser
+# Diffusers/Jet Reverser
 
 DIFFUSER_ND = 1*u.inch
 
 JET_REVERSER_ND = 3*u.inch
+
