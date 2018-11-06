@@ -88,7 +88,7 @@ class EntranceTank:
                 self.floc.HL / 2))
             a_etf_pv = a_et_pv + a_floc_pv
 
-            w_tot = a_etf_pv / self.floc.l_sed_max
+            w_tot = a_etf_pv / self.floc.sed_tank_l_max
             w_chan = w_tot / self.floc.num_channel()
 
             a_new = L_MAX * w_chan

@@ -82,17 +82,16 @@ class Flocculator:
     HL = 40 * u.cm
     GT = 37000
     END_WATER_H = 2 * u.m
-    L_MAX = 6 * u.m
     CHANNEL_N_MIN = 2
 
-    def __init__(self, q=20*u.L/u.s, temp=25*u.degC, l_sed_max=6*u.m):
+    def __init__(self, q=20*u.L/u.s, temp=25*u.degC, sed_tank_l_max=6 * u.m):
         """Initializer function to set flow rate and temperature
         :param q: flow rate
         :param temp: temperature
         """
         self.q = q
         self.temp = temp
-        self.l_sed_max = l_sed_max
+        self.sed_tank_l_max = sed_tank_l_max
 
     @property
     def vel_gradient_avg(self):
