@@ -190,10 +190,12 @@ class Flocculator:
         --------
         num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
         2
-
         """
-        # Unimplemented
-        pass
+        W_tot= self.vol/(self.channel_l() * self.END_WATER_HEIGHT)
+        num = W_tot/(self.w_min().magnitude)
+        # floor function with step size 2
+        num = np.floor(num/2)*2
+        return int(max(num, 2))
 
     def d_exp_max(self):
         """"Return the maximum distance between expansions for the largest
