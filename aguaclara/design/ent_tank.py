@@ -84,7 +84,7 @@ class EntranceTank:
         tolerance = 0.01
         while a_ratio > (1 + tolerance):
             a_et_pv = a_new
-            a_floc_pv = self.floc.vol() / (self.floc.END_WATER_HEIGHT + (
+            a_floc_pv = self.floc.vol() / (self.floc.END_WATER_H + (
                 self.floc.HL / 2))
             a_etf_pv = a_et_pv + a_floc_pv
 

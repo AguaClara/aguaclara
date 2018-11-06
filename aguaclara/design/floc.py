@@ -81,7 +81,7 @@ class Flocculator:
 
     HL = 40 * u.cm
     GT = 37000
-    END_WATER_HEIGHT = 2 * u.m
+    END_WATER_H = 2 * u.m
     L_MAX = 6 * u.m
     CHANNEL_N_MIN = 2
 
@@ -131,7 +131,7 @@ class Flocculator:
         """
         return (
             self.vol() /
-            (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_HEIGHT)
+            (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_H)
         )
 
     @property
@@ -162,12 +162,12 @@ class Flocculator:
                 (
                     self.K_e
                     / (
-                        2 * self.END_WATER_HEIGHT
+                        2 * self.END_WATER_H
                         * (self.vel_gradient_avg.magnitude ** 2)
                         * pc.nu(self.temp)
                     )
                 ) ** (1/3)
-            ) * self.q / self.END_WATER_HEIGHT
+            ) * self.q / self.END_WATER_H
         )
 
     @property
@@ -232,10 +232,10 @@ class Flocculator:
         # perf_metric is (d between flow exp / baffle_spacing)
         perf_metric = 6
         w_min_perf_metric = (
-            (perf_metric * self.q / self.END_WATER_HEIGHT)
+            (perf_metric * self.q / self.END_WATER_H)
             * (
                 self.K_e / (
-                    2 * self.END_WATER_HEIGHT
+                    2 * self.END_WATER_H
                     * pc.nu(self.temp)
                     * (self.vel_gradient_avg() ** 2)
                 )
@@ -243,7 +243,7 @@ class Flocculator:
         )
 
         w_min = max(w_min_human, w_min_perf_metric)
-        w_tot = self.vol() / (self.channel_l() * self.END_WATER_HEIGHT)
+        w_tot = self.vol() / (self.channel_l() * self.END_WATER_H)
         n_chan = w_tot / w_min
         w_chan = w_tot / n_chan
         return w_chan
@@ -251,12 +251,12 @@ class Flocculator:
     @property
     def exp_n(self):
         """Return the minimum number of expansions per baffle space."""
-        return math.ceil(self.END_WATER_HEIGHT / self.d_exp_max)
+        return math.ceil(self.END_WATER_H / self.d_exp_max)
 
     @property
     def expansions_h(self):
         """Returns the height between flow expansions."""
-        return self.END_WATER_HEIGHT / self.exp_n
+        return self.END_WATER_H / self.exp_n
 
     @property
     def baffles_s(self):
@@ -290,4 +290,4 @@ class Flocculator:
         baffles_n(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
         -1
         """
-        return self.END_WATER_HEIGHT / self.baffles_s - 1
+        return self.END_WATER_H / self.baffles_s - 1
