@@ -1,6 +1,15 @@
+import pytest
+import numpy as np
+
 from aguaclara.design.lfom import LFOM
 from aguaclara.core.units import unit_registry as u
-import numpy as np
+
+
+@pytest.fixture()
+def lfom():
+    return LFOM(q=1*u.L/u.s, hl=30*u.cm)
+    # return LFOM(q=30, hl=30)
+
 
 def test_lfom(lfom):
     assert lfom.width_stout(10*u.cm).to(u.m) == 0.002405154520928927*u.m
@@ -14,9 +23,11 @@ def test_lfom(lfom):
     assert lfom.orifice_diameter.to(u.m) == 0.00635*u.m
     assert lfom.drillbit_area.to(u.m**2) == 3.1669217443593606e-05*u.m**2
     assert lfom.n_orifices_per_row_max == 10
-    assert lfom.flow_ramp[5] == 0.6 *u.L/u.s
-    assert lfom.flow_actual(2, [4,3,2]) == 0.0001962543726011661 * u.m**3/u.s
+    assert lfom.flow_ramp[5] == 0.6 * u.L/u.s
+    assert lfom.flow_actual(2, [4, 3, 2]) == 0.0001962543726011661 * u.m**3/u.s
     assert lfom.n_orifices_per_row[0] == 8
-    assert -0.001 < (np.average(lfom.error_per_row) - 0.005194582036259183) <0.001
+    assert -0.001 < (np.average(lfom.error_per_row) -
+                     0.005194582036259183) < 0.001
     lfom.draw()
-    assert lfom.cad.measurements["d"].to(u.mm).magnitude - (lfom.b_rows*2 + lfom.orifice_diameter).to(u.mm).magnitude < 1
+    assert lfom.cad.measurements["d"].to(
+        u.mm).magnitude - (lfom.b_rows*2 + lfom.orifice_diameter).to(u.mm).magnitude < 1
