@@ -76,7 +76,7 @@ MODULES_LARGE_ND = 1.5*u.inch
 
 class Flocculator:
 
-    K = 2.56
+    BAFFLE_K = 2.56
     HL = 40 * u.cm
     GT = 37000
     END_WATER_H = 2 * u.m
@@ -157,7 +157,7 @@ class Flocculator:
             HS_RATIO_MIN
             * (
                 (
-                    self.K
+                    self.BAFFLE_K
                     / (
                         2 * self.END_WATER_H
                         * (self.vel_gradient_avg.magnitude ** 2)
@@ -213,7 +213,7 @@ class Flocculator:
         nu = pc.nu(self.temp)
         pi = HS_RATIO_MAX
         w = self.channel_w
-        k = self.K
+        k = self.BAFFLE_K
         q = self.q
 
         return ((k / (2*nu*(G**2))) * ((q*pi/w)**3)) ** (1/4)
@@ -231,7 +231,7 @@ class Flocculator:
         w_min_perf_metric = (
             (perf_metric * self.q / self.END_WATER_H)
             * (
-                    self.K / (
+                    self.BAFFLE_K / (
                     2 * self.END_WATER_H
                     * pc.nu(self.temp)
                     * (self.vel_gradient_avg() ** 2)
@@ -266,7 +266,7 @@ class Flocculator:
         ."""
         return (
             (
-                self.K
+                self.BAFFLE_K
                 / (
                     2 * self.d_exp_max
                     * (self.vel_gradient_avg ** 2)
