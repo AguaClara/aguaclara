@@ -1,9 +1,8 @@
-import math
-
-import aguaclara.core.constants as con
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
+
+import math
 
 
 HS_RATIO_MIN = 3
