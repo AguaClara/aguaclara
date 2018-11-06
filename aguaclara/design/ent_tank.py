@@ -1,5 +1,4 @@
 from aguaclara.core.units import unit_registry as u
-
 from design.floc import Flocculator
 
 L_MAX = 2.2 * u.m
@@ -59,38 +58,3 @@ HOPPER_LEDGE_THICKNESS = 15*u.cm
 WALKWAY_W = 1 * u.m
 RAPID_MIX_ORIFICE_PLATE_THICKNESS = 2*u.cm
 RAPID_MIX_AIR_RELEASE_ND = 1*u.inch
-
-
-class EntranceTank:
-
-    def __init__(self, floc=Flocculator()):
-        self.floc = floc
-        self.q = floc.q
-        self.temp = floc.temp
-
-    def a_ent_tank(self):
-        """Return the planview area of the entrance tank given plant flow rate,
-        headloss, target collision potential, design temperature, and depth of
-        water at the end of the flocculator.
-
-        Examples
-        --------
-        area_ent_tank(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        1 meter ** 2
-        """
-        # first guess planview area
-        a_new = 1 * u.m**2
-        a_ratio = 0
-        tolerance = 0.01
-        while a_ratio > (1 + tolerance):
-            a_et_pv = a_new
-            a_floc_pv = self.floc.vol() / (self.floc.END_WATER_HEIGHT + (
-                self.floc.HL / 2))
-            a_etf_pv = a_et_pv + a_floc_pv
-
-            w_tot = a_etf_pv / self.floc.l_sed_max
-            w_chan = w_tot / self.floc.num_channel()
-
-            a_new = L_MAX * w_chan
-            a_ratio = a_new / a_et_pv
-        return a_new
