@@ -131,7 +131,7 @@ class Flocculator:
         target volume, while still allowing human access.
         """
         return (
-            self.vol() /
+            self.vol /
             (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_H)
         )
 
@@ -141,7 +141,7 @@ class Flocculator:
         the length of the sedimentation tank (self.L_MAX), and the target
         volume and human access width (self.l_max_vol).
         """
-        return min(self.L_MAX, self.l_max_vol)
+        return min(self.sed_tank_l_max, self.l_max_vol)
 
     @property
     def w_min_h_s_ratio(self):
@@ -238,13 +238,13 @@ class Flocculator:
                     self.BAFFLE_K / (
                     2 * self.END_WATER_H
                     * pc.nu(self.temp)
-                    * (self.vel_gradient_avg() ** 2)
+                    * (self.vel_gradient_avg ** 2)
                 )
             ) ** (1/3)
         )
 
-        w_min = max(w_min_human, w_min_perf_metric)
-        w_tot = self.vol() / (self.channel_l() * self.END_WATER_H)
+        w_min = self.w_min
+        w_tot = self.vol / (self.channel_l * self.END_WATER_H)
         n_chan = w_tot / w_min
         w_chan = w_tot / n_chan
         return w_chan

@@ -19,11 +19,11 @@ def test_all_functions():
 
     auev = vectorize(assert_unit_equality)
     tests = zip(
-        (floc.vel_gradient_avg(), 118.715*(u.s**-1), 0.001),
-        (floc.vol(), 6.233*(u.m**3), 0.001),
-        (floc.w_min_h_s_ratio(), 0.1074*u.cm, 0.0001),
-        (floc.d_exp_max(), 0.375*u.m, 0.001),
-        (floc.baffles_s(), 0.063*u.m, 0.001)
+        (floc.vel_gradient_avg, 118.715*(u.s**-1), 0.001),
+        (floc.vol, 6.233*(u.m**3), 0.001),
+        (floc.w_min_h_s_ratio, 0.1074*u.cm, 0.0001),
+        (floc.d_exp_max, 0.375*u.m, 0.001),
+        (floc.baffles_s, 0.063*u.m, 0.001)
     )
 
     assert floc.num_channel() == 2
