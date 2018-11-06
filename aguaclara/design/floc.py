@@ -75,6 +75,7 @@ MODULES_LARGE_ND = 1.5*u.inch
 
 
 class Flocculator:
+    """Calculates physical dimensions of an AguaClara flocculator."""
 
     BAFFLE_K = 2.56
     HL = 40 * u.cm
