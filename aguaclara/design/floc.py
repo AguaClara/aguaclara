@@ -83,9 +83,13 @@ class Flocculator:
     CHANNEL_N_MIN = 2
 
     def __init__(self, q=20*u.L/u.s, temp=25*u.degC, sed_tank_l_max=6 * u.m):
-        """Initializer function to set flow rate and temperature
-        :param q: flow rate
-        :param temp: temperature
+        """Instantiate a Flocculator object, representing a real flocculator
+        component.
+
+        :param q: Flow rate through the Flocculator.
+        :param temp: Water temperature of the Flocculator.
+        :param sed_tank_l_max: Maximum length of the sedimentation tank, used
+        to calculate the length of the adjacent flocculator.
         """
         self.q = q
         self.temp = temp
