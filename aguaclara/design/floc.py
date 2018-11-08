@@ -117,7 +117,6 @@ class Flocculator:
         self.sed_tank_l_max = sed_tank_l_max
 
     @property
-
     def vel_grad_avg(self):
         """Calculate the average velocity gradient (G-bar) of water flowing
         through the flocculator.
@@ -125,13 +124,13 @@ class Flocculator:
         :returns: Average velocity gradient (G-bar)
         :rtype: float * second ** -1
         """
-        return ((pc.gravity * self.HL) / \
+        return ((pc.gravity * self.HL) /
                (self.GT * pc.nu(self.temp))).to(u.s ** -1)
     
     @property
     def retention_time(self):
         """Return the retention time of flocs in a flocculator."""
-        return self.GT / self.vel_gradient_avg()
+        return self.GT / self.vel_grad_avg
 
     @property
     def vol(self):
@@ -150,7 +149,7 @@ class Flocculator:
         """Return the maximum flocculator channel length that achieves the
         target volume, while still allowing human access.
         """
-        return self.vol /
+        return self.vol / \
                (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_H)
 
     @property
