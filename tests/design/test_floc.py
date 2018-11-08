@@ -39,4 +39,10 @@ class FlocTest(unittest.TestCase):
         self.assertAlmostEqual(self.floc.retention_time, 311.6713099170526 * u.s)
 
     def test_vol(self):
-        self.assertAlmostEqual(self.floc.vol, 6.233426198341053 * (u.m**3))
+        self.assertAlmostEqual(self.floc.vol, 6.233426198341053 * u.m**3)
+
+    def test_l_max_vol(self):
+        self.assertAlmostEqual(self.floc.l_max_vol, 3.463014554633918 * u.m)
+
+    def test_channel_l(self):
+        self.assertAlmostEqual(self.floc.channel_l, 3.463014554633918 * u.m)

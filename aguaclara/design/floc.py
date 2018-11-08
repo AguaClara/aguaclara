@@ -147,17 +147,23 @@ class Flocculator:
 
     @property
     def l_max_vol(self):
-        """Return the maximum flocculator channel length that achieves the
+        """Calculate the maximum flocculator channel length that achieves the
         target volume, while still allowing human access.
+
+        :returns: Maximum length based off of volume
+        :rtype: float * meter
         """
-        return self.vol / \
+        return (self.vol /
                (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_H)
+               ).to(u.m)
 
     @property
     def channel_l(self):
-        """Return the length of the flocculator channel, as constrained by
-        the length of the sedimentation tank (self.L_MAX), and the target
-        volume and human access width (self.l_max_vol).
+        """Calculate the length of the flocculator channel that allows for the
+        target volume, while at the same time, allowing for human access.
+
+        :returns: Channel length
+        :rtype: float * meter
         """
         return min(self.sed_tank_l_max, self.l_max_vol)
 
