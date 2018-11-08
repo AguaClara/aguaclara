@@ -3,11 +3,18 @@ from aguaclara.design.floc import Flocculator
 
 
 class Plant:
-    def __init__(self, q=20*u.L/u.s, temp=25*u.degC):
-        """Initializes AguaClara plant parametrically given temp/flow rate
+    """Functions for designing an AguaClara water treatment plant."""
 
-        :param q: flow rate
-        :param temp: temperature
+    def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC):
+        """Initialize a Plant object that represents a real AguaClara water
+        treatment plant.
+
+        :param q: Flow rate of water through the plant.
+        :type q: float * u.L/u.s
+        :param temp: Temperature of water through the plant.
+        :type q: float * u.degC
+        :returns: object
+        :rtype: Plant
         """
         self.q = q
         self.temp = temp
