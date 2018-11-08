@@ -1,5 +1,4 @@
 from aguaclara.core.units import unit_registry as u
-from design.floc import Flocculator
 
 L_MAX = 2.2 * u.m
 
