@@ -97,7 +97,8 @@ class Flocculator:
     END_WATER_H = 2 * u.m
     CHANNEL_N_MIN = 2
 
-    def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC, sed_tank_l_max=6 * u.m):
+    def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC,
+                 sed_tank_l_max=6 * u.m):
         """Instantiate a Flocculator object, representing a real flocculator
         component.
 
