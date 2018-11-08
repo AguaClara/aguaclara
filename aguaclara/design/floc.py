@@ -1,9 +1,8 @@
-import math
-
-import aguaclara.core.constants as con
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
+
+import math
 
 
 HS_RATIO_MIN = 3
@@ -76,32 +75,55 @@ MODULES_LARGE_ND = 1.5*u.inch
 
 
 class Flocculator:
+    """Calculates physical dimensions of an AguaClara flocculator.
 
-    K = (1 / con.VC_ORIFICE_RATIO ** 2 - 1) ** 2
+    Constant instance attributes
+    ----------------------------
+    - BAFFLE_K (K or K_baffle): float
+        - The minor loss coefficient of the flocculator baffles.
+    - HL (h_L_floc): float * u.cm
+        - The target head loss in the flocculator.
+    - GT (G-bar-Theta): float
+        - The target collision potential of particles in the flocculator.
+    - END_WATER_H (H): float * u.m
+        - The height of water at the end of the flocculator.
+    - CHANNEL_N_MIN (n_{Min, channel}): int
+        - The minimum number of flocculator channels.
+    """
+
+    BAFFLE_K = 2.56
     HL = 40 * u.cm
     GT = 37000
     END_WATER_H = 2 * u.m
-    L_MAX_SED = 6 * u.m
     CHANNEL_N_MIN = 2
 
-    def __init__(self, q=20*u.L/u.s, temp=25*u.degC, l_sed_max=6*u.m):
-        """Initializer function to set flow rate and temperature
-        :param q: flow rate
-        :param temp: temperature
+    def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC,
+                 sed_tank_l_max=6 * u.m):
+        """Instantiate a Flocculator object, representing a real flocculator
+        component.
+
+        :param q: Flow rate of water through the flocculator.
+        :type q: float * u.L/u.s
+        :param temp: Water temperature of the flocculator.
+        :type temp: float * u.degC
+        :param sed_tank_l_max: Maximum length of the sedimentation tank, used
+        to calculate the length of the adjacent flocculator.
+        :type sed_tank_l_max: float * u.m
+        :returns: object
+        :rtype: Flocculator
         """
         self.q = q
         self.temp = temp
-        self.l_sed_max = l_sed_max
+        self.sed_tank_l_max = sed_tank_l_max
 
     @property
-    def vel_gradient_avg(self):
-        """Return the average velocity gradient of a flocculator given head
-        loss, collision potential and temperature.
 
-        Examples
-        --------
-        >>> (40*u.cm, 37000, 25*u.degC)
-        118.715 1/second
+    def vel_grad_avg(self):
+        """Calculate the average velocity gradient (G-bar) of water flowing
+        through the flocculator.
+
+        :returns: Average velocity gradient (G-bar)
+        :rtype: float * second ** -1
         """
         return ((pc.gravity * self.HL) / \
                (self.GT * pc.nu(self.temp))).to(u.s ** -1)
@@ -116,35 +138,28 @@ class Flocculator:
         """Return the total volume of the flocculator using plant flow rate, head
         loss, collision potential and temperature.
 
-        Uses an estimation of flocculator retention time (ignoring the decrease
-        in water depth caused by head loss in the flocculator). Volume does not
-        take into account the extra volume that the flocculator will have due to
-        changing water level caused by head loss.
-
-        Examples
-        --------
-        vol(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC)
-        6.233 meter3
+        Uses an estimation of flocculator residence time (ignoring the decrease
+        in water depth caused by head loss in the flocculator.) Volume does not
+        take into account the extra volume that the flocculator will have due
+        to changing water level caused by head loss.
         """
-        return (self.GT * self.q) / self.vel_gradient_avg
+        return (self.GT * self.q) / self.vel_grad_avg
 
     @property
     def l_max_vol(self):
         """Return the maximum flocculator channel length that achieves the
         target volume, while still allowing human access.
         """
-        return (
-            self.vol
-            / (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_HEIGHT)
-        )
+        return self.vol /
+               (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_H)
 
     @property
     def channel_l(self):
         """Return the length of the flocculator channel, as constrained by
-        the length of the sedimentation tank (self.L_MAX_SED), and the target
-        volume and human access width (self.l_max_vol_target).
+        the length of the sedimentation tank (self.L_MAX), and the target
+        volume and human access width (self.l_max_vol).
         """
-        return min(self.L_MAX_SED, self.l_max_vol)
+        return min(self.sed_tank_l_max, self.l_max_vol)
 
     @property
     def w_min_h_s_ratio(self):
@@ -164,14 +179,14 @@ class Flocculator:
             HS_RATIO_MIN
             * (
                 (
-                    self.K_e
+                    self.BAFFLE_K
                     / (
-                        2 * self.END_WATER_HEIGHT
-                        * (self.vel_gradient_avg.magnitude ** 2)
+                        2 * self.END_WATER_H
+                        * (self.vel_grad_avg.magnitude ** 2)
                         * pc.nu(self.temp)
                     )
                 ) ** (1/3)
-            ) * self.q / self.END_WATER_HEIGHT
+            ) * self.q / self.END_WATER_H
         )
 
     @property
@@ -201,12 +216,10 @@ class Flocculator:
         --------
         num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
         2
+
         """
-        W_tot= self.vol/(self.channel_l() * self.END_WATER_HEIGHT)
-        num = W_tot/(self.w_min().magnitude)
-        # floor function with step size 2
-        num = np.floor(num/2)*2
-        return int(max(num, 2))
+        # Unimplemented
+        pass
 
     @property
     def d_exp_max(self):
@@ -218,11 +231,11 @@ class Flocculator:
         exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.375 meter
         """
-        G = self.vel_gradient_avg
+        G = self.vel_grad_avg
         nu = pc.nu(self.temp)
         pi = HS_RATIO_MAX
         w = self.channel_w
-        k = self.K_e
+        k = self.BAFFLE_K
         q = self.q
 
         return ((k / (2*nu*(G**2))) * ((q*pi/w)**3)) ** (1/4)
@@ -238,18 +251,18 @@ class Flocculator:
         # perf_metric is (d between flow exp / baffle_spacing)
         perf_metric = 6
         w_min_perf_metric = (
-            (perf_metric * self.q / self.END_WATER_HEIGHT)
+            (perf_metric * self.q / self.END_WATER_H)
             * (
-                self.K_e / (
-                    2 * self.END_WATER_HEIGHT
+                    self.BAFFLE_K / (
+                    2 * self.END_WATER_H
                     * pc.nu(self.temp)
-                    * (self.vel_gradient_avg ** 2)
+                    * (self.vel_grad_avg ** 2)
                 )
             ) ** (1/3)
         )
 
-        w_min = max(w_min_human, w_min_perf_metric)
-        w_tot = self.vol / (self.channel_l * self.END_WATER_HEIGHT)
+        w_min = self.w_min
+        w_tot = self.vol / (self.channel_l * self.END_WATER_H)
         n_chan = w_tot / w_min
         w_chan = w_tot / n_chan
         return w_chan
@@ -257,7 +270,7 @@ class Flocculator:
     @property
     def exp_n(self):
         """Return the minimum number of expansions per baffle space."""
-        return math.ceil(self.END_WATER_HEIGHT / self.d_exp_max)
+        return math.ceil(self.END_WATER_H / self.d_exp_max)
 
     @property
     def expansions_h(self):
@@ -272,13 +285,13 @@ class Flocculator:
         --------
         baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
-        """
+        ."""
         return (
             (
-                self.K_e
+                self.BAFFLE_K
                 / (
                     2 * self.d_exp_max
-                    * (self.vel_gradient_avg ** 2)
+                    * (self.vel_grad_avg ** 2)
                     * pc.nu(self.temp)
                 )
             ) ** (1/3)
