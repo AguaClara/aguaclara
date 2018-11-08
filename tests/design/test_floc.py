@@ -33,4 +33,9 @@ class FlocTest(unittest.TestCase):
         self.floc = Flocculator()
 
     def test_vel_gradient_avg(self):
-        self.assertAlmostEqual(self.floc.vel_grad_avg, 118.715 * (u.s ** -1))
+        self.assertAlmostEqual(self.floc.vel_grad_avg, 118.71480891150065 * (u.s ** -1))
+
+    def test_retention_time(self):
+        self.assertAlmostEqual(self.floc.retention_time, 311.6713099170526 * u.s)
+
+

@@ -122,14 +122,18 @@ class Flocculator:
         through the flocculator.
 
         :returns: Average velocity gradient (G-bar)
-        :rtype: float * second ** -1
+        :rtype: float * 1 / second
         """
         return ((pc.gravity * self.HL) /
                (self.GT * pc.nu(self.temp))).to(u.s ** -1)
     
     @property
     def retention_time(self):
-        """Return the retention time of flocs in a flocculator."""
+        """Calculate the retention time of flocs in a flocculator.
+
+        :returns: Retention time of flocs (:math:`\theta`)
+        :rtype: float * second
+        """
         return self.GT / self.vel_grad_avg
 
     @property
