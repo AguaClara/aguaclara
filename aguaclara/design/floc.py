@@ -125,7 +125,7 @@ class Flocculator:
         :rtype: float * 1 / second
         """
         return ((pc.gravity * self.HL) /
-               (self.GT * pc.nu(self.temp))).to(u.s ** -1)
+               (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
     
     @property
     def retention_time(self):
@@ -138,15 +138,12 @@ class Flocculator:
 
     @property
     def vol(self):
-        """Return the total volume of the flocculator using plant flow rate, head
-        loss, collision potential and temperature.
+        """Calculate the target volume of the flocculator.
 
-        Uses an estimation of flocculator residence time (ignoring the decrease
-        in water depth caused by head loss in the flocculator.) Volume does not
-        take into account the extra volume that the flocculator will have due
-        to changing water level caused by head loss.
+        :returns: Target volume
+        :rtype: float * meter ** 3
         """
-        return (self.GT * self.q) / self.vel_grad_avg
+        return self.q * self.retention_time
 
     @property
     def l_max_vol(self):

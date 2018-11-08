@@ -38,4 +38,5 @@ class FlocTest(unittest.TestCase):
     def test_retention_time(self):
         self.assertAlmostEqual(self.floc.retention_time, 311.6713099170526 * u.s)
 
-
+    def test_vol(self):
+        self.assertAlmostEqual(self.floc.vol, 6.233*(u.m**3))
