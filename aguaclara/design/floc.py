@@ -104,8 +104,8 @@ class Flocculator:
         >>> (40*u.cm, 37000, 25*u.degC)
         118.715 1/second
         """
-        return (pc.gravity.magnitude * self.HL) / \
-               (self.GT * pc.nu(self.temp).magnitude)
+        return ((pc.gravity * self.HL) / \
+               (self.GT * pc.nu(self.temp))).to(u.s ** -1)
 
     @property
     def vol(self):
