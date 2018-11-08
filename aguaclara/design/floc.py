@@ -143,7 +143,7 @@ class Flocculator:
         :returns: Target volume
         :rtype: float * meter ** 3
         """
-        return self.q * self.retention_time
+        return (self.q * self.retention_time).to(u.m ** 3)
 
     @property
     def l_max_vol(self):
