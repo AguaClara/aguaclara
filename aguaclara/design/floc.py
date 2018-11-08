@@ -87,7 +87,7 @@ class Flocculator:
         - The target collision potential of particles in the flocculator.
     - END_WATER_H (H): float * u.m
         - The height of water at the end of the flocculator.
-    - CHANNEL_N_MIN (n_Min, channel): int
+    - CHANNEL_N_MIN (n_{Min, channel}): int
         - The minimum number of flocculator channels.
     """
 
