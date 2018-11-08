@@ -22,27 +22,27 @@ class Plant:
 
     @property
     def ent_tank_a(self):
-        """Return the planview area of the entrance tank.
+        """Calculate the planview area of the entrance tank, given the volume of
+        the flocculator.
 
-        Examples
-        --------
-        area_ent_tank(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        1 meter ** 2
+        :returns: The planview area of the entrance tank.
+        :rtype: float * u.m ** 2
         """
         # first guess planview area
         a_new = 1 * u.m**2
         a_ratio = 0
         tolerance = 0.01
+
         while a_ratio > (1 + tolerance):
             a_et_pv = a_new
             a_floc_pv = (
-                self.floc.vol() /
+                self.floc.vol /
                 (self.floc.END_WATER_HEIGHT + (self.floc.HL / 2))
             )
             a_etf_pv = a_et_pv + a_floc_pv
 
             w_tot = a_etf_pv / self.floc.l_sed_max
-            w_chan = w_tot / self.floc.num_channel()
+            w_chan = w_tot / self.floc.num_channel
 
             a_new = self.floc.L_MAX * w_chan
             a_ratio = a_new / a_et_pv
