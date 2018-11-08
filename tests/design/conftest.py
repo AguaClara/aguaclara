@@ -1,10 +1,23 @@
 import pytest
-from aguaclara.design.lfom import LFOM
-from aguaclara.core.units import unit_registry as u
+from numpy import vectorize
 
 
+class Utils:
+    @staticmethod
+    def assert_unit_equality(expected, actual, precision=1e-12):
+        """
+        Tests equality of expected and actual, including unit equality, with
+        specified precision.
+        """
+        converted = actual.to(expected.units)
+        assert converted.magnitude == (
+            pytest.approx(expected.magnitude, precision)
+        )
 
-@pytest.fixture()
-def lfom():
-    return LFOM(q=1*u.L/u.s, hl=30*u.cm)
-    # return LFOM(q=30, hl=30)
+    # vectorized version of assert_unit_equality
+    vaue = vectorize(assert_unit_equality)
+
+
+@pytest.fixture
+def utils():
+    return Utils
