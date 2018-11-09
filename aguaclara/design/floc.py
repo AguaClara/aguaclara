@@ -5,9 +5,6 @@ from aguaclara.core.units import unit_registry as u
 import math
 
 
-HS_RATIO_MIN = 3
-HS_RATIO_MAX = 6
-
 # Unused constants - START \/
 
 FREEBOARD = 10 * u.cm
@@ -96,6 +93,8 @@ class Flocculator:
     GT = 37000
     END_WATER_H = 2 * u.m
     CHANNEL_N_MIN = 2
+    HS_RATIO_MIN = 3
+    HS_RATIO_MAX = 6
 
     def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC,
                  sed_tank_l_max=6 * u.m):
@@ -168,32 +167,31 @@ class Flocculator:
         return min(self.sed_tank_l_max, self.l_max_vol)
 
     @property
-    def w_min_h_s_ratio(self):
+    def w_min_hs_ratio(self):
         """Return the minimum channel width required to achieve H/S > 3.
 
         The channel can be wider than this, but this is the absolute minimum
         width for a channel. The minimum width occurs when there is only one
         expansion per baffle and thus the distance between expansions is the
         same as the depth of water at the end of the flocculator.
-
-        Examples
-        --------
-        width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        0.1074 centimeter
         """
-        return (
-            HS_RATIO_MIN
-            * (
-                (
-                    self.BAFFLE_K
-                    / (
-                        2 * self.END_WATER_H
-                        * (self.vel_grad_avg.magnitude ** 2)
-                        * pc.nu(self.temp)
-                    )
-                ) ** (1/3)
-            ) * self.q / self.END_WATER_H
-        )
+        # return (
+        #     HS_RATIO_MIN
+        #     * (
+        #         (
+        #             self.BAFFLE_K
+        #             / (
+        #                 2 * self.END_WATER_H
+        #                 * (self.vel_grad_avg.magnitude ** 2)
+        #                 * pc.nu(self.temp)
+        #             )
+        #         ) ** (1/3)
+        #     ) * self.q / self.END_WATER_H
+        # )
+        return ((self.HS_RATIO_MIN * self.q / self.END_WATER_H) *
+               (self.BAFFLE_K /
+               (2 * self.END_WATER_H * pc.nu(self.temp) * self.vel_grad_avg)) ** (1/3)
+               ).to(u.cm)
 
     @property
     def w_min(self):
@@ -208,7 +206,7 @@ class Flocculator:
         width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         45 centimeter
         """
-        return max(self.w_min_h_s_ratio.magnitude, W_MIN.magnitude)
+        return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN)
 
     @property
     def num_channel(self):
