@@ -46,3 +46,6 @@ class FlocTest(unittest.TestCase):
 
     def test_channel_l(self):
         self.assertAlmostEqual(self.floc.channel_l, 3.463014554633918 * u.m)
+
+    def test_w_min_hs_ratio(self):
+        self.assertAlmostEqual(self.floc.w_min_hs_ratio, 0 * u.cm)

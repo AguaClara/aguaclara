@@ -190,7 +190,7 @@ class Flocculator:
         # )
         return ((self.HS_RATIO_MIN * self.q / self.END_WATER_H) *
                (self.BAFFLE_K /
-               (2 * self.END_WATER_H * pc.nu(self.temp) * self.vel_grad_avg)) ** (1/3)
+               (2 * self.END_WATER_H * (pc.nu(self.temp) * u.m ** 2 / u.s) * self.vel_grad_avg)) ** (1/3)
                ).to(u.cm)
 
     @property
