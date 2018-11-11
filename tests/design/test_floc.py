@@ -1,23 +1,5 @@
-# from pytest import approx
-#
-# from aguaclara.design.floc import Flocculator
-# from aguaclara.core.units import unit_registry as u
-#
-#
-# def test_all_functions(utils):
-#     floc = Flocculator(q=(20 * (u.L/u.s)), temp=(25 * u.degC))
-#
-#     tests = zip(
-#         (floc.vel_gradient_avg, 118.715*(u.s**-1), 0.001),
-#         (floc.vol, 6.233*(u.m**3), 0.001),
-#         (floc.w_min_h_s_ratio, 0.1074*u.cm, 0.0001),
-#         (floc.expansion_h_max, 0.375*u.m, 0.001),
-#         (floc.baffles_s, 0.063*u.m, 0.001)
-#     )
-#
-#     assert floc.channel_n == 2
-#     assert floc.baffles_n == approx(31, 1)
-#     utils.vaue(tests)
+# floc.d_exp_max, 0.375*u.m
+# floc.baffles_s, 0.063*u.m
 
 import unittest
 
@@ -33,4 +15,25 @@ class FlocTest(unittest.TestCase):
         self.floc = Flocculator()
 
     def test_vel_gradient_avg(self):
-        self.assertAlmostEqual(self.floc.vel_gradient_avg, 118.715 * (u.s ** -1))
+        self.assertAlmostEqual(self.floc.vel_grad_avg,
+                               118.71480891150065 * (u.s ** -1))
+
+    def test_retention_time(self):
+        self.assertAlmostEqual(self.floc.retention_time,
+                               311.6713099170526 * u.s)
+
+    def test_vol(self):
+        self.assertAlmostEqual(self.floc.vol, 6.233426198341053 * u.m**3)
+
+    def test_l_max_vol(self):
+        self.assertAlmostEqual(self.floc.l_max_vol, 3.463014554633918 * u.m)
+
+    def test_channel_l(self):
+        self.assertAlmostEqual(self.floc.channel_l, 3.463014554633918 * u.m)
+
+    def test_w_min_hs_ratio(self):
+        self.assertAlmostEqual(self.floc.w_min_hs_ratio,
+                               11.114415605933008 * u.cm)
+
+    def test_w_min(self):
+        self.assertAlmostEqual(self.floc.w_min, 45 * u.cm)
