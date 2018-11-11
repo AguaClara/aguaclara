@@ -42,7 +42,7 @@ class Plant:
             a_etf_pv = a_et_pv + a_floc_pv
 
             w_tot = a_etf_pv / self.floc.l_sed_max
-            w_chan = w_tot / self.floc.num_channel
+            w_chan = w_tot / self.floc.channel_n
 
             a_new = self.floc.L_MAX * w_chan
             a_ratio = a_new / a_et_pv
