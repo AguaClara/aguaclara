@@ -1,11 +1,9 @@
-import math
-
-import numpy as np
-
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
 
+import math
+import numpy as np
 
 # Unused constants - START \/
 
