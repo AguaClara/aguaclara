@@ -1,8 +1,10 @@
+import math
+
+import numpy as np
+
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
-
-import math
 
 
 # Unused constants - START \/
@@ -137,7 +139,7 @@ class Flocculator:
         :returns: Retention time of flocs (:math:`\theta`)
         :rtype: float * second
         """
-        return self.GT / self.vel_grad_avg
+        return (self.GT / self.vel_grad_avg).to(u.s)
 
     @property
     def vol(self):
@@ -168,7 +170,7 @@ class Flocculator:
         :returns: Channel length
         :rtype: float * meter
         """
-        return min(self.sed_tank_l_max, self.l_max_vol)
+        return (min(self.sed_tank_l_max, self.l_max_vol)).to(u.m)
 
     @property
     def w_min_hs_ratio(self):
@@ -178,7 +180,6 @@ class Flocculator:
         :returns: Minimum channel width given H_e/S
         :rtype: float * centimeter
         """
-
         return ((self.HS_RATIO_MIN * self.q.to(u.m ** 3 / u.s) / self.END_WATER_H) *
                 (self.BAFFLE_K /
                  (2 * self.END_WATER_H * pc.nu(self.temp) * self.vel_grad_avg ** 2)) ** (1/3)
@@ -202,11 +203,13 @@ class Flocculator:
         minimum channel width. A floor function is used to ensure that there
         are an even number of channels.
 
+        :returns: Number of channels
+        :rtype: int
+
         Examples
         --------
         channel_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
         2
-
         """
         num = self.w_total / self.w_min
         # floor function with step size 2
@@ -215,39 +218,57 @@ class Flocculator:
 
     @property
     def w_total(self):
-        """The total width of the flocculator."""
-        return self.vol / (self.channel_l * self.END_WATER_HEIGHT)
+        """The total width of the flocculator.
+
+        :returns: Total width
+        :rtype: float * meter
+        """
+        return (self.vol / (self.channel_l * self.END_WATER_HEIGHT)).to(u.m)
 
     @property
     def channel_w(self):
         """
         The channel width of the flocculator.  See section 'Flocculation
         Design' of textbook'
+
+        :returns: Channel width
+        :rtype: float * meter
         """
-        return self.w_total / self.channel_n
+        return (self.w_total / self.channel_n).to(u.m)
 
     @property
     def expansion_h_max(self):
         """"Return the maximum distance between expansions for the largest
         allowable H/S ratio.
 
+        :returns: Maximum expansion distance
+        :rtype: float * meter
+
         Examples
         --------
         exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.375 meter
         """
-        return ((self.K_e/(2*pc.nu(self.temp)*(self.vel_gradient_avg**2))) *
-                (self.q*HS_RATIO_MAX/self.channel_w)**3) ** (1/4)
+        return (((self.K_e/(2*pc.nu(self.temp)*(self.vel_gradient_avg**2))) *
+                 (self.q*self.HS_RATIO_MAX/self.channel_w)**3)**(1/4)).to(u.m)
 
     @property
     def exp_n(self):
-        """Return the minimum number of expansions per baffle space."""
-        return math.ceil(self.END_WATER_H / self.expansion_h_max)
+        """Return the minimum number of expansions per baffle space.
+
+        :returns: Minimum number of expansions per baffle space
+        :rtype: int
+        """
+        return int(math.ceil(self.END_WATER_H / self.expansion_h_max))
 
     @property
     def expansions_h(self):
-        """Returns the height between flow expansions."""
-        return self.END_WATER_H / self.exp_n
+        """Returns the height between flow expansions.
+
+        :returns: Height between flow expansions
+        :rtype: float * meter
+        """
+        return (self.END_WATER_H / self.exp_n).to(u.m)
 
     @property
     def baffles_s(self):
@@ -257,7 +278,7 @@ class Flocculator:
         --------
         baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.063 meter
-        ."""
+        """
         return (
             (
                 self.BAFFLE_K
