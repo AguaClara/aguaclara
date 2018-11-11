@@ -31,9 +31,6 @@ BAFFLE_SET_BACK_PLASTIC_S = 2 * u.cm
 
 # Target flocculator collision potential basis of design
 
-# Minimum width of flocculator channel required for constructability based
-# on the width of the human hip
-W_MIN = ha.HUMAN_W_MIN
 BOD_GT = 75 * u.m ** (2 / 3)
 
 # Ratio of the width of the gap between the baffle and the wall and the
