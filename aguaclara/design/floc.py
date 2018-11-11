@@ -5,9 +5,6 @@ from aguaclara.core.units import unit_registry as u
 import math
 
 
-HS_RATIO_MIN = 3
-HS_RATIO_MAX = 6
-
 # Unused constants - START \/
 
 FREEBOARD = 10 * u.cm
@@ -89,6 +86,10 @@ class Flocculator:
         - The height of water at the end of the flocculator.
     - CHANNEL_N_MIN (n_{Min, channel}): int
         - The minimum number of flocculator channels.
+    - HS_RATIO_MIN (Pi_{HS}): float
+        - The minimum ratio between expansion height and baffle spacing
+    - HS_RATIO_MAX (Pi_{HS}): float
+        - The maximum ratio between expansion height and baffle spacing
     """
 
     BAFFLE_K = 2.56
@@ -96,6 +97,8 @@ class Flocculator:
     GT = 37000
     END_WATER_H = 2 * u.m
     CHANNEL_N_MIN = 2
+    HS_RATIO_MIN = 3
+    HS_RATIO_MAX = 6
 
     def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC,
                  sed_tank_l_max=6 * u.m):
@@ -122,86 +125,75 @@ class Flocculator:
         through the flocculator.
 
         :returns: Average velocity gradient (G-bar)
-        :rtype: float * second ** -1
+        :rtype: float * 1 / second
         """
         return ((pc.gravity * self.HL) /
-               (self.GT * pc.nu(self.temp))).to(u.s ** -1)
+
+               (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
     
     @property
     def retention_time(self):
-        """Return the retention time of flocs in a flocculator."""
-        return self.GT / self.vel_grad_avg()
+        """Calculate the retention time of flocs in a flocculator.
+
+        :returns: Retention time of flocs (:math:`\theta`)
+        :rtype: float * second
+        """
+        return self.GT / self.vel_grad_avg
 
     @property
     def vol(self):
-        """Return the total volume of the flocculator using plant flow rate, head
-        loss, collision potential and temperature.
+        """Calculate the target volume of the flocculator.
 
-        Uses an estimation of flocculator residence time (ignoring the decrease
-        in water depth caused by head loss in the flocculator.) Volume does not
-        take into account the extra volume that the flocculator will have due
-        to changing water level caused by head loss.
+        :returns: Target volume
+        :rtype: float * meter ** 3
         """
-        return (self.GT * self.q) / self.vel_grad_avg
+        return (self.q * self.retention_time).to(u.m ** 3)
 
     @property
     def l_max_vol(self):
-        """Return the maximum flocculator channel length that achieves the
+        """Calculate the maximum flocculator channel length that achieves the
         target volume, while still allowing human access.
+
+        :returns: Maximum length based off of volume
+        :rtype: float * meter
         """
-        return self.vol / \
+        return (self.vol /
                (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_H)
+               ).to(u.m)
 
     @property
     def channel_l(self):
-        """Return the length of the flocculator channel, as constrained by
-        the length of the sedimentation tank (self.L_MAX), and the target
-        volume and human access width (self.l_max_vol).
+        """Calculate the length of the flocculator channel that allows for the
+        target volume, while at the same time, allowing for human access.
+
+        :returns: Channel length
+        :rtype: float * meter
         """
         return min(self.sed_tank_l_max, self.l_max_vol)
 
     @property
-    def w_min_h_s_ratio(self):
-        """Return the minimum channel width required to achieve H/S > 3.
+    def w_min_hs_ratio(self):
+        """Calculate the minimum flocculator channel width, given the minimum
+        ratio between expansion height (H) and baffle spacing (S).
 
-        The channel can be wider than this, but this is the absolute minimum
-        width for a channel. The minimum width occurs when there is only one
-        expansion per baffle and thus the distance between expansions is the
-        same as the depth of water at the end of the flocculator.
-
-        Examples
-        --------
-        width_HS_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        0.1074 centimeter
+        :returns: Minimum channel width given H_e/S
+        :rtype: float * centimeter
         """
-        return (
-            HS_RATIO_MIN
-            * (
-                (
-                    self.BAFFLE_K
-                    / (
-                        2 * self.END_WATER_H
-                        * (self.vel_grad_avg.magnitude ** 2)
-                        * pc.nu(self.temp)
-                    )
-                ) ** (1/3)
-            ) * self.q / self.END_WATER_H
-        )
+
+        return ((self.HS_RATIO_MIN * self.q.to(u.m ** 3 / u.s) / self.END_WATER_H) *
+               (self.BAFFLE_K /
+               (2 * self.END_WATER_H * pc.nu(self.temp) * self.vel_grad_avg ** 2)) ** (1/3)
+               ).to(u.cm)
 
     @property
     def w_min(self):
-        """Return the minimum channel width required.
+        """Calculate the minimum channel width required to remain within the
+        H_e/S ratio range and human access requirements.
 
-        This takes the maximum of the minimum required to achieve H/S > 3 and
-        the minimum required for constructability based on the width of the
-        human hip.
-
-        Examples
-        --------
-        width_floc_min(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        45 centimeter
+        :returns: Minimum channel width
+        :rtype: float * centimeter
         """
-        return max(self.w_min_h_s_ratio.magnitude, W_MIN.magnitude)
+        return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN)
 
     @property
     def num_channel(self):
@@ -232,7 +224,7 @@ class Flocculator:
         """
         G = self.vel_grad_avg
         nu = pc.nu(self.temp)
-        pi = HS_RATIO_MAX
+        pi = self.HS_RATIO_MAX
         w = self.channel_w
         k = self.BAFFLE_K
         q = self.q
