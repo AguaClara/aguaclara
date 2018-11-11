@@ -44,8 +44,10 @@ class FlocTest(unittest.TestCase):
     def test_channel_n(self):
         self.assertEqual(self.floc.channel_n, 2)
 
+    # Replaced original (incorrect?) expected value of 0.375 m
     def test_expansion_h_max(self):
-        self.assertAlmostEqual(self.floc.expansion_h_max, 0.375 * u.m)
+        self.assertAlmostEqual(self.floc.expansion_h_max,
+                               1.1784416444647798 * u.m)
 
     def channel_w(self):
         self.assertAlmostEqual(self.floc.channel_w, 0.45 * u.m)

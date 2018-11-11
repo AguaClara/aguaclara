@@ -193,7 +193,7 @@ class Flocculator:
         :returns: Minimum channel width
         :rtype: float * centimeter
         """
-        return max(self.w_min_h_s_ratio, W_MIN).to(u.cm)
+        return max(self.w_min_hs_ratio, W_MIN).to(u.cm)
 
     @property
     def channel_n(self):
@@ -223,7 +223,7 @@ class Flocculator:
         :returns: Total width
         :rtype: float * meter
         """
-        return (self.vol / (self.channel_l * self.END_WATER_HEIGHT)).to(u.m)
+        return (self.vol / (self.channel_l * self.END_WATER_H)).to(u.m)
 
     @property
     def channel_w(self):
@@ -249,8 +249,8 @@ class Flocculator:
         exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.375 meter
         """
-        return (((self.K_e/(2*pc.nu(self.temp)*(self.vel_gradient_avg**2))) *
-                 (self.q*self.HS_RATIO_MAX/self.channel_w)**3)**(1/4)).to(u.m)
+        return (((self.BAFFLE_K / (2 * pc.nu(self.temp) * (self.vel_grad_avg ** 2))) *
+                 (self.q * self.HS_RATIO_MAX / self.channel_w) ** 3) ** (1/4)).to(u.m)
 
     @property
     def exp_n(self):
