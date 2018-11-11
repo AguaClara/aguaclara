@@ -128,6 +128,7 @@ class Flocculator:
         :rtype: float * 1 / second
         """
         return ((pc.gravity * self.HL) /
+
                (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
     
     @property
