@@ -56,12 +56,12 @@ def get_data_by_time(path, columns, start_date, start_time="00:00", end_date=Non
 
     # Calculate start index
     time_column = pd.to_numeric(data[0].iloc[:, 0])
-    interval = time_column[2]-time_column[1]
-    start_idx = int(round((day_fraction(start_time) - time_column[1])/interval + .5)) #round up
+    interval = time_column[1]-time_column[0]
+    start_idx = int(round((day_fraction(start_time) - time_column[0])/interval + .5)) #round up
 
     # Calculate end index
     time_column = pd.to_numeric(data[-1].iloc[:, 0])
-    end_idx = int(round((day_fraction(end_time) - time_column[1])/interval + .5)) #round up
+    end_idx = int(round((day_fraction(end_time) - time_column[0])/interval + .5)) + 1 #round up
 
     # Get columns of interest
     if len(paths) == 1:
@@ -72,6 +72,7 @@ def get_data_by_time(path, columns, start_date, start_time="00:00", end_date=Non
             for c in columns:
                 result.append(list(pd.to_numeric(data[0].iloc[start_idx:end_idx, c])))
     else:
+        data[1].iloc[0, 0] = 0
         if isinstance(columns, int):
             result = list(pd.to_numeric(data[0].iloc[start_idx:, columns])) + \
                      list(pd.to_numeric(data[1].iloc[:end_idx, columns]) + (1 if columns == 0 else 0))
@@ -99,7 +100,7 @@ def remove_notes(data):
     pandas.DataFrame
         DataFrame object with no text, except for headers
     """
-    has_text = data.iloc[:, 0].astype(str).str.contains('[a-z]', '[A-Z]')
+    has_text = data.iloc[:, 0].astype(str).str.contains('(?!e-)[a-zA-Z]')
     text_rows = list(has_text.index[has_text])
     return data.drop(text_rows)
 
@@ -131,34 +132,49 @@ def day_fraction(time):
     return hour/24 + minute/1440
 
 
-def get_data_by_state(path, dates, columns, state):
-    """Extracts columns of data from a ProCoDA datalog for each iteration of the given state
+def get_data_by_state(path, dates, state, column):
+    """Reads a ProCoDA file and extracts the time and data column for each iteration of
+    the given state.
 
     Parameters
     ----------
-    path : string
-        The path to the folder containing your ProCoDA data files. Use "" for current directory.
     dates : string (list)
-        A single date or list of dates for which data was recorded, in the form "M-D-YYYY"
+        A list of dates or single date for which data was recorded, in
+        the form "M-D-YYYY"
     state : int
-        The state number for which data should be plotted
-    columns : int (list)
-        A single index of a column or a list of indices of columns of data to extract.
-        Column 0, the time column, is automatically included. The first data column is column 1.
+        The state ID number for which data should be plotted
+    column : int or string
+        int:
+            Index of the column that you want to extract. Column 0 is time.
+            The first data column is column 1.
+        string:
+            Name of the column header that you want to extract
+    path : string, optional
+        Optional argument of the path to the folder containing your ProCoDA
+        files. Defaults to the current directory if no argument is passed in
+    extension : string, optional
+        The file extension of the tab delimited file. Defaults to ".xls" if
+        no argument is passed in
 
     Returns
     -------
-    2D list
-        A list of lists containing the columns to extract, in order of the indices given in the columns variable
+    3-D list
+        A list of lists of the time and data columns extracted for each iteration of the state.
+         For example, if "data" is the output, data[i][:,0] gives the time column and data[i][:,1]
+         gives the data column for the ith iteration of the given state and column. data[i][0]
+         would give the first [time, data] pair.
 
     Examples
     --------
-    get_data_by_state(path='/Users/.../ProCoDA Data/', dates=["6-19-2013", "6-20-2013"], columns=[1, 3], state=1)
+    get_data_by_state(["6-19-2013", "6-20-2013"], 1, 28)
     """
     data_agg = []
     day = 0
+    first_day = True
     overnight = False
-    extension = '.xls'
+    extension = ".xls"
+    if path[-1] != '/':
+        path += '/'
 
     if not isinstance(dates, list):
         dates = [dates]
@@ -175,9 +191,9 @@ def get_data_by_state(path, dates, columns, state):
 
         # get the start and end times for the state
         state_start_idx = states[:, 1] == state
-        state_start = states[state_start_idx, 0]  # gives a list of all the start times that day
+        state_start = states[state_start_idx, 0]
         state_end_idx = np.append([False], state_start_idx[0:-1])
-        state_end = states[state_end_idx, 0]  # gives a list of all the end times that day
+        state_end = states[state_end_idx, 0]
 
         if overnight:
             state_start = np.insert(state_start, 0, 0)
@@ -196,30 +212,28 @@ def get_data_by_state(path, dates, columns, state):
                     data_start.append(j)
                     add_start = False
                 if data[j, 0] > state_end[i]:
-                    data_end.append(j - 1)
+                    data_end.append(j-1)
                     break
 
-        start_time = data[data_start[0], 0]
+        if first_day:
+            start_time = data[0, 0]
 
-        if isinstance(columns, int):
-            data_agg = [[], []]
-        else:
-            for i in range(len(columns) + 1):
-                data_agg.append([])
-
+        # extract data at those times
         for i in range(np.size(data_start)):
-            t = list(data[data_start[i]:data_end[i], 0] + day - start_time)
-            data_agg[0] += t
-
-            if isinstance(columns, int):
-                col = list(data[data_start[i]:data_end[i], columns])
-                data_agg[1] += col
+            t = data[data_start[i]:data_end[i], 0] + day - start_time
+            if isinstance(column, int):
+                c = data[data_start[i]:data_end[i], column]
             else:
-                for j in range(len(columns)):
-                    col = list(data[data_start[i]:data_end[i], columns[j]])
-                    data_agg[j+1] += col
+                c = data[column][data_start[i]:data_end[i]]
+            if overnight and i == 0:
+                data_agg = np.insert(data_agg[-1], np.size(data_agg[-1][:, 0]),
+                                     np.vstack((t, c)).T)
+            else:
+                data_agg.append(np.vstack((t, c)).T)
 
         day += 1
+        if first_day:
+            first_day = False
         if state_start_idx[-1]:
             overnight = True
 
