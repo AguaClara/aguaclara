@@ -47,6 +47,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
+    'm2r'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -176,5 +177,6 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
+
 def setup(app):
-  app.add_stylesheet("css/youtube.css")
+    app.add_stylesheet("css/youtube.css")
