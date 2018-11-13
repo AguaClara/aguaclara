@@ -1,20 +1,123 @@
 """
-tests for the research package's ProCoDA parsing functions
+Tests for the research package's ProCoDA parsing functions
 """
 
 import unittest
 from aguaclara.research.procoda_parser import *
 
 class TestProCoDAParser(unittest.TestCase):
-    """
-    NOTE: ENTIRE CLASS HAS BEEN COMMENTED OUT DUE TO BEING OUTDATED. WILL FIX AFTER RELEASE 0.0.15.
 
-    def test_ftime(self):
+    def test_get_data_by_time(self):
+        '''
+        Extract column(s) of data between given starting and ending days and times
+        '''
+        path = os.path.join(os.path.dirname(__file__), '.', 'data')
+
+        data_day1 = pd.read_csv(path + '/datalog 6-14-2018.xls', delimiter='\t')
+        data_day1 = np.round([pd.to_numeric(data_day1.iloc[:, 0]), pd.to_numeric(data_day1.iloc[:, 4])], 5)
+        data_day1 = [data_day1[0].tolist(), data_day1[1].tolist()]
+
+        data_day2 = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+        data_day2 = np.round([pd.to_numeric(data_day2.iloc[:, 0]), pd.to_numeric(data_day2.iloc[:, 4])], 5)
+        data_day2 = [data_day2[0].tolist(), data_day2[1].tolist()]
+        data_day2[0][0] = 0  # to remove scientific notation "e-"
+
+        # SINGLE COLUMN, ONE DAY
+        output = get_data_by_time(path=path, columns=0, start_date="6-14-2018", start_time="12:20", end_time="13:00")
+        self.assertSequenceEqual(np.round(output, 5).tolist(), data_day1[0][1041:1282])
+
+        # SINGLE COLUMN, TWO DAYS
+        output = get_data_by_time(path=path, columns=0, start_date="6-14-2018", end_date='6-15-2018',
+                                  start_time="12:20", end_time="10:50")
+        time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
+        self.assertSequenceEqual(np.round(output, 5).tolist(), time_column)
+
+        # MULTI COLUMN, ONE DAY
+        output = get_data_by_time(path=path, columns=[0, 4], start_date="6-14-2018", start_time="12:20",
+                                  end_time="13:00")
+        self.assertSequenceEqual(np.round(output[0], 5).tolist(), data_day1[0][1041:1282])
+        self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:1282])
+
+        # MULTI COLUMN, TWO DAYS
+        output = get_data_by_time(path=path, columns=[0, 4], start_date="6-14-2018", end_date='6-15-2018',
+                                  start_time="12:20", end_time="10:50")
+        time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
+        self.assertSequenceEqual(np.round(output[0], 5).tolist(), time_column)
+        self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
+
+    def test_remove_notes(self):
+        '''
+        Return a DataFrame without any lines that originally contained text
+        '''
+        path = os.path.join(os.path.dirname(__file__), '.', 'data')
+
+        output = remove_notes(pd.read_csv(path + '/example datalog.xls', delimiter='\t'))
+
+        self.assertSequenceEqual(np.round(pd.to_numeric(output.iloc[:, 0]), 5).tolist(), np.round(np.array(
+            [0.6842773323, 0.6843351954, 0.6843930789, 0.6844509555, 0.6845088278,
+                0.6845666989, 0.6846245615, 0.6846824172, 0.6847402968, 0.6847981752,
+                0.6848560403, 0.6849139126, 0.6849717883, 0.6850296562, 0.6850875147,
+                0.6851453919, 0.6852032725, 0.6852611229, 0.6853190069, 0.6853768753,
+                0.6854347496, 0.6854926132, 0.6855504820, 0.6856083520, 0.6856662182,
+                0.6857240844, 0.6857819618, 0.6858398270, 0.6858977139, 0.6859555700,
+                0.6860134505, 0.6860713232, 0.6861291842, 0.6861870457, 0.6862449249,
+                0.6863027915, 0.6863606668, 0.6864185391, 0.6864764071, 0.6865342703,
+                0.6865921393, 0.6866500041, 0.6867078679, 0.6867657506, 0.6868236041,
+                0.6868814757, 0.6869393510, 0.6869972210, 0.6870550872, 0.6871129465,
+                0.6871708079, 0.6872286914, 0.6872865461, 0.6873444206, 0.6874022918,
+                0.6874601622, 0.6875180261, 0.6875759033, 0.6876337620, 0.6876916265,
+                0.6877495162, 0.6878073736, 0.6878652461, 0.6879231002, 0.6879809879,
+                0.6880388527, 0.6880967171, 0.6881545836, 0.6882124509, 0.6882703269,
+                0.6883281866, 0.6883860691, 0.6884439336, 0.6885017899, 0.6885596701,
+                0.6886175404, 0.6886754119, 0.6887332758, 0.6887911269, 0.6888490074,
+                0.6889068788, 0.6889647418, 0.6890226086, 0.6890804764, 0.6891383548,
+                0.6891962138, 0.6892540828, 0.6893119550, 0.6893698320, 0.6894277027,
+                0.6894855667, 0.6895434231, 0.6896013099, 0.6896591665, 0.6897170327,
+                0.6897749034, 0.6898327828, 0.6898906472, 0.6899485221, 0.6900063868,
+                0.6900642650, 0.6901221240, 0.6901800059, 0.6902378702, 0.6902957428,
+                0.6903536033, 0.6904114725, 0.6904693497, 0.6905272197, 0.6905850893,
+                0.6906429484, 0.6907008191, 0.6907586903, 0.6908165562, 0.6908744311,
+                0.6909322896, 0.6909901754, 0.6910480434, 0.6911059057, 0.6911637699,
+                0.6912216499, 0.6912795226, 0.6913373875, 0.6913952623, 0.6914531382,
+                0.6915109916, 0.6915688702, 0.6916267444, 0.6916846161, 0.6917424642,
+                0.6918003503, 0.6918582045, 0.6919160955, 0.6919739553, 0.6920318141,
+                0.6920897015, 0.6921475574, 0.6922054305, 0.6922632954, 0.6923211679,
+                0.6923790376, 0.6924369006, 0.6924947757, 0.6925526523, 0.6926105221,
+                0.6926683943, 0.6927262529, 0.6927841220, 0.6928419967, 0.6928998698,
+                0.6929577334, 0.6930156006, 0.6930734725, 0.6931313515, 0.6931892121,
+                0.6932470936, 0.6933049500, 0.6933628298, 0.6934206902, 0.6934785742,
+                0.6935364312, 0.6935943119, 0.6936521639, 0.6937100397, 0.6937679167,
+                0.6938257774, 0.6938836411]), 5).tolist())
+
+
+    def test_get_data_by_state(self):
+        '''
+        Extract the time column and a data column for each iteration of a state
+        '''
+        path = os.path.join(os.path.dirname(__file__), '.', 'data')
+
+        output = get_data_by_state(path, dates=["6-19-2013"], state=1, column=1)  # , "6-20-2013"
+
+        datafile = pd.read_csv(path + "/datalog 6-19-2013.xls", delimiter='\t')
+        time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
+                                   np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
+        start_time = time_and_data1[0, 0]
+
+        answer = [time_and_data1[:, 98:175], time_and_data1[:, 220:485], time_and_data1[:, 3039:3304],
+                  time_and_data1[:, 5858:6123], time_and_data1[:, 8677:8942], time_and_data1[:, 11496:11761],
+                  time_and_data1[:, 14315:14580]]
+
+        for i in range(len(output)):
+            output_i = np.round(np.array(output[i]).astype(np.double), 5)
+            self.assertSequenceEqual([j[0] for j in output_i], [round(j-start_time, 5) for j in answer[i][0]])
+            self.assertSequenceEqual([j[1] for j in output_i], [j for j in answer[i][1]])
+
+    def test_column_of_time(self):
         '''''
         Extract the time column from a data file.
         '''''
-        path = os.path.join(os.path.dirname(__file__), '.', 'data', 'Lab5Part2(CMFR_Final).xls')
-        answer = ftime(path, 50, -1)
+        path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
+        answer = column_of_time(path, 50, -1)
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
          answer.tolist(),
@@ -60,11 +163,12 @@ class TestProCoDAParser(unittest.TestCase):
          6.77069570e-03,   6.82855640e-03])*u.day, 5).tolist()
         )
 
+
     def test_column_of_data(self):
         '''''
         Extract other columns of data and append units.
         '''''
-        path = os.path.join(os.path.dirname(__file__), '.', 'data', 'Lab5Part2(CMFR_Final).xls')
+        path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
         answer = column_of_data(path, 50, 1, -1, 'mg/L')
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
@@ -105,7 +209,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''''
         Test function that extracts meta information from data file.
         '''''
-        path = os.path.join(os.path.dirname(__file__), '.', 'data', 'Lab5Part2(CMFR_Final).xls')
+        path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
         answer = notes(path)['Day fraction since midnight on ']
         x = pd.DataFrame(index=[1, 29, 35],
                          columns=['Day fraction since midnight on ', 'red dye (mg/L)', 'Run Pump ()', 'Pump ()'])
@@ -193,17 +297,6 @@ class TestProCoDAParser(unittest.TestCase):
         5.34098, 5.31712, 5.28969, 5.5, 5.5, 5.5]*u.mL/u.s
         )
 
-    '''
-    This test should open a plotting window. It has been commented out because
-    is it not compatible with Travis tests
-
-    def test_plot_state(self):
-        path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
-
-        # make sure an error isn't raised since output of plot can't be tested
-        plot_state(["6-19-2013", "6-20-2013"], 1, 28, path)
-    '''
-
     def test_read_state_with_metafile(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'Test Meta File.txt')
 
@@ -239,4 +332,3 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertSequenceEqual(
         [5.445427082723495, 5.459751965314751],
         output['Average Conc (mg/L)'].tolist())
-    """
