@@ -105,26 +105,26 @@ class WaterPropertiesTest(unittest.TestCase):
                 self.assertAlmostEqual(pc.viscosity_dynamic(i[0]).magnitude, i[1])
 
     def test_viscosity_kinematic(self):
-        """viscosity_kinematic should give known results with known input."""
+        """nu should give known results with known input."""
         checks = ((342, 4.1584506710898959e-07),
                   (297, 9.1670473903811879e-07),
                   (273.15, 1.7532330683680798e-06),
                   (373.15, 2.9108883329847625e-07))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]).magnitude, i[1])
+                self.assertAlmostEqual(pc.nu(i[0]).magnitude, i[1])
 
     def test_viscosity_kinematic_units(self):
-        """viscosity_kinematic should handle units correctly."""
+        """nu should handle units correctly."""
         checks = ((342, 4.1584506710898959e-07),
                   (297 * u.degK, 9.1670473903811879e-07),
                   (0 * u.degC, 1.7532330683680798e-06),
                   (100 * u.degC, 2.9108883329847625e-07))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]).magnitude, i[1])
-                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]),
-                                 (pc.viscosity_dynamic(i[0]) / pc.density_water(i[0])))
+                self.assertAlmostEqual(pc.nu(i[0]).magnitude, i[1])
+                self.assertAlmostEqual(pc.nu(i[0]),
+                                       (pc.viscosity_dynamic(i[0]) / pc.density_water(i[0])))
 
 
 class ReynoldsNumsTest(unittest.TestCase):

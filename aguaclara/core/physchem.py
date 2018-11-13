@@ -73,11 +73,13 @@ def density_water(temp):
 
 
 @u.wraps(u.m**2/u.s, [u.degK], False)
-def viscosity_kinematic(temp):
+def nu(temp):
     """Return the kinematic viscosity of water at a given temperature.
 
     If given units, the function will automatically convert to Kelvin.
     If not given units, the function will assume Kelvin.
+
+    TODO: This should return meter ** 2 / second.
     """
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
     return (viscosity_dynamic(temp).magnitude

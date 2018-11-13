@@ -1,13 +1,12 @@
 from aguaclara.core.units import unit_registry as u
-from core.units import unit_registry as u
 
 L_MAX = 2.2 * u.m
 
 # Angle of the sloped walls of the entrance tank hoppers
 ENT_TANK_SLOPE_ANGLE = 45 * u.deg
 
-# Extra space around the float (increase in effective diameter) to ensure
-# that float has free travel
+# Extra space around the float (increase in effective diameter) to
+# ensure that float has free travel
 FLOAT_S = 5 * u.cm
 HOPPER_PEAK_W = 3 * u.cm
 PLATE_S = 2.5 * u.cm
@@ -39,16 +38,17 @@ RAPID_MIX_EDR = 3 * u.W / u.kg
 
 RAPID_MIX_PLATE_RESTRAINER_ND = 0.5 * u.inch
 
-FLOAT_ND =  8*u.inch
+FLOAT_ND = 8*u.inch
 
-#Minimum pipe size to handle grit and to ensure that the pipe can be easily unclogged
-DRAIN_MIN_ND =  3*u.inch
+# Minimum pipe size to handle grit and to ensure that the pipe can be
+# easily unclogged
+DRAIN_MIN_ND = 3*u.inch
 
-DRAIN_ND =  3*u.inch #This is constant for now
+DRAIN_ND = 3*u.inch  # This is constant for now
 
 REMOVABLE_WALL_THICKNESS = 5*u.cm
 
-#Parameters are arbitrary - need to be calculated
+# Parameters are arbitrary - need to be calculated
 REMOVABLE_WALL_SUPPORT_H = 4 * u.cm
 
 REMOVABLE_WALL_SUPPORT_THICKNESS = 5*u.cm

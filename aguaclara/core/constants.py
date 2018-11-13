@@ -14,7 +14,8 @@ AIR_DENSITY = 1.204 * u.kg / u.mm ** 3
 
 # The influence of viscosity on mixing in jet reactors
 JET_ROUND_RATIO = 0.08
-JET_PLANE_RATIO = 0.0124  # Estimate for plane jets in the flocculator and sed tank jet reverser.
+# Estimate for plane jets in the flocculator and sed tank jet reverser.
+JET_PLANE_RATIO = 0.0124
 
 LFP_FLOW_MAX = 16.1 * u.L / u.s
 
