@@ -1,9 +1,7 @@
-Welcome to the AguaClara Documentation!
-=============================================
+===========================
+``aguaclara`` Documentation
+===========================
 
-The AguaClara python package holds code that governs the design of an AguaClara drinking water treatment plant.
+.. image:: images/logo.png
 
-.. toctree::
-    :maxdepth: 2
-
-    design
+``aguaclara`` is a Python package built by `AguaClara Cornell <http://aguaclara.cornell.edu/>`_. It contains Python classes for designing AguaClara water treatment plants, and functions for conducting research on water treatment and wastewater treatment processes.
