@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(name='aguaclara',
-      version='0.0.14',
-      description='AguaClara Infrastructure Design Engine',
-      url='https://github.com/AguaClara/aguaclara_design',
+      version='0.0.15',
+      description='Open source functions for AguaClara water treatment research and plant design.',
+      url='https://github.com/AguaClara/aguaclara',
       author='AguaClara at Cornell',
       author_email='aguaclara@cornell.edu',
       license='MIT',
