@@ -1,6 +1,8 @@
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
+import aguaclara.core.constants as con
 from aguaclara.core.units import unit_registry as u
+from onshapepy import Part
 
 import math
 import numpy as np
@@ -31,9 +33,6 @@ BAFFLE_SET_BACK_PLASTIC_S = 2 * u.cm
 
 # Target flocculator collision potential basis of design
 
-# Minimum width of flocculator channel required for constructability based
-# on the width of the human hip
-W_MIN = ha.HUMAN_W_MIN
 BOD_GT = 75 * u.m ** (2 / 3)
 
 # Ratio of the width of the gap between the baffle and the wall and the
@@ -90,6 +89,8 @@ class Flocculator:
         - The minimum ratio between expansion height and baffle spacing
     - HS_RATIO_MAX (Pi_{HS}): float
         - The maximum ratio between expansion height and baffle spacing
+    - CAD: Part
+        - URL to the flocculator 3D model in Onshape
     """
 
     BAFFLE_K = 2.56
@@ -99,6 +100,10 @@ class Flocculator:
     CHANNEL_N_MIN = 2
     HS_RATIO_MIN = 3
     HS_RATIO_MAX = 6
+
+    CAD = Part(
+        'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
+    )
 
     def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC,
                  sed_tank_l_max=6 * u.m):
@@ -127,8 +132,8 @@ class Flocculator:
         :returns: Average velocity gradient (G-bar)
         :rtype: float * 1 / second
         """
-        return ((pc.gravity * self.HL) /
-                (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
+        return ((con.GRAVITY * self.HL) /
+               (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
 
     @property
     def retention_time(self):
@@ -301,3 +306,12 @@ class Flocculator:
         -1
         """
         return self.END_WATER_H / self.baffles_s - 1
+
+    def draw(self):
+        self.CAD.params = {
+            'channel_l': self.channel_l,
+            'channel_w': self.channel_w,
+            'channel_h': self.END_WATER_H,
+            'channel_pairs': self.channel_n / 2,
+            'baffle_s': self.baffle_s,
+        }
