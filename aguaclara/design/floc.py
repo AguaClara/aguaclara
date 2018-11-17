@@ -1,6 +1,8 @@
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
+import aguaclara.core.constants as con
 from aguaclara.core.units import unit_registry as u
+from onshapepy import Part
 
 import math
 import numpy as np
@@ -31,9 +33,6 @@ BAFFLE_SET_BACK_PLASTIC_S = 2 * u.cm
 
 # Target flocculator collision potential basis of design
 
-# Minimum width of flocculator channel required for constructability based
-# on the width of the human hip
-W_MIN = ha.HUMAN_W_MIN
 BOD_GT = 75 * u.m ** (2 / 3)
 
 # Ratio of the width of the gap between the baffle and the wall and the
@@ -90,6 +89,8 @@ class Flocculator:
         - The minimum ratio between expansion height and baffle spacing
     - HS_RATIO_MAX (Pi_{HS}): float
         - The maximum ratio between expansion height and baffle spacing
+    - CAD: Part
+        - URL to the flocculator 3D model in Onshape
     """
 
     BAFFLE_K = 2.56
@@ -99,6 +100,10 @@ class Flocculator:
     CHANNEL_N_MIN = 2
     HS_RATIO_MIN = 3
     HS_RATIO_MAX = 6
+
+    CAD = Part(
+        'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
+    )
 
     def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC,
                  sed_tank_l_max=6 * u.m):
@@ -127,8 +132,8 @@ class Flocculator:
         :returns: Average velocity gradient (G-bar)
         :rtype: float * 1 / second
         """
-        return ((pc.gravity * self.HL) /
-                (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
+        return ((con.GRAVITY * self.HL) /
+               (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
 
     @property
     def retention_time(self):
@@ -191,7 +196,7 @@ class Flocculator:
         :returns: Minimum channel width
         :rtype: float * centimeter
         """
-        return max(self.w_min_hs_ratio, W_MIN).to(u.cm)
+        return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN).to(u.cm)
 
     @property
     def channel_n(self):
@@ -203,11 +208,6 @@ class Flocculator:
 
         :returns: Number of channels
         :rtype: int
-
-        Examples
-        --------
-        channel_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
-        2
         """
         num = self.w_total / self.w_min
         # floor function with step size 2
@@ -251,53 +251,50 @@ class Flocculator:
                  (self.q * self.HS_RATIO_MAX / self.channel_w) ** 3) ** (1/4)).to(u.m)
 
     @property
-    def exp_n(self):
+    def expansion_n(self):
         """Return the minimum number of expansions per baffle space.
 
-        :returns: Minimum number of expansions per baffle space
+        :returns: Minimum number of expansions/baffle space
         :rtype: int
         """
-        return int(math.ceil(self.END_WATER_H / self.expansion_h_max))
+        return math.ceil(self.END_WATER_H / self.expansion_h_max)
 
     @property
-    def expansions_h(self):
+    def expansion_h(self):
         """Returns the height between flow expansions.
 
         :returns: Height between flow expansions
-        :rtype: float * meter
+        :rtype: float * centimeter
         """
-        return (self.END_WATER_H / self.exp_n).to(u.m)
+        return (self.END_WATER_H / self.expansion_n).to(u.cm)
 
     @property
-    def baffles_s(self):
+    def baffle_s(self):
         """Return the spacing between baffles.
 
-        Examples
-        --------
-        baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        0.063 meter
+        :returns: Minimum number of expansions/baffle space
+        :rtype: int
         """
-        return (
-            (
-                self.BAFFLE_K
-                / (
-                    2 * self.d_exp_max
-                    * (self.vel_grad_avg ** 2)
-                    * pc.nu(self.temp)
-                )
-            ) ** (1/3)
-            * self.q / ha.HUMAN_W_MIN
-        )
+        
+        return ((self.BAFFLE_K /
+               (2 * self.expansion_h_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) *
+               self.q / ha.HUMAN_W_MIN).to(u.cm)
 
     @property
-    def baffles_n(self):
+    def obstacle_n(self):
         """Return the number of baffles a channel can contain.
 
-        Examples
-        --------
-        baffles_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
-        0
-        baffles_n(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
-        -1
+        :returns: Number of baffles channel can contain
+        :rtype: int
         """
-        return self.END_WATER_H / self.baffles_s - 1
+        return (self.END_WATER_H / self.expansion_h) - 1
+
+    def draw(self):
+        """Draw the Onshape flocculator model based off of this object."""
+        self.CAD.params = {
+            'channel_l': self.channel_l,
+            'channel_w': self.channel_w,
+            'channel_h': self.END_WATER_H,
+            'channel_pairs': self.channel_n,
+            'baffle_s': self.baffle_s,
+        }
