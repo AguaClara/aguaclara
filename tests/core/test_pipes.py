@@ -19,9 +19,9 @@ class TestPipes(unittest.TestCase):
         assert_list_almost_equal = np.vectorize(self.assertAlmostEqual)
         assert_list_almost_equal(
             [
-                pipe.od(),
-                pipe.id_sdr(),
-                pipe.id_sch40(),
+                pipe.od,
+                pipe.id_sdr,
+                pipe.id_sch40,
             ],
             [
                 7.625 * u.inch,
