@@ -256,56 +256,43 @@ class Flocculator:
                  (self.q * self.HS_RATIO_MAX / self.channel_w) ** 3) ** (1/4)).to(u.m)
 
     @property
-    def exp_n(self):
+    def expansion_n(self):
         """Return the minimum number of expansions per baffle space.
 
-        :returns: Minimum number of expansions per baffle space
+        :returns: Minimum number of expansions/baffle space
         :rtype: int
         """
-        return int(math.ceil(self.END_WATER_H / self.expansion_h_max))
+        return math.ceil(self.END_WATER_H / self.d_exp_max)
 
     @property
-    def expansions_h(self):
+    def expansion_h(self):
         """Returns the height between flow expansions.
 
         :returns: Height between flow expansions
-        :rtype: float * meter
+        :rtype: float * centimeter
         """
-        return (self.END_WATER_H / self.exp_n).to(u.m)
+        return (self.END_WATER_H / self.expansion_n).to(u.cm)
 
     @property
-    def baffles_s(self):
+    def baffle_s(self):
         """Return the spacing between baffles.
 
-        Examples
-        --------
-        baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        0.063 meter
+        :returns: Minimum number of expansions/baffle space
+        :rtype: int
         """
-        return (
-            (
-                self.BAFFLE_K
-                / (
-                    2 * self.expansion_h_max
-                    * (self.vel_grad_avg ** 2)
-                    * pc.nu(self.temp)
-                )
-            ) ** (1/3)
-            * self.q / ha.HUMAN_W_MIN
-        )
+        
+        return (self.BAFFLE_K /
+               (2 * self.d_exp_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) * \
+               self.q / ha.HUMAN_W_MIN
 
     @property
-    def baffles_n(self):
+    def obstacle_n(self):
         """Return the number of baffles a channel can contain.
 
-        Examples
-        --------
-        baffles_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
-        0
-        baffles_n(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
-        -1
+        :returns: Number of baffles channel can contain
+        :rtype: int
         """
-        return self.END_WATER_H / self.baffles_s - 1
+        return (self.END_WATER_H / self.expansion_h) -1
 
     def draw(self):
         self.CAD.params = {
