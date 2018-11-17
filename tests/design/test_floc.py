@@ -1,6 +1,3 @@
-# floc.d_exp_max, 0.375*u.m
-# floc.baffles_s, 0.063*u.m
-
 import unittest
 
 from aguaclara.design.floc import Flocculator
