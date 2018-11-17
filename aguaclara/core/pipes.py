@@ -26,16 +26,16 @@ class Pipe:
 
     @property
     def od(self):
-        index = (np.abs(np.array(pipedb['NDinch']) - (self.nd))).argmin()
-        return (pipedb.iloc[index, 1]).to(u.inch)
+        index = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
+        return pipedb.iloc[index, 1] * u.inch
 
     @property
     def id_sdr(self):
-        return self.od().magnitude * (self.sdr - 2) / self.sdr
+        return self.od.magnitude * (self.sdr - 2) / self.sdr
 
     @property
     def id_sch40(self):
-        myindex = (np.abs(np.array(pipedb['NDinch']) - (self.nd))).argmin()
+        myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
         return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5]))
 
 @u.wraps(u.inch, u.inch, False)
