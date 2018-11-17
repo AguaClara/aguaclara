@@ -276,9 +276,9 @@ class Flocculator:
         :rtype: int
         """
         
-        return (self.BAFFLE_K /
-               (2 * self.expansion_h_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) * \
-               self.q / ha.HUMAN_W_MIN
+        return ((self.BAFFLE_K /
+               (2 * self.expansion_h_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) *
+               self.q / ha.HUMAN_W_MIN).to(u.cm)
 
     @property
     def obstacle_n(self):
@@ -287,9 +287,10 @@ class Flocculator:
         :returns: Number of baffles channel can contain
         :rtype: int
         """
-        return (self.END_WATER_H / self.expansion_h) -1
+        return (self.END_WATER_H / self.expansion_h) - 1
 
     def draw(self):
+        """Draw the Onshape flocculator model based off of this object."""
         self.CAD.params = {
             'channel_l': self.channel_l,
             'channel_w': self.channel_w,
