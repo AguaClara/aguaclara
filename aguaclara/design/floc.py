@@ -208,11 +208,6 @@ class Flocculator:
 
         :returns: Number of channels
         :rtype: int
-
-        Examples
-        --------
-        channel_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
-        2
         """
         num = self.w_total / self.w_min
         # floor function with step size 2
