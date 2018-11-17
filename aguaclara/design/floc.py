@@ -3,6 +3,7 @@ import aguaclara.design.human_access as ha
 from aguaclara.core.units import unit_registry as u
 
 import math
+import aguaclara.core.constants as con
 
 
 # Unused constants - START \/
@@ -127,7 +128,7 @@ class Flocculator:
         :returns: Average velocity gradient (G-bar)
         :rtype: float * 1 / second
         """
-        return ((pc.gravity * self.HL) /
+        return ((con.GRAVITY * self.HL) /
 
                (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
     
@@ -259,45 +260,44 @@ class Flocculator:
         return w_chan
 
     @property
-    def exp_n(self):
-        """Return the minimum number of expansions per baffle space."""
+    def expansion_n(self):
+        """Return the minimum number of expansions per baffle space.
+
+        :returns: Minimum number of expansions/baffle space
+        :rtype: int
+        """
         return math.ceil(self.END_WATER_H / self.d_exp_max)
 
     @property
-    def expansions_h(self):
-        """Returns the height between flow expansions."""
-        return self.END_WATER_H / self.exp_n
+    def expansion_h(self):
+        """Returns the height between flow expansions.
+
+        :returns: Height between flow expansions
+        :rtype: float * centimeter
+        """
+        return (self.END_WATER_H / self.expansion_n).to(u.cm)
 
     @property
-    def baffles_s(self):
+    def baffle_s(self):
         """Return the spacing between baffles.
 
-        Examples
-        --------
-        baffles_s(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        0.063 meter
-        ."""
-        return (
-            (
-                self.BAFFLE_K
-                / (
-                    2 * self.d_exp_max
-                    * (self.vel_grad_avg ** 2)
-                    * pc.nu(self.temp)
-                )
-            ) ** (1/3)
-            * self.q / ha.HUMAN_W_MIN
-        )
+        :returns: Minimum number of expansions/baffle space
+        :rtype: int
+        """
+        
+        return (self.BAFFLE_K /
+               (2 * self.d_exp_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) * \
+               self.q / ha.HUMAN_W_MIN
 
     @property
-    def baffles_n(self):
+    def obstacle_n(self):
         """Return the number of baffles a channel can contain.
 
-        Examples
-        --------
-        baffles_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 2*u.m)
-        0
-        baffles_n(20*u.L/u.s, 20*u.cm, 37000, 25*u.degC, 2*u.m, 2*u.m, 21*u.m)
-        -1
+        :returns: Number of baffles channel can contain
+        :rtype: int
         """
-        return self.END_WATER_H / self.baffles_s - 1
+        return (self.END_WATER_H / self.expansion_h) -1
+
+
+
+
