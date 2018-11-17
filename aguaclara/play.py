@@ -1,7 +1,7 @@
-"""This module is intended to provide easy set up for an aide design playground
-/environment.
+"""This module is intended to provide easy set up for a playground development
+environment using the aguaclara package.
 
-It imports all commonly used aide packages with one line, ensures Python is
+It imports all commonly used packages with one line, ensures Python is
 run in the correct virtual environment, sets sig figs correctly and provides
 any additional environment massaging to get to designing as quickly as
 possible. This should NOT be used by other modules within aguaclara as it
@@ -14,7 +14,7 @@ Usage:
 
 Now you should be able to execute:
     *`np.array([1,2,3,4])
-And your numbers should be limited to four significant figures  when printed.
+And your numbers should be limited to four significant figures when printed.
 
 """
 
@@ -27,7 +27,9 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 # Design imports
-from aguaclara.design.lfom import LFOM
+# from aguaclara.design.lfom import LFOM    #NOTE: temporarily disabled for release 0.0.15 to prevent problems
+                                            #with lacking Onshape set up (unnecessary for research teams)
+
 
 # Core imports
 import aguaclara
@@ -39,12 +41,12 @@ import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
 import aguaclara.core.head_loss as k
 import aguaclara.core.pipeline as pipeline
-import aguaclara.core.optional_inputs as opt
+# import aguaclara.core.optional_inputs as opt
 import warnings
 
 
 # deprecated imports
-import aguaclara.core.expert_inputs as exp
+# import aguaclara.core.expert_inputs as exp
 
 
 def setup_aide():

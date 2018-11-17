@@ -6,7 +6,7 @@ import aguaclara.core.utility as ut
 import aguaclara.core.drills as drills
 from aguaclara.core.units import unit_registry as u
 
-from onshapepy.part import Part
+# from onshapepy.part import Part
 
 import numpy as np
 import math
@@ -18,9 +18,9 @@ class LFOM:
     sdr = 26
     drill_bits = drills.DRILL_BITS_D_IMPERIAL
     s_orfice = 1*u.cm
-    cad = Part(
-        "https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d"
-    )
+    # cad = Part(
+    #     "https://cad.onshape.com/documents/e1798ab5f546e1414e86992d/w/104d463fef6c6a71c703abe6/e/890edb42c7884277d8d8711d"
+    # )
 
     def __init__(self, q=20*u.L/u.s, hl=20*u.cm):
         self.q = q
@@ -184,7 +184,7 @@ class LFOM:
             FLOW_lfom_error.append(row_error.to(u.dimensionless))
         return FLOW_lfom_error
 
-    def draw(self):
-        """Draw the LFOM in CAD."""
-        self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
-                           "OD": self.nom_diam_pipe, "bRows": self.b_rows}
+    # def draw(self):
+    #     """Draw the LFOM in CAD."""
+    #     self.cad.params = {"dHoles": self.orifice_diameter, "nHolesPerRow": str(self.n_orifices_per_row),
+    #                        "OD": self.nom_diam_pipe, "bRows": self.b_rows}
