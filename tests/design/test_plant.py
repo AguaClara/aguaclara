@@ -1,7 +1,15 @@
+import unittest
+
 from aguaclara.design.plant import Plant
 from aguaclara.core.units import unit_registry as u
 
 
-def test_plant(utils):
-    plant = Plant()
-    utils.assert_unit_equality(1*(u.m**2), plant.ent_tank_a, 0.001)
+class PlantTest(unittest.TestCase):
+
+    def setUp(self):
+        unittest.TestCase.setUp(self)
+
+        self.plant = Plant()
+
+    def test_vel_grad_avg(self):
+        self.assertAlmostEqual(self.plant.ent_tank_a, 1 * (u.m ** 2), 0.001)
