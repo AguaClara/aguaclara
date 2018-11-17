@@ -196,7 +196,7 @@ class Flocculator:
         :returns: Minimum channel width
         :rtype: float * centimeter
         """
-        return max(self.w_min_hs_ratio, W_MIN).to(u.cm)
+        return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN).to(u.cm)
 
     @property
     def channel_n(self):
@@ -286,7 +286,7 @@ class Flocculator:
             (
                 self.BAFFLE_K
                 / (
-                    2 * self.d_exp_max
+                    2 * self.expansion_h_max
                     * (self.vel_grad_avg ** 2)
                     * pc.nu(self.temp)
                 )
@@ -312,6 +312,6 @@ class Flocculator:
             'channel_l': self.channel_l,
             'channel_w': self.channel_w,
             'channel_h': self.END_WATER_H,
-            'channel_pairs': self.channel_n / 2,
-            'baffle_s': self.baffle_s,
+            'channel_pairs': self.channel_n,
+            'baffle_s': self.baffles_s,
         }
