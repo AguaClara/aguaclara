@@ -1,10 +1,11 @@
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
+import aguaclara.core.constants as con
 from aguaclara.core.units import unit_registry as u
+from onshapepy import Part
 
 import math
-import aguaclara.core.constants as con
-
+import numpy as np
 
 # Unused constants - START \/
 
@@ -32,9 +33,6 @@ BAFFLE_SET_BACK_PLASTIC_S = 2 * u.cm
 
 # Target flocculator collision potential basis of design
 
-# Minimum width of flocculator channel required for constructability based
-# on the width of the human hip
-W_MIN = ha.HUMAN_W_MIN
 BOD_GT = 75 * u.m ** (2 / 3)
 
 # Ratio of the width of the gap between the baffle and the wall and the
@@ -91,6 +89,8 @@ class Flocculator:
         - The minimum ratio between expansion height and baffle spacing
     - HS_RATIO_MAX (Pi_{HS}): float
         - The maximum ratio between expansion height and baffle spacing
+    - CAD: Part
+        - URL to the flocculator 3D model in Onshape
     """
 
     BAFFLE_K = 2.56
@@ -100,6 +100,10 @@ class Flocculator:
     CHANNEL_N_MIN = 2
     HS_RATIO_MIN = 3
     HS_RATIO_MAX = 6
+
+    CAD = Part(
+        'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
+    )
 
     def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC,
                  sed_tank_l_max=6 * u.m):
@@ -129,9 +133,8 @@ class Flocculator:
         :rtype: float * 1 / second
         """
         return ((con.GRAVITY * self.HL) /
-
                (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
-    
+
     @property
     def retention_time(self):
         """Calculate the retention time of flocs in a flocculator.
@@ -139,7 +142,7 @@ class Flocculator:
         :returns: Retention time of flocs (:math:`\theta`)
         :rtype: float * second
         """
-        return self.GT / self.vel_grad_avg
+        return (self.GT / self.vel_grad_avg).to(u.s)
 
     @property
     def vol(self):
@@ -159,8 +162,8 @@ class Flocculator:
         :rtype: float * meter
         """
         return (self.vol /
-               (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_H)
-               ).to(u.m)
+                (self.CHANNEL_N_MIN * ha.HUMAN_W_MIN * self.END_WATER_H)
+                ).to(u.m)
 
     @property
     def channel_l(self):
@@ -170,7 +173,7 @@ class Flocculator:
         :returns: Channel length
         :rtype: float * meter
         """
-        return min(self.sed_tank_l_max, self.l_max_vol)
+        return (min(self.sed_tank_l_max, self.l_max_vol)).to(u.m)
 
     @property
     def w_min_hs_ratio(self):
@@ -180,11 +183,10 @@ class Flocculator:
         :returns: Minimum channel width given H_e/S
         :rtype: float * centimeter
         """
-
         return ((self.HS_RATIO_MIN * self.q.to(u.m ** 3 / u.s) / self.END_WATER_H) *
-               (self.BAFFLE_K /
-               (2 * self.END_WATER_H * pc.nu(self.temp) * self.vel_grad_avg ** 2)) ** (1/3)
-               ).to(u.cm)
+                (self.BAFFLE_K /
+                 (2 * self.END_WATER_H * pc.nu(self.temp) * self.vel_grad_avg ** 2)) ** (1/3)
+                ).to(u.cm)
 
     @property
     def w_min(self):
@@ -194,70 +196,64 @@ class Flocculator:
         :returns: Minimum channel width
         :rtype: float * centimeter
         """
-        return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN)
+        return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN).to(u.cm)
 
     @property
-    def num_channel(self):
+    def channel_n(self):
         """Return the number of channels in the entrance tank/flocculator (ETF).
 
         This takes the total width of the flocculator and divides it by the
         minimum channel width. A floor function is used to ensure that there
-        are an even number of channels.        ?
+        are an even number of channels.
+
+        :returns: Number of channels
+        :rtype: int
 
         Examples
         --------
-        num_channel(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
+        channel_n(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 20*u.m, 2*u.m)
         2
-
         """
-        # Unimplemented
-        pass
+        num = self.w_total / self.w_min
+        # floor function with step size 2
+        num_floor = np.floor(num / 2) * 2
+        return int(max(num_floor, 2))
 
     @property
-    def d_exp_max(self):
-        """"Return the maximum distance between expansions for the largest
-        allowable H/S ratio.
+    def w_total(self):
+        """The total width of the flocculator.
 
-        Examples
-        --------
-        exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
-        0.375 meter
+        :returns: Total width
+        :rtype: float * meter
         """
-        G = self.vel_grad_avg
-        nu = pc.nu(self.temp)
-        pi = self.HS_RATIO_MAX
-        w = self.channel_w
-        k = self.BAFFLE_K
-        q = self.q
-
-        return ((k / (2*nu*(G**2))) * ((q*pi/w)**3)) ** (1/4)
+        return (self.vol / (self.channel_l * self.END_WATER_H)).to(u.m)
 
     @property
     def channel_w(self):
         """
         The channel width of the flocculator.  See section 'Flocculation
         Design' of textbook'
-        """
-        w_min_human = ha.HUMAN_W_MIN
-        # just assume it's 6
-        # perf_metric is (d between flow exp / baffle_spacing)
-        perf_metric = 6
-        w_min_perf_metric = (
-            (perf_metric * self.q / self.END_WATER_H)
-            * (
-                    self.BAFFLE_K / (
-                    2 * self.END_WATER_H
-                    * pc.nu(self.temp)
-                    * (self.vel_grad_avg ** 2)
-                )
-            ) ** (1/3)
-        )
 
-        w_min = self.w_min
-        w_tot = self.vol / (self.channel_l * self.END_WATER_H)
-        n_chan = w_tot / w_min
-        w_chan = w_tot / n_chan
-        return w_chan
+        :returns: Channel width
+        :rtype: float * meter
+        """
+        return (self.w_total / self.channel_n).to(u.m)
+
+    @property
+    def expansion_h_max(self):
+        """"Return the maximum distance between expansions for the largest
+        allowable H/S ratio.
+
+        :returns: Maximum expansion distance
+        :rtype: float * meter
+
+        Examples
+        --------
+        exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+        0.375 meter
+        """
+        return (((self.BAFFLE_K / (2 * pc.nu(self.temp) * (self.vel_grad_avg ** 2))) *
+                 (self.q * self.HS_RATIO_MAX / self.channel_w) ** 3) ** (1/4)).to(u.m)
 
     @property
     def expansion_n(self):
@@ -298,6 +294,11 @@ class Flocculator:
         """
         return (self.END_WATER_H / self.expansion_h) -1
 
-
-
-
+    def draw(self):
+        self.CAD.params = {
+            'channel_l': self.channel_l,
+            'channel_w': self.channel_w,
+            'channel_h': self.END_WATER_H,
+            'channel_pairs': self.channel_n,
+            'baffle_s': self.baffles_s,
+        }
