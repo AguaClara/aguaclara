@@ -262,7 +262,7 @@ class Flocculator:
         :returns: Minimum number of expansions/baffle space
         :rtype: int
         """
-        return math.ceil(self.END_WATER_H / self.d_exp_max)
+        return math.ceil(self.END_WATER_H / self.expansion_h_max)
 
     @property
     def expansion_h(self):
@@ -282,7 +282,7 @@ class Flocculator:
         """
         
         return (self.BAFFLE_K /
-               (2 * self.d_exp_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) * \
+               (2 * self.expansion_h_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) * \
                self.q / ha.HUMAN_W_MIN
 
     @property
@@ -300,5 +300,5 @@ class Flocculator:
             'channel_w': self.channel_w,
             'channel_h': self.END_WATER_H,
             'channel_pairs': self.channel_n,
-            'baffle_s': self.baffles_s,
+            'baffle_s': self.baffle_s,
         }
