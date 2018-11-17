@@ -27,7 +27,7 @@ class Pipe:
     @property
     def od(self):
         index = (np.abs(np.array(pipedb['NDinch']) - (self.nd))).argmin()
-        return pipedb.iloc[index, 1]
+        return (pipedb.iloc[index, 1]).to(u.inch)
 
     @property
     def id_sdr(self):
