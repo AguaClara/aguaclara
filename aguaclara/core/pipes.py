@@ -16,6 +16,28 @@ csv_path = os.path.join(dir_path, 'data/pipe_database.csv')
 with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
 
+""""""
+class Pipe:
+
+
+    def __init__(self, nd,sdr):
+        self.nd= nd
+        self.sdr = sdr
+
+    @property
+    def od(self):
+        index = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
+        return pipedb.iloc[index, 1] * u.inch
+
+    @property
+    def id_sdr(self):
+        return self.od.magnitude * (self.sdr - 2) / self.sdr
+
+    @property
+    def id_sch40(self):
+        myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
+        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5]))
+
 @u.wraps(u.inch, u.inch, False)
 def OD(ND):
     """Return a pipe's outer diameter according to its nominal diameter.

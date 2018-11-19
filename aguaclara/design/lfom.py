@@ -169,7 +169,7 @@ class LFOM:
             # calculate the ideal number of orifices at the current row without constraining to an integer
             flow_needed = self.flow_ramp[i] - self.flow_actual(i, n)
             n_orifices_real = (flow_needed / flow_per_orifice).to(u.dimensionless)
-            # constrain number of orifices to be less than the max per row and greater or equal to 0
+            # constrain number of orifices to be less than the max  per row and greater or equal to 0
             n[i] = min((max(0, round(n_orifices_real))), self.n_orifices_per_row_max)
         return n
 
