@@ -19,7 +19,7 @@ script:
 - cd docs
 - pipenv run make html
 - pipenv run make doctest
-- htmlproofer _build/html --allow_hash_href --file_ignore "_build/html/search.html"
+- htmlproofer build --allow_hash_href --file_ignore "build/search.html"
 - cd ..
 after_success:
 - pipenv run codecov
