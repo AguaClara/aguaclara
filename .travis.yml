@@ -19,7 +19,7 @@ script:
 - cd docs
 - pipenv run make html
 - pipenv run make doctest
-- htmlproofer build --allow_hash_href --file_ignore "build/search.html"
+- htmlproofer build/html --allow_hash_href --file_ignore "build/html/search.html"
 - cd ..
 after_success:
 - pipenv run codecov
@@ -34,7 +34,7 @@ deploy:
   skip-cleanup: true
   github-token: "$GITHUB_TOKEN"
   keep-history: true
-  local-dir: docs/_build/html
+  local-dir: docs/build/html
   target-branch: gh-pages
   on:
     tags: true
