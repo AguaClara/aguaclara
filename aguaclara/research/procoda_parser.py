@@ -122,6 +122,7 @@ def day_fraction(time):
 
     Examples
     --------
+    >>> from aguaclara.research.procoda_parser import day_fraction
     >>> day_fraction("00:21")
     0.014583333333333334
     >>> day_fraction("18:30")
