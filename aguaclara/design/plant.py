@@ -30,20 +30,18 @@ class Plant:
         """
         # first guess planview area
         a_new = 1 * u.m**2
-        a_ratio = 0
+        a_ratio = 2  # set to >1+tolerance to start while loop
         tolerance = 0.01
-
+        a_floc_pv = (
+            self.floc.vol /
+            (self.floc.END_WATER_H + (self.floc.HL / 2))
+        )
         while a_ratio > (1 + tolerance):
             a_et_pv = a_new
-            a_floc_pv = (
-                self.floc.vol /
-                (self.floc.END_WATER_HEIGHT + (self.floc.HL / 2))
-            )
             a_etf_pv = a_et_pv + a_floc_pv
-
-            w_tot = a_etf_pv / self.floc.l_sed_max
+            w_tot = a_etf_pv / self.floc.sed_tank_l_max
             w_chan = w_tot / self.floc.channel_n
 
-            a_new = self.floc.L_MAX * w_chan
+            a_new = self.floc.l_max_vol * w_chan
             a_ratio = a_new / a_et_pv
         return a_new
