@@ -133,7 +133,7 @@ class Flocculator:
         :rtype: float * 1 / second
         """
         return ((con.GRAVITY * self.HL) /
-               (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
+                (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
 
     @property
     def retention_time(self):
@@ -275,10 +275,10 @@ class Flocculator:
         :returns: Minimum number of expansions/baffle space
         :rtype: int
         """
-        
+
         return ((self.BAFFLE_K /
-               (2 * self.expansion_h_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) *
-               self.q / ha.HUMAN_W_MIN).to(u.cm)
+                 (2 * self.expansion_h_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) *
+                self.q / ha.HUMAN_W_MIN).to(u.cm)
 
     @property
     def obstacle_n(self):
