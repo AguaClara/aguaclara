@@ -25,6 +25,17 @@ pip install --editable . -U --user
 ```
 The editable flag makes it so that you don't have to continuously install with pip to make the changes you just made visible.
 
+### Running Tests
+To run the test suite, you'll have to install the dev dependencies with pipenv from the repo root directory:
+```bash
+pipenv install 
+```
+If pipenv reports you need to install a different version of python, please do so. After pipenv runs successfully, you'll have a fully provisioned testing environment. To run all the tests, now just type:
+```bash
+pipenv run pytest
+```
+The tests should all pass. If they don't, check in with the latest Travis build of master to see what the difference between the Travis environment and your local environment could make the tests not pass.
+
 ## Contributing: (v0.0.1 -> v0.1.0)
 1. Write your code!
 2. When you are ready to commit it, make a new branch that describes your changes and push it to github:
