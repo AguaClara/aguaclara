@@ -59,6 +59,10 @@ We're not tracking changes at the moment here. Once development is at a more rea
 
 Cloud9 is a cloud based IDE that runs on an AWS EC2 instance. Using cloud9, you can forgo the ordeal of setting up your dev environment and instead use an already constructed dev environment. 
 
+### Using a Prebuilt AguaClara environment
+
+To use the already generated environment, you'll need to setup an IAM account on Amazon. Once you have that, go to [this url](https://console.aws.amazon.com/cloud9/ide/97167ded50a1463faea003d3e1336fe9) and ask to be invited to the environment. Then ping [Ethan](ethan.keller@gmail.com) to get you access. Note that the environment will not save, so be sure to use your git credentials to push any changes you make. 
+
 ### Create the Cloud9 Environment (in the case of not having an environment already configured.)
 1. Use an ec2 instance
 2. Install pyenv with the [pyenv installer](https://github.com/pyenv/pyenv-installer) to manage python versions. Currently: `$ curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash`. You'll probably have to run the three commands : 
