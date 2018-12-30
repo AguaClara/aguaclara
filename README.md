@@ -55,32 +55,27 @@ The tests should all pass. If they don't, check in with the latest Travis build 
 
 We're not tracking changes at the moment here. Once development is at a more reasonable pace, we'll start tracking improvements and bug fixes more carefully!
 
-## Structure
-The aguaclara package has three distinct levels that work together to design a plant. The first level is composed of base classes that define chemicals, quantities, and other parameters. These classes are created and used within the functional layer to define some basic engineering equations. Lastly, the component classes correspond to objects that are modeled in Fusion 360.
+## Using Cloud 9 for development
 
-    +----------------------------+
-    | COMPONENT CLASSES (.parts) |
-    +-------------+              |
-    | Classes that correspond to |
-    | Fusion components.         |    ^
-    +------------+---------------+    |
-                 ^                    |
-                 |                    |
-    +-----------------------+         |
-    |  FUNCTIONAL|LAYER     |         | Each layer
-    +--------------+        |         | depends on the
-    |  This layer has only  |         | layers below
-    |  functions that rely  |         | it to function.
-    |  on quantity class    |         |
-    |  inputs.              |         |
-    +------------+----------+         |
-                 ^                    |
-                 |                    |
-    +------------+---------------+    |
-    |BASE CLASSES                |    |
-    +-----------                 |    |
-    |Classes needed to make the  |    |
-    |functional and component    |    +
-    |class layers work. Such as  |
-    |Quantity, HP and DP.        |
-    +----------------------------+
+Cloud9 is a cloud based IDE that runs on an AWS EC2 instance. Using cloud9, you can forgo the ordeal of setting up your dev environment and instead use an already constructed dev environment. 
+
+### Create the Cloud9 Environment (in the case of not having an environment already configured.)
+1. Use an ec2 instance
+2. Install pyenv with the [pyenv installer](https://github.com/pyenv/pyenv-installer) to manage python versions. Currently: `$ curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash`. You'll probably have to run the three commands : 
+    ```bash
+    export PATH="/home/ec2-user/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    ```
+    If pyenv doesn't show up on your path with `which pyenv`
+3. Install the requisite version of python stated within the Pipfile. Currently 3.5.5. Install with pyenv and set to the global version: `pyenv install 3.5.5 && pyenv global 3.5.5`. You may see an error about the bzip2 library. I think this is safe to ignore...
+4. Next, install pipenv using pip: `pip install pipenv`
+5. Unalis python with `unalias python`
+6. Clone into the aguaclara repo with `git clone https://github.com/AguaClara/aguaclara.git` and go into the repo with `cd aguaclara`
+7. Install the pipenv environment with: `pipenv install --dev`
+8. Run tests with pipenv and pytest: `pipenv run pytest`
+9. The tests should pass. Now you can start programming, stepping through code, etc!
+
+**Notes**
+Pipenv takes up a lot of space and may run through your available storage. You can delete the tmp file with `sudo rm -rf /tmp/*` and you can inspect what other directories are taking up space with `du -h -t 50M /`. Another large file to delete is `sudo rm -rf /home/ec2-user/.cache/pipenv*`. 
+7. 
