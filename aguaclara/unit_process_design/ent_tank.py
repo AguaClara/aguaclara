@@ -35,7 +35,7 @@ def drain_OD(q_plant, T, depth_end, SDR):
     >>> from aguaclara.play import*
     ??
     """
-    nu = viscosity_kinematic(T)
+    nu = pc.viscosity_kinematic(T)
     K_minor = con.PIPE_ENTRANCE_K_MINOR + con.PIPE_EXIT_K_MINOR + con.EL90_K_MINOR
     drain_ID = pc.diam_pipe(q_plant, depth_end, depth_end, nu, mat.PVC_PIPE_ROUGH, K_minor)
     drain_ND = pipe.SDR_available_ND(drain_ID, SDR)

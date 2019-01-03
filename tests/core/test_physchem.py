@@ -112,7 +112,7 @@ class WaterPropertiesTest(unittest.TestCase):
                   (373.15, 2.9108883329847625e-07))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(viscosity_kinematic(i[0]).magnitude, i[1])
+                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]).magnitude, i[1])
 
     def test_viscosity_kinematic_units(self):
         """nu should handle units correctly."""
@@ -122,8 +122,8 @@ class WaterPropertiesTest(unittest.TestCase):
                   (100 * u.degC, 2.9108883329847625e-07))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(viscosity_kinematic(i[0]).magnitude, i[1])
-                self.assertAlmostEqual(viscosity_kinematic(i[0]),
+                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]).magnitude, i[1])
+                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]),
                                        (pc.viscosity_dynamic(i[0]) / pc.density_water(i[0])))
 
 
