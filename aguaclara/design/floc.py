@@ -93,7 +93,13 @@ class Flocculator:
         - URL to the flocculator 3D model in Onshape
     """
 
-    BAFFLE_K = pc.K_MINOR_FLOC_BAFFLE
+    # Increased both to provide a safety margin on flocculator head loss and
+    # to simultaneously scale back on the actual collision potential we are
+    # trying to achieve.
+    # Originally calculated to be 2.3 from the equations:
+    # VC_BAFFLE_RATIO = con.VC_ORIFICE_RATIO**2
+    # K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2
+    BAFFLE_K = 2.5
     HL = 40 * u.cm
     GT = 37000
     END_WATER_H = 2 * u.m
