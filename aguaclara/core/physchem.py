@@ -96,6 +96,7 @@ def re_pipe(FlowRate, Diam, Nu):
 
 
 @u.wraps(u.m, [u.m, u.m], False)
+@ut.list_handler()
 def radius_hydraulic(Width, DistCenter, openchannel):
     """Return the hydraulic radius.
 
@@ -141,6 +142,7 @@ def re_general(Vel, Area, PerimWetted, Nu):
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def fric(FlowRate, Diam, Nu, PipeRough):
     """Return the friction factor for pipe flow.
 
@@ -163,6 +165,7 @@ def fric(FlowRate, Diam, Nu, PipeRough):
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
     """Return the friction factor for a rectangular channel."""
     #Checking input validity - inputs not checked here are checked by
@@ -189,6 +192,7 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
 
 
 @u.wraps(None, [u.m**2, u.m, u.m/u.s, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
     """Return the friction factor for a general channel."""
     #Checking input validity - inputs not checked here are checked by
@@ -356,6 +360,7 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m], False)
+@ut.list_handler()
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
     #Checking input validity
@@ -370,6 +375,7 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
 
 #Deviates from the MathCad at the 6th decimal place. Worth investigating or not?
 @u.wraps(u.m**3/u.s, [u.m, u.m], False)
+@ut.list_handler()
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
     #Checking input validity
@@ -458,6 +464,7 @@ def flow_swamee(Diam, HeadLossFric, Length, Nu, PipeRough):
 
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def flow_pipemajor(Diam, HeadLossFric, Length, Nu, PipeRough):
     """Return the flow rate with only major losses.
 
@@ -491,6 +498,7 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
 # straight pipe that has both major and minor losses and might be either
 # laminar or turbulent.
 @u.wraps(u.m**3/u.s, (u.m, u.m, u.m, u.m**2/u.s, u.m), False)
+@ut.list_handler()
 def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
     """Return the the flow in a straight pipe.
 
@@ -528,6 +536,7 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
                        )
     return FlowRate
 
+
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s], False)
 def diam_hagen(FlowRate, HeadLossFric, Length, Nu):
     #Checking input validity
@@ -563,7 +572,9 @@ def diam_swamee(FlowRate, HeadLossFric, Length, Nu, PipeRough):
          )
     return 0.66 * (a+b)**0.04
 
+
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
     """Return the pipe IDiam that would result in given major losses.
     This function applies to both laminar and turbulent flow.
@@ -592,6 +603,7 @@ def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
     """Return the pipe ID that would result in the given total head loss.
 
