@@ -8,6 +8,6 @@ By: Sage Weber-Shirk
 
 """
 
-NTU = 1.7 * (mg / L)
+NTU = 1.47 * (mg / L)
 dollar = [money] = USD
 lempira = dollar * 0.0427 = HNL

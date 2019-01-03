@@ -13,7 +13,6 @@ from aguaclara.core.units import unit_registry as u
 #==============================================================================
 # Functions for Coagulant Viscosities and Selecting Available Tube Diameters
 #==============================================================================
-from core.units import unit_registry as u
 
 
 def _DiamTubeAvail(en_tube_series = True):
