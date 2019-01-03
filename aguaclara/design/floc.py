@@ -93,7 +93,7 @@ class Flocculator:
         - URL to the flocculator 3D model in Onshape
     """
 
-    BAFFLE_K = 2.56
+    BAFFLE_K = pc.K_MINOR_FLOC_BAFFLE
     HL = 40 * u.cm
     GT = 37000
     END_WATER_H = 2 * u.m
