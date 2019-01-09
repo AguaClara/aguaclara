@@ -93,7 +93,13 @@ class Flocculator:
         - URL to the flocculator 3D model in Onshape
     """
 
-    BAFFLE_K = 2.56
+    # Increased both to provide a safety margin on flocculator head loss and
+    # to simultaneously scale back on the actual collision potential we are
+    # trying to achieve.
+    # Originally calculated to be 2.3 from the equations:
+    # VC_BAFFLE_RATIO = con.VC_ORIFICE_RATIO**2
+    # K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2
+    BAFFLE_K = 2.5
     HL = 40 * u.cm
     GT = 37000
     END_WATER_H = 2 * u.m
@@ -133,7 +139,7 @@ class Flocculator:
         :rtype: float * 1 / second
         """
         return ((con.GRAVITY * self.HL) /
-                (pc.nu(self.temp) * self.GT)).to(u.s ** -1)
+                (pc.viscosity_kinematic(self.temp) * self.GT)).to(u.s ** -1)
 
     @property
     def retention_time(self):
@@ -185,7 +191,7 @@ class Flocculator:
         """
         return ((self.HS_RATIO_MIN * self.q.to(u.m ** 3 / u.s) / self.END_WATER_H) *
                 (self.BAFFLE_K /
-                 (2 * self.END_WATER_H * pc.nu(self.temp) * self.vel_grad_avg ** 2)) ** (1/3)
+                 (2 * self.END_WATER_H * pc.viscosity_kinematic(self.temp) * self.vel_grad_avg ** 2)) ** (1/3)
                 ).to(u.cm)
 
     @property
@@ -247,7 +253,7 @@ class Flocculator:
         exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
         0.375 meter
         """
-        return (((self.BAFFLE_K / (2 * pc.nu(self.temp) * (self.vel_grad_avg ** 2))) *
+        return (((self.BAFFLE_K / (2 * pc.viscosity_kinematic(self.temp) * (self.vel_grad_avg ** 2))) *
                  (self.q * self.HS_RATIO_MAX / self.channel_w) ** 3) ** (1/4)).to(u.m)
 
     @property
@@ -277,7 +283,8 @@ class Flocculator:
         """
 
         return ((self.BAFFLE_K /
-                 (2 * self.expansion_h_max * (self.vel_grad_avg ** 2) * pc.nu(self.temp))) ** (1/3) *
+                 (2 * self.expansion_h_max * (self.vel_grad_avg ** 2) *
+                  pc.viscosity_kinematic(self.temp))) ** (1/3) *
                 self.q / ha.HUMAN_W_MIN).to(u.cm)
 
     @property

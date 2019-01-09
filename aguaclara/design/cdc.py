@@ -13,7 +13,6 @@ from aguaclara.core.units import unit_registry as u
 #==============================================================================
 # Functions for Coagulant Viscosities and Selecting Available Tube Diameters
 #==============================================================================
-from core.units import unit_registry as u
 
 
 def _DiamTubeAvail(en_tube_series = True):
@@ -40,7 +39,7 @@ def viscosity_kinematic_alum(conc_alum, temp):
     based on the effect on water and that there is no confounding effect from
     the coagulant.
     """
-    nu = (1 + (4.255 * 10**-6) * conc_alum**2.289) * pc.nu(temp).magnitude
+    nu = (1 + (4.255 * 10**-6) * conc_alum**2.289) * pc.viscosity_kinematic(temp).magnitude
     return nu
 
 
@@ -54,7 +53,7 @@ def viscosity_kinematic_pacl(conc_pacl, temp):
     based on the effect on water and that there is no confounding effect from
     the coagulant.
     """
-    nu = (1 + (2.383 * 10**-5) * conc_pacl**1.893) * pc.nu(temp).magnitude
+    nu = (1 + (2.383 * 10**-5) * conc_pacl**1.893) * pc.viscosity_kinematic(temp).magnitude
     return nu
 
 
@@ -70,7 +69,7 @@ def viscosity_kinematic_chem(conc_chem, temp, en_chem):
      if en_chem == 1:
          nu =  viscosity_kinematic_pacl(conc_chem, temp).magnitude
      if en_chem not in [0,1]:
-         nu =  pc.nu(temp).magnitude
+         nu =  pc.viscosity_kinematic(temp).magnitude
      return nu
 
 
