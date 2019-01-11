@@ -1,0 +1,635 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Research &mdash; AguaClara v0.0.17 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Flocculator" href="floc.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.17
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Research</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/research.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.research.procoda_parser">
+<span id="research"></span><h1>Research<a class="headerlink" href="#module-aguaclara.research.procoda_parser" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.average_state">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">average_state</code><span class="sig-paren">(</span><em>dates</em>, <em>state</em>, <em>column</em>, <em>units=''</em>, <em>path=''</em>, <em>extension='.xls'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#average_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.average_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outputs the average value of the data for each instance of a state in
+the given ProCoDA files</p>
+<dl class="docutils">
+<dt>dates <span class="classifier-delimiter">:</span> <span class="classifier">string (list)</span></dt>
+<dd>A list of dates or single date for which data was recorded, in
+the form “M-D-Y”</dd>
+<dt>state <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>The state ID number for which data should be extracted</dd>
+<dt>column <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><dl class="first last docutils">
+<dt>int:</dt>
+<dd>Index of the column that you want to extract. Column 0 is time.
+The first data column is column 1.</dd>
+<dt>string:</dt>
+<dd>Name of the column header that you want to extract</dd>
+</dl>
+</dd>
+<dt>units <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” which indicates no units</dd>
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>Optional argument of the path to the folder containing your ProCoDA
+files. Defaults to the current directory if no argument is passed in</dd>
+<dt>extension <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The file extension of the tab delimited file. Defaults to “.xls” if
+no argument is passed in</dd>
+</dl>
+<dl class="docutils">
+<dt>float list</dt>
+<dd>A list of averages for each instance of the given state</dd>
+</dl>
+<p>data_avgs = average_state([“6-19-2013”, “6-20-2013”], 1, 28, “mL/s”)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.column_of_data">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">column_of_data</code><span class="sig-paren">(</span><em>data_file_path</em>, <em>start</em>, <em>column</em>, <em>end='-1'</em>, <em>units=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#column_of_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts a column of data from a ProCoDA data file.</p>
+<dl class="docutils">
+<dt>data_file_path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>File path. If the file is in the working directory, then the file name
+is sufficient.</dd>
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>Index of first row of data to extract from the data file</dd>
+<dt>end <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd>Index of last row of data to extract from the data
+Defaults to -1, which extracts all the data in the file</dd>
+<dt>column <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><dl class="first last docutils">
+<dt>int:</dt>
+<dd>Index of the column that you want to extract. Column 0 is time.
+The first data column is column 1.</dd>
+<dt>string:</dt>
+<dd>Name of the column header that you want to extract</dd>
+</dl>
+</dd>
+<dt>units <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” which indicates no units</dd>
+</dl>
+<dl class="docutils">
+<dt>numpy array</dt>
+<dd>Experimental data with the units applied.</dd>
+</dl>
+<p>column_of_data(Reactor_data.txt, 0, 1, -1, “mg/L”)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.column_of_time">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">column_of_time</code><span class="sig-paren">(</span><em>data_file_path</em>, <em>start</em>, <em>end=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#column_of_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts the column of times from a ProCoDA data file.</p>
+<dl class="docutils">
+<dt>data_file_path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>File path. If the file is in the working directory, then the file name
+is sufficient.</dd>
+<dt>start <span class="classifier-delimiter">:</span> <span class="classifier">int or float</span></dt>
+<dd>Index of first row of data to extract from the data file</dd>
+<dt>end <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional</span></dt>
+<dd>Index of last row of data to extract from the data
+Defaults to -1, which extracts all the data in the file</dd>
+</dl>
+<dl class="docutils">
+<dt>numpy array</dt>
+<dd>Experimental times starting at 0 day with units of days.</dd>
+</dl>
+<p>ftime(Reactor_data.txt, 0)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.day_fraction">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">day_fraction</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#day_fraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.day_fraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a 24-hour time to a fraction of a day.</p>
+<p>For example, midnight corresponds to 0.0, and noon to 0.5.</p>
+<dl class="docutils">
+<dt>time <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>Time in the form of ‘HH:MM’ (24-hour time)</dd>
+</dl>
+<dl class="docutils">
+<dt>float</dt>
+<dd>A day fraction</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.procoda_parser</span> <span class="k">import</span> <span class="n">day_fraction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">day_fraction</span><span class="p">(</span><span class="s2">&quot;00:21&quot;</span><span class="p">)</span>
+<span class="go">0.014583333333333334</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">day_fraction</span><span class="p">(</span><span class="s2">&quot;18:30&quot;</span><span class="p">)</span>
+<span class="go">0.7708333333333334</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.get_data_by_state">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">get_data_by_state</code><span class="sig-paren">(</span><em>path</em>, <em>dates</em>, <em>state</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#get_data_by_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a ProCoDA file and extracts the time and data column for each iteration of
+the given state.</p>
+<dl class="docutils">
+<dt>dates <span class="classifier-delimiter">:</span> <span class="classifier">string (list)</span></dt>
+<dd>A list of dates or single date for which data was recorded, in
+the form “M-D-YYYY”</dd>
+<dt>state <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>The state ID number for which data should be plotted</dd>
+<dt>column <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><dl class="first last docutils">
+<dt>int:</dt>
+<dd>Index of the column that you want to extract. Column 0 is time.
+The first data column is column 1.</dd>
+<dt>string:</dt>
+<dd>Name of the column header that you want to extract</dd>
+</dl>
+</dd>
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>Optional argument of the path to the folder containing your ProCoDA
+files. Defaults to the current directory if no argument is passed in</dd>
+<dt>extension <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The file extension of the tab delimited file. Defaults to “.xls” if
+no argument is passed in</dd>
+</dl>
+<dl class="docutils">
+<dt>3-D list</dt>
+<dd><dl class="first last docutils">
+<dt>A list of lists of the time and data columns extracted for each iteration of the state.</dt>
+<dd>For example, if “data” is the output, data[i][:,0] gives the time column and data[i][:,1]
+gives the data column for the ith iteration of the given state and column. data[i][0]
+would give the first [time, data] pair.</dd>
+</dl>
+</dd>
+</dl>
+<p>get_data_by_state([“6-19-2013”, “6-20-2013”], 1, 28)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.get_data_by_time">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">get_data_by_time</code><span class="sig-paren">(</span><em>path</em>, <em>columns</em>, <em>start_date</em>, <em>start_time='00:00'</em>, <em>end_date=None</em>, <em>end_time='23:59'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts columns of data from a ProCoDA datalog based on starting and ending date(s) and times</p>
+<p>Note: currently only works for 1 or 2 days of data, i.e. end_date must be unspecified or one day after start_date</p>
+<dl class="docutils">
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>The path to the folder containing your ProCoDA data files</dd>
+<dt>columns <span class="classifier-delimiter">:</span> <span class="classifier">int (list)</span></dt>
+<dd>A single index of a column or a list of indices of columns of data to extract
+Note: Column 0 is time. The first data column is column 1.</dd>
+<dt>start_date <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>Starting date of data to extract, formatted ‘M-D-YYYY’</dd>
+<dt>start_time: string, optional</dt>
+<dd>Starting time of data to extract, formatted ‘HH:MM’ (24-hour time)</dd>
+<dt>end_date <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>Ending date of data to extract, formatted ‘M-D-YYYY’</dd>
+<dt>end_time: string, optional</dt>
+<dd>Ending time of data to extract, formatted ‘HH:MM’ (24-hour time)</dd>
+</dl>
+<dl class="docutils">
+<dt>list (2D list)</dt>
+<dd><dl class="first last docutils">
+<dt>list :</dt>
+<dd>contains the single column of data to extract</dd>
+<dt>2D list:</dt>
+<dd>a list of lists containing the columns to extract, in order of the indices given in the columns variable</dd>
+</dl>
+</dd>
+</dl>
+<dl class="docutils">
+<dt>get_data_by_time(path=’/Users/…/ProCoDA Data/’, columns=4, start_date=‘6-14-2018’, start_time=‘12:20’,</dt>
+<dd>end_date=‘6-15-2018’, end_time=‘10:50’)</dd>
+<dt>get_data_by_time(path=’/Users/…/ProCoDA Data/’, columns=[0,4], start_date=‘6-14-2018’, start_time=‘12:20’,</dt>
+<dd>end_time=‘23:59’)</dd>
+</dl>
+<p>get_data_by_time(path=’/Users/…/ProCoDA Data/’, columns=[0,3,4], start_date=‘6-14-2018’, end_date=‘6-18-2018’)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.notes">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">notes</code><span class="sig-paren">(</span><em>data_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.notes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts any experimental notes from a ProCoDA data file.</p>
+<dl class="docutils">
+<dt>data_file_path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>File path. If the file is in the working directory, then the file name
+is sufficient.</dd>
+</dl>
+<dl class="docutils">
+<dt>dataframe</dt>
+<dd>The rows of the data file that contain text notes inserted during the
+experiment. Use this to identify the section of the data file that you
+want to extract.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.perform_function_on_state">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">perform_function_on_state</code><span class="sig-paren">(</span><em>func</em>, <em>dates</em>, <em>state</em>, <em>column</em>, <em>units=''</em>, <em>path=''</em>, <em>extension='.xls'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#perform_function_on_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.perform_function_on_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the function given on each state of the data for the given state
+in the given column and outputs the result for each instance of the state</p>
+<dl class="docutils">
+<dt>func <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
+<dd>A function which will be applied to data from each instance of the state</dd>
+<dt>dates <span class="classifier-delimiter">:</span> <span class="classifier">string (list)</span></dt>
+<dd>A list of dates or single date for which data was recorded, in
+the form “M-D-Y”</dd>
+<dt>state <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>The state ID number for which data should be extracted</dd>
+<dt>column <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><dl class="first last docutils">
+<dt>int:</dt>
+<dd>Index of the column that you want to extract. Column 0 is time.
+The first data column is column 1.</dd>
+<dt>string:</dt>
+<dd>Name of the column header that you want to extract</dd>
+</dl>
+</dd>
+<dt>units <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” which indicates no units</dd>
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>Optional argument of the path to the folder containing your ProCoDA
+files. Defaults to the current directory if no argument is passed in</dd>
+<dt>extension <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The file extension of the tab delimited file. Defaults to “.xls” if
+no argument is passed in</dd>
+</dl>
+<dl class="docutils">
+<dt>list</dt>
+<dd>The outputs of the given function for each instance of the given state</dd>
+</dl>
+<p>func takes in a list of data with units and outputs the correct units</p>
+<dl class="docutils">
+<dt>def avg_with_units(lst):</dt>
+<dd><p class="first">num = np.size(lst)
+acc = 0
+for i in lst:</p>
+<blockquote>
+<div>acc = i + acc</div></blockquote>
+<p class="last">return acc / num</p>
+</dd>
+</dl>
+<p>data_avgs = perform_function_on_state(avg_with_units, [“6-19-2013”, “6-20-2013”], 1, 28, “mL/s”)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.read_state">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">read_state</code><span class="sig-paren">(</span><em>dates</em>, <em>state</em>, <em>column</em>, <em>units=''</em>, <em>path=''</em>, <em>extension='.xls'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#read_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a ProCoDA file and outputs the data column and time vector for
+each iteration of the given state.</p>
+<dl class="docutils">
+<dt>dates <span class="classifier-delimiter">:</span> <span class="classifier">string (list)</span></dt>
+<dd>A list of dates or single date for which data was recorded, in
+the form “M-D-Y”</dd>
+<dt>state <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>The state ID number for which data should be extracted</dd>
+<dt>column <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><dl class="first last docutils">
+<dt>int:</dt>
+<dd>Index of the column that you want to extract. Column 0 is time.
+The first data column is column 1.</dd>
+<dt>string:</dt>
+<dd>Name of the column header that you want to extract</dd>
+</dl>
+</dd>
+<dt>units <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” which indicates no units</dd>
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>Optional argument of the path to the folder containing your ProCoDA
+files. Defaults to the current directory if no argument is passed in</dd>
+<dt>extension <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The file extension of the tab delimited file. Defaults to “.xls” if
+no argument is passed in</dd>
+</dl>
+<dl class="docutils">
+<dt>time <span class="classifier-delimiter">:</span> <span class="classifier">numpy array</span></dt>
+<dd>Times corresponding to the data (with units)</dd>
+<dt>data <span class="classifier-delimiter">:</span> <span class="classifier">numpy array</span></dt>
+<dd>Data in the given column during the given state with units</dd>
+</dl>
+<p>time, data = read_state([“6-19-2013”, “6-20-2013”], 1, 28, “mL/s”)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.read_state_with_metafile">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">read_state_with_metafile</code><span class="sig-paren">(</span><em>func</em>, <em>state</em>, <em>column</em>, <em>path</em>, <em>metaids=[]</em>, <em>extension='.xls'</em>, <em>units=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#read_state_with_metafile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state_with_metafile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in a ProCoDA meta file and performs a function for all data of a
+certain state in each of the experiments (denoted by file paths in then
+metafile)</p>
+<dl class="docutils">
+<dt>func <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
+<dd>A function which will be applied to data from each instance of the state</dd>
+<dt>state <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>The state ID number for which data should be extracted</dd>
+<dt>column <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><dl class="first last docutils">
+<dt>int:</dt>
+<dd>Index of the column that you want to extract. Column 0 is time.
+The first data column is column 1.</dd>
+<dt>string:</dt>
+<dd>Name of the column header that you want to extract</dd>
+</dl>
+</dd>
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>Path to your ProCoDA metafile (must be tab-delimited)</dd>
+<dt>metaids <span class="classifier-delimiter">:</span> <span class="classifier">string list, optional</span></dt>
+<dd>a list of the experiment IDs you’d like to analyze from the metafile</dd>
+<dt>extension <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The file extension of the tab delimited file. Defaults to “.xls” if
+no argument is passed in</dd>
+<dt>units <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” which indicates no units</dd>
+</dl>
+<dl class="docutils">
+<dt>ids <span class="classifier-delimiter">:</span> <span class="classifier">string list</span></dt>
+<dd>The list of experiment ids given in the metafile</dd>
+<dt>outputs <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd>The outputs of the given function for each experiment</dd>
+</dl>
+<dl class="docutils">
+<dt>def avg_with_units(lst):</dt>
+<dd><p class="first">num = np.size(lst)
+acc = 0
+for i in lst:</p>
+<blockquote>
+<div>acc = i + acc</div></blockquote>
+<p class="last">return acc / num</p>
+</dd>
+</dl>
+<p>path = “../tests/data/Test Meta File.txt”
+ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], “.xls”, “mg/L”)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.remove_notes">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">remove_notes</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#remove_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.remove_notes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Omits any rows containing text from a pandas.DataFrame object, except for headers</p>
+<p>Text is defined as characters of the alphabet. The resulting DataFrame should have only headers and numerical data.</p>
+<dl class="docutils">
+<dt>data <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd>DataFrame object to remove text from</dd>
+</dl>
+<dl class="docutils">
+<dt>pandas.DataFrame</dt>
+<dd>DataFrame object with no text, except for headers</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.write_calculations_to_csv">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">write_calculations_to_csv</code><span class="sig-paren">(</span><em>funcs</em>, <em>states</em>, <em>columns</em>, <em>path</em>, <em>headers</em>, <em>out_name</em>, <em>metaids=[]</em>, <em>extension='.xls'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/research/procoda_parser.html#write_calculations_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.write_calculations_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes each output of the given functions on the given states and data
+columns to a new column in a</p>
+<dl class="docutils">
+<dt>funcs <span class="classifier-delimiter">:</span> <span class="classifier">function (list)</span></dt>
+<dd>A function or list of functions which will be applied in order to the
+data. If only one function is given it is applied to all the
+states/columns</dd>
+<dt>states <span class="classifier-delimiter">:</span> <span class="classifier">string (list)</span></dt>
+<dd>The state ID numbers for which data should be extracted. List should be
+in order of calculation or if only one state is given then it will be
+used for all the calculations</dd>
+<dt>columns <span class="classifier-delimiter">:</span> <span class="classifier">int or string (list)</span></dt>
+<dd><dl class="first last docutils">
+<dt>If only one column is given it is used for all the calculations</dt>
+<dd><dl class="first last docutils">
+<dt>int:</dt>
+<dd>Index of the column that you want to extract. Column 0 is time.
+The first data column is column 1.</dd>
+<dt>string:</dt>
+<dd>Name of the column header that you want to extract</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>Path to your ProCoDA metafile (must be tab-delimited)</dd>
+<dt>headers <span class="classifier-delimiter">:</span> <span class="classifier">string list</span></dt>
+<dd>List of the desired header for each calculation, in order</dd>
+<dt>out_name <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>Desired name for the output file. Can include a relative path</dd>
+<dt>metaids <span class="classifier-delimiter">:</span> <span class="classifier">string list, optional</span></dt>
+<dd>a list of the experiment IDs you’d like to analyze from the metafile</dd>
+<dt>extension <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd>The file extension of the tab delimited file. Defaults to “.xls” if
+no argument is passed in</dd>
+</dl>
+<dl class="docutils">
+<dt>out_name.csv</dt>
+<dd>A CSV file with the each column being a new calcuation and each row
+being a new experiment on which the calcuations were performed</dd>
+<dt>output <span class="classifier-delimiter">:</span> <span class="classifier">DataFrame</span></dt>
+<dd>Pandas dataframe which is the same data that was written to CSV</dd>
+</dl>
+<p>funcs, states, columns, and headers are all of the same length if they are
+lists. Some being lists and some single values are okay.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="floc.html" class="btn btn-neutral" title="Flocculator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'v0.0.17',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

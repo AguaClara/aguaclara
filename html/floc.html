@@ -1,0 +1,559 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Flocculator &mdash; AguaClara v0.0.17 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Research" href="research.html" />
+    <link rel="prev" title="Design" href="design.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.17
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="design.html">Design</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Flocculator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="design.html">Design</a> &raquo;</li>
+        
+      <li>Flocculator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/floc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.design.floc">
+<span id="flocculator"></span><h1>Flocculator<a class="headerlink" href="#module-aguaclara.design.floc" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="aguaclara.design.floc.Flocculator">
+<em class="property">class </em><code class="descclassname">aguaclara.design.floc.</code><code class="descname">Flocculator</code><span class="sig-paren">(</span><em>q=&lt;Quantity(20.0</em>, <em>'liter / second')&gt;</em>, <em>temp=&lt;Quantity(25</em>, <em>'degC')&gt;</em>, <em>sed_tank_l_max=&lt;Quantity(6</em>, <em>'meter')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/design/floc.html#Flocculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates physical dimensions of an AguaClara flocculator.</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>BAFFLE_K (K or K_baffle): float</dt>
+<dd><ul class="first last">
+<li>The minor loss coefficient of the flocculator baffles.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>HL (h_L_floc): float * u.cm</dt>
+<dd><ul class="first last">
+<li>The target head loss in the flocculator.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>GT (G-bar-Theta): float</dt>
+<dd><ul class="first last">
+<li>The target collision potential of particles in the flocculator.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>END_WATER_H (H): float * u.m</dt>
+<dd><ul class="first last">
+<li>The height of water at the end of the flocculator.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>CHANNEL_N_MIN (n_{Min, channel}): int</dt>
+<dd><ul class="first last">
+<li>The minimum number of flocculator channels.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>HS_RATIO_MIN (Pi_{HS}): float</dt>
+<dd><ul class="first last">
+<li>The minimum ratio between expansion height and baffle spacing</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>HS_RATIO_MAX (Pi_{HS}): float</dt>
+<dd><ul class="first last">
+<li>The maximum ratio between expansion height and baffle spacing</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>CAD: Part</dt>
+<dd><ul class="first last">
+<li>URL to the flocculator 3D model in Onshape</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.baffle_s">
+<code class="descname">baffle_s</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.baffle_s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the spacing between baffles.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Minimum number of expansions/baffle space</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.channel_l">
+<code class="descname">channel_l</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the length of the flocculator channel that allows for the
+target volume, while at the same time, allowing for human access.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Channel length</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.channel_n">
+<code class="descname">channel_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of channels in the entrance tank/flocculator (ETF).</p>
+<p>This takes the total width of the flocculator and divides it by the
+minimum channel width. A floor function is used to ensure that there
+are an even number of channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Number of channels</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.channel_w">
+<code class="descname">channel_w</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_w" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel width of the flocculator.  See section ‘Flocculation
+Design’ of textbook’</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Channel width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.floc.Flocculator.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/design/floc.html#Flocculator.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the Onshape flocculator model based off of this object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.expansion_h">
+<code class="descname">expansion_h</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the height between flow expansions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Height between flow expansions</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * centimeter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.expansion_h_max">
+<code class="descname">expansion_h_max</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>“Return the maximum distance between expansions for the largest
+allowable H/S ratio.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Maximum expansion distance</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
+</tr>
+</tbody>
+</table>
+<p>exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+0.375 meter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.expansion_n">
+<code class="descname">expansion_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minimum number of expansions per baffle space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Minimum number of expansions/baffle space</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.l_max_vol">
+<code class="descname">l_max_vol</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.l_max_vol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the maximum flocculator channel length that achieves the
+target volume, while still allowing human access.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Maximum length based off of volume</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.obstacle_n">
+<code class="descname">obstacle_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.obstacle_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of baffles a channel can contain.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Number of baffles channel can contain</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.retention_time">
+<code class="descname">retention_time</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.retention_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the retention time of flocs in a flocculator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Retention time of flocs (:math:`      heta`)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * second</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.vel_grad_avg">
+<code class="descname">vel_grad_avg</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vel_grad_avg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the average velocity gradient (G-bar) of water flowing
+through the flocculator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Average velocity gradient (G-bar)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * 1 / second</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.vol">
+<code class="descname">vol</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the target volume of the flocculator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Target volume</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter ** 3</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.w_min">
+<code class="descname">w_min</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.w_min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the minimum channel width required to remain within the
+H_e/S ratio range and human access requirements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Minimum channel width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * centimeter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.w_min_hs_ratio">
+<code class="descname">w_min_hs_ratio</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.w_min_hs_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the minimum flocculator channel width, given the minimum
+ratio between expansion height (H) and baffle spacing (S).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Minimum channel width given H_e/S</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * centimeter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.w_total">
+<code class="descname">w_total</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.w_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total width of the flocculator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Total width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="research.html" class="btn btn-neutral float-right" title="Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="design.html" class="btn btn-neutral" title="Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'v0.0.17',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

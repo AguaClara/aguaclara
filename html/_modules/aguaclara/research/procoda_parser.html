@@ -1,0 +1,1138 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aguaclara.research.procoda_parser &mdash; AguaClara v0.0.17 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.17
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aguaclara.research.procoda_parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aguaclara.research.procoda_parser</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+
+
+<div class="viewcode-block" id="get_data_by_time"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.get_data_by_time">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;00:00&quot;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;23:59&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extracts columns of data from a ProCoDA datalog based on starting and ending date(s) and times</span>
+
+<span class="sd">    Note: currently only works for 1 or 2 days of data, i.e. end_date must be unspecified or one day after start_date</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : string</span>
+<span class="sd">        The path to the folder containing your ProCoDA data files</span>
+<span class="sd">    columns : int (list)</span>
+<span class="sd">        A single index of a column or a list of indices of columns of data to extract</span>
+<span class="sd">        Note: Column 0 is time. The first data column is column 1.</span>
+<span class="sd">    start_date : string</span>
+<span class="sd">        Starting date of data to extract, formatted &#39;M-D-YYYY&#39;</span>
+<span class="sd">    start_time: string, optional</span>
+<span class="sd">        Starting time of data to extract, formatted &#39;HH:MM&#39; (24-hour time)</span>
+<span class="sd">    end_date : string, optional</span>
+<span class="sd">        Ending date of data to extract, formatted &#39;M-D-YYYY&#39;</span>
+<span class="sd">    end_time: string, optional</span>
+<span class="sd">        Ending time of data to extract, formatted &#39;HH:MM&#39; (24-hour time)</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    list (2D list)</span>
+<span class="sd">        list :</span>
+<span class="sd">            contains the single column of data to extract</span>
+<span class="sd">        2D list:</span>
+<span class="sd">            a list of lists containing the columns to extract, in order of the indices given in the columns variable</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    get_data_by_time(path=&#39;/Users/.../ProCoDA Data/&#39;, columns=4, start_date=&#39;6-14-2018&#39;, start_time=&#39;12:20&#39;,</span>
+<span class="sd">        end_date=&#39;6-15-2018&#39;, end_time=&#39;10:50&#39;)</span>
+<span class="sd">    get_data_by_time(path=&#39;/Users/.../ProCoDA Data/&#39;, columns=[0,4], start_date=&#39;6-14-2018&#39;, start_time=&#39;12:20&#39;,</span>
+<span class="sd">         end_time=&#39;23:59&#39;)</span>
+<span class="sd">    get_data_by_time(path=&#39;/Users/.../ProCoDA Data/&#39;, columns=[0,3,4], start_date=&#39;6-14-2018&#39;, end_date=&#39;6-18-2018&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Locate and read data file(s)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;datalog &quot;</span> <span class="o">+</span> <span class="n">start_date</span> <span class="o">+</span> <span class="s1">&#39;.xls&#39;</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_notes</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">))]</span>
+
+    <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;datalog &quot;</span> <span class="o">+</span> <span class="n">end_date</span> <span class="o">+</span> <span class="s2">&quot;.xls&quot;</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remove_notes</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)))</span>
+
+    <span class="c1"># Calculate start index</span>
+    <span class="n">time_column</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">interval</span> <span class="o">=</span> <span class="n">time_column</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">time_column</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">start_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">day_fraction</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span> <span class="o">-</span> <span class="n">time_column</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">interval</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span><span class="p">))</span> <span class="c1">#round up</span>
+
+    <span class="c1"># Calculate end index</span>
+    <span class="n">time_column</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">end_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">day_fraction</span><span class="p">(</span><span class="n">end_time</span><span class="p">)</span> <span class="o">-</span> <span class="n">time_column</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">interval</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1">#round up</span>
+
+    <span class="c1"># Get columns of interest</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">,</span> <span class="n">columns</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">,</span> <span class="n">c</span><span class="p">])))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:,</span> <span class="n">columns</span><span class="p">]))</span> <span class="o">+</span> \
+                     <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">end_idx</span><span class="p">,</span> <span class="n">columns</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">columns</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:,</span> <span class="n">c</span><span class="p">]))</span> <span class="o">+</span>
+                              <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">end_idx</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="remove_notes"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.remove_notes">[docs]</a><span class="k">def</span> <span class="nf">remove_notes</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Omits any rows containing text from a pandas.DataFrame object, except for headers</span>
+
+<span class="sd">    Text is defined as characters of the alphabet. The resulting DataFrame should have only headers and numerical data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pandas.DataFrame</span>
+<span class="sd">        DataFrame object to remove text from</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        DataFrame object with no text, except for headers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">has_text</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;(?!e-)[a-zA-Z]&#39;</span><span class="p">)</span>
+    <span class="n">text_rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">has_text</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">has_text</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">text_rows</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="day_fraction"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.day_fraction">[docs]</a><span class="k">def</span> <span class="nf">day_fraction</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts a 24-hour time to a fraction of a day.</span>
+
+<span class="sd">    For example, midnight corresponds to 0.0, and noon to 0.5.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    time : string</span>
+<span class="sd">        Time in the form of &#39;HH:MM&#39; (24-hour time)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        A day fraction</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.procoda_parser import day_fraction</span>
+<span class="sd">    &gt;&gt;&gt; day_fraction(&quot;00:21&quot;)</span>
+<span class="sd">    0.014583333333333334</span>
+<span class="sd">    &gt;&gt;&gt; day_fraction(&quot;18:30&quot;)</span>
+<span class="sd">    0.7708333333333334</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">hour</span><span class="o">/</span><span class="mi">24</span> <span class="o">+</span> <span class="n">minute</span><span class="o">/</span><span class="mi">1440</span></div>
+
+
+<div class="viewcode-block" id="get_data_by_state"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.get_data_by_state">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and extracts the time and data column for each iteration of</span>
+<span class="sd">    the given state.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dates : string (list)</span>
+<span class="sd">        A list of dates or single date for which data was recorded, in</span>
+<span class="sd">        the form &quot;M-D-YYYY&quot;</span>
+<span class="sd">    state : int</span>
+<span class="sd">        The state ID number for which data should be plotted</span>
+<span class="sd">    column : int or string</span>
+<span class="sd">        int:</span>
+<span class="sd">            Index of the column that you want to extract. Column 0 is time.</span>
+<span class="sd">            The first data column is column 1.</span>
+<span class="sd">        string:</span>
+<span class="sd">            Name of the column header that you want to extract</span>
+<span class="sd">    path : string, optional</span>
+<span class="sd">        Optional argument of the path to the folder containing your ProCoDA</span>
+<span class="sd">        files. Defaults to the current directory if no argument is passed in</span>
+<span class="sd">    extension : string, optional</span>
+<span class="sd">        The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if</span>
+<span class="sd">        no argument is passed in</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    3-D list</span>
+<span class="sd">        A list of lists of the time and data columns extracted for each iteration of the state.</span>
+<span class="sd">         For example, if &quot;data&quot; is the output, data[i][:,0] gives the time column and data[i][:,1]</span>
+<span class="sd">         gives the data column for the ith iteration of the given state and column. data[i][0]</span>
+<span class="sd">         would give the first [time, data] pair.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    get_data_by_state([&quot;6-19-2013&quot;, &quot;6-20-2013&quot;], 1, 28)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_agg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">first_day</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">overnight</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">extension</span> <span class="o">=</span> <span class="s2">&quot;.xls&quot;</span>
+    <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dates</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+        <span class="n">state_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;statelog &quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;datalog &quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># get the start and end times for the state</span>
+        <span class="n">state_start_idx</span> <span class="o">=</span> <span class="n">states</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">state</span>
+        <span class="n">state_start</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">state_start_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">state_end_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="kc">False</span><span class="p">],</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">state_end</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">state_end_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">overnight</span><span class="p">:</span>
+            <span class="n">state_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">state_start</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">state_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">state_end</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_end</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># get the corresponding indices in the data array</span>
+        <span class="n">data_start</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data_end</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">state_start</span><span class="p">)):</span>
+            <span class="n">add_start</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_start</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="ow">and</span> <span class="n">add_start</span><span class="p">:</span>
+                    <span class="n">data_start</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                    <span class="n">add_start</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_end</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">data_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># extract data at those times</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_start</span><span class="p">)):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">day</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">column</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">overnight</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]),</span>
+                                     <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data_agg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="n">day</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
+            <span class="n">first_day</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">overnight</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">data_agg</span></div>
+
+
+<div class="viewcode-block" id="column_of_time"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.column_of_time">[docs]</a><span class="k">def</span> <span class="nf">column_of_time</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts the column of times from a ProCoDA data file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_file_path : string</span>
+<span class="sd">        File path. If the file is in the working directory, then the file name</span>
+<span class="sd">        is sufficient.</span>
+
+<span class="sd">    start : int or float</span>
+<span class="sd">        Index of first row of data to extract from the data file</span>
+
+<span class="sd">    end : int or float, optional</span>
+<span class="sd">        Index of last row of data to extract from the data</span>
+<span class="sd">        Defaults to -1, which extracts all the data in the file</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy array</span>
+<span class="sd">        Experimental times starting at 0 day with units of days.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    ftime(Reactor_data.txt, 0)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span>
+    <span class="n">day_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">time_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">day_times</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">),</span> <span class="n">start_time</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">time_data</span></div>
+
+
+<div class="viewcode-block" id="column_of_data"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.column_of_data">[docs]</a><span class="k">def</span> <span class="nf">column_of_data</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts a column of data from a ProCoDA data file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_file_path : string</span>
+<span class="sd">        File path. If the file is in the working directory, then the file name</span>
+<span class="sd">        is sufficient.</span>
+
+<span class="sd">    start : int</span>
+<span class="sd">        Index of first row of data to extract from the data file</span>
+
+<span class="sd">    end : int, optional</span>
+<span class="sd">        Index of last row of data to extract from the data</span>
+<span class="sd">        Defaults to -1, which extracts all the data in the file</span>
+
+<span class="sd">    column : int or string</span>
+<span class="sd">        int:</span>
+<span class="sd">            Index of the column that you want to extract. Column 0 is time.</span>
+<span class="sd">            The first data column is column 1.</span>
+<span class="sd">        string:</span>
+<span class="sd">            Name of the column header that you want to extract</span>
+
+<span class="sd">    units : string, optional</span>
+<span class="sd">        The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; which indicates no units</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy array</span>
+<span class="sd">        Experimental data with the units applied.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    column_of_data(Reactor_data.txt, 0, 1, -1, &quot;mg/L&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">column</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">column</span><span class="p">]))</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="notes"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.notes">[docs]</a><span class="k">def</span> <span class="nf">notes</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts any experimental notes from a ProCoDA data file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_file_path : string</span>
+<span class="sd">        File path. If the file is in the working directory, then the file name</span>
+<span class="sd">        is sufficient.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dataframe</span>
+<span class="sd">        The rows of the data file that contain text notes inserted during the</span>
+<span class="sd">        experiment. Use this to identify the section of the data file that you</span>
+<span class="sd">        want to extract.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">text_row</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;[a-z]&#39;</span><span class="p">,</span> <span class="s1">&#39;[A-Z]&#39;</span><span class="p">)</span>
+    <span class="n">text_row_index</span> <span class="o">=</span> <span class="n">text_row</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">text_row</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">notes</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">text_row_index</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">notes</span></div>
+
+
+<div class="viewcode-block" id="read_state"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.read_state">[docs]</a><span class="k">def</span> <span class="nf">read_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and outputs the data column and time vector for</span>
+<span class="sd">    each iteration of the given state.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dates : string (list)</span>
+<span class="sd">        A list of dates or single date for which data was recorded, in</span>
+<span class="sd">        the form &quot;M-D-Y&quot;</span>
+
+<span class="sd">    state : int</span>
+<span class="sd">        The state ID number for which data should be extracted</span>
+
+<span class="sd">    column : int or string</span>
+<span class="sd">        int:</span>
+<span class="sd">            Index of the column that you want to extract. Column 0 is time.</span>
+<span class="sd">            The first data column is column 1.</span>
+<span class="sd">        string:</span>
+<span class="sd">            Name of the column header that you want to extract</span>
+
+<span class="sd">    units : string, optional</span>
+<span class="sd">        The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; which indicates no units</span>
+
+<span class="sd">    path : string, optional</span>
+<span class="sd">        Optional argument of the path to the folder containing your ProCoDA</span>
+<span class="sd">        files. Defaults to the current directory if no argument is passed in</span>
+
+<span class="sd">    extension : string, optional</span>
+<span class="sd">        The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if</span>
+<span class="sd">        no argument is passed in</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    time : numpy array</span>
+<span class="sd">        Times corresponding to the data (with units)</span>
+
+<span class="sd">    data : numpy array</span>
+<span class="sd">        Data in the given column during the given state with units</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    time, data = read_state([&quot;6-19-2013&quot;, &quot;6-20-2013&quot;], 1, 28, &quot;mL/s&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_agg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">first_day</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">overnight</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dates</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+        <span class="n">state_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;statelog &quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;datalog &quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># get the start and end times for the state</span>
+        <span class="n">state_start_idx</span> <span class="o">=</span> <span class="n">states</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">state</span>
+        <span class="n">state_start</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">state_start_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">state_end_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="kc">False</span><span class="p">],</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">state_start_idx</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="n">state_end</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">state_end_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">overnight</span><span class="p">:</span>
+            <span class="n">state_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">state_start</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">state_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">state_end</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">state_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># get the corresponding indices in the data array</span>
+        <span class="n">data_start</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data_end</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">state_start</span><span class="p">)):</span>
+            <span class="n">add_start</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_start</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="ow">and</span> <span class="n">add_start</span><span class="p">:</span>
+                    <span class="n">data_start</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                    <span class="n">add_start</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_end</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                    <span class="n">data_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># extract data at those times</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_start</span><span class="p">)):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">day</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">column</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">overnight</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]),</span>
+                                     <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data_agg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="n">day</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
+            <span class="n">first_day</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">overnight</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">data_agg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="average_state"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.average_state">[docs]</a><span class="k">def</span> <span class="nf">average_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Outputs the average value of the data for each instance of a state in</span>
+<span class="sd">    the given ProCoDA files</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dates : string (list)</span>
+<span class="sd">        A list of dates or single date for which data was recorded, in</span>
+<span class="sd">        the form &quot;M-D-Y&quot;</span>
+
+<span class="sd">    state : int</span>
+<span class="sd">        The state ID number for which data should be extracted</span>
+
+<span class="sd">    column : int or string</span>
+<span class="sd">        int:</span>
+<span class="sd">            Index of the column that you want to extract. Column 0 is time.</span>
+<span class="sd">            The first data column is column 1.</span>
+<span class="sd">        string:</span>
+<span class="sd">            Name of the column header that you want to extract</span>
+
+<span class="sd">    units : string, optional</span>
+<span class="sd">        The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; which indicates no units</span>
+
+<span class="sd">    path : string, optional</span>
+<span class="sd">        Optional argument of the path to the folder containing your ProCoDA</span>
+<span class="sd">        files. Defaults to the current directory if no argument is passed in</span>
+
+<span class="sd">    extension : string, optional</span>
+<span class="sd">        The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if</span>
+<span class="sd">        no argument is passed in</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float list</span>
+<span class="sd">        A list of averages for each instance of the given state</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    data_avgs = average_state([&quot;6-19-2013&quot;, &quot;6-20-2013&quot;], 1, 28, &quot;mL/s&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_agg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">first_day</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">overnight</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dates</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+        <span class="n">state_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;statelog &quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;datalog &quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># get the start and end times for the state</span>
+        <span class="n">state_start_idx</span> <span class="o">=</span> <span class="n">states</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">state</span>
+        <span class="n">state_start</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">state_start_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">state_end_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="kc">False</span><span class="p">],</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">state_start_idx</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="n">state_end</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">state_end_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">overnight</span><span class="p">:</span>
+            <span class="n">state_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">state_start</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">state_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">state_end</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">state_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># get the corresponding indices in the data array</span>
+        <span class="n">data_start</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data_end</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">state_start</span><span class="p">)):</span>
+            <span class="n">add_start</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_start</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="ow">and</span> <span class="n">add_start</span><span class="p">:</span>
+                    <span class="n">data_start</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                    <span class="n">add_start</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_end</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                    <span class="n">data_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># extract data at those times</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_start</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">column</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">overnight</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:]),</span> <span class="n">c</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data_agg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="n">day</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
+            <span class="n">first_day</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">overnight</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">averages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">)):</span>
+        <span class="n">averages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">averages</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">averages</span></div>
+
+
+<div class="viewcode-block" id="perform_function_on_state"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.perform_function_on_state">[docs]</a><span class="k">def</span> <span class="nf">perform_function_on_state</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Performs the function given on each state of the data for the given state</span>
+<span class="sd">    in the given column and outputs the result for each instance of the state</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : function</span>
+<span class="sd">        A function which will be applied to data from each instance of the state</span>
+
+<span class="sd">    dates : string (list)</span>
+<span class="sd">        A list of dates or single date for which data was recorded, in</span>
+<span class="sd">        the form &quot;M-D-Y&quot;</span>
+
+<span class="sd">    state : int</span>
+<span class="sd">        The state ID number for which data should be extracted</span>
+
+<span class="sd">    column : int or string</span>
+<span class="sd">        int:</span>
+<span class="sd">            Index of the column that you want to extract. Column 0 is time.</span>
+<span class="sd">            The first data column is column 1.</span>
+<span class="sd">        string:</span>
+<span class="sd">            Name of the column header that you want to extract</span>
+
+<span class="sd">    units : string, optional</span>
+<span class="sd">        The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; which indicates no units</span>
+
+<span class="sd">    path : string, optional</span>
+<span class="sd">        Optional argument of the path to the folder containing your ProCoDA</span>
+<span class="sd">        files. Defaults to the current directory if no argument is passed in</span>
+
+<span class="sd">    extension : string, optional</span>
+<span class="sd">        The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if</span>
+<span class="sd">        no argument is passed in</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        The outputs of the given function for each instance of the given state</span>
+
+<span class="sd">    Requires</span>
+<span class="sd">    --------</span>
+<span class="sd">    func takes in a list of data with units and outputs the correct units</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    def avg_with_units(lst):</span>
+<span class="sd">        num = np.size(lst)</span>
+<span class="sd">        acc = 0</span>
+<span class="sd">        for i in lst:</span>
+<span class="sd">            acc = i + acc</span>
+
+<span class="sd">        return acc / num</span>
+
+<span class="sd">    data_avgs = perform_function_on_state(avg_with_units, [&quot;6-19-2013&quot;, &quot;6-20-2013&quot;], 1, 28, &quot;mL/s&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_agg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">first_day</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">overnight</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dates</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+        <span class="n">state_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;statelog &quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;datalog &quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># get the start and end times for the state</span>
+        <span class="n">state_start_idx</span> <span class="o">=</span> <span class="n">states</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">state</span>
+        <span class="n">state_start</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">state_start_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">state_end_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="kc">False</span><span class="p">],</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">state_start_idx</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="n">state_end</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">state_end_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">overnight</span><span class="p">:</span>
+            <span class="n">state_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">state_start</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">state_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">state_end</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">state_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># get the corresponding indices in the data array</span>
+        <span class="n">data_start</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data_end</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">state_start</span><span class="p">)):</span>
+            <span class="n">add_start</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_start</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="ow">and</span> <span class="n">add_start</span><span class="p">:</span>
+                    <span class="n">data_start</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                    <span class="n">add_start</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_end</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                    <span class="n">data_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># extract data at those times</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_start</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">column</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">overnight</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:]),</span> <span class="n">c</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data_agg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="n">day</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
+            <span class="n">first_day</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">state_start_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">overnight</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">))</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">output</span><span class="o">*</span><span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">))</span><span class="o">.</span><span class="n">units</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">output</span></div>
+
+
+<div class="viewcode-block" id="read_state_with_metafile"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.read_state_with_metafile">[docs]</a><span class="k">def</span> <span class="nf">read_state_with_metafile</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span>
+                             <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Takes in a ProCoDA meta file and performs a function for all data of a</span>
+<span class="sd">    certain state in each of the experiments (denoted by file paths in then</span>
+<span class="sd">    metafile)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : function</span>
+<span class="sd">        A function which will be applied to data from each instance of the state</span>
+
+<span class="sd">    state : int</span>
+<span class="sd">        The state ID number for which data should be extracted</span>
+
+<span class="sd">    column : int or string</span>
+<span class="sd">        int:</span>
+<span class="sd">            Index of the column that you want to extract. Column 0 is time.</span>
+<span class="sd">            The first data column is column 1.</span>
+<span class="sd">        string:</span>
+<span class="sd">            Name of the column header that you want to extract</span>
+
+<span class="sd">    path : string</span>
+<span class="sd">        Path to your ProCoDA metafile (must be tab-delimited)</span>
+
+<span class="sd">    metaids : string list, optional</span>
+<span class="sd">        a list of the experiment IDs you&#39;d like to analyze from the metafile</span>
+
+<span class="sd">    extension : string, optional</span>
+<span class="sd">        The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if</span>
+<span class="sd">        no argument is passed in</span>
+
+<span class="sd">    units : string, optional</span>
+<span class="sd">        The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; which indicates no units</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ids : string list</span>
+<span class="sd">        The list of experiment ids given in the metafile</span>
+
+<span class="sd">    outputs : list</span>
+<span class="sd">        The outputs of the given function for each experiment</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    def avg_with_units(lst):</span>
+<span class="sd">        num = np.size(lst)</span>
+<span class="sd">        acc = 0</span>
+<span class="sd">        for i in lst:</span>
+<span class="sd">            acc = i + acc</span>
+
+<span class="sd">        return acc / num</span>
+
+<span class="sd">    path = &quot;../tests/data/Test Meta File.txt&quot;</span>
+<span class="sd">    ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], &quot;.xls&quot;, &quot;mg/L&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">metafile</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">metafile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">metafile</span><span class="p">)</span>
+
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">ids</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">metaids</span><span class="p">:</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="n">metaids</span><span class="p">:</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metafile</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">4</span><span class="p">]</span>
+
+    <span class="n">basepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">metafile</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+
+    <span class="c1"># use a loop to evaluate each experiment in the metafile</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)):</span>
+        <span class="c1"># get the range of dates for experiment i</span>
+        <span class="n">day1</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># modify the metafile date so that it works with datetime format</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">day1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span> <span class="ow">or</span> <span class="n">day1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">):</span>
+            <span class="n">day1</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="n">day1</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">day1</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span> <span class="ow">or</span> <span class="n">day1</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">):</span>
+            <span class="n">day1</span> <span class="o">=</span> <span class="n">day1</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="n">day1</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+
+        <span class="k">if</span> <span class="n">day1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">day1</span><span class="p">,</span> <span class="s2">&quot;%m-</span><span class="si">%d</span><span class="s2">-%Y&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">day1</span><span class="p">,</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%y&quot;</span><span class="p">)</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">duration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+
+        <span class="n">date_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+            <span class="n">curr_day</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m-</span><span class="si">%d</span><span class="s2">-%Y&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">curr_day</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+                <span class="n">curr_day</span> <span class="o">=</span> <span class="n">curr_day</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">curr_day</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="n">curr_day</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+                <span class="n">curr_day</span> <span class="o">=</span> <span class="n">curr_day</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+            <span class="n">date_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr_day</span><span class="p">)</span>
+
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basepath</span><span class="p">,</span> <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">read_state</span><span class="p">(</span><span class="n">date_list</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
+
+        <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">ids</span><span class="p">,</span> <span class="n">outputs</span></div>
+
+
+<div class="viewcode-block" id="write_calculations_to_csv"><a class="viewcode-back" href="../../../research.html#aguaclara.research.procoda_parser.write_calculations_to_csv">[docs]</a><span class="k">def</span> <span class="nf">write_calculations_to_csv</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">out_name</span><span class="p">,</span>
+                              <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Writes each output of the given functions on the given states and data</span>
+<span class="sd">    columns to a new column in a</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    funcs : function (list)</span>
+<span class="sd">        A function or list of functions which will be applied in order to the</span>
+<span class="sd">        data. If only one function is given it is applied to all the</span>
+<span class="sd">        states/columns</span>
+
+<span class="sd">    states : string (list)</span>
+<span class="sd">        The state ID numbers for which data should be extracted. List should be</span>
+<span class="sd">        in order of calculation or if only one state is given then it will be</span>
+<span class="sd">        used for all the calculations</span>
+
+<span class="sd">    columns : int or string (list)</span>
+<span class="sd">        If only one column is given it is used for all the calculations</span>
+<span class="sd">            int:</span>
+<span class="sd">                Index of the column that you want to extract. Column 0 is time.</span>
+<span class="sd">                The first data column is column 1.</span>
+<span class="sd">            string:</span>
+<span class="sd">                Name of the column header that you want to extract</span>
+
+<span class="sd">    path : string</span>
+<span class="sd">        Path to your ProCoDA metafile (must be tab-delimited)</span>
+
+<span class="sd">    headers : string list</span>
+<span class="sd">        List of the desired header for each calculation, in order</span>
+
+<span class="sd">    out_name : string</span>
+<span class="sd">        Desired name for the output file. Can include a relative path</span>
+
+<span class="sd">    metaids : string list, optional</span>
+<span class="sd">        a list of the experiment IDs you&#39;d like to analyze from the metafile</span>
+
+<span class="sd">    extension : string, optional</span>
+<span class="sd">        The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if</span>
+<span class="sd">        no argument is passed in</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out_name.csv</span>
+<span class="sd">        A CSV file with the each column being a new calcuation and each row</span>
+<span class="sd">        being a new experiment on which the calcuations were performed</span>
+
+<span class="sd">    output : DataFrame</span>
+<span class="sd">        Pandas dataframe which is the same data that was written to CSV</span>
+
+<span class="sd">    Requires</span>
+<span class="sd">    --------</span>
+<span class="sd">    funcs, states, columns, and headers are all of the same length if they are</span>
+<span class="sd">    lists. Some being lists and some single values are okay.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">funcs</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="n">states</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">columns</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="n">data_agg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)):</span>
+        <span class="n">ids</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">read_state_with_metafile</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                                             <span class="n">path</span><span class="p">,</span> <span class="n">metaids</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
+        <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_agg</span><span class="p">,</span> <span class="p">[</span><span class="n">data</span><span class="p">])</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ids</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span><span class="o">+</span><span class="n">headers</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_name</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'v0.0.17',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
