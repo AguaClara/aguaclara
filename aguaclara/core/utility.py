@@ -11,6 +11,7 @@ from aguaclara.core.units import unit_registry as u
 import numpy as np
 import functools
 
+
 def round_sf(number, digits):
     """Returns inputted value rounded to number
     of significant figures desired.
@@ -20,7 +21,19 @@ def round_sf(number, digits):
        digits: number of significant digits
        to be rounded to.
    """
-    return round(number, digits - len(str(number)))
+    units = None
+    try:
+        num = number.magnitude
+        units = number.units
+    except AttributeError:
+        num = number
+
+    if (units is not None):
+        rounded_num = round(num, digits - len(str(num))) * units
+    else:
+        rounded_num = round(num, digits - len(str(num)))
+    return rounded_num
+
 
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
@@ -48,7 +61,6 @@ def ceil_nearest(x,array):
 
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs."""
-    print(HandlerResult)
     def decorate(func):
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element.
