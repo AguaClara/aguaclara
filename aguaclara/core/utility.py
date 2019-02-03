@@ -2,14 +2,11 @@
 can be used throughout the plant design.
 
 """
-
-# units allows us to include units in all of our calculations
-import math
 from aguaclara.core.units import unit_registry as u
 
 
 import numpy as np
-import functools
+from math import log10, floor
 
 
 def round_sf(number, digits):
@@ -20,7 +17,7 @@ def round_sf(number, digits):
        number: Value to be rounded
        digits: number of significant digits
        to be rounded to.
-   """
+    """
     units = None
     try:
         num = number.magnitude
@@ -28,11 +25,17 @@ def round_sf(number, digits):
     except AttributeError:
         num = number
 
-    if (units is not None):
-        rounded_num = round(num, digits - len(str(num))) * units
-    else:
-        rounded_num = round(num, digits - len(str(num)))
-    return rounded_num
+    try:
+        if (units != None):
+            rounded_num = round(num, digits - int(floor(log10(abs(num)))) - 1) * units
+        else:
+            rounded_num = round(num, digits - int(floor(log10(abs(num)))) - 1)
+        return rounded_num
+    except ValueError:  # Prevents an error with log10(0)
+        if (units != None):
+            return 0 * units
+        else:
+            return 0
 
 
 def stepceil_with_units(param, step, unit):
