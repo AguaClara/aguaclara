@@ -24,7 +24,6 @@ import numpy as np
 import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
-plt.switch_backend('TKAgg')
 
 # Design imports
 # from aguaclara.design.lfom import LFOM    #NOTE: temporarily disabled for release 0.0.15 to prevent problems
