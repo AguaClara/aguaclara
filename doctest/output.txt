@@ -1,4 +1,4 @@
-Results of doctest builder run on 2019-01-18 02:08:29
+Results of doctest builder run on 2019-02-05 05:59:52
 =====================================================
 
 Document: research
