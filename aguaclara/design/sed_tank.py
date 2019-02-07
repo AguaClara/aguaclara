@@ -291,7 +291,7 @@ class SedimentationTank:
     def n_sed_plates_max(self, sed_inruts=sed_dict):
         """Return the maximum possible number of plate settlers in a module given
         plate spacing, thickness, angle, and unsupported length of plate settler.
-        Parameters
+        Parameters 
         ----------
         S_plate : float
             Edge to edge distance between plate settlers
