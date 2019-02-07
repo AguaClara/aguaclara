@@ -265,6 +265,9 @@ manifold : dict
 """
 from aide_design.play import*
 
+class SedimentationTank:
+
+
 # again we will change this to an important statment from the URL of  aide_template repo
 sed_dict = {
             'thickness_wall': 0.15*u.m,
@@ -288,7 +291,7 @@ sed_dict = {
 }
 
 @u.wraps(None, [None], False)
-def n_sed_plates_max(sed_inputs=sed_dict):
+def n_sed_plates_max(sed_inruts=sed_dict):
     """Return the maximum possible number of plate settlers in a module given
     plate spacing, thickness, angle, and unsupported length of plate settler.
     Parameters
@@ -484,7 +487,7 @@ def vel_inlet_man_max(sed_inputs=sed_dict):
     """Return the maximum velocity through the manifold.
     Parameters
     ----------
-    sed_inputs : dict
+  " sed_inputs : dict
         A dictionary of all of the constant inputs needed for sedimentation tank
         calculations can be found in sed.yaml
     Returns
@@ -628,7 +631,8 @@ def L_sed_plate(sed_inputs=sed_dict):
         A dictionary of all of the constant inputs needed for sedimentation tank
         calculations can be found in sed.yaml
     Returns
-    -------
+    --
+----
     float
         Length of a single plate
     Examples
