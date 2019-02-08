@@ -20,7 +20,10 @@ def get_drill_bits_d_imperial():
 
 def get_drill_bits_d_metric():
     """Return array of possible drill diameters in metric."""
-    return np.arange(0.5, 5.0, 0.1) * u.mm
+    return np.concatenate((np.arange(1.0, 10.0, 0.1),
+                           np.arange(10.0, 18.0, 0.5),
+                           np.arange(18.0, 36.0, 1.0),
+                           np.arange(40.0, 55.0, 5.0))) * u.mm
 
 
 DRILL_BITS_D_IMPERIAL = get_drill_bits_d_imperial()

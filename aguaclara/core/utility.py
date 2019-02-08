@@ -2,14 +2,12 @@
 can be used throughout the plant design.
 
 """
-
-# units allows us to include units in all of our calculations
-import math
 from aguaclara.core.units import unit_registry as u
 
 
 import numpy as np
-import functools
+from math import log10, floor
+
 
 def round_sf(number, digits):
     """Returns inputted value rounded to number
@@ -19,8 +17,26 @@ def round_sf(number, digits):
        number: Value to be rounded
        digits: number of significant digits
        to be rounded to.
-   """
-    return round(number, digits - len(str(number)))
+    """
+    units = None
+    try:
+        num = number.magnitude
+        units = number.units
+    except AttributeError:
+        num = number
+
+    try:
+        if (units != None):
+            rounded_num = round(num, digits - int(floor(log10(abs(num)))) - 1) * units
+        else:
+            rounded_num = round(num, digits - int(floor(log10(abs(num)))) - 1)
+        return rounded_num
+    except ValueError:  # Prevents an error with log10(0)
+        if (units != None):
+            return 0 * units
+        else:
+            return 0
+
 
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
@@ -48,7 +64,6 @@ def ceil_nearest(x,array):
 
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs."""
-    print(HandlerResult)
     def decorate(func):
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element.

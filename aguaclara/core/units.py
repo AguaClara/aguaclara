@@ -27,6 +27,9 @@ unit_registry = pint.UnitRegistry(
 unit_registry.default_format = '.4g'
 pd.options.display.float_format = '{:,.4g}'.format
 
+unit_registry.load_definitions(os.path.join(os.path.dirname(__file__),
+                                            "data", "unit_definitions.txt"))
+
 
 def set_sig_figs(n: int):
     """Set the default number of significant figures used to print pint,
@@ -53,6 +56,3 @@ def set_sig_figs(n: int):
     """
     unit_registry.default_format = '.' + str(n) + 'g'
     pd.options.display.float_format = ('{:,.' + str(n) + '}').format
-
-    unit_registry.load_definitions(os.path.join(os.path.dirname(__file__),
-                                                "data", "unit_definitions.txt"))

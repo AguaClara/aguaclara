@@ -29,7 +29,7 @@ class FlocTest(unittest.TestCase):
 
     def test_w_min_hs_ratio(self):
         self.assertAlmostEqual(self.floc.w_min_hs_ratio,
-                               11.114415605933008 * u.cm)
+                               11.026896890543643 * u.cm)
 
     def test_w_min(self):
         self.assertAlmostEqual(self.floc.w_min, 45 * u.cm)
@@ -45,7 +45,7 @@ class FlocTest(unittest.TestCase):
 
     def test_expansion_h_max(self):
         self.assertAlmostEqual(self.floc.expansion_h_max,
-                               1.1784416444647798 * u.m)
+                               1.171475181753684 * u.m)
 
     def test_expansion_n(self):
         self.assertAlmostEqual(self.floc.expansion_n, 2)
@@ -54,7 +54,7 @@ class FlocTest(unittest.TestCase):
         self.assertAlmostEqual(self.floc.expansion_h, 100 * u.cm)
 
     def test_baffle_s(self):
-        self.assertAlmostEqual(self.floc.baffle_s, 19.64069407441299 * u.cm)
+        self.assertAlmostEqual(self.floc.baffle_s, 19.524586362561394 * u.cm)
 
     def test_obstacle_n(self):
         self.assertAlmostEqual(self.floc.obstacle_n, 1)
