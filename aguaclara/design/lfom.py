@@ -11,7 +11,7 @@ import math
 
 class LFOM:
 
-    def __init__(self, q=20*u.L/u.s, hl=20*u.cm, safety_factor=1.2, sdr=26,
+    def __init__(self, q=20*u.L/u.s, hl=20*u.cm, safety_factor=1.5, sdr=26,
                  drill_bits=drills.DRILL_BITS_D_IMPERIAL, s_orifice=0.5*u.cm):
 
         self.q = q
@@ -21,14 +21,14 @@ class LFOM:
         self.drill_bits = drill_bits
         self.s_orifice = s_orifice
 
-    def width_stout(self, z):
+    def stout_w_per_flow(self, z):
         """Return the width of a Stout weir at elevation z. More info
         here. <https://confluence.cornell.edu/display/AGUACLARA/
         LFOM+sutro+weir+research>
         """
         w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) *
                           con.VC_ORIFICE_RATIO * np.pi * self.hl)
-        return w_per_flow
+        return w_per_flow.to_base_units()
 
     @property
     def n_rows(self):
@@ -45,7 +45,7 @@ class LFOM:
         The challenge is to figure out a reasonable system of constraints that
         reliably returns a valid solution.
         """
-        N_estimated = (self.hl * np.pi / (2 * self.width_stout(self.hl) * self.q)).to(u.dimensionless)
+        N_estimated = (self.hl * np.pi / (2 * self.stout_w_per_flow(self.hl) * self.q)).to(u.dimensionless)
         variablerow = min(10, max(4, math.trunc(N_estimated.magnitude)))
         return variablerow
 
@@ -85,7 +85,7 @@ class LFOM:
         # Calculate the center of the top row:
         z = self.hl - 0.5 * self.b_rows
         # Multiply the stout weir width by the height of one row.
-        return self.width_stout(z) * self.q * self.b_rows
+        return self.stout_w_per_flow(z) * self.q * self.b_rows
 
     @property
     def d_orifice_max(self):
