@@ -266,58 +266,55 @@ manifold : dict
 from aide_design.play import*
 
 class SedimentationTank:
-
-
-# again we will change this to an important statment from the URL of  aide_template repo
-sed_dict = {
-            'thickness_wall': 0.15*u.m,
-            'plate_settlers': {
-                'angle': 60*u.deg, 'S': 2.5*u.cm,
-                'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+    # again we will change this to an important statment from the URL of  aide_template repo
+    sed_dict = {
+                'thickness_wall': 0.15*u.m,
+                'plate_settlers': {
+                    'angle': 60*u.deg, 'S': 2.5*u.cm,
+                    'thickness': 2*u.mm, 'L_cantilevered': 20*u.cm,
+                    },
+                'tank': {
+                    'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
                 },
-            'tank': {
-                'W': 42*u.inch, 'L': 5.8*u.m, 'vel_up': 1*u.mm/u.s
-            },
-            'manifold': {
-                'ratio_Q_man_orifice': 0.8,
-                'diffuser': {
-                    'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
-                    'A': 0.419*u.inch**2
-                },
-                'exit_man': {
-                    'hl_orifice': 4*u.cm, 'N_orifices': 58
+                'manifold': {
+                    'ratio_Q_man_orifice': 0.8,
+                    'diffuser': {
+                        'thickness_wall': 1.17*u.inch, 'vel_max': 442.9*u.mm/u.s,
+                        'A': 0.419*u.inch**2
+                    },
+                    'exit_man': {
+                        'hl_orifice': 4*u.cm, 'N_orifices': 58
+                    }
                 }
-            }
-}
 
-@u.wraps(None, [None], False)
-def n_sed_plates_max(sed_inruts=sed_dict):
-    """Return the maximum possible number of plate settlers in a module given
-    plate spacing, thickness, angle, and unsupported length of plate settler.
-    Parameters
-    ----------
-    S_plate : float
-        Edge to edge distance between plate settlers
-    thickness_plate : float
-        Thickness of PVC sheet used to make plate settlers
-    L_sed_plate_cantilevered : float
-        Maximum length of sed plate sticking out past module pipes without any
-        additional support. The goal is to prevent floppy modules that don't
-        maintain constant distances between the plates
-    angle_plate : float
-        Angle of plate settlers
-    Returns
-    -------
-    int
-        Maximum number of plates
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    B_plate = sed_inputs['plate_settlers']['S'] + sed_inputs['plate_settlers']['thickness']
-    return math.floor((sed_inputs['plate_settlers']['L_cantilevered'].magnitude / B_plate.magnitude
-                      * np.tan(sed_inputs['plate_settlers']['angle'].to(u.rad).magnitude)) + 1)
+    @u.wraps(None, [None], False)
+    def n_sed_plates_max(self, sed_inruts=sed_dict):
+        """Return the maximum possible number of plate settlers in a module given
+        plate spacing, thickness, angle, and unsupported length of plate settler.
+        Parameters 
+        ----------
+        S_plate : float
+            Edge to edge distance between plate settlers
+        thickness_plate : float
+            Thickness of PVC sheet used to make plate settlers
+        L_sed_plate_cantilevered : float
+            Maximum length of sed plate sticking out past module pipes without any
+            additional support. The goal is to prevent floppy modules that don't
+            maintain constant distances between the plates
+        angle_plate : float
+            Angle of plate settlers
+        Returns
+        -------
+        int
+            Maximum number of plates
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        B_plate = sed_inputs['plate_settlers']['S'] + sed_inputs['plate_settlers']['thickness']
+        return math.floor((sed_inputs['plate_settlers']['L_cantilevered'].magnitude / B_plate.magnitude
+                          * np.tan(sed_inputs['plate_settlers']['angle'].to(u.rad).magnitude)) + 1)
 
 @u.wraps(u.inch, [None], False)
 def w_diffuser_inner_min(sed_inputs=sed_dict):
