@@ -250,9 +250,16 @@ class Flocculator:
        :returns: list of designed values (G, t, channel_W, obstacle_n)
        :rtype: int
        """
-       floc_design = collections.namedtuple('floc_design','channel_n channel_L channel_W baffle_S obstacle_n G t expansion_max_H drain_ND')
-       FLOC = floc_design( channel_n=self.channel_n, channel_L=self.channel_L, channel_W=self.channel_W, baffle_S=self.baffle_S, obstacle_n=self.obstacle_n, G=self.vel_grad_avg, t=self.retention_time,expansion_max_H=self.expansion_max_H, drain_ND=self.drain_ND)
-       return FLOC
+       floc_dict = { 'channel_n': self.channel_n, 
+                    'channel_L' : self.channel_L, 
+                    'channel_W':self.channel_W, 
+                    'baffle_S':self.baffle_S, 
+                    'obstacle_n':self.obstacle_n, 
+                    'G':self.vel_grad_avg, 
+                    't':self.retention_time,
+                    'expansion_max_H':self.expansion_max_H, 
+                    'drain_ND':self.drain_ND }
+       return floc_dict
 
    def draw(self):
         """Draw the Onshape flocculator model based off of this object."""
