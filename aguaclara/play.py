@@ -13,18 +13,22 @@ import matplotlib.pyplot as plt
 import warnings
 
 import aguaclara
+
+import aguaclara.core.constants as con
+from aguaclara.core import drills
+import aguaclara.core.head_loss as k
+import aguaclara.core.materials as mat
+from aguaclara.core import physchem as pc
+from aguaclara.core import pipeline
 import aguaclara.core.pipes as pipe
 from aguaclara.core.units import unit_registry as u
-from aguaclara.core import physchem as pc
-import aguaclara.core.constants as con
-import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
-import aguaclara.core.head_loss as k
-import aguaclara.core.pipeline as pipeline
 
 # Temporarily disabled for release 0.0.15 to prevent problems with lacking
 # Onshapepy setup. Re-enable when Onshapepy backend has been resolved.
 # from aguaclara.design.lfom import LFOM
+# from aguaclara.design.floc import Flocculator
+import aguaclara.design.human_access as ha
 
 
 def set_sig_figs(n=4):
