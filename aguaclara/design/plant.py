@@ -18,7 +18,7 @@ class Plant:
         """
         self.q = q
         self.temp = temp
-        self.floc = Flocculator(q=q, temp=temp)
+        self.floc = Flocculator(Q=q, temp=temp)
 
     @property
     def ent_tank_a(self):
