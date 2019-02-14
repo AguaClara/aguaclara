@@ -47,9 +47,8 @@ class Flocculator:
    RATIO_MAX_HS = 6
    SDR = 41
 
-
    def __init__(self, Q=20 * u.L/u.s, temp=25 * u.degC,
-                max_L=6 * u.m, Gt=3700, HL = 40 * u.cm,
+                max_L=6 * u.m, Gt=37000, HL = 40 * u.cm,
                 downstream_H = 2 * u.m, entrancetank_L = 1.5 * u.m,
                 max_W = 42 * u.inch, drain_t = 30 * u.min ):
        """Instantiate a Flocculator object, representing a real flocculator
