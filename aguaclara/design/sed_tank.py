@@ -263,7 +263,7 @@ manifold : dict
         N_orifices : int
             Number of orifices in the exit manifold
 """
-from aide_design.play import*
+from aguaclara.play import *
 
 class SedimentationTank:
     # again we will change this to an important statment from the URL of  aide_template repo
