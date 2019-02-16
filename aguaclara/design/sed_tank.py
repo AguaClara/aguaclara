@@ -214,9 +214,9 @@ PLATE_SETTLERS_THICKNESS = 2*u.mm
 
 PLATE_SETTLERS_L_CANTILEVERED = 20*u.cm
 
-TANK _W = 42*u.inch
+TANK_W = 42*u.inch
 
-TANK _L = 5.8*u.m
+TANK_L = 5.8*u.m
 
 TANK_VEL_UP = 1*u.mm/u.s
 
@@ -317,7 +317,7 @@ from aide_design.play import*
 }
 """
 @u.wraps(None, [None], False)
-def n_sed_plates_max(sed_inputs=sed_dict):
+def n_sed_plates_max(self):
     """Return the maximum possible number of plate settlers in a module given
     plate spacing, thickness, angle, and unsupported length of plate settler.
     Parameters
@@ -341,12 +341,12 @@ def n_sed_plates_max(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    B_plate = sed_inputs['plate_settlers']['S'] + sed_inputs['plate_settlers']['thickness']
-    return math.floor((sed_inputs['plate_settlers']['L_cantilevered'].magnitude / B_plate.magnitude
-                      * np.tan(sed_inputs['plate_settlers']['angle'].to(u.rad).magnitude)) + 1)
+    B_plate = self.PLATE_SETTLERS_S + self.PLATE_SETTLERS_THICKNESS
+    return math.floor((self.PLATE_SETTLERS_L_CANTILEVERED.magnitude / B_plate.magnitude
+                      * np.tan(self.PLATE_SETTLERS_ANGLE.to(u.rad).magnitude)) + 1)
 
 @u.wraps(u.inch, [None], False)
-def w_diffuser_inner_min(sed_inputs=sed_dict):
+def w_diffuser_inner_min(self):
     """Return the minimum inner width of each diffuser in the sedimentation tank.
     Parameters
     ----------
@@ -362,12 +362,12 @@ def w_diffuser_inner_min(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    return ((sed_inputs['tank']['vel_up'].to(u.inch/u.s).magnitude /
-             sed_inputs['manifold']['diffuser']['vel_max'].to(u.inch/u.s).magnitude)
-             * sed_inputs['tank']['W'])
+    return ((self.TANK_VEL_UP.to(u.inch/u.s).magnitude /
+             self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
+             * self.TANK_W)
 
 @u.wraps(u.m, [None], False)
-def w_diffuser_inner(sed_inputs=sed_dict):
+def w_diffuser_inner(self):
     """Return the inner width of each diffuser in the sedimentation tank.
     Parameters
     ----------
@@ -383,11 +383,11 @@ def w_diffuser_inner(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    return ut.ceil_nearest(w_diffuser_inner_min(sed_inputs).magnitude,
+    return ut.ceil_nearest(w_diffuser_inner_min().magnitude,
                            (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
 
 @u.wraps(u.m, [None], False)
-def w_diffuser_outer(sed_inputs=sed_dict):
+def w_diffuser_outer(self):
     """Return the outer width of each diffuser in the sedimentation tank.
     Parameters
     ----------
@@ -403,11 +403,11 @@ def w_diffuser_outer(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    return (w_diffuser_inner_min(sed_inputs['tank']['W']) +
-            (2 * sed_inputs['manifold']['diffuser']['thickness_wall'])).to(u.m).magnitude
+    return (w_diffuser_inner_min(self.TANK_W) +
+            (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL)).to(u.m).magnitude
 
 @u.wraps(u.m, [None], False)
-def L_diffuser_outer(sed_inputs=sed_dict):
+def L_diffuser_outer(self):
     """Return the outer length of each diffuser in the sedimentation tank.
     Parameters
     ----------
@@ -423,12 +423,12 @@ def L_diffuser_outer(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    return ((sed_inputs['manifold']['diffuser']['A'] /
-           (2 * sed_inputs['manifold']['diffuser']['thickness_wall']))
-           - w_diffuser_inner(sed_inputs).to(u.inch)).to(u.m).magnitude
+    return ((self.MANIFOLD_DIFFUSER_A /
+           (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL))
+           - w_diffuser_inner().to(u.inch)).to(u.m).magnitude
 
 @u.wraps(u.m, [None], False)
-def L_diffuser_inner(sed_inputs=sed_dict):
+def L_diffuser_inner(self):
     """Return the inner length of each diffuser in the sedimentation tank.
     Parameters
     ----------
@@ -445,10 +445,10 @@ def L_diffuser_inner(sed_inputs=sed_dict):
     >>>
     """
     return L_diffuser_outer(sed_inputs['tank']['W']) -
-            (2 * (sed_inputs['manifold']['diffuser']['thickness_wall']).to(u.m)).magnitude)
+            (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude)
 
 @u.wraps(u.m**3/u.s, [None], False)
-def q_diffuser(sed_inputs=sed_dict):
+def q_diffuser(self):
     """Return the flow through each diffuser.
     Parameters
     ----------
@@ -464,12 +464,12 @@ def q_diffuser(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    return (sed_inputs['tank']['vel_up'].to(u.m/u.s) *
-             sed_inputs['tank']['W'].to(u.m) *
-             L_diffuser_outer(sed_inputs)).magnitude
+    return (self.TANK_VEL_UP.to(u.m/u.s) *
+             self.TANK_W.to(u.m) *
+             L_diffuser_outer()).magnitude
 
 @u.wraps(u.m/u.s, [None], False)
-def vel_sed_diffuser(sed_inputs=sed_dict):
+def vel_sed_diffuser(self):
     """Return the velocity through each diffuser.
     Parameters
     ----------
@@ -485,7 +485,7 @@ def vel_sed_diffuser(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    return (q_diffuser(sed_inputs).magnitude
+    return (q_diffuser().magnitude
             / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
 
 @u.wraps(u.m**3/u.s, [None], False)
