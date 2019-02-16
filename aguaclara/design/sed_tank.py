@@ -489,7 +489,7 @@ def vel_sed_diffuser(self):
             / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
 
 @u.wraps(u.m**3/u.s, [None], False)
-def q_tank(sed_inputs=sed_dict):
+def q_tank(self):
     """Return the maximum flow through one sedimentation tank.
     Parameters
     ----------
@@ -505,11 +505,11 @@ def q_tank(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    return (sed_inputs['tank']['L'] * sed_inputs['tank']['vel_up'].to(u.m/u.s) *
-            sed_inputs['tank']['W'].to(u.m)).magnitude
+    return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
+            self.TANK_W.to(u.m)).magnitude
 
 @u.wraps(u.m/u.s, [None], False)
-def vel_inlet_man_max(sed_inputs=sed_dict):
+def vel_inlet_man_max(self):
     """Return the maximum velocity through the manifold.
     Parameters
     ----------
@@ -525,13 +525,13 @@ def vel_inlet_man_max(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    vel_manifold_max = (sed_inputs['diffuser']['vel_max'].to(u.m/u.s).magnitude *
-        sqrt(2*((1-(sed_inputs['manifold']['ratio_Q_man_orifice'])**2)) /
-        (((sed_inputs['manifold']['ratio_Q_man_orifice'])**2)+1)))
+    vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m/u.s).magnitude *
+        sqrt(2*((1-(self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)) /
+        (((MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
     return vel_manifold_max
 
 @u.wraps(None, [u.m**3/u.s, None], False)
-def n_tanks(Q_plant, sed_inputs=sed_dict):
+def n_tanks(self, Q_plant):
     """Return the number of sedimentation tanks required for a given flow rate.
     Parameters
     ----------
@@ -549,11 +549,11 @@ def n_tanks(Q_plant, sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    q = q_tank(sed_inputs).magnitude
+    q = q_tank().magnitude
     return (int(np.ceil(Q_plant / q)))
 
 @u.wraps(u.m, [u.m**3/u.s, None], False)
-def L_channel(Q_plant, sed_inputs=sed_dict):
+def L_channel(self, Q_plant):
     """Return the length of the inlet and exit channels for the sedimentation tank.
     Parameters
     ----------
@@ -572,8 +572,8 @@ def L_channel(Q_plant, sed_inputs=sed_dict):
     >>>
     """
     n_tanks = n_tanks(Q_plant, sed_inputs)
-    return ((n_tanks * sed_inputs['tank']['W']) + sed_inputs['thickness_wall'] +
-            ((n_tanks-1) * sed_inputs['thickness_wall']))
+    return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
+            ((n_tanks-1) * self.THICKNESS_WALL))
 
 @u.wraps(u.m, [u.m**3/u.s, u.degK, None], False)
 @ut.list_handler
