@@ -142,7 +142,6 @@ def re_general(Vel, Area, PerimWetted, Nu):
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
-@ut.list_handler()
 def fric(FlowRate, Diam, Nu, PipeRough):
     """Return the friction factor for pipe flow.
 
