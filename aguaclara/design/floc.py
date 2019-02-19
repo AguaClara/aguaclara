@@ -49,8 +49,8 @@ class Flocculator:
 
    def __init__(self, Q=20 * u.L/u.s, temp=25 * u.degC,
                 max_L=6 * u.m, Gt=37000, HL = 40 * u.cm,
-                downstream_H = 2 * u.m, entrancetank_L = 1.5 * u.m,
-                max_W = 42 * u.inch, drain_t = 30 * u.min ):
+                downstream_H = 2 * u.m, ent_tank_L =1.5 * u.m,
+                max_W = 42 * u.inch, drain_t = 30 * u.min):
        """Instantiate a Flocculator object, representing a real flocculator
        component.
        :param Q: Flow rate of water through the flocculator.
@@ -65,8 +65,8 @@ class Flocculator:
        :type HL: float * u.m
        :param  downstream_H: Desired depth at the downstream end.
        :type  downstream_H: float * u.m
-       :param  entrancetank_L: Estimated length of entrance tank.
-       :type  entrancetank_L: float * u.m
+       :param  ent_tank_L: Estimated length of entrance tank.
+       :type  ent_tank_L: float * u.m
        :param  max_W: Maximum width of flocculator based on baffle sheet width.
        :type  max_W: float * u.m
        :returns: object
@@ -78,7 +78,7 @@ class Flocculator:
        self.Gt = Gt
        self.HL = HL
        self.downstream_H = downstream_H
-       self.entrancetank_L = entrancetank_L
+       self.ent_tank_L = ent_tank_L
        self.max_W = max_W
        self.drain_t = drain_t
 
@@ -135,7 +135,7 @@ class Flocculator:
        :rtype: float * dimensionless
        """
        min_hydraulic_W = np.amax(np.array([1,(self.max_W/self.W_min_HS_ratio).to(u.dimensionless)])) * self.W_min_HS_ratio
-       return 2*np.ceil(((self.vol/(min_hydraulic_W * self.downstream_H) + self.entrancetank_L)/(2*self.max_L)).to(u.dimensionless))
+       return 2*np.ceil(((self.vol / (min_hydraulic_W * self.downstream_H) + self.ent_tank_L) / (2 * self.max_L)).to(u.dimensionless))
 
 
    @property
@@ -152,7 +152,7 @@ class Flocculator:
        :returns: Channel width
        :rtype: float * meter
        """
-       channel_est_W = (self.vol / (self.downstream_H * (self.channel_n * self.max_L - self.entrancetank_L))).to(u.m)
+       channel_est_W = (self.vol / (self.downstream_H * (self.channel_n * self.max_L - self.ent_tank_L))).to(u.m)
        # The channel may need to wider than the width that would get the exact required volume.
        # In that case we will need to shorten the flocculator
        channel_W = np.amax(np.array([1,(ha.HUMAN_W_MIN/channel_est_W).to(u.dimensionless),(self.W_min_HS_ratio/channel_est_W).to(u.dimensionless)])) * channel_est_W
@@ -172,7 +172,7 @@ class Flocculator:
        :returns: Channel length
        :rtype: float * meter
        """
-       channel_L = ((self.vol / (self.channel_W * self.downstream_H) + self.entrancetank_L)/self.channel_n).to(u.m)
+       channel_L = ((self.vol / (self.channel_W * self.downstream_H) + self.ent_tank_L) / self.channel_n).to(u.m)
        return channel_L
 
    @property
@@ -226,6 +226,28 @@ class Flocculator:
        return self.expansion_n - 1
 
    @property
+   def drain_K(self):
+       """ Return the minor loss coefficient of the drain pipe.
+       :returns: Minor Loss Coefficient
+       :return: float
+       """
+       drain_K = minorloss.PIPE_ENTRANCE_K_MINOR + minorloss.PIPE_ENTRANCE_K_MINOR + minorloss.PIPE_EXIT_K_MINOR
+       return drain_K
+
+   @property
+   def drain_D(self):
+       """ Returns depth of drain pipe.
+       :returns: Depth
+       :return: float
+       """
+       tank_A = 2 * self.channel_L * self.channel_W
+       drain_D = (np.sqrt(8 * tank_A / (np.pi * self.drain_t) * np.sqrt(
+           self.downstream_H * self.drain_K / (2 * u.standard_gravity)))).to_base_units()
+       return drain_D
+
+
+
+   @property
    def drain_ND(self):
        """Returns the diameter of the drain pipe.
        Each drain pipe will drain two channels because channels are connected by
@@ -237,10 +259,7 @@ class Flocculator:
        :rtype: float * centimeter
        """
 
-       drain_K = minorloss.PIPE_ENTRANCE_K_MINOR + minorloss.PIPE_ENTRANCE_K_MINOR +minorloss.PIPE_EXIT_K_MINOR
-       tank_A = 2* self.channel_L * self.channel_W
-       drain_D = (np.sqrt(8 * tank_A/(np.pi* self.drain_t) * np.sqrt(self.downstream_H * drain_K/(2*u.standard_gravity)))).to_base_units()
-       drain_ND = pipes.ND_SDR_available(drain_D,self.SDR)
+       drain_ND = pipes.ND_SDR_available(self.drain_D,self.SDR)
        return drain_ND
 
    @property
