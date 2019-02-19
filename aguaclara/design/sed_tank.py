@@ -204,34 +204,6 @@ DIFFUSER_ND = 1*u.inch
 
 JET_REVERSER_ND = 3*u.inch
 
-THICKNESS_WALL = 0.15*u.m
-
-PLATE_SETTLERS_ANGLE = 60*u.deg
-
-PLATE_SETTLERS_S = 2.5*u.cm
-
-PLATE_SETTLERS_THICKNESS = 2*u.mm
-
-PLATE_SETTLERS_L_CANTILEVERED = 20*u.cm
-
-TANK_W = 42*u.inch
-
-TANK_L = 5.8*u.m
-
-TANK_VEL_UP = 1*u.mm/u.s
-
-MANIFOLD_RATIO_Q_MAN_ORIFICE = 0.8
-
-MANIFOLD_DIFFUSER_THICKNESS_WALL = 1.17*u.inch
-
-MANIFOLD_DIFFUSER_VEL_MAX = 442.9*u.mm/u.s
-
-MANIFOLD_DIFFUSER_A = 0.419*u.inch**2
-
-MANIFOLD_EXIT_MAN_HL_ORIFICE = 4*u.cm
-
-MANIFOLD_EXIT_MAN_N_ORIFICES = 58
-
 
 """This file contains all the functions needed to design a sedimentation tank
 for an AguaClara plant.
@@ -292,7 +264,7 @@ manifold : dict
         N_orifices : int
             Number of orifices in the exit manifold
 """
-from aide_design.play import*
+from aguaclara.play import*
 
 # again we will change this to an important statment from the URL of  aide_template repo
 """sed_dict = {
@@ -316,357 +288,389 @@ from aide_design.play import*
             }
 }
 """
-@u.wraps(None, [None], False)
-def n_sed_plates_max(self):
-    """Return the maximum possible number of plate settlers in a module given
-    plate spacing, thickness, angle, and unsupported length of plate settler.
-    Parameters
-    ----------
-    S_plate : float
-        Edge to edge distance between plate settlers
-    thickness_plate : float
-        Thickness of PVC sheet used to make plate settlers
-    L_sed_plate_cantilevered : float
-        Maximum length of sed plate sticking out past module pipes without any
-        additional support. The goal is to prevent floppy modules that don't
-        maintain constant distances between the plates
-    angle_plate : float
-        Angle of plate settlers
-    Returns
-    -------
-    int
-        Maximum number of plates
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    B_plate = self.PLATE_SETTLERS_S + self.PLATE_SETTLERS_THICKNESS
-    return math.floor((self.PLATE_SETTLERS_L_CANTILEVERED.magnitude / B_plate.magnitude
-                      * np.tan(self.PLATE_SETTLERS_ANGLE.to(u.rad).magnitude)) + 1)
 
-@u.wraps(u.inch, [None], False)
-def w_diffuser_inner_min(self):
-    """Return the minimum inner width of each diffuser in the sedimentation tank.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations. Can be found in sed.yaml
-    Returns
-    -------
-    float
-        Minimum inner width of each diffuser in the sedimentation tank
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    return ((self.TANK_VEL_UP.to(u.inch/u.s).magnitude /
-             self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
-             * self.TANK_W)
+class SedimentationTank:
+    THICKNESS_WALL = 0.15 * u.m
 
-@u.wraps(u.m, [None], False)
-def w_diffuser_inner(self):
-    """Return the inner width of each diffuser in the sedimentation tank.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Inner width of each diffuser in the sedimentation tank
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    return ut.ceil_nearest(w_diffuser_inner_min().magnitude,
-                           (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
+    PLATE_SETTLERS_ANGLE = 60 * u.deg
 
-@u.wraps(u.m, [None], False)
-def w_diffuser_outer(self):
-    """Return the outer width of each diffuser in the sedimentation tank.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Outer width of each diffuser in the sedimentation tank
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    return (w_diffuser_inner_min(self.TANK_W) +
-            (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL)).to(u.m).magnitude
+    PLATE_SETTLERS_S = 2.5 * u.cm
 
-@u.wraps(u.m, [None], False)
-def L_diffuser_outer(self):
-    """Return the outer length of each diffuser in the sedimentation tank.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Outer length of each diffuser in the sedimentation tank
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    return ((self.MANIFOLD_DIFFUSER_A /
-           (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL))
-           - w_diffuser_inner().to(u.inch)).to(u.m).magnitude
+    PLATE_SETTLERS_THICKNESS = 2 * u.mm
 
-@u.wraps(u.m, [None], False)
-def L_diffuser_inner(self):
-    """Return the inner length of each diffuser in the sedimentation tank.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Inner length of each diffuser in the sedimentation tank
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    return L_diffuser_outer(sed_inputs['tank']['W']) -
-            (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude)
+    PLATE_SETTLERS_L_CANTILEVERED = 20 * u.cm
 
-@u.wraps(u.m**3/u.s, [None], False)
-def q_diffuser(self):
-    """Return the flow through each diffuser.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Flow through each diffuser in the sedimentation tank
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    return (self.TANK_VEL_UP.to(u.m/u.s) *
-             self.TANK_W.to(u.m) *
-             L_diffuser_outer()).magnitude
+    PLATE_SETTLERS_VEL_CAPTURE = 0.12 * u.mm / u.s
 
-@u.wraps(u.m/u.s, [None], False)
-def vel_sed_diffuser(self):
-    """Return the velocity through each diffuser.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Flow through each diffuser in the sedimentation tank
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    return (q_diffuser().magnitude
-            / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
+    TANK_W = 42 * u.inch
 
-@u.wraps(u.m**3/u.s, [None], False)
-def q_tank(self):
-    """Return the maximum flow through one sedimentation tank.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Maximum flow through one sedimentation tank
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
-            self.TANK_W.to(u.m)).magnitude
+    TANK_L = 5.8 * u.m
 
-@u.wraps(u.m/u.s, [None], False)
-def vel_inlet_man_max(self):
-    """Return the maximum velocity through the manifold.
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Maximum velocity through the manifold.
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m/u.s).magnitude *
-        sqrt(2*((1-(self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)) /
-        (((MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
-    return vel_manifold_max
+    TANK_VEL_UP = 1 * u.mm / u.s
 
-@u.wraps(None, [u.m**3/u.s, None], False)
-def n_tanks(self, Q_plant):
-    """Return the number of sedimentation tanks required for a given flow rate.
-    Parameters
-    ----------
-    Q_plant : float
-        Total plant flow rate
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    int
-        Number of sedimentation tanks required for a given flow rate.
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    q = q_tank().magnitude
-    return (int(np.ceil(Q_plant / q)))
+    MANIFOLD_RATIO_Q_MAN_ORIFICE = 0.8
 
-@u.wraps(u.m, [u.m**3/u.s, None], False)
-def L_channel(self, Q_plant):
-    """Return the length of the inlet and exit channels for the sedimentation tank.
-    Parameters
-    ----------
-    Q_plant : float
-        Total plant flow rate
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Length of the inlet and exit channels for the sedimentation tank.
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    n_tanks = n_tanks(Q_plant, sed_inputs)
-    return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
-            ((n_tanks-1) * self.THICKNESS_WALL))
+    MANIFOLD_DIFFUSER_THICKNESS_WALL = 1.17 * u.inch
 
-@u.wraps(u.m, [u.m**3/u.s, u.degK, None], False)
-@ut.list_handler
-def ID_exit_man(self, Q_plant, temp):
-    """Return the inner diameter of the exit manifold by guessing an initial
-    diameter then iterating through pipe flow calculations until the answer
-    converges within 1%% error
-    Parameters
-    ----------
-    Q_plant : float
-        Total plant flow rate
-    temp : float
-        Design temperature
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Inner diameter of the exit manifold
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
-    nu = pc.viscosity_dynamic(temp)
-    hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
-    L = self.TANK_L
-    N_orifices = self.MANIFOLD_EXIT_MAN_N_ORIFICES
-    K_minor = con.K_MINOR_PIPE_EXIT
-    pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
+    MANIFOLD_DIFFUSER_VEL_MAX = 442.9 * u.mm / u.s
 
-    D = max(diam_pipemajor(Q_plant, hl, L, nu, pipe_rough).magnitude,
-                   diam_pipeminor(Q_plant, hl, K_minor).magnitude)
-    err = 1.00
-    while err > 0.01:
-            D_prev = D
-            f = pc.fric(Q_plant, D_prev, nu, pipe_rough)
-            D = ((8*Q_plant**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
-                    (((f*L/D_prev + K_minor) * (1/3 * 1/) *
-                    (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
-                    / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
-            err = abs(D_prev - D) / ((D + D_prev) / 2)
-    return D
+    MANIFOLD_DIFFUSER_A = 0.419 * u.inch ** 2
 
-@u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
-def D_exit_man_orifice(self, Q_plant, drill_bits):
-    """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
-    Parameters
-    ----------
-    Q_plant : float
-        Total plant flow rate
-    drill_bits : list
-        List of possible drill bit sizes
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Diameter of the orifices in the exit manifold for the sedimentation tank.
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    Q_orifice = Q_plant/self.MANIFOLD_EXIT_MAN_N_ORIFICES
-    D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * self.MANIFOLD_EXIT_MAN_HL_ORIFICE.magnitude))
-    return ut.ceil_nearest(D_orifice, drill_bits)
+    MANIFOLD_EXIT_MAN_HL_ORIFICE = 4 * u.cm
+
+    MANIFOLD_EXIT_MAN_N_ORIFICES = 58
+
+    @u.wraps(None, [None], False)
+    def n_sed_plates_max(self):
+        """Return the maximum possible number of plate settlers in a module given
+        plate spacing, thickness, angle, and unsupported length of plate settler.
+        Parameters
+        ----------
+        S_plate : float
+            Edge to edge distance between plate settlers
+        thickness_plate : float
+            Thickness of PVC sheet used to make plate settlers
+        L_sed_plate_cantilevered : float
+            Maximum length of sed plate sticking out past module pipes without any
+            additional support. The goal is to prevent floppy modules that don't
+            maintain constant distances between the plates
+        angle_plate : float
+            Angle of plate settlers
+        Returns
+        -------
+        int
+            Maximum number of plates
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        B_plate = self.PLATE_SETTLERS_S + self.PLATE_SETTLERS_THICKNESS
+        return math.floor((self.PLATE_SETTLERS_L_CANTILEVERED.magnitude / B_plate.magnitude
+                          * np.tan(self.PLATE_SETTLERS_ANGLE.to(u.rad).magnitude)) + 1)
+
+    @u.wraps(u.inch, [None], False)
+    def w_diffuser_inner_min(self):
+        """Return the minimum inner width of each diffuser in the sedimentation tank.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations. Can be found in sed.yaml
+        Returns
+        -------
+        float
+            Minimum inner width of each diffuser in the sedimentation tank
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        return ((self.TANK_VEL_UP.to(u.inch/u.s).magnitude /
+                 self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
+                 * self.TANK_W)
+
+    @u.wraps(u.m, [None], False)
+    def w_diffuser_inner(self):
+        """Return the inner width of each diffuser in the sedimentation tank.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Inner width of each diffuser in the sedimentation tank
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        return ut.ceil_nearest(w_diffuser_inner_min().magnitude,
+                               (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
+
+    @u.wraps(u.m, [None], False)
+    def w_diffuser_outer(self):
+        """Return the outer width of each diffuser in the sedimentation tank.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Outer width of each diffuser in the sedimentation tank
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        return (w_diffuser_inner_min(self.TANK_W) +
+                (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL)).to(u.m).magnitude
+
+    @u.wraps(u.m, [None], False)
+    def L_diffuser_outer(self):
+        """Return the outer length of each diffuser in the sedimentation tank.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Outer length of each diffuser in the sedimentation tank
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        return ((self.MANIFOLD_DIFFUSER_A /
+               (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL))
+               - w_diffuser_inner().to(u.inch)).to(u.m).magnitude
+
+    @u.wraps(u.m, [None], False)
+    def L_diffuser_inner(self):
+        """Return the inner length of each diffuser in the sedimentation tank.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Inner length of each diffuser in the sedimentation tank
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        return L_diffuser_outer(sed_inputs['tank']['W']) -
+                (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude)
+
+    @u.wraps(u.m**3/u.s, [None], False)
+    def q_diffuser(self):
+        """Return the flow through each diffuser.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Flow through each diffuser in the sedimentation tank
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        return (self.TANK_VEL_UP.to(u.m/u.s) *
+                 self.TANK_W.to(u.m) *
+                 L_diffuser_outer()).magnitude
+
+    @u.wraps(u.m/u.s, [None], False)
+    def vel_sed_diffuser(self):
+        """Return the velocity through each diffuser.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Flow through each diffuser in the sedimentation tank
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        return (q_diffuser().magnitude
+                / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
+
+    @u.wraps(u.m**3/u.s, [None], False)
+    def q_tank(self):
+        """Return the maximum flow through one sedimentation tank.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Maximum flow through one sedimentation tank
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
+                self.TANK_W.to(u.m)).magnitude
+
+    @u.wraps(u.m/u.s, [None], False)
+    def vel_inlet_man_max(self):
+        """Return the maximum velocity through the manifold.
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Maximum velocity through the manifold.
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m/u.s).magnitude *
+            sqrt(2*((1-(self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)) /
+            (((MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
+        return vel_manifold_max
+
+    @u.wraps(None, [u.m**3/u.s, None], False)
+    def n_tanks(self, Q_plant):
+        """Return the number of sedimentation tanks required for a given flow rate.
+        Parameters
+        ----------
+        Q_plant : float
+            Total plant flow rate
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        int
+            Number of sedimentation tanks required for a given flow rate.
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        q = q_tank().magnitude
+        return (int(np.ceil(Q_plant / q)))
+
+    @u.wraps(u.m, [u.m**3/u.s, None], False)
+    def L_channel(self, Q_plant):
+        """Return the length of the inlet and exit channels for the sedimentation tank.
+        Parameters
+        ----------
+        Q_plant : float
+            Total plant flow rate
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Length of the inlet and exit channels for the sedimentation tank.
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        n_tanks = n_tanks(Q_plant, sed_inputs)
+        return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
+                ((n_tanks-1) * self.THICKNESS_WALL))
+
+    @u.wraps(u.m, [u.m**3/u.s, u.degK, None], False)
+    @ut.list_handler
+    def ID_exit_man(self, Q_plant, temp):
+        """Return the inner diameter of the exit manifold by guessing an initial
+        diameter then iterating through pipe flow calculations until the answer
+        converges within 1%% error
+        Parameters
+        ----------
+        Q_plant : float
+            Total plant flow rate
+        temp : float
+            Design temperature
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Inner diameter of the exit manifold
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        #Inputs do not need to be checked here because they are checked by
+        #functions this function calls.
+        nu = pc.viscosity_dynamic(temp)
+        hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
+        L = self.TANK_L
+        N_orifices = self.MANIFOLD_EXIT_MAN_N_ORIFICES
+        K_minor = con.K_MINOR_PIPE_EXIT
+        pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
+
+        D = max(diam_pipemajor(Q_plant, hl, L, nu, pipe_rough).magnitude,
+                       diam_pipeminor(Q_plant, hl, K_minor).magnitude)
+        err = 1.00
+        while err > 0.01:
+                D_prev = D
+                f = pc.fric(Q_plant, D_prev, nu, pipe_rough)
+                D = ((8*Q_plant**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
+                        (((f*L/D_prev + K_minor) * (1/3 * 1/) *
+                        (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
+                        / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
+                err = abs(D_prev - D) / ((D + D_prev) / 2)
+        return D
+
+    @u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
+    def D_exit_man_orifice(self, Q_plant, drill_bits):
+        """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
+        Parameters
+        ----------
+        Q_plant : float
+            Total plant flow rate
+        drill_bits : list
+            List of possible drill bit sizes
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Diameter of the orifices in the exit manifold for the sedimentation tank.
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        Q_orifice = Q_plant/self.MANIFOLD_EXIT_MAN_N_ORIFICES
+        D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * self.MANIFOLD_EXIT_MAN_HL_ORIFICE.magnitude))
+        return ut.ceil_nearest(D_orifice, drill_bits)
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
-def L_sed_plate(self):
-    """Return the length of a single plate in the plate settler module based on
-    achieving the desired capture velocity
-    Parameters
-    ----------
-    sed_inputs : dict
-        A dictionary of all of the constant inputs needed for sedimentation tank
-        calculations can be found in sed.yaml
-    Returns
-    -------
-    float
-        Length of a single plate
-    Examples
-    --------
-    >>> from aide_design.play import*
-    >>>
-    """
-    L_sed_plate = ((self.PLATE_SETTLERS_S * ((self.TANK_VEL_UP/sed_input['plate_settlers']['vel_capture'])-1)
-                  + self.PLATE_SETTLERS_THICKNESS * (self.TANK_VEL_UP/sed_input['plate_settlers']['vel_capture']))
-                 / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
-                 ).to(u.m)
-    return L_sed_plate
+    @u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
+    def L_sed_plate(self):
+        """Return the length of a single plate in the plate settler module based on
+        achieving the desired capture velocity
+        Parameters
+        ----------
+        sed_inputs : dict
+            A dictionary of all of the constant inputs needed for sedimentation tank
+            calculations can be found in sed.yaml
+        Returns
+        -------
+        float
+            Length of a single plate
+        Examples
+        --------
+        >>> from aide_design.play import*
+        >>>
+        """
+        L_sed_plate = ((self.PLATE_SETTLERS_S * ((self.TANK_VEL_UP/self.PLATE_SETTLERS_VEL_CAPTURE)-1)
+                      + self.PLATE_SETTLERS_THICKNESS * (self.TANK_VEL_UP/self.PLATE_SETTLERS_VEL_CAPTURE))
+                     / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
+                     ).to(u.m)
+        return L_sed_plates
