@@ -622,7 +622,7 @@ def ID_exit_man(self, Q_plant, temp):
     return D
 
 @u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
-def D_exit_man_orifice(Q_plant, drill_bits, sed_inputs=sed_dict):
+def D_exit_man_orifice(self, Q_plant, drill_bits):
     """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
     Parameters
     ----------
@@ -642,13 +642,13 @@ def D_exit_man_orifice(Q_plant, drill_bits, sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    Q_orifice = Q_plant/sed_input['exit_man']['N_orifices']
-    D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * sed_input['exit_man']['hl_orifice'].magnitude))
+    Q_orifice = Q_plant/self.MANIFOLD_EXIT_MAN_N_ORIFICES
+    D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * self.MANIFOLD_EXIT_MAN_HL_ORIFICE.magnitude))
     return ut.ceil_nearest(D_orifice, drill_bits)
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
-def L_sed_plate(sed_inputs=sed_dict):
+def L_sed_plate(self):
     """Return the length of a single plate in the plate settler module based on
     achieving the desired capture velocity
     Parameters
@@ -665,8 +665,8 @@ def L_sed_plate(sed_inputs=sed_dict):
     >>> from aide_design.play import*
     >>>
     """
-    L_sed_plate = ((sed_input['plate_settlers']['S'] * ((sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture'])-1)
-                  + sed_input['plate_settlers']['thickness'] * (sed_input['tank']['vel_up']/sed_input['plate_settlers']['vel_capture']))
-                 / (np.sin(sed_input['plate_settlers']['angle']) * np.cos(sed_input['plate_settlers']['angle']))
+    L_sed_plate = ((self.PLATE_SETTLERS_S * ((self.TANK_VEL_UP/sed_input['plate_settlers']['vel_capture'])-1)
+                  + self.PLATE_SETTLERS_THICKNESS * (self.TANK_VEL_UP/sed_input['plate_settlers']['vel_capture']))
+                 / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
                  ).to(u.m)
     return L_sed_plate
