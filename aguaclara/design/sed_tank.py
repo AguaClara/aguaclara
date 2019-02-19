@@ -320,7 +320,7 @@ class SedimentationTank:
 
     MANIFOLD_EXIT_MAN_N_ORIFICES = 58
 
-    @u.wraps(None, [None], False)
+    @property
     def n_sed_plates_max(self):
         """Return the maximum possible number of plate settlers in a module given
         plate spacing, thickness, angle, and unsupported length of plate settler.
@@ -349,7 +349,7 @@ class SedimentationTank:
         return math.floor((self.PLATE_SETTLERS_L_CANTILEVERED.magnitude / B_plate.magnitude
                           * np.tan(self.PLATE_SETTLERS_ANGLE.to(u.rad).magnitude)) + 1)
 
-    @u.wraps(u.inch, [None], False)
+    @property
     def w_diffuser_inner_min(self):
         """Return the minimum inner width of each diffuser in the sedimentation tank.
         Parameters
@@ -370,7 +370,7 @@ class SedimentationTank:
                  self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
                  * self.TANK_W)
 
-    @u.wraps(u.m, [None], False)
+    @property
     def w_diffuser_inner(self):
         """Return the inner width of each diffuser in the sedimentation tank.
         Parameters
@@ -390,7 +390,7 @@ class SedimentationTank:
         return ut.ceil_nearest(w_diffuser_inner_min().magnitude,
                                (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
 
-    @u.wraps(u.m, [None], False)
+    @property
     def w_diffuser_outer(self):
         """Return the outer width of each diffuser in the sedimentation tank.
         Parameters
@@ -410,7 +410,7 @@ class SedimentationTank:
         return (w_diffuser_inner_min(self.TANK_W) +
                 (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL)).to(u.m).magnitude
 
-    @u.wraps(u.m, [None], False)
+    @property
     def L_diffuser_outer(self):
         """Return the outer length of each diffuser in the sedimentation tank.
         Parameters
@@ -431,7 +431,7 @@ class SedimentationTank:
                (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL))
                - w_diffuser_inner().to(u.inch)).to(u.m).magnitude
 
-    @u.wraps(u.m, [None], False)
+    @property
     def L_diffuser_inner(self):
         """Return the inner length of each diffuser in the sedimentation tank.
         Parameters
@@ -451,7 +451,7 @@ class SedimentationTank:
         return L_diffuser_outer(sed_inputs['tank']['W']) -
                 (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude)
 
-    @u.wraps(u.m**3/u.s, [None], False)
+    @property
     def q_diffuser(self):
         """Return the flow through each diffuser.
         Parameters
@@ -472,7 +472,7 @@ class SedimentationTank:
                  self.TANK_W.to(u.m) *
                  L_diffuser_outer()).magnitude
 
-    @u.wraps(u.m/u.s, [None], False)
+    @property
     def vel_sed_diffuser(self):
         """Return the velocity through each diffuser.
         Parameters
@@ -492,7 +492,7 @@ class SedimentationTank:
         return (q_diffuser().magnitude
                 / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
 
-    @u.wraps(u.m**3/u.s, [None], False)
+    @property
     def q_tank(self):
         """Return the maximum flow through one sedimentation tank.
         Parameters
@@ -512,7 +512,7 @@ class SedimentationTank:
         return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
                 self.TANK_W.to(u.m)).magnitude
 
-    @u.wraps(u.m/u.s, [None], False)
+    @property
     def vel_inlet_man_max(self):
         """Return the maximum velocity through the manifold.
         Parameters
@@ -534,7 +534,7 @@ class SedimentationTank:
             (((MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
         return vel_manifold_max
 
-    @u.wraps(None, [u.m**3/u.s, None], False)
+    @property
     def n_tanks(self, Q_plant):
         """Return the number of sedimentation tanks required for a given flow rate.
         Parameters
@@ -556,7 +556,7 @@ class SedimentationTank:
         q = q_tank().magnitude
         return (int(np.ceil(Q_plant / q)))
 
-    @u.wraps(u.m, [u.m**3/u.s, None], False)
+    @property
     def L_channel(self, Q_plant):
         """Return the length of the inlet and exit channels for the sedimentation tank.
         Parameters
@@ -579,7 +579,7 @@ class SedimentationTank:
         return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
                 ((n_tanks-1) * self.THICKNESS_WALL))
 
-    @u.wraps(u.m, [u.m**3/u.s, u.degK, None], False)
+    @property
     @ut.list_handler
     def ID_exit_man(self, Q_plant, temp):
         """Return the inner diameter of the exit manifold by guessing an initial
@@ -625,7 +625,7 @@ class SedimentationTank:
                 err = abs(D_prev - D) / ((D + D_prev) / 2)
         return D
 
-    @u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
+    @property
     def D_exit_man_orifice(self, Q_plant, drill_bits):
         """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
         Parameters
@@ -651,7 +651,7 @@ class SedimentationTank:
         return ut.ceil_nearest(D_orifice, drill_bits)
 
 
-    @u.wraps(u.m, [u.m**3/u.s, u.inch, None], False)
+    @property
     def L_sed_plate(self):
         """Return the length of a single plate in the plate settler module based on
         achieving the desired capture velocity
