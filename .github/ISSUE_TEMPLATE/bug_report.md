@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Report bugs so we can help squash them!
-title: "[BUG] <title goes here>"
+title: "<Summarize where the bug is occurring and what's happening>"
 labels: bug, low
 assignees: ''
 

@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Let us know what you want to be implemented!
-title: "[FEATURE] <title goes here>"
+title: "<Summarize the feature and how it should work>"
 labels: feature, low
 assignees: ''
 
