@@ -1,53 +1,50 @@
-import aguaclara
-import aguaclara.core.physchem as pc
 import aguaclara.core.head_loss as minorloss
-import aguaclara.core.pipes as pipes
 import aguaclara.design.human_access as ha
+import aguaclara.core.physchem as pc
+import aguaclara.core.pipes as pipes
 from aguaclara.core.units import unit_registry as u
-import numpy as np
-import collections
 
-# Ratio of the width of the gap between the baffle and the wall and the
-# spacing between the baffles.
+import numpy as np
+
+# Ratio of the width of the gap between the baffle and the wall and the spacing
+# between the baffles.
 BAFFLE_RATIO = 1
 DRAIN_TIME = 15 * u.min
 MOD_ND = 0.5 * u.inch
 SPACER_ND = 0.75 * u.inch
 MOD_EDGE_LAST_PIPE_S = 10 * u.cm
 
-
 # Height that the drain stub extends above the top of the flocculator wall
 DRAIN_STUB_EXT_H = 0 * u.cm
 MOD_PIPE_EDGE_S = 10 * u.cm
 BAFFLE_THICKNESS = 2 * u.mm
-# Unused constants - END /\
 
 
 class Flocculator:
-   """Calculates physical dimensions of an AguaClara flocculator.
-   Constant instance attributes
-   ----------------------------
-   - BAFFLE_K (K or K_baffle): float
+    """Calculates physical dimensions of an AguaClara flocculator.
+    Constant instance attributes
+    ----------------------------
+    - BAFFLE_K (K or K_baffle): float
        - The minor loss coefficient of the flocculator baffles.
-   - HS_RATIO_MIN (Pi_{HS}): float
+    - HS_RATIO_MIN (Pi_{HS}): float
        - The minimum ratio between expansion height and baffle spacing
-   - RATIO_MAX_HS (Pi_{HS}): float
+    - RATIO_MAX_HS (Pi_{HS}): float
        - The maximum ratio between expansion height and baffle spacing
-   """
+    """
 
-   # Increased both to provide a safety margin on flocculator head loss and
-   # to simultaneously scale back on the actual collision potential we are
-   # trying to achieve.
-   # Originally calculated to be 2.3 from the equations:
+    # Increased both to provide a safety margin on flocculator head loss and
+    # to simultaneously scale back on the actual collision potential we are
+    # trying to achieve.
+    # Originally calculated to be 2.3 from the equations:
 
-   # K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2
-   BAFFLE_K = 2.5
-   CHANNEL_N_MIN = 2
-   HS_RATIO_MIN = 3
-   RATIO_MAX_HS = 6
-   SDR = 41
+    # K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2
+    BAFFLE_K = 2.5
+    CHANNEL_N_MIN = 2
+    HS_RATIO_MIN = 3
+    RATIO_MAX_HS = 6
+    SDR = 41
 
-   def __init__(self, Q=20 * u.L/u.s, temp=25 * u.degC,
+    def __init__(self, Q=20 * u.L/u.s, temp=25 * u.degC,
                 max_L=6 * u.m, Gt=37000, HL = 40 * u.cm,
                 downstream_H = 2 * u.m, ent_tank_L =1.5 * u.m,
                 max_W = 42 * u.inch, drain_t = 30 * u.min):
@@ -83,8 +80,8 @@ class Flocculator:
        self.drain_t = drain_t
 
 
-   @property
-   def vel_grad_avg(self):
+    @property
+    def vel_grad_avg(self):
        """Calculate the average velocity gradient (G-bar) of water flowing
        through the flocculator.
        :returns: Average velocity gradient (G-bar)
@@ -93,16 +90,16 @@ class Flocculator:
        return ((u.standard_gravity * self.HL) /
                (pc.viscosity_kinematic(self.temp) * self.Gt)).to(u.s ** -1)
 
-   @property
-   def retention_time(self):
+    @property
+    def retention_time(self):
        """Calculates the hydraulic retention time neglecting the volume created by head loss in the flocculator.
        :returns: Hydraulic retention time (:math:`\theta`)
        :rtype: float * second
        """
        return (self.Gt / self.vel_grad_avg).to(u.s)
 
-   @property
-   def vol(self):
+    @property
+    def vol(self):
        """Calculate the target volume (not counting the volume added by head loss) of the flocculator.
        :returns: Target volume
        :rtype: float * meter ** 3
@@ -110,8 +107,8 @@ class Flocculator:
        return (self.Q * self.retention_time).to(u.m ** 3)
 
 
-   @property
-   def W_min_HS_ratio(self):
+    @property
+    def W_min_HS_ratio(self):
        """Calculate the minimum flocculator channel width, given the minimum
        ratio between expansion height (H) and baffle spacing (S).
        :returns: Minimum channel width given H_e/S
@@ -123,8 +120,8 @@ class Flocculator:
                ).to(u.cm)
 
 
-   @property
-   def channel_n(self):
+    @property
+    def channel_n(self):
        """Calculate the minimum number of channels based on the maximum
        possible channel width and the maximum length of the channels.
        Round up to the next even number (factor of 2 shows up twice in equation)
@@ -138,8 +135,8 @@ class Flocculator:
        return 2*np.ceil(((self.vol / (min_hydraulic_W * self.downstream_H) + self.ent_tank_L) / (2 * self.max_L)).to(u.dimensionless))
 
 
-   @property
-   def channel_W(self):
+    @property
+    def channel_W(self):
        """
        The minimum and hence optimal channel width of the flocculator.
        This
@@ -158,8 +155,8 @@ class Flocculator:
        channel_W = np.amax(np.array([1,(ha.HUMAN_W_MIN/channel_est_W).to(u.dimensionless),(self.W_min_HS_ratio/channel_est_W).to(u.dimensionless)])) * channel_est_W
        return channel_W
 
-   @property
-   def channel_L(self):
+    @property
+    def channel_L(self):
        """
        The channel length of the flocculator. If ha.HUMAN_W_MIN or W_min_HS_ratio
        is the defining constraint for the flocculator width, then the flocculator
@@ -175,8 +172,8 @@ class Flocculator:
        channel_L = ((self.vol / (self.channel_W * self.downstream_H) + self.ent_tank_L) / self.channel_n).to(u.m)
        return channel_L
 
-   @property
-   def expansion_max_H(self):
+    @property
+    def expansion_max_H(self):
        """"Return the maximum distance between expansions for the largest
        allowable H/S ratio.
        :returns: Maximum expansion distance
@@ -189,24 +186,24 @@ class Flocculator:
        return (((self.BAFFLE_K / (2 * pc.viscosity_kinematic(self.temp) * (self.vel_grad_avg ** 2))) *
                 (self.Q * self.RATIO_MAX_HS / self.channel_W) ** 3) ** (1/4)).to(u.m)
 
-   @property
-   def expansion_n(self):
+    @property
+    def expansion_n(self):
        """Return the minimum number of expansions per baffle space.
        :returns: Minimum number of expansions/baffle space
        :rtype: int
        """
        return np.ceil(self.downstream_H / self.expansion_max_H)
 
-   @property
-   def expansion_H(self):
+    @property
+    def expansion_H(self):
        """Returns the height between flow expansions.
        :returns: Height between flow expansions
        :rtype: float * centimeter
        """
        return (self.downstream_H / self.expansion_n).to(u.cm)
 
-   @property
-   def baffle_S(self):
+    @property
+    def baffle_S(self):
        """Return the spacing between baffles.
        :returns: Spacing between baffles
        :rtype: int
@@ -217,16 +214,16 @@ class Flocculator:
                  pc.viscosity_kinematic(self.temp))).to_base_units()) ** (1/3) *
                self.Q / self.channel_W).to(u.cm)
 
-   @property
-   def obstacle_n(self):
+    @property
+    def obstacle_n(self):
        """Return the number of obstacles per baffle.
        :returns: Number of obstacles per baffle
        :rtype: int
        """
        return self.expansion_n - 1
 
-   @property
-   def drain_K(self):
+    @property
+    def drain_K(self):
        """ Return the minor loss coefficient of the drain pipe.
        :returns: Minor Loss Coefficient
        :return: float
@@ -234,8 +231,8 @@ class Flocculator:
        drain_K = minorloss.PIPE_ENTRANCE_K_MINOR + minorloss.PIPE_ENTRANCE_K_MINOR + minorloss.PIPE_EXIT_K_MINOR
        return drain_K
 
-   @property
-   def drain_D(self):
+    @property
+    def drain_D(self):
        """ Returns depth of drain pipe.
        :returns: Depth
        :return: float
@@ -247,8 +244,8 @@ class Flocculator:
 
 
 
-   @property
-   def drain_ND(self):
+    @property
+    def drain_ND(self):
        """Returns the diameter of the drain pipe.
        Each drain pipe will drain two channels because channels are connected by
        a port at the far end and the first channel can't have a drain because
@@ -262,24 +259,24 @@ class Flocculator:
        drain_ND = pipes.ND_SDR_available(self.drain_D,self.SDR)
        return drain_ND
 
-   @property
-   def design(self):
+    @property
+    def design(self):
        """Returns the designed values.
        :returns: list of designed values (G, t, channel_W, obstacle_n)
        :rtype: int
        """
-       floc_dict = { 'channel_n': self.channel_n, 
-                    'channel_L' : self.channel_L, 
-                    'channel_W':self.channel_W, 
-                    'baffle_S':self.baffle_S, 
-                    'obstacle_n':self.obstacle_n, 
-                    'G':self.vel_grad_avg, 
+       floc_dict = { 'channel_n': self.channel_n,
+                    'channel_L' : self.channel_L,
+                    'channel_W':self.channel_W,
+                    'baffle_S':self.baffle_S,
+                    'obstacle_n':self.obstacle_n,
+                    'G':self.vel_grad_avg,
                     't':self.retention_time,
-                    'expansion_max_H':self.expansion_max_H, 
+                    'expansion_max_H':self.expansion_max_H,
                     'drain_ND':self.drain_ND }
        return floc_dict
 
-   def draw(self):
+    def draw(self):
         """Draw the Onshape flocculator model based off of this object."""
         self.CAD.params = {
             'channel_L': self.channel_L,
