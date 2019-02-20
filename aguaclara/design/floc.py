@@ -12,6 +12,7 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipes
 from aguaclara.core.units import unit_registry as u
 
+from onshapepy import Part
 import numpy as np
 
 # Ratio of the width of the gap between the baffle and the wall and the spacing
@@ -32,12 +33,16 @@ class Flocculator:
     """Calculates physical dimensions of an AguaClara flocculator.
     Constant instance attributes
     ----------------------------
-    - BAFFLE_K (K or K_baffle): float
-       - The minor loss coefficient of the flocculator baffles.
-    - HS_RATIO_MIN (Pi_{HS}): float
-       - The minimum ratio between expansion height and baffle spacing
-    - RATIO_MAX_HS (Pi_{HS}): float
-       - The maximum ratio between expansion height and baffle spacing
+    - BAFFLE_K (K or K_{baffle}): float
+        - The minor loss coefficient of the flocculator baffles.
+    - CHANNEL_N_MIN (N_{channel}: int
+        - The minimum number of flocculator channels.
+    - HS_RATIO_MIN (\Pi_{HS}): float
+        - The minimum ratio between expansion height and baffle spacing
+    - RATIO_MAX_HS (\Pi_{HS}): float
+        - The maximum ratio between expansion height and baffle spacing
+    - SDR (sdr): float
+        - The standard dimension ratio.
     """
 
     # Increased both to provide a safety margin on flocculator head loss and
@@ -48,14 +53,26 @@ class Flocculator:
     # K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2
     BAFFLE_K = 2.5
     CHANNEL_N_MIN = 2
-    HS_RATIO_MIN = 3
-    RATIO_MAX_HS = 6
-    SDR = 41
+    HS_RATIO_MIN = 3.0
+    RATIO_MAX_HS = 6.0
+    SDR = 41.0
 
-    def __init__(self, Q=20 * u.L/u.s, temp=25 * u.degC,
-                max_L=6 * u.m, Gt=37000, HL = 40 * u.cm,
-                downstream_H = 2 * u.m, ent_tank_L =1.5 * u.m,
-                max_W = 42 * u.inch, drain_t = 30 * u.min):
+    CAD = Part(
+        'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
+    )
+
+    def __init__(
+            self,
+            Q=20 * u.L/u.s,
+            temp=25 * u.degC,
+            max_L=6 * u.m,
+            Gt=37000,
+            HL = 40 * u.cm,
+            downstream_H = 2 * u.m,
+            ent_tank_L=1.5 * u.m,
+            max_W=42 * u.inch,
+            drain_t=30 * u.min
+    ):
         """Instantiate a Flocculator object, representing a real flocculator
         component.
         :param Q: Flow rate of water through the flocculator.
@@ -87,7 +104,6 @@ class Flocculator:
         self.max_W = max_W
         self.drain_t = drain_t
 
-
     @property
     def vel_grad_avg(self):
         """Calculate the average velocity gradient (G-bar) of water flowing
@@ -114,7 +130,6 @@ class Flocculator:
         """
         return (self.Q * self.retention_time).to(u.m ** 3)
 
-
     @property
     def W_min_HS_ratio(self):
         """Calculate the minimum flocculator channel width, given the minimum
@@ -127,7 +142,6 @@ class Flocculator:
                 (2 * self.downstream_H * pc.viscosity_kinematic(self.temp) * self.vel_grad_avg ** 2)) ** (1/3)
                ).to(u.cm)
 
-
     @property
     def channel_n(self):
         """Calculate the minimum number of channels based on the maximum
@@ -139,9 +153,10 @@ class Flocculator:
         :returns: number of channels
         :rtype: float * dimensionless
         """
-        min_hydraulic_W = np.amax(np.array([1,(self.max_W/self.W_min_HS_ratio).to(u.dimensionless)])) * self.W_min_HS_ratio
-        return 2*np.ceil(((self.vol / (min_hydraulic_W * self.downstream_H) + self.ent_tank_L) / (2 * self.max_L)).to(u.dimensionless))
-
+        min_hydraulic_W =\
+            np.amax(np.array([1, (self.max_W/self.W_min_HS_ratio).to(u.dimensionless)])) * self.W_min_HS_ratio
+        return 2*np.ceil(((self.vol / (min_hydraulic_W * self.downstream_H) +
+                           self.ent_tank_L) / (2 * self.max_L)).to(u.dimensionless))
 
     @property
     def channel_W(self):
@@ -160,7 +175,8 @@ class Flocculator:
         channel_est_W = (self.vol / (self.downstream_H * (self.channel_n * self.max_L - self.ent_tank_L))).to(u.m)
         # The channel may need to wider than the width that would get the exact required volume.
         # In that case we will need to shorten the flocculator
-        channel_W = np.amax(np.array([1,(ha.HUMAN_W_MIN/channel_est_W).to(u.dimensionless),(self.W_min_HS_ratio/channel_est_W).to(u.dimensionless)])) * channel_est_W
+        channel_W = np.amax(np.array([1, (ha.HUMAN_W_MIN/channel_est_W).to(u.dimensionless),
+                                      (self.W_min_HS_ratio/channel_est_W).to(u.dimensionless)])) * channel_est_W
         return channel_W
 
     @property
@@ -216,7 +232,6 @@ class Flocculator:
         :returns: Spacing between baffles
         :rtype: int
         """
-
         return ((self.BAFFLE_K /
                 ((2 * self.expansion_H * (self.vel_grad_avg ** 2) *
                  pc.viscosity_kinematic(self.temp))).to_base_units()) ** (1/3) *
@@ -261,8 +276,7 @@ class Flocculator:
         :returns: list of designed values
         :rtype: float * centimeter
         """
-
-        drain_ND = pipes.ND_SDR_available(self.drain_D,self.SDR)
+        drain_ND = pipes.ND_SDR_available(self.drain_D, self.SDR)
         return drain_ND
 
     @property
@@ -271,15 +285,15 @@ class Flocculator:
         :returns: list of designed values (G, t, channel_W, obstacle_n)
         :rtype: int
         """
-        floc_dict = { 'channel_n': self.channel_n,
-                    'channel_L' : self.channel_L,
-                    'channel_W':self.channel_W,
-                    'baffle_S':self.baffle_S,
-                    'obstacle_n':self.obstacle_n,
-                    'G':self.vel_grad_avg,
-                    't':self.retention_time,
-                    'expansion_max_H':self.expansion_max_H,
-                    'drain_ND':self.drain_ND }
+        floc_dict = {'channel_n': self.channel_n,
+                     'channel_L': self.channel_L,
+                     'channel_W': self.channel_W,
+                     'baffle_S': self.baffle_S,
+                     'obstacle_n': self.obstacle_n,
+                     'G': self.vel_grad_avg,
+                     't': self.retention_time,
+                     'expansion_max_H': self.expansion_max_H,
+                     'drain_ND': self.drain_ND}
         return floc_dict
 
     def draw(self):
