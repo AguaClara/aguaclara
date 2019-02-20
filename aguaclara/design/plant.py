@@ -42,6 +42,6 @@ class Plant:
             w_tot = a_etf_pv / self.floc.max_L
             w_chan = w_tot / self.floc.channel_n
 
-            a_new = self.floc.l_max_vol * w_chan
+            a_new = self.floc.max_L * w_chan
             a_ratio = a_new / a_et_pv
         return a_new
