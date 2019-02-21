@@ -387,8 +387,8 @@ class SedimentationTank:
         >>> from aide_design.play import*
         >>>
         """
-        return ut.ceil_nearest(w_diffuser_inner_min().magnitude,
-                               (np.arange(1/16,1/4,1/16)*u.inch).magnitude)
+        return ut.ceil_nearest(self.w_diffuser_inner_min.magnitude,
+                               (np.arange(1/16, 1/4, 1/16)*u.inch).magnitude)*u.inch
 
     @property
     def w_diffuser_outer(self):
@@ -407,7 +407,7 @@ class SedimentationTank:
         >>> from aide_design.play import*
         >>>
         """
-        return (w_diffuser_inner_min(self.TANK_W) +
+        return (self.w_diffuser_inner_min +
                 (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL)).to(u.m).magnitude
 
     @property
@@ -429,7 +429,7 @@ class SedimentationTank:
         """
         return ((self.MANIFOLD_DIFFUSER_A /
                (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL))
-               - w_diffuser_inner().to(u.inch)).to(u.m).magnitude
+               - self.w_diffuser_inner.to(u.inch)).to(u.m).magnitude
 
     @property
     def L_diffuser_inner(self):
@@ -448,7 +448,7 @@ class SedimentationTank:
         >>> from aide_design.play import*
         >>>
         """
-        return L_diffuser_outer(sed_inputs['tank']['W']) -
+        return (self.L_diffuser_outer -
                 (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude)
 
     @property
@@ -470,7 +470,7 @@ class SedimentationTank:
         """
         return (self.TANK_VEL_UP.to(u.m/u.s) *
                  self.TANK_W.to(u.m) *
-                 L_diffuser_outer()).magnitude
+                 self.L_diffuser_outer).magnitude
 
     @property
     def vel_sed_diffuser(self):
@@ -579,9 +579,9 @@ class SedimentationTank:
         return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
                 ((n_tanks-1) * self.THICKNESS_WALL))
 
-    @property
-    @ut.list_handler
-    def ID_exit_man(self, Q_plant, temp):
+    ###@property
+    ###@ut.list_handler
+    ###def ID_exit_man(self, Q_plant, temp):
         """Return the inner diameter of the exit manifold by guessing an initial
         diameter then iterating through pipe flow calculations until the answer
         converges within 1%% error
@@ -605,7 +605,7 @@ class SedimentationTank:
         """
         #Inputs do not need to be checked here because they are checked by
         #functions this function calls.
-        nu = pc.viscosity_dynamic(temp)
+        """nu = pc.viscosity_dynamic(temp)
         hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
         L = self.TANK_L
         N_orifices = self.MANIFOLD_EXIT_MAN_N_ORIFICES
@@ -623,7 +623,8 @@ class SedimentationTank:
                         (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
                         / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
                 err = abs(D_prev - D) / ((D + D_prev) / 2)
-        return D
+        return D """
+
 
     @property
     def D_exit_man_orifice(self, Q_plant, drill_bits):
