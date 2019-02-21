@@ -289,6 +289,7 @@ from aguaclara.play import*
 }
 """
 
+
 class SedimentationTank:
     THICKNESS_WALL = 0.15 * u.m
 
@@ -319,6 +320,13 @@ class SedimentationTank:
     MANIFOLD_EXIT_MAN_HL_ORIFICE = 4 * u.cm
 
     MANIFOLD_EXIT_MAN_N_ORIFICES = 58
+
+    def __init__(self, q=20 * u.L / u.s):
+        """Instantiates a SedimentationTank with the specified flow rate.
+
+        TODO: Elaborate on this docstring.
+        """
+        self.q = q
 
     @property
     def n_sed_plates_max(self):
