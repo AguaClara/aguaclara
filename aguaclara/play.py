@@ -1,7 +1,13 @@
-"""Provide easy setup for using the `aguaclara` package and all of its modules.
+"""``aguaclara`` package playground setup
 
-Usage:
-    `from aguaclara.play import *`
+Provide easy setup for using the ``aguaclara`` package and all of its modules,
+classes, and functions.
+
+Note: this module should not be used for development. Instead, individually
+import only necessary modules.
+
+Example:
+    >>> from aguaclara.play import *
 """
 
 import math
@@ -11,8 +17,6 @@ import matplotlib
 import matplotlib.style
 import matplotlib.pyplot as plt
 import warnings
-
-import aguaclara
 
 import aguaclara.core.constants as con
 from aguaclara.core import drills
@@ -32,11 +36,11 @@ import aguaclara.design.human_access as ha
 
 
 def set_sig_figs(n=4):
-    """Set the number of significant figures used to print pint, pandas, and
-    numpy quantities.
+    """Set the number of significant figures used to print Pint, Pandas, and
+    NumPy quantities.
 
     Args:
-        n: Number of significant figures to display
+        n (int): Number of significant figures to display.
     """
     u.default_format = '.' + str(n) + 'g'
     pd.options.display.float_format = ('{:,.' + str(n) + '}').format
