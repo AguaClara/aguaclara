@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Flocculator &mdash; AguaClara v0.0.19 documentation</title>
+  <title>Flocculator &mdash; AguaClara v0.0.20 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.0.19
+                v0.0.20
               </div>
             
           
@@ -158,45 +158,26 @@
             
   <div class="section" id="module-aguaclara.design.floc">
 <span id="flocculator"></span><h1>Flocculator<a class="headerlink" href="#module-aguaclara.design.floc" title="Permalink to this headline">¶</a></h1>
+<p>Flocculator design.</p>
+<p>This module provides all constants and functions necessary to design an
+AguaClara flocculator. These constants and functions define both hydraulic
+(head loss, retention time, etc.) and geometric (baffle spacing, channel length,
+etc.) values that specify a flocculator design.</p>
 <dl class="class">
 <dt id="aguaclara.design.floc.Flocculator">
-<em class="property">class </em><code class="descclassname">aguaclara.design.floc.</code><code class="descname">Flocculator</code><span class="sig-paren">(</span><em>q=&lt;Quantity(20.0</em>, <em>'liter / second')&gt;</em>, <em>temp=&lt;Quantity(25</em>, <em>'degC')&gt;</em>, <em>sed_tank_l_max=&lt;Quantity(6</em>, <em>'meter')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/design/floc.html#Flocculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates physical dimensions of an AguaClara flocculator.</p>
-<ul class="simple">
-<li><dl class="first docutils">
-<dt>BAFFLE_K (K or K_baffle): float</dt>
-<dd><ul class="first last">
+<em class="property">class </em><code class="descclassname">aguaclara.design.floc.</code><code class="descname">Flocculator</code><span class="sig-paren">(</span><em>Q=&lt;Quantity(20.0</em>, <em>'liter / second')&gt;</em>, <em>temp=&lt;Quantity(25</em>, <em>'degC')&gt;</em>, <em>max_L=&lt;Quantity(6</em>, <em>'meter')&gt;</em>, <em>Gt=37000</em>, <em>HL=&lt;Quantity(40</em>, <em>'centimeter')&gt;</em>, <em>downstream_H=&lt;Quantity(2</em>, <em>'meter')&gt;</em>, <em>ent_tank_L=&lt;Quantity(1.5</em>, <em>'meter')&gt;</em>, <em>max_W=&lt;Quantity(42</em>, <em>'inch')&gt;</em>, <em>drain_t=&lt;Quantity(30</em>, <em>'minute')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/design/floc.html#Flocculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates physical dimensions of an AguaClara flocculator.
+Constant instance attributes
+—————————-
+- BAFFLE_K (K or K_{baffle}): float</p>
+<blockquote>
+<div><ul class="simple">
 <li>The minor loss coefficient of the flocculator baffles.</li>
 </ul>
-</dd>
-</dl>
-</li>
+</div></blockquote>
+<ul class="simple">
 <li><dl class="first docutils">
-<dt>HL (h_L_floc): float * u.cm</dt>
-<dd><ul class="first last">
-<li>The target head loss in the flocculator.</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>GT (G-bar-Theta): float</dt>
-<dd><ul class="first last">
-<li>The target collision potential of particles in the flocculator.</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>END_WATER_H (H): float * u.m</dt>
-<dd><ul class="first last">
-<li>The height of water at the end of the flocculator.</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>CHANNEL_N_MIN (n_{Min, channel}): int</dt>
+<dt>CHANNEL_N_MIN (N_{channel}: int</dt>
 <dd><ul class="first last">
 <li>The minimum number of flocculator channels.</li>
 </ul>
@@ -212,7 +193,7 @@
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>HS_RATIO_MAX (Pi_{HS}): float</dt>
+<dt>RATIO_MAX_HS (Pi_{HS}): float</dt>
 <dd><ul class="first last">
 <li>The maximum ratio between expansion height and baffle spacing</li>
 </ul>
@@ -220,71 +201,56 @@
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>CAD: Part</dt>
+<dt>SDR (sdr): float</dt>
 <dd><ul class="first last">
-<li>URL to the flocculator 3D model in Onshape</li>
+<li>The standard dimension ratio.</li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
 <dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.baffle_s">
-<code class="descname">baffle_s</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.baffle_s" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the spacing between baffles.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Minimum number of expansions/baffle space</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dt id="aguaclara.design.floc.Flocculator.W_min_HS_ratio">
+<code class="descname">W_min_HS_ratio</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.W_min_HS_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the minimum flocculator channel width, given the minimum
+ratio between expansion height (H) and baffle spacing (S).
+:returns: Minimum channel width given H_e/S
+:rtype: float * centimeter</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.channel_l">
-<code class="descname">channel_l</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the length of the flocculator channel that allows for the
-target volume, while at the same time, allowing for human access.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Channel length</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
-</tr>
-</tbody>
-</table>
+<dt id="aguaclara.design.floc.Flocculator.baffle_S">
+<code class="descname">baffle_S</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.baffle_S" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the spacing between baffles.
+:returns: Spacing between baffles
+:rtype: int</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.channel_n">
-<code class="descname">channel_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of channels in the entrance tank/flocculator (ETF).</p>
-<p>This takes the total width of the flocculator and divides it by the
-minimum channel width. A floor function is used to ensure that there
-are an even number of channels.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Number of channels</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dt id="aguaclara.design.floc.Flocculator.channel_L">
+<code class="descname">channel_L</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_L" title="Permalink to this definition">¶</a></dt>
+<dd><p>The channel length of the flocculator. If ha.HUMAN_W_MIN or W_min_HS_ratio
+is the defining constraint for the flocculator width, then the flocculator
+volume will be greater than necessary. Bring the volume back to the design
+volume by shortening the flocculator in this case. This design approach
+will produce flocculators that are the same length as the max_L that was
+specified in many cases. The flocculator will be less than the specified
+length especially for cases with only one or two sed tanks.
+channel_L = (vol/(channel_W * downstream_H) + entrancetank_L)/channel_n
+:returns: Channel length
+:rtype: float * meter</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.channel_w">
-<code class="descname">channel_w</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_w" title="Permalink to this definition">¶</a></dt>
-<dd><p>The channel width of the flocculator.  See section ‘Flocculation
-Design’ of textbook’</p>
+<dt id="aguaclara.design.floc.Flocculator.channel_W">
+<code class="descname">channel_W</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_W" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum and hence optimal channel width of the flocculator.
+This
+The channel must be
+- wide enough to meet the volume requirement (channel_est_W)
+- wider than human access for construction
+- wider than hydraulic requirement to meet H/S ratio
+Create a dimensionless array of the 3 requirements and then get the maximum</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -297,6 +263,70 @@ Design’ of textbook’</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.channel_n">
+<code class="descname">channel_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.channel_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the minimum number of channels based on the maximum
+possible channel width and the maximum length of the channels.
+Round up to the next even number (factor of 2 shows up twice in equation)
+The channel width must be greater than the hydraulic width that ensure baffle overlap.
+Based on the equation for the flocculator volume
+volume = ([max_L*channel_n] - entrancetank_L)*max_W * downstream_H
+:returns: number of channels
+:rtype: float * dimensionless</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.design">
+<code class="descname">design</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.design" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the designed values.
+:returns: list of designed values (G, t, channel_W, obstacle_n)
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.drain_D">
+<code class="descname">drain_D</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.drain_D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns depth of drain pipe.
+:returns: Depth
+:return: float</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.drain_K">
+<code class="descname">drain_K</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.drain_K" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minor loss coefficient of the drain pipe.
+:returns: Minor Loss Coefficient
+:return: float</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aguaclara.design.floc.Flocculator.drain_ND">
+<code class="descname">drain_ND</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.drain_ND" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Returns the diameter of the drain pipe.</dt>
+<dd>Each drain pipe will drain two channels because channels are connected by
+a port at the far end and the first channel can’t have a drain because
+of the entrance tank. Need to review the design to see if this is a good
+assumption.
+D_{Pipe} = sqrt{</dd>
+</dl>
+<p>rac{8 A_{Tank}}{pi t_{Drain}} sqrt{ 
+rac{h_0 sum K}{2g} } }</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">list of designed values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">float * centimeter</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
 <dl class="method">
 <dt id="aguaclara.design.floc.Flocculator.draw">
 <code class="descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aguaclara/design/floc.html#Flocculator.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator.draw" title="Permalink to this definition">¶</a></dt>
@@ -304,186 +334,65 @@ Design’ of textbook’</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.expansion_h">
-<code class="descname">expansion_h</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the height between flow expansions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Height between flow expansions</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * centimeter</td>
-</tr>
-</tbody>
-</table>
+<dt id="aguaclara.design.floc.Flocculator.expansion_H">
+<code class="descname">expansion_H</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_H" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the height between flow expansions.
+:returns: Height between flow expansions
+:rtype: float * centimeter</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.expansion_h_max">
-<code class="descname">expansion_h_max</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h_max" title="Permalink to this definition">¶</a></dt>
+<dt id="aguaclara.design.floc.Flocculator.expansion_max_H">
+<code class="descname">expansion_max_H</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_max_H" title="Permalink to this definition">¶</a></dt>
 <dd><p>“Return the maximum distance between expansions for the largest
-allowable H/S ratio.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Maximum expansion distance</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
-</tr>
-</tbody>
-</table>
-<p>exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
+allowable H/S ratio.
+:returns: Maximum expansion distance
+:rtype: float * meter
+Examples
+——–
+exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)
 0.375 meter</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aguaclara.design.floc.Flocculator.expansion_n">
 <code class="descname">expansion_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the minimum number of expansions per baffle space.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Minimum number of expansions/baffle space</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.l_max_vol">
-<code class="descname">l_max_vol</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.l_max_vol" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the maximum flocculator channel length that achieves the
-target volume, while still allowing human access.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Maximum length based off of volume</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Return the minimum number of expansions per baffle space.
+:returns: Minimum number of expansions/baffle space
+:rtype: int</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aguaclara.design.floc.Flocculator.obstacle_n">
 <code class="descname">obstacle_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.obstacle_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of baffles a channel can contain.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Number of baffles channel can contain</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dd><p>Return the number of obstacles per baffle.
+:returns: Number of obstacles per baffle
+:rtype: int</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aguaclara.design.floc.Flocculator.retention_time">
 <code class="descname">retention_time</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.retention_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the retention time of flocs in a flocculator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Retention time of flocs (:math:`      heta`)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * second</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Calculates the hydraulic retention time neglecting the volume created by head loss in the flocculator.
+:returns: Hydraulic retention time (:math:`     heta`)
+:rtype: float * second</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aguaclara.design.floc.Flocculator.vel_grad_avg">
 <code class="descname">vel_grad_avg</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vel_grad_avg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the average velocity gradient (G-bar) of water flowing
-through the flocculator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Average velocity gradient (G-bar)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * 1 / second</td>
-</tr>
-</tbody>
-</table>
+through the flocculator.
+:returns: Average velocity gradient (G-bar)
+:rtype: float * 1 / second</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aguaclara.design.floc.Flocculator.vol">
 <code class="descname">vol</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vol" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the target volume of the flocculator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Target volume</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter ** 3</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.w_min">
-<code class="descname">w_min</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.w_min" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the minimum channel width required to remain within the
-H_e/S ratio range and human access requirements.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Minimum channel width</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * centimeter</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.w_min_hs_ratio">
-<code class="descname">w_min_hs_ratio</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.w_min_hs_ratio" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the minimum flocculator channel width, given the minimum
-ratio between expansion height (H) and baffle spacing (S).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Minimum channel width given H_e/S</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * centimeter</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="aguaclara.design.floc.Flocculator.w_total">
-<code class="descname">w_total</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.w_total" title="Permalink to this definition">¶</a></dt>
-<dd><p>The total width of the flocculator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Total width</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float * meter</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Calculate the target volume (not counting the volume added by head loss) of the flocculator.
+:returns: Target volume
+:rtype: float * meter ** 3</p>
 </dd></dl>
 
 </dd></dl>
@@ -532,7 +441,7 @@ ratio between expansion height (H) and baffle spacing (S).</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v0.0.19',
+            VERSION:'v0.0.20',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
