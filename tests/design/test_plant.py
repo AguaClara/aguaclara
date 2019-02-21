@@ -12,4 +12,4 @@ class PlantTest(unittest.TestCase):
         self.plant = Plant()
 
     def test_vel_grad_avg(self):
-        self.assertAlmostEqual(self.plant.ent_tank_a, 1.1457647546752496 * (u.m ** 2), 3)
+        self.assertAlmostEqual(self.plant.ent_tank_a, 2.819052298257505 * (u.m ** 2), 3)
