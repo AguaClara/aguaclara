@@ -34,6 +34,8 @@ import aguaclara.core.utility as ut
 # from aguaclara.design.floc import Flocculator
 import aguaclara.design.human_access as ha
 
+import aguaclara.research.procoda_parser as pp
+import aguaclara.research.environmental_processes_analysis as epa
 
 def set_sig_figs(n=4):
     """Set the number of significant figures used to print Pint, Pandas, and
