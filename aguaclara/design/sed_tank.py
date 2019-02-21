@@ -457,7 +457,7 @@ class SedimentationTank:
         >>>
         """
         return (self.L_diffuser_outer -
-                (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude)
+                (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude) * u.m
 
     @property
     def q_diffuser(self):
@@ -478,7 +478,7 @@ class SedimentationTank:
         """
         return (self.TANK_VEL_UP.to(u.m/u.s) *
                  self.TANK_W.to(u.m) *
-                 self.L_diffuser_outer).magnitude
+                 self.L_diffuser_outer).magnitude * u.m
 
     @property
     def vel_sed_diffuser(self):
@@ -497,8 +497,8 @@ class SedimentationTank:
         >>> from aide_design.play import*
         >>>
         """
-        return (q_diffuser().magnitude
-                / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
+        return (self.q_diffuser.magnitude
+                / (self.w_diffuser_inner * self.L_diffuser_inner).magnitude)
 
     @property
     def q_tank(self):
@@ -518,7 +518,7 @@ class SedimentationTank:
         >>>
         """
         return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
-                self.TANK_W.to(u.m)).magnitude
+                self.TANK_W.to(u.m)).magnitude * u.m
 
     @property
     def vel_inlet_man_max(self):
@@ -538,12 +538,12 @@ class SedimentationTank:
         >>>
         """
         vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m/u.s).magnitude *
-            sqrt(2*((1-(self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)) /
-            (((MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
+                            math.sqrt(2*((1-(self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)) /
+                                      (((self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
         return vel_manifold_max
 
     @property
-    def n_tanks(self, Q_plant):
+    def n_tanks(self):
         """Return the number of sedimentation tanks required for a given flow rate.
         Parameters
         ----------
@@ -561,11 +561,11 @@ class SedimentationTank:
         >>> from aide_design.play import*
         >>>
         """
-        q = q_tank().magnitude
-        return (int(np.ceil(Q_plant / q)))
+        q = self.q_tank.magnitude
+        return int(np.ceil(self.q / q))
 
     @property
-    def L_channel(self, Q_plant):
+    def L_channel(self):
         """Return the length of the inlet and exit channels for the sedimentation tank.
         Parameters
         ----------
@@ -583,13 +583,13 @@ class SedimentationTank:
         >>> from aide_design.play import*
         >>>
         """
-        n_tanks = n_tanks(Q_plant, sed_inputs)
+        n_tanks = n_tanks(self.q, sed_inputs)
         return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
                 ((n_tanks-1) * self.THICKNESS_WALL))
 
-    ###@property
-    ###@ut.list_handler
-    ###def ID_exit_man(self, Q_plant, temp):
+    @property
+    @ut.list_handler
+    def ID_exit_man(self, temp):
         """Return the inner diameter of the exit manifold by guessing an initial
         diameter then iterating through pipe flow calculations until the answer
         converges within 1%% error
@@ -613,7 +613,7 @@ class SedimentationTank:
         """
         #Inputs do not need to be checked here because they are checked by
         #functions this function calls.
-        """nu = pc.viscosity_dynamic(temp)
+        nu = pc.viscosity_dynamic(temp)
         hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
         L = self.TANK_L
         N_orifices = self.MANIFOLD_EXIT_MAN_N_ORIFICES
@@ -625,13 +625,13 @@ class SedimentationTank:
         err = 1.00
         while err > 0.01:
                 D_prev = D
-                f = pc.fric(Q_plant, D_prev, nu, pipe_rough)
+                f = pc.fric(self.q, D_prev, nu, pipe_rough)
                 D = ((8*Q_plant**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
-                        (((f*L/D_prev + K_minor) * (1/3 * 1/) *
+                        (((f*L/D_prev + K_minor) *
                         (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
                         / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
                 err = abs(D_prev - D) / ((D + D_prev) / 2)
-        return D """
+        return D
 
 
     @property
