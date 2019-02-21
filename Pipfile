@@ -9,6 +9,7 @@ pint = "*"
 scipy = "*"
 onshapepy = "*"
 requests = ">=2.20.0"
+cachetools = "*"
 
 [dev-packages]
 codecov = "*"
@@ -16,10 +17,10 @@ coverage = "*"
 pytest = "*"
 pytest-cov = "*"
 Sphinx = "*"
-sphinx_rtd_theme = "==0.4.0"
 aguaclara = {editable = true, path = "."}
 pytest-runner = "*"
 requests = ">=2.20.0"
+cachetools = "*"
 
 [requires]
 python_version = "3.5"

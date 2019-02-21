@@ -5,3 +5,4 @@ matplotlib
 pint
 codecov
 pytest-cov
+cachetools

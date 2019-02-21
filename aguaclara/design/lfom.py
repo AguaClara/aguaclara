@@ -5,8 +5,10 @@ import aguaclara.core.pipes as pipe
 import aguaclara.core.utility as ut
 import aguaclara.core.drills as drills
 from aguaclara.core.units import unit_registry as u
+
 import numpy as np
 import math
+from cachetools import cached
 
 
 class LFOM:
