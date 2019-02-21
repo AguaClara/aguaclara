@@ -18,7 +18,7 @@ class Plant:
         """
         self.q = q
         self.temp = temp
-        self.floc = Flocculator(q=q, temp=temp)
+        self.floc = Flocculator(Q=q, temp=temp)
 
     @property
     def ent_tank_a(self):
@@ -34,14 +34,14 @@ class Plant:
         tolerance = 0.01
         a_floc_pv = (
             self.floc.vol /
-            (self.floc.END_WATER_H + (self.floc.HL / 2))
+            (self.floc.downstream_H + (self.floc.HL / 2))
         )
         while a_ratio > (1 + tolerance):
             a_et_pv = a_new
             a_etf_pv = a_et_pv + a_floc_pv
-            w_tot = a_etf_pv / self.floc.sed_tank_l_max
+            w_tot = a_etf_pv / self.floc.max_L
             w_chan = w_tot / self.floc.channel_n
 
-            a_new = self.floc.l_max_vol * w_chan
+            a_new = self.floc.max_L * w_chan
             a_ratio = a_new / a_et_pv
         return a_new
