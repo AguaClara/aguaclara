@@ -1,6 +1,7 @@
 from aguaclara.core.units import unit_registry as u
 import numpy as np
 import pandas as pd
+import os
 
 # pump rotor radius based on minimizing error between predicted and measured
 # values
@@ -70,7 +71,9 @@ def ID_colored_tube(color):
     2.79 millimeter
 
     """
-    df = pd.read_csv("/data/tubing_data.txt", delimiter='\t')
+    tubing_data_path = os.path.join(os.path.dirname(__file__),
+        "data", "tubing_data.txt")
+    df = pd.read_csv(tubing_data_path, delimiter='\t')
     idx = df["Color"] == color
     return df[idx]['Diameter (mm)'].values[0] * u.mm
 
