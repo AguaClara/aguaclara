@@ -1,14 +1,16 @@
 """Build an Linear Flow Orifice Meter"""
+import math
+from operator import attrgetter
+
+import numpy as np
+from cachetools import cachedmethod, LFUCache
+
 import aguaclara.core.constants as con
+import aguaclara.core.drills as drills
 import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipe
 import aguaclara.core.utility as ut
-import aguaclara.core.drills as drills
 from aguaclara.core.units import unit_registry as u
-
-import numpy as np
-import math
-from cachetools import cached
 
 
 class LFOM:
@@ -23,6 +25,9 @@ class LFOM:
         self.drill_bits = drill_bits
         self.s_orifice = s_orifice
 
+        self.cache = LFUCache(10)
+
+    @cachedmethod(attrgetter('cache'))
     def stout_w_per_flow(self, z):
         """Return the width of a Stout weir at elevation z. More info
         here. <https://confluence.cornell.edu/display/AGUACLARA/
@@ -33,6 +38,7 @@ class LFOM:
         return w_per_flow.to_base_units()
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def n_rows(self):
         """This equation states that the open area corresponding to one row
         can be set equal to two orifices of diameter=row height. If there
@@ -52,12 +58,14 @@ class LFOM:
         return variablerow
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def b_rows(self):
         """The distance center to center between each row of orifices.
         Message how long it took to load everything (minus packages)"""
         return self.hl / self.n_rows
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def vel_critical(self):
         """The average vertical velocity of the water inside the LFOM pipe
         at the very bottom of the bottom row of orifices The speed of
@@ -66,18 +74,21 @@ class LFOM:
         return (4 / (3 * math.pi) * (2 * pc.gravity * self.hl) ** (1 / 2)).to(u.m/u.s)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def area_pipe_min(self):
         """The minimum cross-sectional area of the LFOM pipe that assures
         a safety factor."""
         return (self.safety_factor * self.q / self.vel_critical).to(u.cm**2)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def nom_diam_pipe(self):
         """The nominal diameter of the LFOM pipe"""
         ID = pc.diam_circle(self.area_pipe_min)
         return pipe.ND_SDR_available(ID, self.sdr)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def area_top_orifice(self):
         """Estimate the orifice area corresponding to the top row of orifices.
         Another solution method is to use integration to solve this problem.
@@ -90,11 +101,13 @@ class LFOM:
         return self.stout_w_per_flow(z) * self.q * self.b_rows
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def d_orifice_max(self):
         """Determine the maximum orifice diameter."""
         return pc.diam_circle(self.area_top_orifice)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def orifice_diameter(self):
         """The actual orifice diameter. We don't let the diameter extend
         beyond its row space. """
@@ -102,11 +115,13 @@ class LFOM:
         return ut.floor_nearest(maxdrill, self.drill_bits)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def drillbit_area(self):
         """The area of the actual drill bit."""
         return pc.area_circle(self.orifice_diameter)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def n_orifices_per_row_max(self):
         """A bound on the number of orifices allowed in each row.
         The distance between consecutive orifices must be enough to retain
@@ -118,11 +133,13 @@ class LFOM:
         return math.floor(c/b)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def flow_ramp(self):
         """An equally spaced array representing flow at each row."""
         return np.linspace(1 / self.n_rows, 1, self.n_rows)*self.q
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def height_orifices(self):
         """Calculates the height of the center of each row of orifices.
         The bottom of the bottom row orifices is at the zero elevation
@@ -132,6 +149,7 @@ class LFOM:
 
         return (np.linspace(0, self.n_rows-1, self.n_rows))*self.b_rows + 0.5 * self.orifice_diameter
 
+    @cachedmethod(attrgetter('cache'))
     def flow_actual(self, Row_Index_Submerged, N_LFOM_Orifices):
         """Calculates the flow for a given number of submerged rows of orifices
         harray is the distance from the water level to the center of the
@@ -158,6 +176,7 @@ class LFOM:
         return flow
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def n_orifices_per_row(self):
         """Calculate number of orifices at each level given an orifice
         diameter.
@@ -178,6 +197,7 @@ class LFOM:
         return n
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def error_per_row(self):
         """This function calculates the error of the design based on the
         differences between the predicted flow rate

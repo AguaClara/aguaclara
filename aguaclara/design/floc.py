@@ -1,11 +1,14 @@
-import aguaclara.core.physchem as pc
-import aguaclara.design.human_access as ha
-import aguaclara.core.constants as con
-from aguaclara.core.units import unit_registry as u
+import math
+from operator import attrgetter
+
+import numpy as np
+from cachetools import cachedmethod, LFUCache
 from onshapepy import Part
 
-import math
-import numpy as np
+import aguaclara.core.constants as con
+import aguaclara.core.physchem as pc
+import aguaclara.design.human_access as ha
+from aguaclara.core.units import unit_registry as u
 
 # Unused constants - START \/
 
@@ -130,7 +133,10 @@ class Flocculator:
         self.temp = temp
         self.sed_tank_l_max = sed_tank_l_max
 
+        self.cache = LFUCache(10)
+
     @property
+    @cachedmethod(attrgetter('cache'))
     def vel_grad_avg(self):
         """Calculate the average velocity gradient (G-bar) of water flowing
         through the flocculator.
@@ -142,6 +148,7 @@ class Flocculator:
                 (pc.viscosity_kinematic(self.temp) * self.GT)).to(u.s ** -1)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def retention_time(self):
         """Calculate the retention time of flocs in a flocculator.
 
@@ -151,6 +158,7 @@ class Flocculator:
         return (self.GT / self.vel_grad_avg).to(u.s)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def vol(self):
         """Calculate the target volume of the flocculator.
 
@@ -160,6 +168,7 @@ class Flocculator:
         return (self.q * self.retention_time).to(u.m ** 3)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def l_max_vol(self):
         """Calculate the maximum flocculator channel length that achieves the
         target volume, while still allowing human access.
@@ -172,6 +181,7 @@ class Flocculator:
                 ).to(u.m)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def channel_l(self):
         """Calculate the length of the flocculator channel that allows for the
         target volume, while at the same time, allowing for human access.
@@ -182,6 +192,7 @@ class Flocculator:
         return (min(self.sed_tank_l_max, self.l_max_vol)).to(u.m)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def w_min_hs_ratio(self):
         """Calculate the minimum flocculator channel width, given the minimum
         ratio between expansion height (H) and baffle spacing (S).
@@ -195,6 +206,7 @@ class Flocculator:
                 ).to(u.cm)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def w_min(self):
         """Calculate the minimum channel width required to remain within the
         H_e/S ratio range and human access requirements.
@@ -205,6 +217,7 @@ class Flocculator:
         return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN).to(u.cm)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def channel_n(self):
         """Return the number of channels in the entrance tank/flocculator (ETF).
 
@@ -221,6 +234,7 @@ class Flocculator:
         return int(max(num_floor, 2))
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def w_total(self):
         """The total width of the flocculator.
 
@@ -230,6 +244,7 @@ class Flocculator:
         return (self.vol / (self.channel_l * self.END_WATER_H)).to(u.m)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def channel_w(self):
         """
         The channel width of the flocculator.  See section 'Flocculation
@@ -241,6 +256,7 @@ class Flocculator:
         return (self.w_total / self.channel_n).to(u.m)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def expansion_h_max(self):
         """"Return the maximum distance between expansions for the largest
         allowable H/S ratio.
@@ -257,6 +273,7 @@ class Flocculator:
                  (self.q * self.HS_RATIO_MAX / self.channel_w) ** 3) ** (1/4)).to(u.m)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def expansion_n(self):
         """Return the minimum number of expansions per baffle space.
 
@@ -266,6 +283,7 @@ class Flocculator:
         return math.ceil(self.END_WATER_H / self.expansion_h_max)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def expansion_h(self):
         """Returns the height between flow expansions.
 
@@ -275,6 +293,7 @@ class Flocculator:
         return (self.END_WATER_H / self.expansion_n).to(u.cm)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def baffle_s(self):
         """Return the spacing between baffles.
 
@@ -288,6 +307,7 @@ class Flocculator:
                 self.q / ha.HUMAN_W_MIN).to(u.cm)
 
     @property
+    @cachedmethod(attrgetter('cache'))
     def obstacle_n(self):
         """Return the number of baffles a channel can contain.
 
