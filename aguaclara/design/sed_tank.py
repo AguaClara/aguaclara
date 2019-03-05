@@ -257,35 +257,41 @@ class SedimentationTank:
 
         MANIFOLD_EXIT_MAN_N_ORIFICES: (int) 58 Number of orifices in the exit manifold
     """
-    THICKNESS_WALL= 0.15 * u.m
+    THICKNESS_WALL= 0.15 * u.m #expert input
 
-    PLATE_SETTLERS_ANGLE = 60 * u.deg
+    #Make plate settler module
 
-    PLATE_SETTLERS_S = 2.5 * u.cm
+    PLATE_SETTLERS_ANGLE = 60 * u.deg #E-I
 
-    PLATE_SETTLERS_THICKNESS = 2 * u.mm
+    PLATE_SETTLERS_S = 2.5 * u.cm #E-I
 
-    PLATE_SETTLERS_L_CANTILEVERED = 20 * u.cm
+    PLATE_SETTLERS_THICKNESS = 2 * u.mm #E-I
 
-    PLATE_SETTLERS_VEL_CAPTURE = 0.12 * u.mm / u.s
+    PLATE_SETTLERS_L_CANTILEVERED = 20 * u.cm #E-I (Put in onshape)
 
-    TANK_W = 42 * u.inch
+    PLATE_SETTLERS_VEL_CAPTURE = 0.12 * u.mm / u.s #E-I
 
-    TANK_L = 5.8 * u.m
+    TANK_W = 42 * u.inch #E-I
 
-    TANK_VEL_UP = 1 * u.mm / u.s
+    TANK_L = 5.8 * u.m #E-I (Rename to Bay?)
 
-    MANIFOLD_RATIO_Q_MAN_ORIFICE = 0.8
+    #Specify Inner length (E-I)
+
+    TANK_VEL_UP = 1 * u.mm / u.s #E_I
+
+    MANIFOLD_RATIO_Q_MAN_ORIFICE = 0.8 #E-I
 
     MANIFOLD_DIFFUSER_THICKNESS_WALL = 1.17 * u.inch
 
-    MANIFOLD_DIFFUSER_VEL_MAX = 442.9 * u.mm / u.s
+    #Specify schedule (SDR) of diffuser pipe for above
 
-    MANIFOLD_DIFFUSER_A = 0.419 * u.inch ** 2
+    MANIFOLD_DIFFUSER_VEL_MAX = 442.9 * u.mm / u.s #E-I
 
-    MANIFOLD_EXIT_MAN_HL_ORIFICE = 4 * u.cm
+    MANIFOLD_DIFFUSER_A = 0.419 * u.inch ** 2 #Calculate from Q
 
-    MANIFOLD_EXIT_MAN_N_ORIFICES = 58
+    MANIFOLD_EXIT_MAN_HL_ORIFICE = 4 * u.cm #E-I
+
+    MANIFOLD_EXIT_MAN_N_ORIFICES = 58 #E-I
 
     def __init__(self, q=20 * u.L / u.s):
         """Instantiates a SedimentationTank with the specified flow rate.
@@ -293,6 +299,7 @@ class SedimentationTank:
         TODO: Elaborate on this docstring.
         """
         self.q = q
+        # Create Bay class
 
     @property
     def n_sed_plates_max(self):
@@ -306,6 +313,7 @@ class SedimentationTank:
         B_plate = self.PLATE_SETTLERS_S + self.PLATE_SETTLERS_THICKNESS
         return math.floor((self.PLATE_SETTLERS_L_CANTILEVERED.magnitude / B_plate.magnitude
                           * np.tan(self.PLATE_SETTLERS_ANGLE.to(u.rad).magnitude)) + 1)
+        # Calculate in onshape
 
     @property
     def w_diffuser_inner_min(self):
@@ -317,6 +325,11 @@ class SedimentationTank:
         return ((self.TANK_VEL_UP.to(u.inch/u.s).magnitude /
                  self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
                  * self.TANK_W)
+
+    # Remove these next four, and specify in onshape a 15% stretch difference between
+    # the circumference of both diffuser ends' inner/outer circumferences.
+    # We can model the aggregate diffuser jet as one continuous flow. Don't
+    # correct for the thickness that separates each diffuser's effluent orfice.
 
     @property
     def w_diffuser_inner(self):
@@ -369,6 +382,7 @@ class SedimentationTank:
         return (self.TANK_VEL_UP.to(u.m/u.s) *
                  self.TANK_W.to(u.m) *
                  self.L_diffuser_outer).magnitude
+        # Remove
 
     @property
     def vel_sed_diffuser(self):
@@ -379,6 +393,7 @@ class SedimentationTank:
         """
         return (q_diffuser().magnitude
                 / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
+        # Remove
 
     @property
     def q_tank(self):
@@ -389,6 +404,7 @@ class SedimentationTank:
         """
         return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
                 self.TANK_W.to(u.m)).magnitude
+        #rename to q_bay, use to determine how many bays are needed
 
     @property
     def vel_inlet_man_max(self):
@@ -415,6 +431,7 @@ class SedimentationTank:
         """
         q = q_tank().magnitude
         return (int(np.ceil(Q_plant / q)))
+        # Part of logic at the sed_tank level
 
     @property
     def L_channel(self, Q_plant):
@@ -429,6 +446,8 @@ class SedimentationTank:
         n_tanks = n_tanks(Q_plant, sed_inputs)
         return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
                 ((n_tanks-1) * self.THICKNESS_WALL))
+
+    #Need to specify W_channel function
 
     @property
     @ut.list_handler
@@ -496,3 +515,6 @@ class SedimentationTank:
                      / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
                      ).to(u.m)
         return L_sed_plates
+
+
+    #Need code for sed_channel
