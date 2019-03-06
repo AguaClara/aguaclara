@@ -16,9 +16,9 @@ min_rpm = 3 * u.rev/u.min
 max_rpm = 95 * u.rev/u.min
 
 
-def Q6_roller(ID_tube):
+def Q_roller(ID_tube):
     """This function calculates the volume per revolution of a 6 roller pump
-    given the innner diameter (ID) of 3-stop tubing. It was empirically derived
+    given the inner diameter (ID) of 3-stop tubing. It was empirically derived
     using the table found at
     http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm
 
@@ -34,11 +34,11 @@ def Q6_roller(ID_tube):
 
     Examples
     --------
-    >>> Q6_roller(2.79*u.mm)
+    >>> Q_roller(2.79*u.mm)
     0.4005495805189351 milliliter/rev
-    >>> Q6_roller(1.52*u.mm)
+    >>> Q_roller(1.52*u.mm)
     0.14884596727278446 milliliter/rev
-    >>> Q6_roller(0.51*u.mm)
+    >>> Q_roller(0.51*u.mm)
     0.01943899117521222 milliliter/rev
 
     """
@@ -107,7 +107,7 @@ def C_stock_max(Q_plant, C, tubing_color):
 
     """
     ID_tube = ID_colored_tube(tubing_color)
-    return (C * Q_plant / (Q6_roller(ID_tube) * min_rpm)).to(u.g/u.L)
+    return (C * Q_plant / (Q_roller(ID_tube) * min_rpm)).to(u.g/u.L)
 
 
 def Q_stock_max(Q_plant, C, tubing_color):
@@ -304,5 +304,5 @@ def pump_rpm(Q, tubing_color):
     4.031012804669423 rev/minute
 
     """
-    flow_per_rev = Q6_roller(ID_colored_tube(tubing_color))
+    flow_per_rev = Q_roller(ID_colored_tube(tubing_color))
     return (Q / flow_per_rev).to(u.rev/u.min)
