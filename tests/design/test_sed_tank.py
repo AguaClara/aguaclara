@@ -21,25 +21,25 @@ class SedimentationTankTest(unittest.TestCase):
         self.assertAlmostEqual(self.sed_tank.w_diffuser_inner, 0.125* u.inch)
 
     def test_w_diffuser_outer(self):
-        self.assertAlmostEqual(self.sed_tank.w_diffuser_outer, 0.06184467012869722)
+        self.assertAlmostEqual(self.sed_tank.w_diffuser_outer, 0.06184467012869722*u.m)
 
     def test_L_diffuser_outer(self):
-        self.assertAlmostEqual(self.sed_tank.L_diffuser_outer, 0.001373119658119658)
+        self.assertAlmostEqual(self.sed_tank.L_diffuser_outer, 0.001373119658119658*u.m)
 
     def test_L_diffuser_inner(self):
         self.assertAlmostEqual(self.sed_tank.L_diffuser_inner, -0.05806288034188034*u.m)
 
     def test_q_diffuser(self):
-        self.assertAlmostEqual(self.sed_tank.q_diffuser, 1.4648440512820511e-06*u.m)
+        self.assertAlmostEqual(self.sed_tank.q_diffuser, 1.4648440512820511e-06*(u.L / u.s))
 
     def test_vel_sed_diffuser(self):
-        self.assertAlmostEqual(self.sed_tank.vel_sed_diffuser, -0.0002018286440709652)
+        self.assertAlmostEqual(self.sed_tank.vel_sed_diffuser, -0.0002018286440709652*(u.m/u.s))
 
     def test_q_tank(self):
         self.assertAlmostEqual(self.sed_tank.q_tank, 6.18744*(u.L / u.s))
 
     def test_vel_inlet_man_max(self):
-        self.assertAlmostEqual(self.sed_tank.vel_inlet_man_max, 0.29346073739129713)
+        self.assertAlmostEqual(self.sed_tank.vel_inlet_man_max, 0.29346073739129713*(u.m/u.s))
 
     def test_n_tanks(self):
         self.assertAlmostEqual(self.sed_tank.n_tanks, 4)
@@ -50,6 +50,8 @@ class SedimentationTankTest(unittest.TestCase):
     #def test_ID_exit_man(self):
     #    self.assertAlmostEqual(self.sed_tank.ID_exit_man, 4*u.m)
 
+    #def D_exit_man_orifice(self):
+    #    self.assertAlmostEqual(self.sed_tank.D_exit_man_orifice, 1)
 
 
 

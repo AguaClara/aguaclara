@@ -2,6 +2,7 @@ from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import aguaclara.core.pipes as pipe
 import aguaclara.core.physchem as pc
+import aguaclara.core.drills as drills
 
 import numpy as np
 
@@ -361,7 +362,7 @@ class SedimentationTank:
         """
         return ((self.MANIFOLD_DIFFUSER_A /
                (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL))
-               - self.w_diffuser_inner.to(u.inch)).to(u.m).magnitude
+               - self.w_diffuser_inner.to(u.inch)).to(u.m)
 
     @property
     def L_diffuser_inner(self):
@@ -370,8 +371,8 @@ class SedimentationTank:
         Returns:
             Inner length of each diffuser in the sedimentation tank (float).
         """
-        return (self.L_diffuser_outer -
-                (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude)
+        return self.L_diffuser_outer - \
+               (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m))
 
     @property
     def q_diffuser(self):
@@ -403,7 +404,7 @@ class SedimentationTank:
             Maximum flow through one sedimentation tank (float).
         """
         return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
-                self.TANK_W.to(u.m)).magnitude.to(u.L / u.s)
+                self.TANK_W.to(u.m)).to(u.L / u.s)
         #rename to q_bay, use to determine how many bays are needed
 
     @property
@@ -491,7 +492,7 @@ class SedimentationTank:
 
 
     @property
-    def D_exit_man_orifice(self, Q_plant, drill_bits):
+    def D_exit_man_orifice(self):
         """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
 
         Args:
@@ -501,9 +502,9 @@ class SedimentationTank:
         Returns:
             Diameter of the orifices in the exit manifold for the sedimentation tank (float).
         """
-        Q_orifice = Q_plant/self.MANIFOLD_EXIT_MAN_N_ORIFICES
+        Q_orifice = self.q/self.MANIFOLD_EXIT_MAN_N_ORIFICES
         D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * self.MANIFOLD_EXIT_MAN_HL_ORIFICE.magnitude))
-        return ut.ceil_nearest(D_orifice, drill_bits)
+        return ut.ceil_nearest(D_orifice, drills.DRILL_BITS_D_METRIC)
 
 
     @property
