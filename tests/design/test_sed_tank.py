@@ -47,8 +47,9 @@ class SedimentationTankTest(unittest.TestCase):
     def test_L_channel(self):
         self.assertAlmostEqual(self.sed_tank.L_channel, 191.6220472440945*u.inch)
 
-    def test_ID_exit_man(self):
-        self.assertAlmostEqual(self.sed_tank.ID_exit_man, 4*u.m)
+    #def test_ID_exit_man(self):
+    #    self.assertAlmostEqual(self.sed_tank.ID_exit_man, 4*u.m)
+
 
 
 
