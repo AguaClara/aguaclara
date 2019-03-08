@@ -555,7 +555,7 @@ def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
     t_seconds = (t_data.to(u.s)).magnitude
     # assume that a guess of 1 reactor in series is close enough to get a solution
     p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude,5]
-    popt, pcov = curve_fit(Tracer_AD_Pe, t_seconds, C_unitless, p0)
+    popt, pcov = curve_fit(Tracer_AD_Pe, t_seconds, C_unitless, p0, bounds=(0.0001,np.inf))
     Solver_theta = popt[0]*u.s
     Solver_C_bar = popt[1]*u(C_units)
     Solver_Pe = popt[2]
