@@ -221,8 +221,8 @@ def aeration_data(DO_column, dirpath):
     filepaths = [os.path.join(dirpath, i) for i in filenames]
     #DO_data is a list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
     # cycle through all of the files and extract the column of data with oxygen concentrations and the times
-    DO_data=[Column_of_data(i,0,-1,DO_column,'mg/L') for i in filepaths]
-    time_data=[(ftime(i,0,-1)).to(u.s) for i in filepaths]
+    DO_data=[column_of_data(i,0,DO_column,-1,'mg/L') for i in filepaths]
+    time_data=[(column_of_time(i,0,-1)).to(u.s) for i in filepaths]
     aeration_collection = collections.namedtuple('aeration_results','filepaths airflows DO_data time_data')
     aeration_results = aeration_collection(filepaths, airflows, DO_data, time_data)
     return aeration_results
@@ -398,7 +398,7 @@ def E_Advective_Dispersion(t, Pe):
     # replace any times at zero with a number VERY close to zero to avoid
     # divide by zero errors
     if isinstance(t, list):
-        t[t == 0] = 10**(-50)
+        t[t == 0] = 10**(-10)
     return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
 
 
@@ -549,13 +549,15 @@ def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
             peclet number that best fits the data
 
     """
-
+    #remove time=0 data to eliminate divide by zero error
+    t_data = t_data[1:-1]
+    C_data = C_data[1:-1]
     C_unitless = C_data.magnitude
     C_units = str(C_bar_guess.units)
     t_seconds = (t_data.to(u.s)).magnitude
     # assume that a guess of 1 reactor in series is close enough to get a solution
     p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude,5]
-    popt, pcov = curve_fit(Tracer_AD_Pe, t_seconds, C_unitless, p0, bounds=(0.0001,np.inf))
+    popt, pcov = curve_fit(Tracer_AD_Pe, t_seconds, C_unitless, p0, bounds=(0.01,np.inf))
     Solver_theta = popt[0]*u.s
     Solver_C_bar = popt[1]*u(C_units)
     Solver_Pe = popt[2]
