@@ -7,12 +7,15 @@ Example:
         sed_tank = SedimentationTank()
 """
 from aguaclara.core.units import unit_registry as u
+from aguaclara.design.sed_tank_bay import SedimentationTankBay
 import aguaclara.core.constants as con
 import aguaclara.core.pipes as pipe
 import aguaclara.core.physchem as pc
 import aguaclara.core.drills as drills
+import aguaclara.core.utility as ut
 
 import numpy as np
+import math
 
 PLANT_FLOOR_THICKNESS = 0.2 * u.m  # plant floor slab thickness
 WALL_THICKNESS = 0.15 * u.m  # thickness of sed tank dividing wall
@@ -288,6 +291,7 @@ class SedimentationTank:
 
     THICKNESS_WALL = 0.15 * u.m  # EI
 
+    """
     PLATE_SETTLERS_ANGLE = 60 * u.deg  # EI
 
     PLATE_SETTLERS_S = 2.5 * u.cm  # EI
@@ -300,11 +304,10 @@ class SedimentationTank:
 
     TANK_W = 42 * u.inch  # EI
 
-    # TODO: Rename TANK_L to TANK_L_INNER
-
-    TANK_L = 5.8 * u.m  # EI
+    TANK_L_INNER = 5.8 * u.m  # EI
 
     TANK_VEL_UP = 1 * u.mm / u.s  # EI
+    """
 
     MANIFOLD_RATIO_Q_MAN_ORIFICE = 0.8  # EI
 
@@ -314,9 +317,7 @@ class SedimentationTank:
 
     MANIFOLD_DIFFUSER_VEL_MAX = 442.9 * u.mm / u.s  # EI
 
-    # TODO: Calculate the below quantity from flow rate.
-
-    MANIFOLD_DIFFUSER_A = 0.419 * u.inch ** 2
+    DIFFUSER_N = 108 #EI
 
     MANIFOLD_EXIT_MAN_HL_ORIFICE = 4 * u.cm  # EI
 
@@ -329,21 +330,6 @@ class SedimentationTank:
         """
         self.q = q
 
-    # TODO: remove this next function. It deals with geometric, rather than
-    # hydraulic relations, so it should be done in Onshape.
-
-    @property
-    def n_sed_plates_max(self):
-        """Return the maximum possible number of plate settlers in a module given
-        plate spacing, thickness, angle, and unsupported length of plate settler.
-
-        Returns:
-            Maximum number of plates (int).
-
-        """
-        B_plate = self.PLATE_SETTLERS_S + self.PLATE_SETTLERS_THICKNESS
-        return math.floor((self.PLATE_SETTLERS_L_CANTILEVERED.magnitude / B_plate.magnitude
-                          * np.tan(self.PLATE_SETTLERS_ANGLE.to(u.rad).magnitude)) + 1)
 
     @property
     def w_diffuser_inner_min(self):
@@ -361,109 +347,6 @@ class SedimentationTank:
     # We can model the aggregate diffuser jet as one continuous flow. Don't
     # correct for the thickness that separates each diffuser's effluent orifice.
 
-    # TODO: Remove the next four functions about the diffusers. They rely
-    # entirely on geometric, physical relations, rather than the hydraulic
-    # relations that we're calculating, so they will be dealt with in Onshape.
-
-    @property
-    def w_diffuser_inner(self):
-        """Return the inner width of each diffuser in the sedimentation tank.
-
-        Returns:
-            Inner width of each diffuser in the sedimentation tank (float).
-        """
-        return ut.ceil_nearest(self.w_diffuser_inner_min.magnitude,
-                               (np.arange(1/16, 1/4, 1/16)*u.inch).magnitude)*u.inch
-
-    @property
-    def w_diffuser_outer(self):
-        """Return the outer width of each diffuser in the sedimentation tank.
-
-        Returns:
-            Outer width of each diffuser in the sedimentation tank (float).
-        """
-        return (self.w_diffuser_inner_min +
-                (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL)).to(u.m).magnitude
-
-    @property
-    def L_diffuser_outer(self):
-        """Return the outer length of each diffuser in the sedimentation tank.
-
-        Returns:
-            Outer length of each diffuser in the sedimentation tank (float).
-        """
-        return ((self.MANIFOLD_DIFFUSER_A /
-               (2 * self.MANIFOLD_DIFFUSER_THICKNESS_WALL))
-               - self.w_diffuser_inner.to(u.inch)).to(u.m)
-
-    @property
-    def L_diffuser_inner(self):
-        """Return the inner length of each diffuser in the sedimentation tank.
-
-        Returns:
-            Inner length of each diffuser in the sedimentation tank (float).
-        """
-        return self.L_diffuser_outer - \
-               (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m))
-
-    # TODO: Remove the next two functions. Monroe says there isn't ever a need
-    # to calculate them.
-
-    @property
-    def q_diffuser(self):
-        """Return the flow (Qsed) through each diffuser.
-
-        Returns:
-            Flow through each diffuser in the sedimentation tank (float).
-        """
-        return (self.TANK_VEL_UP.to(u.m/u.s) *
-                 self.TANK_W.to(u.m) *
-                 self.L_diffuser_outer).magnitude
-
-    @property
-    def vel_sed_diffuser(self):
-        """Return the velocity through each diffuser.
-
-        Returns:
-            Flow through each diffuser in the sedimentation tank (float).
-        """
-        return (self.q_diffuser.magnitude
-                / (self.w_diffuser_inner * self.L_diffuser_inner).magnitude)
-
-    # TODO: the below function is one function that would be need to be put into the
-    # SedimentationTankBay (STB) class. To avoid name overlap, the q that is
-    # passed into the STB class's __init__ function will be called q_plant,
-    # and the below function will just be called q.
-
-    @property
-    def q_tank(self):
-        """Return the maximum flow through one sedimentation tank.
-
-        Returns:
-            Maximum flow through one sedimentation tank (float).
-        """
-        return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
-                self.TANK_W.to(u.m)).magnitude.to(u.L / u.s)
-
-    # TODO: move this below function into STB and call it just `n` to avoid having
-    # a redundant name. Also, this is a property. The flow rate of the plant is
-    # already defined in the class's constructor, so use that instead, and
-    # remove the Q_plant argument.
-
-    @property
-    def n_tanks(self):
-        """Return the number of sedimentation tanks required for a given flow rate.
-
-        Args:
-            Q_plant (float): the flow rate
-
-
-        Returns:
-            Number of sedimentation tanks required for a given flow rate (int).
-        """
-        #q = self.q_tank.magnitude
-        return int(np.ceil(self.q / self.q_tank))
-        # Part of logic at the sed_tank level
 
     @property
     def vel_inlet_man_max(self):
@@ -472,7 +355,7 @@ class SedimentationTank:
         Returns:
             Maximum velocity through the manifold (float).
         """
-        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m / u.s).magnitude *
+        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m / u.s) *
                             math.sqrt(2 * ((1 - (self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2)) /
                                       (((self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2) + 1)))
         return vel_manifold_max
@@ -563,3 +446,11 @@ class SedimentationTank:
                      / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
                      ).to(u.m)
         return L_sed_plates
+
+    @property
+    def diffuser_a(self):
+        """
+        Calculates manifold diffuser area from flow rate.
+        """
+        diffuser_a = self.q_bay / (self.MANIFOLD_DIFFUSER_VEL_MAX * self.DIFFUSER_N)
+        return diffuser_a
