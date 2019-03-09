@@ -9,6 +9,7 @@ Example:
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import aguaclara.core.pipes as pipe
+import aguaclara.core.physchem as pc
 
 import numpy as np
 
@@ -425,8 +426,8 @@ class SedimentationTank:
         Returns:
             Flow through each diffuser in the sedimentation tank (float).
         """
-        return (q_diffuser().magnitude
-                / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
+        return (self.q_diffuser.magnitude
+                / (self.w_diffuser_inner * self.L_diffuser_inner).magnitude)
 
     # TODO: the below function is one function that would be need to be put into the
     # SedimentationTankBay (STB) class. To avoid name overlap, the q that is
@@ -441,7 +442,7 @@ class SedimentationTank:
             Maximum flow through one sedimentation tank (float).
         """
         return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
-                self.TANK_W.to(u.m)).magnitude
+                self.TANK_W.to(u.m)).magnitude.to(u.L / u.s)
 
     # TODO: move this below function into STB and call it just `n` to avoid having
     # a redundant name. Also, this is a property. The flow rate of the plant is
@@ -449,7 +450,7 @@ class SedimentationTank:
     # remove the Q_plant argument.
 
     @property
-    def n_tanks(self, Q_plant):
+    def n_tanks(self):
         """Return the number of sedimentation tanks required for a given flow rate.
 
         Args:
@@ -459,11 +460,9 @@ class SedimentationTank:
         Returns:
             Number of sedimentation tanks required for a given flow rate (int).
         """
-        q = q_tank().magnitude
-        return (int(np.ceil(Q_plant / q)))
-
-    # TODO: This function is broken. Pay attention to the linting (sqiggly lines)
-    # to see what's wrong with it.
+        #q = self.q_tank.magnitude
+        return int(np.ceil(self.q / self.q_tank))
+        # Part of logic at the sed_tank level
 
     @property
     def vel_inlet_man_max(self):
@@ -472,13 +471,13 @@ class SedimentationTank:
         Returns:
             Maximum velocity through the manifold (float).
         """
-        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m/u.s).magnitude *
-            sqrt(2*((1-(self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)) /
-            (((MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
+        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m / u.s).magnitude *
+                            math.sqrt(2 * ((1 - (self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2)) /
+                                      (((self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2) + 1)))
         return vel_manifold_max
 
     @property
-    def L_channel(self, Q_plant):
+    def L_channel(self):
         """Return the length of the inlet and exit channels for the sedimentation tank.
 
         Args:
@@ -487,15 +486,15 @@ class SedimentationTank:
         Returns:
             Length of the inlet and exit channels for the sedimentation tank (float).
         """
-        n_tanks = n_tanks(Q_plant, sed_inputs)
-        return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
-                ((n_tanks-1) * self.THICKNESS_WALL))
+        #n_tanks = self.n_tanks
+        return ((self.n_tanks * self.TANK_W) + self.THICKNESS_WALL +
+                ((self.n_tanks-1) * self.THICKNESS_WALL))
 
     # TODO: We need to specify a function for calculating the width of the channel.
 
     @property
     @ut.list_handler
-    def ID_exit_man(self, Q_plant, temp):
+    def ID_exit_man(self):
         """Return the inner diameter of the exit manifold by guessing an initial
         diameter then iterating through pipe flow calculations until the answer
         converges within 1%% error
@@ -509,6 +508,7 @@ class SedimentationTank:
         """
         #Inputs do not need to be checked here because they are checked by
         #functions this function calls.
+        """
         nu = pc.viscosity_dynamic(temp)
         hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
         L = self.TANK_L
@@ -516,18 +516,21 @@ class SedimentationTank:
         K_minor = con.K_MINOR_PIPE_EXIT
         pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
 
-        D = max(diam_pipemajor(Q_plant, hl, L, nu, pipe_rough).magnitude,
-                       diam_pipeminor(Q_plant, hl, K_minor).magnitude)
+        D = max(pc.diam_pipemajor(self.q, hl, L, nu, pipe_rough).magnitude,
+                pc.diam_pipeminor(self.q, hl, K_minor).magnitude)
         err = 1.00
         while err > 0.01:
                 D_prev = D
-                f = pc.fric(Q_plant, D_prev, nu, pipe_rough)
-                D = ((8*Q_plant**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
-                        (((f*L/D_prev + K_minor) *
-                        (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
-                        / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
+                f = pc.fric(self.q, D_prev, nu, pipe_rough)
+                D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) * 
+                     (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2))) 
+                      / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
                 err = abs(D_prev - D) / ((D + D_prev) / 2)
-        return D
+        return D"""
+        pipe_rough = mat.PVC_PIPE_ROUGH.to(u.m)
+        id = ((self.q / (np.pi / 4 * ((2 * con.GRAVITY * pipe_rough) ** 1 / 2))) ** 1 / 2) * u.m
+        return id
+
 
 
     @property
