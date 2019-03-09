@@ -1,3 +1,11 @@
+"""This module contains all the functions needed to design a sedimentation tank
+for an AguaClara plant.
+
+Example:
+    To create an object of SedimentationTank, use:
+
+        sed_tank = SedimentationTank()
+"""
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import aguaclara.core.pipes as pipe
@@ -205,17 +213,6 @@ DIFFUSER_ND = 1*u.inch
 JET_REVERSER_ND = 3*u.inch
 
 
-"""This module contains all the functions needed to design a sedimentation tank
-for an AguaClara plant.
-
-Example:
-    To create an object of SedimentationTank, use:
-    
-        sed_tank = SedimentationTank()
-"""
-from aguaclara.play import*
-
-
 class SedimentationTank:
     """
     Calculates physical dimensions of Sedimentation Tank.
@@ -257,49 +254,81 @@ class SedimentationTank:
 
         MANIFOLD_EXIT_MAN_N_ORIFICES: (int) 58 Number of orifices in the exit manifold
     """
-    THICKNESS_WALL= 0.15 * u.m #expert input
 
-    #Make plate settler module
+    # TODO: The new nomenclature that we're using for the sedimentation tank
+    # is that the entire structure is called a "tank", but the individual areas
+    # where sedimentation happens are now called "bays". The structure that
+    # controls water going in and out of the bays is called the channel.
+    #
+    # The task is to create a new file called `sed_tank_bay.py`. In it, make a
+    # class `SedimentationTankBay`, and put all constants and functions dealing
+    # with creating a single bay. For now, anything dealing with plate settlers
+    # should also go in there.
+    #
+    # Once SedimentationTankBay (STB) is set up, SedimentationTank should
+    # create a STB in its __init__ function.
 
-    PLATE_SETTLERS_ANGLE = 60 * u.deg #E-I
+    # TODO: All constants labelled EI (Expert Input) are constants that
+    # most users wouldn't have to change, but an expert engineer might want to.
+    # Put them into the arguments of the __init__ function, and keep their
+    # defaults values there. Then, for each EI, assign it to a field in
+    # __init__. For example:
+    #
+    # self.thickness_wall = thickness_wall
+    #
+    # where thickness_wall is the name of the argument that's passed into
+    # the function.
+    #
+    # All EI's need to be specified in both SedimentationTank (ST) and
+    # SedimentationTankBay (STB). Since the ST itself will contain instances of
+    # STB's, you'll have to pass the same EI's into STB in the __init__ function
+    # for ST.
 
-    PLATE_SETTLERS_S = 2.5 * u.cm #E-I
+    THICKNESS_WALL = 0.15 * u.m  # EI
 
-    PLATE_SETTLERS_THICKNESS = 2 * u.mm #E-I
+    PLATE_SETTLERS_ANGLE = 60 * u.deg  # EI
 
-    PLATE_SETTLERS_L_CANTILEVERED = 20 * u.cm #E-I (Put in onshape)
+    PLATE_SETTLERS_S = 2.5 * u.cm  # EI
 
-    PLATE_SETTLERS_VEL_CAPTURE = 0.12 * u.mm / u.s #E-I
+    PLATE_SETTLERS_THICKNESS = 2 * u.mm  # EI
 
-    TANK_W = 42 * u.inch #E-I
+    PLATE_SETTLERS_L_CANTILEVERED = 20 * u.cm  # EI
 
-    TANK_L = 5.8 * u.m #E-I (Rename to Bay?)
+    PLATE_SETTLERS_VEL_CAPTURE = 0.12 * u.mm / u.s  # EI
 
-    #Specify Inner length (E-I)
+    TANK_W = 42 * u.inch  # EI
 
-    TANK_VEL_UP = 1 * u.mm / u.s #E_I
+    # TODO: Rename TANK_L to TANK_L_INNER
 
-    MANIFOLD_RATIO_Q_MAN_ORIFICE = 0.8 #E-I
+    TANK_L = 5.8 * u.m  # EI
+
+    TANK_VEL_UP = 1 * u.mm / u.s  # EI
+
+    MANIFOLD_RATIO_Q_MAN_ORIFICE = 0.8  # EI
 
     MANIFOLD_DIFFUSER_THICKNESS_WALL = 1.17 * u.inch
 
-    #Specify schedule (SDR) of diffuser pipe for above
+    # TODO: Specify schedule (SDR) of diffuser pipe for above
 
-    MANIFOLD_DIFFUSER_VEL_MAX = 442.9 * u.mm / u.s #E-I
+    MANIFOLD_DIFFUSER_VEL_MAX = 442.9 * u.mm / u.s  # EI
 
-    MANIFOLD_DIFFUSER_A = 0.419 * u.inch ** 2 #Calculate from Q
+    # TODO: Calculate the below quantity from flow rate.
 
-    MANIFOLD_EXIT_MAN_HL_ORIFICE = 4 * u.cm #E-I
+    MANIFOLD_DIFFUSER_A = 0.419 * u.inch ** 2
 
-    MANIFOLD_EXIT_MAN_N_ORIFICES = 58 #E-I
+    MANIFOLD_EXIT_MAN_HL_ORIFICE = 4 * u.cm  # EI
+
+    MANIFOLD_EXIT_MAN_N_ORIFICES = 58  # EI
 
     def __init__(self, q=20 * u.L / u.s):
         """Instantiates a SedimentationTank with the specified flow rate.
 
-        TODO: Elaborate on this docstring.
+        TODO: Elaborate on this docstring once the fields have been finalized.
         """
         self.q = q
-        # Create Bay class
+
+    # TODO: remove this next function. It deals with geometric, rather than
+    # hydraulic relations, so it should be done in Onshape.
 
     @property
     def n_sed_plates_max(self):
@@ -313,7 +342,6 @@ class SedimentationTank:
         B_plate = self.PLATE_SETTLERS_S + self.PLATE_SETTLERS_THICKNESS
         return math.floor((self.PLATE_SETTLERS_L_CANTILEVERED.magnitude / B_plate.magnitude
                           * np.tan(self.PLATE_SETTLERS_ANGLE.to(u.rad).magnitude)) + 1)
-        # Calculate in onshape
 
     @property
     def w_diffuser_inner_min(self):
@@ -326,10 +354,14 @@ class SedimentationTank:
                  self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
                  * self.TANK_W)
 
-    # Remove these next four, and specify in onshape a 15% stretch difference between
+    # Note: we need to specify in Onshape a 15% stretch difference between
     # the circumference of both diffuser ends' inner/outer circumferences.
     # We can model the aggregate diffuser jet as one continuous flow. Don't
-    # correct for the thickness that separates each diffuser's effluent orfice.
+    # correct for the thickness that separates each diffuser's effluent orifice.
+
+    # TODO: Remove the next four functions about the diffusers. They rely
+    # entirely on geometric, physical relations, rather than the hydraulic
+    # relations that we're calculating, so they will be dealt with in Onshape.
 
     @property
     def w_diffuser_inner(self):
@@ -372,6 +404,9 @@ class SedimentationTank:
         return (self.L_diffuser_outer -
                 (2 * (self.MANIFOLD_DIFFUSER_THICKNESS_WALL).to(u.m)).magnitude)
 
+    # TODO: Remove the next two functions. Monroe says there isn't ever a need
+    # to calculate them.
+
     @property
     def q_diffuser(self):
         """Return the flow (Qsed) through each diffuser.
@@ -382,7 +417,6 @@ class SedimentationTank:
         return (self.TANK_VEL_UP.to(u.m/u.s) *
                  self.TANK_W.to(u.m) *
                  self.L_diffuser_outer).magnitude
-        # Remove
 
     @property
     def vel_sed_diffuser(self):
@@ -393,7 +427,11 @@ class SedimentationTank:
         """
         return (q_diffuser().magnitude
                 / (w_diffuser_inner(w_tank) * L_diffuser_inner(w_tank)).magnitude)
-        # Remove
+
+    # TODO: the below function is one function that would be need to be put into the
+    # SedimentationTankBay (STB) class. To avoid name overlap, the q that is
+    # passed into the STB class's __init__ function will be called q_plant,
+    # and the below function will just be called q.
 
     @property
     def q_tank(self):
@@ -404,19 +442,11 @@ class SedimentationTank:
         """
         return (self.TANK_L * self.TANK_VEL_UP.to(u.m/u.s) *
                 self.TANK_W.to(u.m)).magnitude
-        #rename to q_bay, use to determine how many bays are needed
 
-    @property
-    def vel_inlet_man_max(self):
-        """Return the maximum velocity through the manifold.
-
-        Returns:
-            Maximum velocity through the manifold (float).
-        """
-        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m/u.s).magnitude *
-            sqrt(2*((1-(self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)) /
-            (((MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
-        return vel_manifold_max
+    # TODO: move this below function into STB and call it just `n` to avoid having
+    # a redundant name. Also, this is a property. The flow rate of the plant is
+    # already defined in the class's constructor, so use that instead, and
+    # remove the Q_plant argument.
 
     @property
     def n_tanks(self, Q_plant):
@@ -431,7 +461,21 @@ class SedimentationTank:
         """
         q = q_tank().magnitude
         return (int(np.ceil(Q_plant / q)))
-        # Part of logic at the sed_tank level
+
+    # TODO: This function is broken. Pay attention to the linting (sqiggly lines)
+    # to see what's wrong with it.
+
+    @property
+    def vel_inlet_man_max(self):
+        """Return the maximum velocity through the manifold.
+
+        Returns:
+            Maximum velocity through the manifold (float).
+        """
+        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m/u.s).magnitude *
+            sqrt(2*((1-(self.MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)) /
+            (((MANIFOLD_RATIO_Q_MAN_ORIFICE)**2)+1)))
+        return vel_manifold_max
 
     @property
     def L_channel(self, Q_plant):
@@ -447,7 +491,7 @@ class SedimentationTank:
         return ((n_tanks * self.TANK_W) + self.THICKNESS_WALL +
                 ((n_tanks-1) * self.THICKNESS_WALL))
 
-    #Need to specify W_channel function
+    # TODO: We need to specify a function for calculating the width of the channel.
 
     @property
     @ut.list_handler
@@ -515,6 +559,3 @@ class SedimentationTank:
                      / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
                      ).to(u.m)
         return L_sed_plates
-
-
-    #Need code for sed_channel
