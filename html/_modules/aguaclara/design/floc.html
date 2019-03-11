@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.floc &mdash; AguaClara v0.0.22 documentation</title>
+  <title>aguaclara.design.floc &mdash; AguaClara v0.0.23 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v0.0.22
+                v0.0.23
               </div>
             
           
@@ -162,7 +162,6 @@
 <span class="kn">import</span> <span class="nn">aguaclara.core.pipes</span> <span class="k">as</span> <span class="nn">pipes</span>
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
 
-<span class="kn">from</span> <span class="nn">onshapepy</span> <span class="k">import</span> <span class="n">Part</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Ratio of the width of the gap between the baffle and the wall and the spacing</span>
@@ -206,10 +205,6 @@
     <span class="n">HS_RATIO_MIN</span> <span class="o">=</span> <span class="mf">3.0</span>
     <span class="n">RATIO_MAX_HS</span> <span class="o">=</span> <span class="mf">6.0</span>
     <span class="n">SDR</span> <span class="o">=</span> <span class="mf">41.0</span>
-
-    <span class="n">CAD</span> <span class="o">=</span> <span class="n">Part</span><span class="p">(</span>
-        <span class="s1">&#39;https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f&#39;</span>
-    <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -448,7 +443,11 @@
 
 <div class="viewcode-block" id="Flocculator.draw"><a class="viewcode-back" href="../../../floc.html#aguaclara.design.floc.Flocculator.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the Onshape flocculator model based off of this object.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">CAD</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="kn">from</span> <span class="nn">onshapepy</span> <span class="k">import</span> <span class="n">Part</span>
+        <span class="n">CAD</span> <span class="o">=</span> <span class="n">Part</span><span class="p">(</span>
+            <span class="s1">&#39;https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f&#39;</span>
+        <span class="p">)</span>
+        <span class="n">CAD</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;channel_L&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_L</span><span class="p">,</span>
             <span class="s1">&#39;channel_W&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_W</span><span class="p">,</span>
             <span class="s1">&#39;channel_H&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span><span class="p">,</span>
@@ -489,7 +488,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v0.0.22',
+            VERSION:'v0.0.23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
