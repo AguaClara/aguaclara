@@ -9,6 +9,7 @@ pint = "*"
 scipy = "*"
 onshapepy = "*"
 requests = ">=2.20.0"
+numpy = "==1.12.1"
 
 [dev-packages]
 codecov = "*"
