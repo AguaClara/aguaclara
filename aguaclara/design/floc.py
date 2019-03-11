@@ -12,7 +12,6 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipes
 from aguaclara.core.units import unit_registry as u
 
-from onshapepy import Part
 import numpy as np
 
 # Ratio of the width of the gap between the baffle and the wall and the spacing
@@ -56,10 +55,6 @@ class Flocculator:
     HS_RATIO_MIN = 3.0
     RATIO_MAX_HS = 6.0
     SDR = 41.0
-
-    CAD = Part(
-        'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
-    )
 
     def __init__(
             self,
@@ -298,7 +293,11 @@ class Flocculator:
 
     def draw(self):
         """Draw the Onshape flocculator model based off of this object."""
-        self.CAD.params = {
+        from onshapepy import Part
+        CAD = Part(
+            'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
+        )
+        CAD.params = {
             'channel_L': self.channel_L,
             'channel_W': self.channel_W,
             'channel_H': self.downstream_H,
