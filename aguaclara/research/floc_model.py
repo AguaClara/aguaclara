@@ -15,6 +15,7 @@ u.enable_contexts('chem')
 
 
 class Material:
+    @u.wraps(None, [None, u.m, u.kg/u.m**3, u.kg/u.mol], False)
     def __init__(self, name, diameter, density, molecWeight):
         self.name = name
         self.Diameter = diameter
