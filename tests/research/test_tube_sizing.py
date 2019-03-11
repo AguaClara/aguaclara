@@ -8,15 +8,15 @@ from aguaclara.research.tube_sizing import *
 
 class TestTubeSizing(unittest.TestCase):
 
-    def test_Q_roller(self):
+    def test_vol_per_rev(self):
         answer = 0.4005495805189351*u.mL/u.rev
-        self.assertEqual(Q_roller(2.79*u.mm), answer)
+        self.assertEqual(vol_per_rev(2.79*u.mm), answer)
 
         answer = 0.14884596727278446*u.mL/u.rev
-        self.assertEqual(Q_roller(1.52*u.mm), answer)
+        self.assertEqual(vol_per_rev(1.52*u.mm), answer)
 
         answer = 0.01943899117521222*u.mL/u.rev
-        self.assertEqual(Q_roller(0.51*u.mm), answer)
+        self.assertEqual(vol_per_rev(0.51*u.mm), answer)
 
     def test_ID_colored_tube(self):
         answer = 1.52*u.mm

@@ -8,7 +8,7 @@ import os
 R_pump = 1.62 * u.cm
 
 # empirically derived correction factor due to the fact that larger diameter
-# tubing has more loss ue to space smashed by rollers
+# tubing has more loss due to space smashed by rollers
 k_nonlinear = 13
 
 # maximum and minimum rpms for a 100 rpm pump
@@ -16,9 +16,9 @@ min_rpm = 3 * u.rev/u.min
 max_rpm = 95 * u.rev/u.min
 
 
-def Q_roller(ID_tube):
+def vol_per_rev(ID_tube):
     """This function calculates the volume per revolution of a 6 roller pump
-    given the inner diameter (ID) of 3-stop tubing. It was empirically derived
+    given the inner diameter (ID) of 3-stop tubing. It is empirically derived
     using the table found at
     http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm
 
@@ -30,17 +30,16 @@ def Q_roller(ID_tube):
     Returns
     -------
     float
-        flow from the 6 roller pump (mL/rev)
+        volume per revolution from the 6 roller pump (mL/rev)
 
     Examples
     --------
-    >>> Q_roller(2.79*u.mm)
+    >>> vol_per_rev(2.79*u.mm)
     0.4005495805189351 milliliter/rev
-    >>> Q_roller(1.52*u.mm)
+    >>> vol_per_rev(1.52*u.mm)
     0.14884596727278446 milliliter/rev
-    >>> Q_roller(0.51*u.mm)
+    >>> vol_per_rev(0.51*u.mm)
     0.01943899117521222 milliliter/rev
-
     """
     term1 = (R_pump * 2 * np.pi - k_nonlinear * ID_tube) / u.rev
     term2 = np.pi * (ID_tube ** 2) / 4
@@ -48,8 +47,8 @@ def Q_roller(ID_tube):
 
 
 def ID_colored_tube(color):
-    """This function looks up the inner diameter of a tube from the tubing data
-    table given the color.
+    """This function looks up the inner diameter of a 3-stop tube by Ismatec
+    given its color code.
 
     Parameters
     ----------
@@ -59,7 +58,7 @@ def ID_colored_tube(color):
     Returns
     -------
     float
-        diameter of the tubing (mm)
+        inner diameter of the tubing (mm)
 
     Examples
     --------
@@ -107,7 +106,7 @@ def C_stock_max(Q_plant, C, tubing_color):
 
     """
     ID_tube = ID_colored_tube(tubing_color)
-    return (C * Q_plant / (Q_roller(ID_tube) * min_rpm)).to(u.g/u.L)
+    return (C * Q_plant / (vol_per_rev(ID_tube) * min_rpm)).to(u.g/u.L)
 
 
 def Q_stock_max(Q_plant, C, tubing_color):
@@ -304,5 +303,5 @@ def pump_rpm(Q, tubing_color):
     4.031012804669423 rev/minute
 
     """
-    flow_per_rev = Q_roller(ID_colored_tube(tubing_color))
+    flow_per_rev = vol_per_rev(ID_colored_tube(tubing_color))
     return (Q / flow_per_rev).to(u.rev/u.min)
