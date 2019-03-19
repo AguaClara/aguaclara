@@ -323,12 +323,22 @@ class SedimentationTank:
 
     MANIFOLD_EXIT_MAN_N_ORIFICES = 58  # EI
 
-    def __init__(self, q=20 * u.L / u.s):
+    def __init__(self, q=20 * u.L / u.s, tank_l_inner = 58 * u.m, tank_vel_up = 1 * u.mm / u.s, tank_w = 42 * u.inch,
+        plate_settlers_angle = 60 * u.deg, plate_settlers_s = 2.5 * u.cm, plate_settlers_thickness = 2 * u.mm,
+        plate_settlers_l_cantilevered = 20 * u.cm, plate_settlers_vel_capture = 0.12 * u.mm / u.s):
         """Instantiates a SedimentationTank with the specified flow rate.
 
         TODO: Elaborate on this docstring once the fields have been finalized.
         """
         self.q = q
+        self.tank_l_inner = tank_l_inner
+        self.tank_vel_up = tank_vel_up
+        self.tank_w = tank_w
+        self.plate_settlers_angle = plate_settlers_angle
+        self.plate_settlers_s = plate_settlers_s
+        self.plate_settlers_thickness = plate_settlers_thickness
+        self.plate_settlers_l_cantilevered = plate_settlers_l_cantilevered
+        self.plate_settlers_vel_capture = plate_settlers_vel_capture
 
 
     @property
