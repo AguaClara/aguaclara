@@ -226,68 +226,39 @@ class SedimentationTank:
 
         THICKNESS_WALL: (float) Thickness of walls in the sedimentation unit process
 
-        PLATE_SETTLERS_ANGLE: (int) 60 * u.deg Angle of plate settlers (relative to beign completely horizontal)
+        PLATE_SETTLERS_ANGLE: (int) Angle of plate settlers (relative to beign completely horizontal)
 
-        PLATE_SETTLERS_S: (float) 2.5 * u.cm Edge to edge distance between plates
+        PLATE_SETTLERS_S: (float) Edge to edge distance between plates
 
-        PLATE_SETTLERS_THICKNESS: (float) 2 * u.mm Thickness of pVC sheet used to make plate settlers
+        PLATE_SETTLERS_THICKNESS: (float) Thickness of pVC sheet used to make plate settlers
 
-        PLATE_SETTLERS_L_CANTILEVERED: (float) 20 * u.cm Maximum length of sed plate sticking out past module pipes without any
+        PLATE_SETTLERS_L_CANTILEVERED: (float) Maximum length of sed plate sticking out past module pipes without any
             additional support. The goal is to prevent floppy modules that don't
             maintain constant distances between the plates
 
-        PLATE_SETTLERS_VEL_CAPTURE: (float) 0.12 * u.mm / u.s velocity of the slowest settling particle that
+        PLATE_SETTLERS_VEL_CAPTURE: (float) velocity of the slowest settling particle that
         a sedimentation tank captures reliably
 
-        TANK_W: (float) 42 * u.inch Width of the sedimentation tank. Based off of the width of the PVC
+        TANK_W: (float) Width of the sedimentation tank. Based off of the width of the PVC
             sheet used to make plate settlers
 
-        TANK_L: (float) 5.8 * u.m Length of the sedimentation tank. Based off of the length of a manifold
+        TANK_L: (float) Length of the sedimentation tank. Based off of the length of a manifold
             pipe
 
-        TANK_VEL_UP: (float) 1 * u.mm / u.s Upflow velocity through a sedimentation tank used as basis of design
+        TANK_VEL_UP: (float) Upflow velocity through a sedimentation tank used as basis of design
 
-        MANIFOLD_RATIO_Q_MAN_ORIFICE: (float) 0.8 Acceptable ratio of min to max flow through the manifold orifices
+        MANIFOLD_RATIO_Q_MAN_ORIFICE: (float) Acceptable ratio of min to max flow through the manifold orifices
 
-        MANIFOLD_DIFFUSER_THICKNESS_WALL: (float) 1.17 * u.inch Wall thickness of a diffuser
+        MANIFOLD_DIFFUSER_THICKNESS_WALL: (float) Wall thickness of a diffuser
 
-        MANIFOLD_DIFFUSER_VEL_MAX: (float) 442.9 * u.mm / u.s Maximum velocity through a diffuser
+        MANIFOLD_DIFFUSER_VEL_MAX: (float) Maximum velocity through a diffuser
 
-        MANIFOLD_DIFFUSER_A: (float) 0.419 * u.inch ** 2 Area of a diffuer when viewed down the length of the manifold
+        MANIFOLD_DIFFUSER_A: (float) Area of a diffuer when viewed down the length of the manifold
 
-        MANIFOLD_EXIT_MAN_HL_ORIFICE: (float) 4 * u.cm Headloss through an orifice in the exit manifold
+        MANIFOLD_EXIT_MAN_HL_ORIFICE: (float) Headloss through an orifice in the exit manifold
 
-        MANIFOLD_EXIT_MAN_N_ORIFICES: (int) 58 Number of orifices in the exit manifold
+        MANIFOLD_EXIT_MAN_N_ORIFICES: (int) Number of orifices in the exit manifold
     """
-
-    # TODO: The new nomenclature that we're using for the sedimentation tank
-    # is that the entire structure is called a "tank", but the individual areas
-    # where sedimentation happens are now called "bays". The structure that
-    # controls water going in and out of the bays is called the channel.
-    #
-    # The task is to create a new file called `sed_tank_bay.py`. In it, make a
-    # class `SedimentationTankBay`, and put all constants and functions dealing
-    # with creating a single bay. For now, anything dealing with plate settlers
-    # should also go in there.
-    #
-    # Once SedimentationTankBay (STB) is set up, SedimentationTank should
-    # create a STB in its __init__ function.
-
-    # TODO: All constants labelled EI (Expert Input) are constants that
-    # most users wouldn't have to change, but an expert engineer might want to.
-    # Put them into the arguments of the __init__ function, and keep their
-    # defaults values there. Then, for each EI, assign it to a field in
-    # __init__. For example:
-    #
-    # self.thickness_wall = thickness_wall
-    #
-    # where thickness_wall is the name of the argument that's passed into
-    # the function.
-    #
-    # All EI's need to be specified in both SedimentationTank (ST) and
-    # SedimentationTankBay (STB). Since the ST itself will contain instances of
-    # STB's, you'll have to pass the same EI's into STB in the __init__ function
-    # for ST.
 
     THICKNESS_WALL = 0.15 * u.m  # EI
 
@@ -326,9 +297,11 @@ class SedimentationTank:
     def __init__(self, q=20 * u.L / u.s, tank_l_inner = 58 * u.m, tank_vel_up = 1 * u.mm / u.s, tank_w = 42 * u.inch,
         plate_settlers_angle = 60 * u.deg, plate_settlers_s = 2.5 * u.cm, plate_settlers_thickness = 2 * u.mm,
         plate_settlers_l_cantilevered = 20 * u.cm, plate_settlers_vel_capture = 0.12 * u.mm / u.s):
-        """Instantiates a SedimentationTank with the specified flow rate.
+        """Instantiates a SedimentationTank with specified values.
 
-        TODO: Elaborate on this docstring once the fields have been finalized.
+        Args:
+            Flow rate q
+            Inner length of the tank
         """
         self.q = q
         self.tank_l_inner = tank_l_inner
@@ -340,42 +313,9 @@ class SedimentationTank:
         self.plate_settlers_l_cantilevered = plate_settlers_l_cantilevered
         self.plate_settlers_vel_capture = plate_settlers_vel_capture
 
-
-    @property
-    def w_diffuser_inner_min(self):
-        """Return the minimum inner width of each diffuser in the sedimentation tank.
-
-        Returns:
-            Minimum inner width of each diffuser in the sedimentation tank (float).
-        """
-        return ((self.TANK_VEL_UP.to(u.inch/u.s).magnitude /
-                 self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
-                 * self.TANK_W)
-
-    # Note: we need to specify in Onshape a 15% stretch difference between
-    # the circumference of both diffuser ends' inner/outer circumferences.
-    # We can model the aggregate diffuser jet as one continuous flow. Don't
-    # correct for the thickness that separates each diffuser's effluent orifice.
-
-
-    @property
-    def vel_inlet_man_max(self):
-        """Return the maximum velocity through the manifold.
-
-        Returns:
-            Maximum velocity through the manifold (float).
-        """
-        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m / u.s) *
-                            math.sqrt(2 * ((1 - (self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2)) /
-                                      (((self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2) + 1)))
-        return vel_manifold_max
-
     @property
     def L_channel(self):
         """Return the length of the inlet and exit channels for the sedimentation tank.
-
-        Args:
-            Q_plant (float): the flow rate
 
         Returns:
             Length of the inlet and exit channels for the sedimentation tank (float).
@@ -385,82 +325,3 @@ class SedimentationTank:
                 ((self.n_tanks-1) * self.THICKNESS_WALL))
 
     # TODO: We need to specify a function for calculating the width of the channel.
-
-    @property
-    @ut.list_handler
-    def ID_exit_man(self):
-        """Return the inner diameter of the exit manifold by guessing an initial
-        diameter then iterating through pipe flow calculations until the answer
-        converges within 1%% error
-
-        Args:
-            Q_plant (float): the flow rate
-            temp (float): guess of initial diameter
-
-        Returns:
-            Inner diameter of the exit manifold (float).
-        """
-        #Inputs do not need to be checked here because they are checked by
-        #functions this function calls.
-        """
-        nu = pc.viscosity_dynamic(temp)
-        hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
-        L = self.TANK_L
-        N_orifices = self.MANIFOLD_EXIT_MAN_N_ORIFICES
-        K_minor = con.K_MINOR_PIPE_EXIT
-        pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
-
-        D = max(pc.diam_pipemajor(self.q, hl, L, nu, pipe_rough).magnitude,
-                pc.diam_pipeminor(self.q, hl, K_minor).magnitude)
-        err = 1.00
-        while err > 0.01:
-                D_prev = D
-                f = pc.fric(self.q, D_prev, nu, pipe_rough)
-                D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) * 
-                     (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2))) 
-                      / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
-                err = abs(D_prev - D) / ((D + D_prev) / 2)
-        return D"""
-        pipe_rough = mat.PVC_PIPE_ROUGH.to(u.m)
-        id = ((self.q / (np.pi / 4 * ((2 * con.GRAVITY * pipe_rough) ** 1 / 2))) ** 1 / 2) * u.m
-        return id
-
-
-
-    @property
-    def D_exit_man_orifice(self):
-        """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
-
-        Args:
-            Q_plant (float): the flow rate
-            drill_bits =
-
-        Returns:
-            Diameter of the orifices in the exit manifold for the sedimentation tank (float).
-        """
-        Q_orifice = self.q/self.MANIFOLD_EXIT_MAN_N_ORIFICES
-        D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * self.MANIFOLD_EXIT_MAN_HL_ORIFICE.magnitude))
-        return ut.ceil_nearest(D_orifice, drills.DRILL_BITS_D_METRIC)
-
-
-    @property
-    def L_sed_plate(self):
-        """Return the length of a single plate in the plate settler module based on
-        achieving the desired capture velocity
-
-        Returns:
-            Length of a single plate (float).
-        """
-        L_sed_plate = ((self.PLATE_SETTLERS_S * ((self.TANK_VEL_UP/self.PLATE_SETTLERS_VEL_CAPTURE)-1)
-                      + self.PLATE_SETTLERS_THICKNESS * (self.TANK_VEL_UP/self.PLATE_SETTLERS_VEL_CAPTURE))
-                     / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
-                     ).to(u.m)
-        return L_sed_plates
-
-    @property
-    def diffuser_a(self):
-        """
-        Calculates manifold diffuser area from flow rate.
-        """
-        diffuser_a = self.q_bay / (self.MANIFOLD_DIFFUSER_VEL_MAX * self.DIFFUSER_N)
-        return diffuser_a
