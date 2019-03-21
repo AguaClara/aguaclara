@@ -20,22 +20,22 @@ class Reactor:
 
 class Variable_C_Stock(Reactor):
 
-	def __init__(self, Q_sys, C_sys, Q_stock):
+    def __init__(self, Q_sys, C_sys, Q_stock):
         self.Q_sys = Q_sys
         self.C_sys = C_sys
         self.Q_stock = Q_stock
 
-	def C_stock(self):
+    def C_stock(self):
         return self.Q_sys*self.C_sys/self.Q_stock
 
 
 class Variable_Q_Stock(Reactor):
 
-	def __init__(self, Q_sys, C_sys, C_stock, vol_per_rev)
+    def __init__(self, Q_sys, C_sys, C_stock, vol_per_rev):
         self.Q_sys = Q_sys
         self.C_sys = C_sys
         self.C_stock = C_stock
         self.vol_per_rev = vol_per_rev
 
-	def pump_speed(self):
+    def pump_speed(self):
         return rpm(self.Q_sys*self.C_sys/self.C_stock, self.vol_per_rev)
