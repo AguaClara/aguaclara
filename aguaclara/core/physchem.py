@@ -69,7 +69,7 @@ def density_water(temp):
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
     rhointerpolated = interpolate.CubicSpline(WATER_DENSITY_TABLE[0],
                                                     WATER_DENSITY_TABLE[1])
-    return rhointerpolated(temp)
+    return np.asscalar(rhointerpolated(temp))
 
 
 @u.wraps(u.m**2/u.s, [u.degK], False)
@@ -142,7 +142,6 @@ def re_general(Vel, Area, PerimWetted, Nu):
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
-@ut.list_handler()
 def fric(FlowRate, Diam, Nu, PipeRough):
     """Return the friction factor for pipe flow.
 
