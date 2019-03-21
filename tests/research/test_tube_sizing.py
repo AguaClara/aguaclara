@@ -5,7 +5,6 @@ Tests for the research package's tube_sizing module.
 import unittest
 from aguaclara.research.tube_sizing import *
 
-
 class TestTubeSizing(unittest.TestCase):
 
     def test_vol_per_rev(self):
