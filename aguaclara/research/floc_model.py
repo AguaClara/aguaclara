@@ -15,7 +15,6 @@ u.enable_contexts('chem')
 
 
 class Material:
-    @u.wraps(None, [None, u.m, u.kg/u.m**3, u.kg/u.mol], False)
     def __init__(self, name, diameter, density, molecWeight):
         self.name = name
         self.Diameter = diameter
@@ -47,17 +46,15 @@ class Chemical(Material):
 
 ################## Material Definitions ##################
 # name, diameter in m, density in kg/m³, molecular weight in kg/mole
-Clay = Material('Clay', 7 * 10**-6, 2650, None)
-
-PACl = Chemical('PACl', (90 * u.nm).to(u.m).magnitude, 1138, 1.039,
-                'PACl', AluminumMPM=13)
-
-Alum = Chemical('Alum', (70 * u.nm).to(u.m).magnitude, 2420, 0.59921,
-                'AlOH3', AluminumMPM=2)
-
-Alum.define_Precip((70 * u.nm).to(u.m).magnitude, 2420, 0.078, 1)
-
-HumicAcid = Chemical('Humic Acid', 72 * 10**-9, 1780, None, 'Humic Acid')
+Clay = Material('Clay', 7 * 10**-6 * u.m, 2650 * u.kg/u.m**3, None)
+PACl = Chemical('PACl', 9 * 10 **-8 * u.m, 1138 * u.kg/u.m**3,
+                 1.039 * u.kg/u.mol, 'PACl', AluminumMPM=13)
+Alum = Chemical('Alum', 7 * 10 **-8 * u.m, 2420 * u.kg/u.m**3,
+                0.59921 * u.kg/u.mol, 'AlOH3', AluminumMPM=2)
+Alum.define_Precip(7 * 10 **-8 * u.m, 2420 * u.kg/u.m**3,
+                0.078 * u.kg/u.mol, 1)
+HumicAcid = Chemical('Humic Acid', 72 * 10**-9 * u.m, 1780 * u.kg/u.m**3, None,
+                'Humic Acid')
 
 
 ################### Necessary Constants ###################
