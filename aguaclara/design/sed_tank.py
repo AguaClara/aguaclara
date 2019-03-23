@@ -220,88 +220,36 @@ JET_REVERSER_ND = 3*u.inch
 
 class SedimentationTank:
     """
-    Calculates physical dimensions of Sedimentation Tank.
-
-    Attributes:
-
-        THICKNESS_WALL: (float) Thickness of walls in the sedimentation unit process
-
-        PLATE_SETTLERS_ANGLE: (int) Angle of plate settlers (relative to beign completely horizontal)
-
-        PLATE_SETTLERS_S: (float) Edge to edge distance between plates
-
-        PLATE_SETTLERS_THICKNESS: (float) Thickness of pVC sheet used to make plate settlers
-
-        PLATE_SETTLERS_L_CANTILEVERED: (float) Maximum length of sed plate sticking out past module pipes without any
-            additional support. The goal is to prevent floppy modules that don't
-            maintain constant distances between the plates
-
-        PLATE_SETTLERS_VEL_CAPTURE: (float) velocity of the slowest settling particle that
-        a sedimentation tank captures reliably
-
-        TANK_W: (float) Width of the sedimentation tank. Based off of the width of the PVC
-            sheet used to make plate settlers
-
-        TANK_L: (float) Length of the sedimentation tank. Based off of the length of a manifold
-            pipe
-
-        TANK_VEL_UP: (float) Upflow velocity through a sedimentation tank used as basis of design
-
-        MANIFOLD_RATIO_Q_MAN_ORIFICE: (float) Acceptable ratio of min to max flow through the manifold orifices
-
-        MANIFOLD_DIFFUSER_THICKNESS_WALL: (float) Wall thickness of a diffuser
-
-        MANIFOLD_DIFFUSER_VEL_MAX: (float) Maximum velocity through a diffuser
-
-        MANIFOLD_DIFFUSER_A: (float) Area of a diffuer when viewed down the length of the manifold
-
-        MANIFOLD_EXIT_MAN_HL_ORIFICE: (float) Headloss through an orifice in the exit manifold
-
-        MANIFOLD_EXIT_MAN_N_ORIFICES: (int) Number of orifices in the exit manifold
+    Calculates dimensions and values for Sedimentation Tank.
     """
 
-    THICKNESS_WALL = 0.15 * u.m  # EI
-
-    """
-    PLATE_SETTLERS_ANGLE = 60 * u.deg  # EI
-
-    PLATE_SETTLERS_S = 2.5 * u.cm  # EI
-
-    PLATE_SETTLERS_THICKNESS = 2 * u.mm  # EI
-
-    PLATE_SETTLERS_L_CANTILEVERED = 20 * u.cm  # EI
-
-    PLATE_SETTLERS_VEL_CAPTURE = 0.12 * u.mm / u.s  # EI
-
-    TANK_W = 42 * u.inch  # EI
-
-    TANK_L_INNER = 5.8 * u.m  # EI
-
-    TANK_VEL_UP = 1 * u.mm / u.s  # EI
-    """
-
-    MANIFOLD_RATIO_Q_MAN_ORIFICE = 0.8  # EI
-
-    MANIFOLD_DIFFUSER_THICKNESS_WALL = 1.17 * u.inch
 
     # TODO: Specify schedule (SDR) of diffuser pipe for above
 
-    MANIFOLD_DIFFUSER_VEL_MAX = 442.9 * u.mm / u.s  # EI
-
-    DIFFUSER_N = 108 #EI
-
-    MANIFOLD_EXIT_MAN_HL_ORIFICE = 4 * u.cm  # EI
-
-    MANIFOLD_EXIT_MAN_N_ORIFICES = 58  # EI
 
     def __init__(self, q=20 * u.L / u.s, tank_l_inner = 58 * u.m, tank_vel_up = 1 * u.mm / u.s, tank_w = 42 * u.inch,
         plate_settlers_angle = 60 * u.deg, plate_settlers_s = 2.5 * u.cm, plate_settlers_thickness = 2 * u.mm,
-        plate_settlers_l_cantilevered = 20 * u.cm, plate_settlers_vel_capture = 0.12 * u.mm / u.s):
+        plate_settlers_l_cantilevered = 20 * u.cm, plate_settlers_vel_capture = 0.12 * u.mm / u.s,
+        manifold_diffuser_vel_max=442.9 * u.mm / u.s, diffuser_n=108, manifold_exit_man_hl_orifice=4 * u.cm,
+        manifold_exit_man_n_orifices=58, manifold_ratio_q_man_orifice=0.8,
+        manifold_diffuser_thickness_wall=1.17 * u.inch, thickness_wall = 0.15 * u.m):
         """Instantiates a SedimentationTank with specified values.
 
         Args:
-            Flow rate q
-            Inner length of the tank
+            q (float): Flow rate
+            tank_l_inner (float): Inner length of the tank
+            tank_vel_up (float): Upflow velocity through a sedimentation tank
+            tank_w (float): Width of the tank
+            plate_settlers_angle (int): Angle of plate settlers from horizontal
+            plate_settlers_s (float): Perpendicular distance between plates, not the horizontal distance between plates
+            plate_settlers_thickness (float): Thickness of the plate settlers
+            plate_settlers_l_cantilevered (float): Maximum length of sed plate sticking out past module pipes without any
+            additional support
+            plate_settlers_vel_capture (float): Velocity capture of plate settlers
+            thickness_wall (float): thickness of the wall
+
+        Returns:
+            An object of the SedimentationTank class
         """
         self.q = q
         self.tank_l_inner = tank_l_inner
@@ -312,6 +260,13 @@ class SedimentationTank:
         self.plate_settlers_thickness = plate_settlers_thickness
         self.plate_settlers_l_cantilevered = plate_settlers_l_cantilevered
         self.plate_settlers_vel_capture = plate_settlers_vel_capture
+        self.manifold_diffuser_vel_max = manifold_diffuser_vel_max
+        self.diffuser_n = diffuser_n
+        self.manifold_exit_man_hl_orifice = manifold_exit_man_hl_orifice
+        self.manifold_exit_man_n_orifices = manifold_exit_man_n_orifices
+        self.manifold_ratio_q_man_orifice = manifold_ratio_q_man_orifice
+        self.manifold_diffuser_thickness_wall = manifold_diffuser_thickness_wall
+        self.thickness_wall = thickness_wall
 
     @property
     def L_channel(self):

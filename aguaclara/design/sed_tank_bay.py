@@ -1,26 +1,38 @@
 from aguaclara.core.units import unit_registry as u
 
 class SedimentationTankBay:
-    TANK_L_INNER = 5.8 * u.m  # EI
-
-    TANK_VEL_UP = 1 * u.mm / u.s  # EI
-
-    TANK_W = 42 * u.inch  # EI
-
-    PLATE_SETTLERS_ANGLE = 60 * u.deg  # EI
-
-    PLATE_SETTLERS_S = 2.5 * u.cm  # EI
-
-    PLATE_SETTLERS_THICKNESS = 2 * u.mm  # EI
-
-    PLATE_SETTLERS_L_CANTILEVERED = 20 * u.cm  # EI
-
-    PLATE_SETTLERS_VEL_CAPTURE = 0.12 * u.mm / u.s  # EI
-
+    """Calculates necessary dimensions and values for SedimentationTankBay.
+    """
 
     def __init__(self, q=20*u.L/u.s, tank_l_inner=58*u.m, tank_vel_up = 1 *u.mm/ u.s, tank_w=42*u.inch,
                  plate_settlers_angle = 60*u.deg, plate_settlers_s = 2.5*u.cm, plate_settlers_thickness=2*u.mm,
-                 plate_settlers_l_cantilevered=20*u.cm, plate_settlers_vel_capture=0.12*u.mm/u.s):
+                 plate_settlers_l_cantilevered=20*u.cm, plate_settlers_vel_capture=0.12*u.mm/u.s,
+                 manifold_diffuser_vel_max = 442.9 * u.mm / u.s, diffuser_n = 108, manifold_exit_man_hl_orifice = 4 * u.cm,
+                 manifold_exit_man_n_orifices = 58, manifold_ratio_q_man_orifice = 0.8, manifold_diffuser_thickness_wall = 1.17 *u.inch):
+        """Instantiates a SedimentationTankBay with specified values.
+        Args:
+            q (float): Flow rate
+            tank_l_inner (float): Inner length of the tank
+            tank_vel_up (float): Upflow velocity through a sedimentation tank
+            tank_w (float): Width of the tank
+            plate_settlers_angle (int): Angle of plate settlers from horizontal
+            plate_settlers_s (float): Perpendicular distance between plates, not the horizontal distance between plates
+            plate_settlers_thickness (float): Thickness of the plate settlers
+            plate_settlers_l_cantilevered (float): Maximum length of sed plate sticking out past module pipes without any
+            additional support
+            plate_settlers_vel_capture (float): Velocity capture of plate settlers
+            manifold_diffuser_vel_max (float):
+            diffuser_n (int):
+            manifold_exit_man_hl_orifice (float): Headloss through an orifice in the exit manifold
+            manifold_exit_man_n_orifices (int): Number of orifices in the exit manifold
+            manifold_ratio_q_man_orifice (float):
+            manifold_diffuser_thickness_wall (float):
+
+
+        Returns:
+             An instantiated object of SedimentationTankBay class
+
+        """
         self.q = q
         self.tank_l_inner = tank_l_inner
         self.tank_vel_up = tank_vel_up
@@ -30,6 +42,12 @@ class SedimentationTankBay:
         self.plate_settlers_thickness = plate_settlers_thickness
         self.plate_settlers_l_cantilevered = plate_settlers_l_cantilevered
         self.plate_settlers_vel_capture = plate_settlers_vel_capture
+        self.manifold_diffuser_vel_max = manifold_diffuser_vel_max
+        self.diffuser_n = diffuser_n
+        self.manifold_exit_man_hl_orifice = manifold_exit_man_hl_orifice
+        self.manifold_exit_man_n_orifices = manifold_exit_man_n_orifices
+        self.manifold_ratio_q_man_orifice = manifold_ratio_q_man_orifice
+        self.manifold_diffuser_thickness_wall = manifold_diffuser_thickness_wall
 
     @property
     def q_bay(self):
@@ -45,10 +63,6 @@ class SedimentationTankBay:
     @property
     def n(self):
         """Return the number of sedimentation tanks required for a given flow rate.
-
-        Args:
-            Q_plant (float): the flow rate
-
 
         Returns:
             Number of sedimentation tanks required for a given flow rate (int).
@@ -94,10 +108,6 @@ class SedimentationTankBay:
         diameter then iterating through pipe flow calculations until the answer
         converges within 1%% error
 
-        Args:
-            Q_plant (float): the flow rate
-            temp (float): guess of initial diameter
-
         Returns:
             Inner diameter of the exit manifold (float).
         """
@@ -131,10 +141,6 @@ class SedimentationTankBay:
     @property
     def D_exit_man_orifice(self):
         """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
-
-        Args:
-            Q_plant (float): the flow rate
-            drill_bits =
 
         Returns:
             Diameter of the orifices in the exit manifold for the sedimentation tank (float).
