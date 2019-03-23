@@ -21,12 +21,12 @@ class SedimentationTankBay:
             plate_settlers_l_cantilevered (float): Maximum length of sed plate sticking out past module pipes without any
             additional support
             plate_settlers_vel_capture (float): Velocity capture of plate settlers
-            manifold_diffuser_vel_max (float):
-            diffuser_n (int):
+            manifold_diffuser_vel_max (float):  Maximum velocity through a diffuser
+            diffuser_n (int): number of diffusers per sed tank
             manifold_exit_man_hl_orifice (float): Headloss through an orifice in the exit manifold
             manifold_exit_man_n_orifices (int): Number of orifices in the exit manifold
-            manifold_ratio_q_man_orifice (float):
-            manifold_diffuser_thickness_wall (float):
+            manifold_ratio_q_man_orifice (float): flow distribution from the inlet manifold
+            manifold_diffuser_thickness_wall (float): wall thickness of diffuser
 
 
         Returns:
