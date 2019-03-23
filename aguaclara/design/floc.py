@@ -5,16 +5,14 @@ AguaClara flocculator. These constants and functions define both hydraulic
 (head loss, retention time, etc.) and geometric (baffle spacing, channel length,
 etc.) values that specify a flocculator design.
 """
-import math
-from operator import attrgetter
 
 import numpy as np
-from cachetools import cachedmethod, LFUCache
-from onshapepy import Part
 
-import aguaclara.core.constants as con
+import aguaclara.core.head_loss as hl
 import aguaclara.core.physchem as pc
 import aguaclara.design.human_access as ha
+from aguaclara.core import pipes
+from aguaclara.core.cache import ac_cache, HashableObject
 from aguaclara.core.units import unit_registry as u
 
 # Ratio of the width of the gap between the baffle and the wall and the spacing
@@ -31,7 +29,7 @@ MOD_PIPE_EDGE_S = 10 * u.cm
 BAFFLE_THICKNESS = 2 * u.mm
 
 
-class Flocculator:
+class Flocculator(HashableObject):
     """Calculates physical dimensions of an AguaClara flocculator.
     Constant instance attributes
     ----------------------------
@@ -102,10 +100,8 @@ class Flocculator:
         self.max_W = max_W
         self.drain_t = drain_t
 
-        self.cache = LFUCache(10)
-
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def vel_grad_avg(self):
         """Calculate the average velocity gradient (G-bar) of water flowing
         through the flocculator.
@@ -116,7 +112,7 @@ class Flocculator:
                (pc.viscosity_kinematic(self.temp) * self.Gt)).to(u.s ** -1)
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def retention_time(self):
         """Calculates the hydraulic retention time neglecting the volume created by head loss in the flocculator.
         :returns: Hydraulic retention time (:math:`\theta`)
@@ -125,7 +121,7 @@ class Flocculator:
         return (self.Gt / self.vel_grad_avg).to(u.s)
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def vol(self):
         """Calculate the target volume (not counting the volume added by head loss) of the flocculator.
         :returns: Target volume
@@ -134,7 +130,7 @@ class Flocculator:
         return (self.Q * self.retention_time).to(u.m ** 3)
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def W_min_HS_ratio(self):
         """Calculate the minimum flocculator channel width, given the minimum
         ratio between expansion height (H) and baffle spacing (S).
@@ -147,7 +143,7 @@ class Flocculator:
                ).to(u.cm)
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def channel_n(self):
         """Calculate the minimum number of channels based on the maximum
         possible channel width and the maximum length of the channels.
@@ -164,7 +160,7 @@ class Flocculator:
                            self.ent_tank_L) / (2 * self.max_L)).to(u.dimensionless))
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def channel_W(self):
         """
         The minimum and hence optimal channel width of the flocculator.
@@ -186,7 +182,7 @@ class Flocculator:
         return channel_W
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def channel_L(self):
         """
         The channel length of the flocculator. If ha.HUMAN_W_MIN or W_min_HS_ratio
@@ -204,7 +200,7 @@ class Flocculator:
         return channel_L
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def expansion_max_H(self):
         """"Return the maximum distance between expansions for the largest
         allowable H/S ratio.
@@ -219,7 +215,7 @@ class Flocculator:
                 (self.Q * self.RATIO_MAX_HS / self.channel_W) ** 3) ** (1/4)).to(u.m)
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def expansion_n(self):
         """Return the minimum number of expansions per baffle space.
         :returns: Minimum number of expansions/baffle space
@@ -228,7 +224,7 @@ class Flocculator:
         return np.ceil(self.downstream_H / self.expansion_max_H)
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def expansion_H(self):
         """Returns the height between flow expansions.
         :returns: Height between flow expansions
@@ -237,7 +233,7 @@ class Flocculator:
         return (self.downstream_H / self.expansion_n).to(u.cm)
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def baffle_S(self):
         """Return the spacing between baffles.
         :returns: Spacing between baffles
@@ -249,7 +245,7 @@ class Flocculator:
                self.Q / self.channel_W).to(u.cm)
 
     @property
-    @cachedmethod(attrgetter('cache'))
+    @ac_cache
     def obstacle_n(self):
         """Return the number of obstacles per baffle.
         :returns: Number of obstacles per baffle
@@ -258,15 +254,17 @@ class Flocculator:
         return self.expansion_n - 1
 
     @property
+    @ac_cache
     def drain_K(self):
         """ Return the minor loss coefficient of the drain pipe.
         :returns: Minor Loss Coefficient
         :return: float
         """
-        drain_K = minorloss.PIPE_ENTRANCE_K_MINOR + minorloss.PIPE_ENTRANCE_K_MINOR + minorloss.PIPE_EXIT_K_MINOR
+        drain_K = hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_EXIT_K_MINOR
         return drain_K
 
     @property
+    @ac_cache
     def drain_D(self):
         """ Returns depth of drain pipe.
         :returns: Depth
@@ -278,6 +276,7 @@ class Flocculator:
         return drain_D
 
     @property
+    @ac_cache
     def drain_ND(self):
         """Returns the diameter of the drain pipe.
         Each drain pipe will drain two channels because channels are connected by
@@ -292,6 +291,7 @@ class Flocculator:
         return drain_ND
 
     @property
+    @ac_cache
     def design(self):
         """Returns the designed values.
         :returns: list of designed values (G, t, channel_W, obstacle_n)

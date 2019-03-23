@@ -24,17 +24,17 @@ def ac_cache(method):
 
     # Attempt to hash any object
     def ac_hash(hashable_object):
-        if is_simple_hashable(hashable_object):
-            a_hash = repr(hashable_object)
-        elif isinstance(hashable_object, HashableObject):
-            a_hash = hashable_object.ac_hash()
-        elif isinstance(hashable_object, collections.Iterable):
-            a_hash = ac_hash_iterable_into_tuple(hashable_object)
-        else:
-            a_hash = repr(hashable_object)
-            warnings.warn("Using repr() to make a hash of {}. Please consider inheriting HashableObject class as repr "
-                          "will not guarantee replicable hashing and can result in bad cache returns.".format(
-                repr(hashable_object)), Warning, stacklevel=2)
+        # if is_simple_hashable(hashable_object):
+        a_hash = repr(hashable_object)
+        # elif isinstance(hashable_object, HashableObject):
+        #     a_hash = hashable_object.ac_hash()
+        # elif isinstance(hashable_object, collections.Iterable):
+        #     a_hash = ac_hash_iterable_into_tuple(hashable_object)
+        # else:
+        #     a_hash = repr(hashable_object)
+        #     warnings.warn("Using repr() to make a hash of {}. Please consider inheriting HashableObject class as repr "
+        #                   "will not guarantee replicable hashing and can result in bad cache returns.".format(
+        #         repr(hashable_object)), Warning, stacklevel=2)
         return a_hash
 
     def ac_hash_iterable_into_tuple(hashable_object_list):
