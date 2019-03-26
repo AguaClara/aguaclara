@@ -1,4 +1,5 @@
 from aguaclara.core.units import unit_registry as u
+import aguaclara.core.utility as ut
 
 class SedimentationTankBay:
     """Calculates necessary dimensions and values for SedimentationTankBay.
