@@ -1,3 +1,5 @@
+from aguaclara.core.units import unit_registry as u
+
 class Stock(object):
     """A stock of material in solution, with functions for calculations
     involving flow rate and concentration. A parent class to be used in
@@ -47,9 +49,9 @@ class Variable_C_Stock(Stock):
         self.Q_sys = Q_sys
         self.C_sys = C_sys
         if Q_stock != 0:
-            self.Q_stock = Q_stock
+            self._Q_stock = Q_stock
         else:
-            self.Q_stock = Stock.Q_stock(vol_per_rev, rpm)
+            self._Q_stock = Stock.Q_stock(vol_per_rev, rpm)
 
     def C_stock(self):
         """Return the required concentration of material in the stock given a
@@ -59,7 +61,7 @@ class Variable_C_Stock(Stock):
         :return: Concentration of material in the stock
         :rtype: float
         """
-        return self.Q_sys * self.C_sys / self.Q_stock
+        return self.Q_sys * self.C_sys / self._Q_stock
 
     def rpm(self, vol_per_rev):
         """Return the pump speed required for the reactor's stock of material
@@ -71,7 +73,7 @@ class Variable_C_Stock(Stock):
         :return: Pump speed for the material stock, in revolutions per minute
         :rtype: float
         """
-        return Stock.rpm(vol_per_rev, self.Q_stock)
+        return Stock.rpm(vol_per_rev, self._Q_stock)
 
     def Q_stock(self):
         """Return the desired flow rate from the stock of material.
@@ -79,7 +81,7 @@ class Variable_C_Stock(Stock):
         :return: Flow rate from the stock of material
         :rtype: float
         """
-        return self.Q_stock
+        return self._Q_stock
 
     def T_stock(self, V_stock):
         """Return the amount of time at which the stock of materal will be
@@ -91,7 +93,7 @@ class Variable_C_Stock(Stock):
         :return: Time at which the stock will be depleted
         :rtype: float
         """
-        return Stock.T_stock(V_stock, self.Q_stock)
+        return Stock.T_stock(self, V_stock, self._Q_stock).to(u.hr)
 
     def M_stock(self, V_stock):
         """Return the mass of undiluted material required for the stock
@@ -103,7 +105,7 @@ class Variable_C_Stock(Stock):
         :return: Mass of undiluted stock material
         :rtype: float
         """
-        return Stock.M_stock(V_stock, self.C_stock())
+        return Stock.M_stock(self, V_stock, self.C_stock())
 
     def V_super_stock(self, V_stock, C_super_stock):
         """Return the volume of super (more concentrated) stock that must be
@@ -156,9 +158,9 @@ class Variable_Q_Stock(Stock):
         :param C_stock: Concentration of the material in the stock
         :type C_stock: float
         """
-        self.Q_sys = Q_sys
-        self.C_sys = C_sys
-        self.C_stock = C_stock
+        self._Q_sys = Q_sys
+        self._C_sys = C_sys
+        self._C_stock = C_stock
 
     def Q_stock(self):
         """Return the required flow rate from the stock of material given
@@ -168,7 +170,7 @@ class Variable_Q_Stock(Stock):
         :return: Flow rate from the stock of material
         :rtype: float
         """
-        return self.Q_sys * self.C_sys / self.C_stock
+        return self._Q_sys * self._C_sys / self._C_stock
 
     def rpm(self, vol_per_rev):
         """Return the pump speed required for the reactor's stock of material
@@ -180,7 +182,7 @@ class Variable_Q_Stock(Stock):
         :return: Pump speed for the material stock, in revolutions per minute
         :rtype: float
         """
-        return Stock.rpm(self.Q_stock(), self.vol_per_rev)
+        return Stock.rpm(self.Q_stock(), vol_per_rev)
 
     def T_stock(self, V_stock):
         """Return the amount of time at which the stock of materal will be
@@ -204,7 +206,7 @@ class Variable_Q_Stock(Stock):
         :return: Mass of undiluted stock material
         :rtype: float
         """
-        return self.C_stock * V_stock
+        return self._C_stock * V_stock
 
     def V_super_stock(self, V_stock, C_super_stock):
         """Return the volume of super (more concentrated) stock that must be
@@ -218,7 +220,7 @@ class Variable_Q_Stock(Stock):
         :return: Volume of super stock to dilute
         :rtype: float
         """
-        return V_stock * self.C_stock / C_super_stock
+        return V_stock * self._C_stock / C_super_stock
 
     def dilution_factor(self, C_super_stock):
         """Return the dilution factor of the concentration of material in the
@@ -230,4 +232,4 @@ class Variable_Q_Stock(Stock):
         :return: dilution factor of stock concentration over super stock concentration (< 1)
         :rtype: float
         """
-        return self.C_stock / C_super_stock
+        return self._C_stock / C_super_stock
