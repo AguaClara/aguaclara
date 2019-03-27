@@ -4,7 +4,7 @@ Tests for the research package's tube_sizing module.
 import unittest
 from aguaclara.core.units import unit_registry as u
 
-developing = True
+developing = False
 if developing:
     import sys
     sys.path.append("../../aguaclara/research")
