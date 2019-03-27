@@ -221,7 +221,7 @@ class Variable_Q_Stock(Stock):
         :return: Pump speed for the material stock, in revolutions per minute
         :rtype: float
         """
-        return Stock.rpm(self, self.Q_stock(), vol_per_rev).to(u.rev/u.min)
+        return Stock.rpm(self, vol_per_rev, self.Q_stock()).to(u.rev/u.min)
 
     def T_stock(self, V_stock):
         """Return the amount of time at which the stock of materal will be
