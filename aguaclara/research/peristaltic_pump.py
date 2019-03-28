@@ -31,7 +31,8 @@ def vol_per_rev_3_stop(color="", inner_diameter=0):
 
     :Examples:
 
-    >>> vol_per_rev(2.79*u.mm)
+    >>> from aguaclara.research.peristaltic_pump import vol_per_rev_3_stop
+    vol_per_rev(2.79*u.mm)
     0.4005495805189351 milliliter/rev
     >>> vol_per_rev(1.52*u.mm)
     0.14884596727278446 milliliter/rev
@@ -56,7 +57,8 @@ def ID_colored_tube(color):
 
     :Examples:
 
-    >>> ID_colored_tube("yellow-blue")
+    >>> from aguaclara.research.peristaltic_pump import ID_colored_tube
+    ID_colored_tube("yellow-blue")
     1.52 millimeter
     >>> ID_colored_tube("orange-yellow")
     0.51 millimeter
@@ -82,7 +84,8 @@ def vol_per_rev_LS(id_number):
 
     :Examples:
 
-    >>> vol_per_rev_LS(13)
+    >>> from aguaclara.research.peristaltic_pump import vol_per_rev_LS
+    vol_per_rev_LS(13)
     <Quantity(0.06, 'milliliter / turn')>
     """
     tubing_data_path = os.path.join(os.path.dirname(__file__), "data",
@@ -106,7 +109,8 @@ def flow_rate(vol_per_rev, rpm):
 
     :Examples:
 
-    >>> flow_rate(3*u.mL/u.rev, 5*u.rev/u.min)
+    >>> from aguaclara.research.peristaltic_pump from flow_rate
+    flow_rate(3*u.mL/u.rev, 5*u.rev/u.min)
     <Quantity(0.25, 'milliliter / second')>
     """
     return (vol_per_rev * rpm).to(u.mL/u.s)
