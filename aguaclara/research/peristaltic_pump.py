@@ -14,16 +14,19 @@ k_nonlinear = 13
 def vol_per_rev_3_stop(color="", inner_diameter=0):
     """Return the volume per revolution of an Ismatec 6 roller pump
     given the inner diameter (ID) of 3-stop tubing. The calculation is
-    empirically derived from the table found at
+    interpolated from the table found at
     http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm.
 
-    Note: either input a string as the tubing color code or a number as the
+    Note:
+    1. Either input a string as the tubing color code or a number as the
     tubing inner diameter. If both are given, the function will default to using
     the color.
+    2. The calculation is interpolated for inner diameters between 0.13 and 3.17
+    mm. Accuracy is not guaranteed for tubes with smaller or larger diameters.
 
     :param color: Color code of the Ismatec 3-stop tubing
     :type color: string
-    :param inner_diameter: Inner diameter of the Ismatec 3-stop tubing
+    :param inner_diameter: Inner diameter of the Ismatec 3-stop tubing. Results will be most accurate for inner diameters between 0.13 and 3.17 mm.
     :type inner_diameter: float
 
     :return: Volume per revolution output by a 6-roller pump through the 3-stop tubing (mL/rev)
@@ -59,11 +62,11 @@ def ID_colored_tube(color):
 
     >>> from aguaclara.research.peristaltic_pump import ID_colored_tube
     >>> ID_colored_tube("yellow-blue")
-    1.52 millimeter
+    <Quantity(1.52, 'milliliter')>
     >>> ID_colored_tube("orange-yellow")
-    0.51 millimeter
+    <Quantity(0.51, 'milliliter')>
     >>> ID_colored_tube("purple-white")
-    2.79 millimeter
+    <Quantity(2.79, 'milliliter')>
     """
     tubing_data_path = os.path.join(os.path.dirname(__file__), "data",
         "3_stop_tubing.txt")
@@ -76,7 +79,7 @@ def vol_per_rev_LS(id_number):
     """Look up the volume per revolution output by a Masterflex L/S pump
     through L/S tubing of the given ID number.
 
-    :param id_number: Identification number of the L/S tubing, between 13 and 18
+    :param id_number: Identification number of the L/S tubing. Valid numbers are 13-18, 24, 35, and 36.
     :type id_number: int
 
     :return: Volume per revolution output by a Masterflex L/S pump through the L/S tubing
@@ -87,6 +90,8 @@ def vol_per_rev_LS(id_number):
     >>> from aguaclara.research.peristaltic_pump import vol_per_rev_LS
     >>> vol_per_rev_LS(13)
     <Quantity(0.06, 'milliliter / turn')>
+    >>> vol_per_rev_LS(18)
+    <Quantity(3.8, 'milliliter / turn')>
     """
     tubing_data_path = os.path.join(os.path.dirname(__file__), "data",
         "LS_tubing.txt")

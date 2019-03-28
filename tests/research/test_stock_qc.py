@@ -1,56 +1,60 @@
 """
 Tests for the research package's tube_sizing module.
 """
-import sys
-sys.path.append("../../aguaclara/research")
-from stock_qc import *
-
 import unittest
 from aguaclara.core.units import unit_registry as u
 
-#from aguaclara.research.stock_qc import *
-reactor = Variable_C_Stock(1*u.mL/u.s, 2*u.g/u.L, 0.4*u.mL/u.s)
+developing = False
+if developing:
+    import sys
+    sys.path.append("../../aguaclara/research")
+    import stock_qc as stock_qc
+else:
+    import aguaclara.research.stock_qc as stock_qc
+
+C_reactor = stock_qc.Variable_C_Stock(1*u.mL/u.s, 2*u.mg/u.L, 0.4*u.mL/u.s)
+Q_reactor = stock_qc.Variable_Q_Stock(4.9*u.mL/u.s, 3.6*u.mg/u.L, 50*u.mg/u.L)
+
 
 class TestStockQC(unittest.TestCase):
 
+    def assertAlmostEqualQuantity(self, first, second, places=7):
+        self.assertAlmostEqual(first.magnitude, second.magnitude, places)
+        self.assertAlmostEqual(first.units, second.units, places)
 
     def test_init(self):
-        #reactor = Variable_C_Stock(1*u.mL/u.s, 2*u.g/u.L, 0.3*u.mL/u.s)
-        self.assertEqual(1*u.mL/u.s, reactor._Q_sys)
-        self.assertEqual(2*u.g/u.L, reactor._C_sys)
-        self.assertEqual(0.4*u.mL/u.s, reactor._Q_stock)
+        self.assertEqual(1*u.mL/u.s, C_reactor.Q_sys())
+        self.assertEqual(2*u.mg/u.L, C_reactor.C_sys())
+        self.assertEqual(0.4*u.mL/u.s, C_reactor.Q_stock())
+
+        self.assertEqual(4.9*u.mL/u.s, Q_reactor.Q_sys())
+        self.assertEqual(3.6*u.mg/u.L, Q_reactor.C_sys())
+        self.assertEqual(50*u.mg/u.L, Q_reactor.C_stock())
 
     def test_C_Stock(self):
-        self.assertEqual(5.0*u.g/u.L, reactor.C_stock())
+        self.assertAlmostEqualQuantity(5.0*u.mg/u.L, C_reactor.C_stock())
+
+    def test_Q_Stock(self):
+        self.assertAlmostEqualQuantity(0.3528*u.mL/u.s, Q_reactor.Q_stock())
 
     def test_rpm(self):
-        self.assertEqual(480*u.rev/u.min, reactor.rpm(0.05*u.mL/u.rev))
-
-    def test_Q_stock(self):
-        self.assertEqual(0.4*u.mL/u.s, reactor.Q_stock())
+        self.assertAlmostEqualQuantity(480*u.rev/u.min, C_reactor.rpm(0.05*u.mL/u.rev))
+        self.assertAlmostEqualQuantity(88.2*u.rev/u.min, Q_reactor.rpm(0.24*u.mL/u.rev))
 
     def test_T_stock(self):
-        self.assertAlmostEqual(3.4722222222222, reactor.T_stock(5*u.L).magnitude)
-        self.assertEqual((1*u.hr).units, reactor.T_stock(5*u.L).units)
+        self.assertAlmostEqualQuantity(3.4722222222222222*u.hr, C_reactor.T_stock(5*u.L))
+        self.assertAlmostEqualQuantity(24.722852103804485*u.hr, Q_reactor.T_stock(31.4*u.L))
 
     def test_M_stock(self):
-        self.assertEqual(25.0*u.g, reactor.M_stock(5*u.L))
+        self.assertAlmostEqualQuantity(25.0*u.mg, C_reactor.M_stock(5*u.L))
+        self.assertAlmostEqualQuantity(1570.0*u.mg, Q_reactor.M_stock(31.4*u.L))
 
     def test_V_super_stock(self):
-        self.assertEqual(1, reactor.V_super_stock(5, self._C_stock))
+        self.assertAlmostEqualQuantity(0.00035714285714285714*u.L,
+            C_reactor.V_super_stock(5*u.L, 70*u.g/u.L))
+        self.assertAlmostEqualQuantity(0.028035714285714285*u.L,
+            Q_reactor.V_super_stock(31.4*u.L, 56*u.g/u.L))
 
-    def dilution_factor(self):
-        self.assertEqual(2.5, reactor.dilution_factor(self.C_stock(), 2))
-
-
-    # def test_C_Stock:
-    #     self.assertEqual(reactor.Q_sys * reactor.
-    #
-    # def test_T_stock(self):
-    #     answer = 37.324192635827984*u.hr
-    #     self.assertEqual(reactor.T_stock(7*u.mL/u.s, 100*u.NTU, "yellow-blue", 1*u.L),
-    #         answer)
-    #
-    #     answer = 285.79443786361537*u.hr
-    #     self.assertEqual(reactor.T_stock(7*u.mL/u.s, 2*u.mg/u.L, "orange-yellow",1*u.L),
-    #         answer)
+    def test_dilution_factor(self):
+        self.assertEqual(7.142857142857142e-05*u.dimensionless, C_reactor.dilution_factor(70*u.g/u.L))
+        self.assertEqual(0.0008928571428571429*u.dimensionless, Q_reactor.dilution_factor(56*u.g/u.L))
