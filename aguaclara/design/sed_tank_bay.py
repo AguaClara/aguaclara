@@ -5,11 +5,22 @@ class SedimentationTankBay:
     """Calculates necessary dimensions and values for SedimentationTankBay.
     """
 
-    def __init__(self, q=20*u.L/u.s, tank_l_inner=58*u.m, tank_vel_up = 1 *u.mm/ u.s, tank_w=42*u.inch,
-                 plate_settlers_angle = 60*u.deg, plate_settlers_s = 2.5*u.cm, plate_settlers_thickness=2*u.mm,
-                 plate_settlers_l_cantilevered=20*u.cm, plate_settlers_vel_capture=0.12*u.mm/u.s,
-                 manifold_diffuser_vel_max = 442.9 * u.mm / u.s, diffuser_n = 108, manifold_exit_man_hl_orifice = 4 * u.cm,
-                 manifold_exit_man_n_orifices = 58, manifold_ratio_q_man_orifice = 0.8, manifold_diffuser_thickness_wall = 1.17 *u.inch):
+    def __init__(self,
+                 q=20*u.L/u.s,
+                 tank_l_inner=58*u.m,
+                 tank_vel_up = 1 *u.mm/ u.s,
+                 tank_w=42*u.inch,
+                 plate_settlers_angle = 60*u.deg,
+                 plate_settlers_s = 2.5*u.cm,
+                 plate_settlers_thickness=2*u.mm,
+                 plate_settlers_l_cantilevered=20*u.cm,
+                 plate_settlers_vel_capture=0.12*u.mm/u.s,
+                 manifold_diffuser_vel_max = 442.9 * u.mm / u.s,
+                 diffuser_n = 108,
+                 manifold_exit_man_hl_orifice = 4 * u.cm,
+                 manifold_exit_man_n_orifices = 58,
+                 manifold_ratio_q_man_orifice = 0.8,
+                 manifold_diffuser_thickness_wall = 1.17 *u.inch):
         """Instantiates a SedimentationTankBay with specified values.
         Args:
             q (float): Flow rate
@@ -57,8 +68,8 @@ class SedimentationTankBay:
         Returns:
             Maximum flow through one sedimentation tank (float).
         """
-        return (self.TANK_L_INNER * self.TANK_VEL_UP.to(u.m/u.s) *
-                self.TANK_W.to(u.m)).to(u.L / u.s)
+        return (self.tank_l_inner * self.tank_vel_up.to(u.m/u.s) *
+                self.tank_w.to(u.m)).to(u.L / u.s)
         #rename to q_bay, use to determine how many bays are needed
 
     @property
@@ -80,9 +91,9 @@ class SedimentationTankBay:
         Returns:
             Minimum inner width of each diffuser in the sedimentation tank (float).
         """
-        return ((self.TANK_VEL_UP.to(u.inch/u.s).magnitude /
-                 self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
-                 * self.TANK_W)
+        return ((self.tank_vel_up.to(u.inch/u.s).magnitude /
+                 self.manifold_diffuser_vel_max.to(u.inch/u.s).magnitude)
+                 * self.tank_w)
 
     # Note: we need to specify in Onshape a 15% stretch difference between
     # the circumference of both diffuser ends' inner/outer circumferences.
@@ -97,9 +108,9 @@ class SedimentationTankBay:
         Returns:
             Maximum velocity through the manifold (float).
         """
-        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m / u.s) *
-                            math.sqrt(2 * ((1 - (self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2)) /
-                                      (((self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2) + 1)))
+        vel_manifold_max = (self.manifold_diffuser_vel_max.to(u.m / u.s) *
+                            math.sqrt(2 * ((1 - (self.manifold_ratio_q_man_orifice) ** 2)) /
+                                      (((self.manifold_ratio_q_man_orifice) ** 2) + 1)))
         return vel_manifold_max
 
     @property
@@ -128,8 +139,8 @@ class SedimentationTankBay:
         while err > 0.01:
                 D_prev = D
                 f = pc.fric(self.q, D_prev, nu, pipe_rough)
-                D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) * 
-                     (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2))) 
+                D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
+                     (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
                       / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
                 err = abs(D_prev - D) / ((D + D_prev) / 2)
         return D"""
@@ -146,8 +157,8 @@ class SedimentationTankBay:
         Returns:
             Diameter of the orifices in the exit manifold for the sedimentation tank (float).
         """
-        Q_orifice = self.q/self.MANIFOLD_EXIT_MAN_N_ORIFICES
-        D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * self.MANIFOLD_EXIT_MAN_HL_ORIFICE.magnitude))
+        Q_orifice = self.q/self.manifold_exit_man_n_orifices
+        D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * self.manifold_exit_man_hl_orifice.magnitude))
         return ut.ceil_nearest(D_orifice, drills.DRILL_BITS_D_METRIC)
 
 
@@ -159,9 +170,9 @@ class SedimentationTankBay:
         Returns:
             Length of a single plate (float).
         """
-        L_sed_plate = ((self.PLATE_SETTLERS_S * ((self.TANK_VEL_UP/self.PLATE_SETTLERS_VEL_CAPTURE)-1)
-                      + self.PLATE_SETTLERS_THICKNESS * (self.TANK_VEL_UP/self.PLATE_SETTLERS_VEL_CAPTURE))
-                     / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
+        L_sed_plate = ((self.plate_settlers_s * ((self.tank_vel_up/self.plate_settlers_vel_capture)-1)
+                      + self.plate_settlers_thickness * (self.tank_vel_up/self.plate_settlers_vel_capture))
+                     / (np.sin(self.plate_settlers_angle) * np.cos(self.plate_settlers_angle))
                      ).to(u.m)
         return L_sed_plates
 
@@ -170,5 +181,5 @@ class SedimentationTankBay:
         """
         Calculates manifold diffuser area from flow rate.
         """
-        diffuser_a = self.q_bay / (self.MANIFOLD_DIFFUSER_VEL_MAX * self.DIFFUSER_N)
+        diffuser_a = self.q_bay / (self.manifold_diffuser_vel_max * self.diffuser_n)
         return diffuser_a

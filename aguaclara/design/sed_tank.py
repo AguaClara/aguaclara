@@ -1,10 +1,5 @@
 """This module contains all the functions needed to design a sedimentation tank
 for an AguaClara plant.
-
-Example:
-    To create an object of SedimentationTank, use:
-
-        sed_tank = SedimentationTank()
 """
 from aguaclara.core.units import unit_registry as u
 from aguaclara.design.sed_tank_bay import SedimentationTankBay
@@ -221,18 +216,33 @@ JET_REVERSER_ND = 3*u.inch
 class SedimentationTank:
     """
     Calculates dimensions and values for Sedimentation Tank.
+
+    Example:
+        To create an object of SedimentationTank, use:
+            >>> sed_tank = SedimentationTank()
     """
 
 
     # TODO: Specify schedule (SDR) of diffuser pipe for above
 
 
-    def __init__(self, q=20 * u.L / u.s, tank_l_inner = 58 * u.m, tank_vel_up = 1 * u.mm / u.s, tank_w = 42 * u.inch,
-        plate_settlers_angle = 60 * u.deg, plate_settlers_s = 2.5 * u.cm, plate_settlers_thickness = 2 * u.mm,
-        plate_settlers_l_cantilevered = 20 * u.cm, plate_settlers_vel_capture = 0.12 * u.mm / u.s,
-        manifold_diffuser_vel_max=442.9 * u.mm / u.s, diffuser_n=108, manifold_exit_man_hl_orifice=4 * u.cm,
-        manifold_exit_man_n_orifices=58, manifold_ratio_q_man_orifice=0.8,
-        manifold_diffuser_thickness_wall=1.17 * u.inch, thickness_wall = 0.15 * u.m):
+    def __init__(self,
+                 q = 20 * u.L / u.s,
+                 tank_l_inner = 58 * u.m,
+                 tank_vel_up = 1 * u.mm / u.s,
+                 tank_w = 42 * u.inch,
+                 plate_settlers_angle = 60 * u.deg,
+                 plate_settlers_s = 2.5 * u.cm,
+                 plate_settlers_thickness = 2 * u.mm,
+                 plate_settlers_l_cantilevered = 20 * u.cm,
+                 plate_settlers_vel_capture = 0.12 * u.mm / u.s,
+                 manifold_diffuser_vel_max = 442.9 * u.mm / u.s,
+                 diffuser_n = 108,
+                 manifold_exit_man_hl_orifice = 4 * u.cm,
+                 manifold_exit_man_n_orifices = 58,
+                 manifold_ratio_q_man_orifice = 0.8,
+                 manifold_diffuser_thickness_wall = 1.17 * u.inch,
+                 thickness_wall = 0.15 * u.m):
         """Instantiates a SedimentationTank with specified values.
 
         Args:
@@ -267,6 +277,22 @@ class SedimentationTank:
         self.manifold_ratio_q_man_orifice = manifold_ratio_q_man_orifice
         self.manifold_diffuser_thickness_wall = manifold_diffuser_thickness_wall
         self.thickness_wall = thickness_wall
+        self.bay = SedimentationTankBay(self.q,
+                                        self.tank_l_inner,
+                                        self.tank_vel_up,
+                                        self.tank_w,
+                                        self.plate_settlers_angle,
+                                        self.plate_settlers_s,
+                                        self.plate_settlers_thickness,
+                                        self.plate_settlers_l_cantilevered,
+                                        self.plate_settlers_vel_capture,
+                                        self.manifold_diffuser_vel_max,
+                                        self.diffuser_n,
+                                        self.manifold_exit_man_hl_orifice,
+                                        self.manifold_exit_man_n_orifices,
+                                        self.manifold_ratio_q_man_orifice,
+                                        self.manifold_diffuser_thickness_wall)
+        self.n_bays = self.bay.n()
 
     @property
     def L_channel(self):
@@ -275,8 +301,7 @@ class SedimentationTank:
         Returns:
             Length of the inlet and exit channels for the sedimentation tank (float).
         """
-        #n_tanks = self.n_tanks
-        return ((self.n_tanks * self.TANK_W) + self.THICKNESS_WALL +
-                ((self.n_tanks-1) * self.THICKNESS_WALL))
+        return ((self.n_bays * self.TANK_W) + self.THICKNESS_WALL +
+                ((self.n_bays-1) * self.THICKNESS_WALL))
 
     # TODO: We need to specify a function for calculating the width of the channel.
