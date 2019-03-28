@@ -11,37 +11,30 @@ def get_data_by_time(path, columns, start_date, start_time="00:00", end_date=Non
 
     Note: currently only works for 1 or 2 days of data, i.e. end_date must be unspecified or one day after start_date
 
-    Parameters
-    ----------
-    path : string
-        The path to the folder containing your ProCoDA data files
-    columns : int (list)
-        A single index of a column or a list of indices of columns of data to extract
-        Note: Column 0 is time. The first data column is column 1.
-    start_date : string
-        Starting date of data to extract, formatted 'M-D-YYYY'
-    start_time: string, optional
-        Starting time of data to extract, formatted 'HH:MM' (24-hour time)
-    end_date : string, optional
-        Ending date of data to extract, formatted 'M-D-YYYY'
-    end_time: string, optional
-        Ending time of data to extract, formatted 'HH:MM' (24-hour time)
+    :param path: The path to the folder containing your ProCoDA data files
+    :type path: string
+    :param columns: A single index of a column or a list of indices of columns of data to extract. Note: Column 0 is time. The first data column is column 1.
+    :type columns: int or int list
+    :param start_date: Starting date of data to extract, formatted 'M-D-YYYY'
+    :type start_date: string
+    :param start_time: Starting time of data to extract, formatted 'HH:MM' (24-hour time)
+    :type start_time: string, optional
+    :param end_date: Ending date of data to extract, formatted 'M-D-YYYY'
+    :type end_date: string, optional
+    :param end_time: Ending time of data to extract, formatted 'HH:MM' (24-hour time)
+    :type end_time: string, optional
 
-    Return
-    ------
-    list (2D list)
-        list :
-            contains the single column of data to extract
-        2D list:
-            a list of lists containing the columns to extract, in order of the indices given in the columns variable
+    :return: A list containing the single column of data to extract, or a list of lists containing the columns to extract, in order of the indexes given in the columns variable
+    :rtype: list or 2D list
 
-    Examples
-    --------
-    get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, start_date='6-14-2018', start_time='12:20',
-        end_date='6-15-2018', end_time='10:50')
-    get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], start_date='6-14-2018', start_time='12:20',
-         end_time='23:59')
-    get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], start_date='6-14-2018', end_date='6-18-2018')
+
+    :Examples:
+
+    >>>get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, start_date='6-14-2018', start_time='12:20' end_date='6-15-2018', end_time='10:50')
+
+    >>>get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], start_date='6-14-2018', start_time='12:20', end_time='23:59')
+
+    >>>get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], start_date='6-14-2018', end_date='6-18-2018')
     """
 
     # Locate and read data file(s)
