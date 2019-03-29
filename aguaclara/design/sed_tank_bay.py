@@ -1,33 +1,69 @@
+"""Calculate hydraulic dimensions of a sedimentation tank bay.
+
+Example:
+    >>> from aguaclara.design.sed_tank_bay import SedimentationTankBay
+"""
+
 from aguaclara.core.units import unit_registry as u
+import aguaclara.core.constants as con
+import aguaclara.core.materials as mat
+from aguaclara.core import drills
 import aguaclara.core.utility as ut
+import numpy as np
+import math
+
 
 class SedimentationTankBay:
     """Calculates necessary dimensions and values for SedimentationTankBay.
+
+    Example:
+        >>> sed_tank_bay = SedimentationTankBay()
     """
 
-    def __init__(self, q=20*u.L/u.s, tank_l_inner=58*u.m, tank_vel_up = 1 *u.mm/ u.s, tank_w=42*u.inch,
-                 plate_settlers_angle = 60*u.deg, plate_settlers_s = 2.5*u.cm, plate_settlers_thickness=2*u.mm,
-                 plate_settlers_l_cantilevered=20*u.cm, plate_settlers_vel_capture=0.12*u.mm/u.s,
-                 manifold_diffuser_vel_max = 442.9 * u.mm / u.s, diffuser_n = 108, manifold_exit_man_hl_orifice = 4 * u.cm,
-                 manifold_exit_man_n_orifices = 58, manifold_ratio_q_man_orifice = 0.8, manifold_diffuser_thickness_wall = 1.17 *u.inch):
-        """Instantiates a SedimentationTankBay with specified values.
+    def __init__(self,
+                 q=20.0 * u.L / u.s,
+                 vel_upflow=1.0 * u.mm / u.s,
+                 l_inner=5.8 * u.m,
+                 w_inner=42.0 * u.inch,
+                 diffuser_vel_max=442.9 * u.mm / u.s,
+                 diffuser_n=108,
+                 diffuser_wall_thickness=1.17 * u.inch,
+                 plate_settler_angle=60.0 * u.deg,
+                 plate_settler_s=2.5 * u.cm,
+                 plate_settler_thickness=2.0 * u.mm,
+                 plate_settler_l_cantilever_max=20.0 * u.cm,
+                 plate_settler_vel_capture=0.12 * u.mm / u.s,
+                 exit_man_orifice_hl=4.0 * u.cm,
+                 exit_man_orifice_n=58,
+                 exit_man_orifice_q_ratio_max=0.8):
+        """Instantiates a SedimentationTankBay with the specified values.
+
+        All args are optional, and default to values that are optimized for 20
+        L/s if not specified.
+
         Args:
-            q (float): Flow rate
-            tank_l_inner (float): Inner length of the tank
-            tank_vel_up (float): Upflow velocity through a sedimentation tank
-            tank_w (float): Width of the tank
-            plate_settlers_angle (int): Angle of plate settlers from horizontal
-            plate_settlers_s (float): Perpendicular distance between plates, not the horizontal distance between plates
-            plate_settlers_thickness (float): Thickness of the plate settlers
-            plate_settlers_l_cantilevered (float): Maximum length of sed plate sticking out past module pipes without any
-            additional support
-            plate_settlers_vel_capture (float): Velocity capture of plate settlers
-            manifold_diffuser_vel_max (float):  Maximum velocity through a diffuser
-            diffuser_n (int): number of diffusers per sed tank
-            manifold_exit_man_hl_orifice (float): Headloss through an orifice in the exit manifold
-            manifold_exit_man_n_orifices (int): Number of orifices in the exit manifold
-            manifold_ratio_q_man_orifice (float): flow distribution from the inlet manifold
-            manifold_diffuser_thickness_wall (float): wall thickness of diffuser
+            q (float * u.L / u.s): Flow rate.
+            vel_upflow (float * u.mm / u.s): Upflow velocity.
+            l_inner (float * u.m): Inner length.
+            w_inner (float * u.inch): Inner width.
+            diffuser_vel_max (float * u.mm / u.s):  Maximum velocity through a
+                diffuser.
+            diffuser_n (int): Number of diffusers.
+            diffuser_wall_thickness (float * u.inch): Diffuser wall thickness.
+            plate_settler_angle (float * u.deg): Angle of plate settlers from
+                horizontal.
+            plate_settler_s (float * u.cm): Perpendicular space between plate
+                settlers.
+            plate_settler_thickness (float * u.mm): Plate settler thickness.
+            plate_settler_l_cantilever_max (float * u.cm): Maximum length of
+                plate settler protruding past the support pipes.
+            plate_settler_vel_capture (float * u.mm / u.s): Capture velocity of
+                plate settlers.
+            exit_man_orifice_hl (float * u.cm): Head loss through an orifice in
+                the exit manifold.
+            exit_man_orifice_n (int): Number of orifices in the exit manifold
+            exit_man_orifice_q_ratio_max (float): Maximum ratio of flow rate
+                between any given orifice in the exit manifold.
 
 
         Returns:
@@ -35,20 +71,20 @@ class SedimentationTankBay:
 
         """
         self.q = q
-        self.tank_l_inner = tank_l_inner
-        self.tank_vel_up = tank_vel_up
-        self.tank_w = tank_w
-        self.plate_settlers_angle = plate_settlers_angle
-        self.plate_settlers_s = plate_settlers_s
-        self.plate_settlers_thickness = plate_settlers_thickness
-        self.plate_settlers_l_cantilevered = plate_settlers_l_cantilevered
-        self.plate_settlers_vel_capture = plate_settlers_vel_capture
-        self.manifold_diffuser_vel_max = manifold_diffuser_vel_max
+        self.l_inner = l_inner
+        self.vel_upflow = vel_upflow
+        self.tank_w = w_inner
+        self.plate_settlers_angle = plate_settler_angle
+        self.plate_settlers_s = plate_settler_s
+        self.plate_settlers_thickness = plate_settler_thickness
+        self.plate_settlers_l_cantilevered = plate_settler_l_cantilever_max
+        self.plate_settlers_vel_capture = plate_settler_vel_capture
+        self.manifold_diffuser_vel_max = diffuser_vel_max
         self.diffuser_n = diffuser_n
-        self.manifold_exit_man_hl_orifice = manifold_exit_man_hl_orifice
-        self.manifold_exit_man_n_orifices = manifold_exit_man_n_orifices
-        self.manifold_ratio_q_man_orifice = manifold_ratio_q_man_orifice
-        self.manifold_diffuser_thickness_wall = manifold_diffuser_thickness_wall
+        self.manifold_exit_man_hl_orifice = exit_man_orifice_hl
+        self.manifold_exit_man_n_orifices = exit_man_orifice_n
+        self.manifold_ratio_q_man_orifice = exit_man_orifice_q_ratio_max
+        self.manifold_diffuser_thickness_wall = diffuser_wall_thickness
 
     @property
     def q_bay(self):
@@ -57,8 +93,8 @@ class SedimentationTankBay:
         Returns:
             Maximum flow through one sedimentation tank (float).
         """
-        return (self.TANK_L_INNER * self.TANK_VEL_UP.to(u.m/u.s) *
-                self.TANK_W.to(u.m)).to(u.L / u.s)
+        return (self.l_inner * self.vel_upflow.to(u.m/u.s) *
+                self.tank_w.to(u.m)).to(u.L / u.s)
         #rename to q_bay, use to determine how many bays are needed
 
     @property
@@ -68,10 +104,7 @@ class SedimentationTankBay:
         Returns:
             Number of sedimentation tanks required for a given flow rate (int).
         """
-        # q = self.q_tank.magnitude
-        return int(np.ceil(self.q / self.q_tank))
-        # Part of logic at the sed_tank level
-
+        return int(np.ceil(self.q / self.q_bay))
 
     @property
     def w_diffuser_inner_min(self):
@@ -80,9 +113,9 @@ class SedimentationTankBay:
         Returns:
             Minimum inner width of each diffuser in the sedimentation tank (float).
         """
-        return ((self.TANK_VEL_UP.to(u.inch/u.s).magnitude /
-                 self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.inch/u.s).magnitude)
-                 * self.TANK_W)
+        return ((self.vel_upflow.to(u.inch/u.s).magnitude /
+                 self.manifold_diffuser_vel_max.to(u.inch/u.s).magnitude)
+                 * self.tank_w)
 
     # Note: we need to specify in Onshape a 15% stretch difference between
     # the circumference of both diffuser ends' inner/outer circumferences.
@@ -97,9 +130,9 @@ class SedimentationTankBay:
         Returns:
             Maximum velocity through the manifold (float).
         """
-        vel_manifold_max = (self.MANIFOLD_DIFFUSER_VEL_MAX.to(u.m / u.s) *
-                            math.sqrt(2 * ((1 - (self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2)) /
-                                      (((self.MANIFOLD_RATIO_Q_MAN_ORIFICE) ** 2) + 1)))
+        vel_manifold_max = (self.manifold_diffuser_vel_max.to(u.m / u.s) *
+                            math.sqrt(2 * (1 - self.manifold_ratio_q_man_orifice ** 2) /
+                                      (self.manifold_ratio_q_man_orifice ** 2 + 1)))
         return vel_manifold_max
 
     @property
@@ -146,8 +179,8 @@ class SedimentationTankBay:
         Returns:
             Diameter of the orifices in the exit manifold for the sedimentation tank (float).
         """
-        Q_orifice = self.q/self.MANIFOLD_EXIT_MAN_N_ORIFICES
-        D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.RATIO_VC_ORIFICE * np.sqrt(2 * pc.GRAVITY.magnitude * self.MANIFOLD_EXIT_MAN_HL_ORIFICE.magnitude))
+        Q_orifice = self.q/self.manifold_exit_man_n_orifices
+        D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.VC_ORIFICE_RATIO * np.sqrt(2 * con.GRAVITY.magnitude * self.manifold_exit_man_hl_orifice.magnitude))
         return ut.ceil_nearest(D_orifice, drills.DRILL_BITS_D_METRIC)
 
 
@@ -159,16 +192,16 @@ class SedimentationTankBay:
         Returns:
             Length of a single plate (float).
         """
-        L_sed_plate = ((self.PLATE_SETTLERS_S * ((self.TANK_VEL_UP/self.PLATE_SETTLERS_VEL_CAPTURE)-1)
-                      + self.PLATE_SETTLERS_THICKNESS * (self.TANK_VEL_UP/self.PLATE_SETTLERS_VEL_CAPTURE))
-                     / (np.sin(self.PLATE_SETTLERS_ANGLE) * np.cos(self.PLATE_ANGLE))
+        L_sed_plate = ((self.plate_settlers_s * ((self.vel_upflow/self.plate_settlers_vel_capture)-1)
+                      + self.plate_settlers_thickness * (self.vel_upflow/self.plate_settlers_vel_capture))
+                     / (np.sin(self.plate_settlers_angle) * np.cos(self.plate_settlers_angle))
                      ).to(u.m)
-        return L_sed_plates
+        return L_sed_plate
 
     @property
     def diffuser_a(self):
         """
         Calculates manifold diffuser area from flow rate.
         """
-        diffuser_a = self.q_bay / (self.MANIFOLD_DIFFUSER_VEL_MAX * self.DIFFUSER_N)
+        diffuser_a = self.q_bay / (self.manifold_diffuser_vel_max * self.diffuser_n)
         return diffuser_a
