@@ -161,8 +161,8 @@ class SedimentationTankBay:
         while err > 0.01:
                 D_prev = D
                 f = pc.fric(self.q, D_prev, nu, pipe_rough)
-                D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) * 
-                     (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2))) 
+                D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
+                     (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
                       / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
                 err = abs(D_prev - D) / ((D + D_prev) / 2)
         return D"""
