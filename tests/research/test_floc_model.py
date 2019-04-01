@@ -2,12 +2,17 @@
 Tests for the research package's floc_model functions
 """
 
-import sys
-sys.path.append("../../aguaclara/research")
-
 import unittest
-import floc_model as fm
 from aguaclara.core.units import unit_registry as u
+
+developing = False
+if developing:
+    import sys
+    sys.path.append("../../aguaclara/research")
+    import floc_model as fm
+else:
+    import aguaclara.research.floc_model as fm
+
 
 class TestFlocModel(unittest.TestCase):
 
