@@ -10,9 +10,6 @@ class Stock(object):
     def rpm(self, vol_per_rev, Q):
         return (Q / vol_per_rev)
 
-    def Q_stock(self, vol_per_rev, rpm):
-        return vol_per_rev * rpm
-
     def T_stock(self, V_stock, Q_stock):
         return (V_stock / Q_stock)
 
