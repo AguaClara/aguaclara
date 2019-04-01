@@ -162,7 +162,7 @@ class Variable_Q_Stock(Stock):
     >>> reactor.Q_stock()
     <Quantity(0.18421052631578946, 'milliliter / second')>
     >>> reactor.rpm(vol_per_rev = .5*u.mL/u.rev).to(u.rev/u.min)
-    <Quantity(22.105263157894736, 'turn / minute')>
+    <Quantity(22.105263157894736, 'rev / minute')>
     """
 
     def __init__(self, Q_sys, C_sys, C_stock):
