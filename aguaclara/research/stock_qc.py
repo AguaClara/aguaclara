@@ -10,9 +10,6 @@ class Stock(object):
     def rpm(self, vol_per_rev, Q):
         return (Q / vol_per_rev)
 
-    def Q_stock(self, vol_per_rev, rpm):
-        return vol_per_rev * rpm
-
     def T_stock(self, V_stock, Q_stock):
         return (V_stock / Q_stock)
 
@@ -32,6 +29,7 @@ class Variable_C_Stock(Stock):
 
     :Examples:
 
+    >>> from aguaclara.research.stock_qc import Variable_C_Stock
     >>> from aguaclara.core.units import unit_registry as u
     >>> reactor = Variable_C_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, Q_stock = .01*u.mL/u.s)
     >>> reactor.C_stock()
@@ -155,12 +153,13 @@ class Variable_Q_Stock(Stock):
 
     :Examples:
 
+    >>> from aguaclara.research.stock_qc import Variable_Q_Stock
     >>> from aguaclara.core.units import unit_registry as u
     >>> reactor = Variable_Q_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, C_stock = 7.6*u.mg/u.L)
     >>> reactor.Q_stock()
     <Quantity(0.18421052631578946, 'milliliter / second')>
     >>> reactor.rpm(vol_per_rev = .5*u.mL/u.rev).to(u.rev/u.min)
-    <Quantity(22.105263157894736, 'turn / minute')>
+    <Quantity(22.105263157894736, 'rev / minute')>
     """
 
     def __init__(self, Q_sys, C_sys, C_stock):
