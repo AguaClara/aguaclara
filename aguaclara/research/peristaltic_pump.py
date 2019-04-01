@@ -34,10 +34,13 @@ def vol_per_rev_3_stop(color="", inner_diameter=0):
 
     :Examples:
 
-    >>> vol_per_rev_3_stop(color="yellow-blue")
-    <Quantity(0.14884596727278449, 'milliliter / rev')>
-    >>> vol_per_rev(inner_diameter=2.79*u.mm)
-    <Quantity(0.4005495805189351, 'milliliter / rev')>
+    >>> from aguaclara.research.peristaltic_pump import vol_per_rev_3_stop
+    >>> vol_per_rev_3_stop(2.79*u.mm)
+    0.4005495805189351 milliliter/rev
+    >>> vol_per_rev_3_stop(1.52*u.mm)
+    0.14884596727278446 milliliter/rev
+    >>> vol_per_rev_3_stop(0.51*u.mm)
+    0.01943899117521222 milliliter/rev
     """
     if color != "":
         inner_diameter = ID_colored_tube(color)
@@ -57,6 +60,7 @@ def ID_colored_tube(color):
 
     :Examples:
 
+    >>> from aguaclara.research.peristaltic_pump import ID_colored_tube
     >>> ID_colored_tube("yellow-blue")
     <Quantity(1.52, 'milliliter')>
     >>> ID_colored_tube("orange-yellow")
@@ -83,6 +87,7 @@ def vol_per_rev_LS(id_number):
 
     :Examples:
 
+    >>> from aguaclara.research.peristaltic_pump import vol_per_rev_LS
     >>> vol_per_rev_LS(13)
     <Quantity(0.06, 'milliliter / turn')>
     >>> vol_per_rev_LS(18)
@@ -92,7 +97,7 @@ def vol_per_rev_LS(id_number):
         "LS_tubing.txt")
     df = pd.read_csv(tubing_data_path, delimiter='\t')
     idx = df["Number"] == id_number
-    return df[idx]['Flow (mL/rev)'].values[0] * u.mL/u.rev
+    return df[idx]['Flow (mL/rev)'].values[0] * u.mL/u.turn
 
 
 def flow_rate(vol_per_rev, rpm):
@@ -109,6 +114,7 @@ def flow_rate(vol_per_rev, rpm):
 
     :Examples:
 
+    >>> from aguaclara.research.peristaltic_pump from flow_rate
     >>> flow_rate(3*u.mL/u.rev, 5*u.rev/u.min)
     <Quantity(0.25, 'milliliter / second')>
     """
