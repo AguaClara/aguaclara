@@ -10,7 +10,6 @@ WATER_NU = 1 * 10 ** -6 * u.m ** 2 / u.s
 
 ATM_P = 1 * u.atm
 AIR_NU = 12 * u.mm ** 2 / u.s
-AIR_DENSITY = 1.204 * u.kg / u.mm ** 3
 
 # The influence of viscosity on mixing in jet reactors
 JET_ROUND_RATIO = 0.08
