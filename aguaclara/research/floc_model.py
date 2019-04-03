@@ -15,7 +15,22 @@ u.enable_contexts('chem')
 
 
 class Material:
+    """A particulate material with a name, diameter, density, and
+    molecular weight.
+    """
+
     def __init__(self, name, diameter, density, molecWeight):
+        """Initialize a material object.
+
+        :param name: Name of the material
+        :type name: string
+        :param diameter: Diameter of the material in particulate form
+        :type diameter: float
+        :param density: Density of the material (mass/volume)
+        :type density: float
+        :param molecWeight: Molecular weight of the material (mass/mole)
+        :type moleWeight: float
+        """
         self.name = name
         self.Diameter = diameter
         self.Density = density
@@ -23,6 +38,10 @@ class Material:
 
 
 class Chemical(Material):
+    """A chemical with a name, diameter, density, molecular weight, number of
+    aluminum atoms per molecule, and a precipitate.
+    """
+
     def __init__(self, name, diameter, density, molecWeight, Precipitate,
                  AluminumMPM=None):
         Material.__init__(self, name, diameter, density, molecWeight)

@@ -2,8 +2,9 @@ Research
 ========
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
-    procoda_parser
+    environmental_processes_analysis
     peristaltic_pump
+    procoda_parser
     stock_qc
