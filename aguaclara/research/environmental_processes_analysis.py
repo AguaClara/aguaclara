@@ -1,4 +1,4 @@
-from aguaclara.research.procoda_parser import *
+numpy.arrayfrom aguaclara.research.procoda_parser import *
 from aguaclara.core.units import unit_registry as u
 import pandas as pd
 import numpy as np
@@ -111,6 +111,7 @@ def ANC_closed(pH, total_carbonates):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import ANC_closed
+    >>> from aguaclara.core.units import unit_registry as u
     >>> round(ANC_closed(10, 1*u.mol/u.L), 7)
     <Quantity(1.359831, 'equivalent / liter')>
     """
@@ -155,9 +156,9 @@ def aeration_data(DO_column, dirpath):
     :return: collection of
 
         * **filepaths** (*string list*) - All file paths in the directory sorted by flow rate
-        * **airflows** (*Numpy.array*) - Sorted array of air flow rates with units of micromole/s
-        * **DO_data** (*Numpy.array list*) - Sorted list of Numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
-        * **time_data** (*Numpy.array list*) - Sorted list of Numpy arrays containing the times with units of seconds
+        * **airflows** (*numpy.array*) - Sorted array of air flow rates with units of micromole/s
+        * **DO_data** (*numpy.array list*) - Sorted list of Numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
+        * **time_data** (*numpy.array list*) - Sorted list of Numpy arrays containing the times with units of seconds
     """
     #return the list of files in the directory
     filenames = os.listdir(dirpath)
@@ -192,6 +193,7 @@ def O2_sat(P_air, temp):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import O2_sat
+    >>> from aguaclara.core.units import unit_registry as u
     >>> round(O2_sat(1*u.atm , 300*u.kelvin), 7)
     <Quantity(8.0931572, 'milligram / liter')>
     """
@@ -209,7 +211,7 @@ def Gran(data_file_path):
     :return: collection of
 
         * **V_titrant** (*float*) - Volume of titrant in mL
-        * **ph_data** (*Numpy.array*) - pH of the sample
+        * **ph_data** (*numpy.array*) - pH of the sample
         * **V_sample** (*float*) - Volume of the original sample that was titrated in mL
         * **Normality_titrant** (*float*) - Normality of the acid used to titrate the sample in mole/L
         * **V_equivalent** (*float*) - Volume of acid required to consume all of the ANC in mL
@@ -244,7 +246,7 @@ def CMFR(t, C_initial, C_influent):
     :param C_influent: The concentration entering the CMFR.
     :type C_influent: float
     :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.
-    :type t: float or Numpy.array
+    :type t: float or numpy.array
 
     :return: Effluent concentration
     :rtype: float
@@ -252,6 +254,7 @@ def CMFR(t, C_initial, C_influent):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import CMFR
+    >>> from aguaclara.core.units import unit_registry as u
     >>> round(CMFR(0.1, 0*u.mg/u.L, 10*u.mg/u.L), 7)
     <Quantity(0.9516258, 'milligram / liter')>
     >>> round(CMFR(0.9, 5*u.mg/u.L, 10*u.mg/u.L), 7)
@@ -265,7 +268,7 @@ def E_CMFR_N(t, N):
     from a spike input to a series of completely mixed flow reactors.
 
     :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.
-    :type t: float or Numpy.array
+    :type t: float or numpy.array
     :param N: The number of completely mixed flow reactors (CMFRS) in series. Must be greater than 1.
     :type N: int
 
@@ -288,7 +291,7 @@ def E_Advective_Dispersion(t, Pe):
     a spike input to reactor with advection and dispersion.
 
     :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.
-    :type t: float or Numpy.array
+    :type t: float or numpy.array
     :param Pe: The ratio of advection to dispersion ((mean fluid velocity)/(Dispersion*flow path length))
     :type Pe: float
 
@@ -328,6 +331,7 @@ def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import Tracer_CMFR_N
+    >>> from aguaclara.core.units import unit_registry as u
     >>> Tracer_CMFR_N([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 3)
     <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423], 'milligram / liter')>
     """
@@ -387,6 +391,7 @@ def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import Tracer_AD_Pe
+    >>> from aguaclara.core.units import unit_registry as u
     >>> Tracer_AD_Pe([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 5)
     <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], 'milligram / liter')>
 

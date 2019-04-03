@@ -226,7 +226,7 @@ def column_of_time(path, start, end=-1):
     :type end: int
 
     :return: Experimental times starting at 0 day with units of days.
-    :rtype: Numpy.array
+    :rtype: numpy.array
 
     :Examples:
 
@@ -263,7 +263,7 @@ def column_of_data(path, start, column, end="-1", units=""):
     :type units: string, optional
 
     :return: Experimental data with the units applied.
-    :rtype: Numpy.array
+    :rtype: numpy.array
 
     :Examples:
 
@@ -325,8 +325,8 @@ def read_state(dates, state, column, units="", path="", extension=".xls"):
     :param extension: The file extension of the tab delimited file. Defaults to ".xls" if no argument is passed in
     :type extension: string, optional
 
-    :return: time (Numpy.array) - Times corresponding to the data (with units)
-    :return: data (Numpy.array) - Data in the given column during the given state with units
+    :return: time (numpy.array) - Times corresponding to the data (with units)
+    :return: data (numpy.array) - Data in the given column during the given state with units
 
     :Examples:
 

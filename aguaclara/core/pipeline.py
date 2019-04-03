@@ -10,21 +10,27 @@ import aguaclara.core.materials as mats
 import numpy
 
 @u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)
-def flow_pipeline(diameters: numpy.ndarray, lengths: numpy.ndarray, k_minors: numpy.ndarray, target_headloss: float,
+def flow_pipeline(diameters, lengths, k_minors, target_headloss,
                   nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
     """
     This function takes a single pipeline with multiple sections, each potentially with different diameters,
     lengths and minor loss coefficients and determines the flow rate for a given headloss.
 
-    Args:
-        diameters: list of diameters, where the i_th diameter corresponds to the i_th pipe section
-        lengths: list of diameters, where the i_th diameter corresponds to the i_th pipe section
-        k_minors: list of diameters, where the i_th diameter corresponds to the i_th pipe section
-        target_headloss: a single headloss describing the total headloss through the system
-        nu: The fluid dynamic viscosity of the fluid. Defaults to water at room temperature (1 * 10**-6 * m**2/s)
-        pipe_rough:  The pipe roughness. Defaults to PVC roughness.
-    Returns:
-        flow: the total flow through the system
+    :param diameters: list of diameters, where the i_th diameter corresponds to the i_th pipe section
+    :type diameters: numpy.ndarray
+    :param lengths: list of diameters, where the i_th diameter corresponds to the i_th pipe section
+    :type lengths: numpy.ndarray
+    :param k_minors: list of diameters, where the i_th diameter corresponds to the i_th pipe section
+    :type k_minors: numpy.ndarray
+    :param target_headloss: a single headloss describing the total headloss through the system
+    :type target_headloss: float
+    :param nu: The fluid dynamic viscosity of the fluid. Defaults to water at room temperature (1 * 10**-6 * m**2/s)
+    :type nu: float
+    :param pipe_rough:  The pipe roughness. Defaults to PVC roughness.
+    :type pipe_rough: float
+
+    :return: the total flow through the system
+    :rtype: float
     """
 
     # Ensure all the arguments except total headloss are the same length
