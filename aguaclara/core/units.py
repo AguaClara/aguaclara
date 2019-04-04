@@ -16,15 +16,15 @@ its own units to the ``unit_registry``:
 :Examples:
 
 >>> from aguaclara.core.units import unit_registry as u
->>> c = 3 * 10**8 * u.m / u.s
->>> c
-<Quantity(300000000.0, 'meter / second')>
->>> c.magnitude
-300000000.0
->>> c.units
-<Unit('meter / second')>
->>> c.to(u.mi/u.hr)
-<Quantity(671080887.6163207, 'mile / hour')>
+>>> rpm = 10 * u.rev/u.min
+>>> rpm
+<Quantity(10.0, 'rev / minute')>
+>>> rpm.magnitude
+10.0
+>>> rpm.units
+<Unit('rev / minute')>
+>>> rpm.to(u.rad/u.s)
+<Quantity(1.0471975511965976, 'radian / second')>
 """
 
 import os
@@ -56,7 +56,7 @@ def set_sig_figs(n):
 
     :Examples:
 
-    >>> from aguaclara.core.units import unit_registry as u
+    >>> from aguaclara.core.units import set_sig_figs, unit_registry as u
     >>> h = 2.5532532522352543*u.m
     >>> e = 25532532522352543*u.m
     >>> print('h before sigfig adjustment:',h)
