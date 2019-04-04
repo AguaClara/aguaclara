@@ -1,0 +1,368 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Peristaltic Pump &mdash; AguaClara v0.0.24 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ProCoDA Parser" href="procoda_parser.html" />
+    <link rel="prev" title="Environmental Processes Analysis" href="environmental_processes_analysis.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.24
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="research.html">Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="environmental_processes_analysis.html">Environmental Processes Analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Peristaltic Pump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="procoda_parser.html">ProCoDA Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stock_qc.html">Stock QC</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="research.html">Research</a> &raquo;</li>
+        
+      <li>Peristaltic Pump</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/research/peristaltic_pump.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.research.peristaltic_pump">
+<span id="peristaltic-pump"></span><h1>Peristaltic Pump<a class="headerlink" href="#module-aguaclara.research.peristaltic_pump" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="aguaclara.research.peristaltic_pump.ID_colored_tube">
+<code class="descclassname">aguaclara.research.peristaltic_pump.</code><code class="descname">ID_colored_tube</code><span class="sig-paren">(</span><em>color</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#ID_colored_tube"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.ID_colored_tube" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up the inner diameter of Ismatec 3-stop tubing given its color code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>color</strong> (<em>string</em>) – Color of the 3-stop tubing</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Inner diameter of the 3-stop tubing (mm)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">ID_colored_tube</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;yellow-blue&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity(1.52, &#39;millimeter&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;orange-yellow&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity(0.51, &#39;millimeter&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;purple-white&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity(2.79, &#39;millimeter&#39;)&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.peristaltic_pump.flow_rate">
+<code class="descclassname">aguaclara.research.peristaltic_pump.</code><code class="descname">flow_rate</code><span class="sig-paren">(</span><em>vol_per_rev</em>, <em>rpm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#flow_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.flow_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow rate from a pump given the volume of fluid pumped per
+revolution and the desired pump speed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vol_per_rev</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Volume of fluid output per revolution (dependent on pump and tubing)</li>
+<li><strong>rpm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Desired pump speed in revolutions per minute</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Flow rate of the pump (mL/s)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">flow_rate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flow_rate</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+<span class="go">&lt;Quantity(0.25, &#39;milliliter / second&#39;)&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.peristaltic_pump.vol_per_rev_3_stop">
+<code class="descclassname">aguaclara.research.peristaltic_pump.</code><code class="descname">vol_per_rev_3_stop</code><span class="sig-paren">(</span><em>color=''</em>, <em>inner_diameter=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#vol_per_rev_3_stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.vol_per_rev_3_stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the volume per revolution of an Ismatec 6 roller pump
+given the inner diameter (ID) of 3-stop tubing. The calculation is
+interpolated from the table found at
+<a class="reference external" href="http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm">http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm</a>.</p>
+<p>Note:
+1. Either input a string as the tubing color code or a number as the
+tubing inner diameter. If both are given, the function will default to using
+the color.
+2. The calculation is interpolated for inner diameters between 0.13 and 3.17
+mm. Accuracy is not guaranteed for tubes with smaller or larger diameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>color</strong> (<em>string</em>) – Color code of the Ismatec 3-stop tubing</li>
+<li><strong>inner_diameter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Inner diameter of the Ismatec 3-stop tubing. Results will be most accurate for inner diameters between 0.13 and 3.17 mm.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Volume per revolution output by a 6-roller pump through the 3-stop tubing (mL/rev)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">vol_per_rev_3_stop</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;yellow-blue&quot;</span><span class="p">),</span> <span class="mi">6</span><span class="p">)</span>
+<span class="go">&lt;Quantity(0.148846, &#39;milliliter / rev&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">inner_diameter</span><span class="o">=.</span><span class="mi">20</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mm</span><span class="p">),</span> <span class="mi">6</span><span class="p">)</span>
+<span class="go">&lt;Quantity(0.003116, &#39;milliliter / rev&#39;)&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.peristaltic_pump.vol_per_rev_LS">
+<code class="descclassname">aguaclara.research.peristaltic_pump.</code><code class="descname">vol_per_rev_LS</code><span class="sig-paren">(</span><em>id_number</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#vol_per_rev_LS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.vol_per_rev_LS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up the volume per revolution output by a Masterflex L/S pump
+through L/S tubing of the given ID number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Identification number of the L/S tubing. Valid numbers are 13-18, 24, 35, and 36.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Volume per revolution output by a Masterflex L/S pump through the L/S tubing</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">vol_per_rev_LS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vol_per_rev_LS</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="go">&lt;Quantity(0.06, &#39;milliliter / turn&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vol_per_rev_LS</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+<span class="go">&lt;Quantity(3.8, &#39;milliliter / turn&#39;)&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="procoda_parser.html" class="btn btn-neutral float-right" title="ProCoDA Parser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="environmental_processes_analysis.html" class="btn btn-neutral" title="Environmental Processes Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v0.0.24',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

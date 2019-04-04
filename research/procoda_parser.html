@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ProCoDA Parser &mdash; AguaClara v0.0.24 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Stock QC" href="stock_qc.html" />
+    <link rel="prev" title="Peristaltic Pump" href="peristaltic_pump.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.24
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="research.html">Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="environmental_processes_analysis.html">Environmental Processes Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="peristaltic_pump.html">Peristaltic Pump</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ProCoDA Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stock_qc.html">Stock QC</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="research.html">Research</a> &raquo;</li>
+        
+      <li>ProCoDA Parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/research/procoda_parser.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.research.procoda_parser">
+<span id="procoda-parser"></span><h1>ProCoDA Parser<a class="headerlink" href="#module-aguaclara.research.procoda_parser" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.average_state">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">average_state</code><span class="sig-paren">(</span><em>dates</em>, <em>state</em>, <em>column</em>, <em>units=''</em>, <em>path=''</em>, <em>extension='.xls'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#average_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.average_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outputs the average value of the data for each instance of a state in
+the given ProCoDA files</p>
+<p>Note: Column 0 is time. The first data column is column 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A list of dates or single date for which data was recorded, in the form “M-D-Y”</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be extracted</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</li>
+<li><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</li>
+<li><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</li>
+<li><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.xls” if no argument is passed in</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of averages for each instance of the given state</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">float list</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_avgs</span> <span class="o">=</span> <span class="n">average_state</span><span class="p">([</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;mL/s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.column_of_data">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">column_of_data</code><span class="sig-paren">(</span><em>path</em>, <em>start</em>, <em>column</em>, <em>end='-1'</em>, <em>units=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts a column of data from a ProCoDA data file.</p>
+<p>Note: Column 0 is time. The first data column is column 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</li>
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Index of first row of data to extract from the data file</li>
+<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Index of last row of data to extract from the data. Defaults to last row</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR name of the column header that you want to extract</li>
+<li><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Experimental data with the units applied.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">numpy.array</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">column_of_data</span><span class="p">(</span><span class="s2">&quot;Reactor_data.txt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mg/L&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.column_of_time">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">column_of_time</code><span class="sig-paren">(</span><em>path</em>, <em>start</em>, <em>end=-1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts the column of times from a ProCoDA data file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</li>
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Index of first row of data to extract from the data file</li>
+<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Index of last row of data to extract from the data. Defaults to last row</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Experimental times starting at 0 day with units of days.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">numpy.array</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ftime</span><span class="p">(</span><span class="s2">&quot;Reactor_data.txt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.day_fraction">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">day_fraction</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#day_fraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.day_fraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a 24-hour time to a fraction of a day.</p>
+<p>For example, midnight corresponds to 0.0, and noon to 0.5.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> (<em>string</em>) – Time in the form of ‘HH:MM’ (24-hour time)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A day fraction</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">day_fraction</span><span class="p">(</span><span class="s2">&quot;18:30&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.get_data_by_state">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">get_data_by_state</code><span class="sig-paren">(</span><em>path</em>, <em>dates</em>, <em>state</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a ProCoDA file and extracts the time and data column for each
+iteration ofthe given state.</p>
+<p>Note: column 0 is time, the first data column is column 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s), defaults to the current directory</li>
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A list of dates or single date for which data was recorded, in the form “M-D-YYYY”</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be plotted</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – The integer index of the column that you want to extract OR the header of the column that you want to extract</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of lists of the time and data columns extracted for each iteration of the state. For example, if “data” is the output, data[i][:,0] gives the time column and data[i][:,1] gives the data column for the ith iteration of the given state and column. data[i][0] would give the first [time, data] pair.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><p class="first">list of lists of lists</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="n">state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">28</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.get_data_by_time">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">get_data_by_time</code><span class="sig-paren">(</span><em>path</em>, <em>columns</em>, <em>start_date</em>, <em>start_time='00:00'</em>, <em>end_date=None</em>, <em>end_time='23:59'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts columns of data from a ProCoDA datalog based on starting and
+ending date(s) and times</p>
+<p>Note: Column 0 is time. The first data column is column 1.</p>
+<p>Note: Currently only works for 1 or 2 days of data, i.e. end_date must be
+unspecified or one day after start_date</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s)</li>
+<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>int list</em>) – A single index of a column OR a list of indices of columns of data to extract. Note: Column 0 is time. The first data column is column 1.</li>
+<li><strong>start_date</strong> (<em>string</em>) – Starting date of data to extract, formatted ‘M-D-YYYY’</li>
+<li><strong>start_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Starting time of data to extract, formatted ‘HH:MM’ (24-hour time)</li>
+<li><strong>end_date</strong> (<em>string</em><em>, </em><em>optional</em>) – Ending date of data to extract, formatted ‘M-D-YYYY’</li>
+<li><strong>end_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Ending time of data to extract, formatted ‘HH:MM’ (24-hour time)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list containing the single column of data to extract, OR a list of lists containing the columns to extract, in order of the indices given in the columns variable</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a> or list list</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.notes">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">notes</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.notes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts any experimental notes from a ProCoDA data file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The rows of the data file that contain text notes inserted during the experiment. Use this to identify the section of the data file that you want to extract.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">pandas.Dataframe</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.perform_function_on_state">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">perform_function_on_state</code><span class="sig-paren">(</span><em>func</em>, <em>dates</em>, <em>state</em>, <em>column</em>, <em>units=''</em>, <em>path=''</em>, <em>extension='.xls'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#perform_function_on_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.perform_function_on_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the function given on each state of the data for the given state
+in the given column and outputs the result for each instance of the state</p>
+<p>Note: Column 0 is time. The first data column is column 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>func</strong> (<em>function</em>) – A function that will be applied to data from each instance of the state</li>
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A list of dates or single date for which data was recorded, in the form “M-D-Y”</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be extracted</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</li>
+<li><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</li>
+<li><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</li>
+<li><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.xls” if no argument is passed in</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Requires:</th><td class="field-body"><p class="first">func takes in a list of data with units and outputs the correct units</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The outputs of the given function for each instance of the given state</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">avg_with_units</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+<span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">acc</span>
+
+<span class="k">return</span> <span class="n">acc</span> <span class="o">/</span> <span class="n">num</span>
+
+<span class="n">data_avgs</span> <span class="o">=</span> <span class="n">perform_function_on_state</span><span class="p">(</span><span class="n">avg_with_units</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;mL/s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.read_state">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">read_state</code><span class="sig-paren">(</span><em>dates</em>, <em>state</em>, <em>column</em>, <em>units=''</em>, <em>path=''</em>, <em>extension='.xls'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a ProCoDA file and outputs the data column and time vector for
+each iteration of the given state.</p>
+<p>Note: Column 0 is time. The first data column is column 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A list of dates or single date for which data was recorded, in the form “M-D-Y”</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be extracted</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</li>
+<li><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</li>
+<li><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</li>
+<li><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.xls” if no argument is passed in</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">time (numpy.array) - Times corresponding to the data (with units)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">data (numpy.array) - Data in the given column during the given state with units</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">read_state</span><span class="p">([</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;mL/s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.read_state_with_metafile">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">read_state_with_metafile</code><span class="sig-paren">(</span><em>func</em>, <em>state</em>, <em>column</em>, <em>path</em>, <em>metaids=[]</em>, <em>extension='.xls'</em>, <em>units=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state_with_metafile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state_with_metafile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in a ProCoDA meta file and performs a function for all data of a
+certain state in each of the experiments (denoted by file paths in then
+metafile)</p>
+<p>Note: Column 0 is time. The first data column is column 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>func</strong> (<em>function</em>) – A function that will be applied to data from each instance of the state</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be extracted</li>
+<li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</li>
+<li><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file (must be tab-delimited)</li>
+<li><strong>metaids</strong> (<em>string list</em><em>, </em><em>optional</em>) – a list of the experiment IDs you’d like to analyze from the metafile</li>
+<li><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.xls” if no argument is passed in</li>
+<li><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">ids (string list) - The list of experiment ids given in the metafile</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">outputs (list) - The outputs of the given function for each experiment</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">avg_with_units</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">acc</span>
+
+    <span class="k">return</span> <span class="n">acc</span> <span class="o">/</span> <span class="n">num</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;../tests/data/Test Meta File.txt&quot;</span>
+<span class="n">ids</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">read_state_with_metafile</span><span class="p">(</span><span class="n">avg_with_units</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="p">[],</span> <span class="s2">&quot;.xls&quot;</span><span class="p">,</span> <span class="s2">&quot;mg/L&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.remove_notes">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">remove_notes</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#remove_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.remove_notes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Omits any rows containing text from a Pandas.DataFrame object, except for headers.</p>
+<p>Text is defined as characters of the alphabet. The resulting DataFrame should have only headers and numerical data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>Pandas.DataFrame</em>) – DataFrame object to remove text from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">DataFrame object with no text, except for headers</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.write_calculations_to_csv">
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">write_calculations_to_csv</code><span class="sig-paren">(</span><em>funcs</em>, <em>states</em>, <em>columns</em>, <em>path</em>, <em>headers</em>, <em>out_name</em>, <em>metaids=[]</em>, <em>extension='.xls'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#write_calculations_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.write_calculations_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes each output of the given functions on the given states and data
+columns to a new column in the specified output file.</p>
+<p>Note: Column 0 is time. The first data column is column 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>funcs</strong> (<em>function</em><em> or </em><em>function list</em>) – A function or list of functions which will be applied in order to the data. If only one function is given it is applied to all the states/columns</li>
+<li><strong>states</strong> (<em>string</em><em> or </em><em>string list</em>) – The state ID numbers for which data should be extracted. List should be in order of calculation or if only one state is given then it will be used for all the calculations</li>
+<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>string</em><em>, </em><em>int list</em><em>, or </em><em>string list</em>) – The index of a column, the header of a column, a list of indexes, OR a list of headers of the column(s) that you want to apply calculations to</li>
+<li><strong>path</strong> (<em>string</em>) – Path to your ProCoDA metafile (must be tab-delimited)</li>
+<li><strong>headers</strong> (<em>string list</em>) – List of the desired header for each calculation, in order</li>
+<li><strong>out_name</strong> (<em>string</em>) – Desired name for the output file. Can include a relative path</li>
+<li><strong>metaids</strong> (<em>string list</em><em>, </em><em>optional</em>) – A list of the experiment IDs you’d like to analyze from the metafile</li>
+<li><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.xls” if no argument is passed in</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Requires:</th><td class="field-body"><p class="first">funcs, states, columns, and headers are all of the same length if they are lists. Some being lists and some single values are okay.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">out_name.csv (CVS file) - A CSV file with the each column being a new calcuation and each row being a new experiment on which the calcuations were performed</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">output (Pandas.DataFrame)- Pandas DataFrame holding the same data that was written to the output file</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="stock_qc.html" class="btn btn-neutral float-right" title="Stock QC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="peristaltic_pump.html" class="btn btn-neutral" title="Peristaltic Pump" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v0.0.24',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

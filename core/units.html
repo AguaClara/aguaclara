@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Units &mdash; AguaClara v0.0.24 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Utility" href="utility.html" />
+    <link rel="prev" title="Pipes" href="pipes.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.24
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="core.html">Core</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drills.html">Drills</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="physchem.html">PhysChem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipes.html">Pipes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="core.html">Core</a> &raquo;</li>
+        
+      <li>Units</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/core/units.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.core.units">
+<span id="units"></span><h1>Units<a class="headerlink" href="#module-aguaclara.core.units" title="Permalink to this headline">¶</a></h1>
+<p>Module containing global <code class="docutils literal notranslate"><span class="pre">pint</span></code> unit registry.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pint</span></code> package supports arithmetic involving <strong>physical quantities</strong>
+each of which has a magnitude and units, for example 1 cm or 3 kg m/s^2.
+The units of a quantity come from <code class="docutils literal notranslate"><span class="pre">pint</span></code>’s <strong>unit registry</strong>. This module
+contains a single global unit registry <code class="docutils literal notranslate"><span class="pre">unit_registry</span></code> that can be used by any
+number of other modules. The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> has also defined and added some of
+its own units to the <code class="docutils literal notranslate"><span class="pre">unit_registry</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li>NTU = 1.47 * (mg / L)</li>
+<li>dollar = [money] = USD</li>
+<li>lempira = dollar * 0.0427 = HNL</li>
+<li>equivalent = mole = eq</li>
+<li>rev = revolution</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span>
+<span class="go">&lt;Quantity(10.0, &#39;rev / minute&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span><span class="o">.</span><span class="n">magnitude</span>
+<span class="go">10.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span><span class="o">.</span><span class="n">units</span>
+<span class="go">&lt;Unit(&#39;rev / minute&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">rad</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+<span class="go">&lt;Quantity(1.0471975511965976, &#39;radian / second&#39;)&gt;</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="aguaclara.core.units.set_sig_figs">
+<code class="descclassname">aguaclara.core.units.</code><code class="descname">set_sig_figs</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/units.html#set_sig_figs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.units.set_sig_figs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the default number of significant figures used to print pint,
+pandas and numpy values quantities. Defaults to 4.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of significant figures to display</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">set_sig_figs</span><span class="p">,</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="mf">2.5532532522352543</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">m</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="mi">25532532522352543</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">m</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;h before sigfig adjustment:&#39;</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
+<span class="go">h before sigfig adjustment: 2.553 meter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;e before sigfig adjustment:&#39;</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+<span class="go">e before sigfig adjustment: 2.553e+16 meter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">set_sig_figs</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;h after sigfig adjustment:&#39;</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
+<span class="go">h after sigfig adjustment: 2.553253252 meter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;e after sigfig adjustment:&#39;</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+<span class="go">e after sigfig adjustment: 2.553253252e+16 meter</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="aguaclara.core.units.unit_registry">
+<code class="descclassname">aguaclara.core.units.</code><code class="descname">unit_registry</code><em class="property"> = &lt;pint.registry.UnitRegistry object&gt;</em><a class="headerlink" href="#aguaclara.core.units.unit_registry" title="Permalink to this definition">¶</a></dt>
+<dd><p>A global unit registry that can be used by any of other module.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="utility.html" class="btn btn-neutral float-right" title="Utility" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pipes.html" class="btn btn-neutral" title="Pipes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v0.0.24',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

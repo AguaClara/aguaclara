@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aguaclara.design.floc &mdash; AguaClara v0.0.24 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.24
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aguaclara.design.floc</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aguaclara.design.floc</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Flocculator design.</span>
+
+<span class="sd">This module provides all constants and functions necessary to design an</span>
+<span class="sd">AguaClara flocculator. These constants and functions define both hydraulic</span>
+<span class="sd">(head loss, retention time, etc.) and geometric (baffle spacing, channel length,</span>
+<span class="sd">etc.) values that specify a flocculator design.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">aguaclara.core.head_loss</span> <span class="k">as</span> <span class="nn">minorloss</span>
+<span class="kn">import</span> <span class="nn">aguaclara.design.human_access</span> <span class="k">as</span> <span class="nn">ha</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.physchem</span> <span class="k">as</span> <span class="nn">pc</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.pipes</span> <span class="k">as</span> <span class="nn">pipes</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Ratio of the width of the gap between the baffle and the wall and the spacing</span>
+<span class="c1"># between the baffles.</span>
+<span class="n">BAFFLE_RATIO</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">DRAIN_TIME</span> <span class="o">=</span> <span class="mi">15</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">min</span>
+<span class="n">MOD_ND</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
+<span class="n">SPACER_ND</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
+<span class="n">MOD_EDGE_LAST_PIPE_S</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+
+<span class="c1"># Height that the drain stub extends above the top of the flocculator wall</span>
+<span class="n">DRAIN_STUB_EXT_H</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+<span class="n">MOD_PIPE_EDGE_S</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+<span class="n">BAFFLE_THICKNESS</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span>
+
+
+<div class="viewcode-block" id="Flocculator"><a class="viewcode-back" href="../../../design/floc.html#aguaclara.design.floc.Flocculator">[docs]</a><span class="k">class</span> <span class="nc">Flocculator</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Calculates physical dimensions of an AguaClara flocculator.</span>
+<span class="sd">    Constant instance attributes</span>
+<span class="sd">    ----------------------------</span>
+<span class="sd">    - BAFFLE_K (K or K_{baffle}): float</span>
+<span class="sd">        - The minor loss coefficient of the flocculator baffles.</span>
+<span class="sd">    - CHANNEL_N_MIN (N_{channel}: int</span>
+<span class="sd">        - The minimum number of flocculator channels.</span>
+<span class="sd">    - HS_RATIO_MIN (\Pi_{HS}): float</span>
+<span class="sd">        - The minimum ratio between expansion height and baffle spacing</span>
+<span class="sd">    - RATIO_MAX_HS (\Pi_{HS}): float</span>
+<span class="sd">        - The maximum ratio between expansion height and baffle spacing</span>
+<span class="sd">    - SDR (sdr): float</span>
+<span class="sd">        - The standard dimension ratio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Increased both to provide a safety margin on flocculator head loss and</span>
+    <span class="c1"># to simultaneously scale back on the actual collision potential we are</span>
+    <span class="c1"># trying to achieve.</span>
+    <span class="c1"># Originally calculated to be 2.3 from the equations:</span>
+
+    <span class="c1"># K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2</span>
+    <span class="n">BAFFLE_K</span> <span class="o">=</span> <span class="mf">2.5</span>
+    <span class="n">CHANNEL_N_MIN</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">HS_RATIO_MIN</span> <span class="o">=</span> <span class="mf">3.0</span>
+    <span class="n">RATIO_MAX_HS</span> <span class="o">=</span> <span class="mf">6.0</span>
+    <span class="n">SDR</span> <span class="o">=</span> <span class="mf">41.0</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">Q</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+            <span class="n">temp</span><span class="o">=</span><span class="mi">25</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span>
+            <span class="n">max_L</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">Gt</span><span class="o">=</span><span class="mi">37000</span><span class="p">,</span>
+            <span class="n">HL</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">,</span>
+            <span class="n">downstream_H</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">ent_tank_L</span><span class="o">=</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">max_W</span><span class="o">=</span><span class="mi">42</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span>
+            <span class="n">drain_t</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">min</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate a Flocculator object, representing a real flocculator</span>
+<span class="sd">        component.</span>
+<span class="sd">        :param Q: Flow rate of water through the flocculator.</span>
+<span class="sd">        :type Q: float * u.L/u.s</span>
+<span class="sd">        :param temp: Water temperature of the flocculator.</span>
+<span class="sd">        :type temp: float * u.degC</span>
+<span class="sd">        :param max_L: Desired maximum length of the flocculator tank. Often equal to the sed tank length.</span>
+<span class="sd">        :type max_L: float * u.m</span>
+<span class="sd">        :param Gt: Desired total fluid deformation (collision potential).</span>
+<span class="sd">        :type Gt: float * u.dimensionless</span>
+<span class="sd">        :param HL: Desired head loss in the flocculator.</span>
+<span class="sd">        :type HL: float * u.m</span>
+<span class="sd">        :param  downstream_H: Desired depth at the downstream end.</span>
+<span class="sd">        :type  downstream_H: float * u.m</span>
+<span class="sd">        :param  ent_tank_L: Estimated length of entrance tank.</span>
+<span class="sd">        :type  ent_tank_L: float * u.m</span>
+<span class="sd">        :param  max_W: Maximum width of flocculator based on baffle sheet width.</span>
+<span class="sd">        :type  max_W: float * u.m</span>
+<span class="sd">        :returns: object</span>
+<span class="sd">        :rtype: Flocculator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_L</span> <span class="o">=</span> <span class="n">max_L</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Gt</span> <span class="o">=</span> <span class="n">Gt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">HL</span> <span class="o">=</span> <span class="n">HL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span> <span class="o">=</span> <span class="n">downstream_H</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ent_tank_L</span> <span class="o">=</span> <span class="n">ent_tank_L</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_W</span> <span class="o">=</span> <span class="n">max_W</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drain_t</span> <span class="o">=</span> <span class="n">drain_t</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vel_grad_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the average velocity gradient (G-bar) of water flowing</span>
+<span class="sd">        through the flocculator.</span>
+<span class="sd">        :returns: Average velocity gradient (G-bar)</span>
+<span class="sd">        :rtype: float * 1 / second</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">standard_gravity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">HL</span><span class="p">)</span> <span class="o">/</span>
+               <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Gt</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">retention_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the hydraulic retention time neglecting the volume created by head loss in the flocculator.</span>
+<span class="sd">        :returns: Hydraulic retention time (:math:`\theta`)</span>
+<span class="sd">        :rtype: float * second</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Gt</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the target volume (not counting the volume added by head loss) of the flocculator.</span>
+<span class="sd">        :returns: Target volume</span>
+<span class="sd">        :rtype: float * meter ** 3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">retention_time</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">W_min_HS_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the minimum flocculator channel width, given the minimum</span>
+<span class="sd">        ratio between expansion height (H) and baffle spacing (S).</span>
+<span class="sd">        :returns: Minimum channel width given H_e/S</span>
+<span class="sd">        :rtype: float * centimeter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">HS_RATIO_MIN</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span><span class="p">)</span> <span class="o">*</span>
+               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BAFFLE_K</span> <span class="o">/</span>
+                <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+               <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">channel_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the minimum number of channels based on the maximum</span>
+<span class="sd">        possible channel width and the maximum length of the channels.</span>
+<span class="sd">        Round up to the next even number (factor of 2 shows up twice in equation)</span>
+<span class="sd">        The channel width must be greater than the hydraulic width that ensure baffle overlap.</span>
+<span class="sd">        Based on the equation for the flocculator volume</span>
+<span class="sd">        volume = ([max_L*channel_n] - entrancetank_L)*max_W * downstream_H</span>
+<span class="sd">        :returns: number of channels</span>
+<span class="sd">        :rtype: float * dimensionless</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">min_hydraulic_W</span> <span class="o">=</span>\
+            <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_W</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">W_min_HS_ratio</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)]))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_min_HS_ratio</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">vol</span> <span class="o">/</span> <span class="p">(</span><span class="n">min_hydraulic_W</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span><span class="p">)</span> <span class="o">+</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">ent_tank_L</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_L</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">channel_W</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The minimum and hence optimal channel width of the flocculator.</span>
+<span class="sd">        This</span>
+<span class="sd">        The channel must be</span>
+<span class="sd">        - wide enough to meet the volume requirement (channel_est_W)</span>
+<span class="sd">        - wider than human access for construction</span>
+<span class="sd">        - wider than hydraulic requirement to meet H/S ratio</span>
+<span class="sd">        Create a dimensionless array of the 3 requirements and then get the maximum</span>
+
+<span class="sd">        :returns: Channel width</span>
+<span class="sd">        :rtype: float * meter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">channel_est_W</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vol</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_L</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ent_tank_L</span><span class="p">)))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+        <span class="c1"># The channel may need to wider than the width that would get the exact required volume.</span>
+        <span class="c1"># In that case we will need to shorten the flocculator</span>
+        <span class="n">channel_W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">ha</span><span class="o">.</span><span class="n">HUMAN_W_MIN</span><span class="o">/</span><span class="n">channel_est_W</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">),</span>
+                                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W_min_HS_ratio</span><span class="o">/</span><span class="n">channel_est_W</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)]))</span> <span class="o">*</span> <span class="n">channel_est_W</span>
+        <span class="k">return</span> <span class="n">channel_W</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">channel_L</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The channel length of the flocculator. If ha.HUMAN_W_MIN or W_min_HS_ratio</span>
+<span class="sd">        is the defining constraint for the flocculator width, then the flocculator</span>
+<span class="sd">        volume will be greater than necessary. Bring the volume back to the design</span>
+<span class="sd">        volume by shortening the flocculator in this case. This design approach</span>
+<span class="sd">        will produce flocculators that are the same length as the max_L that was</span>
+<span class="sd">        specified in many cases. The flocculator will be less than the specified</span>
+<span class="sd">        length especially for cases with only one or two sed tanks.</span>
+<span class="sd">        channel_L = (vol/(channel_W * downstream_H) + entrancetank_L)/channel_n</span>
+<span class="sd">        :returns: Channel length</span>
+<span class="sd">        :rtype: float * meter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">channel_L</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">vol</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_W</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ent_tank_L</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_n</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">channel_L</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">expansion_max_H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;Return the maximum distance between expansions for the largest</span>
+<span class="sd">        allowable H/S ratio.</span>
+<span class="sd">        :returns: Maximum expansion distance</span>
+<span class="sd">        :rtype: float * meter</span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        exp_dist_max(20*u.L/u.s, 40*u.cm, 37000, 25*u.degC, 2*u.m)</span>
+<span class="sd">        0.375 meter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">BAFFLE_K</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span> <span class="o">*</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RATIO_MAX_HS</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_W</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">expansion_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the minimum number of expansions per baffle space.</span>
+<span class="sd">        :returns: Minimum number of expansions/baffle space</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">expansion_max_H</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">expansion_H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the height between flow expansions.</span>
+<span class="sd">        :returns: Height between flow expansions</span>
+<span class="sd">        :rtype: float * centimeter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">expansion_n</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">baffle_S</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the spacing between baffles.</span>
+<span class="sd">        :returns: Spacing between baffles</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">BAFFLE_K</span> <span class="o">/</span>
+                <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">expansion_H</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span>
+                 <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)))</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">())</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_W</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">obstacle_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of obstacles per baffle.</span>
+<span class="sd">        :returns: Number of obstacles per baffle</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expansion_n</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">drain_K</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the minor loss coefficient of the drain pipe.</span>
+<span class="sd">        :returns: Minor Loss Coefficient</span>
+<span class="sd">        :return: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">drain_K</span> <span class="o">=</span> <span class="n">minorloss</span><span class="o">.</span><span class="n">PIPE_ENTRANCE_K_MINOR</span> <span class="o">+</span> <span class="n">minorloss</span><span class="o">.</span><span class="n">PIPE_ENTRANCE_K_MINOR</span> <span class="o">+</span> <span class="n">minorloss</span><span class="o">.</span><span class="n">PIPE_EXIT_K_MINOR</span>
+        <span class="k">return</span> <span class="n">drain_K</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">drain_D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns depth of drain pipe.</span>
+<span class="sd">        :returns: Depth</span>
+<span class="sd">        :return: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tank_A</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_L</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_W</span>
+        <span class="n">drain_D</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">tank_A</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">drain_t</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">drain_K</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">standard_gravity</span><span class="p">))))</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">drain_D</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">drain_ND</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the diameter of the drain pipe.</span>
+<span class="sd">        Each drain pipe will drain two channels because channels are connected by</span>
+<span class="sd">        a port at the far end and the first channel can&#39;t have a drain because</span>
+<span class="sd">        of the entrance tank. Need to review the design to see if this is a good</span>
+<span class="sd">        assumption.</span>
+<span class="sd">        D_{Pipe} = \sqrt{ \frac{8 A_{Tank}}{\pi t_{Drain}} \sqrt{ \frac{h_0 \sum K}{2g} } }</span>
+<span class="sd">        :returns: list of designed values</span>
+<span class="sd">        :rtype: float * centimeter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">drain_ND</span> <span class="o">=</span> <span class="n">pipes</span><span class="o">.</span><span class="n">ND_SDR_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drain_D</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SDR</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">drain_ND</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">design</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the designed values.</span>
+<span class="sd">        :returns: list of designed values (G, t, channel_W, obstacle_n)</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">floc_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;channel_n&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_n</span><span class="p">,</span>
+                     <span class="s1">&#39;channel_L&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_L</span><span class="p">,</span>
+                     <span class="s1">&#39;channel_W&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_W</span><span class="p">,</span>
+                     <span class="s1">&#39;baffle_S&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baffle_S</span><span class="p">,</span>
+                     <span class="s1">&#39;obstacle_n&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_n</span><span class="p">,</span>
+                     <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span><span class="p">,</span>
+                     <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">retention_time</span><span class="p">,</span>
+                     <span class="s1">&#39;expansion_max_H&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">expansion_max_H</span><span class="p">,</span>
+                     <span class="s1">&#39;drain_ND&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">drain_ND</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">floc_dict</span>
+
+<div class="viewcode-block" id="Flocculator.draw"><a class="viewcode-back" href="../../../design/floc.html#aguaclara.design.floc.Flocculator.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the Onshape flocculator model based off of this object.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">onshapepy</span> <span class="k">import</span> <span class="n">Part</span>
+        <span class="n">CAD</span> <span class="o">=</span> <span class="n">Part</span><span class="p">(</span>
+            <span class="s1">&#39;https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f&#39;</span>
+        <span class="p">)</span>
+        <span class="n">CAD</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;channel_L&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_L</span><span class="p">,</span>
+            <span class="s1">&#39;channel_W&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_W</span><span class="p">,</span>
+            <span class="s1">&#39;channel_H&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">downstream_H</span><span class="p">,</span>
+            <span class="s1">&#39;channel_pairs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+            <span class="s1">&#39;baffle_S&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baffle_S</span><span class="p">,</span>
+        <span class="p">}</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'v0.0.24',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

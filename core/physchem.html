@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PhysChem &mdash; AguaClara v0.0.24 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pipeline" href="pipeline.html" />
+    <link rel="prev" title="Materials" href="materials.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.24
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="core.html">Core</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drills.html">Drills</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Materials</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PhysChem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipes.html">Pipes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="core.html">Core</a> &raquo;</li>
+        
+      <li>PhysChem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/core/physchem.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.core.physchem">
+<span id="physchem"></span><h1>PhysChem<a class="headerlink" href="#module-aguaclara.core.physchem" title="Permalink to this headline">¶</a></h1>
+<p>Contains unit process functions pertaining to the design of physical
+and chemical unit processes for AguaClara water treatment plants.</p>
+<dl class="data">
+<dt id="aguaclara.core.physchem.RE_TRANSITION_PIPE">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">RE_TRANSITION_PIPE</code><em class="property"> = 2100</em><a class="headerlink" href="#aguaclara.core.physchem.RE_TRANSITION_PIPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="aguaclara.core.physchem.WATER_DENSITY_TABLE">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">WATER_DENSITY_TABLE</code><em class="property"> = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15, 323.15, 333.15, 343.15, 353.15, 363.15, 373.15), (999.9, 1000, 999.7, 998.2, 995.7, 992.2, 988.1, 983.2, 977.8, 971.8, 965.3, 958.4)]</em><a class="headerlink" href="#aguaclara.core.physchem.WATER_DENSITY_TABLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Table of temperatures and the corresponding water density.</p>
+<p>Index[0] is a list of water temperatures, in Kelvin.
+Index[1] is the corresponding densities, in kg/m³.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.area_circle">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">area_circle</code><span class="sig-paren">(</span><em>DiamCircle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#area_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.area_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the area of a circle.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.area_orifice">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">area_orifice</code><span class="sig-paren">(</span><em>Height</em>, <em>RatioVCOrifice</em>, <em>FlowRate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#area_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.area_orifice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the area of the orifice.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.density_water">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">density_water</code><span class="sig-paren">(</span><em>temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_water" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the density of water at a given temperature.</p>
+<p>If given units, the function will automatically convert to Kelvin.
+If not given units, the function will assume Kelvin.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.diam_circle">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">diam_circle</code><span class="sig-paren">(</span><em>AreaCircle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the diameter of a circle.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.diam_pipeminor">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">diam_pipeminor</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>HeadLossExpans</em>, <em>KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipeminor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipeminor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the pipe ID that would result in the given minor losses.</p>
+<p>This function applies to both laminar and turbulent flow.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.diam_swamee">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">diam_swamee</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>HeadLossFric</em>, <em>Length</em>, <em>Nu</em>, <em>PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_swamee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_swamee" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the inner diameter of a pipe.</p>
+<p>The Swamee Jain equation is dimensionally correct and returns the
+inner diameter of a pipe given the flow rate and the head loss due
+to shear on the pipe walls. The Swamee Jain equation does NOT take
+minor losses into account. This equation ONLY applies to turbulent
+flow.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.flow_hagen">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">flow_hagen</code><span class="sig-paren">(</span><em>Diam</em>, <em>HeadLossFric</em>, <em>Length</em>, <em>Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_hagen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_hagen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow rate for laminar flow with only major losses.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.flow_pipeminor">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">flow_pipeminor</code><span class="sig-paren">(</span><em>Diam</em>, <em>HeadLossExpans</em>, <em>KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipeminor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipeminor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow rate with only minor losses.</p>
+<p>This function applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.flow_rect_weir">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">flow_rect_weir</code><span class="sig-paren">(</span><em>Height</em>, <em>Width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_rect_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_rect_weir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow of a rectangular weir.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.flow_swamee">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">flow_swamee</code><span class="sig-paren">(</span><em>Diam</em>, <em>HeadLossFric</em>, <em>Length</em>, <em>Nu</em>, <em>PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_swamee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_swamee" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow rate for turbulent flow with only major losses.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.flow_transition">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">flow_transition</code><span class="sig-paren">(</span><em>Diam</em>, <em>Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_transition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow rate for the laminar/turbulent transition.</p>
+<p>This equation is used in some of the other equations for flow.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.fric">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">fric</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Diam</em>, <em>Nu</em>, <em>PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the friction factor for pipe flow.</p>
+<p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="aguaclara.core.physchem.gravity">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">gravity</code><em class="property"> = &lt;Quantity(9.80665, 'meter / second ** 2')&gt;</em><a class="headerlink" href="#aguaclara.core.physchem.gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>A few equations for useful geometry.
+Is there a geometry package that we should be using?</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.head_orifice">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">head_orifice</code><span class="sig-paren">(</span><em>Diam</em>, <em>RatioVCOrifice</em>, <em>FlowRate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#head_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.head_orifice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the head of the orifice.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Diam</em>, <em>Length</em>, <em>Nu</em>, <em>PipeRough</em>, <em>KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total head loss from major and minor losses in a pipe.</p>
+<p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_exp">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_exp</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Diam</em>, <em>KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minor head loss (due to expansions) in a pipe.</p>
+<p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_exp_general">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_exp_general</code><span class="sig-paren">(</span><em>Vel</em>, <em>KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp_general" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minor head loss due to expansion in the general case.</p>
+<p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_exp_rect">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_exp_rect</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Width</em>, <em>DistCenter</em>, <em>KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minor head loss due to expansion in a rectangular channel.</p>
+<p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_fric">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_fric</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Diam</em>, <em>Length</em>, <em>Nu</em>, <em>PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the major head loss (due to wall shear) in a pipe.</p>
+<p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_fric_general">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_fric_general</code><span class="sig-paren">(</span><em>Area</em>, <em>PerimWetted</em>, <em>Vel</em>, <em>Length</em>, <em>Nu</em>, <em>PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric_general" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the major head loss due to wall shear in the general case.</p>
+<p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_fric_rect">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_fric_rect</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Width</em>, <em>DistCenter</em>, <em>Length</em>, <em>Nu</em>, <em>PipeRough</em>, <em>openchannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the major head loss due to wall shear in a rectangular channel.</p>
+<p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_gen">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_gen</code><span class="sig-paren">(</span><em>Area</em>, <em>Vel</em>, <em>PerimWetted</em>, <em>Length</em>, <em>KMinor</em>, <em>Nu</em>, <em>PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total head lossin the general case.</p>
+<p>Total head loss is a combination of major and minor losses.
+This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_kozeny">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_kozeny</code><span class="sig-paren">(</span><em>Length</em>, <em>Diam</em>, <em>Vel</em>, <em>Porosity</em>, <em>Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_kozeny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_kozeny" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Carmen Kozeny Sand Bed head loss.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_manifold">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_manifold</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Diam</em>, <em>Length</em>, <em>KMinor</em>, <em>Nu</em>, <em>PipeRough</em>, <em>NumOutlets</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_manifold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_manifold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total head loss through the manifold.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_rect">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_rect</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Width</em>, <em>DistCenter</em>, <em>Length</em>, <em>KMinor</em>, <em>Nu</em>, <em>PipeRough</em>, <em>openchannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total head loss in a rectangular channel.</p>
+<p>Total head loss is a combination of the major and minor losses.
+This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.headloss_weir">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">headloss_weir</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_weir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the headloss of a weir.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.height_water_critical">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">height_water_critical</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#height_water_critical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.height_water_critical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the critical local water depth.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.num_orifices">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">num_orifices</code><span class="sig-paren">(</span><em>FlowPlant</em>, <em>RatioVCOrifice</em>, <em>HeadLossOrifice</em>, <em>DiamOrifice</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#num_orifices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.num_orifices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of orifices.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.radius_hydraulic_general">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">radius_hydraulic_general</code><span class="sig-paren">(</span><em>Area</em>, <em>PerimWetted</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic_general" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the general hydraulic radius.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.re_general">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">re_general</code><span class="sig-paren">(</span><em>Vel</em>, <em>Area</em>, <em>PerimWetted</em>, <em>Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_general" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Reynolds Number for a general cross section.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.re_pipe">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">re_pipe</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Diam</em>, <em>Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_pipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Reynolds Number for a pipe.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.re_rect">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">re_rect</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Width</em>, <em>DistCenter</em>, <em>Nu</em>, <em>openchannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Reynolds Number for a rectangular channel.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.vel_horizontal">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">vel_horizontal</code><span class="sig-paren">(</span><em>HeightWaterCritical</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#vel_horizontal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.vel_horizontal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the horizontal velocity.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.viscosity_dynamic">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">viscosity_dynamic</code><span class="sig-paren">(</span><em>temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_dynamic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_dynamic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dynamic viscosity of water at a given temperature.</p>
+<p>If given units, the function will automatically convert to Kelvin.
+If not given units, the function will assume Kelvin.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.viscosity_kinematic">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">viscosity_kinematic</code><span class="sig-paren">(</span><em>temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_kinematic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_kinematic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the kinematic viscosity of water at a given temperature.</p>
+<p>If given units, the function will automatically convert to Kelvin.
+If not given units, the function will assume Kelvin.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.width_rect_weir">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">width_rect_weir</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#width_rect_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.width_rect_weir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the width of a rectangular weir.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pipeline.html" class="btn btn-neutral float-right" title="Pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="materials.html" class="btn btn-neutral" title="Materials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v0.0.24',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

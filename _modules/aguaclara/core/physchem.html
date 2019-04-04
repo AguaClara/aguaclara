@@ -1,0 +1,908 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aguaclara.core.physchem &mdash; AguaClara v0.0.24 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.24
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aguaclara.core.physchem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aguaclara.core.physchem</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Contains unit process functions pertaining to the design of physical</span>
+<span class="sd">and chemical unit processes for AguaClara water treatment plants.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.materials</span> <span class="k">as</span> <span class="nn">mat</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.constants</span> <span class="k">as</span> <span class="nn">con</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">interpolate</span><span class="p">,</span> <span class="n">integrate</span>
+
+<span class="n">gravity</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">GRAVITY</span>
+
+<span class="c1">###################### Simple geometry ######################</span>
+<span class="sd">&quot;&quot;&quot;A few equations for useful geometry.</span>
+<span class="sd">Is there a geometry package that we should be using?&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="area_circle"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.area_circle">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">area_circle</span><span class="p">(</span><span class="n">DiamCircle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the area of a circle.&quot;&quot;&quot;</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">DiamCircle</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;DiamCircle&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">DiamCircle</span><span class="o">**</span><span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="diam_circle"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_circle">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">diam_circle</span><span class="p">(</span><span class="n">AreaCircle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the diameter of a circle.&quot;&quot;&quot;</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">AreaCircle</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;AreaCircle&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">AreaCircle</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+
+<span class="c1">######################### Hydraulics #########################</span>
+
+<span class="n">RE_TRANSITION_PIPE</span> <span class="o">=</span> <span class="mi">2100</span>
+<span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+<span class="n">K_KOZENY</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">K_KOZENY</span>
+
+<span class="n">WATER_DENSITY_TABLE</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">273.15</span><span class="p">,</span> <span class="mf">278.15</span><span class="p">,</span> <span class="mf">283.15</span><span class="p">,</span> <span class="mf">293.15</span><span class="p">,</span> <span class="mf">303.15</span><span class="p">,</span> <span class="mf">313.15</span><span class="p">,</span>
+                        <span class="mf">323.15</span><span class="p">,</span> <span class="mf">333.15</span><span class="p">,</span> <span class="mf">343.15</span><span class="p">,</span> <span class="mf">353.15</span><span class="p">,</span> <span class="mf">363.15</span><span class="p">,</span> <span class="mf">373.15</span>
+                        <span class="p">),</span> <span class="p">(</span><span class="mf">999.9</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">999.7</span><span class="p">,</span> <span class="mf">998.2</span><span class="p">,</span> <span class="mf">995.7</span><span class="p">,</span> <span class="mf">992.2</span><span class="p">,</span>
+                            <span class="mf">988.1</span><span class="p">,</span> <span class="mf">983.2</span><span class="p">,</span> <span class="mf">977.8</span><span class="p">,</span> <span class="mf">971.8</span><span class="p">,</span> <span class="mf">965.3</span><span class="p">,</span> <span class="mf">958.4</span>
+                            <span class="p">)</span>
+                       <span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Table of temperatures and the corresponding water density.</span>
+
+<span class="sd">Index[0] is a list of water temperatures, in Kelvin.</span>
+<span class="sd">Index[1] is the corresponding densities, in kg/m³.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="viscosity_dynamic"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.viscosity_dynamic">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">kg</span><span class="o">/</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">),</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">degK</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">viscosity_dynamic</span><span class="p">(</span><span class="n">temp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the dynamic viscosity of water at a given temperature.</span>
+
+<span class="sd">    If given units, the function will automatically convert to Kelvin.</span>
+<span class="sd">    If not given units, the function will assume Kelvin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">temp</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="mf">2.414</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span><span class="o">**-</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="mf">247.8</span> <span class="o">/</span> <span class="p">(</span><span class="n">temp</span><span class="o">-</span><span class="mi">140</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="density_water"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.density_water">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">kg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">degK</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">density_water</span><span class="p">(</span><span class="n">temp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the density of water at a given temperature.</span>
+
+<span class="sd">    If given units, the function will automatically convert to Kelvin.</span>
+<span class="sd">    If not given units, the function will assume Kelvin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">temp</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
+    <span class="n">rhointerpolated</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">CubicSpline</span><span class="p">(</span><span class="n">WATER_DENSITY_TABLE</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                    <span class="n">WATER_DENSITY_TABLE</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asscalar</span><span class="p">(</span><span class="n">rhointerpolated</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="viscosity_kinematic"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.viscosity_kinematic">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">degK</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">viscosity_kinematic</span><span class="p">(</span><span class="n">temp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the kinematic viscosity of water at a given temperature.</span>
+
+<span class="sd">    If given units, the function will automatically convert to Kelvin.</span>
+<span class="sd">    If not given units, the function will assume Kelvin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">temp</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">viscosity_dynamic</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="o">/</span> <span class="n">density_water</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="re_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_pipe">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">re_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the Reynolds Number for a pipe.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Diam</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diameter&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">FlowRate</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Diam</span> <span class="o">*</span> <span class="n">Nu</span><span class="p">)</span></div>
+
+
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">radius_hydraulic</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the hydraulic radius.</span>
+
+<span class="sd">    Width and DistCenter are length values and openchannel is a boolean.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Width</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Width&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">DistCenter</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;DistCenter&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">openchannel</span><span class="p">,</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;openchannel&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">openchannel</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">Width</span><span class="o">*</span><span class="n">DistCenter</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Width</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">DistCenter</span><span class="p">)</span>
+        <span class="c1"># if openchannel is True, the channel is open. Otherwise, the channel</span>
+        <span class="c1"># is assumed to have a top.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">Width</span><span class="o">*</span><span class="n">DistCenter</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Width</span><span class="o">+</span><span class="n">DistCenter</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="radius_hydraulic_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.radius_hydraulic_general">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">radius_hydraulic_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the general hydraulic radius.&quot;&quot;&quot;</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Area</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Area&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">PerimWetted</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Wetted perimeter&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">Area</span> <span class="o">/</span> <span class="n">PerimWetted</span></div>
+
+
+<div class="viewcode-block" id="re_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_rect">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">re_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the Reynolds Number for a rectangular channel.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">FlowRate</span>
+            <span class="o">*</span> <span class="n">radius_hydraulic</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">Width</span> <span class="o">*</span> <span class="n">DistCenter</span> <span class="o">*</span> <span class="n">Nu</span><span class="p">))</span></div>
+    <span class="c1">#Reynolds Number for rectangular channel; open = False if all sides</span>
+    <span class="c1">#are wetted; l = Diam and Diam = 4*R.h</span>
+
+
+<div class="viewcode-block" id="re_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_general">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">re_general</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the Reynolds Number for a general cross section.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Vel</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;Velocity&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">radius_hydraulic_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">Vel</span> <span class="o">/</span> <span class="n">Nu</span></div>
+
+
+<div class="viewcode-block" id="fric"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.fric">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the friction factor for pipe flow.</span>
+
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">PipeRough</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;Pipe roughness&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">re_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">RE_TRANSITION_PIPE</span><span class="p">:</span>
+        <span class="c1">#Swamee-Jain friction factor for turbulent flow; best for</span>
+        <span class="c1">#Re&gt;3000 and ε/Diam &lt; 0.02</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.25</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">PipeRough</span> <span class="o">/</span> <span class="p">(</span><span class="mf">3.7</span> <span class="o">*</span> <span class="n">Diam</span><span class="p">)</span>
+                              <span class="o">+</span> <span class="mf">5.74</span> <span class="o">/</span> <span class="n">re_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.9</span>
+                              <span class="p">)</span>
+                     <span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+             <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="mi">64</span> <span class="o">/</span> <span class="n">re_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f</span></div>
+
+
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">fric_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the friction factor for a rectangular channel.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">PipeRough</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;Pipe roughness&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">re_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span><span class="n">Width</span><span class="p">,</span><span class="n">DistCenter</span><span class="p">,</span><span class="n">Nu</span><span class="p">,</span><span class="n">openchannel</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">RE_TRANSITION_PIPE</span><span class="p">:</span>
+        <span class="c1">#Swamee-Jain friction factor adapted for rectangular channel.</span>
+        <span class="c1">#Diam = 4*R_h in this case.</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">0.25</span>
+                <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">PipeRough</span>
+                             <span class="o">/</span> <span class="p">(</span><span class="mf">3.7</span> <span class="o">*</span> <span class="mi">4</span>
+                                <span class="o">*</span> <span class="n">radius_hydraulic</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span>
+                                                   <span class="n">openchannel</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                                <span class="p">)</span>
+                             <span class="p">)</span>
+                            <span class="o">+</span> <span class="p">(</span><span class="mf">5.74</span> <span class="o">/</span> <span class="p">(</span><span class="n">re_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span>
+                                               <span class="n">Nu</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.9</span><span class="p">)</span>
+                               <span class="p">)</span>
+                            <span class="p">)</span>
+                    <span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">64</span> <span class="o">/</span> <span class="n">re_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">)</span>
+
+
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">fric_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the friction factor for a general channel.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">PipeRough</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;Pipe roughness&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">re_general</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">RE_TRANSITION_PIPE</span><span class="p">:</span>
+        <span class="c1">#Swamee-Jain friction factor adapted for any cross-section.</span>
+        <span class="c1">#Diam = 4*R*h</span>
+        <span class="n">f</span><span class="o">=</span> <span class="p">(</span><span class="mf">0.25</span> <span class="o">/</span>
+            <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">PipeRough</span>
+                       <span class="o">/</span> <span class="p">(</span><span class="mf">3.7</span> <span class="o">*</span> <span class="mi">4</span>
+                          <span class="o">*</span> <span class="n">radius_hydraulic_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                          <span class="p">)</span>
+                       <span class="p">)</span>
+                      <span class="o">+</span> <span class="p">(</span><span class="mf">5.74</span>
+                         <span class="o">/</span> <span class="n">re_general</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.9</span>
+                         <span class="p">)</span>
+                      <span class="p">)</span>
+             <span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="mi">64</span> <span class="o">/</span> <span class="n">re_general</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f</span>
+
+
+<div class="viewcode-block" id="headloss_fric"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_fric">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the major head loss (due to wall shear) in a pipe.</span>
+
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Length</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span>
+            <span class="o">*</span> <span class="mi">8</span> <span class="o">/</span> <span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">Length</span> <span class="o">*</span> <span class="n">FlowRate</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">Diam</span><span class="o">**</span><span class="mi">5</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_exp"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_exp">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_exp</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the minor head loss (due to expansions) in a pipe.</span>
+
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Diam</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diameter&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">KMinor</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;K minor&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">KMinor</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">/</span> <span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">FlowRate</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Diam</span><span class="o">**</span><span class="mi">4</span></div>
+
+
+<div class="viewcode-block" id="headloss"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a pipe.</span>
+
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Inputs do not need to be checked here because they are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">headloss_fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="o">+</span> <span class="n">headloss_exp</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_fric_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_fric_rect">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_fric_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the major head loss due to wall shear in a rectangular channel.</span>
+
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Length</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">fric_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span>
+                      <span class="n">PipeRough</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">Length</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">radius_hydraulic</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">FlowRate</span><span class="o">**</span><span class="mi">2</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="p">(</span><span class="n">Width</span><span class="o">*</span><span class="n">DistCenter</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_exp_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_exp_rect">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_exp_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the minor head loss due to expansion in a rectangular channel.</span>
+
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Width</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Width&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">DistCenter</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;DistCenter&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">KMinor</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;K minor&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">KMinor</span> <span class="o">*</span> <span class="n">FlowRate</span><span class="o">**</span><span class="mi">2</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="p">(</span><span class="n">Width</span><span class="o">*</span><span class="n">DistCenter</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_rect">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                  <span class="n">KMinor</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the total head loss in a rectangular channel.</span>
+
+<span class="sd">    Total head loss is a combination of the major and minor losses.</span>
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Inputs do not need to be checked here because they are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">headloss_exp_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+              <span class="o">+</span> <span class="n">headloss_fric_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">DistCenter</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                                   <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_fric_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_fric_general">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_fric_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the major head loss due to wall shear in the general case.</span>
+
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Length</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">fric_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span> <span class="o">*</span> <span class="n">Length</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">radius_hydraulic_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">Vel</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_exp_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_exp_general">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_exp_general</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the minor head loss due to expansion in the general case.</span>
+
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Vel</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Velocity&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">KMinor</span><span class="p">,</span> <span class="s1">&#39;&gt;=0&#39;</span><span class="p">,</span> <span class="s1">&#39;K minor&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">KMinor</span> <span class="o">*</span> <span class="n">Vel</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_gen"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_gen">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_gen</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the total head lossin the general case.</span>
+
+<span class="sd">    Total head loss is a combination of major and minor losses.</span>
+<span class="sd">    This equation applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Inputs do not need to be checked here because they are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">headloss_exp_general</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="o">+</span> <span class="n">headloss_fric_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span>
+                                     <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_manifold"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_manifold">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+               <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_manifold</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">NumOutlets</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the total head loss through the manifold.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">NumOutlets</span><span class="p">,</span> <span class="s2">&quot;&gt;0, int&quot;</span><span class="p">,</span> <span class="s1">&#39;Number of outlets&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">headloss</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="o">*</span> <span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span> <span class="p">)</span>
+               <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">NumOutlets</span><span class="p">))</span>
+               <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">NumOutlets</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+               <span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">flow_orifice</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">Height</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the flow rate of the orifice.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Diam</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diameter&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;VC orifice ratio&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">Height</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">RatioVCOrifice</span> <span class="o">*</span> <span class="n">area_circle</span><span class="p">(</span><span class="n">Diam</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">Height</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="c1">#Deviates from the MathCad at the 6th decimal place. Worth investigating or not?</span>
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">flow_orifice_vert</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">Height</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the vertical flow rate of the orifice.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;VC orifice ratio&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">Height</span> <span class="o">&gt;</span> <span class="o">-</span><span class="n">Diam</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">flow_vert</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">Diam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="p">(</span><span class="n">Diam</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span>
+                                                   <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Height</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span>
+                                                   <span class="p">),</span>
+                                                   <span class="o">-</span> <span class="n">Diam</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                                                   <span class="nb">min</span><span class="p">(</span><span class="n">Diam</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">Height</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">flow_vert</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">RatioVCOrifice</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+
+<div class="viewcode-block" id="head_orifice"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.head_orifice">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">head_orifice</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="n">FlowRate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the head of the orifice.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Diam</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diameter&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;VC orifice ratio&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">FlowRate</span>
+             <span class="o">/</span> <span class="p">(</span><span class="n">RatioVCOrifice</span> <span class="o">*</span> <span class="n">area_circle</span><span class="p">(</span><span class="n">Diam</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+             <span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="area_orifice"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.area_orifice">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">area_orifice</span><span class="p">(</span><span class="n">Height</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="n">FlowRate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the area of the orifice.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Height</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Height&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="s2">&quot;0-1, &gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;VC orifice ratio&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">FlowRate</span> <span class="o">/</span> <span class="p">(</span><span class="n">RatioVCOrifice</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">Height</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="num_orifices"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.num_orifices">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">num_orifices</span><span class="p">(</span><span class="n">FlowPlant</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="n">HeadLossOrifice</span><span class="p">,</span> <span class="n">DiamOrifice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the number of orifices.&quot;&quot;&quot;</span>
+    <span class="c1">#Inputs do not need to be checked here because they are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">area_orifice</span><span class="p">(</span><span class="n">HeadLossOrifice</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">,</span>
+                                 <span class="n">FlowPlant</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                    <span class="o">/</span> <span class="n">area_circle</span><span class="p">(</span><span class="n">DiamOrifice</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span></div>
+
+
+<span class="c1"># Here we define functions that return the flow rate.</span>
+<div class="viewcode-block" id="flow_transition"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_transition">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">flow_transition</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the flow rate for the laminar/turbulent transition.</span>
+
+<span class="sd">    This equation is used in some of the other equations for flow.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Diam</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diameter&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Diam</span> <span class="o">*</span> <span class="n">RE_TRANSITION_PIPE</span> <span class="o">*</span> <span class="n">Nu</span> <span class="o">/</span> <span class="mi">4</span></div>
+
+
+<div class="viewcode-block" id="flow_hagen"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_hagen">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">flow_hagen</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the flow rate for laminar flow with only major losses.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Diam</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diameter&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">HeadLossFric</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;Headloss due to friction&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">Diam</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">128</span><span class="o">*</span><span class="n">Nu</span><span class="p">)</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">HeadLossFric</span> <span class="o">/</span> <span class="n">Length</span></div>
+
+
+<div class="viewcode-block" id="flow_swamee"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_swamee">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">flow_swamee</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the flow rate for turbulent flow with only major losses.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Diam</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diameter&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">HeadLossFric</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Headloss due to friction&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">PipeRough</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;Pipe roughness&quot;</span><span class="p">])</span>
+    <span class="n">logterm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">PipeRough</span> <span class="o">/</span> <span class="p">(</span><span class="mf">3.7</span> <span class="o">*</span> <span class="n">Diam</span><span class="p">)</span>
+                       <span class="o">+</span> <span class="mf">2.51</span> <span class="o">*</span> <span class="n">Nu</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Length</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span>
+                                                         <span class="o">*</span> <span class="n">HeadLossFric</span>
+                                                         <span class="o">*</span> <span class="n">Diam</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+                                              <span class="p">)</span>
+                       <span class="p">)</span>
+    <span class="k">return</span> <span class="p">((</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">Diam</span><span class="o">**</span><span class="p">(</span><span class="mi">5</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">logterm</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">HeadLossFric</span> <span class="o">/</span> <span class="n">Length</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">flow_pipemajor</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the flow rate with only major losses.</span>
+
+<span class="sd">    This function applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Inputs do not need to be checked here because they are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">FlowHagen</span> <span class="o">=</span> <span class="n">flow_hagen</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="k">if</span> <span class="n">FlowHagen</span> <span class="o">&lt;</span> <span class="n">flow_transition</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FlowHagen</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">flow_swamee</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+
+<div class="viewcode-block" id="flow_pipeminor"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_pipeminor">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">flow_pipeminor</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossExpans</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the flow rate with only minor losses.</span>
+
+<span class="sd">    This function applies to both laminar and turbulent flows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity - inputs not checked here are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">HeadLossExpans</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;Headloss due to expansion&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">KMinor</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;K minor&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">area_circle</span><span class="p">(</span><span class="n">Diam</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span>
+                                                  <span class="o">*</span> <span class="n">HeadLossExpans</span>
+                                                  <span class="o">/</span> <span class="n">KMinor</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+<span class="c1"># Now we put all of the flow equations together and calculate the flow in a</span>
+<span class="c1"># straight pipe that has both major and minor losses and might be either</span>
+<span class="c1"># laminar or turbulent.</span>
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">flow_pipe</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the the flow in a straight pipe.</span>
+
+<span class="sd">    This function works for both major and minor losses and</span>
+<span class="sd">    works whether the flow is laminar or turbulent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Inputs do not need to be checked here because they are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="k">if</span> <span class="n">KMinor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">FlowRate</span> <span class="o">=</span> <span class="n">flow_pipemajor</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span>
+                                  <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">FlowRatePrev</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">FlowRate</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">flow_pipemajor</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                                      <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                       <span class="n">flow_pipeminor</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                       <span class="p">)</span>
+        <span class="k">while</span> <span class="n">err</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">:</span>
+            <span class="n">FlowRatePrev</span> <span class="o">=</span> <span class="n">FlowRate</span>
+            <span class="n">HLFricNew</span> <span class="o">=</span> <span class="p">(</span><span class="n">HeadLoss</span> <span class="o">*</span> <span class="n">headloss_fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                                                  <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                         <span class="o">/</span> <span class="p">(</span><span class="n">headloss_fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                                          <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                            <span class="o">+</span> <span class="n">headloss_exp</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                            <span class="p">)</span>
+                         <span class="p">)</span>
+            <span class="n">FlowRate</span> <span class="o">=</span> <span class="n">flow_pipemajor</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HLFricNew</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                                      <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="k">if</span> <span class="n">FlowRate</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">err</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">err</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">FlowRate</span> <span class="o">-</span> <span class="n">FlowRatePrev</span><span class="p">)</span>
+                       <span class="o">/</span> <span class="p">((</span><span class="n">FlowRate</span> <span class="o">+</span> <span class="n">FlowRatePrev</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                       <span class="p">)</span>
+    <span class="k">return</span> <span class="n">FlowRate</span>
+
+
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">diam_hagen</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">HeadLossFric</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Headloss due to friction&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">((</span><span class="mi">128</span> <span class="o">*</span> <span class="n">Nu</span> <span class="o">*</span> <span class="n">FlowRate</span> <span class="o">*</span> <span class="n">Length</span><span class="p">)</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">HeadLossFric</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="diam_swamee"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_swamee">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">diam_swamee</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe.</span>
+
+<span class="sd">    The Swamee Jain equation is dimensionally correct and returns the</span>
+<span class="sd">    inner diameter of a pipe given the flow rate and the head loss due</span>
+<span class="sd">    to shear on the pipe walls. The Swamee Jain equation does NOT take</span>
+<span class="sd">    minor losses into account. This equation ONLY applies to turbulent</span>
+<span class="sd">    flow.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">HeadLossFric</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Headloss due to friction&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">PipeRough</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;Pipe roughness&quot;</span><span class="p">])</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">((</span><span class="n">PipeRough</span> <span class="o">**</span> <span class="mf">1.25</span><span class="p">)</span>
+         <span class="o">*</span> <span class="p">((</span><span class="n">Length</span> <span class="o">*</span> <span class="n">FlowRate</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">HeadLossFric</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">**</span><span class="mf">4.75</span>
+         <span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">Nu</span> <span class="o">*</span> <span class="n">FlowRate</span><span class="o">**</span><span class="mf">9.4</span>
+         <span class="o">*</span> <span class="p">(</span><span class="n">Length</span> <span class="o">/</span> <span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span>  <span class="n">HeadLossFric</span><span class="p">))</span> <span class="o">**</span> <span class="mf">5.2</span>
+         <span class="p">)</span>
+    <span class="k">return</span> <span class="mf">0.66</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="mf">0.04</span></div>
+
+
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">diam_pipemajor</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the pipe IDiam that would result in given major losses.</span>
+<span class="sd">    This function applies to both laminar and turbulent flow.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Inputs do not need to be checked here because they are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="n">DiamLaminar</span> <span class="o">=</span> <span class="n">diam_hagen</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="k">if</span> <span class="n">re_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">DiamLaminar</span><span class="p">,</span> <span class="n">Nu</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">RE_TRANSITION_PIPE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DiamLaminar</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">diam_swamee</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                           <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+<div class="viewcode-block" id="diam_pipeminor"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_pipeminor">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">diam_pipeminor</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossExpans</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the pipe ID that would result in the given minor losses.</span>
+
+<span class="sd">    This function applies to both laminar and turbulent flow.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">KMinor</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;K minor&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">HeadLossExpans</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Headloss due to expansion&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">FlowRate</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">KMinor</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">HeadLossExpans</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">diam_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the pipe ID that would result in the given total head loss.</span>
+
+<span class="sd">    This function applies to both laminar and turbulent flow and</span>
+<span class="sd">    incorporates both minor and major losses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Inputs do not need to be checked here because they are checked by</span>
+    <span class="c1">#functions this function calls.</span>
+    <span class="k">if</span> <span class="n">KMinor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">Diam</span> <span class="o">=</span> <span class="n">diam_pipemajor</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span>
+                              <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Diam</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">diam_pipemajor</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span>
+                                  <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                   <span class="n">diam_pipeminor</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="mf">1.00</span>
+        <span class="k">while</span> <span class="n">err</span> <span class="o">&gt;</span> <span class="mf">0.001</span><span class="p">:</span>
+            <span class="n">DiamPrev</span> <span class="o">=</span> <span class="n">Diam</span>
+            <span class="n">HLFricNew</span> <span class="o">=</span> <span class="p">(</span><span class="n">HeadLoss</span> <span class="o">*</span> <span class="n">headloss_fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                                                  <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span>
+                                                  <span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                         <span class="o">/</span> <span class="p">(</span><span class="n">headloss_fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span>
+                                          <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span>
+                                          <span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                                          <span class="o">+</span> <span class="n">headloss_exp</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span>
+                                                         <span class="n">Diam</span><span class="p">,</span> <span class="n">KMinor</span>
+                                                         <span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                            <span class="p">)</span>
+                         <span class="p">)</span>
+            <span class="n">Diam</span> <span class="o">=</span> <span class="n">diam_pipemajor</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HLFricNew</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span>
+                                  <span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Diam</span> <span class="o">-</span> <span class="n">DiamPrev</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">Diam</span> <span class="o">+</span> <span class="n">DiamPrev</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Diam</span>
+
+<span class="c1"># Weir head loss equations</span>
+<div class="viewcode-block" id="width_rect_weir"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.width_rect_weir">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">width_rect_weir</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Height</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the width of a rectangular weir.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Height</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Height&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">((</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">FlowRate</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">Height</span> <span class="o">**</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="p">)</span></div>
+
+
+<span class="c1"># For a pipe, Width is the circumference of the pipe.</span>
+<span class="c1"># Head loss for a weir is the difference in height between the water</span>
+<span class="c1"># upstream of the weir and the top of the weir.</span>
+<div class="viewcode-block" id="headloss_weir"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_weir">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_weir</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the headloss of a weir.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Width</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Width&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(((</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">FlowRate</span>
+             <span class="o">/</span> <span class="p">(</span><span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">Width</span><span class="p">)</span>
+             <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="flow_rect_weir"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_rect_weir">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">flow_rect_weir</span><span class="p">(</span><span class="n">Height</span><span class="p">,</span> <span class="n">Width</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the flow of a rectangular weir.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Height</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Height&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Width</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Width&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">((</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">Height</span><span class="o">**</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+            <span class="o">*</span> <span class="n">Width</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="height_water_critical"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.height_water_critical">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">height_water_critical</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the critical local water depth.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">FlowRate</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Flow rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Width</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Width&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">FlowRate</span> <span class="o">/</span> <span class="p">(</span><span class="n">Width</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="vel_horizontal"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.vel_horizontal">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">vel_horizontal</span><span class="p">(</span><span class="n">HeightWaterCritical</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the horizontal velocity.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">HeightWaterCritical</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Critical height of water&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">HeightWaterCritical</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="headloss_kozeny"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_kozeny">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">headloss_kozeny</span><span class="p">(</span><span class="n">Length</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">Porosity</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the Carmen Kozeny Sand Bed head loss.&quot;&quot;&quot;</span>
+    <span class="c1">#Checking input validity</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Length</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Diam</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diam&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">Vel</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Velocity&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">Nu</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">],</span>
+                   <span class="p">[</span><span class="n">Porosity</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;Porosity&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">K_KOZENY</span> <span class="o">*</span> <span class="n">Length</span> <span class="o">*</span> <span class="n">Nu</span>
+            <span class="o">/</span> <span class="n">gravity</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">Porosity</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="o">/</span> <span class="n">Porosity</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">Vel</span>
+            <span class="o">/</span> <span class="n">Diam</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'v0.0.24',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

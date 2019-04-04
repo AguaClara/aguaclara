@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pipes &mdash; AguaClara v0.0.24 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Units" href="units.html" />
+    <link rel="prev" title="Pipeline" href="pipeline.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.24
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="core.html">Core</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drills.html">Drills</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="physchem.html">PhysChem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pipes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="core.html">Core</a> &raquo;</li>
+        
+      <li>Pipes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/core/pipes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.core.pipes">
+<span id="pipes"></span><h1>Pipes<a class="headerlink" href="#module-aguaclara.core.pipes" title="Permalink to this headline">¶</a></h1>
+<p>This file contains functions which convert between the nominal, inner, and
+outer diameters of pipes based on their standard dimension ratio (SDR).</p>
+<dl class="function">
+<dt id="aguaclara.core.pipes.ID_SDR">
+<code class="descclassname">aguaclara.core.pipes.</code><code class="descname">ID_SDR</code><span class="sig-paren">(</span><em>ND</em>, <em>SDR</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the inner diameter for SDR(standard diameter ratio) pipes.</p>
+<p>For these pipes the wall thickness is the outer diameter divided by
+the SDR.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.pipes.ID_SDR_all_available">
+<code class="descclassname">aguaclara.core.pipes.</code><code class="descname">ID_SDR_all_available</code><span class="sig-paren">(</span><em>SDR</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR_all_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR_all_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of inner diameters with a given SDR.</p>
+<p>IDs available are those commonly used based on the ‘Used’ column
+in the pipedb.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.pipes.ID_sch40">
+<code class="descclassname">aguaclara.core.pipes.</code><code class="descname">ID_sch40</code><span class="sig-paren">(</span><em>ND</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_sch40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_sch40" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the inner diameter for schedule 40 pipes.</p>
+<p>The wall thickness for these pipes is in the pipedb.</p>
+<p>Take the values of the array, subtract the ND, take the absolute
+value, find the index of the minimium value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.pipes.ND_SDR_available">
+<code class="descclassname">aguaclara.core.pipes.</code><code class="descname">ND_SDR_available</code><span class="sig-paren">(</span><em>ID</em>, <em>SDR</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_SDR_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_SDR_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an available ND given an ID and a schedule.</p>
+<p>Takes the values of the array, compares to the ID, and finds the index
+of the first value greater or equal.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.pipes.ND_all_available">
+<code class="descclassname">aguaclara.core.pipes.</code><code class="descname">ND_all_available</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_all_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_all_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of available nominal diameters.</p>
+<p>NDs available are those commonly used as based on the ‘Used’ column
+in the pipedb.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.pipes.ND_available">
+<code class="descclassname">aguaclara.core.pipes.</code><code class="descname">ND_available</code><span class="sig-paren">(</span><em>NDguess</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minimum ND that is available.</p>
+<ol class="arabic simple">
+<li>Extract the magnitude in inches from the nominal diameter.</li>
+<li>Find the index of the closest nominal diameter.</li>
+<li>Take the values of the array, subtract the ND, take the
+absolute value, find the index of the minimium value.</li>
+</ol>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.pipes.OD">
+<code class="descclassname">aguaclara.core.pipes.</code><code class="descname">OD</code><span class="sig-paren">(</span><em>ND</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.OD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pipe’s outer diameter according to its nominal diameter.</p>
+<p>The pipe schedule is not required here because all of the pipes of a
+given nominal diameter have the same outer diameter.</p>
+<p>Steps:
+1. Find the index of the closest nominal diameter.</p>
+<blockquote>
+<div>(Should this be changed to find the next largest ND?)</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Take the values of the array, subtract the ND, take the absolute
+value, find the index of the minimium value.</li>
+</ol>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="units.html" class="btn btn-neutral float-right" title="Units" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pipeline.html" class="btn btn-neutral" title="Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v0.0.24',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
