@@ -23,23 +23,23 @@ class TestProCoDAParser(unittest.TestCase):
         data_day2[0][0] = 0  # to remove scientific notation "e-"
 
         # SINGLE COLUMN, ONE DAY
-        output = get_data_by_time(path=path, columns=0, start_date="6-14-2018", start_time="12:20", end_time="13:00")
+        output = get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20", end_time="13:00")
         self.assertSequenceEqual(np.round(output, 5).tolist(), data_day1[0][1041:1282])
 
         # SINGLE COLUMN, TWO DAYS
-        output = get_data_by_time(path=path, columns=0, start_date="6-14-2018", end_date='6-15-2018',
+        output = get_data_by_time(path=path, columns=0, dates=["6-14-2018", "6-15-2018"],
                                   start_time="12:20", end_time="10:50")
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output, 5).tolist(), time_column)
 
         # MULTI COLUMN, ONE DAY
-        output = get_data_by_time(path=path, columns=[0, 4], start_date="6-14-2018", start_time="12:20",
+        output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018"], start_time="12:20",
                                   end_time="13:00")
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), data_day1[0][1041:1282])
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:1282])
 
         # MULTI COLUMN, TWO DAYS
-        output = get_data_by_time(path=path, columns=[0, 4], start_date="6-14-2018", end_date='6-15-2018',
+        output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
                                   start_time="12:20", end_time="10:50")
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), time_column)

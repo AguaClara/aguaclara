@@ -6,25 +6,19 @@ import os
 from pathlib import Path
 
 
-def get_data_by_time(path, columns, start_date, start_time="00:00", end_date=None, end_time="23:59"):
-    """Extracts columns of data from a ProCoDA datalog based on starting and
-    ending date(s) and times
+def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59'):
+    """Extract columns of data from a ProCoDA datalog based on date(s) and time(s)
 
     Note: Column 0 is time. The first data column is column 1.
 
-    Note: Currently only works for 1 or 2 days of data, i.e. end_date must be
-    unspecified or one day after start_date
-
     :param path: The path to the folder containing the ProCoDA data file(s)
     :type path: string
-    :param columns: A single index of a column OR a list of indices of columns of data to extract. Note: Column 0 is time. The first data column is column 1.
+    :param columns: A single index of a column OR a list of indices of columns of data to extract.
     :type columns: int or int list
-    :param start_date: Starting date of data to extract, formatted 'M-D-YYYY'
-    :type start_date: string
+    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
+    :type dates: string or string list
     :param start_time: Starting time of data to extract, formatted 'HH:MM' (24-hour time)
     :type start_time: string, optional
-    :param end_date: Ending date of data to extract, formatted 'M-D-YYYY'
-    :type end_date: string, optional
     :param end_time: Ending time of data to extract, formatted 'HH:MM' (24-hour time)
     :type end_time: string, optional
 
@@ -33,63 +27,36 @@ def get_data_by_time(path, columns, start_date, start_time="00:00", end_date=Non
 
     :Examples:
 
-    .. code-block::: python
+    .. code-block:: python
 
-        get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, start_date='6-14-2018', start_time='12:20', end_date='6-15-2018', end_time='10:50')
-        get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], start_date='6-14-2018', start_time='12:20', end_time='23:59')
-        get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], start_date='6-14-2018', end_date='6-18-2018')
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, dates=['6-14-2018', '6-15-2018'], start_time='12:20', end_time='10:50')
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], dates='6-14-2018', start_time='12:20', end_time='23:59')
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], dates='6-14-2018')
     """
+    data = data_from_dates(path, dates)
 
-    # Locate and read data file(s)
-    if path[-1] != '/':
-        path += '/'
-    paths = [path + "datalog " + start_date + '.xls']
-    data = [remove_notes(pd.read_csv(paths[0], delimiter='\t'))]
+    first_time_column = pd.to_numeric(data[0].iloc[:, 0])
+    start = max(day_fraction(start_time), first_time_column[0])
+    start_idx = time_column_index(start, first_time_column)
+    end_idx = time_column_index(day_fraction(end_time),
+        pd.to_numeric(data[-1].iloc[:, 0])) + 1
 
-    if end_date is not None:
-        paths.append(path + "datalog " + end_date + ".xls")
-        data.append(remove_notes(pd.read_csv(paths[1], delimiter='\t')))
-
-    # Calculate start index
-    time_column = pd.to_numeric(data[0].iloc[:, 0])
-    interval = time_column[1]-time_column[0]
-    start_idx = int(round((day_fraction(start_time) - time_column[0])/interval + .5)) #round up
-
-    # Calculate end index
-    time_column = pd.to_numeric(data[-1].iloc[:, 0])
-    end_idx = int(round((day_fraction(end_time) - time_column[0])/interval + .5)) + 1 #round up
-
-    # Get columns of interest
-    if len(paths) == 1:
-        if isinstance(columns, int):
-            result = list(pd.to_numeric(data[0].iloc[start_idx:end_idx, columns]))
-        else:
-            result = []
-            for c in columns:
-                result.append(list(pd.to_numeric(data[0].iloc[start_idx:end_idx, c])))
+    if isinstance(columns, int):
+        return column_start_to_end(data, columns, start_idx, end_idx)
     else:
-        data[1].iloc[0, 0] = 0
-        if isinstance(columns, int):
-            result = list(pd.to_numeric(data[0].iloc[start_idx:, columns])) + \
-                     list(pd.to_numeric(data[1].iloc[:end_idx, columns]) + (1 if columns == 0 else 0))
-        else:
-            result = []
-            for c in columns:
-                result.append(list(pd.to_numeric(data[0].iloc[start_idx:, c])) +
-                              list(pd.to_numeric(data[1].iloc[:end_idx, c])+(1 if c == 0 else 0)))
-
+        result = []
+        for c in columns:
+            result.append(column_start_to_end(data, c, start_idx, end_idx))
     return result
 
 
 def remove_notes(data):
-    """Omits any rows containing text from a Pandas.DataFrame object, except for headers.
+    """Omit notes from a DataFrame object, where notes are identified as rows with non-numerical entries in the first column.
 
-    Text is defined as characters of the alphabet. The resulting DataFrame should have only headers and numerical data.
-
-    :param data: DataFrame object to remove text from
+    :param data: DataFrame object to remove notes from
     :type data: Pandas.DataFrame
 
-    :return: DataFrame object with no text, except for headers
+    :return: DataFrame object with no notes
     :rtype: Pandas.DataFrame
     """
     has_text = data.iloc[:, 0].astype(str).str.contains('(?!e-)[a-zA-Z]')
@@ -98,7 +65,7 @@ def remove_notes(data):
 
 
 def day_fraction(time):
-    """Converts a 24-hour time to a fraction of a day.
+    """Convert a 24-hour time to a fraction of a day.
 
     For example, midnight corresponds to 0.0, and noon to 0.5.
 
@@ -119,6 +86,80 @@ def day_fraction(time):
     return hour/24 + minute/1440
 
 
+def time_column_index(time, time_column):
+    """Return the index of lowest time in the column of times that is greater
+    than or equal to the given time.
+
+    :param time: the time to index from the column of time; a day fraction
+    :type time: float
+    :param time_column: a list of times (in day fractions), must be increasing and equally spaced
+    :type time_column: float list
+
+    :return: approximate index of the time from the column of times
+    :rtype: int
+    """
+    interval = time_column[1]-time_column[0]
+    return int(round((time - time_column[0])/interval + .5))
+
+
+def data_from_dates(path, dates):
+    """Return list DataFrames representing the ProCoDA datalogs stored in
+    the given path and recorded on the given dates.
+
+    :param path: The path to the folder containing the ProCoDA data file(s)
+    :type path: string
+    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
+    :type dates: string or string list
+
+    :return: a list DataFrame objects representing the ProCoDA datalogs corresponding with the given dates
+    :rtype: pandas.DataFrame list
+    """
+    if path[-1] != os.path.sep:
+        path += os.path.sep
+
+    if not isinstance(dates, list):
+        dates = [dates]
+
+    data = []
+    for d in dates:
+        filepath = path + 'datalog ' + d + '.xls'
+        data.append(remove_notes(pd.read_csv(filepath, delimiter='\t')))
+
+    return data
+
+
+def column_start_to_end(data, column, start_idx, end_idx):
+    """Return a list of numeric data entries in the given column from the starting
+    index to the ending index. This can list can be compiled over one or more
+    DataFrames.
+
+    :param data: a list of DataFrames to extract data in one column from
+    :type data: Pandas.DataFrame list
+    :param column: a column index
+    :type column: int
+    :param start_idx: the index of the starting row
+    :type start_idx: int
+    :param start_idx: the index of the ending row
+    :type start_idx: int
+
+    :return: a list of data from the given column
+    :rtype: float list
+    """
+    if len(data) == 1:
+        result = list(pd.to_numeric(data[0].iloc[start_idx:end_idx, column]))
+    else:
+        result = list(pd.to_numeric(data[0].iloc[start_idx:, column]))
+        for i in range(1, len(data)-1):
+            data[i].iloc[0, 0] = 0
+            result += list(pd.to_numeric(data[i].iloc[:, column]) +
+                      (i if column == 0 else 0))
+        data[-1].iloc[0, 0] = 0
+        result += list(pd.to_numeric(data[-1].iloc[:end_idx, column]) +
+                  (len(data)-1 if column == 0 else 0))
+
+    return result
+
+
 def get_data_by_state(path, dates, state, column):
     """Reads a ProCoDA file and extracts the time and data column for each
     iteration ofthe given state.
@@ -127,7 +168,7 @@ def get_data_by_state(path, dates, state, column):
 
     :param path: The path to the folder containing the ProCoDA data file(s), defaults to the current directory
     :type path: string
-    :param dates: A list of dates or single date for which data was recorded, in the form "M-D-YYYY"
+    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
     :type dates: string or string list
     :param state: The state ID number for which data should be plotted
     :type state: int
@@ -141,7 +182,7 @@ def get_data_by_state(path, dates, state, column):
 
     .. code-block:: python
 
-        get_data_by_state(path='/Users/.../ProCoDA Data/', dates=["6-19-2013", "6-20-2013"], state=1, column=28)
+        data = get_data_by_state(path='/Users/.../ProCoDA Data/', dates=["6-19-2013", "6-20-2013"], state=1, column=28)
     """
     data_agg = []
     day = 0
@@ -232,13 +273,8 @@ def column_of_time(path, start, end=-1):
 
     .. code-block:: python
 
-        ftime("Reactor_data.txt", 0)
+        time = column_of_time("Reactor_data.txt", 0)
     """
-    if not isinstance(start, int):
-        start = int(start)
-    if not isinstance(end, int):
-        end = int(end)
-
     df = pd.read_csv(path, delimiter='\t')
     start_time = pd.to_numeric(df.iloc[start, 0])*u.day
     day_times = pd.to_numeric(df.iloc[start:end, 0])
@@ -269,7 +305,7 @@ def column_of_data(path, start, column, end="-1", units=""):
 
     .. code-block:: python
 
-        column_of_data("Reactor_data.txt", 0, 1, -1, "mg/L")
+        data = column_of_data("Reactor_data.txt", 0, 1, -1, "mg/L")
     """
     if not isinstance(start, int):
         start = int(start)
@@ -312,7 +348,7 @@ def read_state(dates, state, column, units="", path="", extension=".xls"):
 
     Note: Column 0 is time. The first data column is column 1.
 
-    :param dates: A list of dates or single date for which data was recorded, in the form "M-D-Y"
+    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
     :type dates: string or string list
     :param state: The state ID number for which data should be extracted
     :type state: int
@@ -413,7 +449,7 @@ def average_state(dates, state, column, units="", path="", extension=".xls"):
 
     Note: Column 0 is time. The first data column is column 1.
 
-    :param dates: A list of dates or single date for which data was recorded, in the form "M-D-Y"
+    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
     :type dates: string or string list
     :param state: The state ID number for which data should be extracted
     :type state: int
@@ -518,7 +554,7 @@ def perform_function_on_state(func, dates, state, column, units="", path="", ext
 
     :param func: A function that will be applied to data from each instance of the state
     :type func: function
-    :param dates: A list of dates or single date for which data was recorded, in the form "M-D-Y"
+    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
     :type dates: string or string list
     :param state: The state ID number for which data should be extracted
     :type state: int
