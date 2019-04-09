@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ProCoDA Parser &mdash; AguaClara v0.0.24 documentation</title>
+  <title>ProCoDA Parser &mdash; AguaClara v0.0.24.2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.0.24
+                v0.0.24.2
               </div>
             
           
@@ -173,7 +173,7 @@ the given ProCoDA files</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A list of dates or single date for which data was recorded, in the form “M-D-Y”</li>
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</li>
 <li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be extracted</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</li>
 <li><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</li>
@@ -225,7 +225,7 @@ the given ProCoDA files</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">column_of_data</span><span class="p">(</span><span class="s2">&quot;Reactor_data.txt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mg/L&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">column_of_data</span><span class="p">(</span><span class="s2">&quot;Reactor_data.txt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mg/L&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -255,31 +255,7 @@ the given ProCoDA files</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ftime</span><span class="p">(</span><span class="s2">&quot;Reactor_data.txt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.procoda_parser.day_fraction">
-<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">day_fraction</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#day_fraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.day_fraction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts a 24-hour time to a fraction of a day.</p>
-<p>For example, midnight corresponds to 0.0, and noon to 0.5.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> (<em>string</em>) – Time in the form of ‘HH:MM’ (24-hour time)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A day fraction</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">day_fraction</span><span class="p">(</span><span class="s2">&quot;18:30&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">column_of_time</span><span class="p">(</span><span class="s2">&quot;Reactor_data.txt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -296,7 +272,7 @@ iteration ofthe given state.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s), defaults to the current directory</li>
-<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A list of dates or single date for which data was recorded, in the form “M-D-YYYY”</li>
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</li>
 <li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be plotted</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – The integer index of the column that you want to extract OR the header of the column that you want to extract</li>
 </ul>
@@ -312,29 +288,25 @@ iteration ofthe given state.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="n">state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">28</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="n">state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">28</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="aguaclara.research.procoda_parser.get_data_by_time">
-<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">get_data_by_time</code><span class="sig-paren">(</span><em>path</em>, <em>columns</em>, <em>start_date</em>, <em>start_time='00:00'</em>, <em>end_date=None</em>, <em>end_time='23:59'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extracts columns of data from a ProCoDA datalog based on starting and
-ending date(s) and times</p>
+<code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">get_data_by_time</code><span class="sig-paren">(</span><em>path</em>, <em>columns</em>, <em>dates</em>, <em>start_time='00:00'</em>, <em>end_time='23:59'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract columns of data from a ProCoDA datalog based on date(s) and time(s)</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
-<p>Note: Currently only works for 1 or 2 days of data, i.e. end_date must be
-unspecified or one day after start_date</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s)</li>
-<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>int list</em>) – A single index of a column OR a list of indices of columns of data to extract. Note: Column 0 is time. The first data column is column 1.</li>
-<li><strong>start_date</strong> (<em>string</em>) – Starting date of data to extract, formatted ‘M-D-YYYY’</li>
+<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>int list</em>) – A single index of a column OR a list of indices of columns of data to extract.</li>
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</li>
 <li><strong>start_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Starting time of data to extract, formatted ‘HH:MM’ (24-hour time)</li>
-<li><strong>end_date</strong> (<em>string</em><em>, </em><em>optional</em>) – Ending date of data to extract, formatted ‘M-D-YYYY’</li>
 <li><strong>end_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Ending time of data to extract, formatted ‘HH:MM’ (24-hour time)</li>
 </ul>
 </td>
@@ -349,6 +321,11 @@ unspecified or one day after start_date</p>
 </tr>
 </tbody>
 </table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">,</span> <span class="s1">&#39;6-15-2018&#39;</span><span class="p">],</span> <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;12:20&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;10:50&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">dates</span><span class="o">=</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;12:20&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;23:59&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">dates</span><span class="o">=</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -381,7 +358,7 @@ in the given column and outputs the result for each instance of the state</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>func</strong> (<em>function</em>) – A function that will be applied to data from each instance of the state</li>
-<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A list of dates or single date for which data was recorded, in the form “M-D-Y”</li>
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</li>
 <li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be extracted</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</li>
 <li><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</li>
@@ -427,7 +404,7 @@ each iteration of the given state.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A list of dates or single date for which data was recorded, in the form “M-D-Y”</li>
+<li><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</li>
 <li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The state ID number for which data should be extracted</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</li>
 <li><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</li>
@@ -500,15 +477,14 @@ metafile)</p>
 <dl class="function">
 <dt id="aguaclara.research.procoda_parser.remove_notes">
 <code class="descclassname">aguaclara.research.procoda_parser.</code><code class="descname">remove_notes</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#remove_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.remove_notes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Omits any rows containing text from a Pandas.DataFrame object, except for headers.</p>
-<p>Text is defined as characters of the alphabet. The resulting DataFrame should have only headers and numerical data.</p>
+<dd><p>Omit notes from a DataFrame object, where notes are identified as rows with non-numerical entries in the first column.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>Pandas.DataFrame</em>) – DataFrame object to remove text from</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>Pandas.DataFrame</em>) – DataFrame object to remove notes from</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">DataFrame object with no text, except for headers</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">DataFrame object with no notes</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas.DataFrame</td>
 </tr>
@@ -595,7 +571,7 @@ columns to a new column in the specified output file.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v0.0.24',
+            VERSION:'v0.0.24.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
