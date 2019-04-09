@@ -12,7 +12,7 @@ class SedimentationTankTest(unittest.TestCase):
         self.sed_tank = SedimentationTank()
 
     #def test_q_bay(self):
-    #    self.assertAlmostEqual(self.sed_tank.q_bay, 191.6220472440945*u.inch)
+    #    self.assertAlmostEqual(self.sed_tank.q, 191.6220472440945*u.inch)
 
     #def test_n_sed_plates_max(self):
     #    self.assertAlmostEqual(self.sed_tank.n_sed_plates_max, 13)

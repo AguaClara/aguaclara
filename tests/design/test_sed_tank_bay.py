@@ -12,7 +12,7 @@ class SedimentationTankBayTest(unittest.TestCase):
         self.sed_tank_bay = SedimentationTankBay()
 
     def test_q_bay(self):
-        self.assertAlmostEqual(self.sed_tank_bay.q_bay, 13)
+        self.assertAlmostEqual(self.sed_tank_bay.q, 13)
 
 #    def test_n(self):
 #        self.assertAlmostEqual(self.sed_tank_bay.n, 4)
