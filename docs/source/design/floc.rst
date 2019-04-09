@@ -1,5 +1,5 @@
-Design
-======
+Flocculator
+===========
 
 Here's how to run the code:
 
@@ -9,8 +9,5 @@ Here's how to run the code:
     floc = Flocculator()
     floc.channel_l
 
-.. toctree::
-    :maxdepth: 2
-
-    floc
-
+.. automodule:: aguaclara.design.floc
+    :members:

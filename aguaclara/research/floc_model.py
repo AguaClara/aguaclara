@@ -15,7 +15,22 @@ u.enable_contexts('chem')
 
 
 class Material:
+    """A particulate material with a name, diameter, density, and
+    molecular weight.
+    """
+
     def __init__(self, name, diameter, density, molecWeight):
+        """Initialize a material object.
+
+        :param name: Name of the material
+        :type name: string
+        :param diameter: Diameter of the material in particulate form
+        :type diameter: float
+        :param density: Density of the material (mass/volume)
+        :type density: float
+        :param molecWeight: Molecular weight of the material (mass/mole)
+        :type moleWeight: float
+        """
         self.name = name
         self.Diameter = diameter
         self.Density = density
@@ -23,6 +38,10 @@ class Material:
 
 
 class Chemical(Material):
+    """A chemical with a name, diameter, density, molecular weight, number of
+    aluminum atoms per molecule, and a precipitate.
+    """
+
     def __init__(self, name, diameter, density, molecWeight, Precipitate,
                  AluminumMPM=None):
         Material.__init__(self, name, diameter, density, molecWeight)
@@ -46,17 +65,15 @@ class Chemical(Material):
 
 ################## Material Definitions ##################
 # name, diameter in m, density in kg/m³, molecular weight in kg/mole
-Clay = Material('Clay', 7 * 10**-6, 2650, None)
-
-PACl = Chemical('PACl', (90 * u.nm).to(u.m).magnitude, 1138, 1.039,
-                'PACl', AluminumMPM=13)
-
-Alum = Chemical('Alum', (70 * u.nm).to(u.m).magnitude, 2420, 0.59921,
-                'AlOH3', AluminumMPM=2)
-
-Alum.define_Precip((70 * u.nm).to(u.m).magnitude, 2420, 0.078, 1)
-
-HumicAcid = Chemical('Humic Acid', 72 * 10**-9, 1780, None, 'Humic Acid')
+Clay = Material('Clay', 7 * 10**-6 * u.m, 2650 * u.kg/u.m**3, None)
+PACl = Chemical('PACl', 9 * 10 **-8 * u.m, 1138 * u.kg/u.m**3,
+                 1.039 * u.kg/u.mol, 'PACl', AluminumMPM=13)
+Alum = Chemical('Alum', 7 * 10 **-8 * u.m, 2420 * u.kg/u.m**3,
+                0.59921 * u.kg/u.mol, 'AlOH3', AluminumMPM=2)
+Alum.define_Precip(7 * 10 **-8 * u.m, 2420 * u.kg/u.m**3,
+                0.078 * u.kg/u.mol, 1)
+HumicAcid = Chemical('Humic Acid', 72 * 10**-9 * u.m, 1780 * u.kg/u.m**3, None,
+                'Humic Acid')
 
 
 ################### Necessary Constants ###################

@@ -10,8 +10,7 @@ import aguaclara.core.utility as ut
 import numpy as np
 from scipy import interpolate, integrate
 
-gravity = 9.80665 * u.m/u.s**2
-"""Define the gravitational constant, in m/s²."""
+gravity = con.GRAVITY
 
 ###################### Simple geometry ######################
 """A few equations for useful geometry.
@@ -31,8 +30,9 @@ def diam_circle(AreaCircle):
     return np.sqrt(4 * AreaCircle / np.pi)
 
 ######################### Hydraulics #########################
-RE_TRANSITION_PIPE = 2100
 
+RE_TRANSITION_PIPE = 2100
+""" """
 K_KOZENY = con.K_KOZENY
 
 WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15,
@@ -78,8 +78,6 @@ def viscosity_kinematic(temp):
 
     If given units, the function will automatically convert to Kelvin.
     If not given units, the function will assume Kelvin.
-
-    TODO: This should return meter ** 2 / second.
     """
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
     return (viscosity_dynamic(temp).magnitude

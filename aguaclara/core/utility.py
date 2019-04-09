@@ -10,13 +10,12 @@ from math import log10, floor
 
 
 def round_sf(number, digits):
-    """Returns inputted value rounded to number
-    of significant figures desired.
+    """Returns inputted value rounded to number of significant figures desired.
 
-    Parameters:
-       number: Value to be rounded
-       digits: number of significant digits
-       to be rounded to.
+    :param number: Value to be rounded
+    :type number: float
+    :param digits: number of significant digits to be rounded to.
+    :type digits: int
     """
     units = None
     try:
