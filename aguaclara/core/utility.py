@@ -197,3 +197,17 @@ def check_range(*args):
             if 'boolean' in arg[1] and type(i) != bool:
                 raise TypeError("{1} is {0} but must be a "
                                 "boolean.".format(i, arg[2]))
+def max(*args, f=np.max):
+    base_q=args[0]
+    L= []
+    for i, arg in enumerate(args):
+        L.insert(i,(arg/base_q).to(u.dimensionless))
+    return f(L)*base_q
+
+
+def min(*args, f=np.min):
+    base_q=args[0]
+    L = []
+    for i, arg in enumerate(args):
+        L.insert(i, (arg/base_q).to(u.dimensionless))
+    return f(L)*base_q
