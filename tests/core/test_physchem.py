@@ -1193,6 +1193,10 @@ class MiscPhysFuncsTest(unittest.TestCase):
             with self.subTest(i=i):
                 self.assertAlmostEqual(pc.headloss_kozeny(*i).magnitude, base)
 
+    def test_manifold_ID(self):
+        """manifold_ID should return known value for known input"""
+        self.assertAlmostEquals(pc.manifold_ID(0.006, 1.2).magnitude, 0.039682379412712764)
+
 
 if __name__ == "__main__":
     unittest.main()

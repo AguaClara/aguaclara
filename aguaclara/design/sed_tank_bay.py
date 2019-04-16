@@ -131,43 +131,42 @@ class SedimentationTankBay:
                                       (self.exit_man_orifice_q_ratio_max ** 2 + 1)))
         return vel_manifold_max
 
-    @property
-    @ut.list_handler
-    def ID_exit_man(self):
-        """Return the inner diameter of the exit manifold by guessing an initial
-        diameter then iterating through pipe flow calculations until the answer
-        converges within 1%% error
-
-        Returns:
-            Inner diameter of the exit manifold (float).
-        """
-        #Inputs do not need to be checked here because they are checked by
-        #functions this function calls.
-        """
-        nu = pc.viscosity_dynamic(temp)
-        hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
-        L = self.TANK_L
-        N_orifices = self.MANIFOLD_EXIT_MAN_N_ORIFICES
-        K_minor = con.K_MINOR_PIPE_EXIT
-        pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
-
-        D = max(pc.diam_pipemajor(self.q, hl, L, nu, pipe_rough).magnitude,
-                pc.diam_pipeminor(self.q, hl, K_minor).magnitude)
-        err = 1.00
-        while err > 0.01:
-                D_prev = D
-                f = pc.fric(self.q, D_prev, nu, pipe_rough)
-                D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
-                     (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
-                      / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
-                err = abs(D_prev - D) / ((D + D_prev) / 2)
-        return D"""
-        pipe_rough = mat.PVC_PIPE_ROUGH.to(u.m)
-        id = ((self.q / (np.pi / 4 * ((2 * con.GRAVITY * pipe_rough) ** 1 / 2))) ** 1 / 2) * u.m
-        return id
-
+    # @property
+    # def ID_exit_man(self):
+    #     """Return the inner diameter of the exit manifold by guessing an initial
+    #     diameter then iterating through pipe flow calculations until the answer
+    #     converges within 1%% error
+    #
+    #     Returns:
+    #         Inner diameter of the exit manifold (float).
+    #     """
+    #     #Inputs do not need to be checked here because they are checked by
+    #     #functions this function calls.
+    #     """
+    #     nu = pc.viscosity_dynamic(temp)
+    #     hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
+    #     L = self.TANK_L
+    #     N_orifices = self.MANIFOLD_EXIT_MAN_N_ORIFICES
+    #     K_minor = con.K_MINOR_PIPE_EXIT
+    #     pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
+    #
+    #     D = max(pc.diam_pipemajor(self.q, hl, L, nu, pipe_rough).magnitude,
+    #             pc.diam_pipeminor(self.q, hl, K_minor).magnitude)
+    #     err = 1.00
+    #     while err > 0.01:
+    #             D_prev = D
+    #             f = pc.fric(self.q, D_prev, nu, pipe_rough)
+    #             D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
+    #                  (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
+    #                   / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
+    #             err = abs(D_prev - D) / ((D + D_prev) / 2)
+    #     return D"""
+    #     pipe_rough = mat.PVC_PIPE_ROUGH.to(u.m)
+    #     id = ((self.q / (np.pi / 4 * ((2 * con.GRAVITY * pipe_rough) ** 1 / 2))) ** 1 / 2)
+    #     return id
 
 
+##this
     @property
     def D_exit_man_orifice(self):
         """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
