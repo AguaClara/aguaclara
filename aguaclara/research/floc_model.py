@@ -91,7 +91,7 @@ PHI_FLOC = 45/24
 # The Avogadro constant.
 NUM_AVOGADRO = 6.0221415 * 10**23
 # Molecular weight of aluminum in kg/mole.
-MOLEC_WEIGHT_ALUMINUM = 0.027
+MOLEC_WEIGHT_ALUMINUM = 0.027 * u.kg / u.mol
 
 
 ######################## Functions ########################
@@ -120,15 +120,28 @@ def dens_pacl_solution(ConcAluminum, temp):
             )
 
 
-@u.wraps(u.kg/u.m**3, [u.kg/u.m**3, None], False)
 def conc_precipitate(ConcAluminum, coag):
     """Return coagulant precipitate concentration given aluminum dose.
+
+    This function assumes complete precipitation of coagulant into Al13.
 
     Note that conc_precipitate returns a value that varies from the equivalent
     MathCAD function beginning at the third decimal place. The majority of
     functions below this point in the file ultimately call on conc_precipitate
     at some point, and will not return the same value as their equivalent
     function in MathCAD. This is known.
+
+    Parameters
+    ----------
+    var1 : float
+        Concentration of aluminum in solution
+    var2 : Material
+        Type of coagulant in solution
+
+    Returns
+    ----------
+    float
+        Concentration of coagulant precipitates
     """
     return ((ConcAluminum / MOLEC_WEIGHT_ALUMINUM)
             * (coag.PrecipMolecWeight / coag.PrecipAluminumMPM)
@@ -173,9 +186,27 @@ def num_nanoclusters(ConcAluminum, coag):
                             * np.pi * coag.Diameter**3))
 
 
-@u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
 def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
-    """Return the fraction of flocs initially present."""
+    """Return the fraction of flocs initially present.
+
+    Function to calculate the initial volume fraction of particles, accounting for both suspended particle particles and coagulant precipitates.
+
+    Parameters
+    ----------
+    var1 : float
+        Concentration of aluminum in solution
+    var2 : float
+        Concentration of particle in suspension
+    var3 : Material
+        Type of coagulant in solution
+    var4 : Material
+        Type of particles in suspension
+
+    Returns
+    ----------
+    float
+        Volume fraction of particles initially present
+    """
     return ((conc_precipitate(ConcAluminum, coag).magnitude/coag.PrecipDensity)
             + (ConcClay / material.Density))
 
@@ -251,13 +282,28 @@ def ratio_clay_sphere(RatioHeightDiameter):
     return (1/2 + RatioHeightDiameter) * (2 / (3*RatioHeightDiameter))**(2/3)
 
 
-@u.wraps(None, [u.kg/u.m**3, None, u.m, u.dimensionless], False)
 def ratio_area_clay_total(ConcClay, material, DiamTube, RatioHeightDiameter):
     """Return the surface area of clay normalized by total surface area.
 
     Total surface area is a combination of clay and reactor wall
     surface areas. This function is used to estimate how much coagulant
     actually goes to the clay.
+
+    Parameters
+    ----------
+    var1 : float
+        Concentration of clay in suspension
+    var2 : float
+        Type of clay in suspension
+    var3 : float
+        Diameter of flocculator tube (assumes tube flocculator for calculation of reactor surface area)
+    var4 : float
+        Dimensionless ratio describing ratio of clay height to clay diameter
+
+    Returns
+    ----------
+    float
+        The ratio of clay surface area to total available surface area (accounting for reactor walls).
     """
     return (1
             / (1
@@ -270,8 +316,6 @@ def ratio_area_clay_total(ConcClay, material, DiamTube, RatioHeightDiameter):
             )
 
 
-@u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None,
-                u.m, u.dimensionless], False)
 def gamma_coag(ConcClay, ConcAluminum, coag, material,
                DiamTube, RatioHeightDiameter):
     """Return the coverage of clay with nanoglobs.
@@ -280,18 +324,37 @@ def gamma_coag(ConcClay, ConcAluminum, coag, material,
     and a poisson distribution on the clay given random hits by the
     nanoglobs. The poisson distribution results in the coverage only
     gradually approaching full coverage as coagulant dose increases.
+
+    Parameters
+    ----------
+    var1 : float
+        Concentration of clay in suspension
+    var2 : float
+        Concentration of aluminum in solution
+    var3 : Material
+        Type of coagulant in solution
+    var4 : Material
+        Type of clay in suspension
+    var5 : float
+        Diameter of flocculator tube (assumes tube flocculator for calculation of reactor surface area)
+    var6: float
+        Dimensionless ratio describing ratio of clay height to clay diameter
+
+    Returns
+    -------
+    float
+        fraction of the clay surface area that is coated with coagulant precipitates
     """
     return (1 - np.exp((
-                       (-frac_vol_floc_initial(ConcAluminum, 0, coag, material)
+                       (-frac_vol_floc_initial(ConcAluminum, 0*u.kg/u.m**3, coag, material)
                          * material.Diameter)
-                        / (frac_vol_floc_initial(0, ConcClay, coag, material)
+                        / (frac_vol_floc_initial(0*u.kg/u.m**3, ConcClay, coag, material)
                            * coag.Diameter))
                        * (1 / np.pi)
                        * (ratio_area_clay_total(ConcClay, material,
                                                 DiamTube, RatioHeightDiameter)
                           / ratio_clay_sphere(RatioHeightDiameter))
                        ))
-
 
 @u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
 @ut.list_handler()
