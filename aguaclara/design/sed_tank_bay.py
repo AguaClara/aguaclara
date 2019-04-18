@@ -11,6 +11,7 @@ from aguaclara.core import drills
 import aguaclara.core.utility as ut
 import numpy as np
 import math
+from onshapepy import Part
 
 
 class SedimentationTankBay:
@@ -19,6 +20,9 @@ class SedimentationTankBay:
     Example:
         >>> sed_tank_bay = SedimentationTankBay()
     """
+    CAD = Part(
+        'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
+    )
 
     def __init__(self,
                  plant_q=20.0 * u.L / u.s,
