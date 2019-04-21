@@ -261,6 +261,9 @@ class SedimentationTank:
         Returns:
             An object of the SedimentationTank class
         """
+        bay = SedimentationTankBay()
+
+        self.num_bays = bay.n
         self.q = q
         self.tank_l_inner = tank_l_inner
         self.tank_vel_up = tank_vel_up
