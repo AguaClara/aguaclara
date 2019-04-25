@@ -17,18 +17,21 @@ class PipeComponent:
         Args:
             diameter_inner (float *u.in): inner diameter of the pipes 
 
-
         Returns:
              PipeComponent object."""
         self.diameter_inner = diameter_inner
 
 class Pipe(PipeComponent):
     """This class calculates necessary functions and holds fields for pipes"""
+    def __init__(self, diameter_inner):
+        super().__init__(self, diameter_inner)
     # length
 
 
 class Connector(PipeComponent):
      """This class calculates necessary functions and holds fields for connectors"""
+     def __init__(self, diameter_inner):
+         super().__init__(self, diameter_inner)
     # angle
 
 
