@@ -114,15 +114,13 @@ def data_from_dates(path, dates):
     :return: a list DataFrame objects representing the ProCoDA datalogs corresponding with the given dates
     :rtype: pandas.DataFrame list
     """
-    if path[-1] != os.path.sep:
-        path += os.path.sep
 
     if not isinstance(dates, list):
         dates = [dates]
 
     data = []
     for d in dates:
-        filepath = path + 'datalog ' + d + '.xls'
+        filepath = os.path.join(path, 'datalog ' + d + '.xls')
         data.append(remove_notes(pd.read_csv(filepath, delimiter='\t')))
 
     return data
