@@ -152,8 +152,8 @@ FLUIDIZED_RATIO = 1.3 #Bed expands 30% when fluidized
 
 class Filter:
 
-    def __init__(self, flow_rate = 20 *u.L/u.s, sand_layer_thick = 20 *u.cm,
-                 n_backwash_manifold_diameter = 4 * u.in, max_filtration_head_loss * 30 u.cm):
+    def __init__(self, flow_rate = 20 *u.L/u.s, sand_layer_thick = 20 *u.cm, 
+		n_backwash_manifold_diameter = 4 * u.in, max_filtration_head_loss = 30 * u.cm):
         self.flow_rate = flow_rate
         self.sand_layer_thickness = sand_layer_thickness
         self.nbackwash_manifold_diameter = nbackwash_manifold_diameter
