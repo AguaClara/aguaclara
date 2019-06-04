@@ -698,3 +698,13 @@ def headloss_kozeny(Length, Diam, Vel, Porosity, Nu):
             / gravity.magnitude * (1-Porosity)**2
             / Porosity**3 * 36 * Vel
             / Diam ** 2)
+
+
+@u.wraps(u.m, [u.m**3/u.s, u.m], False)
+def manifold_ID(FlowRate, Pressure):
+    """Return the internal diameter of a pipe for a given pressure
+    recovery constraint. """
+    #Checking input validity
+    ut.check_range([FlowRate, ">0", "Flow rate"], [Pressure, ">0", "Pressure"])
+    return np.sqrt(FlowRate/((np.pi/4)*np.sqrt(2*gravity.magnitude*Pressure)))
+

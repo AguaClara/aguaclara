@@ -9,6 +9,33 @@ import aguaclara.core.constants as con
 import aguaclara.core.materials as mats
 import numpy
 
+class PipeComponent:
+    """This class has functions and fields common to Pipe and Connector"""
+    def __init__(self, diameter_inner = (1/8)*u.in):
+        """Instantiates a PipeComponent fields common to both class Pipe and Connector with the specified values.
+
+        Args:
+            diameter_inner (float *u.in): inner diameter of the pipes 
+
+        Returns:
+             PipeComponent object."""
+        self.diameter_inner = diameter_inner
+
+class Pipe(PipeComponent):
+    """This class calculates necessary functions and holds fields for pipes"""
+    def __init__(self, diameter_inner):
+        super().__init__(self, diameter_inner)
+    # length
+
+
+class Connector(PipeComponent):
+     """This class calculates necessary functions and holds fields for connectors"""
+     def __init__(self, diameter_inner):
+         super().__init__(self, diameter_inner)
+    # angle
+
+
+
 @u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)
 def flow_pipeline(diameters: numpy.ndarray, lengths: numpy.ndarray, k_minors: numpy.ndarray, target_headloss: float,
                   nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
@@ -48,3 +75,4 @@ def flow_pipeline(diameters: numpy.ndarray, lengths: numpy.ndarray, k_minors: nu
         flow = flow + err * flow
 
     return flow
+
