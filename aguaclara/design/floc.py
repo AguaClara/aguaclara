@@ -97,7 +97,7 @@ class Flocculator:
 
     @property
     def retention_time(self):
-        """Calculates the hydraulic retention time neglecting the volume 
+        """The hydraulic retention time neglecting the volume 
         created by head loss.
         """
         retention_time = (self.gt / self.vel_grad_avg).to(u.s)
@@ -192,17 +192,17 @@ class Flocculator:
 
     @property
     def expansion_n(self):
-        """Return the minimum number of expansions per baffle space."""
+        """The minimum number of expansions per baffle space."""
         return np.ceil(self.end_water_depth / self.expansion_h_max)
 
     @property
     def expansion_h(self):
-        """Returns the height between flow expansions."""
+        """The height between flow expansions."""
         return (self.end_water_depth / self.expansion_n).to(u.cm)
 
     @property
     def baffle_s(self):
-        """Return the spacing between baffles."""
+        """The spacing between baffles."""
         baffle_s = (
                 (self.BAFFLE_K /
                     (
@@ -216,12 +216,12 @@ class Flocculator:
 
     @property
     def obstacle_n(self):
-        """Return the number of obstacles per baffle."""
+        """The number of obstacles per baffle."""
         return self.expansion_n - 1
 
     @property
     def drain_k(self):
-        """Return the minor loss coefficient of the drain pipe."""
+        """The minor loss coefficient of the drain pipe."""
         drain_K = \
             hl.PIPE_ENTRANCE_K_MINOR + \
             hl.PIPE_ENTRANCE_K_MINOR + \
@@ -230,7 +230,7 @@ class Flocculator:
 
     @property
     def drain_d(self):
-        """Returns depth of drain pipe."""
+        """The depth of the drain pipe."""
         chan_pair_a = 2 * self.chan_l * self.chan_w
         drain_D = (
                 np.sqrt(8 * chan_pair_a / (np.pi * self.drain_t) *
@@ -244,13 +244,13 @@ class Flocculator:
 
     @property
     def drain_nd(self):
-        """Returns the diameter of the drain pipe."""
+        """The diameter of the drain pipe."""
         drain_ND = pipes.ND_SDR_available(self.drain_d, self.SDR)
         return drain_ND
 
     @property
     def design(self):
-        """Returns the designed values."""
+        """The designed values."""
         floc_dict = {'channel_n': self.chan_n,
                      'channel_L': self.chan_l,
                      'channel_W': self.chan_w,
