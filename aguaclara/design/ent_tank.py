@@ -5,9 +5,10 @@
 #. introduces chemical dosing through the CDC <add link> using the water level set by the LFOM <add link>.
 
 Example:
-    >>> from aguaclara.design.ent_tank import *
+    >>> from aguaclara.design.ent_tank import * #Maybe we shouldn't do this to avoid bringing other variables into scope? -Oliver L., oal22, 5 Jun 2019
     >>> ent_tank = EntranceTank(q = 20 * u.L / u.s, floc_chan_w = 42.0 * u.inch,...)
     >>> ent_tank.plate_n
+    15
 """
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.physchem as pc
@@ -17,7 +18,6 @@ import aguaclara.core.pipes as pipe
 import aguaclara.core.head_loss as hl
 
 import numpy as np
-import math
 
 L_MAX = 2.2 * u.m
 
@@ -73,7 +73,7 @@ class EntranceTank(object):
     An entrance tank's design relies on the LFOM's and flocculator's design in
     the same plant, but assumed/default values may be used to design an
     entrance tank by itself. To design these components in tandem, use the
-    EntTankFloc class <add link>.
+    ``EntTankFloc`` class <add link>.
 
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (required)
