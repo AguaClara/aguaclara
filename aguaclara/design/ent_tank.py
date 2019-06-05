@@ -76,7 +76,27 @@ class EntranceTank(object):
     EntTankFloc class <add link>.
 
     Design Inputs:
-        - :code:`q (float * u.L / u.s)`: 
+        - ``q (float * u.L / u.s)``: Flow rate (required)
+        - ``lfom_id (float * u.inch)``: The LFOM's inner diameter (recommended,
+          defaults to 2")
+        - ``floc_chan_w (float * u.inch)``: The flocculator's channel width
+          (recommended, defaults to 42")
+        - ``floc_chan_depth (float * u.m)``: The flocculator's channel depth
+          (recommended, defaults to 2m)
+        - ``plate_s (float * u.cm)``: The spacing between plates in a plate
+          settler (optional, defaults to 2.5cm)
+        - ``plate_thickness (float * u.deg)``: The thickness of a plate in a 
+          plate settler (optional, defaults to 2mm)
+        - ``plate_angle (float * u.deg)``: The angle of the plate settler 
+          (optional, defaults to 60 degrees)
+        - ``plate_capture_vel (float * u.mm / u.s)``: The capture velocity of the 
+          plate settler (optional, defaults to 8m/s)
+        - ``fab_space (float * u.cm)``: The space needed for a person to remove 
+          the drain pipe (optional, defaults to 5cm) 
+        - ``temp (float * u.degC)``: Water temperature (optional,
+          defaults to 20 degrees celsius) 
+        - ``sdr (float)``: Standard demension ratio (optional,
+          defaults to 41)  
     """
 
     def __init__(self, q,
@@ -104,10 +124,7 @@ class EntranceTank(object):
     
     @property
     def drain_od(self):
-        """Return the nominal diameter of the entrance tank drain pipe. Depth at the
-        end of the flocculator is used for headloss and length calculation inputs in
-        the diam_pipe calculation.
-        """
+        """The nominal diameter of the entrance tank drain pipe."""
         nu = pc.viscosity_kinematic(self.temp)
         k_minor = \
             hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_EXIT_K_MINOR + hl.EL90_K_MINOR
@@ -122,10 +139,7 @@ class EntranceTank(object):
         
     @property
     def plate_n(self):
-        """Return the number of plates in the entrance tank.
-
-        This number minimizes the total length of the plate settler unit.
-        """
+        """The number of plates in the plate settlers."""
         num_plates_as_float = \
             np.sqrt(
                 (self.q / (
@@ -138,10 +152,8 @@ class EntranceTank(object):
 
     @property
     def plate_l(self):
-        """Return the length of the plates in the entrance tank.
-        """
-        plate_l = \
-            (
+        """The length of the plates in the plate settlers."""
+        plate_l = (
                 self.q / (
                     self.plate_n * self.floc_chan_w * self.plate_capture_vel *
                     np.cos(self.plate_angle.to(u.rad))
@@ -151,10 +163,17 @@ class EntranceTank(object):
 
     @property
     def l(self):
-        """Return the length of the entrance tank.
-        """
-        plate_array_thickness = (self.plate_thickness * self.plate_n) + (self.plate_s * (self.plate_n - 1))
-        l = self.drain_od + (self.fab_space * 2) + (plate_array_thickness * np.cos(((90 * u.deg) - self.plate_angle).to(u.rad))) + (self.plate_l * np.cos(self.plate_angle.to(u.rad))) + (self.lfom_id * 2)
+        """The length of the tank."""
+        plate_array_thickness = \
+            (self.plate_thickness * self.plate_n) + \
+            (self.plate_s * (self.plate_n - 1))
+            
+        l = self.drain_od + (self.fab_space * 2) + \
+            (
+                plate_array_thickness * np.cos(((90 * u.deg) -
+                self.plate_angle).to(u.rad))
+            ) + \
+            (self.plate_l * np.cos(self.plate_angle.to(u.rad))) + \
+            (self.lfom_id * 2)
         return l
-        
         
