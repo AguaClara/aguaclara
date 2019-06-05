@@ -1,5 +1,5 @@
 Entrance Tank
 =============
 
-.. automodule:: aguaclara.design.ent_tank
+.. automodule:: aguaclara.design.ent
     :members:

@@ -4,5 +4,6 @@ Design
 .. toctree::
     :maxdepth: 2
     
-    ent_tank
+    ent_floc
+    ent
     floc

@@ -21,7 +21,7 @@ class Plant:
         self.floc = Flocculator(q=q, temp=temp)
 
     @property
-    def ent_tank_a(self):
+    def ent_a(self):
         """Calculate the planview area of the entrance tank, given the volume of
         the flocculator.
 

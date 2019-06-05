@@ -2,10 +2,10 @@
 cause coagulant and other particles to accumulate, forming flocs.
 
 Example:
-    >>> from aguaclara.design.floc import * # See ent_tank.py module docstring.
+    >>> from aguaclara.design.floc import * # See ent.py module docstring.
     >>> floc = Flocculator(q = 20 * u.L / u.s, hl = 40 * u.cm,...)
     >>> floc.chan_w
-    <Quantity(42, 'inch')>
+    42 inch
 """
 import aguaclara.core.head_loss as hl
 import aguaclara.design.human_access as ha
@@ -39,7 +39,7 @@ class Flocculator:
 
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (required)
-        - ``ent_tank_l (float * u.m)``: Entrance tank length
+        - ``ent_l (float * u.m)``: Entrance tank length
           (recommmended, defaults to 1.5m)
         - ``chan_w_max (float * u.inch)``: Maximum width (optional, defaults to
           42")
@@ -66,7 +66,7 @@ class Flocculator:
     CHANNEL_N_MIN = 2
     HS_RATIO_MIN = 3.0
     RATIO_MAX_HS = 6.0
-    SDR = 41.0 # This is an expert input in ent_tank, should this be an expert
+    SDR = 41.0 # This is an expert input in ent, should this be an expert
                # input as well? -Oliver L., oal22, 5 Jun 19
 
     def __init__(self, q,

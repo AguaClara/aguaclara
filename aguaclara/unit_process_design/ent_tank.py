@@ -2,7 +2,7 @@
 an AguaClara plant.
 
 """
-import design.ent_tank
+import design.ent
 from aguaclara.play import*
 
 @u.wraps(u.inch, [u.m**3/u.s, u.degK, u.m, None], False)
