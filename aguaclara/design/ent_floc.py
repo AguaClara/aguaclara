@@ -155,7 +155,7 @@ class EntTankFloc:
         
         # Design the entrance tank using the flocculator's channel width.
         self.ent = EntranceTank(self.ent.q,
-                                self.ent.lfom_id,
+                                self.ent.lfom_nd,
                                 self.floc.chan_w,
                                 self.ent.floc_end_depth,
                                 self.ent.plate_s,

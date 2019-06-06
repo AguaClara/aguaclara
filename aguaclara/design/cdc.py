@@ -1,233 +1,188 @@
-"""This file is used to calculate the design paramters for the chemical dose
-controller of an AguaClara plant.
+"""The chemical dose controller (CDC) in a """
 
-"""
+import aguaclara.core.physchem as pc
+import aguaclara.core.utility as ut
+from aguaclara.core.units import unit_registry as u
+import aguaclara.core.constants as con
+
 
 import numpy as np
 
-from aguaclara.core import physchem as pc, utility as ut
+class CDC(object):
+    def init(self, q,
+             coag_dose_conc_max, #What should this default to? -Oliver L., 6 Jun 19
+             coag_type='pacl',
+             temp=20 * u.degC,
+             coag_stock_conc_est=150 * u.g / u.L,
+             chem_tank_vol_supplier=[208.198, 450, 600, 750, 1100, 2500] * u.L,
+             chem_tank_dimensions_supplier=[
+                 [0.571, 0.851],
+                 [0.85, 0.99],
+                 [0.96, 1.10],
+                 [1.10, 1.02],
+                 [1.10, 1.39],
+                 [1.55, 1.65]
+             ] * u.m,
+             coag_stock_min_est_time=1 * u.day,
+             train_n=1,
+             coag_sack_mass = 25 * u.kg,
+             coag_tube_id = 0.125 * u.inch,
+             error_ratio=0.1,
+             hl = 20 * u.cm,
+             tube_k = 2):
+        self.q = q
 
-from aguaclara.core.units import unit_registry as u
+        if coag_type.lower() not in ['pacl', 'alum']:
+            raise ValueError('coag_type must be either PACl or Alum.')
+        self.coag_type = coag_type
 
+        self.temp = temp
+        self.coag_dose_conc_max = coag_dose_conc_max
+        self.coag_stock_conc_est = coag_stock_conc_est
+        self.chem_tank_vol_supplier = chem_tank_vol_supplier
+        self.chem_tank_dimensions_supplier = chem_tank_dimensions_supplier
+        self.coag_stock_min_est_time = coag_stock_min_est_time
+        self.train_n = train_n
+        self.coag_sack_mass = coag_sack_mass
+        self.coag_tube_id = coag_tube_id
+        self.error_ratio = error_ratio
+        self.hl = hl
+        self.tube_k = tube_k
 
+    def _alum_nu(self, coag_conc):
+        """Return the dynamic viscosity of water at a given temperature.
+
+        If given units, the function will automatically convert to Kelvin.
+        If not given units, the function will assume Kelvin.
+        This function assumes that the temperature dependence can be explained
+        based on the effect on water and that there is no confounding effect from
+        the coagulant.
+        """
+        alum_nu = \
+            (1 + (4.255 * 10 ** -6) * coag_conc.magnitude ** 2.289) * \
+            pc.viscosity_kinematic(self.temp)
+        return alum_nu
+
+    def _pacl_nu(self, coag_conc):
+        """Return the dynamic viscosity of water at a given temperature.
+
+        If given units, the function will automatically convert to Kelvin.
+        If not given units, the function will assume Kelvin.
+        This function assumes that the temperature dependence can be explained
+        based on the effect on water and that there is no confounding effect from
+        the coagulant.
+        """
+        pacl_nu = \
+            (1 + (2.383 * 10 ** -5) * (coag_conc).magnitude ** 1.893) * \
+            pc.viscosity_kinematic(self.temp)
+        return pacl_nu
+
+    def _coag_nu(self, coag_conc, coag_type):
+        """Return the dynamic viscosity of water at a given temperature.
+
+        If given units, the function will automatically convert to Kelvin.
+        If not given units, the function will assume Kelvin.
+        """
+        if coag_type.lower() == 'alum':
+            coag_nu = self._alum_nu(coag_conc)
+        elif coag_type.lower() == 'pacl':
+            coag_nu = self._pacl_nu(coag_conc)
+        return coag_nu
+
+    @property
+    def coag_q_max_est(self):
+        coag_q_max_est = self.q * self.coag_dose_conc_max / \
+            self.coag_stock_conc_est
+        return coag_q_max_est
+    
+    @property
+    def coag_stock_vol(self):
+        coag_stock_vol = ut.ceil_nearest(
+                self.coag_stock_min_est_time * self.train_n * 
+                    self.coag_q_max_est,
+                self.chem_tank_vol_supplier
+            )
+        return coag_stock_vol
+        
+    @property
+    def coag_sack_n(self):
+        coag_sack_n = round(
+                self.coag_stock_vol * self.coag_stock_conc_est /
+                self.coag_sack_mass
+            )
+        return coag_sack_n
+    
+    @property
+    def coag_stock_conc(self):
+        coag_stock_conc = self.coag_sack_n * self.coag_sack_mass / \
+            self.coag_stock_vol
+        return coag_stock_conc
+
+    @property
+    def coag_q_max(self):
+        return self.q * self.coag_dose_conc_max / self.coag_stock_vol
+
+    @property
+    def coag_stock_time_min(self):
+        return self.coag_stock_vol / (self.train_n * self.coag_q_max)
+
+    @property
+    def coag_stock_nu(self):
+        return self._coag_nu(self.coag_stock_conc, self.coag_type)    
 #==============================================================================
-# Functions for Coagulant Viscosities and Selecting Available Tube Diameters
+# Small-diameter Tube Design
 #==============================================================================
+    @property
+    def _coag_tube_q_max(self):
+        """The maximum permissible flow through a coagulant tube."""
+        coag_tube_q_max = ((np.pi * self.coag_tube_id ** 2)/4) * \
+            np.sqrt((2 * self.error_ratio * self.hl * con.gravity)/self.tube_k)
+        return coag_tube_q_max
+    
+    @property
+    def coag_tubes_active_n(self):
+        coag_tubes_active_n = np.ceil(self.coag_q_max / self._coag_tube_q_max)
+        return coag_tubes_active_n
 
+    @property
+    def coag_tubes_n(self):
+        coag_tubes_n = self.coag_tubes_active_n + 1 
+        return coag_tubes_n
+        
+    @property
+    def coag_tube_operating_q_max(self):
+        """The maximum flow through a coagulant tube during actual operation."""
+        coag_tube_operating_q_max = self.coag_q_max / self.coag_tubes_active_n
+        return coag_tube_operating_q_max
+    
+    @property
+    def coag_tube_l(self):
+        coag_tube_l = (
+                self.hl * con.GRAVITY * np.pi * self.coag_tube_id ** 4 /
+                (128 * self.coag_stock_nu * self.coag_tube_operating_q_max)
+            ) - (
+                8 * self.coag_tube_operating_q_max * self.tube_k /
+                (128 * np.pi * self.coag_stock_nu)
+            )
+        return coag_tube_l
 
-def _DiamTubeAvail(en_tube_series = True):
-    if en_tube_series:
-        return 1*u.mm
-    else:
-        return (1/16)*u.inch
-# This section may be unnecessary
-#==============================================================================
-# def _DiamTubeAvail(en_tube_series = True):
-#     if en_tube_series:
-#         return 1*u.mm
-#     else:
-#         return (1/16)*u.inch
-#==============================================================================
+    @property
+    def coag_tank_r(self):
+        index = self.chem_tank_vol_supplier.index(self.coag_stock_vol)
+        coag_tank_r = self.chem_tank_dimensions_supplier[index][0] / 2
+        return coag_tank_r
+        
+    @property
+    def coag_tank_h(self):
+        index = self.chem_tank_vol_supplier.index(self.coag_stock_vol)
+        coag_tank_h = self.chem_tank_dimensions_supplier[index][1]
+        return coag_tank_h
 
-@u.wraps(u.m**2/u.s, [u.kg/u.m**3, u.degK], False)
-def viscosity_kinematic_alum(conc_alum, temp):
-    """Return the dynamic viscosity of water at a given temperature.
-
-    If given units, the function will automatically convert to Kelvin.
-    If not given units, the function will assume Kelvin.
-    This function assumes that the temperature dependence can be explained
-    based on the effect on water and that there is no confounding effect from
-    the coagulant.
-    """
-    nu = (1 + (4.255 * 10**-6) * conc_alum**2.289) * pc.viscosity_kinematic(temp).magnitude
-    return nu
-
-
-@u.wraps(u.m**2/u.s, [u.kg/u.m**3, u.degK], False)
-def viscosity_kinematic_pacl(conc_pacl, temp):
-    """Return the dynamic viscosity of water at a given temperature.
-
-    If given units, the function will automatically convert to Kelvin.
-    If not given units, the function will assume Kelvin.
-    This function assumes that the temperature dependence can be explained
-    based on the effect on water and that there is no confounding effect from
-    the coagulant.
-    """
-    nu = (1 + (2.383 * 10**-5) * conc_pacl**1.893) * pc.viscosity_kinematic(temp).magnitude
-    return nu
-
-
-@u.wraps(u.m**2/u.s, [u.kg/u.m**3, u.degK, None], False)
-def viscosity_kinematic_chem(conc_chem, temp, en_chem):
-     """Return the dynamic viscosity of water at a given temperature.
-
-    If given units, the function will automatically convert to Kelvin.
-    If not given units, the function will assume Kelvin.
-    """
-     if en_chem == 0:
-         nu = viscosity_kinematic_alum(conc_chem, temp).magnitude
-     if en_chem == 1:
-         nu =  viscosity_kinematic_pacl(conc_chem, temp).magnitude
-     if en_chem not in [0,1]:
-         nu =  pc.viscosity_kinematic(temp).magnitude
-     return nu
-
-
-
-#==============================================================================
-# Flow rate Constraints for Laminar Tube Flow, Deviation from Linear Head Loss
-# Behavior, and Lowest Possible Flow
-#==============================================================================
-
-
-@u.wraps(u.m**3/u.s, [u.m, u.m, None, None], False)
-def max_linear_flow(Diam, HeadlossCDC, Ratio_Error, KMinor):
-    """Return the maximum flow that will meet the linear requirement.
-    Maximum flow that can be put through a tube of a given diameter without
-    exceeding the allowable deviation from linear head loss behavior
-    """
-    flow = (pc.area_circle(Diam)).magnitude * np.sqrt((2 * Ratio_Error * HeadlossCDC * pc.gravity)/ KMinor)
-    return flow.magnitude
-
-
-
-
-#==============================================================================
-# Length of Tubing Required Given Head Loss, Max Flow, and Diameter
-#==============================================================================
-
-# Length of tube required to get desired head loss at maximum flow based on
-# the Hagen-Poiseuille equation.
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.kg/u.m**3, u.degK, None, None], False)
-def _len_tube(Flow, Diam, HeadLoss, conc_chem, temp, en_chem, KMinor):
-    """Length of tube required to get desired head loss at maximum flow based on
-    the Hagen-Poiseuille equation."""
-    num1 = pc.gravity.magnitude * HeadLoss * np.pi * (Diam**4)
-    denom1 = 128 * viscosity_kinematic_chem(conc_chem, temp, en_chem) * Flow
-    num2 = Flow * KMinor
-    denom2 = 16 * np.pi * viscosity_kinematic_chem(conc_chem, temp, en_chem)
-    len = ((num1/denom1) - (num2/denom2))
-    return len.magnitude
-
-
-
-#==============================================================================
-# Helper Functions
-#==============================================================================
-@u.wraps(None, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, None, None], False)
-def _n_tube_array(FlowPlant, ConcDoseMax, ConcStock,
-                  DiamTubeAvail, HeadlossCDC, Ratio_Error, KMinor):
-
-    np.ceil((FlowPlant * ConcDoseMax
-               )/ ConcStock*max_linear_flow(DiamTubeAvail, HeadlossCDC, Ratio_Error, KMinor).magnitude)
-    return np.ceil((FlowPlant * ConcDoseMax) /
-            (ConcStock * max_linear_flow(DiamTubeAvail, HeadlossCDC, Ratio_Error, KMinor).magnitude))
-
-
-@u.wraps(u.m**3/u.s, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3], False)
-def _flow_chem_stock(FlowPlant, ConcDoseMax, ConcStock):
-    FlowPlant * ConcDoseMax / ConcStock
-    return FlowPlant * ConcDoseMax / ConcStock
-
-
-@u.wraps(u.m**3/u.s, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m,None,None], False)
-def _flow_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
-                   DiamTubeAvail, HeadlossCDC,Ratio_Error, KMinor):
-
-    (_flow_chem_stock(FlowPlant, ConcDoseMax, ConcStock)
-     ) / (_n_tube_array(FlowPlant, ConcDoseMax, ConcStock,
-                  DiamTubeAvail, HeadlossCDC,Ratio_Error, KMinor))
-    return (_flow_chem_stock(FlowPlant, ConcDoseMax, ConcStock).magnitude
-            ) / (_n_tube_array(FlowPlant, ConcDoseMax, ConcStock,
-                        DiamTubeAvail, HeadlossCDC,Ratio_Error, KMinor))
-
-
-
-#
-@u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.degK, None, None], False)
-def _length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock,
-                           DiamTubeAvail, HeadlossCDC, temp, en_chem, KMinor):
-    """Calculate the length of each diameter tube given the corresponding flow rate
-    and coagulant. Choose the tube that is shorter than the maximum length tube."""
-
-    Flow = _flow_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, DiamTubeAvail, HeadlossCDC,Ratio_Error, KMinor).magnitude
-
-
-    return _len_tube(Flow, DiamTubeAvail, HeadlossCDC, ConcStock, temp, en_chem, KMinor).magnitude
-
-
-# Find the index of that tube
-@u.wraps(None, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, u.degK, None, None], False)
-def i_cdc(FlowPlant, ConcDoseMax, ConcStock,
-          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp,
-          en_chem, KMinor):
-
-    tube_array = (_length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock,
-                                        DiamTubeAvail, HeadlossCDC, temp, en_chem,
-                                        KMinor)).magnitude
-
-
-    if tube_array[0] < float(LenCDCTubeMax):
-        y = ut.floor_nearest(LenCDCTubeMax,tube_array)
-        myindex =np.where(tube_array==y)[0][0]
-
-    else:
-        myindex = 0
-
-    return myindex
-
-
-
-#==============================================================================
-# Final easy to use functions
-#==============================================================================
-
-@u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, u.degK, None, None], False)
-def len_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
-                 DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp,
-                 en_chem, KMinor):
-   """The length of tubing may be longer than the max specified if the stock
-   concentration is too high to give a viable solution with the specified
-   length of tubing."""
-   index = i_cdc(FlowPlant, ConcDoseMax, ConcStock,
-                DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp,
-                en_chem, KMinor)
-   len_cdc_tube = (_length_cdc_tube_array(FlowPlant, ConcDoseMax, ConcStock,
-                                        DiamTubeAvail, HeadlossCDC, temp, en_chem,
-                                        KMinor))[index].magnitude
-
-   return len_cdc_tube
-
-
-@u.wraps(u.m, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, u.degK, None, None], False)
-def diam_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
-                  DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
-                  temp, en_chem, KMinor):
-
-    index = i_cdc(FlowPlant, ConcDoseMax, ConcStock,
-                   DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
-                   temp, en_chem, KMinor)
-
-    diam_cdc_tube = DiamTubeAvail[index]
-
-    return diam_cdc_tube
-
-
-@u.wraps(None, [u.m**3/u.s, u.kg/u.m**3, u.kg/u.m**3, u.m, u.m, u.m, u.degK, None, None], False)
-def n_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
-          DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
-          temp, en_chem, KMinor):
-
-    index = i_cdc(FlowPlant, ConcDoseMax, ConcStock,
-                  DiamTubeAvail, HeadlossCDC, LenCDCTubeMax,
-                  temp, en_chem, KMinor)
-
-    n_cdc_tube = _n_tube_array(FlowPlant, ConcDoseMax, ConcStock,
-                  DiamTubeAvail, HeadlossCDC, Ratio_Error, KMinor)[index]
-
-    return n_cdc_tube
-
-
+    def _DiamTubeAvail(self, en_tube_series = True):
+        if en_tube_series:
+            return 1*u.mm
+        else:
+            return (1/16)*u.inch
 
 
 # testing

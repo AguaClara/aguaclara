@@ -16,6 +16,7 @@ import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
 import aguaclara.core.pipes as pipe
 import aguaclara.core.head_loss as hl
+import aguaclara.core.utility as ut
 
 import numpy as np
 
@@ -100,7 +101,7 @@ class EntranceTank(object):
     """
 
     def __init__(self, q,
-                 lfom_id=2.0 * u.inch, # May be innacurate, check with Monroe -Oliver L., oal22, 4 Jun '19 
+                 lfom_nd=2.0 * u.inch, # May be innacurate, check with Monroe -Oliver L., oal22, 4 Jun '19 
                  floc_chan_w=42.0 * u.inch,
                  floc_end_depth=2.0 * u.m,
                  plate_s=2.5 * u.cm,
@@ -111,7 +112,7 @@ class EntranceTank(object):
                  temp=20.0 * u.degC,
                  sdr=41.0):
         self.q = q
-        self.lfom_id = lfom_id
+        self.lfom_nd = lfom_nd
         self.floc_chan_w = floc_chan_w
         self.floc_end_depth = floc_end_depth
         self.plate_s = plate_s
@@ -123,8 +124,8 @@ class EntranceTank(object):
         self.sdr = sdr
     
     @property
-    def drain_od(self):
-        """The nominal diameter of the entrance tank drain pipe."""
+    def drain_id(self):
+        """The inner diameter of the entrance tank drain pipe."""
         nu = pc.viscosity_kinematic(self.temp)
         k_minor = \
             hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_EXIT_K_MINOR + hl.EL90_K_MINOR
@@ -134,8 +135,17 @@ class EntranceTank(object):
                                 nu,
                                 mat.PVC_PIPE_ROUGH,
                                 k_minor)
-        drain_nd = pipe.ND_SDR_available(drain_id, self.sdr)
-        return pipe.OD(drain_nd)
+        return drain_id
+
+    @property
+    def drain_nd(self):
+        """The nominal diameter of the entrance tank drain pipe.""" 
+        return pipe.ND_SDR_available(self.drain_id, self.sdr)
+
+    @property
+    def drain_od(self):
+        """The outer diameter of the entrance tank drain pipe."""
+        return pipe.OD(self.drain_nd)
         
     @property
     def plate_n(self):
@@ -143,7 +153,8 @@ class EntranceTank(object):
         num_plates_as_float = \
             np.sqrt(
                 (self.q / (
-                    self.plate_s * self.floc_chan_w * self.plate_capture_vel *
+                    (self.plate_s + self.plate_thickness) * self.floc_chan_w *
+                    self.plate_capture_vel *
                     np.sin(self.plate_angle.to(u.rad)).item()
                 )).to(u.dimensionless)
             )
@@ -158,8 +169,9 @@ class EntranceTank(object):
                     self.plate_n * self.floc_chan_w * self.plate_capture_vel *
                     np.cos(self.plate_angle.to(u.rad))
                 )
-            ) - (self.plate_s * np.tan(self.plate_angle.to(u.rad)))
-        return plate_l
+            ) - (self.plate_s * np.tan(self.plate_angle.to(u.rad))).to(u.cm)
+        plate_l_rounded = ut.stepceil_with_units(plate_l, 1.0, u.cm)
+        return plate_l_rounded
 
     @property
     def l(self):
@@ -174,6 +186,6 @@ class EntranceTank(object):
                 self.plate_angle).to(u.rad))
             ) + \
             (self.plate_l * np.cos(self.plate_angle.to(u.rad))) + \
-            (self.lfom_id * 2)
+            (self.lfom_nd * 2)
         return l
         
