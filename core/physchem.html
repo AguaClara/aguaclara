@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PhysChem &mdash; AguaClara v0.0.25 documentation</title>
+  <title>PhysChem &mdash; AguaClara v0.1.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.0.25
+                v0.1.0
               </div>
             
           
@@ -194,6 +194,31 @@ Index[1] is the corresponding densities, in kg/m³.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="aguaclara.core.physchem.density_air">
+<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">density_air</code><span class="sig-paren">(</span><em>Pressure</em>, <em>MolarMass</em>, <em>Temperature</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_air"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_air" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the density of the air.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Pressure</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – pressure of the air in the system</li>
+<li><strong>MolarMass</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – molar mass of the air in the system</li>
+<li><strong>Temperature</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Temperature of the air in the system</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">density of the air in the system</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.core.physchem.density_water">
 <code class="descclassname">aguaclara.core.physchem.</code><code class="descname">density_water</code><span class="sig-paren">(</span><em>temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_water" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the density of water at a given temperature.</p>
@@ -262,13 +287,6 @@ flow.</p>
 <code class="descclassname">aguaclara.core.physchem.</code><code class="descname">fric</code><span class="sig-paren">(</span><em>FlowRate</em>, <em>Diam</em>, <em>Nu</em>, <em>PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the friction factor for pipe flow.</p>
 <p>This equation applies to both laminar and turbulent flows.</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="aguaclara.core.physchem.gravity">
-<code class="descclassname">aguaclara.core.physchem.</code><code class="descname">gravity</code><em class="property"> = &lt;Quantity(9.80665, 'meter / second ** 2')&gt;</em><a class="headerlink" href="#aguaclara.core.physchem.gravity" title="Permalink to this definition">¶</a></dt>
-<dd><p>A few equations for useful geometry.
-Is there a geometry package that we should be using?</p>
 </dd></dl>
 
 <dl class="function">
@@ -468,7 +486,7 @@ If not given units, the function will assume Kelvin.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v0.0.25',
+            VERSION:'v0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.physchem &mdash; AguaClara v0.0.25 documentation</title>
+  <title>aguaclara.core.physchem &mdash; AguaClara v0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                v0.0.25
+                v0.1.0
               </div>
             
           
@@ -163,9 +163,26 @@
 
 <span class="n">gravity</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">GRAVITY</span>
 
+<span class="c1">######################Air################################</span>
+<div class="viewcode-block" id="density_air"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.density_air">[docs]</a><span class="k">def</span> <span class="nf">density_air</span><span class="p">(</span><span class="n">Pressure</span><span class="p">,</span> <span class="n">MolarMass</span><span class="p">,</span> <span class="n">Temperature</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the density of the air.</span>
+
+<span class="sd">    :param Pressure: pressure of the air in the system</span>
+<span class="sd">    :type Pressure: float</span>
+<span class="sd">    :param MolarMass: molar mass of the air in the system</span>
+<span class="sd">    :type MolarMass: float</span>
+<span class="sd">    :param Temperature: Temperature of the air in the system</span>
+<span class="sd">    :type Temperature: float</span>
+
+<span class="sd">    :return: density of the air in the system</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">Pressure</span> <span class="o">*</span> <span class="n">MolarMass</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="n">Temperature</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">kg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span></div>
+
 <span class="c1">###################### Simple geometry ######################</span>
 <span class="sd">&quot;&quot;&quot;A few equations for useful geometry.</span>
-<span class="sd">Is there a geometry package that we should be using?&quot;&quot;&quot;</span>
+<span class="sd">Is there a geometry package that we should be using?</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="area_circle"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.area_circle">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">area_circle</span><span class="p">(</span><span class="n">DiamCircle</span><span class="p">):</span>
@@ -881,7 +898,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'v0.0.25',
+            VERSION:'v0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
