@@ -1,19 +1,34 @@
-"""The chemical dose controller (CDC) in a """
+"""The chemical dose controller (CDC) of an AguaClara plant uses the linear
+relation between flow rate and entrance tank water level (set by the LFOM) to
+dose the correct amount of coagulant and chlorine into the entrance tank.
 
+Example:
+    >>> from aguaclara.design.cdc import *
+    >>> cdc = CDC(q = 20 * L/s, coag_type = 'pacl',...)
+    >>> cdc.coag_stock_vol
+    208.198 liter
+"""
 import aguaclara.core.physchem as pc
 import aguaclara.core.utility as ut
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 
-
 import numpy as np
 
 class CDC(object):
-    def init(self, q,
-             coag_dose_conc_max, #What should this default to? -Oliver L., 6 Jun 19
-             coag_type='pacl',
+    """Design an AguaClara plant's chemical dose controller.
+    
+    Design Inputs:
+        - ``q (float * u.L / u.s)``: Flow rate (required)
+        - ``
+    """
+    def __init__(self, q,
              temp=20 * u.degC,
+             hl = 20 * u.cm,
+             coag_type='pacl',
+             coag_dose_conc_max=2 * u.g / u.L, #What should this default to? -Oliver L., 6 Jun 19
              coag_stock_conc_est=150 * u.g / u.L,
+             coag_stock_min_est_time=1 * u.day,
              chem_tank_vol_supplier=[208.198, 450, 600, 750, 1100, 2500] * u.L,
              chem_tank_dimensions_supplier=[
                  [0.571, 0.851],
@@ -23,12 +38,10 @@ class CDC(object):
                  [1.10, 1.39],
                  [1.55, 1.65]
              ] * u.m,
-             coag_stock_min_est_time=1 * u.day,
              train_n=1,
              coag_sack_mass = 25 * u.kg,
              coag_tube_id = 0.125 * u.inch,
              error_ratio=0.1,
-             hl = 20 * u.cm,
              tube_k = 2):
         self.q = q
 
@@ -107,8 +120,8 @@ class CDC(object):
     @property
     def coag_sack_n(self):
         coag_sack_n = round(
-                self.coag_stock_vol * self.coag_stock_conc_est /
-                self.coag_sack_mass
+                (self.coag_stock_vol * self.coag_stock_conc_est /
+                self.coag_sack_mass).to_base_units()
             )
         return coag_sack_n
     
@@ -120,7 +133,8 @@ class CDC(object):
 
     @property
     def coag_q_max(self):
-        return self.q * self.coag_dose_conc_max / self.coag_stock_vol
+        coag_q_max = self.q * self.coag_dose_conc_max / self.coag_stock_conc
+        return coag_q_max.to(u.L / u.s)
 
     @property
     def coag_stock_time_min(self):
@@ -136,12 +150,13 @@ class CDC(object):
     def _coag_tube_q_max(self):
         """The maximum permissible flow through a coagulant tube."""
         coag_tube_q_max = ((np.pi * self.coag_tube_id ** 2)/4) * \
-            np.sqrt((2 * self.error_ratio * self.hl * con.gravity)/self.tube_k)
+            np.sqrt((2 * self.error_ratio * self.hl * con.GRAVITY)/self.tube_k)
         return coag_tube_q_max
     
     @property
     def coag_tubes_active_n(self):
-        coag_tubes_active_n = np.ceil(self.coag_q_max / self._coag_tube_q_max)
+        coag_tubes_active_n = \
+            np.ceil((self.coag_q_max / self._coag_tube_q_max).to_base_units())
         return coag_tubes_active_n
 
     @property
@@ -164,18 +179,18 @@ class CDC(object):
                 8 * self.coag_tube_operating_q_max * self.tube_k /
                 (128 * np.pi * self.coag_stock_nu)
             )
-        return coag_tube_l
+        return coag_tube_l.to_base_units()
 
     @property
     def coag_tank_r(self):
-        index = self.chem_tank_vol_supplier.index(self.coag_stock_vol)
-        coag_tank_r = self.chem_tank_dimensions_supplier[index][0] / 2
+        index = np.where(self.chem_tank_vol_supplier == self.coag_stock_vol)
+        coag_tank_r = self.chem_tank_dimensions_supplier[0][index] / 2
         return coag_tank_r
         
     @property
     def coag_tank_h(self):
-        index = self.chem_tank_vol_supplier.index(self.coag_stock_vol)
-        coag_tank_h = self.chem_tank_dimensions_supplier[index][1]
+        index = np.where(self.chem_tank_vol_supplier == self.coag_stock_vol)
+        coag_tank_h = self.chem_tank_dimensions_supplier[1][index]
         return coag_tank_h
 
     def _DiamTubeAvail(self, en_tube_series = True):
@@ -185,23 +200,6 @@ class CDC(object):
             return (1/16)*u.inch
 
 
-# testing
-FlowPlant = 100*u.L/u.s
-DiamTubeAvail = np.array(np.arange(1/16,6/16,1/16))*u.inch
-temp = u.Quantity(20,u.degC)
-HeadlossCDC = 20*(u.cm)
-ConcStock = 51.4*(u.gram/u.L)
-ConcDoseMax = 2*(u.mg/u.L)
-LenCDCTubeMax = 4 * u.m
-en_chem = 2
-KMinor = 2
-Ratio_Error=0.1
-x=len_cdc_tube(FlowPlant, ConcDoseMax, ConcStock,
-                 DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp,
-                 en_chem, KMinor)
-#print(x)
-#print(diam_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp, en_chem, KMinor).to(u.inch))
-#print(n_cdc_tube(FlowPlant, ConcDoseMax, ConcStock, DiamTubeAvail, HeadlossCDC, LenCDCTubeMax, temp, en_chem, KMinor))
 LEVER_ARM_L = 0.5 * u.m
 LEVER_CYLINDER_1_D = 1 * u.inch
 LEVER_CYLINDER_4_D = 2 * u.inch
