@@ -12,9 +12,26 @@ from scipy import interpolate, integrate
 
 gravity = con.GRAVITY
 
+######################Air################################
+def density_air(Pressure, MolarMass, Temperature):
+    """Return the density of the air.
+
+    :param Pressure: pressure of the air in the system
+    :type Pressure: float
+    :param MolarMass: molar mass of the air in the system
+    :type MolarMass: float
+    :param Temperature: Temperature of the air in the system
+    :type Temperature: float
+
+    :return: density of the air in the system
+    :rtype: float
+    """
+    return (Pressure * MolarMass / (u.R * Temperature)).to(u.kg/u.m**3)
+
 ###################### Simple geometry ######################
 """A few equations for useful geometry.
-Is there a geometry package that we should be using?"""
+Is there a geometry package that we should be using?
+"""
 
 @u.wraps(u.m**2, u.m, False)
 def area_circle(DiamCircle):
