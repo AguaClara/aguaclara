@@ -142,6 +142,9 @@ class EntranceTank(object):
             (self.lfom_nd * 2)
         return l
 
+
+# TODO: remove unnecessary constants below.
+
 # Angle of the sloped walls of the entrance tank hoppers
 ENT_TANK_SLOPE_ANGLE = 45 * u.deg
 
