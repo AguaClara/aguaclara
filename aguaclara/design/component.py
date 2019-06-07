@@ -1,38 +1,85 @@
-class SharedConfig(object):
+"""This module provides compositional component classes the ability to propogate
+plant-wide design inputs throughout all of its subcomponents.
+
+Since it becomes tedious to pass said plant-wide design inputs manually to each
+subcomponent, this module creates a cache-like data structure that allows a
+component and all of its subcomponents to access a set of shared inputs.
+
+Example:
+    from aguaclara.design.component import *
+    
+    class SubComponent(Component):
+        def __init__(self, pi=PlantInput(),
+                     h=3 * u.m):
+            super().__init__(pi = pi)
+            self.h = h
+
+    class MainComponent(Component):
+        def __init__(self, pi=PlantInput(),
+                     l=2 * u.m,
+                     sub=SubComponent()):
+            super().__init__(pi = pi)
+            self.l = l
+
+            super().propogate_config([self.sub])
+"""
+from aguaclara.core.units import unit_registry as u
+
+class PlantInput(object):
+    """Represents the design inputs that are shared between all components
+    of an AguaClara water treatment plant.
+    
+    Attributes:
+        - ``configs ({string: PlantInput})``: A dictionary mapping the hexcode
+          memory locations of component objects to their plant design inputs.
+
+    Args:
+        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20 l/s)
+        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
+          20°C)
+    """
     configs = {}
 
-    def __init__(self, q):
+    def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC):
         self.q = q
-        
-class SubComponent(object):
-
-    def __init__(self, q = 20, foo = "bar"):
-        configs = SharedConfig.configs
-        hex_code = hex(id(self))
-        
-        if hex_code not in configs:
-            configs[hex_code] = SharedConfig(q)
-
-        self.foo = foo
-
-    @property
-    def q(self):
-        return SharedConfig.configs[hex(id(self))].q
+        self.temp = temp
         
 class Component(object):
+    """An abstract class that should be extended by other component classes.
 
-    def __init__(self, q = 20, sub = SubComponent()):
-        configs = SharedConfig.configs
-        hex_code = hex(id(self))
+    This class provides the ability to record and propogate a configuration of
+    plant design variables for a component and all of its subcomponents.
 
-        if hex_code not in configs:
-            configs[hex_code] = SharedConfig(q)
-            
-        hex_code_sub = hex(id(sub))
-        configs[hex_code_sub] = configs[hex_code]
+    Args:
+        - ``pi (PlantInput)``: The shared plant design inputs for a component
+          object
+    """
 
-        self.sub = sub
+    def __init__(self, pi = PlantInput()):
+        self.mem_loc = hex(id(self))
+
+        if self.mem_loc not in PlantInput.configs:
+            PlantInput.configs[self.mem_loc] = pi
 
     @property
     def q(self):
-        return SharedConfig.configs[hex(id(self))].q
+        """The flow rate. (L/s)"""
+        return PlantInput.configs[self.mem_loc].q
+    
+    @property
+    def temp(self):
+        """The water temperature. (°C)"""
+        return PlantInput.configs[self.mem_loc].temp
+
+    def propogate_config(self, subcomponents):
+        """Propogate the configuration of plant design inputs to all
+        subcomponents.
+        
+        Args:
+            - ``subcomponents ([Component])``: A list of subcomponents for the
+              Component class.
+        """
+        for subcomp in subcomponents:
+            sub_mem_loc = hex(id(subcomp))
+            PlantInput.configs[sub_mem_loc] = \
+                PlantInput.configs[self.mem_loc]
