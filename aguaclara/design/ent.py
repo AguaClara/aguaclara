@@ -26,8 +26,8 @@ class EntranceTank(object):
     
     An entrance tank's design relies on the LFOM's and flocculator's design in
     the same plant, but assumed/default values may be used to design an
-    entrance tank by itself. To design these components in tandem, use the
-    ``EntTankFloc`` class <add link>.
+    entrance tank by itself. To design these components in tandem, use
+    :class:`aguaclara.design.ent_floc.EntTankFloc`.
 
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (required)
@@ -53,7 +53,7 @@ class EntranceTank(object):
           defaults to 41)  
     """
 
-    def __init__(self, q,
+    def __init__(self,
                  lfom_nd=2.0 * u.inch, # May be innacurate, check with Monroe -Oliver L., oal22, 4 Jun '19 
                  floc_chan_w=42.0 * u.inch,
                  floc_end_depth=2.0 * u.m,
@@ -64,7 +64,7 @@ class EntranceTank(object):
                  fab_space=5.0 * u.cm,
                  temp=20.0 * u.degC,
                  sdr=41.0):
-        self.q = q
+        self.q = SharedConfig._instance.q 
         self.lfom_nd = lfom_nd
         self.floc_chan_w = floc_chan_w
         self.floc_end_depth = floc_end_depth
