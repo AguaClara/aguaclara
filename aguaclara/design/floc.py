@@ -190,6 +190,8 @@ class Flocculator:
         """The number of obstacles per baffle."""
         return self.expansion_n - 1
 
+    # TODO: make a function that calculates the obstacle pipe outer diameter.
+
     @property
     def drain_k(self):
         """The minor loss coefficient of the drain pipe."""
@@ -199,6 +201,7 @@ class Flocculator:
             hl.PIPE_EXIT_K_MINOR
         return drain_K
 
+    #TODO: This is an inner diameter
     @property
     def drain_d(self):
         """The depth of the drain pipe."""

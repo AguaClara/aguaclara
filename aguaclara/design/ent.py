@@ -18,10 +18,12 @@ import aguaclara.core.pipes as pipe
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.utility as ut
 
+from aguaclara.design.component import *
+
 import numpy as np
 
 
-class EntranceTank(object): 
+class EntranceTank(Component): 
     """Design an AguaClara plant's entrance tank.
     
     An entrance tank's design relies on the LFOM's and flocculator's design in
@@ -64,7 +66,7 @@ class EntranceTank(object):
                  fab_space=5.0 * u.cm,
                  temp=20.0 * u.degC,
                  sdr=41.0):
-        self.q = SharedConfig._instance.q 
+        super().__init__()
         self.lfom_nd = lfom_nd
         self.floc_chan_w = floc_chan_w
         self.floc_end_depth = floc_end_depth
