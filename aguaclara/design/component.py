@@ -91,6 +91,11 @@ class Component(object):
             PlantInput.configs[sub_mem_loc] = \
                 PlantInput.configs[self.mem_loc]
 
+    @property
+    def serialize(self):
+        # TODO
+        pass
+
 
 # # With PlantInput
 # from aguaclara.design.component import *
