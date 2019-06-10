@@ -53,13 +53,20 @@ class Component(object):
     Args:
         - ``pi (PlantInput)``: The shared plant design inputs for a component
           object
-    """
+    """                                                                                             
+    # PlantInput implementation
+    # def __init__(self, pi = PlantInput()):
+    #     self.mem_loc = hex(id(self))
 
-    def __init__(self, pi = PlantInput()):
+    #     if self.mem_loc not in PlantInput.configs:
+    #         PlantInput.configs[self.mem_loc] = pi
+
+    # Plant inputs as expert inputs implementation
+    def __init__(self, q=20.0 * u.L/u.s, temp=20.0 * u.degC):
         self.mem_loc = hex(id(self))
 
         if self.mem_loc not in PlantInput.configs:
-            PlantInput.configs[self.mem_loc] = pi
+            PlantInput.configs[self.mem_loc] = PlantInput(q, temp)
 
     @property
     def q(self):
@@ -83,3 +90,40 @@ class Component(object):
             sub_mem_loc = hex(id(subcomp))
             PlantInput.configs[sub_mem_loc] = \
                 PlantInput.configs[self.mem_loc]
+
+
+# # With PlantInput
+# from aguaclara.design.component import *
+
+# class SubComponent(Component):
+#     def __init__(self, pi=PlantInput(),
+#                     h=3 * u.m):
+#         super().__init__(pi = pi)
+#         self.h = h
+
+# class MainComponent(Component):
+#     def __init__(self, pi=PlantInput(),
+#                     l=2 * u.m,
+#                     sub=SubComponent()):
+#         super().__init__(pi = pi)
+#         self.l = l
+
+#         super().propogate_config([self.sub])
+
+# # Without PlantInput
+# from aguaclara.design.component import *
+
+# class SubComponent(Component):
+#     def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
+#                     h=3 * u.m):
+#         super().__init__(q = q, temp = temp)
+#         self.h = h
+
+# class MainComponent(Component):
+#     def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
+#                     l=2 * u.m,
+#                     sub=SubComponent()):
+#         super().__init__(q = q, temp = temp)
+#         self.l = l
+
+#         super().propogate_config([self.sub])

@@ -5,16 +5,20 @@ import aguaclara.core.pipes as pipe
 import aguaclara.core.utility as ut
 import aguaclara.core.drills as drills
 from aguaclara.core.units import unit_registry as u
+from aguaclara.design.component import Component
 import numpy as np
 import math
 
 
-class LFOM:
+class LFOM(Component):
 
-    def __init__(self, q=20*u.L/u.s, hl=20*u.cm, safety_factor=1.5, sdr=26,
-                 drill_bits=drills.DRILL_BITS_D_IMPERIAL, s_orifice=0.5*u.cm):
-
-        self.q = q
+    def __init__(self, q=20 * u.L / u.s, temp=20.0 * u.degC,
+                 hl=20 * u.cm,
+                 safety_factor=1.5,
+                 sdr=26,
+                 drill_bits=drills.DRILL_BITS_D_IMPERIAL,
+                 s_orifice=0.5 * u.cm):
+        super().__init__(q = q, temp = temp)
         self.hl = hl
         self.safety_factor = safety_factor
         self.sdr = sdr

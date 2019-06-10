@@ -18,7 +18,7 @@ import aguaclara.core.pipes as pipe
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.utility as ut
 
-from aguaclara.design.component import *
+from aguaclara.design.component import Component
 
 import numpy as np
 
@@ -55,7 +55,7 @@ class EntranceTank(Component):
           defaults to 41)  
     """
 
-    def __init__(self,
+    def __init__(self, q = 20.0 * u.L/u.s, temp = 20.0 * u.degC,
                  lfom_nd=2.0 * u.inch, # May be innacurate, check with Monroe -Oliver L., oal22, 4 Jun '19 
                  floc_chan_w=42.0 * u.inch,
                  floc_end_depth=2.0 * u.m,
@@ -64,9 +64,9 @@ class EntranceTank(Component):
                  plate_angle = 50.0 * u.deg,
                  plate_capture_vel = 8.0 * u.mm / u.s,
                  fab_space=5.0 * u.cm,
-                 temp=20.0 * u.degC,
                  sdr=41.0):
-        super().__init__()
+        super().__init__(q = q, temp = temp)
+
         self.lfom_nd = lfom_nd
         self.floc_chan_w = floc_chan_w
         self.floc_end_depth = floc_end_depth

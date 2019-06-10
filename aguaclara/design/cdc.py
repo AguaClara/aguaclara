@@ -12,18 +12,18 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.utility as ut
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
+from aguaclara.design.component import Component
 
 import numpy as np
 
-class CDC(object):
+class CDC(Component):
     """Design an AguaClara plant's chemical dose controller.
     
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (required)
         - ``
     """
-    def __init__(self, q,
-             temp=20 * u.degC,
+    def __init__(self, q=20.0 * u.L/u.s, temp=20 * u.degC,
              hl = 20 * u.cm,
              coag_type='pacl',
              coag_dose_conc_max=2 * u.g / u.L, #What should this default to? -Oliver L., 6 Jun 19
@@ -43,13 +43,11 @@ class CDC(object):
              coag_tube_id = 0.125 * u.inch,
              error_ratio=0.1,
              tube_k = 2):
-        self.q = q
 
+        super().__init__(q= q, temp = temp)
         if coag_type.lower() not in ['pacl', 'alum']:
             raise ValueError('coag_type must be either PACl or Alum.')
         self.coag_type = coag_type
-
-        self.temp = temp
         self.coag_dose_conc_max = coag_dose_conc_max
         self.coag_stock_conc_est = coag_stock_conc_est
         self.chem_tank_vol_supplier = chem_tank_vol_supplier

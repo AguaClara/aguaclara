@@ -12,11 +12,12 @@ import aguaclara.design.human_access as ha
 import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipes
 from aguaclara.core.units import unit_registry as u
+from aguaclara.design.component import Component
 
 import numpy as np
 
 
-class Flocculator:
+class Flocculator(Component):
     """Design an AguaClara plant's flocculator.
 
     A flocculator's design relies on the entrance tank's design in the same
@@ -40,17 +41,30 @@ class Flocculator:
           20°C)
         - ``hl (float * u.cm)``: Head loss (optional, defaults to 40cm)
     """
-    def __init__(self, q,
+    # Are the following constants necessary? -Oliver L., oal22, 5 Jun 2019
+
+    # Increased both to provide a safety margin on flocculator head loss and
+    # to simultaneously scale back on the actual collision potential we are
+    # trying to achieve.
+    # Originally calculated to be 2.3 from the equations:
+
+    # K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2
+    BAFFLE_K = 2.5
+    CHANNEL_N_MIN = 2
+    HS_RATIO_MIN = 3.0
+    RATIO_MAX_HS = 6.0
+    SDR = 41.0 # This is an expert input in ent, should this be an expert
+               # input as well? -Oliver L., oal22, 5 Jun 19
+
+    def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
                  ent_l=1.5 * u.m,
-                 chan_w_max=42. * u.inch,
-                 temp=25. * u.degC,
-                 l_max=6. * u.m,
-                 gt=37000.,
-                 hl = 40. * u.cm,
-                 end_water_depth = 2. * u.m,
-                 drain_t=30. * u.min):
-        self.q = q
-        self.temp = temp
+                 chan_w_max=42.0 * u.inch,
+                 l_max=6.0 * u.m,
+                 gt=37000,
+                 hl = 40.0 * u.cm,
+                 end_water_depth = 2.0 * u.m,
+                 drain_t=30.0 * u.min):
+        super().__init__(q = q, temp = temp)
         self.l_max = l_max
         self.gt = gt
         self.hl = hl
