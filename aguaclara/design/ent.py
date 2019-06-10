@@ -21,6 +21,7 @@ import aguaclara.core.utility as ut
 from aguaclara.design.component import Component
 
 import numpy as np
+import json
 
 
 class EntranceTank(Component): 
@@ -74,8 +75,23 @@ class EntranceTank(Component):
         self.plate_angle = plate_angle
         self.plate_capture_vel = plate_capture_vel
         self.fab_space = fab_space
-        self.sdr = sdr
+        self.sdr = sdr 
     
+    def json_serialize(self):
+        #The way to go about it is you first have to put the object into a 
+        # dictionary, this can be done with the function vars, but it doesn't 
+        # add the new properties so we'll need to figure that out. Also, to 
+        # serialize we use json.dumps or dump if we want to put it in a proper 
+        # file. Dumps takes in a dict, so that's why we must convert it first.
+        # Dumps however can't serialize ureg quantities, so we'll have to pretty
+        # print those before we put it in the dictionary.
+        #Game Plan
+        #1. turn quantities to strings
+        # 2. make dictionary
+        # 3. add props to dictionary
+        # 4. dump it
+        print(vars)
+
     @property
     def drain_id(self):
         """The inner diameter of the entrance tank drain pipe."""
