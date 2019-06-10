@@ -25,8 +25,17 @@ class Flocculator(Component):
     itself. To design these components in tandem, use 
     :class:`aguaclara.design.ent_floc.EntTankFloc`.
 
+    Attributes:
+        - ``BAFFLE_K (float)``: Minor loss coefficient around a baffle edge
+        - ``CHAN_N_MIN (int)``: Minimum channel number
+        - ``HS_RATIO_MIN (float)``: Minimum H/S ratio
+        - ``HS_RATIO_MAX (float)``: Maximum H/S ratio
+        - ``SDR (float)``: Standard dimension ratio
+
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (required)
+        - ``temp (float * u.degC)``: Water temperature (optional, defaults to
+          20°C)
         - ``ent_l (float * u.m)``: Entrance tank length
           (recommmended, defaults to 1.5m)
         - ``chan_w_max (float * u.inch)``: Maximum width (optional, defaults to
@@ -37,11 +46,9 @@ class Flocculator(Component):
         - ``drain_t (float * u.min)``: Drain time (optional, 
           defaults to 30 mins)
         - ``gt (float)``: Collision potential (optional, defaults to 37000)
-        - ``temp (float * u.degC)``: Water temperature (optional, defaults to
-          20°C)
         - ``hl (float * u.cm)``: Head loss (optional, defaults to 40cm)
     """
-    # Are the following constants necessary? -Oliver L., oal22, 5 Jun 2019
+    # Should the following constants be expert inputs? -Oliver L., oal22, 5 Jun 2019
 
     # Increased both to provide a safety margin on flocculator head loss and
     # to simultaneously scale back on the actual collision potential we are
@@ -50,9 +57,9 @@ class Flocculator(Component):
 
     # K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2
     BAFFLE_K = 2.5
-    CHANNEL_N_MIN = 2
+    CHAN_N_MIN = 2
     HS_RATIO_MIN = 3.0
-    RATIO_MAX_HS = 6.0
+    HS_RATIO_MAX = 6.0
     SDR = 41.0 # This is an expert input in ent, should this be an expert
                # input as well? -Oliver L., oal22, 5 Jun 19
 
@@ -170,7 +177,7 @@ class Flocculator(Component):
                             (self.vel_grad_avg ** 2)
                         )
                     ) *
-                    (self.q * self.RATIO_MAX_HS / self.chan_w) ** 3
+                    (self.q * self.HS_RATIO_MAX / self.chan_w) ** 3
                 ) ** (1/4)
             ).to(u.m)
         return expansion_h_max

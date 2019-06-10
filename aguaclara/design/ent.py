@@ -32,8 +32,10 @@ class EntranceTank(Component):
     :class:`aguaclara.design.ent_floc.EntTankFloc`.
 
     Design Inputs:
-        - ``q (float * u.L / u.s)``: Flow rate (required)
-        - ``lfom_id (float * u.inch)``: The LFOM's inner diameter (recommended,
+        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
+        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
+          20°C)
+        - ``lfom_nd (float * u.inch)``: The LFOM's nominal diameter (recommended,
           defaults to 2")
         - ``floc_chan_w (float * u.inch)``: The flocculator's channel width
           (recommended, defaults to 42")
@@ -48,9 +50,7 @@ class EntranceTank(Component):
         - ``plate_capture_vel (float * u.mm / u.s)``: The capture velocity of the 
           plate settler (optional, defaults to 8m/s)
         - ``fab_space (float * u.cm)``: The space needed for a person to remove 
-          the drain pipe (optional, defaults to 5cm) 
-        - ``temp (float * u.degC)``: Water temperature (optional,
-          defaults to 20 degrees celsius) 
+          the drain pipe (optional, defaults to 5cm)
         - ``sdr (float)``: Standard demension ratio (optional,
           defaults to 41)  
     """
@@ -66,7 +66,6 @@ class EntranceTank(Component):
                  fab_space=5.0 * u.cm,
                  sdr=41.0):
         super().__init__(q = q, temp = temp)
-
         self.lfom_nd = lfom_nd
         self.floc_chan_w = floc_chan_w
         self.floc_end_depth = floc_end_depth
@@ -75,7 +74,6 @@ class EntranceTank(Component):
         self.plate_angle = plate_angle
         self.plate_capture_vel = plate_capture_vel
         self.fab_space = fab_space
-        self.temp = temp
         self.sdr = sdr
     
     @property
