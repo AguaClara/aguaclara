@@ -243,19 +243,19 @@ class Flocculator(Component):
         drain_ND = pipes.ND_SDR_available(self.drain_d, self.SDR)
         return drain_ND
 
-    @property
-    def design(self):
-        """The designed values."""
-        floc_dict = {'channel_n': self.chan_n,
-                     'channel_L': self.chan_l,
-                     'channel_W': self.chan_w,
-                     'baffle_S': self.baffle_s,
-                     'obstacle_n': self.obstacle_n,
-                     'G': self.vel_grad_avg,
-                     't': self.retention_time,
-                     'expansion_max_H': self.expansion_h_max,
-                     'drain_ND': self.drain_nd}
-        return floc_dict
+    # @property
+    # def design(self):
+    #     """The designed values."""
+    #     floc_dict = {'channel_n': self.chan_n,
+    #                  'channel_L': self.chan_l,
+    #                  'channel_W': self.chan_w,
+    #                  'baffle_S': self.baffle_s,
+    #                  'obstacle_n': self.obstacle_n,
+    #                  'G': self.vel_grad_avg,
+    #                  't': self.retention_time,
+    #                  'expansion_max_H': self.expansion_h_max,
+    #                  'drain_ND': self.drain_nd}
+    #     return floc_dict
 
     def draw(self):
         """Draw the Onshape flocculator model based off of this object."""

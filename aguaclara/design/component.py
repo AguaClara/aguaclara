@@ -24,6 +24,8 @@ Example:
             super().propogate_config([self.sub])
 """
 from aguaclara.core.units import unit_registry as u
+import numpy as np
+import json 
 
 class PlantInput(object):
     """Represents the design inputs that are shared between all components
@@ -90,12 +92,51 @@ class Component(object):
             sub_mem_loc = hex(id(subcomp))
             PlantInput.configs[sub_mem_loc] = \
                 PlantInput.configs[self.mem_loc]
+    
+    def array_qtys_to_strs(self, lst):
+        """Convert Pint quantities in a NumPy array to strings.
+        
+        Args:
+            - ``lst (numpy.ndarray Quantity)``: a list of values that has a Pint
+              unit attached to it
+        """
+        return [str(value) for value in lst]
 
-    @property
-    def serialize(self):
-        # TODO
-        pass
+    def serialize_properties(self):
+        """Convert the properties (fields and ``@property`` functions) of a 
+        component into a dictionary.
+        """
+        properties = {}
+        built_in_properties = [
+            '__dict__',
+            '__doc__',
+            '__module__',
+            '__weakref__',
+            'mem_loc'
+        ]
+        for var_name in dir(self):
+            value = getattr(self, var_name)
+            if isinstance(value, Component):
+                properties[var_name] = value.serialize_properties()
+            elif not callable(value) and var_name not in built_in_properties:
+                try: 
+                    if type(value.magnitude) is np.ndarray:
+                        properties[var_name] = self.array_qtys_to_strs(value)
+                    else:
+                        properties[var_name] = str(value)
+                except: 
+                    properties[var_name] = str(value)
+        return properties
 
+    def write_properties_to_file(self, filename):
+        """Append the properties of a component to a file. If it does not exist,
+        then the file is created.
+        
+        Args:
+            - ``filename (str)``: The name of the file
+        """
+        json.dump(self.serialize_properties(), open(filename, mode='a'),
+            indent = 4)
 
 # # With PlantInput
 # from aguaclara.design.component import *
