@@ -10,20 +10,10 @@ Example:
     >>> etf.ent.l
     1.403 meter
 """
-from aguaclara.core.units import unit_registry as u
-import aguaclara.core.physchem as pc
-import aguaclara.core.constants as con
-import aguaclara.core.materials as mat
-import aguaclara.core.pipes as pipe
-import aguaclara.core.head_loss as hl
-from aguaclara.core import drills
+from aguaclara.design.ent import *
+from aguaclara.design.lfom import *
+from aguaclara.design.floc import *
 
-from aguaclara.design.ent import EntranceTank
-from aguaclara.design.lfom import LFOM
-from aguaclara.design.floc import Flocculator
-from aguaclara.design.component import Component
-
-import numpy as np
 
 class EntTankFloc(Component):
     """Design an AguaClara plant's entrance tank/flocculator assembly.

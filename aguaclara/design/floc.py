@@ -243,20 +243,6 @@ class Flocculator(Component):
         drain_ND = pipes.ND_SDR_available(self.drain_d, self.SDR)
         return drain_ND
 
-    # @property
-    # def design(self):
-    #     """The designed values."""
-    #     floc_dict = {'channel_n': self.chan_n,
-    #                  'channel_L': self.chan_l,
-    #                  'channel_W': self.chan_w,
-    #                  'baffle_S': self.baffle_s,
-    #                  'obstacle_n': self.obstacle_n,
-    #                  'G': self.vel_grad_avg,
-    #                  't': self.retention_time,
-    #                  'expansion_max_H': self.expansion_h_max,
-    #                  'drain_ND': self.drain_nd}
-    #     return floc_dict
-
     def draw(self):
         """Draw the Onshape flocculator model based off of this object."""
         from onshapepy import Part
@@ -271,17 +257,3 @@ class Flocculator(Component):
             'baffle_S': self.baffle_s,
         }
 
-# TODO: remove unnecessary constants below.
-
-# Ratio of the width of the gap between the baffle and the wall and the spacing
-# between the baffles.
-BAFFLE_RATIO = 1
-DRAIN_TIME = 15 * u.min
-MOD_ND = 0.5 * u.inch
-SPACER_ND = 0.75 * u.inch
-MOD_EDGE_LAST_PIPE_S = 10 * u.cm
-
-# Height that the drain stub extends above the top of the flocculator wall
-DRAIN_STUB_EXT_H = 0 * u.cm
-MOD_PIPE_EDGE_S = 10 * u.cm
-BAFFLE_THICKNESS = 2 * u.mm
