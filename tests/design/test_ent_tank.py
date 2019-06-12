@@ -1,7 +1,7 @@
 from aguaclara.design.ent import EntranceTank
 from aguaclara.core.units import unit_registry as u
 
-import pytest
+import unittest
 
 class EntranceTankTest(unittest.TestCase):
     def setUp(self):

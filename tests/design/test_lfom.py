@@ -2,6 +2,7 @@ from aguaclara.design.lfom import LFOM
 from aguaclara.core.units import unit_registry as u
 
 import pytest
+import numpy as np
 
 
 @pytest.fixture()
@@ -12,7 +13,7 @@ def lfom():
     )
 
 def test_stout_w_per_flow(lfom):
-    assert lfom.stout_w_per_flow(10 * u.cm) ==
+    assert lfom.stout_w_per_flow(10 * u.cm) == \
            2.4051545209289267 * u.s / u.m ** 2
 
 def test_n_rows(lfom):
