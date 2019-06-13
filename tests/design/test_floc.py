@@ -1,3 +1,5 @@
+#TODO: Add testing for obstacle_pipe_od
+
 from aguaclara.design.floc import Flocculator
 from aguaclara.core.units import unit_registry as u
 
@@ -43,3 +45,4 @@ def test_baffle_s(floc):
 
 def test_obstacle_n(floc):
     assert floc.obstacle_n == 1
+
