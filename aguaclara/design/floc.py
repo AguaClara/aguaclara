@@ -223,6 +223,20 @@ class Flocculator(Component):
         """The number of obstacles per baffle."""
         return self.end_water_depth / self.expansion_h - 1
 
+    @property
+    def contraction_s(self):
+        return self.baffle_s * 0.6
+
+    @property
+    def obstacle_pipe_od(self):
+        pipe_od = pipes.od_available(self.contraction_s)
+
+        if pipe_od > 1.5 * u.inch:
+            pipe_od = pipes.od_available(pipe_od / 2)
+
+        return pipe_od
+        
+
     # TODO: make a function that calculates the obstacle pipe outer diameter.
 
     @property
@@ -234,12 +248,11 @@ class Flocculator(Component):
             hl.PIPE_EXIT_K_MINOR
         return drain_K
 
-    #TODO: This is an inner diameter
     @property
-    def drain_d(self):
+    def drain_id(self):
         """The depth of the drain pipe."""
         chan_pair_a = 2 * self.chan_l * self.chan_w
-        drain_D = (
+        drain_id = (
                 np.sqrt(8 * chan_pair_a / (np.pi * self.drain_t) *
                     np.sqrt(
                         self.end_water_depth * self.drain_k /
@@ -247,12 +260,12 @@ class Flocculator(Component):
                     )
                 )
             ).to_base_units()
-        return drain_D
+        return drain_id
 
     @property
     def drain_nd(self):
         """The diameter of the drain pipe."""
-        drain_ND = pipes.ND_SDR_available(self.drain_d, self.SDR)
+        drain_ND = pipes.ND_SDR_available(self.drain_id, self.SDR)
         return drain_ND
 
     def draw(self):
