@@ -212,13 +212,16 @@ class Flocculator(Component):
         return self.expansion_n - 1
 
     @property
+    def contraction_s(self):
+        return self.baffle_s * 0.6
+
+    @property
     def obstacle_pipe_od(self):
-        contraction_s = self.baffle_s * 0.6
-        pipe_od = pipes.od_available(contraction_s)
+        pipe_od = pipes.od_available(self.contraction_s)
 
         if pipe_od > 1.5 * u.inch:
             pipe_od = pipes.od_available(pipe_od / 2)
-            
+
         return pipe_od
         
 
