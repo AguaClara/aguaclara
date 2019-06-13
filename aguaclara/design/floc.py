@@ -96,6 +96,7 @@ class Flocculator(Component):
         return retention_time
 
     @property
+    # Why is retention time and q are being multiplied, time over q?
     def vol(self):
         """The target volume (not counting the volume added by head loss)."""
         return (self.q * self.retention_time).to(u.m ** 3)
@@ -116,52 +117,60 @@ class Flocculator(Component):
         return w_min_hs_ratio
 
     @property
+    def w_tot(self):
+        return self.vol / (self.end_water_depth * self.chan_l)
+    
+    @property
+    def w_min(self):
+        return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN)
+
+    @property
     def chan_n(self):
         """The minimum number of channels based on the maximum
         possible channel width and the maximum length of the channels.
         """
-        hydraulic_w_min =np.amax(np.array([
-                1, 
-                (self.chan_w_max/self.w_min_hs_ratio).to(u.dimensionless)
-            ])) * self.w_min_hs_ratio
-        chan_n = 2 * np.ceil(
-                (
-                    (self.vol / 
-                        (hydraulic_w_min * self.end_water_depth) + self.ent_l) /
-                    (2 * self.l_max)
-                ).to(u.dimensionless)
-            )
+        chan_n = self.w_tot / self.w_min
         return chan_n
-
+        
     @property
     def chan_w(self):
         """The minimum and hence optimal channel width."""
-        chan_est_W = (
-                self.vol / (
-                    self.end_water_depth *
-                    (self.chan_n * self.l_max - self.ent_l)
-                )
-            ).to(u.m)
-        # The channel may need to wider than the width that would get the exact required volume.
-        # In that case we will need to shorten the flocculator
-        chan_W = np.amax(
-                np.array([
-                    1,
-                    (ha.HUMAN_W_MIN/chan_est_W).to(u.dimensionless),
-                    (self.w_min_hs_ratio/chan_est_W).to(u.dimensionless)
-                ])
-            ) * chan_est_W
-        return chan_W
+        # chan_est_W = (
+        #         self.vol / (
+        #             self.end_water_depth *
+        #             (self.chan_n * self.l_max - self.ent_l)
+        #         )
+        #     ).to(u.m)
+
+        # print("chan_est_W", chan_est_W)
+        # # The channel may need to wider than the width that would get the exact required volume.
+        # # In that case we will need to shorten the flocculator
+        # chan_W = np.amax(
+        #         np.array([
+        #             1,
+        #             (ha.HUMAN_W_MIN/chan_est_W).to(u.dimensionless),
+        #             (self.w_min_hs_ratio/chan_est_W).to(u.dimensionless)
+        #         ])
+        #     ) * chan_est_W
+        chan_w = self.w_tot / self.chan_n
+        return chan_w
+
+    @property
+    def l_max_vol(self):
+        l_max_vol = self.vol / \
+            (self.CHAN_N_MIN * ha.HUMAN_W_MIN * self.end_water_depth)
+        return l_max_vol
 
     @property
     def chan_l(self):
         """The channel length."""
-        chan_l = (
-                (
-                    self.vol / (self.chan_w * self.end_water_depth) +
-                    self.ent_l
-                ) / self.chan_n
-            ).to(u.m)
+        # chan_l = (
+        #         (
+        #             self.vol / (self.chan_w * self.end_water_depth) +
+        #             self.ent_l
+        #         ) / self.chan_n
+        #     ).to(u.m)
+        chan_l = min(self.l_max, self.l_max_vol)
         return chan_l
 
     @property
@@ -180,6 +189,9 @@ class Flocculator(Component):
                     (self.q * self.HS_RATIO_MAX / self.chan_w) ** 3
                 ) ** (1/4)
             ).to(u.m)
+
+        expansion_h_max = (((self.BAFFLE_K/ (2 * pc.viscosity_kinematic(self.temp) * self.vel_grad_avg **2)) * \
+             (((self.q * self.HS_RATIO_MAX)/ self.chan_w) ** 3)) ** (1/4)).to(u.m)
         return expansion_h_max
 
     @property
@@ -209,7 +221,7 @@ class Flocculator(Component):
     @property
     def obstacle_n(self):
         """The number of obstacles per baffle."""
-        return self.expansion_n - 1
+        return self.end_water_depth / self.expansion_h - 1
 
     # TODO: make a function that calculates the obstacle pipe outer diameter.
 
