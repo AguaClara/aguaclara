@@ -5,7 +5,7 @@ water level within the entrance tank.
 Example:
     >>> from aguaclara.design.lfom import *
     >>> lfom = LFOM(q = 20 * u.L / u.s, hl = 20 * u.cm,...)
-    >>> lfom.n_rows
+    >>> lfom.row_n
     6
 """
 import aguaclara.core.constants as con
@@ -32,7 +32,7 @@ class LFOM(Component):
         - ``sdr (float)``: Standard dimension ratio (optional, defaults to 26)
         - ``drill_bits (float * u.inch array)``: List of drill bits 
           (optional) 
-        - ``s_orifice (float * u.cm)``: The spacing between orifices (optional, 
+        - ``orifice_s (float * u.cm)``: The spacing between orifices (optional, 
           defaults to 0.5cm)
     """
     def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
@@ -40,32 +40,36 @@ class LFOM(Component):
                  safety_factor=1.5,
                  sdr=26.0,
                  drill_bits=drills.DRILL_BITS_D_IMPERIAL,
-                 s_orifice=0.5 * u.cm):
+                 orifice_s=0.5 * u.cm):
         super().__init__(q = q, temp = temp)
         self.hl = hl
         self.safety_factor = safety_factor
         self.sdr = sdr
         self.drill_bits = drill_bits
-        self.s_orifice = s_orifice
+        self.orifice_s = orifice_s
 
-    def stout_w_per_flow(self, z):
-        """The width of a stout weir at elevation z."""
-        w_per_flow = 2 / ((2 * pc.gravity * z) ** (1 / 2) *
+    def stout_w_per_flow(self, h):
+        """The width of a stout weir at a given elevation.
+        
+        Args:
+            - ``h (float * u.m)
+        """
+        w_per_flow = 2 / ((2 * pc.gravity * h) ** (1 / 2) *
                           con.VC_ORIFICE_RATIO * np.pi * self.hl)
         return w_per_flow.to_base_units()
 
     @property
-    def n_rows(self):
+    def row_n(self):
         """ The number of rows."""
         N_estimated = (self.hl * np.pi / (2 * self.stout_w_per_flow(self.hl) * \
              self.q)).to(u.dimensionless)
-        variablerow = min(10, max(4, math.trunc(N_estimated.magnitude)))
-        return variablerow
+        row_n = min(10, max(4, math.trunc(N_estimated.magnitude)))
+        return row_n
 
     @property
-    def b_rows(self):
+    def row_b(self):
         """The distance center to center between each row of orifices."""
-        return self.hl / self.n_rows
+        return self.hl / self.row_n
 
     @property
     def vel_critical(self):
@@ -75,104 +79,105 @@ class LFOM(Component):
             (1 / 2)).to(u.m/u.s)
 
     @property
-    def area_pipe_min(self):
+    def pipe_a_min(self):
         """The minimum cross-sectional area of the LFOM pipe assuring
         a safety factor."""
         return (self.safety_factor * self.q / self.vel_critical).to(u.cm**2)
 
     @property
-    def nom_diam_pipe(self):
+    def pipe_nd(self):
         """The nominal diameter of the LFOM pipe"""
-        ID = pc.diam_circle(self.area_pipe_min)
+        ID = pc.diam_circle(self.pipe_a_min)
         return pipe.ND_SDR_available(ID, self.sdr)
 
     @property
-    def area_top_orifice(self):
+    def top_row_orifice_a(self):
         """The orifice area corresponding to the top row of orifices."""
         # Calculate the center of the top row:
-        z = self.hl - 0.5 * self.b_rows
+        z = self.hl - 0.5 * self.row_b
         # Multiply the stout weir width by the height of one row.
-        return self.stout_w_per_flow(z) * self.q * self.b_rows
+        return self.stout_w_per_flow(z) * self.q * self.row_b
 
     @property
-    def d_orifice_max(self):
+    def orifice_d_max(self):
         """The maximum orifice diameter."""
-        return pc.diam_circle(self.area_top_orifice)
+        return pc.diam_circle(self.top_row_orifice_a)
 
     @property
-    def orifice_diameter(self):
+    def orifice_d(self):
         """The actual orifice diameter."""
-        maxdrill = min(self.b_rows, self.d_orifice_max)
+        maxdrill = min(self.row_b, self.orifice_d_max)
         return ut.floor_nearest(maxdrill, self.drill_bits)
 
     @property
-    def drillbit_area(self):
+    def drill_bit_a(self):
         """The area of the actual drill bit."""
-        return pc.area_circle(self.orifice_diameter)
+        return pc.area_circle(self.orifice_d)
 
     @property
-    def n_orifices_per_row_max(self):
+    def orifice_n_max_per_row(self):
         """The max number of orifices allowed in each row."""
-        c = math.pi * pipe.ID_SDR(self.nom_diam_pipe, self.sdr)
-        b = self.orifice_diameter + self.s_orifice
+        c = math.pi * pipe.ID_SDR(self.pipe_nd, self.sdr)
+        b = self.orifice_d + self.orifice_s
 
         return math.floor(c/b)
 
     @property
-    def flow_ramp(self):
+    def q_per_row(self):
         """An array of flow at each row."""
-        return np.linspace(1 / self.n_rows, 1, self.n_rows)*self.q
+        return np.linspace(1 / self.row_n, 1, self.row_n)*self.q
 
     @property
-    def height_orifices(self):
+    def orifice_h_per_row(self):
         """The height of the center of each row of orifices."""
-        height_orifices = (np.linspace(0, self.n_rows - 1, self.n_rows)) * \
-            self.b_rows + 0.5 * self.orifice_diameter
+        height_orifices = (np.linspace(0, self.row_n - 1, self.row_n)) * \
+            self.row_b + 0.5 * self.orifice_d
         return height_orifices
 
-    def flow_actual(self, Row_Index_Submerged, N_LFOM_Orifices):
-        """The flow for a given number of submerged rows of orifices
-        harray is the distance from the water level to the center of the
-        orifices when the water is at the max level."""
-
-        flow = 0
-        for i in range(Row_Index_Submerged + 1):
-            flow = flow + (N_LFOM_Orifices[i] * (
-               pc.flow_orifice_vert(self.orifice_diameter,
-                                    self.b_rows*(Row_Index_Submerged + 1)
-                                    - self.height_orifices[i],
+    def q_submerged(self, row_n, orifice_n_per_row):
+        """The flow rate through some number of submerged rows.
+        
+        Args:
+            - ``row_n``: Number of submerged rows
+        """
+        flow = 0 * u.L / u.s
+        for i in range(row_n):
+            flow = flow + (orifice_n_per_row[i] * (
+               pc.flow_orifice_vert(self.orifice_d,
+                                    self.row_b*(row_n + 1)
+                                    - self.orifice_h_per_row[i],
                                     con.VC_ORIFICE_RATIO)))
-        return flow
+        return flow.to(u.L / u.s)
 
     @property
-    def n_orifices_per_row(self):
+    def orifice_n_per_row(self):
         """The number of orifices at each level."""
         # H is distance from the bottom of the next row of orifices to the
         # center of the current row of orifices
-        H = self.b_rows - 0.5*self.orifice_diameter
-        flow_per_orifice = pc.flow_orifice_vert(self.orifice_diameter, H,
+        h = self.row_b - 0.5*self.orifice_d
+        flow_per_orifice = pc.flow_orifice_vert(self.orifice_d, h,
          con.VC_ORIFICE_RATIO)
-        n = np.zeros(self.n_rows)
-        for i in range(self.n_rows):
+        n = np.zeros(self.row_n)
+        for i in range(self.row_n):
             # calculate the ideal number of orifices at the current row without
             # constraining to an integer
-            flow_needed = self.flow_ramp[i] - self.flow_actual(i, n)
+            flow_needed = self.q_per_row[i] - self.q_submerged(i, n)
             n_orifices_real = (flow_needed / \
                 flow_per_orifice).to(u.dimensionless)
             # constrain number of orifices to be less than the max per row and
             # greater or equal to 0
             n[i] = min((max(0, round(n_orifices_real))),
-             self.n_orifices_per_row_max)
+             self.orifice_n_max_per_row)
         return n
 
     @property
     def error_per_row(self):
         """The error of the design based off the predicted flow rate and 
         the actual flow rate."""
-        FLOW_lfom_error = np.zeros(self.n_rows)
-        for i in range(self.n_rows):
-            actual_flow = self.flow_actual(i, self.n_orifices_per_row)
-            FLOW_lfom_error[i] = (((actual_flow - self.flow_ramp[i]) / \
-                 self.flow_ramp[i]).to(u.dimensionless)).magnitude
-        return FLOW_lfom_error
+        q_error = np.zeros(self.row_n)
+        for i in range(self.row_n):
+            actual_flow = self.q_submerged(i, self.orifice_n_per_row)
+            q_error[i] = (((actual_flow - self.q_per_row[i]) / \
+                 self.q_per_row[i]).to(u.dimensionless)).magnitude
+        return q_error
         

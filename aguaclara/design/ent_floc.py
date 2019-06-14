@@ -79,7 +79,7 @@ class EntTankFloc(Component):
                                 self.ent.plate_thickness,
                                 self.ent.plate_angle,
                                 self.ent.plate_capture_vel,
-                                self.ent.fab_space,
+                                self.ent.fab_s,
                                 self.ent.sdr)
 
         # Recalculate if the actual length of the entrance tank is not close

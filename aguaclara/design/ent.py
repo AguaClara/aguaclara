@@ -49,7 +49,7 @@ class EntranceTank(Component):
           (optional, defaults to 60 degrees)
         - ``plate_capture_vel (float * u.mm / u.s)``: The capture velocity of the 
           plate settler (optional, defaults to 8m/s)
-        - ``fab_space (float * u.cm)``: The space needed for a person to remove 
+        - ``fab_s(float * u.cm)``: The space needed for a person to remove 
           the drain pipe (optional, defaults to 5cm)
         - ``sdr (float)``: Standard demension ratio (optional,
           defaults to 41)  
@@ -63,7 +63,7 @@ class EntranceTank(Component):
                  plate_thickness=2.0 * u.mm,
                  plate_angle = 50.0 * u.deg,
                  plate_capture_vel = 8.0 * u.mm / u.s,
-                 fab_space=5.0 * u.cm,
+                 fab_s=5.0 * u.cm,
                  sdr=41.0):
         super().__init__(q = q, temp = temp)
         self.lfom_nd = lfom_nd
@@ -73,7 +73,7 @@ class EntranceTank(Component):
         self.plate_thickness = plate_thickness
         self.plate_angle = plate_angle
         self.plate_capture_vel = plate_capture_vel
-        self.fab_space = fab_space
+        self.fab_s = fab_s
         self.sdr = sdr 
     
     @property
@@ -133,7 +133,7 @@ class EntranceTank(Component):
             (self.plate_thickness * self.plate_n) + \
             (self.plate_s * (self.plate_n - 1))
             
-        l = self.drain_od + (self.fab_space * 2) + \
+        l = self.drain_od + (self.fab_s * 2) + \
             (
                 plate_array_thickness * np.cos(((90 * u.deg) -
                 self.plate_angle).to(u.rad))
