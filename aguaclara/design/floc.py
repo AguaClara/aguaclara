@@ -31,6 +31,8 @@ class Flocculator(Component):
         - ``HS_RATIO_MIN (float)``: Minimum H/S ratio
         - ``HS_RATIO_MAX (float)``: Maximum H/S ratio
         - ``SDR (float)``: Standard dimension ratio
+        - ``OBSTACLE_OFFSET (bool)``: Whether the baffle obstacles are offset
+          from each other 
 
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (required)
@@ -62,6 +64,7 @@ class Flocculator(Component):
     HS_RATIO_MAX = 6.0
     SDR = 41.0 # This is an expert input in ent, should this be an expert
                # input as well? -Oliver L., oal22, 5 Jun 19
+    OBSTACLE_OFFSET = True
 
     def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
                  ent_l=1.5 * u.m,
@@ -80,6 +83,7 @@ class Flocculator(Component):
         self.chan_w_max = chan_w_max
         self.drain_t = drain_t
 
+
     @property
     def vel_grad_avg(self):
         """The average velocity gradient of water."""
@@ -96,7 +100,6 @@ class Flocculator(Component):
         return retention_time
 
     @property
-    # Why is retention time and q are being multiplied, time over q?
     def vol(self):
         """The target volume (not counting the volume added by head loss)."""
         return (self.q * self.retention_time).to(u.m ** 3)
@@ -130,7 +133,7 @@ class Flocculator(Component):
         possible channel width and the maximum length of the channels.
         """
         chan_n = self.w_tot / self.w_min
-        return chan_n
+        return np.ceil(chan_n.to_base_units())
         
     @property
     def chan_w(self):
@@ -171,7 +174,7 @@ class Flocculator(Component):
         #         ) / self.chan_n
         #     ).to(u.m)
         chan_l = min(self.l_max, self.l_max_vol)
-        return chan_l
+        return chan_l.to_base_units()
 
     @property
     def expansion_h_max(self):
@@ -190,8 +193,8 @@ class Flocculator(Component):
                 ) ** (1/4)
             ).to(u.m)
 
-        expansion_h_max = (((self.BAFFLE_K/ (2 * pc.viscosity_kinematic(self.temp) * self.vel_grad_avg **2)) * \
-             (((self.q * self.HS_RATIO_MAX)/ self.chan_w) ** 3)) ** (1/4)).to(u.m)
+        # expansion_h_max = (((self.BAFFLE_K/ (2 * pc.viscosity_kinematic(self.temp) * self.vel_grad_avg **2)) * \
+        #      (((self.q * self.HS_RATIO_MAX)/ self.chan_w) ** 3)) ** (1/4)).to(u.m)
         return expansion_h_max
 
     @property
@@ -225,19 +228,20 @@ class Flocculator(Component):
 
     @property
     def contraction_s(self):
+        """The space in the baffle by which the flow contracts."""
         return self.baffle_s * 0.6
 
     @property
     def obstacle_pipe_od(self):
+        """The outer diameter of an obstacle pipe. If the available pipe is 
+        greater than 1.5 inches, the obstacle offset will become false."""
         pipe_od = pipes.od_available(self.contraction_s)
 
         if pipe_od > 1.5 * u.inch:
+            self.OBSTACLE_OFFSET = False
             pipe_od = pipes.od_available(pipe_od / 2)
 
         return pipe_od
-        
-
-    # TODO: make a function that calculates the obstacle pipe outer diameter.
 
     @property
     def drain_k(self):
