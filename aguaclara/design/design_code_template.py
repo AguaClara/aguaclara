@@ -1,20 +1,28 @@
 """Welcome to the design code template. This file is meant to teach you how to 
 write AIDE Design Code.
 
+Table of Contents: 
+copy the title name and use find (ctrl+f) to jump to that section 
+	- How to Import
+	- How to name things
+	- How to make a Component
+		- Class Variables
+		- Init functions
+			- init args
+			- super().__init__ purpose
+			- giving fields to object
+			- propogating configurations
+		- property functions
+		- normal functions
+	- How to make a Subcomponent
+	
 These are the imports from other files or python packages that you would want 
 to use in the file.
 """
-import aguaclara.core.constants as con
-import aguaclara.core.drills as drill
-import aguaclara.core.head_loss as hl
-import aguaclara.core.materials as mat
-import aguaclara.core.physchem as pc
-import aguaclara.core.pipes as pipe
-from aguaclara.core.units import unit_registry as u
-import aguaclara.core.utility as ut
 
-from aguaclara.design.component import Component
-
+from aguaclara.core.units import unit_registry as u #Gives python units
+from aguaclara.design.component import Component 	#Allows for the objects to 
+												 	#share q and temp
 import numpy as np
 
 # Naming convention for functions, variables, etc:
@@ -39,10 +47,6 @@ class PressureCooker(Component):
 	them as these inputs have their own default value)
 	Design Inputs:
 	- ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s).
-	- ``temp (float * u.degC)``: Water Temperature (recommended, defaults to 
-	20°C).  
-	- ``rice_and_beans_ratio (float)``: The Monratio (optional, defaults to
-	0.5).
 	- ``<name of input> (<type>)``: <Description> (<default>)
 	"""
 	def __init__(self, q = 20.0 * u.L/u.s, temp = 20.0 * u.degC,
@@ -144,7 +148,7 @@ class Monroe(Component):
     @property
     def h(self):
 		"""The height."""
-		h = self.q * (0.06414368184 * u.s / u.m ** 2)
+		h = self.q * (0.06414368184 * u.s / u.m ** 2) * self.pc.rice_and_beans_ratio
 		return h.to(u.ft)
 
     @property

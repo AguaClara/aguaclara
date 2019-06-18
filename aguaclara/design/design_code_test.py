@@ -1,3 +1,9 @@
+"""Test 1 report
+Test Subject: Nicole Wang
+Score 8/10
+Problems: a whole lot of words, instructions for creating a function too vague 
+"""
+
 """Using the design code template, it is time for you to design your own 
 Oliver!!! In order to make your own Oliver. I will like these certain things:
 	- Class variable for his love of coffee, make it 1000
