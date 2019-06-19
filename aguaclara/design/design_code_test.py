@@ -8,11 +8,12 @@ Problems: a whole lot of words, instructions for creating a function too vague
 Oliver!!! In order to make your own Oliver. I will like these certain things:
 	- Class variable for his love of coffee, make it 1000
 	- His design inputs: q, temp, chromebook(subcomponent), 
-	supression rate(default to 0.7 <choose>), puns per day(choose your own default, make it m/d)
+	supression rate(default to 0.7 <choose>), puns per day(choose your own 
+	default, make it m/d)
 	- Create a property for his love of boba, use q, suppression rate and 
 	love of coffee in calculation 
-	- Create a property olratio, that uses puns per day (extra points if it is 5/7)
-	- Create a function that takes in chance of chromebook failure, and use 
-	Oliver's chromebook fields to tell me how trash his chromebook is
+	- Create a property olratio, that uses puns per day
+	- Create a function that takes in as an arg chromebook_failure_chance, 
+	and use Oliver's chromebook fields to tell me how trash his chromebook is
 	- To Create the chromebook subcomponent, give it the design inputs q, temp, 
 	crashes per day(3 L/d)"""
