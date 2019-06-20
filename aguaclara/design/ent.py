@@ -98,7 +98,8 @@ class EntranceTank(Component):
     @property
     def drain_od(self):
         """The outer diameter of the entrance tank drain pipe."""
-        return pipe.OD(self.drain_nd)
+        drain_pipe = pipe.Pipe(self.drain_nd, self.sdr)
+        return drain_pipe.od
         
     @property
     def plate_n(self):
