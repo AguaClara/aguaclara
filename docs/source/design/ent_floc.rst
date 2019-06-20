@@ -1,3 +1,4 @@
+.. _design-ent-floc:
 Entrance Tank/Flocculator Assembly
 ==================================
 

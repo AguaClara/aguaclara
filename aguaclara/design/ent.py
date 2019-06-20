@@ -1,8 +1,8 @@
 """The entrance tank of an AguaClara water treatment plant
 
 #. removes large grit particles using plate settlers,
-#. contains the LFOM <add link>, which maintains a linear relation between flow and water level, and
-#. introduces chemical dosing through the CDC <add link> using the water level set by the LFOM <add link>.
+#. contains the :ref:`design-lfom`, which maintains a linear relation between flow and water level, and
+#. introduces chemical dosing through the CDC <add link> using the water level set by the :ref:`design-lfom`.
 
 Example:
     >>> from aguaclara.design.ent import *

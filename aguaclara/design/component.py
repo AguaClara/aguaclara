@@ -9,21 +9,22 @@ Example:
     from aguaclara.design.component import *
     
     class SubComponent(Component):
-        def __init__(self, pi=PlantInput(),
+        def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC,
                      h=3 * u.m):
-            super().__init__(pi = pi)
+            super().__init__(q = q, hl = hl)
             self.h = h
 
     class MainComponent(Component):
-        def __init__(self, pi=PlantInput(),
+        def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC,
                      l=2 * u.m,
                      sub=SubComponent()):
-            super().__init__(pi = pi)
+            super().__init__(q = q, hl = hl)
             self.l = l
 
             super().propogate_config([self.sub])
 """
 from aguaclara.core.units import unit_registry as u
+import aguaclara.core.utility as ut
 import numpy as np
 import json 
 
@@ -55,15 +56,7 @@ class Component(object):
     Args:
         - ``pi (PlantInput)``: The shared plant design inputs for a component
           object
-    """                                                                                             
-    # PlantInput implementation
-    # def __init__(self, pi = PlantInput()):
-    #     self.mem_loc = hex(id(self))
-
-    #     if self.mem_loc not in PlantInput.configs:
-    #         PlantInput.configs[self.mem_loc] = pi
-
-    # Plant inputs as expert inputs implementation
+    """
     def __init__(self, q=20.0 * u.L/u.s, temp=20.0 * u.degC):
         self.mem_loc = hex(id(self))
 
@@ -92,15 +85,6 @@ class Component(object):
             sub_mem_loc = hex(id(subcomp))
             PlantInput.configs[sub_mem_loc] = \
                 PlantInput.configs[self.mem_loc]
-    
-    def array_qtys_to_strs(self, lst):
-        """Convert Pint quantities in a NumPy array to strings.
-        
-        Args:
-            - ``lst (numpy.ndarray Quantity)``: a list of values that has a Pint
-              unit attached to it
-        """
-        return [str(value) for value in lst]
 
     def serialize_properties(self):
         """Convert the properties (fields and ``@property`` functions) of a 
@@ -121,7 +105,7 @@ class Component(object):
             elif not callable(value) and var_name not in built_in_properties:
                 try: 
                     if type(value.magnitude) is np.ndarray:
-                        properties[var_name] = self.array_qtys_to_strs(value)
+                        properties[var_name] = ut.array_qtys_to_strs(value)
                     else:
                         properties[var_name] = str(value)
                 except: 
@@ -137,39 +121,3 @@ class Component(object):
         """
         json.dump(self.serialize_properties(), open(filename, mode='a'),
             indent = 4)
-
-# # With PlantInput
-# from aguaclara.design.component import *
-
-# class SubComponent(Component):
-#     def __init__(self, pi=PlantInput(),
-#                     h=3 * u.m):
-#         super().__init__(pi = pi)
-#         self.h = h
-
-# class MainComponent(Component):
-#     def __init__(self, pi=PlantInput(),
-#                     l=2 * u.m,
-#                     sub=SubComponent()):
-#         super().__init__(pi = pi)
-#         self.l = l
-
-#         super().propogate_config([self.sub])
-
-# # Without PlantInput
-# from aguaclara.design.component import *
-
-# class SubComponent(Component):
-#     def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
-#                     h=3 * u.m):
-#         super().__init__(q = q, temp = temp)
-#         self.h = h
-
-# class MainComponent(Component):
-#     def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
-#                     l=2 * u.m,
-#                     sub=SubComponent()):
-#         super().__init__(q = q, temp = temp)
-#         self.l = l
-
-#         super().propogate_config([self.sub])

@@ -1,5 +1,5 @@
 """The Linear Flow Orifice Meter (LFOM) of an AguaClara water treatment plant
-imitates a Sutro Weir and produces a linear relation between flow rate and
+imitates a sutro weir and produces a linear relation between flow rate and
 water level within the entrance tank.
 
 Example:
@@ -93,9 +93,7 @@ class LFOM(Component):
     @property
     def top_row_orifice_a(self):
         """The orifice area corresponding to the top row of orifices."""
-        # Calculate the center of the top row:
         z = self.hl - 0.5 * self.row_b
-        # Multiply the stout weir width by the height of one row.
         return self.stout_w_per_flow(z) * self.q * self.row_b
 
     @property
@@ -152,20 +150,14 @@ class LFOM(Component):
     @property
     def orifice_n_per_row(self):
         """The number of orifices at each level."""
-        # H is distance from the bottom of the next row of orifices to the
-        # center of the current row of orifices
         h = self.row_b - 0.5*self.orifice_d
         flow_per_orifice = pc.flow_orifice_vert(self.orifice_d, h,
          con.VC_ORIFICE_RATIO)
         n = np.zeros(self.row_n)
         for i in range(self.row_n):
-            # calculate the ideal number of orifices at the current row without
-            # constraining to an integer
             flow_needed = self.q_per_row[i] - self.q_submerged(i, n)
             n_orifices_real = (flow_needed / \
                 flow_per_orifice).to(u.dimensionless)
-            # constrain number of orifices to be less than the max per row and
-            # greater or equal to 0
             n[i] = min((max(0, round(n_orifices_real))),
              self.orifice_n_max_per_row)
         return n
