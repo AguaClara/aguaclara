@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 pandas = "*"
-pint = "*"
+pint = "==0.8.1"
 scipy = "*"
 onshape_client = "*"
 requests = ">=2.20.0"
