@@ -86,7 +86,7 @@ def density_water(temp):
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
     rhointerpolated = interpolate.CubicSpline(WATER_DENSITY_TABLE[0],
                                                     WATER_DENSITY_TABLE[1])
-    return np.asscalar(rhointerpolated(temp))
+    return rhointerpolated(temp).item()
 
 
 @u.wraps(u.m**2/u.s, [u.degK], False)

@@ -196,3 +196,12 @@ def check_range(*args):
             if 'boolean' in arg[1] and type(i) != bool:
                 raise TypeError("{1} is {0} but must be a "
                                 "boolean.".format(i, arg[2]))
+
+def array_qtys_to_strs(lst):
+    """Convert Pint quantities in a NumPy array to strings.
+    
+    Args:
+        - ``lst (numpy.ndarray Quantity)``: a list of values that has a Pint
+            unit attached to it
+    """
+    return [str(value) for value in lst]
