@@ -23,4 +23,4 @@ requests = ">=2.20.0"
 rope = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"
