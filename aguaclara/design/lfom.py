@@ -52,7 +52,7 @@ class LFOM(Component):
         """The width of a stout weir at a given elevation.
         
         Args:
-            - ``h (float * u.m)
+            - ``h (float * u.m)``: Elevation height
         """
         w_per_flow = 2 / ((2 * pc.gravity * h) ** (1 / 2) *
                           con.VC_ORIFICE_RATIO * np.pi * self.hl)

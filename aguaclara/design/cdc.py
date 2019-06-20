@@ -21,7 +21,6 @@ class CDC(Component):
     
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (required)
-        - ``
     """
     def __init__(self, q=20.0 * u.L/u.s, temp=20 * u.degC,
              hl = 20 * u.cm,
