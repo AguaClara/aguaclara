@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utility &mdash; AguaClara v0.1.0 documentation</title>
+  <title>Utility &mdash; AguaClara v0.1.1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.1.0
+                v0.1.1
               </div>
             
           
@@ -169,17 +169,34 @@
 <p>This file provides basic utility functions such as significant figures which
 can be used throughout the plant design.</p>
 <dl class="function">
+<dt id="aguaclara.core.utility.array_qtys_to_strs">
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">array_qtys_to_strs</code><span class="sig-paren">(</span><em class="sig-param">lst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#array_qtys_to_strs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.array_qtys_to_strs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Pint quantities in a NumPy array to strings.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">lst</span> <span class="pre">(numpy.ndarray</span> <span class="pre">Quantity)</span></code>: a list of values that has a Pint</dt><dd><p>unit attached to it</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.core.utility.check_range">
-<code class="descclassname">aguaclara.core.utility.</code><code class="descname">check_range</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#check_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.check_range" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">check_range</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#check_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.check_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether passed paramters fall within approved ranges.</p>
 <p>Does not return anything, but will raise an error if a parameter falls
 outside of its defined range.</p>
 <p>Input should be passed as an array of sequences, with each sequence
 having three elements:</p>
 <blockquote>
-<div>[0] is the value being checked,
+<div><p>[0] is the value being checked,
 [1] is the range parameter(s) within which the value should fall, and
-[2] is the name of the parameter, for better error messages.</div></blockquote>
+[2] is the name of the parameter, for better error messages.</p>
+</div></blockquote>
 <p>If [2] is not supplied, “Input” will be appended as a generic name.</p>
 <p>Range requests that this function understands are listed in the
 knownChecks sequence.</p>
@@ -187,31 +204,27 @@ knownChecks sequence.</p>
 
 <dl class="function">
 <dt id="aguaclara.core.utility.list_handler">
-<code class="descclassname">aguaclara.core.utility.</code><code class="descname">list_handler</code><span class="sig-paren">(</span><em>HandlerResult='nparray'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#list_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.list_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">list_handler</code><span class="sig-paren">(</span><em class="sig-param">HandlerResult='nparray'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#list_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.list_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps a function to handle list inputs.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="aguaclara.core.utility.round_sf">
-<code class="descclassname">aguaclara.core.utility.</code><code class="descname">round_sf</code><span class="sig-paren">(</span><em>number</em>, <em>digits</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#round_sf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.round_sf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">round_sf</code><span class="sig-paren">(</span><em class="sig-param">number</em>, <em class="sig-param">digits</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#round_sf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.round_sf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns inputted value rounded to number of significant figures desired.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value to be rounded</li>
-<li><strong>digits</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of significant digits to be rounded to.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value to be rounded</p></li>
+<li><p><strong>digits</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of significant digits to be rounded to.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="aguaclara.core.utility.stepceil_with_units">
-<code class="descclassname">aguaclara.core.utility.</code><code class="descname">stepceil_with_units</code><span class="sig-paren">(</span><em>param</em>, <em>step</em>, <em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#stepceil_with_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.stepceil_with_units" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">stepceil_with_units</code><span class="sig-paren">(</span><em class="sig-param">param</em>, <em class="sig-param">step</em>, <em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#stepceil_with_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.stepceil_with_units" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns the smallest multiple of ‘step’ greater than or
 equal to ‘param’ and outputs the result in Pint units.
 This function is unit-aware and functions without requiring translation
@@ -262,7 +275,7 @@ so long as ‘param’ and ‘unit’ are of the same dimensionality.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v0.1.0',
+            VERSION:'v0.1.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -273,7 +286,7 @@ so long as ‘param’ and ‘unit’ are of the same dimensionality.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
 
   
 

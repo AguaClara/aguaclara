@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Entrance Tank &mdash; AguaClara v0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Flocculator" href="floc.html" />
+    <link rel="prev" title="Entrance Tank/Flocculator Assembly" href="ent_floc.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/core.html">Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="design.html">Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="component.html">Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ent_floc.html">Entrance Tank/Flocculator Assembly</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Entrance Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floc.html">Flocculator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lfom.html">Linear Flow Orifice Meter (LFOM)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="design.html">Design</a> &raquo;</li>
+        
+      <li>Entrance Tank</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/design/ent.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.design.ent">
+<span id="entrance-tank"></span><h1>Entrance Tank<a class="headerlink" href="#module-aguaclara.design.ent" title="Permalink to this headline">¶</a></h1>
+<p>The entrance tank of an AguaClara water treatment plant</p>
+<ol class="arabic simple">
+<li><p>removes large grit particles using plate settlers,</p></li>
+<li><p>contains the <span class="xref std std-ref">design-lfom</span>, which maintains a linear relation between flow and water level, and</p></li>
+<li><p>introduces chemical dosing through the CDC &lt;add link&gt; using the water level set by the <span class="xref std std-ref">design-lfom</span>.</p></li>
+</ol>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.ent</span> <span class="k">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ent_tank</span> <span class="o">=</span> <span class="n">EntranceTank</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">floc_chan_w</span> <span class="o">=</span> <span class="mf">42.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ent_tank</span><span class="o">.</span><span class="n">plate_n</span>
+<span class="go">&lt;Quantity(11.0, &#39;dimensionless&#39;)&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="class">
+<dt id="aguaclara.design.ent.EntranceTank">
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.ent.</code><code class="sig-name descname">EntranceTank</code><span class="sig-paren">(</span><em class="sig-param">q=&lt;Quantity(20.0</em>, <em class="sig-param">'liter / second')&gt;</em>, <em class="sig-param">temp=&lt;Quantity(20.0</em>, <em class="sig-param">'degC')&gt;</em>, <em class="sig-param">lfom_nd=&lt;Quantity(2.0</em>, <em class="sig-param">'inch')&gt;</em>, <em class="sig-param">floc_chan_w=&lt;Quantity(42.0</em>, <em class="sig-param">'inch')&gt;</em>, <em class="sig-param">floc_end_depth=&lt;Quantity(2.0</em>, <em class="sig-param">'meter')&gt;</em>, <em class="sig-param">plate_s=&lt;Quantity(2.5</em>, <em class="sig-param">'centimeter')&gt;</em>, <em class="sig-param">plate_thickness=&lt;Quantity(2.0</em>, <em class="sig-param">'millimeter')&gt;</em>, <em class="sig-param">plate_angle=&lt;Quantity(50.0</em>, <em class="sig-param">'degree')&gt;</em>, <em class="sig-param">plate_capture_vel=&lt;Quantity(8.0</em>, <em class="sig-param">'millimeter / second')&gt;</em>, <em class="sig-param">fab_s=&lt;Quantity(5.0</em>, <em class="sig-param">'centimeter')&gt;</em>, <em class="sig-param">sdr=41.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/ent.html#EntranceTank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.ent.EntranceTank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Design an AguaClara plant’s entrance tank.</p>
+<p>An entrance tank’s design relies on the LFOM’s and flocculator’s design in
+the same plant, but assumed/default values may be used to design an
+entrance tank by itself. To design these components in tandem, use
+<a class="reference internal" href="ent_floc.html#aguaclara.design.ent_floc.EntTankFloc" title="aguaclara.design.ent_floc.EntTankFloc"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.ent_floc.EntTankFloc</span></code></a>.</p>
+<dl class="simple">
+<dt>Design Inputs:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Flow rate (recommended, defaults to 20L/s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature (recommended, defaults to
+20°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lfom_nd</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The LFOM’s nominal diameter (recommended,
+defaults to 2”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">floc_chan_w</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The flocculator’s channel width
+(recommended, defaults to 42”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">floc_chan_depth</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.m)</span></code>: The flocculator’s channel depth
+(recommended, defaults to 2m)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_s</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The spacing between plates in a plate
+settler (optional, defaults to 2.5cm)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The thickness of a plate in a 
+plate settler (optional, defaults to 2mm)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_angle</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The angle of the plate settler 
+(optional, defaults to 60 degrees)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_capture_vel</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.mm</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: The capture velocity of the 
+plate settler (optional, defaults to 8m/s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fab_s(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The space needed for a person to remove 
+the drain pipe (optional, defaults to 5cm)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sdr</span> <span class="pre">(float)</span></code>: Standard demension ratio (optional,
+defaults to 41)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="aguaclara.design.ent.EntranceTank.drain_id">
+<em class="property">property </em><code class="sig-name descname">drain_id</code><a class="headerlink" href="#aguaclara.design.ent.EntranceTank.drain_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The inner diameter of the entrance tank drain pipe.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.ent.EntranceTank.drain_nd">
+<em class="property">property </em><code class="sig-name descname">drain_nd</code><a class="headerlink" href="#aguaclara.design.ent.EntranceTank.drain_nd" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nominal diameter of the entrance tank drain pipe.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.ent.EntranceTank.drain_od">
+<em class="property">property </em><code class="sig-name descname">drain_od</code><a class="headerlink" href="#aguaclara.design.ent.EntranceTank.drain_od" title="Permalink to this definition">¶</a></dt>
+<dd><p>The outer diameter of the entrance tank drain pipe.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.ent.EntranceTank.l">
+<em class="property">property </em><code class="sig-name descname">l</code><a class="headerlink" href="#aguaclara.design.ent.EntranceTank.l" title="Permalink to this definition">¶</a></dt>
+<dd><p>The length of the entrance tank.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.ent.EntranceTank.plate_l">
+<em class="property">property </em><code class="sig-name descname">plate_l</code><a class="headerlink" href="#aguaclara.design.ent.EntranceTank.plate_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>The length of the plates in the plate settlers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.ent.EntranceTank.plate_n">
+<em class="property">property </em><code class="sig-name descname">plate_n</code><a class="headerlink" href="#aguaclara.design.ent.EntranceTank.plate_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of plates in the plate settlers.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="floc.html" class="btn btn-neutral float-right" title="Flocculator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ent_floc.html" class="btn btn-neutral" title="Entrance Tank/Flocculator Assembly" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v0.1.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

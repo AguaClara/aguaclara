@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pipeline &mdash; AguaClara v0.1.0 documentation</title>
+  <title>Pipeline &mdash; AguaClara v0.1.1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.1.0
+                v0.1.1
               </div>
             
           
@@ -170,31 +170,27 @@
 pipeline design.</p>
 <dl class="function">
 <dt id="aguaclara.core.pipeline.flow_pipeline">
-<code class="descclassname">aguaclara.core.pipeline.</code><code class="descname">flow_pipeline</code><span class="sig-paren">(</span><em>diameters</em>, <em>lengths</em>, <em>k_minors</em>, <em>target_headloss</em>, <em>nu=&lt;Quantity(1e-06</em>, <em>'meter ** 2 / second')&gt;</em>, <em>pipe_rough=&lt;Quantity(0.12</em>, <em>'millimeter')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipeline.html#flow_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipeline.flow_pipeline" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.pipeline.</code><code class="sig-name descname">flow_pipeline</code><span class="sig-paren">(</span><em class="sig-param">diameters</em>, <em class="sig-param">lengths</em>, <em class="sig-param">k_minors</em>, <em class="sig-param">target_headloss</em>, <em class="sig-param">nu=&lt;Quantity(1e-06</em>, <em class="sig-param">'meter ** 2 / second')&gt;</em>, <em class="sig-param">pipe_rough=&lt;Quantity(0.12</em>, <em class="sig-param">'millimeter')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipeline.html#flow_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipeline.flow_pipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function takes a single pipeline with multiple sections, each potentially with different diameters,
 lengths and minor loss coefficients and determines the flow rate for a given headloss.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>diameters</strong> (<em>numpy.ndarray</em>) – list of diameters, where the i_th diameter corresponds to the i_th pipe section</li>
-<li><strong>lengths</strong> (<em>numpy.ndarray</em>) – list of diameters, where the i_th diameter corresponds to the i_th pipe section</li>
-<li><strong>k_minors</strong> (<em>numpy.ndarray</em>) – list of diameters, where the i_th diameter corresponds to the i_th pipe section</li>
-<li><strong>target_headloss</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – a single headloss describing the total headloss through the system</li>
-<li><strong>nu</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The fluid dynamic viscosity of the fluid. Defaults to water at room temperature (1 * 10**-6 * m**2/s)</li>
-<li><strong>pipe_rough</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The pipe roughness. Defaults to PVC roughness.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>diameters</strong> (<em>numpy.ndarray</em>) – list of diameters, where the i_th diameter corresponds to the i_th pipe section</p></li>
+<li><p><strong>lengths</strong> (<em>numpy.ndarray</em>) – list of diameters, where the i_th diameter corresponds to the i_th pipe section</p></li>
+<li><p><strong>k_minors</strong> (<em>numpy.ndarray</em>) – list of diameters, where the i_th diameter corresponds to the i_th pipe section</p></li>
+<li><p><strong>target_headloss</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – a single headloss describing the total headloss through the system</p></li>
+<li><p><strong>nu</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The fluid dynamic viscosity of the fluid. Defaults to water at room temperature (1 * 10**-6 * m**2/s)</p></li>
+<li><p><strong>pipe_rough</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The pipe roughness. Defaults to PVC roughness.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the total flow through the system</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the total flow through the system</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -241,7 +237,7 @@ lengths and minor loss coefficients and determines the flow rate for a given hea
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'v0.1.0',
+            VERSION:'v0.1.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -252,7 +248,7 @@ lengths and minor loss coefficients and determines the flow rate for a given hea
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
 
   
 

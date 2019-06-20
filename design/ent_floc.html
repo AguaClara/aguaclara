@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Entrance Tank/Flocculator Assembly &mdash; AguaClara v0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Entrance Tank" href="ent.html" />
+    <link rel="prev" title="Component" href="component.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/core.html">Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="design.html">Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="component.html">Component</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Entrance Tank/Flocculator Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ent.html">Entrance Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floc.html">Flocculator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lfom.html">Linear Flow Orifice Meter (LFOM)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="design.html">Design</a> &raquo;</li>
+        
+      <li>Entrance Tank/Flocculator Assembly</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/design/ent_floc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.design.ent_floc">
+<span id="entrance-tank-flocculator-assembly"></span><h1>Entrance Tank/Flocculator Assembly<a class="headerlink" href="#module-aguaclara.design.ent_floc" title="Permalink to this headline">¶</a></h1>
+<p>The entrance tank/flocculator assembly of an AguaClara water treatment plant
+contains the entrance tank, chemical dose controller (CDC), linear flow orifice
+meter (LFOM), and flocculator. It adds the initial dose of coagulant and
+chlorine to the influent water, then causes flocs (accumulated coagulant and
+primary particles) to aggregate.</p>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.ent_floc</span> <span class="k">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etf</span> <span class="o">=</span> <span class="n">EntTankFloc</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">floc</span><span class="o">=</span><span class="n">Flocculator</span><span class="p">(</span><span class="n">hl</span><span class="o">=</span><span class="mi">35</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etf</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">l</span>
+<span class="go">&lt;Quantity(37.6732811402825, &#39;inch&#39;)&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="class">
+<dt id="aguaclara.design.ent_floc.EntTankFloc">
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.ent_floc.</code><code class="sig-name descname">EntTankFloc</code><span class="sig-paren">(</span><em class="sig-param">q=&lt;Quantity(20.0</em>, <em class="sig-param">'liter / second')&gt;</em>, <em class="sig-param">temp=&lt;Quantity(20.0</em>, <em class="sig-param">'degC')&gt;</em>, <em class="sig-param">ent=&lt;aguaclara.design.ent.EntranceTank object&gt;</em>, <em class="sig-param">floc=&lt;aguaclara.design.floc.Flocculator object&gt;</em>, <em class="sig-param">lfom=&lt;aguaclara.design.lfom.LFOM object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/ent_floc.html#EntTankFloc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.ent_floc.EntTankFloc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Design an AguaClara plant’s entrance tank/flocculator assembly.</p>
+<p>The designs of the LFOM, entrance tank, and flocculator in an AguaClara
+water treatment plant are interdependent. Use this class instead of the
+classes of the individual components to design all three at once.</p>
+<dl class="simple">
+<dt>Design Inputs:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Flow rate (recommended, 
+defaults to 20L/s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature (recommended,
+defaults to 20°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ent</span> <span class="pre">(EntranceTank)</span></code>: Entrance Tank
+(optional, see <a class="reference internal" href="ent.html#aguaclara.design.ent.EntranceTank" title="aguaclara.design.ent.EntranceTank"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.ent.EntranceTank</span></code></a>
+for defaults)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">floc</span> <span class="pre">(Flocculator)</span></code>: Flocculator
+(optional, see <a class="reference internal" href="floc.html#aguaclara.design.floc.Flocculator" title="aguaclara.design.floc.Flocculator"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.floc.Flocculator</span></code></a> for 
+defaults)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lfom</span> <span class="pre">(LFOM)</span></code>: Linear Flow Orifice Meter
+(optional, see <a class="reference internal" href="lfom.html#aguaclara.design.lfom.LFOM" title="aguaclara.design.lfom.LFOM"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.lfom.LFOM</span></code></a> for defaults)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ent.html" class="btn btn-neutral float-right" title="Entrance Tank" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="component.html" class="btn btn-neutral" title="Component" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v0.1.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

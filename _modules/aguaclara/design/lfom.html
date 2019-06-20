@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>aguaclara.design.lfom &mdash; AguaClara v0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design/design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aguaclara.design.lfom</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aguaclara.design.lfom</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The Linear Flow Orifice Meter (LFOM) of an AguaClara water treatment plant</span>
+<span class="sd">imitates a sutro weir and produces a linear relation between flow rate and</span>
+<span class="sd">water level within the entrance tank.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.design.lfom import *</span>
+<span class="sd">    &gt;&gt;&gt; lfom = LFOM(q = 20 * u.L / u.s, hl = 20 * u.cm)</span>
+<span class="sd">    &gt;&gt;&gt; lfom.row_n</span>
+<span class="sd">    6</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.constants</span> <span class="k">as</span> <span class="nn">con</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.physchem</span> <span class="k">as</span> <span class="nn">pc</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.pipes</span> <span class="k">as</span> <span class="nn">pipe</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.drills</span> <span class="k">as</span> <span class="nn">drills</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">aguaclara.design.component</span> <span class="k">import</span> <span class="n">Component</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<div class="viewcode-block" id="LFOM"><a class="viewcode-back" href="../../../design/lfom.html#aguaclara.design.lfom.LFOM">[docs]</a><span class="k">class</span> <span class="nc">LFOM</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Design and AguaClara plant&#39;s LFOM.</span>
+<span class="sd">    </span>
+<span class="sd">    Design Inputs:</span>
+<span class="sd">        - ``q (float * u.L/u.s)``: Flow rate (recommended, defaults to 20L/s)</span>
+<span class="sd">        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to</span>
+<span class="sd">          20°C)</span>
+<span class="sd">        - ``hl (float * u.cm)``: Head loss (optional, defaults to 20cm)</span>
+<span class="sd">        - ``safety_factor (float)``: Safety factor (optional, defaults to 1.5)</span>
+<span class="sd">        - ``sdr (float)``: Standard dimension ratio (optional, defaults to 26)</span>
+<span class="sd">        - ``drill_bits (float * u.inch array)``: List of drill bits </span>
+<span class="sd">          (optional) </span>
+<span class="sd">        - ``orifice_s (float * u.cm)``: The spacing between orifices (optional, </span>
+<span class="sd">          defaults to 0.5cm)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span>
+                 <span class="n">hl</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">,</span>
+                 <span class="n">safety_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                 <span class="n">sdr</span><span class="o">=</span><span class="mf">26.0</span><span class="p">,</span>
+                 <span class="n">drill_bits</span><span class="o">=</span><span class="n">drills</span><span class="o">.</span><span class="n">DRILL_BITS_D_IMPERIAL</span><span class="p">,</span>
+                 <span class="n">orifice_s</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">=</span> <span class="n">hl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">safety_factor</span> <span class="o">=</span> <span class="n">safety_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span> <span class="o">=</span> <span class="n">sdr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drill_bits</span> <span class="o">=</span> <span class="n">drill_bits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orifice_s</span> <span class="o">=</span> <span class="n">orifice_s</span>
+
+<div class="viewcode-block" id="LFOM.stout_w_per_flow"><a class="viewcode-back" href="../../../design/lfom.html#aguaclara.design.lfom.LFOM.stout_w_per_flow">[docs]</a>    <span class="k">def</span> <span class="nf">stout_w_per_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The width of a stout weir at a given elevation.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            - ``h (float * u.m)``: Elevation height</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">w_per_flow</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span>
+                          <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">w_per_flow</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">row_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; The number of rows.&quot;&quot;&quot;</span>
+        <span class="n">N_estimated</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">stout_w_per_flow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hl</span><span class="p">)</span> <span class="o">*</span> \
+             <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span>
+        <span class="n">row_n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="n">N_estimated</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">row_n</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">row_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The distance center to center between each row of orifices.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_n</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vel_critical</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The average vertical velocity of the water inside the LFOM pipe</span>
+<span class="sd">        at the bottom of the orfices.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span><span class="p">)</span> <span class="o">**</span> \
+            <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pipe_a_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The minimum cross-sectional area of the LFOM pipe assuring</span>
+<span class="sd">        a safety factor.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">safety_factor</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vel_critical</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pipe_nd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The nominal diameter of the LFOM pipe&quot;&quot;&quot;</span>
+        <span class="n">ID</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">diam_circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipe_a_min</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pipe</span><span class="o">.</span><span class="n">ND_SDR_available</span><span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">top_row_orifice_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The orifice area corresponding to the top row of orifices.&quot;&quot;&quot;</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_b</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stout_w_per_flow</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_b</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orifice_d_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The maximum orifice diameter.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">diam_circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top_row_orifice_a</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orifice_d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The actual orifice diameter.&quot;&quot;&quot;</span>
+        <span class="n">maxdrill</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">orifice_d_max</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">floor_nearest</span><span class="p">(</span><span class="n">maxdrill</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">drill_bits</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">drill_bit_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The area of the actual drill bit.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">area_circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orifice_d</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orifice_n_max_per_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The max number of orifices allowed in each row.&quot;&quot;&quot;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">pipe</span><span class="o">.</span><span class="n">ID_SDR</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipe_nd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orifice_d</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">orifice_s</span>
+
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">q_per_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An array of flow at each row.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orifice_h_per_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The height of the center of each row of orifices.&quot;&quot;&quot;</span>
+        <span class="n">height_orifices</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">))</span> <span class="o">*</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">row_b</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">orifice_d</span>
+        <span class="k">return</span> <span class="n">height_orifices</span>
+
+<div class="viewcode-block" id="LFOM.q_submerged"><a class="viewcode-back" href="../../../design/lfom.html#aguaclara.design.lfom.LFOM.q_submerged">[docs]</a>    <span class="k">def</span> <span class="nf">q_submerged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_n</span><span class="p">,</span> <span class="n">orifice_n_per_row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The flow rate through some number of submerged rows.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            - ``row_n``: Number of submerged rows</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flow</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row_n</span><span class="p">):</span>
+            <span class="n">flow</span> <span class="o">=</span> <span class="n">flow</span> <span class="o">+</span> <span class="p">(</span><span class="n">orifice_n_per_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span>
+               <span class="n">pc</span><span class="o">.</span><span class="n">flow_orifice_vert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orifice_d</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">row_b</span><span class="o">*</span><span class="p">(</span><span class="n">row_n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">orifice_h_per_row</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                                    <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">flow</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orifice_n_per_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The number of orifices at each level.&quot;&quot;&quot;</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_b</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">orifice_d</span>
+        <span class="n">flow_per_orifice</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">flow_orifice_vert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orifice_d</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span>
+         <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">):</span>
+            <span class="n">flow_needed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_per_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_submerged</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="n">n_orifices_real</span> <span class="o">=</span> <span class="p">(</span><span class="n">flow_needed</span> <span class="o">/</span> \
+                <span class="n">flow_per_orifice</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span>
+            <span class="n">n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">n_orifices_real</span><span class="p">))),</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">orifice_n_max_per_row</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">n</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">error_per_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The error of the design based off the predicted flow rate and </span>
+<span class="sd">        the actual flow rate.&quot;&quot;&quot;</span>
+        <span class="n">q_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">):</span>
+            <span class="n">actual_flow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_submerged</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">orifice_n_per_row</span><span class="p">)</span>
+            <span class="n">q_error</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(((</span><span class="n">actual_flow</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_per_row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> \
+                 <span class="bp">self</span><span class="o">.</span><span class="n">q_per_row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">))</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">return</span> <span class="n">q_error</span></div>
+        
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AguaClara Cornell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'v0.1.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
