@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='aguaclara',
-      version='0.0.25',
+      version='0.1.0',
       description='Open source functions for AguaClara water treatment research and plant design.',
       url='https://github.com/AguaClara/aguaclara',
       author='AguaClara at Cornell',
