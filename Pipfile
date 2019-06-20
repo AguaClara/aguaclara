@@ -9,7 +9,7 @@ pint = "*"
 scipy = "*"
 onshape_client = "*"
 requests = ">=2.20.0"
-matplotlib = "3.0.3"
+matplotlib = "==3.0.3"
 
 [dev-packages]
 codecov = "*"
