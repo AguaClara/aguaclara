@@ -5,10 +5,10 @@
 #. introduces chemical dosing through the CDC <add link> using the water level set by the LFOM <add link>.
 
 Example:
-    >>> from aguaclara.design.ent_tank import *
-    >>> ent_tank = EntranceTank(q = 20 * u.L / u.s, floc_chan_w = 42.0 * u.inch,...)
+    >>> from aguaclara.design.ent import *
+    >>> ent_tank = EntranceTank(q = 20 * u.L / u.s, floc_chan_w = 42.0 * u.inch)
     >>> ent_tank.plate_n
-    15
+    <Quantity(11.0, 'dimensionless')>
 """
 import aguaclara.core.constants as con
 import aguaclara.core.head_loss as hl

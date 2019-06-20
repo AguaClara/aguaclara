@@ -4,7 +4,7 @@ water level within the entrance tank.
 
 Example:
     >>> from aguaclara.design.lfom import *
-    >>> lfom = LFOM(q = 20 * u.L / u.s, hl = 20 * u.cm,...)
+    >>> lfom = LFOM(q = 20 * u.L / u.s, hl = 20 * u.cm)
     >>> lfom.row_n
     6
 """
