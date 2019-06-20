@@ -64,7 +64,7 @@ class PressureCooker(Component):
 # How to make a Component
 # A component is  any component of the plant and extends the component class to 
 # use those functions and abilities. The class Monroe is an example of a 
-# component, PressureCooker is a subcomponent to Monroe, but can still be it's own 
+# component, PressureCooker is a subcomponent to Monroe, but can still be its own 
 # component.
 class Monroe(Component): 
     """Design a Monroe. (This first line should be a short description of the
@@ -78,18 +78,20 @@ class Monroe(Component):
     (The Attributes section describes the class variables that are defined
     in the class, but outside of __init__. Be sure to document the variable
     name, its type, and a plain language description of what it stores.)
+
     Attributes:
         - ``BEAN_DENSITY (float * u.g / u.L)``: Bean density
 
 	(The Design Inputs section describes inputs that can be used to create a
     Monroe object. All of the inputs below are expert inputs, which means that a
     user doesn't have to specify them as they have their own default value.)
+
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
         - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
           20°C)
     """
-	#Class Variables
+	# Class Variables
     # BEANS_DENSITY is a class variable (unlike the instance variables defined
     # in __init__) and should remain constant. The all-caps indicates that it
     # shouldn't be changed.
