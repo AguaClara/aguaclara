@@ -1,40 +1,41 @@
-"""This file provides basic utility functions such as significant figures which
-can be used throughout the plant design.
+"""Utility functions and features
 
+This module provides functions and features for scientific calculations and 
+complex function inputs.
+
+Example:
+    >>> import aguaclara.core.utility as ut
+    >>> round_sf(1234567, 3)
+    1230000
 """
 from aguaclara.core.units import unit_registry as u
-
 
 import numpy as np
 from math import log10, floor
 
 
-def round_sf(number, digits):
-    """Returns inputted value rounded to number of significant figures desired.
+def round_sig_figs(num, figs=4):
+    """Round a number to some amount of significant figures.
 
-    :param number: Value to be rounded
-    :type number: float
-    :param digits: number of significant digits to be rounded to.
-    :type digits: int
+    Args:
+        - number (float): Value to be rounded (optional units)
+        - digits (int): number of significant digits
+          to be rounded to.
     """
-    units = None
-    try:
-        num = number.magnitude
-        units = number.units
-    except AttributeError:
-        num = number
+    # Convert number to a Pint quantity if it isn't already
+    num = num * u.dimensionless
 
-    try:
-        if (units != None):
-            rounded_num = round(num, digits - int(floor(log10(abs(num)))) - 1) * units
-        else:
-            rounded_num = round(num, digits - int(floor(log10(abs(num)))) - 1)
-        return rounded_num
-    except ValueError:  # Prevents an error with log10(0)
-        if (units != None):
-            return 0 * units
-        else:
-            return 0
+    # Prevents undefined log10(0)
+    if num.magnitude != 0:
+        num = np.round(
+                num.magnitude,
+                figs - int(floor(log10(abs(num.magnitude)))) - 1
+            ) * num.units
+
+    if num.units is u.dimensionless:
+        num = num.magnitude
+
+    return num
 
 
 def stepceil_with_units(param, step, unit):
