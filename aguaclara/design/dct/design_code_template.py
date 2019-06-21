@@ -3,9 +3,8 @@ write AIDE Design Code.
 
 Table of Contents: 
 copy the title name and use find (ctrl+f) to jump to that section 
-	- How to Import
 	- How to name things
-	- How to make a Component
+	- How to make a Component(includes import)
 		- Class Variables
 		- Init functions
 			- init args
