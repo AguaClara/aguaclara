@@ -20,7 +20,7 @@ sys.path.append(os.path.join(os.path.dirname(__name__), '..'))
 # -- Project information -----------------------------------------------------
 
 project = u'AguaClara'
-copyright = u'2018, AguaClara Cornell'
+copyright = u'2019, AguaClara Cornell'
 author = u'AguaClara Cornell'
 
 # The short X.Y version
