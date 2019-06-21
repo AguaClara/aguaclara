@@ -2,6 +2,7 @@ language: python
 sudo: false
 python:
 - '3.5'
+- '3.6'
 before_install:
 - openssl aes-256-cbc -K $encrypted_b28ee498f040_key -iv $encrypted_b28ee498f040_iv
   -in .onshapepy.enc -out $HOME/.onshapepy -d
@@ -34,7 +35,7 @@ deploy:
   skip-cleanup: true
   github-token: "$GITHUB_TOKEN"
   keep-history: true
-  local-dir: docs/build
+  local-dir: docs/build/html
   target-branch: gh-pages
   on:
     tags: true

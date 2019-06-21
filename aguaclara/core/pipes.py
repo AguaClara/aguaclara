@@ -88,6 +88,18 @@ def ND_all_available():
             ND_all_available.append((pipedb['NDinch'][i]))
     return ND_all_available * u.inch
 
+def od_all_available():
+    """Return an array of available outer diameters.
+
+    NDs available are those commonly used as based on the 'Used' column
+    in the pipedb.
+    """
+    od_all_available = []
+    for i in range(len(pipedb['ODinch'])):
+        if pipedb.iloc[i, 4] == 1:
+            od_all_available.append((pipedb['ODinch'][i]))
+    return od_all_available * u.inch
+
 
 def ID_SDR_all_available(SDR):
     """Return an array of inner diameters with a given SDR.
@@ -123,3 +135,14 @@ def ND_available(NDguess):
     """
     myindex = (ND_all_available() >= NDguess)
     return min(ND_all_available()[myindex])
+
+def od_available(od_guess):
+    """Return the minimum OD that is available.
+
+    1. Extract the magnitude in inches from the outer diameter.
+    2. Find the index of the closest outer diameter.
+    3. Take the values of the array, subtract the OD, take the
+       absolute value, find the index of the minimium value.
+    """
+    myindex = (od_all_available() >= od_guess)
+    return min(od_all_available()[myindex])

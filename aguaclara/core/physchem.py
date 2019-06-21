@@ -10,12 +10,28 @@ import aguaclara.core.utility as ut
 import numpy as np
 from scipy import interpolate, integrate
 
-gravity = 9.80665 * u.m/u.s**2
-"""Define the gravitational constant, in m/s²."""
+gravity = con.GRAVITY
+
+######################Air################################
+def density_air(Pressure, MolarMass, Temperature):
+    """Return the density of the air.
+
+    :param Pressure: pressure of the air in the system
+    :type Pressure: float
+    :param MolarMass: molar mass of the air in the system
+    :type MolarMass: float
+    :param Temperature: Temperature of the air in the system
+    :type Temperature: float
+
+    :return: density of the air in the system
+    :rtype: float
+    """
+    return (Pressure * MolarMass / (u.R * Temperature)).to(u.kg/u.m**3)
 
 ###################### Simple geometry ######################
 """A few equations for useful geometry.
-Is there a geometry package that we should be using?"""
+Is there a geometry package that we should be using?
+"""
 
 @u.wraps(u.m**2, u.m, False)
 def area_circle(DiamCircle):
@@ -31,8 +47,9 @@ def diam_circle(AreaCircle):
     return np.sqrt(4 * AreaCircle / np.pi)
 
 ######################### Hydraulics #########################
-RE_TRANSITION_PIPE = 2100
 
+RE_TRANSITION_PIPE = 2100
+""" """
 K_KOZENY = con.K_KOZENY
 
 WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15,
@@ -69,7 +86,7 @@ def density_water(temp):
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
     rhointerpolated = interpolate.CubicSpline(WATER_DENSITY_TABLE[0],
                                                     WATER_DENSITY_TABLE[1])
-    return rhointerpolated(temp)
+    return rhointerpolated(temp).item()
 
 
 @u.wraps(u.m**2/u.s, [u.degK], False)
@@ -78,8 +95,6 @@ def viscosity_kinematic(temp):
 
     If given units, the function will automatically convert to Kelvin.
     If not given units, the function will assume Kelvin.
-
-    TODO: This should return meter ** 2 / second.
     """
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
     return (viscosity_dynamic(temp).magnitude
@@ -142,7 +157,6 @@ def re_general(Vel, Area, PerimWetted, Nu):
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
-@ut.list_handler()
 def fric(FlowRate, Diam, Nu, PipeRough):
     """Return the friction factor for pipe flow.
 

@@ -1,0 +1,27 @@
+Color	Diameter (mm)
+orange-black	0.13
+orange-red	0.19
+orange-blue	0.25
+orange-green	0.38
+green-yellow	0.44
+orange-yellow	0.51
+white-yellow	0.57
+orange-white	0.64
+black-black 0.76
+orange-orange	0.89
+white-black	0.95
+white-white	1.02
+white-red	1.09
+red-red	1.14
+red-grey	1.22
+grey-grey	1.3
+yellow-yellow	1.42
+yellow-blue	1.52
+blue-blue	1.65
+blue-green	1.75
+green-green	1.85
+purple-purple	2.06
+purple-black	2.29
+purple-orange	2.54
+purple-white	2.79
+black-white	3.17

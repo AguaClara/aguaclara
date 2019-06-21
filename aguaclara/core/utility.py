@@ -10,13 +10,12 @@ from math import log10, floor
 
 
 def round_sf(number, digits):
-    """Returns inputted value rounded to number
-    of significant figures desired.
+    """Returns inputted value rounded to number of significant figures desired.
 
-    Parameters:
-       number: Value to be rounded
-       digits: number of significant digits
-       to be rounded to.
+    :param number: Value to be rounded
+    :type number: float
+    :param digits: number of significant digits to be rounded to.
+    :type digits: int
     """
     units = None
     try:
@@ -211,3 +210,12 @@ def min(*args, f=np.min):
     for i, arg in enumerate(args):
         L.insert(i, (arg/base_q).to(u.dimensionless))
     return f(L)*base_q
+
+def array_qtys_to_strs(lst):
+    """Convert Pint quantities in a NumPy array to strings.
+    
+    Args:
+        - ``lst (numpy.ndarray Quantity)``: a list of values that has a Pint
+            unit attached to it
+    """
+    return [str(value) for value in lst]
