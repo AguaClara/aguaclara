@@ -8,7 +8,7 @@ This guide will show you how to write code to design a physical object, like an 
 This guide assumes knowledge of basic Python syntax. For a refresher, see the `AguaClara Writing Python Code guide <https://aguaclara.github.io/aguaclara_tutorial/python-and-hydrogen/writing-python-code.html>`_.
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
     
     coding_conventions
     component_make
