@@ -6,9 +6,9 @@ primary particles) to aggregate.
 
 Example:
     >>> from aguaclara.design.ent_floc import *
-    >>> etf = EntTankFloc(20 * u.L / u.s, floc_hl = 35 * u.cm,...)
+    >>> etf = EntTankFloc(q=20 * u.L / u.s, floc=Flocculator(hl=35 * u.cm))
     >>> etf.ent.l
-    1.403 meter
+    <Quantity(37.6732811402825, 'inch')>
 """
 from aguaclara.design.ent import *
 from aguaclara.design.lfom import *

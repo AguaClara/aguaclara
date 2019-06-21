@@ -4,7 +4,7 @@ dose the correct amount of coagulant and chlorine into the entrance tank.
 
 Example:
     >>> from aguaclara.design.cdc import *
-    >>> cdc = CDC(q = 20 * L/s, coag_type = 'pacl',...)
+    >>> cdc = CDC(q = 20 * L/s, coag_type = 'pacl')
     >>> cdc.coag_stock_vol
     208.198 liter
 """
@@ -21,7 +21,6 @@ class CDC(Component):
     
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (required)
-        - ``
     """
     def __init__(self, q=20.0 * u.L/u.s, temp=20 * u.degC,
              hl = 20 * u.cm,

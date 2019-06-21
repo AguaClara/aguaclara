@@ -17,7 +17,7 @@ floc_60 = Flocculator(q = 60 * u.L / u.s)
     (floc_20.vol, 7.004772334349198 * u.m**3), 
     (floc_60.vol, 21.014317003047594 * u.m**3),   # 5
     
-    (floc_20.chan_l, 4.641540185749554 * u.m),
+    (floc_20.chan_l, 3.8915401857495544 * u.m),
     (floc_60.chan_l, 6.0 * u.m),
 
     (floc_20.w_min_hs_ratio, 11.464163761790903 * u.cm),
@@ -27,7 +27,7 @@ floc_60 = Flocculator(q = 60 * u.L / u.s)
     (floc_60.chan_n, 4),
 
     (floc_20.chan_w, 0.45 * u.m),
-    (floc_60.chan_w, 0.45 * u.m),
+    (floc_60.chan_w, 0.4377982708968249 * u.m),
 
     (floc_20.expansion_h_max, 1.206146033516045 * u.m),
     (floc_60.expansion_h_max, 2.806691554748962 * u.m), # 15

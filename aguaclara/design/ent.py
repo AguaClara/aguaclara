@@ -1,14 +1,14 @@
 """The entrance tank of an AguaClara water treatment plant
 
 #. removes large grit particles using plate settlers,
-#. contains the LFOM <add link>, which maintains a linear relation between flow and water level, and
-#. introduces chemical dosing through the CDC <add link> using the water level set by the LFOM <add link>.
+#. contains the :ref:`design-lfom`, which maintains a linear relation between flow and water level, and
+#. introduces chemical dosing through the CDC <add link> using the water level set by the :ref:`design-lfom`.
 
 Example:
-    >>> from aguaclara.design.ent_tank import *
-    >>> ent_tank = EntranceTank(q = 20 * u.L / u.s, floc_chan_w = 42.0 * u.inch,...)
+    >>> from aguaclara.design.ent import *
+    >>> ent_tank = EntranceTank(q = 20 * u.L / u.s, floc_chan_w = 42.0 * u.inch)
     >>> ent_tank.plate_n
-    15
+    <Quantity(11.0, 'dimensionless')>
 """
 import aguaclara.core.constants as con
 import aguaclara.core.head_loss as hl
@@ -98,7 +98,8 @@ class EntranceTank(Component):
     @property
     def drain_od(self):
         """The outer diameter of the entrance tank drain pipe."""
-        return pipe.OD(self.drain_nd)
+        drain_pipe = pipe.Pipe(self.drain_nd, self.sdr)
+        return drain_pipe.od
         
     @property
     def plate_n(self):

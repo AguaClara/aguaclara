@@ -5,10 +5,11 @@ name = "pypi"
 
 [packages]
 pandas = "*"
-pint = "*"
+pint = "==0.8.1"
 scipy = "*"
 onshape_client = "*"
 requests = ">=2.20.0"
+matplotlib = "==3.0.3"
 
 [dev-packages]
 codecov = "*"
@@ -17,10 +18,10 @@ pytest = "*"
 pytest-cov = "*"
 Sphinx = "*"
 sphinx_rtd_theme = "==0.4.0"
-aguaclara = {editable = true, path = "."}
+aguaclara = {editable = true,path = "."}
 pytest-runner = "*"
 requests = ">=2.20.0"
 rope = "*"
-
+pylint = "*"
 [requires]
-python_version = "3.5"
+python_version = "3.6"
