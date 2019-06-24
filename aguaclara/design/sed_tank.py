@@ -3,7 +3,6 @@
 Example:
     >>> from aguaclara.design.sed_tank_bay import SedimentationTankBay
 """
-
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
@@ -23,10 +22,6 @@ class SedimentationTank(Component):
     Example:
         >>> sed_tank_bay = SedimentationTankBay()
     """
-    CAD = Part(
-        'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
-    )
-
     def __init__(self,
                  plant_q=20.0 * u.L / u.s,
                  vel_upflow=1.0 * u.mm / u.s,
@@ -42,7 +37,9 @@ class SedimentationTank(Component):
                  plate_settler_vel_capture=0.12 * u.mm / u.s,
                  exit_man_orifice_hl=4.0 * u.cm,
                  exit_man_orifice_n=58,
-                 exit_man_orifice_q_ratio_max=0.8):
+                 exit_man_orifice_q_ratio_max=0.8,
+                 
+                 plate_w=41.0 * u.inch):
         """Instantiates a SedimentationTankBay with the specified values.
 
         All args are optional, and default to values that are optimized for a 20
