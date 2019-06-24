@@ -6,14 +6,14 @@ Example:
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
+import aguaclara.core.pipes as pipe
 from aguaclara.core import drills
 import aguaclara.core.utility as ut
 from aguaclara.design.component import Component
+import aguaclara.core.physchem as pc
+import aguaclara.core.materials as mat
 
 import numpy as np
-import math
-
-# from onshapepy import Part
 
 
 class SedimentationTank(Component):
@@ -22,6 +22,9 @@ class SedimentationTank(Component):
     Example:
         >>> sed_tank_bay = SedimentationTankBay()
     """
+    INLET_MAN_Q_RATIO = 0.8
+    OUTLET_MAN_HL = 4 * u.cm
+
     def __init__(self,
                  q=20.0 * u.L / u.s,
                  temp=20.0 * u.degC,
@@ -32,6 +35,7 @@ class SedimentationTank(Component):
                  diffuser_n=108,
                  diffuser_wall_thickness=1.17 * u.inch,
                  inlet_hl=1 * u.cm,
+                 inlet_man_sdr = 41,
                  plate_settler_angle=60.0 * u.deg,
                  plate_settler_s=2.5 * u.cm,
                  plate_settler_thickness=2.0 * u.mm,
@@ -40,6 +44,7 @@ class SedimentationTank(Component):
                  exit_man_orifice_hl=4.0 * u.cm,
                  exit_man_orifice_n=58,
                  exit_man_orifice_q_ratio_max=0.8,
+                 outlet_man_sdr=41,
                  
                  w=41.0 * u.inch):
         """Instantiates a SedimentationTankBay with the specified values.
@@ -93,7 +98,9 @@ class SedimentationTank(Component):
 
         self.w = w
         self.inlet_hl = inlet_hl
-    
+        self.inlet_man_sdr = inlet_man_sdr
+        self.outlet_man_sdr = outlet_man_sdr
+        
     @property
     def q_tank(self):
         """
@@ -109,7 +116,7 @@ class SedimentationTank(Component):
         Returns:
             Number of bays in a sedimentation tank (int).
         """
-        n = np.ceil(self.plant_q / self.q)
+        n = np.ceil(self.q / self.q_tank)
         return int(n)
 
     @property
@@ -133,73 +140,49 @@ class SedimentationTank(Component):
         """
         diffuser_a = self.q / (self.diffuser_vel * self.diffuser_n)
         return diffuser_a
-    
-    # @property
-    # def w_diffuser_inner_min(self):
-    #     """
-    #     Returns:
-    #         Minimum inner width of each diffuser in the sedimentation tank (float).
-    #     """
-    #     return ((self.vel_upflow.to(u.inch/u.s).magnitude /
-    #              self.diffuser_vel_max.to(u.inch / u.s).magnitude)
-    #             * self.w_inner)
 
     # Note: we need to specify in Onshape a 15% stretch difference between
     # the circumference of both diffuser ends' inner/outer circumferences.
     # We can model the aggregate diffuser jet as one continuous flow. Don't
     # correct for the thickness that separates each diffuser's effluent orifice.
 
-
     @property
-    def vel_inlet_man_max(self):
+    def inlet_man_v_max(self):
         """Return the maximum velocity through the manifold.
 
         Returns:
             Maximum velocity through the manifold (float).
         """
-        vel_manifold_max = (self.diffuser_vel_max.to(u.m / u.s) *
-                            math.sqrt(2 * (1 - self.exit_man_orifice_q_ratio_max ** 2) /
-                                      (self.exit_man_orifice_q_ratio_max ** 2 + 1)))
-        return vel_manifold_max
+        vel_manifold_max = np.sqrt(4 * con.GRAVITY * self.diffuser_hl *
+                (1 - self.INLET_MAN_Q_RATIO ** 2) /
+                (self.INLET_MAN_Q_RATIO ** 2 + 1)
+            )
+        return vel_manifold_max.to(u.m / u.s)
 
-    # @property
-    # def ID_exit_man(self):
-    #     """Return the inner diameter of the exit manifold by guessing an initial
-    #     diameter then iterating through pipe flow calculations until the answer
-    #     converges within 1%% error
-    #
-    #     Returns:
-    #         Inner diameter of the exit manifold (float).
-    #     """
-    #     #Inputs do not need to be checked here because they are checked by
-    #     #functions this function calls.
-    #     """
-    #     nu = pc.viscosity_dynamic(temp)
-    #     hl = self.MANIFOLD_EXIT_MAN_HL_ORIFICE.to(u.m)
-    #     L = self.TANK_L
-    #     N_orifices = self.MANIFOLD_EXIT_MAN_N_ORIFICES
-    #     K_minor = con.K_MINOR_PIPE_EXIT
-    #     pipe_rough = mat.PIPE_ROUGH_PVC.to(u.m)
-    #
-    #     D = max(pc.diam_pipemajor(self.q, hl, L, nu, pipe_rough).magnitude,
-    #             pc.diam_pipeminor(self.q, hl, K_minor).magnitude)
-    #     err = 1.00
-    #     while err > 0.01:
-    #             D_prev = D
-    #             f = pc.fric(self.q, D_prev, nu, pipe_rough)
-    #             D = ((8*self.q**2 / pc.GRAVITY.magnitude * np.pi**2 * hl) *
-    #                  (((f*L/D_prev + K_minor) * (1/3 + 1/(2 * N_orifices) + 1/(6 * N_orifices**2)))
-    #                   / (1 - self.MANIFOLD_RATIO_Q_MAN_ORIFICE**2)))**0.25
-    #             err = abs(D_prev - D) / ((D + D_prev) / 2)
-    #     return D"""
-    #     pipe_rough = mat.PVC_PIPE_ROUGH.to(u.m)
-    #     id = ((self.q / (np.pi / 4 * ((2 * con.GRAVITY * pipe_rough) ** 1 / 2))) ** 1 / 2)
-    #     return id
+    @property 
+    def inlet_man_nd(self):
+        diam_inner = np.sqrt(4 * self.q_tank / np.pi * self.inlet_man_v_max)
+        inlet_man_nd = pipe.ND_SDR_available(diam_inner, self.inlet_man_sdr)
+        return inlet_man_nd.to(u.cm)
 
-
-##this
     @property
-    def D_exit_man_orifice(self):
+    def outlet_man_nd(self):
+        outlet_man_id = pc.diam_pipe(
+                self.q_tank,
+                self.exit_man_orifice_hl.to(u.m),
+                self.l_inner, 
+                pc.viscosity_dynamic(self.temp), 
+                mat.PVC_PIPE_ROUGH.to(u.m), 
+                self.OUTLET_MAN_HL
+            )
+        outlet_man_nd = pipe.ND_SDR_available(
+                outlet_man_id, 
+                self.outlet_man_sdr
+            )
+        return outlet_man_nd
+
+    @property
+    def exit_man_orifice_d(self):
         """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
 
         Returns:
@@ -209,9 +192,8 @@ class SedimentationTank(Component):
         D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.VC_ORIFICE_RATIO * np.sqrt(2 * con.GRAVITY.magnitude * self.exit_man_orifice_hl.magnitude))
         return ut.ceil_nearest(D_orifice, drills.DRILL_BITS_D_METRIC)
 
-
     @property
-    def L_sed_plate(self):
+    def plate_l(self):
         """Return the length of a single plate in the plate settler module based on
         achieving the desired capture velocity
 
@@ -223,5 +205,3 @@ class SedimentationTank(Component):
                      / (np.sin(self.plate_settler_angle) * np.cos(self.plate_settler_angle))
                      ).to(u.m)
         return L_sed_plate
-
-
