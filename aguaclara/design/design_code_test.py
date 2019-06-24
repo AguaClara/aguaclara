@@ -4,6 +4,12 @@ Score 8/10
 Problems: a whole lot of words, instructions for creating a function too vague 
 """
 
+"""Test 3 Report
+Test Subject: Tigran
+Score: 7/10
+problems: instructions aren't as defined
+"""
+
 """Using the design code template, it is time for you to design your own 
 Oliver!!! In order to make your own Oliver. I will like these certain things:
 	- Class variable for his love of coffee, make it 1000
