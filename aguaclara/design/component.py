@@ -57,8 +57,9 @@ class Component(object):
     plant design variables for a component and all of its subcomponents.
 
     Args:
-        - ``pi (PlantInput)``: The shared plant design inputs for a component
-          object
+        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20 l/s)
+        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
+          20°C)
     """
     def __init__(self, q=20.0 * u.L/u.s, temp=20.0 * u.degC):
         self.mem_loc = hex(id(self))
