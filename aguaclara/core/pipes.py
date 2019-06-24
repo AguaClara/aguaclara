@@ -46,9 +46,9 @@ def OD(ND):
     given nominal diameter have the same outer diameter.
 
     Steps:
-    1. Find the index of the closest nominal diameter.
+    #. Find the index of the closest nominal diameter.
        (Should this be changed to find the next largest ND?)
-    2. Take the values of the array, subtract the ND, take the absolute
+    #. Take the values of the array, subtract the ND, take the absolute
        value, find the index of the minimium value.
     """
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()

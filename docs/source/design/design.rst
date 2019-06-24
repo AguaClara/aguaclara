@@ -4,7 +4,7 @@ Design
 .. toctree::
     :maxdepth: 2
     
-    dct
+    writing_design_code/how_to_write_design_code
     component
     ent_floc
     ent

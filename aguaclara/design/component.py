@@ -5,7 +5,10 @@ Since it becomes tedious to pass said plant-wide design inputs manually to each
 subcomponent, this module creates a cache-like data structure that allows a
 component and all of its subcomponents to access a set of shared inputs.
 
-Example:
+**Example:**
+
+.. code-block:: python
+
     from aguaclara.design.component import *
     
     class SubComponent(Component):

@@ -3,22 +3,23 @@
 ***********************
 How to Make a Component
 ***********************
-This section will show you how to design your own water treatment plant 
-component. A component is any component of the plant, and for coding them these 
-classes will extend the Component class. These classes must extend the Component
-class as it will allow the sharing of certain properties such as flow rate, 
-temperature with the subcomponents of those classes. For example, when making a
-whole plant, the flow rate should be constant between every single subcomponent. 
-For the rest of this section, we will learn how to make the Monroe Component 
-``class Monroe(Component):``. Also make sure to import the neccesary classes and 
-packages for your component, this includes importing the Component class.
+This section will show you how to design your own water treatment plant
+component. A component is any component of the plant, and for coding them these
+classes will extend the Component class. These classes must extend the
+Componentclass as it will allow the sharing of certain properties such as flow
+rate, temperature with the subcomponents of those classes. For example, when
+making awhole plant, the flow rate should be constant between every single
+subcomponent. For the rest of this section, we will learn how to make the Monroe
+Component ``class Monroe(Component):``. Also make sure to import the neccesary
+classes and packages for your component, this includes importing the Component
+class.
 
 Class Variables
 ===============
 
 .. code-block:: python
-	
-	BEAN_DENSITY = 4.0 * u.g / u.L
+
+    BEAN_DENSITY = 4.0 * u.g / u.L
 
 ``BEANS_DENSITY`` is a class variable (unlike the instance variables defined
 in ``__init__``) and should remain constant. The all-caps indicates that it
