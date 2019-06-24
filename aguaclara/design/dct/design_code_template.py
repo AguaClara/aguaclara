@@ -111,14 +111,14 @@ class Monroe(Component):
 		# this will allow the subcomponents of this component to utilize the 
 		# same q and temp. In later functions, you can use the q and temp by 
 		# writing self.q and self.temp.
-		super().__init__(q = q, temp = temp)
+        super().__init__(q = q, temp = temp)
 
 		# giving fields to object
 		# The lines below instantiates a property to a Monroe object. In later 
 		# functions, you can use the rice_and_beans_eaten and pc, by writing 
 		# self.<property name>.
-		self.rice_and_beans_eaten = rice_and_beans_eaten
-		self.pc = pc
+        self.rice_and_beans_eaten = rice_and_beans_eaten
+        self.pc = pc
 
 		# propogating configurations
 		# If your component has a subcomponent (self.pc for our case, as it's default 
@@ -126,7 +126,7 @@ class Monroe(Component):
 		# all of the classes subcomponents (monroe's pc will have the same 
 		# q and temp). You must however put these subcomponents in a list, 
 		# even if it's one subcomponent 
-		super().propogate_config([self.pc])
+        super().propogate_config([self.pc])
 
 	# property functions
 	# Many properties of a component need some calculation, this is too much to 
@@ -142,9 +142,9 @@ class Monroe(Component):
 	# documentation in the same form as the one below.
     @property
     def h(self):
-		"""The height."""
-		h = self.q * (0.06414368184 * u.s / u.m ** 2) * self.pc.rice_and_beans_ratio
-		return h.to(u.ft)
+        """The height."""
+        h = self.q * (0.06414368184 * u.s / u.m ** 2) * self.pc.rice_and_beans_ratio
+        return h.to(u.ft)
 
 	# normal functions
 	# The format for writing methods:
@@ -153,7 +153,7 @@ class Monroe(Component):
 	# body being wrapped in a return. Also, uses very straight to the point
 	# documentation in the same form as the one below.
     def love_for_sustainable_design(self, love_factor):
-		"""His love for sustainable design."""
-		love_for_sustainable_design = self.BEAN_DENSITY * \
+        """His love for sustainable design."""
+        love_for_sustainable_design = self.BEAN_DENSITY * \
 			self.rice_and_beans_eaten + love_factor
-		return love_for_sustainable_design.to(u.kg)
+        return love_for_sustainable_design.to(u.kg)
