@@ -1,19 +1,44 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jul  7 11:51:51 2017
+Created on Fri Jul 7 11:51:51 2017
 
 @author: Sage Weber-Shirk
 
-Last modified: Mon Aug 17 2017
-By: Ethan Keller
+Last modified: Tue Jun 4 2019
+By: Hannah Si
 """
 
 #Note: All answer values in this file should be checked against MathCad
 #before this file is released to the Master branch!
 
 from aguaclara.core.units import unit_registry as u
-from aguaclara.core import physchem as pc
 import unittest
+
+developing = False
+if developing:
+    import sys
+    sys.path.append("../../aguaclara/core")
+    import physchem as pc
+else:
+    from aguaclara.core import physchem as pc
+
+class AirTest(unittest.TestCase):
+    """Test the air density function"""
+    def assertAlmostEqualQuantity(self, first, second, places=7):
+        self.assertAlmostEqual(first.magnitude, second.magnitude, places)
+        self.assertEqual(first.units, second.units, places)
+
+    def test_air_density(self):
+        answer = 1.29320776*u.kg/u.m**3
+        self.assertAlmostEqualQuantity(pc.density_air(1*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
+        answer = 2.06552493*u.kg/u.m**3
+        self.assertAlmostEqualQuantity(pc.density_air(5*u.atm, 10*u.g/u.mol, 295*u.K), answer)
+        answer = 1.62487961*u.kg/u.m**3
+        self.assertAlmostEqualQuantity(pc.density_air(101325*u.Pa, 40*u.g/u.mol, 300*u.K), answer)
+        answer = 0.20786109*u.kg/u.m**3
+        self.assertAlmostEqualQuantity(pc.density_air(700*u.mmHg, 5*u.g/u.mol, 270*u.K), answer)
+        answer = 0*u.kg/u.m**3
+        self.assertAlmostEqualQuantity(pc.density_air(0*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
 
 class GeometryTest(unittest.TestCase):
     """Test the circular area and diameter functions."""
