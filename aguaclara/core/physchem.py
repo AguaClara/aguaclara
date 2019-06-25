@@ -723,3 +723,33 @@ def manifold_ID(FlowRate, Pressure):
     ut.check_range([FlowRate, ">0", "Flow rate"], [Pressure, ">0", "Pressure"])
     return np.sqrt(FlowRate/((np.pi/4)*np.sqrt(2*gravity.magnitude*Pressure)))
 
+def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
+    hl = min(hl, depth / 3)
+    horiz_chan_w_new = q / ((depth - hl) * np.sqrt(2 * con.GRAVITY * hl))
+    
+    error = 1
+    i = 0
+    while error > 0.001 and i < 20:
+        w = horiz_chan_w_new
+        i = i + 1
+        horiz_chan_w_new = np.sqrt((1 + k + \
+            fric_rect(q, w, depth - hl, nu, eps, 1) * (l / 4 * \
+                radius_hydraulic(w, depth - hl, 1)) * (1 - 2 * (manifold / 3))
+        ) / 2 * con.GRAVITY * hl ) * (q / depth - hl) 
+        error = np.abs(horiz_chan_w_new - w) / horiz_chan_w_new + w
+    return horiz_chan_w_new.to(u.m)
+
+def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
+    h_new = (q / (w * np.sqrt(2 * con.GRAVITY * hl))) + hl 
+    error = 1
+    i = 0
+    while error > 0.001 and i < 200:
+        h = h_new
+        hl_local = min(hl, h / 3)
+        i = i + 1
+        h_new = (q/ w) * np.sqrt((1 + \
+            fric_rect(q, w, h - hl_local, nu, eps, 1) * (l / 4 * \
+                radius_hydraulic(w, h - hl_local, 1)) * (1 - 2 * (manifold / 3))
+        )/ (2 * con.GRAVITY * hl_local)) + (hl_local) 
+        error = np.abs(h_new - h) / h_new + h
+    return h_new.to(u.m)
