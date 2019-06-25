@@ -125,12 +125,12 @@ class SedimentationChannel(Component):
     @property
     def inlet_h_weir(self):
         inlet_h_weir = self.inlet_depth + self.INLET_WEIR_FREE_BOARD_H
-
+        return inlet_h_weir
     @property
     def inlet_w_post_weir(self):
         inlet_w_post_weir = max(self.w_min, pc.horiz_chan_w(q,))
         pass
-        
+
     @property
     def inlet_w(self):
         inlet_w = self.inlet_w_pre_weir + self.weir_thickness + self.inlet_post_weir_w
