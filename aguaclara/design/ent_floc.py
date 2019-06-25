@@ -61,26 +61,10 @@ class EntTankFloc(Component):
               length, used to design the first iteration of the flocculator.
         """
         # Design the flocculator using a guess of the entrance tank's length.
-        self.floc = Flocculator(self.floc.q, self.floc.temp,
-                                ent_l,
-                                self.floc.chan_w_max,
-                                self.floc.l_max,
-                                self.floc.gt,
-                                self.floc.hl,
-                                self.floc.end_water_depth,
-                                self.floc.drain_t)
+        self.floc.ent_l = ent_l
         
         # Design the entrance tank using the flocculator's channel width.
-        self.ent = EntranceTank(self.ent.q, self.ent.temp,
-                                self.ent.lfom_nd,
-                                self.floc.chan_w,
-                                self.ent.floc_end_depth,
-                                self.ent.plate_s,
-                                self.ent.plate_thickness,
-                                self.ent.plate_angle,
-                                self.ent.plate_capture_vel,
-                                self.ent.fab_s,
-                                self.ent.sdr)
+        self.ent.floc_chan_w = self.floc.chan_w
 
         # Recalculate if the actual length of the entrance tank is not close
         # enough.
