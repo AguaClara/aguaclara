@@ -25,15 +25,14 @@ class SedimentationTank(Component):
     INLET_MAN_Q_RATIO = 0.8
     OUTLET_MAN_HL = 4 * u.cm
 
-    def __init__(self,
-                 q=20.0 * u.L / u.s,
-                 temp=20.0 * u.degC,
+    def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
                  vel_upflow=1.0 * u.mm / u.s,
                  l_inner=5.8 * u.m,
                  w_inner=42.0 * u.inch,
                  diffuser_vel_max=44.29 * u.cm / u.s,
                  diffuser_n=108,
                  diffuser_wall_thickness=1.17 * u.inch,
+                 diffuser_sdr=41,
                  inlet_hl=1 * u.cm,
                  inlet_man_sdr = 41,
                  plate_settler_angle=60.0 * u.deg,
@@ -111,15 +110,6 @@ class SedimentationTank(Component):
         return q_tank.to(u.L / u.s)
 
     @property
-    def n(self):
-        """
-        Returns:
-            Number of bays in a sedimentation tank (int).
-        """
-        n = np.ceil(self.q / self.q_tank)
-        return int(n)
-
-    @property
     def diffuser_hl(self):
         return self.inlet_hl / self.diffuser_n
     
@@ -161,7 +151,7 @@ class SedimentationTank(Component):
 
     @property 
     def inlet_man_nd(self):
-        diam_inner = np.sqrt(4 * self.q_tank / np.pi * self.inlet_man_v_max)
+        diam_inner = np.sqrt(4 * self.q_tank / (np.pi * self.inlet_man_v_max))
         inlet_man_nd = pipe.ND_SDR_available(diam_inner, self.inlet_man_sdr)
         return inlet_man_nd.to(u.cm)
 
