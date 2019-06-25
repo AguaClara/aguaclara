@@ -54,6 +54,13 @@ def OD(ND):
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
     return pipedb.iloc[index, 1]
 
+def fitting_od(pipe_nd, fitting_sdr=41):
+    pipe_od = OD(pipe_nd)
+    fitting_nd = ND_SDR_available(pipe_od, fitting_sdr)
+    fitting_od = OD(fitting_nd)
+    return fitting_od
+
+
 @u.wraps(u.inch, [u.inch, None], False)
 def ID_SDR(ND, SDR):
     """Return the inner diameter for SDR(standard diameter ratio) pipes.
