@@ -1,41 +1,39 @@
-"""This file provides basic utility functions such as significant figures which
-can be used throughout the plant design.
+"""Utility functions and features
 
+This module provides functions and features for scientific calculations and 
+complex function inputs.
+
+Example:
+    >>> import aguaclara.core.utility as ut
+    >>> round_sig_figs(1234567, 3)
+    1230000
 """
 from aguaclara.core.units import unit_registry as u
-
 
 import numpy as np
 from math import log10, floor
 
 
-def round_sf(number, digits):
-    """Returns inputted value rounded to number
-    of significant figures desired.
+def round_sig_figs(num, figs=4):
+    """Round a number to some amount of significant figures.
 
-    Parameters:
-       number: Value to be rounded
-       digits: number of significant digits
-       to be rounded to.
+    Args:
+        - ``num (float)``: Value to be rounded (optional units)
+        - ``figs (int)``: number of significant digits to be rounded to 
+          (recommended, defaults to 4)
     """
-    units = None
-    try:
-        num = number.magnitude
-        units = number.units
-    except AttributeError:
-        num = number
+    # Convert number to a Pint quantity if it isn't already
+    num = num * u.dimensionless
 
-    try:
-        if (units != None):
-            rounded_num = round(num, digits - int(floor(log10(abs(num)))) - 1) * units
-        else:
-            rounded_num = round(num, digits - int(floor(log10(abs(num)))) - 1)
-        return rounded_num
-    except ValueError:  # Prevents an error with log10(0)
-        if (units != None):
-            return 0 * units
-        else:
-            return 0
+    # Prevents undefined log10(0)
+    if num.magnitude != 0:
+        decimals = figs - int(floor(log10(abs(num.magnitude)))) - 1
+        num = np.round(num.magnitude, decimals) * num.units
+
+    if num.units is u.dimensionless:
+        num = num.magnitude
+
+    return num
 
 
 def stepceil_with_units(param, step, unit):
@@ -48,6 +46,9 @@ def stepceil_with_units(param, step, unit):
     while counter < param.to(unit):
         counter += step * unit
     return counter
+
+def round_step(num, step):
+    
 
 
 # Take the values of the array, compare to x, find the index of the first value less than or equal to x
@@ -211,3 +212,12 @@ def min(*args, f=np.min):
     for i, arg in enumerate(args):
         L.insert(i, (arg/base_q).to(u.dimensionless))
     return f(L)*base_q
+
+def array_qtys_to_strs(lst):
+    """Convert Pint quantities in a NumPy array to strings.
+    
+    Args:
+        - ``lst (numpy.ndarray Quantity)``: a list of values that has a Pint
+            unit attached to it
+    """
+    return [str(value) for value in lst]
