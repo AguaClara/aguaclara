@@ -6,6 +6,7 @@ from aguaclara.core.units import unit_registry as u
 import aguaclara.core.materials as mat
 import aguaclara.core.constants as con
 import aguaclara.core.utility as ut
+import aguaclara.core.pipes as pipe
 
 import numpy as np
 from scipy import interpolate, integrate
@@ -753,3 +754,9 @@ def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
         )/ (2 * con.GRAVITY * hl_local)) + (hl_local) 
         error = np.abs(h_new - h) / h_new + h
     return h_new.to(u.m)
+
+def pipe_flow_nd(q, sdr, hl, l, nu, eps, k):
+    i = 0
+    while q > flow_pipe(pipe.ID_SDR_all_available[i], hl, l, nu, eps, k):
+        i += 1
+    return pipe.ND_SDR_available(pipe.ID_SDR_all_available[i], sdr)
