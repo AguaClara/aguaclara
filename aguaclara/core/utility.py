@@ -5,7 +5,7 @@ complex function inputs.
 
 Example:
     >>> import aguaclara.core.utility as ut
-    >>> round_sf(1234567, 3)
+    >>> round_sig_figs(1234567, 3)
     1230000
 """
 from aguaclara.core.units import unit_registry as u
@@ -18,19 +18,17 @@ def round_sig_figs(num, figs=4):
     """Round a number to some amount of significant figures.
 
     Args:
-        - number (float): Value to be rounded (optional units)
-        - digits (int): number of significant digits
-          to be rounded to.
+        - ``num (float)``: Value to be rounded (optional units)
+        - ``figs (int)``: number of significant digits to be rounded to 
+          (recommended, defaults to 4)
     """
     # Convert number to a Pint quantity if it isn't already
     num = num * u.dimensionless
 
     # Prevents undefined log10(0)
     if num.magnitude != 0:
-        num = np.round(
-                num.magnitude,
-                figs - int(floor(log10(abs(num.magnitude)))) - 1
-            ) * num.units
+        decimals = figs - int(floor(log10(abs(num.magnitude)))) - 1
+        num = np.round(num.magnitude, decimals) * num.units
 
     if num.units is u.dimensionless:
         num = num.magnitude
@@ -48,6 +46,9 @@ def stepceil_with_units(param, step, unit):
     while counter < param.to(unit):
         counter += step * unit
     return counter
+
+def round_step(num, step):
+    
 
 
 # Take the values of the array, compare to x, find the index of the first value less than or equal to x
