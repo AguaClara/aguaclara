@@ -5,6 +5,10 @@ from aguaclara.design.sed_tank import *
 from aguaclara.design.sed_chan import *
 
 
+# TODO: Hopper Length, Exit launder, Side Slopes
+# Inlet chan slopes, Hopper drain
+
+
 class Sedimentor(Component):
     """
     Calculates dimensions and values for Sedimentation Tank.
@@ -15,9 +19,12 @@ class Sedimentor(Component):
     """
 
     def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC,
+                 hopper_l_min=50 * u.cm,
                  tank=SedimentationTank(),
                  chan=SedimentationChannel()):
         super().__init__(q = q, temp = temp)
+
+        self.hopper_l_min = hopper_l_min
 
         self.tank = tank
         self.chan = chan
@@ -42,7 +49,15 @@ class Sedimentor(Component):
         # )
         self.chan.sed_tank_n = self.tank_n
         self.chan.sed_tank_diffuser_hl = self.tank.diffuser_hl
-
+    
+    def hopper_l(self):
+        if self.q > 60. * u.L / u.s: 
+            self.chan.outlet_w +  2 * self.chan.weir_thickness + self.chan.inlet_w + self.chan.sed_wall_thickness
+        else:
+            max(
+                self.hopper_l_min,
+                
+            )
 
 
 WALL_THICKNESS = 0.15 * u.m  # thickness of sed tank dividing wall
@@ -75,13 +90,6 @@ SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/17360490
 
 ##Inlet channel
 WEIR_HL_MAX = 5 * u.cm
-
-##Height of the inlet channel overflow weir above the normal water level
-# in the inlet channel so that the far side of the overflow weir does not
-# fill with water under normal operating conditions. This means the water
-# level in the inlet channel will increase when the inlet overflow weir
-# is in use.
-INLET_WEIR_FREE_BOARD_H = 2 * u.cm
 
 WEIR_THICKNESS = 5*u.cm
 

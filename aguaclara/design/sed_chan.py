@@ -176,8 +176,6 @@ class SedimentationChannel(Component):
         inlet_drain_box_w = max( 2 * self.fitting_s + pipe.fitting_od(self.drain_nd), self.inlet_w_post_weir)
         return inlet_drain_box_w
 
-    
-
     @property
     def outlet_depth(self):
        outlet_depth = self.inlet_depth - self.sed_tank_outlet_man_hl - \
@@ -200,7 +198,7 @@ class SedimentationChannel(Component):
             self.w_min, 
             pc.horiz_chan_w(
                 self.q,
-                self.outlet_weir_depth - self.outlet_free_h,
+                self.outlet_weir_depth - self.outlet_free_h, #what is outlet_free_h
                 self.outlet_weir_depth,
                 self.l,
                 pc.viscosity_kinematic(self.temp),
@@ -224,7 +222,12 @@ class SedimentationChannel(Component):
             self.outlet_post_weir_w
             )
         return outlet_drain_box_w
+
     @property
     def outlet_weir_h(self):
         outlet_weir_h = self.outlet_weir_depth + self.WEIR_FREE_BOARD_H
         return outlet_weir_h
+    
+    @property
+    def w_outer(self):
+        self.outlet_w + 2 * self.chan.weir_thickness + self.chan.inlet_w + self.chan.sed_wall_thickness
