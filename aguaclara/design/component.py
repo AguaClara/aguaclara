@@ -60,8 +60,8 @@ class Component(object):
           object
     """
     def __init__(self, q=20.0 * u.L/u.s, temp=20.0 * u.degC):
-        self.mem_loc = hex(id(self))
-
+        self.mem_loc = hash((q.magnitude, temp.magnitude))
+        
         if self.mem_loc not in PlantInput.configs:
             PlantInput.configs[self.mem_loc] = PlantInput(q, temp)
 
@@ -69,11 +69,19 @@ class Component(object):
     def q(self):
         """The flow rate. (L/s)"""
         return PlantInput.configs[self.mem_loc].q
+
+    @q.setter
+    def set_q(self, q):
+        self.q = q
     
     @property
     def temp(self):
         """The water temperature. (°C)"""
         return PlantInput.configs[self.mem_loc].temp
+
+    @temp.setter
+    def set_temp(self, temp):
+        self.temp = temp
 
     def propogate_config(self, subcomponents):
         """Propogate the configuration of plant design inputs to all
@@ -84,9 +92,11 @@ class Component(object):
               Component class.
         """
         for subcomp in subcomponents:
-            sub_mem_loc = hex(id(subcomp))
-            PlantInput.configs[sub_mem_loc] = \
-                PlantInput.configs[self.mem_loc]
+            # sub_mem_loc = hash((subcomp.q.magnitude, subcomp.temp.magnitude))
+            # PlantInput.configs[sub_mem_loc] = \
+            #     PlantInput.configs[self.mem_loc]
+            subcomp.set_q(self.q)
+            subcomp.set_temp(self.temp)
 
     def serialize_properties(self):
         """Convert the properties (fields and ``@property`` functions) of a 

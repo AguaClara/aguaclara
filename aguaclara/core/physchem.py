@@ -370,7 +370,7 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
             * ((1/3 )
                + (1 / (2*NumOutlets))
                + (1 / (6*NumOutlets**2))
-               )
+              )
             )
 
 

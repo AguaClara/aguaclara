@@ -3,7 +3,17 @@ for an AguaClara plant.
 """
 from aguaclara.design.sed_tank import *
 from aguaclara.design.sed_chan import *
+from aguaclara.core.units import unit_registry as u
+import aguaclara.core.constants as con
+import aguaclara.core.materials as mat
+import aguaclara.core.pipes as pipe
+from aguaclara.core import drills
+import aguaclara.core.utility as ut
+from aguaclara.design.component import Component
+import aguaclara.core.physchem as pc
+import aguaclara.core.materials as mat
 
+import numpy as np
 
 # TODO: Hopper Length, Exit launder, Side Slopes
 # Inlet chan slopes, Hopper drain
@@ -49,15 +59,38 @@ class Sedimentor(Component):
         # )
         self.chan.sed_tank_n = self.tank_n
         self.chan.sed_tank_diffuser_hl = self.tank.diffuser_hl
+        self.chan.sed_w = self.tank.w
     
+    @property
     def hopper_l(self):
         if self.q > 60. * u.L / u.s: 
-            self.chan.outlet_w +  2 * self.chan.weir_thickness + self.chan.inlet_w + self.chan.sed_wall_thickness
+            hopper_l = self.chan.w_outer
         else:
-            max(
+            hopper_l = max(
                 self.hopper_l_min,
-                
+                #asks for length estimate, but we don't have that, we do have 
+                # the actual length however
+                self.plate_l_est * np.cos(self.tank.plate_settler_angle) - \
+                    self.chan.weir_thickness
             )
+        return hopper_l
+
+    @property
+    def weir_floc_z(self):
+        
+
+    @property
+    def hopper_slope_front_h(self):
+        hopper_slope_front_h = self.weir_floc_z - self.hopper_bottom_z
+        return hopper_slope_front_h
+
+    @property
+    def hopper_pipe_drain_l(self):
+        hopper_pipe_drain_l = (
+            self.hopper_slope_front_h /
+             np.tan(self.hopper_slope_front_back_angle)
+             ) self.WALL_THICKNESS #+ socket depth(nd sed hopper drain)
+        return hopper_pipe_drain_l
 
 
 WALL_THICKNESS = 0.15 * u.m  # thickness of sed tank dividing wall

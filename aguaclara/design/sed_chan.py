@@ -34,7 +34,8 @@ class SedimentationChannel(Component):
                  outlet_man_bod_hl = 15.0 * u.cm,
                  fitting_s = 15. * u.cm,
                  inlet_depth_max = 50 * u.cm,
-                 drain_sdr = 26):
+                 drain_sdr = 26,
+                 sed_w = 30.0 * u.cm):
         super().__init__(q = q, temp = temp)
 
         self.sed_tank_n = sed_tank_n
@@ -53,6 +54,7 @@ class SedimentationChannel(Component):
         self.fitting_s = fitting_s
         self.inlet_depth_max = inlet_depth_max
         self.drain_sdr = drain_sdr
+        self.sed_w = sed_w
 
     @property
     def l(self):
@@ -193,6 +195,7 @@ class SedimentationChannel(Component):
     @property
     def outlet_post_weir_w(self):
         outlet_post_weir_w = max(
+            #need self.outlet_to_filter_nd
             self.fitting_s + pipe.fitting_od(self.outlet_to_filter_nd), 
             self.fitting_s + pipe.fitting_od(self.drain_nd), 
             self.w_min, 
@@ -230,4 +233,21 @@ class SedimentationChannel(Component):
     
     @property
     def w_outer(self):
-        self.outlet_w + 2 * self.chan.weir_thickness + self.chan.inlet_w + self.chan.sed_wall_thickness
+        w_outer = self.outlet_w + 2 * self.chan.weir_thickness + self.chan.inlet_w + self.chan.sed_wall_thickness
+        return w_outer
+    
+    @property
+    def inlet_last_coupling_h(self):
+        last_coupling_h = self.weir_exit_hl - 2 * u.cm
+        return last_coupling_h
+    
+    @property
+    def inlet_step_h(self):
+        step_h = self.last_coupling_h / max(1, self.sed_tank_n - 1)
+        return step_h
+    
+    @property
+    def inlet_slope_l(self):
+        inlet_slope_l = self.sed_w + self.sed_wall_thickness - \
+            pipe.fitting_od(self.sed_tank_inlet_man_nd) - self.fitting_s 
+        return inlet_slope_l

@@ -24,6 +24,11 @@ class SedimentationTank(Component):
     """
     INLET_MAN_Q_RATIO = 0.8
     OUTLET_MAN_HL = 4 * u.cm
+    VC_ORIFICE_RATIO = 0.63
+    JET_REVERSER_ND = 3 * u.inch
+    JET_PLANE_RATIO = 0.0124
+
+
 
     def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
                  vel_upflow=1.0 * u.mm / u.s,
@@ -44,6 +49,7 @@ class SedimentationTank(Component):
                  exit_man_orifice_n=58,
                  exit_man_orifice_q_ratio_max=0.8,
                  outlet_man_sdr=41,
+                 slope_angle=50 * u.deg,
                  
                  w=41.0 * u.inch):
         """Instantiates a SedimentationTankBay with the specified values.
@@ -99,6 +105,7 @@ class SedimentationTank(Component):
         self.inlet_hl = inlet_hl
         self.inlet_man_sdr = inlet_man_sdr
         self.outlet_man_sdr = outlet_man_sdr
+        self.slope_angle = slope_angle
         
     @property
     def q_tank(self):
@@ -195,3 +202,52 @@ class SedimentationTank(Component):
                      / (np.sin(self.plate_settler_angle) * np.cos(self.plate_settler_angle))
                      ).to(u.m)
         return L_sed_plate
+
+    @property
+    def outlet_orifice_n(self):
+        outlet_orifice_n = floor((self.up_flow_l - ) / self.outlet_orifice_b)
+
+    @property
+    def outlet_nd(self):
+        #needs a manifold_nd function
+        pass
+
+    @property 
+    def outlet_major_hl(self):
+        outlet_major_hl = pc.headloss_manifold(
+            self.q_tank,
+            pipe.ID_SDR(self.outlet_nd, self.outlet_ps), 
+            self.outlet_l, 
+            0, 
+            pc.viscosity_kinematic(self.temp), 
+            mat.PVC_PIPE_ROUGH, 
+            self.outlet_orifice_n
+            )
+        return outlet_major_hl
+    
+    @property
+    def outlet_orifice_hl(self):
+        outlet_orifice_hl = pc.head_orifice(
+            self.outlet_orifice_d, 
+            self.VC_ORIFICE_RATIO,
+            self.q_tank / self.outlet_orifice_n
+            )
+        return outlet_orifice_hl
+     
+    @property
+    def outlet_hl(self):
+        outlet_hl = self.outlet_orifice_hl + self.outlet_major_hl
+        return outlet_hl
+
+    @property
+    def side_slopes_w(self):
+        side_slopes_w = (
+            self.w - 
+            pipe.ID_SDR(self.JET_REVERSER_ND, self.JET_PLANE_RATIO)
+            ) / 2
+        return side_slopes_w
+
+    @property
+    def side_slopes_h(self):
+        side_slopes_h = np.tan(self.slope_angle) * self.side_slopes_w
+        return side_slopes_h
