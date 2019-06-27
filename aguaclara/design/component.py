@@ -25,8 +25,10 @@ Example:
 """
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.utility as ut
+
 import numpy as np
-import json 
+import json
+
 
 class PlantInput(object):
     """Represents the design inputs that are shared between all components

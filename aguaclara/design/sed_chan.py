@@ -24,14 +24,14 @@ class SedimentationChannel(Component):
                  sed_tank_outlet_man_nd= 60. * u.cm,
                  sed_tank_outlet_man_hl=4*u.cm,
                  sed_wall_thickness = 15.0 * u.cm,
+                 sed_tank_diffuser_hl=0.09 * u.mm,
+
                  weir_thickness = 15.0 * u.cm,
                  w_min = 30.0 * u.cm,
                  outlet_man_bod_hl = 15.0 * u.cm,
                  fitting_s = 15. * u.cm,
-                 sed_tank_diffuser_hl=0.09 * u.mm,
                  inlet_depth_max = 50 * u.cm,
                  drain_sdr = 26):
-
         super().__init__(q = q, temp = temp)
 
         self.sed_tank_n = sed_tank_n
@@ -41,11 +41,12 @@ class SedimentationChannel(Component):
         self.sed_tank_outlet_man_nd = sed_tank_outlet_man_nd
         self.sed_tank_outlet_man_hl = sed_tank_outlet_man_hl
         self.sed_wall_thickness = sed_wall_thickness
+        self.sed_tank_diffuser_hl = sed_tank_diffuser_hl
+
         self.weir_thickness = weir_thickness
         self.w_min = w_min
         self.outlet_man_bod_hl = outlet_man_bod_hl
         self.fitting_s = fitting_s
-        self.sed_tank_diffuser_hl = sed_tank_diffuser_hl
         self.inlet_depth_max = inlet_depth_max
         self.drain_sdr = drain_sdr
 
@@ -68,13 +69,13 @@ class SedimentationChannel(Component):
         return inlet_hl_max
 
     @property
-    def inlet_w_pre_weir_plumbing_min(self):
+    def _inlet_w_pre_weir_plumbing_min(self):
         inlet_w_pre_weir_plumbing_min = pipe.fitting_od(self.sed_tank_inlet_man_nd) + \
             2 * self.fitting_s
         return inlet_w_pre_weir_plumbing_min
     
     @property
-    def inlet_w_pre_weir_hl_min(self):
+    def _inlet_w_pre_weir_hl_min(self):
         inlet_w_pre_weir_hl_min = pc.horiz_chan_w(
             self.q,
             self.inlet_depth_max,
@@ -90,8 +91,8 @@ class SedimentationChannel(Component):
     @property
     def inlet_w_pre_weir(self):
         inlet_w_pre_weir = max(
-            self.inlet_w_pre_weir_plumbing_min, 
-            self.inlet_w_pre_weir_hl_min)
+            self._inlet_w_pre_weir_plumbing_min, 
+            self._inlet_w_pre_weir_hl_min)
         return inlet_w_pre_weir
 
     @property
@@ -115,7 +116,7 @@ class SedimentationChannel(Component):
     
     @property
     def inlet_depth(self):    
-        inlet_depth = max(self.inlet_depth_plumbing_min, self.inlet_depth_hl ) 
+        inlet_depth = max(self.inlet_depth_plumbing_min, self.inlet_depth_hl) 
         return inlet_depth
 
     @property
