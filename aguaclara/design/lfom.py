@@ -35,18 +35,11 @@ class LFOM(Component):
         - ``orifice_s (float * u.cm)``: The spacing between orifices (optional, 
           defaults to 0.5cm)
     """
-    def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
-                 hl=20.0 * u.cm,
-                 safety_factor=1.5,
-                 sdr=26.0,
-                 drill_bits=drills.DRILL_BITS_D_IMPERIAL,
-                 orifice_s=0.5 * u.cm):
-        super().__init__(q = q, temp = temp)
-        self.hl = hl
-        self.safety_factor = safety_factor
-        self.sdr = sdr
-        self.drill_bits = drill_bits
-        self.orifice_s = orifice_s
+    hl = 20.0 * u.cm
+    safety_factor = 1.5
+    sdr = 26.0
+    drill_bits = drills.DRILL_BITS_D_IMPERIAL
+    orifice_s = 0.5 * u.cm
 
     def stout_w_per_flow(self, h):
         """The width of a stout weir at a given elevation.

@@ -16,6 +16,7 @@ from aguaclara.design.component import Component
 
 import numpy as np
 
+# TODO: check math with calculating number of channels
 
 class Flocculator(Component):
     """Design an AguaClara plant's flocculator.
@@ -66,22 +67,15 @@ class Flocculator(Component):
                # input as well? -Oliver L., oal22, 5 Jun 19
     OBSTACLE_OFFSET = True
 
-    def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
-                 ent_l=1.5 * u.m,
-                 chan_w_max=42.0 * u.inch,
-                 l_max=6.0 * u.m,
-                 gt=37000,
-                 hl = 40.0 * u.cm,
-                 end_water_depth = 2.0 * u.m,
-                 drain_t=30.0 * u.min):
-        super().__init__(q = q, temp = temp)
-        self.l_max = l_max
-        self.gt = gt
-        self.hl = hl
-        self.end_water_depth = end_water_depth
-        self.ent_l = ent_l
-        self.chan_w_max = chan_w_max
-        self.drain_t = drain_t
+    q = 20.0 * u.L / u.s
+    temp = 20.0 * u.degC
+    ent_l = 1.5 * u.m
+    chan_w_max = 42.0 * u.inch
+    l_max = 6.0 * u.m
+    gt = 37000
+    hl  =  40.0 * u.cm
+    end_water_depth  =  2.0 * u.m
+    drain_t = 30.0 * u.min
 
 
     @property

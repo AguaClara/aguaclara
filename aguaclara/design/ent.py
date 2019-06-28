@@ -54,28 +54,16 @@ class EntranceTank(Component):
         - ``sdr (float)``: Standard demension ratio (optional,
           defaults to 41)  
     """
+    lfom_nd = 2.0 * u.inch # May be innacurate, check with Monroe -Oliver L., oal22, 4 Jun '19 
+    floc_chan_w = 42.0 * u.inch
+    floc_end_depth = 2.0 * u.m
+    plate_s = 2.5 * u.cm
+    plate_thickness = 2.0 * u.mm
+    plate_angle  =  50.0 * u.deg
+    plate_capture_vel  =  8.0 * u.mm / u.s
+    fab_s = 5.0 * u.cm
+    sdr = 41.0
 
-    def __init__(self, q = 20.0 * u.L/u.s, temp = 20.0 * u.degC,
-                 lfom_nd=2.0 * u.inch, # May be innacurate, check with Monroe -Oliver L., oal22, 4 Jun '19 
-                 floc_chan_w=42.0 * u.inch,
-                 floc_end_depth=2.0 * u.m,
-                 plate_s=2.5 * u.cm,
-                 plate_thickness=2.0 * u.mm,
-                 plate_angle = 50.0 * u.deg,
-                 plate_capture_vel = 8.0 * u.mm / u.s,
-                 fab_s=5.0 * u.cm,
-                 sdr=41.0):
-        super().__init__(q = q, temp = temp)
-        self.lfom_nd = lfom_nd
-        self.floc_chan_w = floc_chan_w
-        self.floc_end_depth = floc_end_depth
-        self.plate_s = plate_s
-        self.plate_thickness = plate_thickness
-        self.plate_angle = plate_angle
-        self.plate_capture_vel = plate_capture_vel
-        self.fab_s = fab_s
-        self.sdr = sdr 
-    
     @property
     def drain_id(self):
         """The inner diameter of the entrance tank drain pipe."""

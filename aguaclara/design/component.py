@@ -28,26 +28,8 @@ import aguaclara.core.utility as ut
 
 import numpy as np
 import json
+from pprint import pprint
 
-
-class PlantInput(object):
-    """Represents the design inputs that are shared between all components
-    of an AguaClara water treatment plant.
-    
-    Attributes:
-        - ``configs ({string: PlantInput})``: A dictionary mapping the hexcode
-          memory locations of component objects to their plant design inputs.
-
-    Args:
-        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20 l/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
-    """
-    configs = {}
-
-    def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC):
-        self.q = q
-        self.temp = temp
         
 class Component(object):
     """An abstract class that should be extended by other component classes.
@@ -59,22 +41,17 @@ class Component(object):
         - ``pi (PlantInput)``: The shared plant design inputs for a component
           object
     """
-    def __init__(self, q=20.0 * u.L/u.s, temp=20.0 * u.degC):
-        self.q = q
-        self.temp = temp
+    q = 20 * u.L / u.s
+    temp = 20 * u.degC
+    subcomponents = []
 
-    def propogate_config(self, subcomponents):
-        """Propogate the configuration of plant design inputs to all
-        subcomponents.
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
         
-        Args:
-            - ``subcomponents ([Component])``: A list of subcomponents for the
-              Component class.
-        """
-        for subcomp in subcomponents:
+        for subcomp in self.subcomponents:
             subcomp.q = self.q
             subcomp.temp = self.temp
-
+        
     def serialize_properties(self):
         """Convert the properties (fields and ``@property`` functions) of a 
         component into a dictionary.
@@ -85,7 +62,7 @@ class Component(object):
             '__doc__',
             '__module__',
             '__weakref__',
-            'mem_loc'
+            'subcomponents'
         ]
         for var_name in dir(self):
             value = getattr(self, var_name)
@@ -99,8 +76,13 @@ class Component(object):
                         properties[var_name] = str(value)
                 except: 
                     properties[var_name] = str(value)
+    
         return properties
 
+    def print_properties(self):
+        """Print the serialized properties with pretty indentation."""
+        pprint(self.serialize_properties())
+    
     def write_properties_to_file(self, filename):
         """Append the properties of a component to a file. If it does not exist,
         then the file is created.
