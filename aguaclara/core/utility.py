@@ -50,37 +50,49 @@ def stepceil_with_units(param, step, unit):
 
 
 # Take the values of the array, compare to x, find the index of the first value less than or equal to x
-def floor_nearest(x,array):
+def floor_nearest(x, array):
     myindex = np.argmax(array >= x) - 1
     return array[myindex]
 
 
 # Take the values of the array, compare to x, find the index of the first value greater or equal to x
-def ceil_nearest(x,array):
+def ceil_nearest(x, array):
     myindex = np.argmax(array >= x)
     return array[myindex]
 
 
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs.
-    :param HandlerResult: output type. Defaults to numpy arrays.
+
+    For each sequence passed as an argument to the function, from left to right,
+    this wrapper will recursively evaluate the function with the sequence
+    replaced by each of its elements and return the results in a sequence.
+
+    For a function "f" of one argument, f([x_1, ..., x_n]) would be evaluated to
+    [f(x_1), ..., f(x_n)]. For a function passed multiple sequences of
+    dimensions d_1, ..., d_n (from left to right), the result would be a
+    d_1 x ... x d_n dimensional array.
+
+    :param HandlerResult: output type. Defaults to Numpy arrays.
     """
     def decorate(func):
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element.
             """
+            # Loop through the positional arguments (args), identify those that
+            # are sequences, and add their index locations to the list
+            # "argSequences". Pint units must be ignored in order to recognize
+            # sequences with units as sequences instead of Pint Quantities.
             argsSequences = []
-            #This for loop identifies arguments that are sequences and
-            #adds their index location to the list 'sequences'. Pint units are
-            #ignored in order to recognize sequences with units as sequences
-            #instead of pint Quantities.
             for num, arg in enumerate(args):
                 if isinstance(arg, u.Quantity):
                     arg = arg.to_base_units().magnitude
                 if isinstance(arg, (list, tuple, np.ndarray)):
                     argsSequences.append(num)
 
-            #Repeat for keyword arguments
+            # Repeat the above for keyword arguments (kwargs), but access them
+            # as a dictionary whose keys are keywords/argument names and values
+            # are corresponding argument values.
             kwargsSequences = []
             for keyword, arg in kwargs.items():
                 if isinstance(arg, u.Quantity):
@@ -88,45 +100,38 @@ def list_handler(HandlerResult="nparray"):
                 if isinstance(arg, (list, tuple, np.ndarray)):
                     kwargsSequences.append(keyword)
 
-            #If there are no sequences to iterate through, simply return
-            #the function.
+            # If there are no sequences to iterate through, simply return
+            # the function evaluated with the given arguments.
             if len(argsSequences) == 0 and len(kwargsSequences) == 0:
                 return func(*args, **kwargs)
 
+            # If there are sequences, iterate through them from left to right.
+            # This means beginning with positional arguments.
             if len(argsSequences) != 0:
-                #iterant keeps track of how many times we've iterated and
-                #limiter stops the loop once we've iterated as many times
-                #as there are list elements. Without this check, a few
-                #erroneous runs will occur, appending the last couple values
-                #to the end of the list multiple times.
-                #
-                #We only care about the length of sequences[0] because this
-                #function is recursive, and argsSequences[0] is always the relevant
-                #sequences for any given run.
                 result = []
                 argsList = list(args)
+                # For each element of the leftmost sequence, evaluate
+                # the function using the original arguments, except with the
+                # sequence replaced by the single element. Store the results of
+                # all the elements in a list (result).
                 for arg in argsList[argsSequences[0]]:
-                    #We can safely replace the entire list argument
-                    #with a single element from it because of the looping
-                    #we're doing. We redefine the object, but that
-                    #definition remains within this namespace and does
-                    #not penetrate further up the function.
+                    # We can safely redefine the entire list argument because
+                    # the new definition remains within this namespace; it does
+                    # alter the loop or penetrate further up the function.
                     argsList[argsSequences[0]] = arg
-                    #Here we dive down the rabbit hole. This ends up
-                    #creating a multi-dimensional array shaped by the
-                    #sizes and shapes of the lists passed.
+                    # Here we dive down the rabbit hole. This recursive call
+                    # creates a multi-dimensional array.
                     result.append(wrapper(*argsList, **kwargs))
+
+            # If there are no sequences in the positional arguments, we can
+            # begin iterating through those in the keyword arguments. The
+            # process is the same as for positional arguments.
             else:
                 result = []
                 for arg in kwargs[kwargsSequences[0]]:
                     kwargs[kwargsSequences[0]] = arg
                     result.append(wrapper(*args, **kwargs))
 
-            #HandlerResult allows the user to specify what type to
-            #return the generated sequence as. It defaults to numpy
-            #arrays because functions tend to handle them better, but if
-            #the user does not wish to import numpy the base Python options
-            #are available to them.
             if HandlerResult == "nparray":
                 result = np.array(result)
             elif HandlerResult == "tuple":
