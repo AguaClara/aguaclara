@@ -110,14 +110,14 @@ def re_pipe(FlowRate, Diam, Nu):
     return (4 * FlowRate) / (np.pi * Diam * Nu)
 
 
-@u.wraps(u.m, [u.m, u.m], False)
+# @u.wraps(u.m, [u.m, u.m], False)
 @ut.list_handler()
 def radius_hydraulic(Width, DistCenter, openchannel):
     """Return the hydraulic radius.
 
     Width and DistCenter are length values and openchannel is a boolean.
     """
-    ut.check_range([Width, ">0", "Width"], [DistCenter, ">0", "DistCenter"],
+    ut.check_range([Width.magnitude, ">0", "Width"], [DistCenter.magnitude, ">0", "DistCenter"],
                    [openchannel, "boolean", "openchannel"])
     if openchannel:
         return (Width*DistCenter) / (Width + 2*DistCenter)
@@ -134,14 +134,15 @@ def radius_hydraulic_general(Area, PerimWetted):
     return Area / PerimWetted
 
 
-@u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s], False)
+# @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s], False)
+@ut.list_handler()
 def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
     """Return the Reynolds Number for a rectangular channel."""
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Nu, ">0", "Nu"])
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"], [Nu.magnitude, ">0", "Nu"])
     return (4 * FlowRate
-            * radius_hydraulic(Width, DistCenter, openchannel).magnitude
+            * radius_hydraulic(Width, DistCenter, openchannel)
             / (Width * DistCenter * Nu))
     #Reynolds Number for rectangular channel; open = False if all sides
     #are wetted; l = Diam and Diam = 4*R.h
@@ -157,6 +158,7 @@ def re_general(Vel, Area, PerimWetted, Nu):
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def fric(FlowRate, Diam, Nu, PipeRough):
     """Return the friction factor for pipe flow.
 
@@ -178,13 +180,13 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     return f
 
 
-@u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+# @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
 @ut.list_handler()
 def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
     """Return the friction factor for a rectangular channel."""
     #Checking input validity - inputs not checked here are checked by
     #functions this function calls.
-    ut.check_range([PipeRough, "0-1", "Pipe roughness"])
+    ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
     if re_rect(FlowRate,Width,DistCenter,Nu,openchannel) >= RE_TRANSITION_PIPE:
         #Swamee-Jain friction factor adapted for rectangular channel.
         #Diam = 4*R_h in this case.
@@ -192,7 +194,7 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
                 / (np.log10((PipeRough
                              / (3.7 * 4
                                 * radius_hydraulic(Width, DistCenter,
-                                                   openchannel).magnitude
+                                                   openchannel)
                                 )
                              )
                             + (5.74 / (re_rect(FlowRate, Width, DistCenter,

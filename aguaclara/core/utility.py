@@ -62,32 +62,38 @@ def ceil_nearest(x,array):
 
 
 def list_handler(HandlerResult="nparray"):
-    """Wraps a function to handle list inputs."""
+    """Wraps a function to handle list inputs.
+    :param HandlerResult: output type. Defaults to numpy arrays.
+    """
     def decorate(func):
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element.
-
-            :param HandlerResult: output type. Defaults to numpy arrays.
             """
-            sequences = []
-            enumsUnitCheck = enumerate(args)
-            argsList = list(args)
-            #This for loop identifies pint unit objects and strips them
-            #of their units.
-            for num, arg in enumsUnitCheck:
-                if type(arg) == type(1 * u.m):
-                    argsList[num] = arg.to_base_units().magnitude
-            enumsUnitless = enumerate(argsList)
+            argsSequences = []
             #This for loop identifies arguments that are sequences and
-            #adds their index location to the list 'sequences'.
-            for num, arg in enumsUnitless:
+            #adds their index location to the list 'sequences'. Pint units are
+            #ignored in order to recognize sequences with units as sequences
+            #instead of pint Quantities.
+            for num, arg in enumerate(args):
+                if isinstance(arg, u.Quantity):
+                    arg = arg.to_base_units().magnitude
                 if isinstance(arg, (list, tuple, np.ndarray)):
-                    sequences.append(num)
+                    argsSequences.append(num)
+
+            #Repeat for keyword arguments
+            kwargsSequences = []
+            for keyword, arg in kwargs.items():
+                if isinstance(arg, u.Quantity):
+                    arg = arg.to_base_units().magnitude
+                if isinstance(arg, (list, tuple, np.ndarray)):
+                    kwargsSequences.append(keyword)
+
             #If there are no sequences to iterate through, simply return
             #the function.
-            if len(sequences) == 0:
-                result = func(*args, **kwargs)
-            else:
+            if len(argsSequences) == 0 and len(kwargsSequences) == 0:
+                return func(*args, **kwargs)
+
+            if len(argsSequences) != 0:
                 #iterant keeps track of how many times we've iterated and
                 #limiter stops the loop once we've iterated as many times
                 #as there are list elements. Without this check, a few
@@ -95,38 +101,39 @@ def list_handler(HandlerResult="nparray"):
                 #to the end of the list multiple times.
                 #
                 #We only care about the length of sequences[0] because this
-                #function is recursive, and sequences[0] is always the relevant
+                #function is recursive, and argsSequences[0] is always the relevant
                 #sequences for any given run.
-                limiter = len(argsList[sequences[0]])
-                iterant = 0
                 result = []
-                for num in sequences:
-                    for arg in argsList[num]:
-                        if iterant >= limiter:
-                            break
-                        #We can safely replace the entire list argument
-                        #with a single element from it because of the looping
-                        #we're doing. We redefine the object, but that
-                        #definition remains within this namespace and does
-                        #not penetrate further up the function.
-                        argsList[num] = arg
-                        #Here we dive down the rabbit hole. This ends up
-                        #creating a multi-dimensional array shaped by the
-                        #sizes and shapes of the lists passed.
-                        result.append(wrapper(*argsList,
-                                              HandlerResult=HandlerResult, **kwargs))
-                        iterant += 1
-                #HandlerResult allows the user to specify what type to
-                #return the generated sequence as. It defaults to numpy
-                #arrays because functions tend to handle them better, but if
-                #the user does not wish to import numpy the base Python options
-                #are available to them.
-                if HandlerResult == "nparray":
-                    result = np.array(result)
-                elif HandlerResult == "tuple":
-                    result = tuple(result)
-                elif HandlerResult == "list":
-                    result == list(result)
+                argsList = list(args)
+                for arg in argsList[argsSequences[0]]:
+                    #We can safely replace the entire list argument
+                    #with a single element from it because of the looping
+                    #we're doing. We redefine the object, but that
+                    #definition remains within this namespace and does
+                    #not penetrate further up the function.
+                    argsList[argsSequences[0]] = arg
+                    #Here we dive down the rabbit hole. This ends up
+                    #creating a multi-dimensional array shaped by the
+                    #sizes and shapes of the lists passed.
+                    result.append(wrapper(*argsList, **kwargs))
+            else:
+                result = []
+                for arg in kwargs[kwargsSequences[0]]:
+                    kwargs[kwargsSequences[0]] = arg
+                    result.append(wrapper(*args, **kwargs))
+
+            #HandlerResult allows the user to specify what type to
+            #return the generated sequence as. It defaults to numpy
+            #arrays because functions tend to handle them better, but if
+            #the user does not wish to import numpy the base Python options
+            #are available to them.
+            if HandlerResult == "nparray":
+                result = np.array(result)
+            elif HandlerResult == "tuple":
+                result = tuple(result)
+            elif HandlerResult == "list":
+                result == list(result)
+
             return result
         return wrapper
     return decorate
@@ -196,12 +203,3 @@ def check_range(*args):
             if 'boolean' in arg[1] and type(i) != bool:
                 raise TypeError("{1} is {0} but must be a "
                                 "boolean.".format(i, arg[2]))
-
-def array_qtys_to_strs(lst):
-    """Convert Pint quantities in a NumPy array to strings.
-    
-    Args:
-        - ``lst (numpy.ndarray Quantity)``: a list of values that has a Pint
-            unit attached to it
-    """
-    return [str(value) for value in lst]
