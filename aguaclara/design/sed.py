@@ -27,20 +27,16 @@ class Sedimentor(Component):
         To create an object of SedimentationTank, use:
             >>> sed_tank = SedimentationTank()
     """
+    q=20 * u.L / u.s
+    temp=20 * u.degC
+    hopper_l_min=50 * u.cm
+    tank=SedimentationTank()
+    chan=SedimentationChannel()
+    subcomponents = [tank, chan]
 
-    def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC,
-                 hopper_l_min=50 * u.cm,
-                 tank=SedimentationTank(),
-                 chan=SedimentationChannel()):
-        super().__init__(q = q, temp = temp)
-
-        self.hopper_l_min = hopper_l_min
-
-        self.tank = tank
-        self.chan = chan
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self._design_chan()
-        
-        super().propogate_config([self.tank, self.chan])
 
     @property
     def tank_n(self):
@@ -74,23 +70,6 @@ class Sedimentor(Component):
                     self.chan.weir_thickness
             )
         return hopper_l
-
-    @property
-    def weir_floc_z(self):
-        
-
-    @property
-    def hopper_slope_front_h(self):
-        hopper_slope_front_h = self.weir_floc_z - self.hopper_bottom_z
-        return hopper_slope_front_h
-
-    @property
-    def hopper_pipe_drain_l(self):
-        hopper_pipe_drain_l = (
-            self.hopper_slope_front_h /
-             np.tan(self.hopper_slope_front_back_angle)
-             ) self.WALL_THICKNESS #+ socket depth(nd sed hopper drain)
-        return hopper_pipe_drain_l
 
 
 WALL_THICKNESS = 0.15 * u.m  # thickness of sed tank dividing wall

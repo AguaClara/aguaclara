@@ -11,7 +11,6 @@ from aguaclara.core import drills
 import aguaclara.core.utility as ut
 from aguaclara.design.component import Component
 import aguaclara.core.physchem as pc
-import aguaclara.core.materials as mat
 
 import numpy as np
 
@@ -27,85 +26,65 @@ class SedimentationTank(Component):
     VC_ORIFICE_RATIO = 0.63
     JET_REVERSER_ND = 3 * u.inch
     JET_PLANE_RATIO = 0.0124
+    HOPPER_DRAIN_ND = 1 * u.inch
+
+    q=20.0 * u.L / u.s
+    temp=20.0 * u.degC
+    vel_upflow=1.0 * u.mm / u.s
+    l_inner=5.8 * u.m
+    w_inner=42.0 * u.inch
+    diffuser_vel_max=44.29 * u.cm / u.s
+    diffuser_n=108
+    diffuser_wall_thickness=1.17 * u.inch
+    diffuser_sdr=41
+    inlet_hl=1 * u.cm
+    inlet_man_sdr = 41
+    plate_settler_angle=60.0 * u.deg
+    plate_settler_s=2.5 * u.cm
+    plate_settler_thickness=2.0 * u.mm
+    plate_settler_cantilever_l_max=20.0 * u.cm
+    plate_settler_vel_capture=0.12 * u.mm / u.s
+    exit_man_orifice_hl=4.0 * u.cm
+    exit_man_orifice_n=58
+    exit_man_orifice_q_ratio_max=0.8
+    outlet_man_sdr=41
+    slope_angle=50 * u.deg
+    
+    w=41.0 * u.inch
+    """Instantiates a SedimentationTankBay with the specified values.
+
+    All args are optional, and default to values that are optimized for a 20
+    L/s plant if not specified.
+
+    Args:
+        plant_q (float * u.L / u.s): Flow rate.
+        vel_upflow (float * u.mm / u.s): Upflow velocity.
+        l_inner (float * u.m): Inner length.
+        w_inner (float * u.inch): Inner width.
+        diffuser_vel_max (float * u.mm / u.s):  Maximum velocity through a
+            diffuser.
+        diffuser_n (int): Number of diffusers.
+        diffuser_wall_thickness (float * u.inch): Diffuser wall thickness.
+        plate_settler_angle (float * u.deg): Angle of plate settlers from
+            horizontal.
+        plate_settler_s (float * u.cm): Perpendicular space between plate
+            settlers.
+        plate_settler_thickness (float * u.mm): Plate settler thickness.
+        plate_settler_cantilever_l_max (float * u.cm): Maximum length of
+            plate settler protruding past the support pipes.
+        plate_settler_vel_capture (float * u.mm / u.s): Capture velocity of
+            plate settlers.
+        exit_man_orifice_hl (float * u.cm): Head loss through an orifice in
+            the exit manifold.
+        exit_man_orifice_n (int): Number of orifices in the exit manifold
+        exit_man_orifice_q_ratio_max (float): Maximum ratio of flow rate
+            between any given orifice in the exit manifold.
 
 
+    Returns:
+            SedimentationTankBay object.
+    """
 
-    def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
-                 vel_upflow=1.0 * u.mm / u.s,
-                 l_inner=5.8 * u.m,
-                 w_inner=42.0 * u.inch,
-                 diffuser_vel_max=44.29 * u.cm / u.s,
-                 diffuser_n=108,
-                 diffuser_wall_thickness=1.17 * u.inch,
-                 diffuser_sdr=41,
-                 inlet_hl=1 * u.cm,
-                 inlet_man_sdr = 41,
-                 plate_settler_angle=60.0 * u.deg,
-                 plate_settler_s=2.5 * u.cm,
-                 plate_settler_thickness=2.0 * u.mm,
-                 plate_settler_cantilever_l_max=20.0 * u.cm,
-                 plate_settler_vel_capture=0.12 * u.mm / u.s,
-                 exit_man_orifice_hl=4.0 * u.cm,
-                 exit_man_orifice_n=58,
-                 exit_man_orifice_q_ratio_max=0.8,
-                 outlet_man_sdr=41,
-                 slope_angle=50 * u.deg,
-                 
-                 w=41.0 * u.inch):
-        """Instantiates a SedimentationTankBay with the specified values.
-
-        All args are optional, and default to values that are optimized for a 20
-        L/s plant if not specified.
-
-        Args:
-            plant_q (float * u.L / u.s): Flow rate.
-            vel_upflow (float * u.mm / u.s): Upflow velocity.
-            l_inner (float * u.m): Inner length.
-            w_inner (float * u.inch): Inner width.
-            diffuser_vel_max (float * u.mm / u.s):  Maximum velocity through a
-                diffuser.
-            diffuser_n (int): Number of diffusers.
-            diffuser_wall_thickness (float * u.inch): Diffuser wall thickness.
-            plate_settler_angle (float * u.deg): Angle of plate settlers from
-                horizontal.
-            plate_settler_s (float * u.cm): Perpendicular space between plate
-                settlers.
-            plate_settler_thickness (float * u.mm): Plate settler thickness.
-            plate_settler_cantilever_l_max (float * u.cm): Maximum length of
-                plate settler protruding past the support pipes.
-            plate_settler_vel_capture (float * u.mm / u.s): Capture velocity of
-                plate settlers.
-            exit_man_orifice_hl (float * u.cm): Head loss through an orifice in
-                the exit manifold.
-            exit_man_orifice_n (int): Number of orifices in the exit manifold
-            exit_man_orifice_q_ratio_max (float): Maximum ratio of flow rate
-                between any given orifice in the exit manifold.
-
-
-        Returns:
-             SedimentationTankBay object.
-        """
-        super().__init__(q = q, temp = temp)
-        self.vel_upflow = vel_upflow
-        self.l_inner = l_inner
-        self.w_inner = w_inner
-        self.plate_settler_angle = plate_settler_angle
-        self.plate_settler_s = plate_settler_s
-        self.plate_settler_thickness = plate_settler_thickness
-        self.plate_settler_cantilever_l_max = plate_settler_cantilever_l_max
-        self.plate_settler_vel_capture = plate_settler_vel_capture
-        self.diffuser_vel_max = diffuser_vel_max
-        self.diffuser_n = diffuser_n
-        self.exit_man_orifice_hl = exit_man_orifice_hl
-        self.exit_man_orifice_n = exit_man_orifice_n
-        self.exit_man_orifice_q_ratio_max = exit_man_orifice_q_ratio_max
-        self.diffuser_wall_thickness = diffuser_wall_thickness
-
-        self.w = w
-        self.inlet_hl = inlet_hl
-        self.inlet_man_sdr = inlet_man_sdr
-        self.outlet_man_sdr = outlet_man_sdr
-        self.slope_angle = slope_angle
         
     @property
     def q_tank(self):
@@ -205,12 +184,14 @@ class SedimentationTank(Component):
 
     @property
     def outlet_orifice_n(self):
-        outlet_orifice_n = floor((self.up_flow_l - ) / self.outlet_orifice_b)
+        outlet_orifice_n = floor((self.up_flow_l) / self.outlet_orifice_b)
+        # incomplete, see N.SedLaunderOrifices
 
     @property
     def outlet_nd(self):
-        #needs a manifold_nd function
-        pass
+        outlet_nd = pc.manifold_nd(
+            self.q_tank
+        )
 
     @property 
     def outlet_major_hl(self):
@@ -251,3 +232,23 @@ class SedimentationTank(Component):
     def side_slopes_h(self):
         side_slopes_h = np.tan(self.slope_angle) * self.side_slopes_w
         return side_slopes_h
+
+   
+
+    @property
+    def weir_floc_z(self):
+        pass
+        
+
+    @property
+    def hopper_slope_front_h(self):
+        hopper_slope_front_h = self.weir_floc_z - self.hopper_bottom_z
+        return hopper_slope_front_h
+
+    @property
+    def hopper_pipe_drain_l(self):
+        hopper_pipe_drain_l = (
+            self.hopper_slope_front_h /
+             np.tan(self.hopper_slope_front_back_angle)
+             ) self.WALL_THICKNESS + pipe.socket_depth(self.hopper_drain_nd)
+        return hopper_pipe_drain_l

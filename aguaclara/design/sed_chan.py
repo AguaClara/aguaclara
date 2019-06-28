@@ -18,43 +18,24 @@ class SedimentationChannel(Component):
     WEIR_FREE_BOARD_H = 2 * u.cm
     SED_DEPTH_EST = 2 * u.m
 
-    def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
-                 sed_tank_n=4,
-                 sed_tank_w_inner=42.0 * u.inch,
-                 sed_tank_wall_thickness=15.0 * u.cm,
-                 sed_tank_inlet_man_nd=60 * u.cm,
-                 sed_tank_outlet_man_nd= 60. * u.cm,
-                 sed_tank_outlet_man_hl=4*u.cm,
-                 sed_wall_thickness = 15.0 * u.cm,
-                 sed_tank_diffuser_hl=0.09 * u.mm,
-
-                 weir_thickness = 15.0 * u.cm,
-                 weir_hl = 5 * u.cm,
-                 w_min = 30.0 * u.cm,
-                 outlet_man_bod_hl = 15.0 * u.cm,
-                 fitting_s = 15. * u.cm,
-                 inlet_depth_max = 50 * u.cm,
-                 drain_sdr = 26,
-                 sed_w = 30.0 * u.cm):
-        super().__init__(q = q, temp = temp)
-
-        self.sed_tank_n = sed_tank_n
-        self.sed_tank_w_inner = sed_tank_w_inner
-        self.sed_tank_wall_thickness = sed_tank_wall_thickness
-        self.sed_tank_inlet_man_nd = sed_tank_inlet_man_nd
-        self.sed_tank_outlet_man_nd = sed_tank_outlet_man_nd
-        self.sed_tank_outlet_man_hl = sed_tank_outlet_man_hl
-        self.sed_wall_thickness = sed_wall_thickness
-        self.sed_tank_diffuser_hl = sed_tank_diffuser_hl
-
-        self.weir_thickness = weir_thickness
-        self.weir_hl = weir_hl
-        self.w_min = w_min
-        self.outlet_man_bod_hl = outlet_man_bod_hl
-        self.fitting_s = fitting_s
-        self.inlet_depth_max = inlet_depth_max
-        self.drain_sdr = drain_sdr
-        self.sed_w = sed_w
+    q=20.0 * u.L / u.s
+    temp=20.0 * u.degC
+    sed_tank_n=4
+    sed_tank_w_inner=42.0 * u.inch
+    sed_tank_wall_thickness=15.0 * u.cm
+    sed_tank_inlet_man_nd=60 * u.cm
+    sed_tank_outlet_man_nd= 60. * u.cm
+    sed_tank_outlet_man_hl=4*u.cm
+    sed_wall_thickness = 15.0 * u.cm
+    sed_tank_diffuser_hl=0.09 * u.mm
+    weir_thickness = 15.0 * u.cm
+    weir_hl = 5 * u.cm
+    w_min = 30.0 * u.cm
+    outlet_man_bod_hl = 15.0 * u.cm
+    fitting_s = 15. * u.cm
+    inlet_depth_max = 50 * u.cm
+    drain_sdr = 26
+    sed_w = 30.0 * u.cm
 
     @property
     def l(self):
@@ -180,7 +161,7 @@ class SedimentationChannel(Component):
 
     @property
     def outlet_depth(self):
-       outlet_depth = self.inlet_depth - self.sed_tank_outlet_man_hl - \
+        outlet_depth = self.inlet_depth - self.sed_tank_outlet_man_hl - \
            self.sed_tank_diffuser_hl
         return outlet_depth
     

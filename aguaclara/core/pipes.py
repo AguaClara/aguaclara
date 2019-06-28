@@ -153,3 +153,6 @@ def od_available(od_guess):
     """
     myindex = (od_all_available() >= od_guess)
     return min(od_all_available()[myindex])
+
+def socket_depth(nd):
+    return nd / 2

@@ -717,12 +717,34 @@ def headloss_kozeny(Length, Diam, Vel, Porosity, Nu):
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m], False)
-def manifold_ID(FlowRate, Pressure):
+def pipe_ID(FlowRate, Pressure):
     """Return the internal diameter of a pipe for a given pressure
     recovery constraint. """
     #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Pressure, ">0", "Pressure"])
     return np.sqrt(FlowRate/((np.pi/4)*np.sqrt(2*gravity.magnitude*Pressure)))
+
+def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
+    id_new = 2 * u.inch
+    id_old = 0 * u.inch
+    error = 1
+    while error > 0.01:
+        id_old = id_new
+        id_new = (
+            ((8 * q ** 2) / (con.GRAVITY * np.pi ** 2 * h)) * 
+            (
+                (
+                    1 + fric(q, id_old, nu, eps) * 
+                    (1 / 3 + 1 / (2 * n) + 1 / (6 * n ** 2))
+                ) /
+                (1 - q_ratio ** 2)
+            )
+        ) ** (1 / 4)
+        error = np.abs(id_old - id_new) / id_new
+    return id_new
+
+def manifold_nd(q, h, l, q_ratio, nu, eps, k, n, sdr):
+    pipe.ND_SDR_available(manifold_id(q, h, l, q_ratio, nu, eps, k, n), sdr)
 
 def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
     hl = min(hl, depth / 3)
