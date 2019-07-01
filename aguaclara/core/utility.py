@@ -11,7 +11,8 @@ Example:
 from aguaclara.core.units import unit_registry as u
 
 import numpy as np
-from math import log10, floor
+from math import log10, floor, ceil
+import warnings
 
 
 def round_sig_figs(num, figs=4):
@@ -19,7 +20,7 @@ def round_sig_figs(num, figs=4):
 
     Args:
         - ``num (float)``: Value to be rounded (optional units)
-        - ``figs (int)``: number of significant digits to be rounded to 
+        - ``figs (int)``: Number of significant digits to be rounded to 
           (recommended, defaults to 4)
     """
     # Convert number to a Pint quantity if it isn't already
@@ -35,6 +36,54 @@ def round_sig_figs(num, figs=4):
 
     return num
 
+def _stepper(num, step=10, func=round):
+    """Round a number to be a multiple of some step.
+    
+    Args:
+        - ``num (float)``: Value to be rounded (optional units)
+        - ``step (float)``: Factor to which ``num`` will be rounded (defaults
+          to 10).
+        - ``func (function)``: Rounding function to use
+    
+    Note:
+        ``step`` must have the same dimensionality as ``num``, but not
+        necessarily the same units (e.g. ``num``: meters and ``step``:
+        centimeters are acceptable).
+    """
+    # Turn arguments into quantities with the same units
+    num = num * u.dimensionless
+    step = step * u.dimensionless
+    step = step.to(num.units)
+
+    num = func(num / step) * step
+
+    if num.units is u.dimensionless:
+        num = num.magnitude
+    
+    return num
+
+def round_step(num, step=10):
+    """Round a number to be a multiple of some step.
+    
+    Args:
+        - ``num (float)``: Value to be rounded (optional units)
+        - ``step (float)``: Factor to which ``num`` will be rounded (defaults
+          to 10).
+    
+    Note:
+        ``step`` must have the same dimensionality as ``num``, but not
+        necessarily the same units (e.g. ``num``: meters and ``step``:
+        centimeters are acceptable).
+    """
+    return _stepper(num, step, round)
+
+def ceil_step(num, step=10):
+    """Like :func:`round_step`, but ``num`` is always rounded up."""
+    return _stepper(num, step, ceil)
+
+def floor_step(num, step=10):
+    """Like :func:`round_step`, but ``num`` is always rounded up."""
+    return _stepper(num, step, floor)
 
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
@@ -42,16 +91,15 @@ def stepceil_with_units(param, step, unit):
     This function is unit-aware and functions without requiring translation
     so long as 'param' and 'unit' are of the same dimensionality.
     """
+    warnings.warn(
+        'stepceil_with_units will be deprecated after 21 Dec 2019. Use '
+            'ceil_step instead.',
+        FutureWarning
+    )
     counter = 0 * unit
     while counter < param.to(unit):
         counter += step * unit
     return counter
-
-def round_step(num, step):
-    num, step = (num, step) * u.dimensionless
-    step = step.to(num.units)
-
-
 
 # Take the values of the array, compare to x, find the index of the first value less than or equal to x
 def floor_nearest(x,array):
