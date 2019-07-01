@@ -755,11 +755,15 @@ def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
     while error > 0.001 and i < 20:
         w = horiz_chan_w_new
         i = i + 1
-        horiz_chan_w_new = np.sqrt((1 + k + \
-            fric_rect(q, w, depth - hl, nu, eps, 1) * (l / 4 * \
-                radius_hydraulic(w, depth - hl, 1)) * (1 - 2 * (manifold / 3))
-        ) / 2 * con.GRAVITY * hl ) * (q / depth - hl) 
-        error = np.abs(horiz_chan_w_new - w) / horiz_chan_w_new + w
+        horiz_chan_w_new = np.sqrt(
+            (
+                1 + k +
+                    fric_rect(q, w, depth - hl, nu, eps, True) * 
+                    (l / (4 * radius_hydraulic(w, depth - hl, True))) *
+                    (1 - (2 * (int(manifold) / 3)))
+            ) / (2 * con.GRAVITY * hl)
+        ) * (q / (depth - hl)) 
+        error = np.abs(horiz_chan_w_new - w) / (horiz_chan_w_new + w)
     return horiz_chan_w_new.to(u.m)
 
 def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
@@ -771,14 +775,14 @@ def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
         hl_local = min(hl, h / 3)
         i = i + 1
         h_new = (q/ w) * np.sqrt((1 + \
-            fric_rect(q, w, h - hl_local, nu, eps, 1) * (l / 4 * \
-                radius_hydraulic(w, h - hl_local, 1)) * (1 - 2 * (manifold / 3))
+            fric_rect(q, w, h - hl_local, nu, eps, True) * (l / (4 * \
+                radius_hydraulic(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))
         )/ (2 * con.GRAVITY * hl_local)) + (hl_local) 
-        error = np.abs(h_new - h) / h_new + h
+        error = np.abs(h_new - h) / (h_new + h)
     return h_new.to(u.m)
 
 def pipe_flow_nd(q, sdr, hl, l, nu, eps, k):
     i = 0
-    while q > flow_pipe(pipe.ID_SDR_all_available[i], hl, l, nu, eps, k):
+    while q > flow_pipe(pipe.ID_SDR_all_available(sdr)[i], hl, l, nu, eps, k):
         i += 1
-    return pipe.ND_SDR_available(pipe.ID_SDR_all_available[i], sdr)
+    return pipe.ND_SDR_available(pipe.ID_SDR_all_available(sdr)[i], sdr)

@@ -28,6 +28,7 @@ class SedimentationChannel(Component):
     sed_tank_outlet_man_hl=4*u.cm
     sed_wall_thickness = 15.0 * u.cm
     sed_tank_diffuser_hl=0.09 * u.mm
+
     weir_thickness = 15.0 * u.cm
     weir_hl = 5 * u.cm
     w_min = 30.0 * u.cm
@@ -36,13 +37,14 @@ class SedimentationChannel(Component):
     inlet_depth_max = 50 * u.cm
     drain_sdr = 26
     sed_w = 30.0 * u.cm
+    outlet_free_h = 5.0 * u.cm
 
     @property
     def l(self):
         l = (self.sed_tank_n * self.sed_tank_w_inner) + \
             ((self.sed_tank_n-1) * self.sed_tank_wall_thickness) + \
             self.sed_wall_thickness
-        return l
+        return l.to(u.m)
 
     @property
     def weir_exit_hl(self):
@@ -70,7 +72,7 @@ class SedimentationChannel(Component):
             self.l,
             pc.viscosity_kinematic(self.temp),
             mat.CONCRETE_PIPE_ROUGH,
-            0,
+            False,
             0
         )
         return inlet_w_pre_weir_hl_min
@@ -98,7 +100,7 @@ class SedimentationChannel(Component):
             self.l, 
             pc.viscosity_kinematic(self.temp),
             mat.CONCRETE_PIPE_ROUGH,
-            0)
+            False)
         return inlet_chan_hl_depth
     
     @property
@@ -168,11 +170,16 @@ class SedimentationChannel(Component):
     @property
     def outlet_weir_depth(self):
         outlet_weir_depth = self.outlet_depth - self.weir_hl - self.WEIR_FREE_BOARD_H
+        return outlet_weir_depth
 
     @property
     def outlet_pre_weir_w(self):
-        return w_min
-
+        #TODO
+        pass
+    @property
+    def outlet_to_filter_nd(self):
+        #TODO
+        pass
     @property
     def outlet_post_weir_w(self):
         outlet_post_weir_w = max(
@@ -214,17 +221,17 @@ class SedimentationChannel(Component):
     
     @property
     def w_outer(self):
-        w_outer = self.outlet_w + 2 * self.chan.weir_thickness + self.chan.inlet_w + self.chan.sed_wall_thickness
+        w_outer = self.outlet_w + 2 * self.weir_thickness + self.inlet_w + self.sed_wall_thickness
         return w_outer
     
     @property
     def inlet_last_coupling_h(self):
-        last_coupling_h = self.weir_exit_hl - 2 * u.cm
+        last_coupling_h = self.outlet_weir_depth - 2 * u.cm
         return last_coupling_h
     
     @property
     def inlet_step_h(self):
-        step_h = self.last_coupling_h / max(1, self.sed_tank_n - 1)
+        step_h = self.inlet_last_coupling_h / max(1, self.sed_tank_n - 1)
         return step_h
     
     @property

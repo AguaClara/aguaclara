@@ -15,9 +15,6 @@ import aguaclara.core.materials as mat
 
 import numpy as np
 
-# TODO: Hopper Length, Exit launder, Side Slopes
-# Inlet chan slopes, Hopper drain
-
 
 class Sedimentor(Component):
     """
@@ -48,11 +45,6 @@ class Sedimentor(Component):
         return int(tank_n)
     
     def _design_chan(self):
-        # self.chan = SedimentationChannel(
-        #     q = self.chan.q,
-        #     temp = self.chan.temp,
-        #     sed_tank_w self.tank_n
-        # )
         self.chan.sed_tank_n = self.tank_n
         self.chan.sed_tank_diffuser_hl = self.tank.diffuser_hl
         self.chan.sed_w = self.tank.w
@@ -64,9 +56,7 @@ class Sedimentor(Component):
         else:
             hopper_l = max(
                 self.hopper_l_min,
-                #asks for length estimate, but we don't have that, we do have 
-                # the actual length however
-                self.plate_l_est * np.cos(self.tank.plate_settler_angle) - \
+                self.tank.plate_l * np.cos(self.tank.plate_settler_angle) - \
                     self.chan.weir_thickness
             )
         return hopper_l

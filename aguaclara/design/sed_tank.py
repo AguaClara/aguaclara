@@ -11,6 +11,7 @@ from aguaclara.core import drills
 import aguaclara.core.utility as ut
 from aguaclara.design.component import Component
 import aguaclara.core.physchem as pc
+import aguaclara.core.head_loss as hl
 
 import numpy as np
 
@@ -27,23 +28,30 @@ class SedimentationTank(Component):
     JET_REVERSER_ND = 3 * u.inch
     JET_PLANE_RATIO = 0.0124
     HOPPER_DRAIN_ND = 1 * u.inch
+    WALL_THICKNESS = 0.15 * u.m
 
     q=20.0 * u.L / u.s
     temp=20.0 * u.degC
+
     vel_upflow=1.0 * u.mm / u.s
     l_inner=5.8 * u.m
     w_inner=42.0 * u.inch
+
     diffuser_vel_max=44.29 * u.cm / u.s
     diffuser_n=108
     diffuser_wall_thickness=1.17 * u.inch
     diffuser_sdr=41
-    inlet_hl=1 * u.cm
+
+    inlet_man_hl=1 * u.cm
     inlet_man_sdr = 41
+    jet_reverser_sdr = 26
+
     plate_settler_angle=60.0 * u.deg
     plate_settler_s=2.5 * u.cm
     plate_settler_thickness=2.0 * u.mm
     plate_settler_cantilever_l_max=20.0 * u.cm
     plate_settler_vel_capture=0.12 * u.mm / u.s
+
     exit_man_orifice_hl=4.0 * u.cm
     exit_man_orifice_n=58
     exit_man_orifice_q_ratio_max=0.8
@@ -94,10 +102,11 @@ class SedimentationTank(Component):
         """
         q_tank = self.l_inner * self.w_inner * self.vel_upflow
         return q_tank.to(u.L / u.s)
+        
 
     @property
     def diffuser_hl(self):
-        return self.inlet_hl / self.diffuser_n
+        return self.inlet_man_hl / self.diffuser_n
     
     @property
     def diffuser_vel(self):
@@ -114,8 +123,8 @@ class SedimentationTank(Component):
         """
         Calculates manifold diffuser area from flow rate.
         """
-        diffuser_a = self.q / (self.diffuser_vel * self.diffuser_n)
-        return diffuser_a
+        diffuser_a = self.q_tank / (self.diffuser_vel * self.diffuser_n)
+        return diffuser_a.to(u.cm ** 2)
 
     # Note: we need to specify in Onshape a 15% stretch difference between
     # the circumference of both diffuser ends' inner/outer circumferences.
@@ -143,18 +152,17 @@ class SedimentationTank(Component):
 
     @property
     def outlet_man_nd(self):
-        outlet_man_id = pc.diam_pipe(
-                self.q_tank,
-                self.exit_man_orifice_hl.to(u.m),
-                self.l_inner, 
-                pc.viscosity_dynamic(self.temp), 
-                mat.PVC_PIPE_ROUGH.to(u.m), 
-                self.OUTLET_MAN_HL
-            )
-        outlet_man_nd = pipe.ND_SDR_available(
-                outlet_man_id, 
-                self.outlet_man_sdr
-            )
+        outlet_man_nd = pc.manifold_nd(
+            self.q_tank,
+            self.OUTLET_MAN_HL,
+            self.l_inner,
+            self.exit_man_orifice_q_ratio_max,
+            pc.viscosity_kinematic(self.temp), 
+            mat.PVC_PIPE_ROUGH.to(u.m), 
+            hl.PIPE_EXIT_K_MINOR,
+            self.exit_man_orifice_n,
+            self.outlet_man_sdr
+        )
         return outlet_man_nd
 
     @property
@@ -164,9 +172,11 @@ class SedimentationTank(Component):
         Returns:
             Diameter of the orifices in the exit manifold for the sedimentation tank (float).
         """
-        Q_orifice = self.q/self.exit_man_orifice_n
-        D_orifice = np.sqrt(Q_orifice**4)/(np.pi * con.VC_ORIFICE_RATIO * np.sqrt(2 * con.GRAVITY.magnitude * self.exit_man_orifice_hl.magnitude))
+        Q_orifice = self.q_tank / self.exit_man_orifice_n
+        D_orifice = pc.diam_circle(Q_orifice/(con.VC_ORIFICE_RATIO * \
+            np.sqrt(2 * con.GRAVITY* self.exit_man_orifice_hl)))
         return ut.ceil_nearest(D_orifice, drills.DRILL_BITS_D_METRIC)
+        # orifice_a = 
 
     @property
     def plate_l(self):
@@ -184,32 +194,32 @@ class SedimentationTank(Component):
 
     @property
     def outlet_orifice_n(self):
-        outlet_orifice_n = floor((self.up_flow_l) / self.outlet_orifice_b)
+        # outlet_orifice_n = floor((self.up_flow_l) / self.outlet_orifice_b)
         # incomplete, see N.SedLaunderOrifices
+        pass
 
     @property
-    def outlet_nd(self):
-        outlet_nd = pc.manifold_nd(
-            self.q_tank
-        )
+    def outlet_orifice_nd(self):
+        pass
 
     @property 
     def outlet_major_hl(self):
-        outlet_major_hl = pc.headloss_manifold(
-            self.q_tank,
-            pipe.ID_SDR(self.outlet_nd, self.outlet_ps), 
-            self.outlet_l, 
-            0, 
-            pc.viscosity_kinematic(self.temp), 
-            mat.PVC_PIPE_ROUGH, 
-            self.outlet_orifice_n
-            )
-        return outlet_major_hl
+        # outlet_major_hl = pc.headloss_manifold(
+        #     self.q_tank,
+        #     pipe.ID_SDR(self.outlet_man_nd, self.outlet_man_sdr), 
+        #     self.outlet_man_l, 
+        #     0, 
+        #     pc.viscosity_kinematic(self.temp), 
+        #     mat.PVC_PIPE_ROUGH, 
+        #     self.outlet_orifice_n
+        #     )
+        # return outlet_major_hl
+        pass
     
     @property
     def outlet_orifice_hl(self):
         outlet_orifice_hl = pc.head_orifice(
-            self.outlet_orifice_d, 
+            self.outlet_orifice_nd, 
             self.VC_ORIFICE_RATIO,
             self.q_tank / self.outlet_orifice_n
             )
@@ -224,21 +234,22 @@ class SedimentationTank(Component):
     def side_slopes_w(self):
         side_slopes_w = (
             self.w - 
-            pipe.ID_SDR(self.JET_REVERSER_ND, self.JET_PLANE_RATIO)
+            pipe.ID_SDR(self.JET_REVERSER_ND, self.jet_reverser_sdr)
             ) / 2
-        return side_slopes_w
+        return side_slopes_w.to(u.m)
 
     @property
     def side_slopes_h(self):
         side_slopes_h = np.tan(self.slope_angle) * self.side_slopes_w
-        return side_slopes_h
-
-   
+        return side_slopes_h.to(u.m)
 
     @property
     def weir_floc_z(self):
         pass
         
+    @property
+    def hopper_bottom_z(self):
+        pass
 
     @property
     def hopper_slope_front_h(self):
@@ -246,9 +257,23 @@ class SedimentationTank(Component):
         return hopper_slope_front_h
 
     @property
+    def hopper_drain_nd(self):
+        pass
+
+    @property
+    def hopper_slope_front_back_angle(self):
+        pass
+
+    @property
     def hopper_pipe_drain_l(self):
         hopper_pipe_drain_l = (
             self.hopper_slope_front_h /
              np.tan(self.hopper_slope_front_back_angle)
-             ) self.WALL_THICKNESS + pipe.socket_depth(self.hopper_drain_nd)
+             ) + self.WALL_THICKNESS + pipe.socket_depth(self.hopper_drain_nd)
         return hopper_pipe_drain_l
+
+    # TODO: outlet manifold functions
+
+    @property
+    def outlet_man_l(self):
+        pass
