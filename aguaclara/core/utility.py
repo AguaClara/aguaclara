@@ -48,8 +48,9 @@ def stepceil_with_units(param, step, unit):
     return counter
 
 def round_step(num, step):
-    if num.magnitude:
-        pass
+    num, step = (num, step) * u.dimensionless
+    step = step.to(num.units)
+
 
 
 # Take the values of the array, compare to x, find the index of the first value less than or equal to x
