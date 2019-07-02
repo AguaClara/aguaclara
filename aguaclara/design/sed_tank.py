@@ -14,6 +14,7 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.head_loss as hl
 
 import numpy as np
+import math
 
 
 class SedimentationTank(Component):
@@ -24,7 +25,6 @@ class SedimentationTank(Component):
     """
     INLET_MAN_Q_RATIO = 0.8
     OUTLET_MAN_HL = 4 * u.cm
-    VC_ORIFICE_RATIO = 0.63
     JET_REVERSER_ND = 3 * u.inch
     JET_PLANE_RATIO = 0.0124
     HOPPER_DRAIN_ND = 1 * u.inch
@@ -52,48 +52,17 @@ class SedimentationTank(Component):
     plate_settler_cantilever_l_max=20.0 * u.cm
     plate_settler_vel_capture=0.12 * u.mm / u.s
 
-    exit_man_orifice_hl=4.0 * u.cm
-    exit_man_orifice_n=58
-    exit_man_orifice_q_ratio_max=0.8
+    outlet_man_orifice_hl=4.0 * u.cm
+    outlet_man_orifice_q_ratio_max=0.8
+    outlet_man_orifice_n_est = 58
     outlet_man_sdr=41
     slope_angle=50 * u.deg
     
-    w=41.0 * u.inch
-    """Instantiates a SedimentationTankBay with the specified values.
+    upflow_l = 6.0 * u.m
+    sed_chan_w_outer = 60 * u.cm
+    sed_chan_weir_thickness = 5 * u.cm
+    hopper_l_min = 50 * u.cm
 
-    All args are optional, and default to values that are optimized for a 20
-    L/s plant if not specified.
-
-    Args:
-        plant_q (float * u.L / u.s): Flow rate.
-        vel_upflow (float * u.mm / u.s): Upflow velocity.
-        l_inner (float * u.m): Inner length.
-        w_inner (float * u.inch): Inner width.
-        diffuser_vel_max (float * u.mm / u.s):  Maximum velocity through a
-            diffuser.
-        diffuser_n (int): Number of diffusers.
-        diffuser_wall_thickness (float * u.inch): Diffuser wall thickness.
-        plate_settler_angle (float * u.deg): Angle of plate settlers from
-            horizontal.
-        plate_settler_s (float * u.cm): Perpendicular space between plate
-            settlers.
-        plate_settler_thickness (float * u.mm): Plate settler thickness.
-        plate_settler_cantilever_l_max (float * u.cm): Maximum length of
-            plate settler protruding past the support pipes.
-        plate_settler_vel_capture (float * u.mm / u.s): Capture velocity of
-            plate settlers.
-        exit_man_orifice_hl (float * u.cm): Head loss through an orifice in
-            the exit manifold.
-        exit_man_orifice_n (int): Number of orifices in the exit manifold
-        exit_man_orifice_q_ratio_max (float): Maximum ratio of flow rate
-            between any given orifice in the exit manifold.
-
-
-    Returns:
-            SedimentationTankBay object.
-    """
-
-        
     @property
     def q_tank(self):
         """
@@ -103,7 +72,6 @@ class SedimentationTank(Component):
         q_tank = self.l_inner * self.w_inner * self.vel_upflow
         return q_tank.to(u.L / u.s)
         
-
     @property
     def diffuser_hl(self):
         return self.inlet_man_hl / self.diffuser_n
@@ -115,7 +83,7 @@ class SedimentationTank(Component):
         
     @property
     def diffuser_w_inner(self):
-        diffuser_w_inner = self.w * self.vel_upflow / self.diffuser_vel
+        diffuser_w_inner = self.w_inner * self.vel_upflow / self.diffuser_vel
         return diffuser_w_inner.to(u.cm)
 
     @property
@@ -156,27 +124,26 @@ class SedimentationTank(Component):
             self.q_tank,
             self.OUTLET_MAN_HL,
             self.l_inner,
-            self.exit_man_orifice_q_ratio_max,
+            self.outlet_man_orifice_q_ratio_max,
             pc.viscosity_kinematic(self.temp), 
             mat.PVC_PIPE_ROUGH.to(u.m), 
             hl.PIPE_EXIT_K_MINOR,
-            self.exit_man_orifice_n,
+            self.outlet_man_orifice_n_est,
             self.outlet_man_sdr
         )
         return outlet_man_nd
 
     @property
-    def exit_man_orifice_d(self):
+    def outlet_man_orifice_d(self):
         """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
 
         Returns:
             Diameter of the orifices in the exit manifold for the sedimentation tank (float).
         """
-        Q_orifice = self.q_tank / self.exit_man_orifice_n
+        Q_orifice = self.q_tank / self.outlet_man_orifice_n_est
         D_orifice = pc.diam_circle(Q_orifice/(con.VC_ORIFICE_RATIO * \
-            np.sqrt(2 * con.GRAVITY* self.exit_man_orifice_hl)))
+            np.sqrt(2 * con.GRAVITY* self.outlet_man_orifice_hl)))
         return ut.ceil_nearest(D_orifice, drills.DRILL_BITS_D_METRIC)
-        # orifice_a = 
 
     @property
     def plate_l(self):
@@ -191,49 +158,51 @@ class SedimentationTank(Component):
                      / (np.sin(self.plate_settler_angle) * np.cos(self.plate_settler_angle))
                      ).to(u.m)
         return L_sed_plate
-
-    @property
-    def outlet_orifice_n(self):
-        # outlet_orifice_n = floor((self.up_flow_l) / self.outlet_orifice_b)
-        # incomplete, see N.SedLaunderOrifices
-        pass
-
-    @property
-    def outlet_orifice_nd(self):
-        pass
-
-    @property 
-    def outlet_major_hl(self):
-        # outlet_major_hl = pc.headloss_manifold(
-        #     self.q_tank,
-        #     pipe.ID_SDR(self.outlet_man_nd, self.outlet_man_sdr), 
-        #     self.outlet_man_l, 
-        #     0, 
-        #     pc.viscosity_kinematic(self.temp), 
-        #     mat.PVC_PIPE_ROUGH, 
-        #     self.outlet_orifice_n
-        #     )
-        # return outlet_major_hl
-        pass
     
+    @property
+    def outlet_man_orifice_q(self):
+        outlet_man_orifice_q = pc.flow_orifice_vert(
+                self.outlet_man_orifice_d,
+                self.outlet_man_orifice_hl,
+                con.VC_ORIFICE_RATIO
+            )
+        return outlet_man_orifice_q.to(u.L / u.s)
+
+    @property
+    def outlet_man_orifice_spacing(self):
+        outlet_man_orifice_spacing = (
+            self.upflow_l - 
+            pipe.socket_depth(self.outlet_man_nd) - 
+            pipe.cap_thickness(self.outlet_man_nd) - 
+            self.outlet_man_orifice_d
+            ) / ((self.q_tank / self.outlet_man_orifice_q) - 1)
+        return outlet_man_orifice_spacing
+
+    @property
+    def outlet_man_orifice_n(self):
+        outlet_orifice_n = math.floor(
+            (
+                self.upflow_l - 
+                pipe.socket_depth(self.outlet_man_nd) - 
+                pipe.cap_thickness(self.outlet_man_nd) - 
+                self.outlet_man_orifice_d
+            ) / self.outlet_man_orifice_spacing
+        ) + 1 
+        return outlet_orifice_n
+
     @property
     def outlet_orifice_hl(self):
         outlet_orifice_hl = pc.head_orifice(
-            self.outlet_orifice_nd, 
-            self.VC_ORIFICE_RATIO,
-            self.q_tank / self.outlet_orifice_n
+            self.outlet_man_nd, 
+            con.VC_ORIFICE_RATIO,
+            self.q_tank / self.outlet_man_orifice_n
             )
-        return outlet_orifice_hl
-     
-    @property
-    def outlet_hl(self):
-        outlet_hl = self.outlet_orifice_hl + self.outlet_major_hl
-        return outlet_hl
+        return outlet_orifice_hl.to(u.mm)
 
     @property
     def side_slopes_w(self):
         side_slopes_w = (
-            self.w - 
+            self.w_inner - 
             pipe.ID_SDR(self.JET_REVERSER_ND, self.jet_reverser_sdr)
             ) / 2
         return side_slopes_w.to(u.m)
@@ -253,8 +222,9 @@ class SedimentationTank(Component):
 
     @property
     def hopper_slope_front_h(self):
-        hopper_slope_front_h = self.weir_floc_z - self.hopper_bottom_z
-        return hopper_slope_front_h
+        # hopper_slope_front_h = self.weir_floc_z - self.hopper_bottom_z
+        # return hopper_slope_front_h
+        pass
 
     @property
     def hopper_drain_nd(self):
@@ -266,14 +236,21 @@ class SedimentationTank(Component):
 
     @property
     def hopper_pipe_drain_l(self):
-        hopper_pipe_drain_l = (
-            self.hopper_slope_front_h /
-             np.tan(self.hopper_slope_front_back_angle)
-             ) + self.WALL_THICKNESS + pipe.socket_depth(self.hopper_drain_nd)
-        return hopper_pipe_drain_l
-
-    # TODO: outlet manifold functions
+        # hopper_pipe_drain_l = (
+        #     self.hopper_slope_front_h /
+        #      np.tan(self.hopper_slope_front_back_angle)
+        #      ) + self.WALL_THICKNESS + pipe.socket_depth(self.hopper_drain_nd)
+        # return hopper_pipe_drain_l
+        pass
 
     @property
-    def outlet_man_l(self):
-        pass
+    def hopper_l(self):
+        if self.q > 60. * u.L / u.s: 
+            hopper_l = self.sed_chan_w_outer
+        else:
+            hopper_l = max(
+                self.hopper_l_min,
+                self.plate_l * np.cos(self.plate_settler_angle) - \
+                    self.sed_chan_weir_thickness
+            )
+        return hopper_l

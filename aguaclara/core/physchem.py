@@ -724,6 +724,19 @@ def pipe_ID(FlowRate, Pressure):
     ut.check_range([FlowRate, ">0", "Flow rate"], [Pressure, ">0", "Pressure"])
     return np.sqrt(FlowRate/((np.pi/4)*np.sqrt(2*gravity.magnitude*Pressure)))
 
+def manifold_id_alt(q, pr_max):
+    """Return the inner diameter of a manifold when major losses are
+    negligible.
+    """
+    manifold_id_alt = np.sqrt(
+        4 * q / (
+            np.pi * np.sqrt(
+                2 * con.GRAVITY * pr_max
+            )
+        )
+    )
+    return manifold_id_alt
+
 def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
     id_new = 2 * u.inch
     id_old = 0 * u.inch
