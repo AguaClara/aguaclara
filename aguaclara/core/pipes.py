@@ -145,7 +145,7 @@ def ND_available(NDguess):
 
 def od_available(od_guess):
     """Return the minimum OD that is available.
-
+    
     1. Extract the magnitude in inches from the outer diameter.
     2. Find the index of the closest outer diameter.
     3. Take the values of the array, subtract the OD, take the
@@ -156,3 +156,7 @@ def od_available(od_guess):
 
 def socket_depth(nd):
     return nd / 2
+
+def cap_thickness(nd):
+    cap_thickness = (fitting_od(nd) - OD(ND_available(nd))) / 2
+    return cap_thickness

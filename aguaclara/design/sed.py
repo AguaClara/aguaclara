@@ -26,7 +26,7 @@ class Sedimentor(Component):
     """
     q=20 * u.L / u.s
     temp=20 * u.degC
-    hopper_l_min=50 * u.cm
+    wall_thickness = 15 * u.cm
     tank=SedimentationTank()
     chan=SedimentationChannel()
     subcomponents = [tank, chan]
@@ -39,7 +39,7 @@ class Sedimentor(Component):
     def tank_n(self):
         """
         Returns:
-            Number of bays in a sedimentation tank (int).
+            Number of bays in a sedimentation tank (int)tank.w.
         """
         tank_n = np.ceil(self.q / self.tank.q_tank)
         return int(tank_n)
@@ -47,38 +47,23 @@ class Sedimentor(Component):
     def _design_chan(self):
         self.chan.sed_tank_n = self.tank_n
         self.chan.sed_tank_diffuser_hl = self.tank.diffuser_hl
-        self.chan.sed_w = self.tank.w
-    
-    @property
-    def hopper_l(self):
-        if self.q > 60. * u.L / u.s: 
-            hopper_l = self.chan.w_outer
-        else:
-            hopper_l = max(
-                self.hopper_l_min,
-                self.tank.plate_l * np.cos(self.tank.plate_settler_angle) - \
-                    self.chan.weir_thickness
-            )
-        return hopper_l
+        self.chan.sed_tank_inlet_man_nd = self.tank.inlet_man_nd
+        self.chan.sed_tank_outlet_man_nd = self.tank.outlet_man_nd
+        self.chan.sed_tank_outlet_man_hl = self.tank.outlet_man_orifice_hl
+        self.chan.sed_tank_diffuser_hl = self.tank.diffuser_hl
+        self.chan.w_inner = self.tank.w_inner
+        self.chan.sed_tank_wall_thickness = self.tank.WALL_THICKNESS
+        self.chan.sed_wall_thickness = self.wall_thickness
 
+    def _design_tank(self):
+        self.tank.sed_chan_w_outer = self.chan.w_outer
+        self.tank.sed_chan_weir_thickness = self.chan.weir_thickness
 
-WALL_THICKNESS = 0.15 * u.m  # thickness of sed tank dividing wall
-HL_OUTLET_MAN = 4 * u.cm  # head loss through the outlet manifold
-
-##Plate settler
-CONC_BOD_VEL = 0.12 * u.mm / u.s  # capture velocity
-
-PLATE_ANGLE = 60 * u.deg
-
-PLATE_S = 2.5 * u.cm
 
 MODULE_PLATES_N_MIN = 8
 
 # This is moved to template because SED_PLATE_THICKNESS is in materials.yaml
 # CENTER_SED_PLATE_DIST = PLATE_S + SED_PLATE_THICKNESS
-
-# Bottom of channel
-SLOPE_ANGLE = 50 * u.deg
 
 ##This slope needs to be verified for functionality in the field.
 # A steeper slope may be required in the floc hopper.
@@ -91,9 +76,6 @@ GATE_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/
 SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/173604905/PlateSettlerSupportBolt.dwg"
 
 ##Inlet channel
-WEIR_HL_MAX = 5 * u.cm
-
-WEIR_THICKNESS = 5*u.cm
 
 INLET_HL_MAX = 1 * u.cm
 
@@ -101,11 +83,6 @@ INLET_HL_MAX = 1 * u.cm
 INLET_H_W_RATIO = 0.95
 
 ##Exit launder
-##Target headloss through the launder orifices
-LAUNDER_BOD_HL = 4 * u.cm
-
-##Acceptable ratio of min to max flow through the launder orifices
-FLOW_LAUNDER_ORIFICES_RATIO = 0.80
 
 ##Center to center spacing of orifices in the launder
 CENTER_LAUNDER_EST_DIST = 10 * u.cm
@@ -153,18 +130,16 @@ PLATE_FRAME_ND = 1.5 * u.inch
 FLOC_WEIR_TO_PLATE_FRAME_H = 10 * u.cm
 
 ##Minimum length (X dimension) of the floc hopper
-HOPPER_MIN_L = 50 * u.cm
 
 ##Inlet manifold
 ##Max energy dissipation rate in the sed diffuser outletS
 ENERGY_DIS_INT_MAX = 150 * u.mW/u.kg
 
 ##Ratio of min to max flow through the inlet manifold diffusers
-INLET_Q_RATIO = 0.8
 
 MAN_ND_MAX = 8 * u.inch
 
-MAN_SDR = 41  # SDR of pipe for sed tank inlet manifold
+ # SDR of pipe for sed tank inlet manifold
 
 ##This is the minimum distance between the inlet manifold and the slope
 # of the sed tank.
@@ -195,26 +170,15 @@ WALL_TO_DIFFUSER_GAP_L_MIN = 3 * u.cm
 MAN_PORT_D = 1.25 * u.inch
 
 # nominal diameter of pipe used for jet reverser in bottom of set tank
-JET_REVERSER_ND = 3 * u.inch
 
 SDR_REVERSER = 26  # SDR of jet reverser pipe
 
-# Diffuser geometry
-SDR_DIFFUSER = 26  # SDR of diffuser pipe
-
 DIFFUSER_PIPE_ND = 4 * u.cm  # nominal diameter of pipe used to make diffusers
 
-AREA_PVC_DIFFUSER = (
-    (np.pi/4) * ((pipe.OD(DIFFUSER_PIPE_ND)**2)
-    - (pipe.ID_SDR(DIFFUSER_PIPE_ND, SDR_DIFFUSER))**2)
-)
+
 # stretch factor applied to the diffuser PVC pipes as they are heated
 # and molded
 PVC_STRETCH_RATIO = 1.2
-
-T_DIFFUSER = ((pipe.OD(DIFFUSER_PIPE_ND) -
-                        pipe.ID_SDR(DIFFUSER_PIPE_ND, SDR_DIFFUSER))
-                              / (2 * PVC_STRETCH_RATIO))
 
 W_DIFFUSER_INNER = 0.3175 * u.cm  # opening width of diffusers
 
@@ -226,7 +190,6 @@ DIFFUSER_L = 15 * u.cm  # vertical length of diffuser
 B_DIFFUSER = 5 * u.cm  # center to center spacing beteen diffusers
 
 # Headloss through the diffusers to ensure uniform flow between sed tanks
-DIFFUSER_HL = 0.001 * u.m
 
 # Outlet to filter
 # If the plant has two trains, the current design shows the exit channel
@@ -249,7 +212,3 @@ HOPPER_SKIMMER_ND = 2*u.inch
 # Diffusers/Jet Reverser
 
 DIFFUSER_ND = 1*u.inch
-
-JET_REVERSER_ND = 3*u.inch
-
-

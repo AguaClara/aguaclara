@@ -744,7 +744,11 @@ def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
     return id_new
 
 def manifold_nd(q, h, l, q_ratio, nu, eps, k, n, sdr):
-    pipe.ND_SDR_available(manifold_id(q, h, l, q_ratio, nu, eps, k, n), sdr)
+    manifold_nd = pipe.ND_SDR_available(
+            manifold_id(q, h, l, q_ratio, nu, eps, k, n), 
+            sdr
+        )
+    return manifold_nd
 
 def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
     hl = min(hl, depth / 3)

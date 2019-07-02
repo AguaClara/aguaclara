@@ -5,6 +5,7 @@ import aguaclara.core.utility as ut
 import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipe
 import aguaclara.core.head_loss as hl
+import aguaclara.design.human_access as ha
 from aguaclara.design.component import Component
 
 import numpy as np
@@ -20,6 +21,7 @@ class SedimentationChannel(Component):
 
     q=20.0 * u.L / u.s
     temp=20.0 * u.degC
+    
     sed_tank_n=4
     sed_tank_w_inner=42.0 * u.inch
     sed_tank_wall_thickness=15.0 * u.cm
@@ -32,12 +34,13 @@ class SedimentationChannel(Component):
     weir_thickness = 15.0 * u.cm
     weir_hl = 5 * u.cm
     w_min = 30.0 * u.cm
-    outlet_man_bod_hl = 15.0 * u.cm
     fitting_s = 15. * u.cm
     inlet_depth_max = 50 * u.cm
     drain_sdr = 26
-    sed_w = 30.0 * u.cm
     outlet_free_h = 5.0 * u.cm
+    outlet_pipe_sdr = 41.0
+    outlet_pipe_hl_max = 1.0 * u.cm
+    outlet_pipe_nd_max = 8 * u.inch
 
     @property
     def l(self):
@@ -86,7 +89,7 @@ class SedimentationChannel(Component):
 
     @property
     def inlet_depth_plumbing_min(self):
-        inlet_plumbing_depth_min = self.outlet_man_bod_hl + self.sed_tank_diffuser_hl + \
+        inlet_plumbing_depth_min = self.sed_tank_outlet_man_hl + self.sed_tank_diffuser_hl + \
             pipe.fitting_od(self.sed_tank_outlet_man_nd) + \
                 self.fitting_s + self.weir_exit_hl
         return inlet_plumbing_depth_min
@@ -174,17 +177,53 @@ class SedimentationChannel(Component):
 
     @property
     def outlet_pre_weir_w(self):
-        #TODO
-        pass
+        return self.w_min
     @property
-    def outlet_to_filter_nd(self):
-        #TODO
-        pass
+    def outlet_pipe_l(self):
+        outlet_pipe_l = ha.DRAIN_CHAN_WALKWAY_W + self.inlet_w + 1.0 * u.m
+        return outlet_pipe_l
+        
+    @property
+    def outlet_pipe_q_max(self):
+        outlet_pipe_q_max = pc.flow_pipe(
+            pipe.ID_SDR(self.outlet_pipe_nd_max, self.outlet_pipe_sdr),
+            self.outlet_pipe_hl_max,
+            self.outlet_pipe_l,
+            pc.viscosity_kinematic(self.temp),
+            mat.PVC_PIPE_ROUGH, 
+            2 * hl.EL90_K_MINOR + hl.PIPE_ENTRANCE_K_MINOR + \
+                 hl.PIPE_EXIT_K_MINOR
+        )
+        return outlet_pipe_q_max.to(u.L / u.s)
+
+    @property
+    def outlet_pipe_n(self):
+        outlet_pipe_n = math.ceil(self.q / self.outlet_pipe_q_max)
+        return outlet_pipe_n
+
+    @property
+    def outlet_pipe_q(self):
+        outlet_pipe_q = self.q / self.outlet_pipe_n
+        return outlet_pipe_q
+
+    @property
+    def outlet_pipe_nd(self):
+        outlet_pipe_nd = pc.pipe_flow_nd(
+            self.outlet_pipe_q, 
+            self.outlet_pipe_sdr, 
+            self.outlet_pipe_hl_max, 
+            self.outlet_pipe_l, 
+            pc.viscosity_kinematic(self.temp), 
+            mat.PVC_PIPE_ROUGH, 
+            2 * hl.EL90_K_MINOR + hl.PIPE_ENTRANCE_K_MINOR + \
+                 hl.PIPE_EXIT_K_MINOR
+        )
+        return outlet_pipe_nd
     @property
     def outlet_post_weir_w(self):
         outlet_post_weir_w = max(
             #need self.outlet_to_filter_nd
-            self.fitting_s + pipe.fitting_od(self.outlet_to_filter_nd), 
+            self.fitting_s + pipe.fitting_od(self.outlet_pipe_nd), 
             self.fitting_s + pipe.fitting_od(self.drain_nd), 
             self.w_min, 
             pc.horiz_chan_w(
@@ -236,6 +275,6 @@ class SedimentationChannel(Component):
     
     @property
     def inlet_slope_l(self):
-        inlet_slope_l = self.sed_w + self.sed_wall_thickness - \
+        inlet_slope_l = self.l + self.sed_wall_thickness - \
             pipe.fitting_od(self.sed_tank_inlet_man_nd) - self.fitting_s 
         return inlet_slope_l
