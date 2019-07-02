@@ -26,7 +26,7 @@ def round_sig_figs(num, figs=4):
     # Convert number to a Pint quantity if it isn't already
     num = num * u.dimensionless
 
-    # Prevents undefined log10(0)
+    # Prevents undefined log10(0) if num is already 0
     if num.magnitude != 0:
         decimals = figs - int(floor(log10(abs(num.magnitude)))) - 1
         num = np.round(num.magnitude, decimals) * num.units
@@ -43,7 +43,7 @@ def _stepper(num, step=10, func=round):
         - ``num (float)``: Value to be rounded (optional units)
         - ``step (float)``: Factor to which ``num`` will be rounded (defaults
           to 10).
-        - ``func (function)``: Rounding function to use
+        - ``func (function)``: Rounding function to use (defaults to round())
     
     Note:
         ``step`` must have the same dimensionality as ``num``, but not
@@ -82,7 +82,7 @@ def ceil_step(num, step=10):
     return _stepper(num, step, ceil)
 
 def floor_step(num, step=10):
-    """Like :func:`round_step`, but ``num`` is always rounded up."""
+    """Like :func:`round_step`, but ``num`` is always rounded down."""
     return _stepper(num, step, floor)
 
 def stepceil_with_units(param, step, unit):
@@ -112,6 +112,10 @@ def ceil_nearest(x,array):
     myindex = np.argmax(array >= x)
     return array[myindex]
 
+
+# TODO: optional units wrapper
+def optional_units():
+    pass
 
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs."""
