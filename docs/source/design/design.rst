@@ -9,3 +9,6 @@ Design
     ent
     floc
     lfom
+    sed
+    sed_chan
+    sed_tank

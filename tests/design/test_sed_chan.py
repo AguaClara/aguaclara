@@ -11,20 +11,14 @@ sed_chan_60 = SedimentationChannel(q = 60.0 * u.L / u.s)
 	(sed_chan_20.l, 4.8671999999999995 * u.m),
 	(sed_chan_60.l, 4.8671999999999995 * u.m),
 
-	(sed_chan_20.weir_exit_hl, 0.016962275713760088 * u.m),
-	(sed_chan_60.weir_exit_hl, 0.035282955314338546 * u.m),
+	(sed_chan_20.outlet_weir_hl, 0.016962275713760088 * u.m),
+	(sed_chan_60.outlet_weir_hl, 0.035282955314338546 * u.m),
 
 	(sed_chan_20.inlet_hl_max, 0.39087750000000016 * u.cm),
 	(sed_chan_60.inlet_hl_max, 0.39087750000000016 * u.cm),
 
 	(sed_chan_20.inlet_w_pre_weir, 41.811023622047244 * u.inch),
 	(sed_chan_60.inlet_w_pre_weir, 41.811023622047244 * u.inch),
-
-	(sed_chan_20.inlet_depth_plumbing_min, 96.90522757137602 * u.cm),
-	(sed_chan_60.inlet_depth_plumbing_min, 98.73729553143386 * u.cm),
-
-	(sed_chan_20.inlet_depth_hl, 0.08933041703807712 * u.m),
-	(sed_chan_60.inlet_depth_hl, 0.22861065728970015 * u.m),
 
 	(sed_chan_20.inlet_depth, 96.90522757137602 * u.cm),
 	(sed_chan_60.inlet_depth, 98.73729553143386 * u.cm),
@@ -56,8 +50,8 @@ sed_chan_60 = SedimentationChannel(q = 60.0 * u.L / u.s)
 	(sed_chan_20.outlet_weir_depth, 85.89622757137602 * u.cm),
 	(sed_chan_60.outlet_weir_depth, 87.72829553143386 * u.cm),
 
-	(sed_chan_20.outlet_pre_weir_w, 30.0 * u.cm),
-	(sed_chan_60.outlet_pre_weir_w, 30.0 * u.cm),
+	(sed_chan_20.outlet_w_pre_weir, 30.0 * u.cm),
+	(sed_chan_60.outlet_w_pre_weir, 30.0 * u.cm),
 
     (sed_chan_20.outlet_pipe_l, 3.7119999999999997 * u.m),
 	(sed_chan_60.outlet_pipe_l, 3.7119999999999997 * u.m),

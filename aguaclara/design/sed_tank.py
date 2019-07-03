@@ -1,8 +1,12 @@
-"""Calculate hydraulic dimensions of a sedimentation tank bay.
+""" A sedimentation tank of an AguaClara water treatment plant
 
 Example:
-    >>> from aguaclara.design.sed_tank_bay import SedimentationTankBay
+    >>> from aguaclara.design.sed_tank import *
+    >>> sed_tank = SedimentationTank(q = 60 * u.L / u.s)
+    >>> sed_tank.diffuser_hl
+    <Quantity(0.009259259259259259, 'centimeter')>
 """
+from aguaclara.design.sed_hopper import SedTankHopper
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
@@ -18,16 +22,79 @@ import math
 
 
 class SedimentationTank(Component):
-    """Calculates necessary dimensions and values for SedimentationTankBay.
+    """Design an AguaClara plant's sedimentation tank.
 
-    Example:
-        >>> sed_tank_bay = SedimentationTankBay()
+    An sedimentation tank's design relies on the sedimentation channel's design 
+    in the same plant, but assumed/default values may be used to design an
+    sedimentation tank by itself. To design these components in tandem, use
+    :class:`aguaclara.design.sed.Sedimentor`.
+
+    Constants:
+        - ``INLET_MAN_Q_RATIO (float)``: The ratio of the flow in the inlet 
+        manifold
+        - ``OUTLET_MAN_HL (float * u.cm)``: The headloss of the outlet manifold
+        - ``JET_REVERSER_ND (float * u.inch)``: The nominal diameter of the jet 
+        reverser
+        - ``JET_PLANE_RATIO (float)``: The ratio for the jet plane
+        - ``WALL_THICKNESS (float * u.m)``: The thickness of the sed tank walls
+    Design Inputs:
+        - ``q (float * u.L / u.s)``: Plant flow rate 
+        (recommended, defaults to 20L/s)
+        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
+          20°C)
+        - ``vel_upflow (float * u.mm / u.s)``: Upflow velocity 
+        (optional, defaults to 1mm/s)
+        - ``l_inner (float * u.m)``: The inner length
+        (optional, defaults to 5.8m)
+        - ``w_inner (float * u.inch)``: The inner width 
+        (optional, defaults to 42in.)
+        - ``diffuser_vel_max (float * u.cm / u.s)``: The max velocity of a
+        diffuser (optional, defaults to 44.29 * u.cm/u.s)
+        - ``diffuser_n (int)``:The nunber of diffusers 
+        (optional, defaults to 108)
+        - ``diffuser_wall_thickness (float * u.inch)``: The thickness of the 
+        wall of a diffuser (optional, defaults to 1.17in.)
+        - ``diffuser_sdr (int)``: The standard dimension ratio of a diffuser
+        (optional, defaults to 41)
+        - ``inlet_man_hl (float * u.cm)``: The headloss of the inlet manifold
+        (optional, defaults to 1cm)
+        - ``inlet_man_sdr (float)``: The standard dimension ratio of the inlet 
+        manifold (optional, defaults to 41)
+        - ``jet_reverser_sdr (int)``: The standard dimension ratio of the jet 
+        reverser (optional, defaults to 26)
+        - ``plate_settler_angle (float * u.deg)``: The angle of the plate 
+        settler (optional, defaults to 60°)
+        - ``plate_settler_s (float * u.cm)``: Spacing in between plate settlers 
+        (optional, defaults to 2.5cm)
+        - ``plate_settler_thickness (float * u.mm)``: Thickness of a plate 
+        settler (optional, defaults to 2mm)
+        - ``plate_settler_cantilever_l_max (float * u.cm)``: The max length of 
+        the plate settler cantilever (optional, defaults to 20cm)
+        - ``plate_settler_vel_capture (float * u.mm / u.s)``: The capture 
+        velocity of a plate settler (optional, defaults to 0.12mm/s)
+        - ``outlet_man_orifice_hl (float * u.cm)``: The headloss of the 
+        orifices in the outlet manifold (optional, defaults to 4cm)
+        - ``outlet_man_orifice_q_ratio_max (float)``: The max ratio of the flow 
+        rate for the orifices of the outlet manifold (optional, defaults to 0.8)
+        - ``outlet_man_orifice_n_est (int)``: The estimated number of orifices 
+        for the outlet manifold (optional, defaults to 58)
+        - ``outlet_man_sdr (int)``: The standard dimension ratio of the outlet 
+        manifold (optional, defaults to 41)
+        - slope_angle (float * u.deg)``: The angle at the bottom of the sed tank
+        (optional, defaults to 50°)
+        - ``upflow_l (float * u.m)``: The length of the upflow 
+        (optional, defaults to 6m)
+        - ``sed_chan_w_outer (float * u.cm)``: The outer width of the 
+        sedimentation channel (optional, defaults to 60cm)
+        - ``sed_chan_weir_thickness (float * u.cm)``: The thickness of the 
+        sedimentation channel weir (optional, defaults to 5cm)
+        - ``hopper_l_min (float * u.cm)``: The minimum length of a hopper
+        (optional, defaults to 50cm)
     """
     INLET_MAN_Q_RATIO = 0.8
-    OUTLET_MAN_HL = 4 * u.cm
-    JET_REVERSER_ND = 3 * u.inch
+    OUTLET_MAN_HL = 4. * u.cm
+    JET_REVERSER_ND = 3. * u.inch
     JET_PLANE_RATIO = 0.0124
-    HOPPER_DRAIN_ND = 1 * u.inch
     WALL_THICKNESS = 0.15 * u.m
 
     q=20.0 * u.L / u.s
@@ -42,7 +109,7 @@ class SedimentationTank(Component):
     diffuser_wall_thickness=1.17 * u.inch
     diffuser_sdr=41
 
-    inlet_man_hl=1 * u.cm
+    inlet_man_hl=1. * u.cm
     inlet_man_sdr = 41
     jet_reverser_sdr = 26
 
@@ -56,41 +123,48 @@ class SedimentationTank(Component):
     outlet_man_orifice_q_ratio_max=0.8
     outlet_man_orifice_n_est = 58
     outlet_man_sdr=41
-    slope_angle=50 * u.deg
+    slope_angle=50. * u.deg
     
     upflow_l = 6.0 * u.m
-    sed_chan_w_outer = 60 * u.cm
-    sed_chan_weir_thickness = 5 * u.cm
-    hopper_l_min = 50 * u.cm
+    sed_chan_w_outer = 60. * u.cm
+    sed_chan_weir_thickness = 5. * u.cm
+
+    hopper = SedTankHopper()
+    subcomponents = [hopper]
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._design_hopper()
+
+    def _design_hopper(self):
+        pass
 
     @property
     def q_tank(self):
-        """
-        Returns:
-            Flow rate in a sedimentation tank (float * u.L / u.s).
-        """
+        """The flow rate present in the tank."""
         q_tank = self.l_inner * self.w_inner * self.vel_upflow
         return q_tank.to(u.L / u.s)
         
     @property
     def diffuser_hl(self):
+        """The headloss of the diffuser."""
         return self.inlet_man_hl / self.diffuser_n
     
     @property
     def diffuser_vel(self):
+        """The velocity of the diffuser"""
         diffuser_vel = np.sqrt(2 * con.GRAVITY * self.diffuser_hl)
         return diffuser_vel.to(u.mm / u.s)
         
     @property
     def diffuser_w_inner(self):
+        """The inner width(neglecting walls) of the diffuser."""
         diffuser_w_inner = self.w_inner * self.vel_upflow / self.diffuser_vel
         return diffuser_w_inner.to(u.cm)
 
     @property
     def diffuser_a(self):
-        """
-        Calculates manifold diffuser area from flow rate.
-        """
+        """The area of the diffuser"""
         diffuser_a = self.q_tank / (self.diffuser_vel * self.diffuser_n)
         return diffuser_a.to(u.cm ** 2)
 
@@ -101,11 +175,7 @@ class SedimentationTank(Component):
 
     @property
     def inlet_man_v_max(self):
-        """Return the maximum velocity through the manifold.
-
-        Returns:
-            Maximum velocity through the manifold (float).
-        """
+        """The maximumum velocity in the inlet manifold."""
         vel_manifold_max = np.sqrt(4 * con.GRAVITY * self.diffuser_hl *
                 (1 - self.INLET_MAN_Q_RATIO ** 2) /
                 (self.INLET_MAN_Q_RATIO ** 2 + 1)
@@ -114,12 +184,14 @@ class SedimentationTank(Component):
 
     @property 
     def inlet_man_nd(self):
+        """The nominal diameter of the inlet manifold"""
         diam_inner = np.sqrt(4 * self.q_tank / (np.pi * self.inlet_man_v_max))
         inlet_man_nd = pipe.ND_SDR_available(diam_inner, self.inlet_man_sdr)
         return inlet_man_nd.to(u.cm)
 
     @property
     def outlet_man_nd(self):
+        """The nominal diameter of the outlet manifold."""
         outlet_man_nd = pc.manifold_nd(
             self.q_tank,
             self.OUTLET_MAN_HL,
@@ -135,11 +207,7 @@ class SedimentationTank(Component):
 
     @property
     def outlet_man_orifice_d(self):
-        """Return the diameter of the orifices in the exit manifold for the sedimentation tank.
-
-        Returns:
-            Diameter of the orifices in the exit manifold for the sedimentation tank (float).
-        """
+        """The diameter of the orifices in the outlet manifold."""
         Q_orifice = self.q_tank / self.outlet_man_orifice_n_est
         D_orifice = pc.diam_circle(Q_orifice/(con.VC_ORIFICE_RATIO * \
             np.sqrt(2 * con.GRAVITY* self.outlet_man_orifice_hl)))
@@ -147,12 +215,7 @@ class SedimentationTank(Component):
 
     @property
     def plate_l(self):
-        """Return the length of a single plate in the plate settler module based on
-        achieving the desired capture velocity
-
-        Returns:
-            Length of a single plate (float).
-        """
+        """The length of a plate in the plate settlers."""
         L_sed_plate = ((self.plate_settler_s * ((self.vel_upflow / self.plate_settler_vel_capture) - 1)
                         + self.plate_settler_thickness * (self.vel_upflow / self.plate_settler_vel_capture))
                      / (np.sin(self.plate_settler_angle) * np.cos(self.plate_settler_angle))
@@ -161,6 +224,7 @@ class SedimentationTank(Component):
     
     @property
     def outlet_man_orifice_q(self):
+        """The flow rate in the orifices of the outlet manifold."""
         outlet_man_orifice_q = pc.flow_orifice_vert(
                 self.outlet_man_orifice_d,
                 self.outlet_man_orifice_hl,
@@ -170,6 +234,7 @@ class SedimentationTank(Component):
 
     @property
     def outlet_man_orifice_spacing(self):
+        """The spacing between orifices on the outlet manifold."""
         outlet_man_orifice_spacing = (
             self.upflow_l - 
             pipe.socket_depth(self.outlet_man_nd) - 
@@ -180,6 +245,7 @@ class SedimentationTank(Component):
 
     @property
     def outlet_man_orifice_n(self):
+        """The number of orifices on the outlet manifold."""
         outlet_orifice_n = math.floor(
             (
                 self.upflow_l - 
@@ -192,6 +258,7 @@ class SedimentationTank(Component):
 
     @property
     def outlet_orifice_hl(self):
+        """The headloss for the orifices of the outlet"""
         outlet_orifice_hl = pc.head_orifice(
             self.outlet_man_nd, 
             con.VC_ORIFICE_RATIO,
@@ -201,6 +268,7 @@ class SedimentationTank(Component):
 
     @property
     def side_slopes_w(self):
+        """The width of the side slopes."""
         side_slopes_w = (
             self.w_inner - 
             pipe.ID_SDR(self.JET_REVERSER_ND, self.jet_reverser_sdr)
@@ -209,48 +277,6 @@ class SedimentationTank(Component):
 
     @property
     def side_slopes_h(self):
+        """The height of the side slopes."""
         side_slopes_h = np.tan(self.slope_angle) * self.side_slopes_w
         return side_slopes_h.to(u.m)
-
-    @property
-    def weir_floc_z(self):
-        pass
-        
-    @property
-    def hopper_bottom_z(self):
-        pass
-
-    @property
-    def hopper_slope_front_h(self):
-        # hopper_slope_front_h = self.weir_floc_z - self.hopper_bottom_z
-        # return hopper_slope_front_h
-        pass
-
-    @property
-    def hopper_drain_nd(self):
-        pass
-
-    @property
-    def hopper_slope_front_back_angle(self):
-        pass
-
-    @property
-    def hopper_pipe_drain_l(self):
-        # hopper_pipe_drain_l = (
-        #     self.hopper_slope_front_h /
-        #      np.tan(self.hopper_slope_front_back_angle)
-        #      ) + self.WALL_THICKNESS + pipe.socket_depth(self.hopper_drain_nd)
-        # return hopper_pipe_drain_l
-        pass
-
-    @property
-    def hopper_l(self):
-        if self.q > 60. * u.L / u.s: 
-            hopper_l = self.sed_chan_w_outer
-        else:
-            hopper_l = max(
-                self.hopper_l_min,
-                self.plate_l * np.cos(self.plate_settler_angle) - \
-                    self.sed_chan_weir_thickness
-            )
-        return hopper_l

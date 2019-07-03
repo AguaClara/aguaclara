@@ -1,6 +1,7 @@
 """This module contains all the functions needed to design a sedimentation tank
 for an AguaClara plant.
 """
+# TODO: switch to explicit imports
 from aguaclara.design.sed_tank import *
 from aguaclara.design.sed_chan import *
 from aguaclara.core.units import unit_registry as u
