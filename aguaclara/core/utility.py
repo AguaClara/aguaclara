@@ -14,6 +14,26 @@ import numpy as np
 from math import log10, floor, ceil
 import warnings
 
+def optional_units(arg_positions, keys):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            args_as_qtys = list(args)
+            for i in range(len(args_as_qtys)):
+                if i in arg_positions:
+                    args_as_qtys[i] *= u.dimensionless
+
+            kwargs_as_qtys = kwargs.copy()
+            for key in list(kwargs_as_qtys.keys()):
+                if key in keys:
+                    kwargs_as_qtys[key] *= u.dimensionless
+
+            result = func(*args_as_qtys, **kwargs_as_qtys)
+            if result.units is u.dimensionless:
+                result = result.magnitude
+
+            return result
+        return wrapper
+    return decorator
 
 def round_sig_figs(num, figs=4):
     """Round a number to some amount of significant figures.
@@ -36,6 +56,7 @@ def round_sig_figs(num, figs=4):
 
     return num
 
+@optional_units([0, 1], ['num', 'step'])
 def _stepper(num, step=10, func=round):
     """Round a number to be a multiple of some step.
     
@@ -51,14 +72,14 @@ def _stepper(num, step=10, func=round):
         centimeters are acceptable).
     """
     # Turn arguments into quantities with the same units
-    num = num * u.dimensionless
-    step = step * u.dimensionless
+    # num = num * u.dimensionless
+    # step = step * u.dimensionless
     step = step.to(num.units)
 
     num = func(num / step) * step
 
-    if num.units is u.dimensionless:
-        num = num.magnitude
+    # if num.units is u.dimensionless:
+    #     num = num.magnitude
     
     return num
 
@@ -75,15 +96,15 @@ def round_step(num, step=10):
         necessarily the same units (e.g. ``num``: meters and ``step``:
         centimeters are acceptable).
     """
-    return _stepper(num, step, round)
+    return _stepper(num, step = step, func = round)
 
 def ceil_step(num, step=10):
     """Like :func:`round_step`, but ``num`` is always rounded up."""
-    return _stepper(num, step, ceil)
+    return _stepper(num, step = step, func = ceil)
 
 def floor_step(num, step=10):
     """Like :func:`round_step`, but ``num`` is always rounded down."""
-    return _stepper(num, step, floor)
+    return _stepper(num, step = step, func = floor)
 
 def stepceil_with_units(param, step, unit):
     """This function returns the smallest multiple of 'step' greater than or
@@ -111,11 +132,6 @@ def floor_nearest(x,array):
 def ceil_nearest(x,array):
     myindex = np.argmax(array >= x)
     return array[myindex]
-
-
-# TODO: optional units wrapper
-def optional_units():
-    pass
 
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs."""
