@@ -35,7 +35,7 @@ class SedTankHopper(Component):
 
     @property
     def bottom_z(self):
-        bottom_z = self.sed_tank_inlet_manifold_pipe + 
+        bottom_z = self.sed_tank_inlet_manifold_pipe + \
         (
             (
                 pipe.fitting_od(self.sed_tank_inlet_manifold_nd) + \
