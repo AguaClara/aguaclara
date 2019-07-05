@@ -25,8 +25,6 @@ class Sedimentor(Component):
         To create an object of SedimentationTank, use:
             >>> sed_tank = SedimentationTank()
     """
-    q=20 * u.L / u.s
-    temp=20 * u.degC
     wall_thickness = 15 * u.cm
     tank=SedimentationTank()
     chan=SedimentationChannel()

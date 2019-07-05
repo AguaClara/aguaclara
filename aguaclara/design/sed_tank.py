@@ -97,9 +97,6 @@ class SedimentationTank(Component):
     JET_PLANE_RATIO = 0.0124
     WALL_THICKNESS = 0.15 * u.m
 
-    q=20.0 * u.L / u.s
-    temp=20.0 * u.degC
-
     vel_upflow=1.0 * u.mm / u.s
     l_inner=5.8 * u.m
     w_inner=42.0 * u.inch

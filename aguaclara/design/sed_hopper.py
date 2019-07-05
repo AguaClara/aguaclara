@@ -7,9 +7,6 @@ import aguaclara.core.materials as mat
 class SedTankHopper(Component):
     WALL_THICKNESS = 0.15 * u.m
     DRAIN_ND = 1.0 * u.inch
-    
-    q = 20.0 * u.L / u.s
-    temp = 20.0 * u.degC
 
     l_min = 50.0 * u.cm    
 

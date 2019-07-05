@@ -81,9 +81,6 @@ class SedimentationChannel(Component):
     PLANT_FREEBOARD_H = 5.0 * u.cm
     WEIR_FREEBOARD_H = 2.0 * u.cm
     SED_DEPTH_EST = 2.0 * u.m
-
-    q=20.0 * u.L / u.s
-    temp=20.0 * u.degC
     
     sed_tank_n=4
     sed_tank_w_inner=42.0 * u.inch
