@@ -3,7 +3,7 @@ can be used throughout the plant design.
 
 """
 from aguaclara.core.units import unit_registry as u
-
+import functools
 
 import numpy as np
 from math import log10, floor
@@ -64,9 +64,10 @@ def ceil_nearest(x, array):
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs.
 
-    For each sequence passed as an argument to the function, from left to right,
-    this wrapper will recursively evaluate the function with the sequence
-    replaced by each of its elements and return the results in a sequence.
+    For each argument passed to the function as a sequence (list, tuple, or
+    Numpy array), this wrapper will recursively evaluate the function with the
+    sequence replaced by each of its elements and return the results in a
+    sequence.
 
     For a function "f" of one argument, f([x_1, ..., x_n]) would be evaluated to
     [f(x_1), ..., f(x_n)]. For a function passed multiple sequences of
@@ -76,6 +77,7 @@ def list_handler(HandlerResult="nparray"):
     :param HandlerResult: output type. Defaults to Numpy arrays.
     """
     def decorate(func):
+        @functools.wraps(func) # For Sphinx documentation of decorated functions
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element.
             """
@@ -145,17 +147,18 @@ def list_handler(HandlerResult="nparray"):
 
 
 def check_range(*args):
-    """
-    Check whether passed paramters fall within approved ranges.
+    """Check whether passed paramters fall within approved ranges.
 
     Does not return anything, but will raise an error if a parameter falls
     outside of its defined range.
 
     Input should be passed as an array of sequences, with each sequence
     having three elements:
+
         [0] is the value being checked,
         [1] is the range parameter(s) within which the value should fall, and
         [2] is the name of the parameter, for better error messages.
+
     If [2] is not supplied, "Input" will be appended as a generic name.
 
     Range requests that this function understands are listed in the

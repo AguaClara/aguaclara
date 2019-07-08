@@ -3,108 +3,133 @@ and chemical unit processes for AguaClara water treatment plants.
 """
 
 from aguaclara.core.units import unit_registry as u
-import aguaclara.core.materials as mat
 import aguaclara.core.constants as con
 import aguaclara.core.utility as ut
 
 import numpy as np
 from scipy import interpolate, integrate
 
-gravity = con.GRAVITY
+gravity = u.gravity
 
-######################Air################################
+########################### Air #############################
+@ut.list_handler()
 def density_air(Pressure, MolarMass, Temperature):
-    """Return the density of the air.
+    """Return the density of air at the given pressure, molar mass, and
+    temperature.
 
     :param Pressure: pressure of the air in the system
-    :type Pressure: float
+    :type Pressure: u.pascal
     :param MolarMass: molar mass of the air in the system
-    :type MolarMass: float
+    :type MolarMass: u.gram/u.mol
     :param Temperature: Temperature of the air in the system
-    :type Temperature: float
+    :type Temperature: u.degK
 
     :return: density of the air in the system
-    :rtype: float
+    :rtype: u.kg/u.m**3
     """
     return (Pressure * MolarMass / (u.R * Temperature)).to(u.kg/u.m**3)
 
 ###################### Simple geometry ######################
+
 """A few equations for useful geometry.
 Is there a geometry package that we should be using?
 """
 
-@u.wraps(u.m**2, u.m, False)
+@ut.list_handler()
 def area_circle(DiamCircle):
-    """Return the area of a circle."""
-    ut.check_range([DiamCircle, ">0", "DiamCircle"])
+    """Return the area of a circle given its diameter.
+
+    :param DiamCircle: diameter of the circle
+    :type DiamCircle: u.m
+
+    :return: area of the circle
+    :rtype: u.m**2
+    """
+    ut.check_range([DiamCircle.magnitude, ">0", "DiamCircle"])
     return np.pi / 4 * DiamCircle**2
 
 
-@u.wraps(u.m, u.m**2, False)
+@ut.list_handler()
 def diam_circle(AreaCircle):
-    """Return the diameter of a circle."""
-    ut.check_range([AreaCircle, ">0", "AreaCircle"])
+    """Return the diameter of a circle given its area.
+
+    :param AreaCircle: area of the circle
+    :type AreaCircle: u.m**2
+
+    :return: diameter of the circle
+    :rtype: u.m
+    """
+
+    ut.check_range([AreaCircle.magnitude, ">0", "AreaCircle"])
     return np.sqrt(4 * AreaCircle / np.pi)
 
 ######################### Hydraulics #########################
 
+#:
 RE_TRANSITION_PIPE = 2100
-""" """
+
 K_KOZENY = con.K_KOZENY
 
+#: Table of temperatures and the corresponding water density.
+#:
+#: WATER_DENSITY_TABLE[0] is a list of water temperatures, in Kelvin.
+#: WATER_DENSITY_TABLE[1] is the corresponding densities, in kg/m³.
 WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15,
                         323.15, 333.15, 343.15, 353.15, 363.15, 373.15
                         ), (999.9, 1000, 999.7, 998.2, 995.7, 992.2,
                             988.1, 983.2, 977.8, 971.8, 965.3, 958.4
                             )
                        ]
-"""Table of temperatures and the corresponding water density.
-
-Index[0] is a list of water temperatures, in Kelvin.
-Index[1] is the corresponding densities, in kg/m³.
-"""
 
 
-@u.wraps(u.kg/(u.m*u.s), [u.degK], False)
+@ut.list_handler()
 def viscosity_dynamic(temp):
     """Return the dynamic viscosity of water at a given temperature.
 
-    If given units, the function will automatically convert to Kelvin.
-    If not given units, the function will assume Kelvin.
+    :param temp: temperature of water
+    :type temp: u.degK
+
+    :return: dynamic viscosity of water
+    :rtype: u.kg/(u.m*u.s)
     """
-    ut.check_range([temp, ">0", "Temperature in Kelvin"])
-    return 2.414 * (10**-5) * 10**(247.8 / (temp-140))
+    ut.check_range([temp.magnitude, ">0", "Temperature in Kelvin"])
+    return 2.414*(10**-5)*u.kg/(u.m*u.s) * 10**(247.8*u.degK / (temp - 140*u.degK))
 
 
-@u.wraps(u.kg/u.m**3, [u.degK], False)
+@ut.list_handler()
 def density_water(temp):
     """Return the density of water at a given temperature.
 
-    If given units, the function will automatically convert to Kelvin.
-    If not given units, the function will assume Kelvin.
+    :param temp: temperature of water
+    :type temp: u.degK
+
+    :return: density of water
+    :rtype: u.kg/u.m**3
     """
-    ut.check_range([temp, ">0", "Temperature in Kelvin"])
+    ut.check_range([temp.magnitude, ">0", "Temperature in Kelvin"])
     rhointerpolated = interpolate.CubicSpline(WATER_DENSITY_TABLE[0],
                                                     WATER_DENSITY_TABLE[1])
-    return rhointerpolated(temp).item()
+    temp = temp.to(u.degK).magnitude
+    return rhointerpolated(temp).item() * u.kg/u.m**3
 
 
-@u.wraps(u.m**2/u.s, [u.degK], False)
+@ut.list_handler()
 def viscosity_kinematic(temp):
     """Return the kinematic viscosity of water at a given temperature.
 
-    If given units, the function will automatically convert to Kelvin.
-    If not given units, the function will assume Kelvin.
+    :param temp: temperature of water
+    :type temp: u.degK
+
+    :return: kinematic viscosity of water
+    :rtype: u.m**2/u.s
     """
-    ut.check_range([temp, ">0", "Temperature in Kelvin"])
-    return (viscosity_dynamic(temp).magnitude
-            / density_water(temp).magnitude)
+    ut.check_range([temp.magnitude, ">0", "Temperature in Kelvin"])
+    return (viscosity_dynamic(temp) / density_water(temp))
 
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s], False)
 def re_pipe(FlowRate, Diam, Nu):
     """Return the Reynolds Number for a pipe."""
-    #Checking input validity
     ut.check_range([FlowRate, ">0", "Flow rate"], [Diam, ">0", "Diameter"],
                    [Nu, ">0", "Nu"])
     return (4 * FlowRate) / (np.pi * Diam * Nu)

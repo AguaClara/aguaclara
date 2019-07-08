@@ -4,7 +4,7 @@ Created on Fri Jul 7 11:51:51 2017
 
 @author: Sage Weber-Shirk
 
-Last modified: Tue Jun 4 2019
+Last modified: Tue July 4 2019
 By: Hannah Si
 """
 
@@ -12,21 +12,19 @@ By: Hannah Si
 #before this file is released to the Master branch!
 
 from aguaclara.core.units import unit_registry as u
+from aguaclara.core import physchem as pc
 import unittest
 
-developing = False
-if developing:
-    import sys
-    sys.path.append("../../aguaclara/core")
-    import physchem as pc
-else:
-    from aguaclara.core import physchem as pc
 
-class AirTest(unittest.TestCase):
-    """Test the air density function"""
+class QuantityTest(unittest.TestCase):
     def assertAlmostEqualQuantity(self, first, second, places=7):
+        second = second.to(first.units)
         self.assertAlmostEqual(first.magnitude, second.magnitude, places)
         self.assertEqual(first.units, second.units, places)
+
+
+class AirTest(QuantityTest):
+    """Test the air density function"""
 
     def test_air_density(self):
         answer = 1.29320776*u.kg/u.m**3
@@ -40,51 +38,53 @@ class AirTest(unittest.TestCase):
         answer = 0*u.kg/u.m**3
         self.assertAlmostEqualQuantity(pc.density_air(0*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
 
-class GeometryTest(unittest.TestCase):
+
+class GeometryTest(QuantityTest):
     """Test the circular area and diameter functions."""
+
     def test_area_circle(self):
-        """area_circle should  should give known result with known input."""
-        checks = ((1, 0.7853981633974483*u.m**2),
-                  (495.6, 192908.99423885669*u.m**2))
+        """area_circle should should give known result with known input."""
+        checks = ((1*u.m, 0.7853981633974483*u.m**2),
+                  (495.6*u.m, 192908.99423885669*u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.area_circle(i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.area_circle(i[0]), i[1])
 
     def test_area_circle_units(self):
-        """area_circle should  should give known result with known input and correct units"""
+        """area_circle should should give known result with known input and correct units"""
         checks = ((1*u.m, 7853.981633974483*u.cm**2),
                   (495.6*u.cm, 19.290899423885669*u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.area_circle(i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.area_circle(i[0]), i[1])
 
     def test_area_circle_range(self):
         """area_circle should return errors with inputs <= 0."""
-        checks = (0, -3)
+        checks = (0*u.m, -3*u.m)
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.area_circle, i)
 
     def test_diam_circle(self):
         """diam_circle should should give known result with known input."""
-        checks = ((1, 1.1283791670955126),
-                  (0.1, 0.3568248232305542),
-                  (347, 21.019374919894773),
-                  (10000 * u.cm**2, 1.1283791670955126))
+        checks = ((1 * u.cm**2, 1.1283791670955126 * u.cm),
+                  (0.1 * u.cm**2, 0.3568248232305542 * u.cm),
+                  (347 * u.cm**2, 21.019374919894773 * u.cm),
+                  (10000 * u.cm**2, 112.83791670955126 * u.cm))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.diam_circle(i[0]).magnitude, i[1])
+                self.assertAlmostEqual(pc.diam_circle(i[0]), i[1])
 
     def test_diam_circle_range(self):
         """diam_circle should return errors with inputs <= 0."""
-        checks = ((0, ValueError),
-                  (-3, ValueError))
+        checks = ((0*u.m, ValueError),
+                  (-3*u.m, ValueError))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(i[1], pc.diam_circle, i[0])
 
 
-class WaterPropertiesTest(unittest.TestCase):
+class WaterPropertiesTest(QuantityTest):
     """Test the density and dynamic/kinematic viscosity functions."""
     def test_water_table(self):
         """The table density_water relies upon shouldn't need to be changed."""
@@ -105,50 +105,50 @@ class WaterPropertiesTest(unittest.TestCase):
 
     def test_density_water_true(self):
         """density_water should give known result with known input."""
-        checks = ((273.15, 999.9),
-                  (300, 996.601907542082),
-                  (343.15, 977.8))
+        checks = ((273.15 * u.degK, 999.9 * u.kg/u.m**3),
+                  (300 * u.degK, 996.601907542082 * u.kg/u.m**3),
+                  (343.15 * u.degK, 977.8 * u.kg/u.m**3))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.density_water(i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.density_water(i[0]), i[1])
 
     def test_viscosity_dynamic(self):
         """viscosity_dynamic should give known result with known input."""
-        checks = ((300, 0.0008540578046518858),
-                  (372, 0.00028238440851243975),
-                  (274, 0.0017060470223965783))
+        checks = ((300 * u.degK, 0.0008540578046518858 * u.kg/(u.m*u.s)),
+                  (372 * u.degK, 0.00028238440851243975 * u.kg/(u.m*u.s)),
+                  (274 * u.degK, 0.0017060470223965783 * u.kg/(u.m*u.s)))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.viscosity_dynamic(i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.viscosity_dynamic(i[0]), i[1])
 
     def test_viscosity_dynamic_units(self):
         """viscosity_dynamic should give known result with known input."""
-        checks = ((300 * u.degK, 0.0008540578046518858),
-                  (26.85 * u.degC, 0.0008540578046518858))
+        checks = ((300 * u.degK, 0.0008540578046518858 * u.kg/(u.m*u.s)),
+                  (26.85 * u.degC, 0.0008540578046518858 * u.kg/(u.m*u.s)))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.viscosity_dynamic(i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.viscosity_dynamic(i[0]), i[1])
 
     def test_viscosity_kinematic(self):
-        """nu should give known results with known input."""
-        checks = ((342, 4.1584506710898959e-07),
-                  (297, 9.1670473903811879e-07),
-                  (273.15, 1.7532330683680798e-06),
-                  (373.15, 2.9108883329847625e-07))
+        """viscosity_kinematic should give known results with known input."""
+        checks = ((342 * u.degK, 4.1584506710898959e-07 * u.m**2/u.s),
+                  (297 * u.degK, 9.1670473903811879e-07 * u.m**2/u.s),
+                  (273.15 * u.degK, 1.7532330683680798e-06 * u.m**2/u.s),
+                  (373.15 * u.degK, 2.9108883329847625e-07 * u.m**2/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.viscosity_kinematic(i[0]), i[1])
 
     def test_viscosity_kinematic_units(self):
-        """nu should handle units correctly."""
-        checks = ((342, 4.1584506710898959e-07),
-                  (297 * u.degK, 9.1670473903811879e-07),
-                  (0 * u.degC, 1.7532330683680798e-06),
-                  (100 * u.degC, 2.9108883329847625e-07))
+        """viscosity_kinematic should handle units correctly."""
+        checks = ((342 * u.degK, 4.1584506710898959e-07 * u.m**2/u.s),
+                  (297 * u.degK, 9.1670473903811879e-07 * u.m**2/u.s),
+                  (273 * u.degK, 1.7532330683680798e-06 * u.m**2/u.s),
+                  (100 * u.degC, 2.9108883329847625e-07 * u.m**2/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]).magnitude, i[1])
-                self.assertAlmostEqual(pc.viscosity_kinematic(i[0]),
+                self.assertAlmostEqualQuantity(pc.viscosity_kinematic(i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.viscosity_kinematic(i[0]),
                                        (pc.viscosity_dynamic(i[0]) / pc.density_water(i[0])))
 
 
