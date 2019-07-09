@@ -15,6 +15,21 @@ from math import log10, floor, ceil
 import warnings
 
 def optional_units(arg_positions, keys):
+    """Wrap a function so that arguments may optionally have units.
+    
+    This should be used as a function decorator; it will not do anything
+    meaningful unless it is appended with a ``@`` before another function.
+
+    Example:
+        @optional_units([0, 2], ['foo', 'zardoz'])
+        def lets_get_func_y(foo, bar=10, zardoz=20 * u.m):
+            step = step.to(num.units)
+            num = func(num / step) * step
+            return num
+
+    Args:
+        - ``arg_positions (int list)``: Position indices of 
+    """
     def decorator(func):
         def wrapper(*args, **kwargs):
             args_as_qtys = list(args)
@@ -35,6 +50,7 @@ def optional_units(arg_positions, keys):
         return wrapper
     return decorator
 
+@optional_units([0], ['num'])
 def round_sig_figs(num, figs=4):
     """Round a number to some amount of significant figures.
 
@@ -71,16 +87,8 @@ def _stepper(num, step=10, func=round):
         necessarily the same units (e.g. ``num``: meters and ``step``:
         centimeters are acceptable).
     """
-    # Turn arguments into quantities with the same units
-    # num = num * u.dimensionless
-    # step = step * u.dimensionless
     step = step.to(num.units)
-
     num = func(num / step) * step
-
-    # if num.units is u.dimensionless:
-    #     num = num.magnitude
-    
     return num
 
 def round_step(num, step=10):
