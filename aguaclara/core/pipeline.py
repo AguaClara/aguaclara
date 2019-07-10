@@ -11,7 +11,7 @@ import numpy
 
 class PipeComponent:
     """This class has functions and fields common to Pipe and Connector"""
-    def __init__(self, diameter_inner = (1/8)*u.in):
+    def __init__(self, diameter_inner = (1/8)*u.inch):
         """Instantiates a PipeComponent fields common to both class Pipe and Connector with the specified values.
 
         Args:

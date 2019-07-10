@@ -56,7 +56,7 @@ class SedimentationTank(Component):
         wall of a diffuser (optional, defaults to 1.17in.)
         - ``diffuser_sdr (int)``: The standard dimension ratio of a diffuser
         (optional, defaults to 41)
-        - ``inlet_man_hl (float * u.cm)``: The headloss of the inlet manifold
+        - ``hl (float * u.cm)``: The headloss of the inlet manifold
         (optional, defaults to 1cm)
         - ``inlet_man_sdr (float)``: The standard dimension ratio of the inlet 
         manifold (optional, defaults to 41)
@@ -95,7 +95,9 @@ class SedimentationTank(Component):
     OUTLET_MAN_HL = 4. * u.cm
     JET_REVERSER_ND = 3. * u.inch
     JET_PLANE_RATIO = 0.0124
+    JET_REVERSER_TO_DIFFUSERS_H = 3 * u.cm
     WALL_THICKNESS = 0.15 * u.m
+    DIFFUSER_L = 15 * u.cm
 
     vel_upflow=1.0 * u.mm / u.s
     l_inner=5.8 * u.m
@@ -121,20 +123,11 @@ class SedimentationTank(Component):
     outlet_man_orifice_n_est = 58
     outlet_man_sdr=41
     slope_angle=50. * u.deg
+    side_slope_to_floc_weir_h_min = 5.0 * u.cm
     
     upflow_l = 6.0 * u.m
     sed_chan_w_outer = 60. * u.cm
     sed_chan_weir_thickness = 5. * u.cm
-
-    hopper = SedTankHopper()
-    subcomponents = [hopper]
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self._design_hopper()
-
-    def _design_hopper(self):
-        pass
 
     @property
     def q_tank(self):
@@ -277,3 +270,9 @@ class SedimentationTank(Component):
         """The height of the side slopes."""
         side_slopes_h = np.tan(self.slope_angle) * self.side_slopes_w
         return side_slopes_h.to(u.m)
+
+    @property
+    def inlet_man_h(self):
+        inlet_man_h = self.JET_REVERSER_TO_DIFFUSERS_H + self.DIFFUSER_L + \
+             ( pipe.OD(self.inlet_man_nd)/ 2 )
+        return inlet_man_h

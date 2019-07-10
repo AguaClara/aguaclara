@@ -4,6 +4,7 @@ for an AguaClara plant.
 # TODO: switch to explicit imports
 from aguaclara.design.sed_tank import *
 from aguaclara.design.sed_chan import *
+from aguaclara.design.sed_hopper import *
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
@@ -28,11 +29,14 @@ class Sedimentor(Component):
     wall_thickness = 15 * u.cm
     tank=SedimentationTank()
     chan=SedimentationChannel()
-    subcomponents = [tank, chan]
+    hopper=SedTankHopper()
+    subcomponents = [tank, chan, hopper]
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._design_chan()
+        self._design_tank()
+        self._design_hopper()
 
     @property
     def tank_n(self):
@@ -57,8 +61,19 @@ class Sedimentor(Component):
     def _design_tank(self):
         self.tank.sed_chan_w_outer = self.chan.w_outer
         self.tank.sed_chan_weir_thickness = self.chan.weir_thickness
-
-
+        
+    def _design_hopper(self):
+        self.hopper.sed_chan_w_outer = self.chan.w_outer
+        self.hopper.sed_tank_plate_l = self.tank.plate_l
+        self.hopper.sed_tank_plate_angle = self.tank.plate_settler_angle
+        self.hopper.sed_chan_weir_thickness = self.chan.weir_thickness
+        self.hopper.sed_chan_drain_nd = self.chan.drain_nd
+        self.hopper.sed_tank_side_slope_h = self.tank.side_slopes_h
+        self.hopper.sed_tank_side_slope_to_floc_weir_h_min = \
+            self.tank.side_slope_to_floc_weir_h_min
+        self.hopper.sed_tank_inlet_man_nd = self.tank.inlet_man_nd
+        self.hopper.sed_tank_inlet_man_h = self.tank.inlet_man_h
+        
 MODULE_PLATES_N_MIN = 8
 
 # This is moved to template because SED_PLATE_THICKNESS is in materials.yaml
