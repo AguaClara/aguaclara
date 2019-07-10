@@ -8,7 +8,7 @@ pandas = "*"
 pint = "==0.8.1"
 scipy = "*"
 onshape_client = "*"
-matplotlib = "*"
+matplotlib = "==3.0.3" # Supports Python 3.5
 
 [dev-packages]
 codecov = "*"
