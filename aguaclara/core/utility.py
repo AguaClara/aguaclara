@@ -5,7 +5,7 @@ complex function inputs.
 
 Example:
     >>> import aguaclara.core.utility as ut
-    >>> round_sig_figs(1234567, 3)
+    >>> ut.round_sig_figs(1234567, 3)
     1230000
 """
 from aguaclara.core.units import unit_registry as u
