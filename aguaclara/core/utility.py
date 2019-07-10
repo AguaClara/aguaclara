@@ -21,8 +21,8 @@ def optional_units(arg_positions, keys):
     meaningful unless it is appended with a ``@`` before another function.
 
     Example:
-        @optional_units([0, 2], ['foo', 'zardoz'])
-        def lets_get_func_y(foo, bar=10, zardoz=20 * u.m):
+        @optional_units([0, 1], ['num', 'step'])
+        def stepper(num, step=10, func=round):
             step = step.to(num.units)
             num = func(num / step) * step
             return num
@@ -32,18 +32,19 @@ def optional_units(arg_positions, keys):
     """
     def decorator(func):
         def wrapper(*args, **kwargs):
-            args_as_qtys = list(args)
-            for i in range(len(args_as_qtys)):
+            args = list(args)
+            for i in range(len(args)):
                 if i in arg_positions:
-                    args_as_qtys[i] *= u.dimensionless
+                    args[i] *= u.dimensionless
 
-            kwargs_as_qtys = kwargs.copy()
-            for key in list(kwargs_as_qtys.keys()):
+            for key in list(kwargs.keys()):
                 if key in keys:
-                    kwargs_as_qtys[key] *= u.dimensionless
+                    kwargs[key] *= u.dimensionless
 
-            result = func(*args_as_qtys, **kwargs_as_qtys)
-            if result.units is u.dimensionless:
+            result = func(*args, **kwargs)
+
+            # Convert back to native Python number type, if possible
+            if result.units == u.dimensionless:
                 result = result.magnitude
 
             return result
@@ -59,16 +60,10 @@ def round_sig_figs(num, figs=4):
         - ``figs (int)``: Number of significant digits to be rounded to 
           (recommended, defaults to 4)
     """
-    # Convert number to a Pint quantity if it isn't already
-    num = num * u.dimensionless
-
     # Prevents undefined log10(0) if num is already 0
     if num.magnitude != 0:
         decimals = figs - int(floor(log10(abs(num.magnitude)))) - 1
         num = np.round(num.magnitude, decimals) * num.units
-
-    if num.units is u.dimensionless:
-        num = num.magnitude
 
     return num
 
