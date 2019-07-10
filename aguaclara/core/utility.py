@@ -28,7 +28,10 @@ def optional_units(arg_positions, keys):
             return num
 
     Args:
-        - ``arg_positions (int list)``: Position indices of 
+        - ``arg_positions (int list)``: Position indices of positional and
+          keyword arguments with optional units
+        - ``keys (str list)``: Names of positional and keyword arguments with
+          optional units
     """
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -110,10 +113,15 @@ def floor_step(num, step=10):
     return _stepper(num, step = step, func = floor)
 
 def stepceil_with_units(param, step, unit):
-    """This function returns the smallest multiple of 'step' greater than or
-    equal to 'param' and outputs the result in Pint units.
-    This function is unit-aware and functions without requiring translation
-    so long as 'param' and 'unit' are of the same dimensionality.
+    """Round a number up to be a multiple of some step.
+    
+    Args:
+        - ``param (float)``: Value to be rounded (optional units)
+        - ``step (float)``: Factor to which ``param`` will be rounded
+        - ``unit (Quantity)``: units of ``step``
+    
+    Note: this function will be deprecated after 21 Dec 2019. Use ceil_step
+    instead.
     """
     warnings.warn(
         'stepceil_with_units will be deprecated after 21 Dec 2019. Use '
@@ -125,16 +133,54 @@ def stepceil_with_units(param, step, unit):
         counter += step * unit
     return counter
 
-# Take the values of the array, compare to x, find the index of the first value less than or equal to x
-def floor_nearest(x,array):
-    myindex = np.argmax(array >= x) - 1
-    return array[myindex]
+def floor_nearest(x, array):
+    """Get the nearest element of a NumPy array less than or equal to a value.
 
+    Args:
+        - ``x``: Value to compare
+        - ``array (numpy.array)``: Array to search
+    """
+    i = np.argmax(array >= x) - 1
+    return array[i]
 
-# Take the values of the array, compare to x, find the index of the first value greater or equal to x
-def ceil_nearest(x,array):
-    myindex = np.argmax(array >= x)
-    return array[myindex]
+def ceil_nearest(x, array):
+    """Get the nearest element of a NumPy array less than or equal to a value.
+
+    Args:
+        - ``x``: Value to compare
+        - ``array (numpy.array)``: Array to search
+    """
+    i = np.argmax(array >= x)
+    return array[i]
+
+def _minmax(*args, func=np.max):
+    base_quantity = args[0]
+    lst = []
+
+    for arg in args:
+        lst.append((arg / base_quantity))
+
+    result = func(lst) * base_quantity
+    return result
+
+def max(*args):
+    """Get the maximum value of some quantities with units.
+    
+    Note:
+        - All quantities must have the same dimensionality, but can have
+          different units.
+        - The output will have the same units as the first argument.
+
+    Example:
+        >>> from aguaclara.play import *
+        >>> ut.max(10 * u.m, 100 * u.cm, 32 * u.cm, 40 * u.inch, 40 * u.km)
+        <Quantity(40000.0, 'meter')>
+    """
+    return _minmax(*args, func = np.max)
+
+def min(*args):
+    """Like :func:`max`, but the minimum of the quantites."""
+    return _minmax(*args, func = np.min)
 
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs."""
@@ -271,20 +317,6 @@ def check_range(*args):
             if 'boolean' in arg[1] and type(i) != bool:
                 raise TypeError("{1} is {0} but must be a "
                                 "boolean.".format(i, arg[2]))
-def max(*args, f=np.max):
-    base_q=args[0]
-    L= []
-    for i, arg in enumerate(args):
-        L.insert(i,(arg/base_q).to(u.dimensionless))
-    return f(L)*base_q
-
-
-def min(*args, f=np.min):
-    base_q=args[0]
-    L = []
-    for i, arg in enumerate(args):
-        L.insert(i, (arg/base_q).to(u.dimensionless))
-    return f(L)*base_q
 
 def array_qtys_to_strs(lst):
     """Convert Pint quantities in a NumPy array to strings.
