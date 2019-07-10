@@ -2,14 +2,16 @@ from aguaclara.design.component import Component
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.pipes as pipe
 import aguaclara.core.materials as mat
-
+import numpy as np
 
 class SedTankHopper(Component):
     WALL_THICKNESS = 0.15 * u.m
     DRAIN_ND = 1.0 * u.inch
 
-    l_min = 50.0 * u.cm    
-
+    l_min = 50.0 * u.cm
+    sed_chan_w_outer = 283.505 * u.cm
+    tank_plate_l = 0.46 * u.m
+    
     @property
     def l(self):
         """The length of the hopper."""
@@ -18,7 +20,7 @@ class SedTankHopper(Component):
         else:
             l = max(
                 self.l_min,
-                self.plate_l * np.cos(self.plate_settler_angle) - \
+                self.sed_tank_plate_l * np.cos(self.plate_settler_angle) - \
                     self.sed_chan_weir_thickness
             )
         return l
