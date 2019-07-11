@@ -68,7 +68,8 @@ class SedimentationChannel(Component):
         - ``inlet_depth_max (float * u.cm)``: Maximum inlet channel depth
           (optional, defaults to 50 cm)
         - ``drain_sdr (int)``: SDR of the drain pipe (optional, defaults to 26)
-        - ``outlet_free_h (float * u.cm)``: Permissible height of water above
+        - ``outlet_free_h (float * u.cm)``: Permissible increase of water level
+          in the outlet channel (optional, defaults to 5 cm)
           ``outlet_weir_depth``:The depth of the outlet weir. (optional, defaults to 5 cm)
         - ``outlet_pipe_sdr (int)``: SDR of the outlet pipe (optional, defaults
           to 41)

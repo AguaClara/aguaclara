@@ -30,72 +30,73 @@ class SedimentationTank(Component):
 
     Constants:
         - ``INLET_MAN_Q_RATIO (float)``: The ratio of the flow in the inlet 
-        manifold
+          manifold.
         - ``OUTLET_MAN_HL (float * u.cm)``: The headloss of the outlet manifold
         - ``JET_REVERSER_ND (float * u.inch)``: The nominal diameter of the jet 
-        reverser
+          reverser.
         - ``JET_PLANE_RATIO (float)``: The ratio for the jet plane
         - ``JET_REVERSER_TO_DIFFUSERS_H (float * u.cm)``: The height between 
-        the jet reverser and diffusers
+          the jet reverser and diffusers.
         - ``WALL_THICKNESS (float * u.m)``: The thickness of the sed tank walls
-        - ``DIFFUSER_L (float * u.cm)``: The length of a diffuser
+        - ``DIFFUSER_L (float * u.cm)``: The length of a diffuser.
     
     Design Inputs:
         - ``q (float * u.L / u.s)``: Plant flow rate 
-        (recommended, defaults to 20L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
+          (recommended, defaults to 20L/s)
+        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to 
           20°C)
         - ``vel_upflow (float * u.mm / u.s)``: Upflow velocity 
-        (optional, defaults to 1mm/s)
+          (optional, defaults to 1mm/s)
         - ``l_inner (float * u.m)``: The inner length
-        (optional, defaults to 5.8m)
+          (optional, defaults to 5.8m)
         - ``w_inner (float * u.inch)``: The inner width 
-        (optional, defaults to 42in.)
+          (optional, defaults to 42in.)
         - ``diffuser_vel_max (float * u.cm / u.s)``: The max velocity of a
-        diffuser (optional, defaults to 44.29 * u.cm/u.s)
+          diffuser (optional, defaults to 44.29 cm/s)
         - ``diffuser_n (int)``:The nunber of diffusers 
-        (optional, defaults to 108)
+          (optional, defaults to 108)
         - ``diffuser_wall_thickness (float * u.inch)``: The thickness of the 
-        wall of a diffuser (optional, defaults to 1.17in.)
+          wall of a diffuser (optional, defaults to 1.17in.)
         - ``diffuser_sdr (int)``: The standard dimension ratio of a diffuser
-        (optional, defaults to 41)
+          (optional, defaults to 41)
         - ``inlet_man_hl (float * u.cm)``: The headloss of the inlet manifold
-        (optional, defaults to 1cm)
+          (optional, defaults to 1cm)
         - ``inlet_man_sdr (float)``: The standard dimension ratio of the inlet 
-        manifold (optional, defaults to 41)
+          manifold (optional, defaults to 41)
         - ``jet_reverser_sdr (int)``: The standard dimension ratio of the jet 
-        reverser (optional, defaults to 26)
+          reverser (optional, defaults to 26)
         - ``plate_settler_angle (float * u.deg)``: The angle of the plate 
-        settler (optional, defaults to 60°)
+          settler (optional, defaults to 60°)
         - ``plate_settler_s (float * u.cm)``: Spacing in between plate settlers 
-        (optional, defaults to 2.5cm)
+          (optional, defaults to 2.5cm)
         - ``plate_settler_thickness (float * u.mm)``: Thickness of a plate 
-        settler (optional, defaults to 2mm)
+          settler (optional, defaults to 2mm)
         - ``plate_settler_cantilever_l_max (float * u.cm)``: The max length of 
-        the plate settler cantilever (optional, defaults to 20cm)
+          the plate settler cantilever (optional, defaults to 20cm)
         - ``plate_settler_vel_capture (float * u.mm / u.s)``: The capture 
-        velocity of a plate settler (optional, defaults to 0.12mm/s)
+          velocity of a plate settler (optional, defaults to 0.12mm/s)
         - ``outlet_man_orifice_hl (float * u.cm)``: The headloss of the 
-        orifices in the outlet manifold (optional, defaults to 4cm)
+          orifices in the outlet manifold (optional, defaults to 4cm)
         - ``outlet_man_orifice_q_ratio_max (float)``: The max ratio of the flow 
-        rate for the orifices of the outlet manifold (optional, defaults to 0.8)
+          rate for the orifices of the outlet manifold (optional, defaults to 0.8)
         - ``outlet_man_orifice_n_est (int)``: The estimated number of orifices 
-        for the outlet manifold (optional, defaults to 58)
+          for the outlet manifold (optional, defaults to 58)
         - ``outlet_man_sdr (int)``: The standard dimension ratio of the outlet 
-        manifold (optional, defaults to 41)
+          manifold (optional, defaults to 41)
         - ``slope_angle (float * u.deg)``: The angle at the bottom of the sed tank
-        (optional, defaults to 50°)
+          (optional, defaults to 50°)
         - ``side_slope_to_floc_weir_h_min (float * u.cm)``: The minimum height 
-        between the side slope and the floc weir. (optional, defaults to 5cm)
+          between the side slope and the floc weir. (optional, defaults to 5cm)
         - ``sed_chan_w_outer (float * u.cm)``: The outer width of the 
-        sedimentation channel (optional, defaults to 60cm)
+          sedimentation channel (optional, defaults to 60cm)
         - ``sed_chan_weir_thickness (float * u.cm)``: The thickness of the 
           sedimentation channel weir (optional, defaults to 5cm)
-        - ``floc_weir_to_plate_frame_h (float * u.cm)``: The height from the
-          top of the floc weir to the plate settler frame (optional, defaults
+        - ``floc_weir_to_plate_frame_h (float * u.cm)``: The height from the 
+          top of the floc weir to the plate settler frame (optional, defaults 
           to 10cm)
-        - ``hopper_slope_vertical_angle (float * u.deg)``: The angle of the
+        - ``hopper_slope_vertical_angle (float * u.deg)``: The angle of the 
           hopper wall slopes to vertical (optional, defaults to 60°)
+
     """
     INLET_MAN_Q_RATIO = 0.8
     OUTLET_MAN_HL = 4. * u.cm
