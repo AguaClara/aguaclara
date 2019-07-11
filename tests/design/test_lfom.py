@@ -4,7 +4,7 @@ from aguaclara.core.units import unit_registry as u
 import pytest
 import numpy as np
 
-lfom_20 = LFOM(q =20.0 * u.L / u.s)
+lfom_20 = LFOM(q = 20.0 * u.L / u.s)
 lfom_60 = LFOM(q = 60.0 * u.L / u.s)
 
 

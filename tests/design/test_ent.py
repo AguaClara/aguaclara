@@ -4,8 +4,8 @@ from aguaclara.core.units import unit_registry as u
 import pytest
 
 
-ent_20 = EntranceTank(20 * u.L / u.s)
-ent_60 = EntranceTank(60 * u.L / u.s)
+ent_20 = EntranceTank(q = 20.0 * u.L / u.s)
+ent_60 = EntranceTank(q = 60.0 * u.L / u.s)
 
 @pytest.mark.parametrize("actual, expected", [
     (ent_20.drain_od, 4.5 * u.inch),  # 0
