@@ -36,14 +36,11 @@ class EntTankFloc(Component):
         - ``lfom (LFOM)``: Linear Flow Orifice Meter
           (optional, see :class:`aguaclara.design.lfom.LFOM` for defaults)
     """
-    ent = EntranceTank()
-    floc = Flocculator()
-    lfom = LFOM()
-    subcomponents = [ent, floc, lfom]
+    subcomponents = {"ent" : EntranceTank, "floc" : Flocculator, "lfom":LFOM}
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
+        
         self._design_ent_floc(self.floc.ent_l)
 
     def _design_ent_floc(self, ent_l):

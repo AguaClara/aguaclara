@@ -3,7 +3,7 @@ from aguaclara.core.units import unit_registry as u
 
 import pytest
 
-etf_20 = EntTankFloc()
+etf_20 = EntTankFloc(q = 20.0 * u.L / u.s)
 etf_60 = EntTankFloc(q = 60.0 * u.L / u.s)
 
 @pytest.mark.parametrize('actual, expected', [

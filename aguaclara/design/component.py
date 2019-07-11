@@ -35,16 +35,15 @@ class Component(object):
     """
     q = 20 * u.L / u.s
     temp = 20 * u.degC
-    subcomponents = []
+    subcomponents = {}
 
     def __init__(self, **kwargs):
         # Update the Component object with new expert inputs, if any were given.
         self.__dict__.update(kwargs)
-        
+        for k, v in self.subcomponents:
+            setattr(k, v(q = self.q, temp = self.temp))
         # Send plant-wide inputs to all subcomponents
-        for subcomp in self.subcomponents:
-            subcomp.q = self.q
-            subcomp.temp = self.temp
+        
         
     def serialize_properties(self):
         """Convert the properties (fields and ``@property`` functions) of a 
