@@ -21,7 +21,7 @@ import numpy as np
 import json
 from pprint import pprint
 
-        
+
 class Component(object):
     """An abstract class that should be extended by other component classes.
 
@@ -33,17 +33,29 @@ class Component(object):
         - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
           20°C)
     """
-    q = 20 * u.L / u.s
-    temp = 20 * u.degC
-    subcomponents = {}
+    Q_DEFAULT = 20 * u.L / u.s
+    TEMP_DEFAULT = 20 * u.degC
 
-    def __init__(self, **kwargs):
+    def __init__(self, subcomponents=[], **kwargs):
+        if type(self) is Component:
+            raise Exception(
+                'The Component class should not be instantiated. Instead, '
+                'instantiate a class that extends Component.'
+            )
+
+        self.q = self.Q_DEFAULT
+        self.temp = self.TEMP_DEFAULT
+
         # Update the Component object with new expert inputs, if any were given.
         self.__dict__.update(kwargs)
-        for k, v in self.subcomponents:
-            setattr(k, v(q = self.q, temp = self.temp))
+
         # Send plant-wide inputs to all subcomponents
-        
+        for subcomp_name in subcomponents:
+            subcomp = getattr(self, subcomp_name)
+            if subcomp.q == self.Q_DEFAULT:
+                subcomp.q = self.q
+            if subcomp.temp == self.TEMP_DEFAULT:
+                subcomp.temp = self.temp
         
     def serialize_properties(self):
         """Convert the properties (fields and ``@property`` functions) of a 
@@ -94,3 +106,26 @@ class Component(object):
         """
         json.dump(self.serialize_properties(), open(filename, mode='a'),
             indent = 4)
+
+# class SubComponent(Component):
+#     def __init__(self, **kwargs):
+#         self.l = 10 * u.m
+#         self.vel = 20 * u.m / u.s
+
+#         super().__init__(subcomponents=[], **kwargs)
+
+#     @property
+#     def something(self):
+#         return self.l * self.vel
+
+# class SuperComponent(Component):
+#     def __init__(self, **kwargs):
+#         self.l = 10 * u.m
+#         self.vel = 20 * u.m / u.s
+#         self.subcomp = SubComponent()
+
+#         super().__init__(subcomponents=['subcomp'], **kwargs)
+
+#     @property
+#     def something(self):
+#         return self.l / self.vel
