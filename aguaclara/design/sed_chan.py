@@ -69,7 +69,7 @@ class SedimentationChannel(Component):
           (optional, defaults to 50 cm)
         - ``drain_sdr (int)``: SDR of the drain pipe (optional, defaults to 26)
         - ``outlet_free_h (float * u.cm)``: Permissible height of water above
-          ``outlet_weir_depth`` (optional, defaults to 5 cm)
+          ``outlet_weir_depth``:The depth of the outlet weir. (optional, defaults to 5 cm)
         - ``outlet_pipe_sdr (int)``: SDR of the outlet pipe (optional, defaults
           to 41)
         - ``outlet_pipe_hl_max (float * u.cm)``: Maximum head loss through the
@@ -88,8 +88,8 @@ class SedimentationChannel(Component):
     sed_tank_inlet_man_nd = 60.0 * u.cm
     sed_tank_outlet_man_nd = 60.0 * u.cm
     sed_tank_outlet_man_hl = 4.0 * u.cm
-    sed_wall_thickness = 15.0 * u.cm
     sed_tank_diffuser_hl=0.09 * u.mm
+    sed_wall_thickness = 15.0 * u.cm
 
     weir_thickness = 15.0 * u.cm
     weir_hl = 5 * u.cm

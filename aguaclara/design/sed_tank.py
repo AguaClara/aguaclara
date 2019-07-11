@@ -6,7 +6,6 @@ Example:
     >>> sed_tank.diffuser_hl
     <Quantity(0.009259259259259259, 'centimeter')>
 """
-from aguaclara.design.sed_hopper import SedTankHopper
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
@@ -36,7 +35,11 @@ class SedimentationTank(Component):
         - ``JET_REVERSER_ND (float * u.inch)``: The nominal diameter of the jet 
         reverser
         - ``JET_PLANE_RATIO (float)``: The ratio for the jet plane
+        - ``JET_REVERSER_TO_DIFFUSERS_H (float * u.cm)``: The height between 
+        the jet reverser and diffusers
         - ``WALL_THICKNESS (float * u.m)``: The thickness of the sed tank walls
+        - ``DIFFUSER_L (float * u.cm)``: The length of a diffuser
+    
     Design Inputs:
         - ``q (float * u.L / u.s)``: Plant flow rate 
         (recommended, defaults to 20L/s)
@@ -56,7 +59,7 @@ class SedimentationTank(Component):
         wall of a diffuser (optional, defaults to 1.17in.)
         - ``diffuser_sdr (int)``: The standard dimension ratio of a diffuser
         (optional, defaults to 41)
-        - ``hl (float * u.cm)``: The headloss of the inlet manifold
+        - ``inlet_man_hl (float * u.cm)``: The headloss of the inlet manifold
         (optional, defaults to 1cm)
         - ``inlet_man_sdr (float)``: The standard dimension ratio of the inlet 
         manifold (optional, defaults to 41)
@@ -80,24 +83,27 @@ class SedimentationTank(Component):
         for the outlet manifold (optional, defaults to 58)
         - ``outlet_man_sdr (int)``: The standard dimension ratio of the outlet 
         manifold (optional, defaults to 41)
-        - slope_angle (float * u.deg)``: The angle at the bottom of the sed tank
+        - ``slope_angle (float * u.deg)``: The angle at the bottom of the sed tank
         (optional, defaults to 50°)
-        - ``upflow_l (float * u.m)``: The length of the upflow 
-        (optional, defaults to 6m)
+        - ``side_slope_to_floc_weir_h_min (float * u.cm)``: The minimum height 
+        between the side slope and the floc weir. (optional, defaults to 5cm)
         - ``sed_chan_w_outer (float * u.cm)``: The outer width of the 
         sedimentation channel (optional, defaults to 60cm)
         - ``sed_chan_weir_thickness (float * u.cm)``: The thickness of the 
-        sedimentation channel weir (optional, defaults to 5cm)
-        - ``hopper_l_min (float * u.cm)``: The minimum length of a hopper
-        (optional, defaults to 50cm)
+          sedimentation channel weir (optional, defaults to 5cm)
+        - ``floc_weir_to_plate_frame_h (float * u.cm)``: The height from the
+          top of the floc weir to the plate settler frame (optional, defaults
+          to 10cm)
+        - ``hopper_slope_vertical_angle (float * u.deg)``: The angle of the
+          hopper wall slopes to vertical (optional, defaults to 60°)
     """
     INLET_MAN_Q_RATIO = 0.8
     OUTLET_MAN_HL = 4. * u.cm
     JET_REVERSER_ND = 3. * u.inch
     JET_PLANE_RATIO = 0.0124
-    JET_REVERSER_TO_DIFFUSERS_H = 3 * u.cm
+    JET_REVERSER_TO_DIFFUSERS_H = 3.0* u.cm
     WALL_THICKNESS = 0.15 * u.m
-    DIFFUSER_L = 15 * u.cm
+    DIFFUSER_L = 15.0 * u.cm
 
     vel_upflow=1.0 * u.mm / u.s
     l_inner=5.8 * u.m
@@ -124,10 +130,11 @@ class SedimentationTank(Component):
     outlet_man_sdr=41
     slope_angle=50. * u.deg
     side_slope_to_floc_weir_h_min = 5.0 * u.cm
-    
-    upflow_l = 6.0 * u.m
-    sed_chan_w_outer = 60. * u.cm
-    sed_chan_weir_thickness = 5. * u.cm
+
+    sed_chan_w_outer = 60.0 * u.cm
+    sed_chan_weir_thickness = 5.0 * u.cm
+    floc_weir_to_plate_frame_h = 10.0 * u.cm
+    hopper_slope_vertical_angle = 60.0 * u.deg
 
     @property
     def q_tank(self):
@@ -157,11 +164,6 @@ class SedimentationTank(Component):
         """The area of the diffuser"""
         diffuser_a = self.q_tank / (self.diffuser_vel * self.diffuser_n)
         return diffuser_a.to(u.cm ** 2)
-
-    # Note: we need to specify in Onshape a 15% stretch difference between
-    # the circumference of both diffuser ends' inner/outer circumferences.
-    # We can model the aggregate diffuser jet as one continuous flow. Don't
-    # correct for the thickness that separates each diffuser's effluent orifice.
 
     @property
     def inlet_man_v_max(self):
@@ -206,9 +208,12 @@ class SedimentationTank(Component):
     @property
     def plate_l(self):
         """The length of a plate in the plate settlers."""
-        L_sed_plate = ((self.plate_settler_s * ((self.vel_upflow / self.plate_settler_vel_capture) - 1)
-                        + self.plate_settler_thickness * (self.vel_upflow / self.plate_settler_vel_capture))
-                     / (np.sin(self.plate_settler_angle) * np.cos(self.plate_settler_angle))
+        L_sed_plate = ((self.plate_settler_s * ((self.vel_upflow / \
+             self.plate_settler_vel_capture) - 1)
+                        + self.plate_settler_thickness * (
+                            self.vel_upflow / self.plate_settler_vel_capture))
+                     / (np.sin(self.plate_settler_angle) * \
+                         np.cos(self.plate_settler_angle))
                      ).to(u.m)
         return L_sed_plate
     
@@ -226,7 +231,7 @@ class SedimentationTank(Component):
     def outlet_man_orifice_spacing(self):
         """The spacing between orifices on the outlet manifold."""
         outlet_man_orifice_spacing = (
-            self.upflow_l - 
+            self.l_inner - 
             pipe.socket_depth(self.outlet_man_nd) - 
             pipe.cap_thickness(self.outlet_man_nd) - 
             self.outlet_man_orifice_d
@@ -238,7 +243,7 @@ class SedimentationTank(Component):
         """The number of orifices on the outlet manifold."""
         outlet_orifice_n = math.floor(
             (
-                self.upflow_l - 
+                self.l_inner - 
                 pipe.socket_depth(self.outlet_man_nd) - 
                 pipe.cap_thickness(self.outlet_man_nd) - 
                 self.outlet_man_orifice_d
@@ -273,6 +278,17 @@ class SedimentationTank(Component):
 
     @property
     def inlet_man_h(self):
+        """The height of the inlet manifold height."""
         inlet_man_h = self.JET_REVERSER_TO_DIFFUSERS_H + self.DIFFUSER_L + \
              ( pipe.OD(self.inlet_man_nd)/ 2 )
         return inlet_man_h
+    
+    @property
+    def floc_weir_h(self):
+        """The height of the floc weir."""
+        floc_weir_h = max(
+            self.inlet_man_h + (pipe.OD(self.inlet_man_nd) / 2) + \
+                mat.CONCRETE_THICKNESS_MIN,
+            self.side_slopes_h + self.side_slope_to_floc_weir_h_min
+        )
+        return floc_weir_h
