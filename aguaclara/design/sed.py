@@ -38,13 +38,13 @@ class Sedimentor(Component):
           (optional, see
           :class:`aguaclara.design.sed_chan.SedimentationChannel` for defaults)
     """
-    wall_thickness = 15.0 * u.cm
-    tank=SedimentationTank()
-    chan=SedimentationChannel()
-    subcomponents = [tank, chan]
-
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        self.wall_thickness = 15.0 * u.cm
+        self.tank = SedimentationTank()
+        self.chan = SedimentationChannel()
+
+        super().__init__(subcomponents = ['tank', 'chan'], **kwargs)
+
         self._design_chan()
         self._design_tank()
 

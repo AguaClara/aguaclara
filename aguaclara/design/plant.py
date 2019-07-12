@@ -5,10 +5,12 @@ from aguaclara.core.units import unit_registry as u
 
 class Plant(Component):
     """Functions for designing an AguaClara water treatment plant."""
+    def __init__(self, **kwargs):
+        self.etf = EntTankFloc()
+        self.sed = Sedimentor()
 
-    q=20 * u.L/u.s
-    temp=25 * u.degC
-    etf = EntTankFloc()
-    sed = Sedimentor()
-    subcomponents = [etf, sed]
+        super().__init__(subcomponents = ["etf", "sed"], **kwargs)
+
+        
+
     

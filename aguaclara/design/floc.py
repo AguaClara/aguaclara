@@ -58,7 +58,6 @@ class Flocculator(Component):
     # trying to achieve.
     # Originally calculated to be 2.3 from the equations:
 
-    # K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2
     BAFFLE_K = 2.5
     CHAN_N_MIN = 2
     HS_RATIO_MIN = 3.0
@@ -67,16 +66,16 @@ class Flocculator(Component):
                # input as well? -Oliver L., oal22, 5 Jun 19
     OBSTACLE_OFFSET = True
 
-    q = 20.0 * u.L / u.s
-    temp = 20.0 * u.degC
-    ent_l = 1.5 * u.m
-    chan_w_max = 42.0 * u.inch
-    l_max = 6.0 * u.m
-    gt = 37000
-    hl  =  40.0 * u.cm
-    end_water_depth  =  2.0 * u.m
-    drain_t = 30.0 * u.min
+    def __init__(self, **kwargs):
+        self.ent_l = 1.5 * u.m
+        self.chan_w_max = 42.0 * u.inch
+        self.l_max = 6.0 * u.m
+        self.gt = 37000
+        self.hl  =  40.0 * u.cm
+        self.end_water_depth  =  2.0 * u.m
+        self.drain_t = 30.0 * u.min
 
+        super().__init__(**kwargs)
 
     @property
     def vel_grad_avg(self):

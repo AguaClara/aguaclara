@@ -106,36 +106,39 @@ class SedimentationTank(Component):
     WALL_THICKNESS = 0.15 * u.m
     DIFFUSER_L = 15.0 * u.cm
 
-    vel_upflow=1.0 * u.mm / u.s
-    l_inner=5.8 * u.m
-    w_inner=42.0 * u.inch
+    def __init__(self, **kwargs):
+        self.vel_upflow=1.0 * u.mm / u.s
+        self.l_inner=5.8 * u.m
+        self.w_inner=42.0 * u.inch
 
-    diffuser_vel_max=44.29 * u.cm / u.s
-    diffuser_n=108
-    diffuser_wall_thickness=1.17 * u.inch
-    diffuser_sdr=41
+        self.diffuser_vel_max=44.29 * u.cm / u.s
+        self.diffuser_n=108
+        self.diffuser_wall_thickness=1.17 * u.inch
+        self.diffuser_sdr=41
 
-    inlet_man_hl=1. * u.cm
-    inlet_man_sdr = 41
-    jet_reverser_sdr = 26
+        self.inlet_man_hl=1. * u.cm
+        self.inlet_man_sdr = 41
+        self.jet_reverser_sdr = 26
 
-    plate_settler_angle=60.0 * u.deg
-    plate_settler_s=2.5 * u.cm
-    plate_settler_thickness=2.0 * u.mm
-    plate_settler_cantilever_l_max=20.0 * u.cm
-    plate_settler_vel_capture=0.12 * u.mm / u.s
+        self.plate_settler_angle=60.0 * u.deg
+        self.plate_settler_s=2.5 * u.cm
+        self.plate_settler_thickness=2.0 * u.mm
+        self.plate_settler_cantilever_l_max=20.0 * u.cm
+        self.plate_settler_vel_capture=0.12 * u.mm / u.s
 
-    outlet_man_orifice_hl=4.0 * u.cm
-    outlet_man_orifice_q_ratio_max=0.8
-    outlet_man_orifice_n_est = 58
-    outlet_man_sdr=41
-    slope_angle=50. * u.deg
-    side_slope_to_floc_weir_h_min = 5.0 * u.cm
+        self.outlet_man_orifice_hl=4.0 * u.cm
+        self.outlet_man_orifice_q_ratio_max=0.8
+        self.outlet_man_orifice_n_est = 58
+        self.outlet_man_sdr=41
+        
+        self.slope_angle=50. * u.deg
+        self.side_slope_to_floc_weir_h_min = 5.0 * u.cm
+        self.sed_chan_w_outer = 60.0 * u.cm
+        self.sed_chan_weir_thickness = 5.0 * u.cm
+        self.floc_weir_to_plate_frame_h = 10.0 * u.cm
+        self.hopper_slope_vertical_angle = 60.0 * u.deg
 
-    sed_chan_w_outer = 60.0 * u.cm
-    sed_chan_weir_thickness = 5.0 * u.cm
-    floc_weir_to_plate_frame_h = 10.0 * u.cm
-    hopper_slope_vertical_angle = 60.0 * u.deg
+        super().__init__(**kwargs)
 
     @property
     def q_tank(self):

@@ -27,11 +27,6 @@ class Component(object):
 
     This class provides the ability to record and propogate a configuration of
     plant design variables for a component and all of its subcomponents.
-
-    Args:
-        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
     """
     Q_DEFAULT = 20 * u.L / u.s
     TEMP_DEFAULT = 20 * u.degC
@@ -106,26 +101,3 @@ class Component(object):
         """
         json.dump(self.serialize_properties(), open(filename, mode='a'),
             indent = 4)
-
-# class SubComponent(Component):
-#     def __init__(self, **kwargs):
-#         self.l = 10 * u.m
-#         self.vel = 20 * u.m / u.s
-
-#         super().__init__(subcomponents=[], **kwargs)
-
-#     @property
-#     def something(self):
-#         return self.l * self.vel
-
-# class SuperComponent(Component):
-#     def __init__(self, **kwargs):
-#         self.l = 10 * u.m
-#         self.vel = 20 * u.m / u.s
-#         self.subcomp = SubComponent()
-
-#         super().__init__(subcomponents=['subcomp'], **kwargs)
-
-#     @property
-#     def something(self):
-#         return self.l / self.vel
