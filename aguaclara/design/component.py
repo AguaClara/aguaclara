@@ -41,13 +41,21 @@ class Component(object):
         self.q = self.Q_DEFAULT
         self.temp = self.TEMP_DEFAULT
 
+        print('1. created ', type(self))
+
         # Update the Component object with new expert inputs, if any were given.
         self.__dict__.update(kwargs)
 
+        print('2. iterating through subcomps of ', type(self))
         # Send plant-wide inputs to all subcomponents
         for subcomp_name in subcomponents:
             subcomp = getattr(self, subcomp_name)
+            print('3.', subcomp)
+            print('4.', self.q)
+            print('5.', subcomp.q)
+            # setattr(self, subcomp_name, subcomp.__init__(q = self.q, temp = self.temp))
             if subcomp.q == self.Q_DEFAULT:
+                print('6. ',  subcomp, ' grabs ', self.q, ' from ', self)
                 subcomp.q = self.q
             if subcomp.temp == self.TEMP_DEFAULT:
                 subcomp.temp = self.temp
