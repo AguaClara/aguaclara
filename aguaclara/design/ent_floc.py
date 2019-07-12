@@ -40,8 +40,10 @@ class EntTankFloc(Component):
         self.ent = EntranceTank()
         self.floc = Flocculator()
         self.lfom = LFOM()    
+        self.subcomponents = [self.ent, self.floc, self.lfom]
 
-        super().__init__(subcomponents = ["ent", "floc", "lfom"], **kwargs)
+        super().__init__(**kwargs)
+        super().set_subcomponents()
 
         self._design_ent_floc(self.floc.ent_l)
 

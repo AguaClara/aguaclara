@@ -11,14 +11,13 @@ from aguaclara.design.sed_chan import SedimentationChannel
 
 from aguaclara.core.units import unit_registry as u
 
+
 class Plant(Component):
     """Functions for designing an AguaClara water treatment plant."""
     def __init__(self, **kwargs):
         self.etf = EntTankFloc()
         self.sed = Sedimentor()
+        self.subcomponents = [self.etf, self.sed]
 
-        super().__init__(subcomponents = ["etf", "sed"], **kwargs)
-
-        
-
-    
+        super().__init__(**kwargs)
+        super().set_subcomponents()

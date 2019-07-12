@@ -40,10 +40,13 @@ class Sedimentor(Component):
     """
     def __init__(self, **kwargs):
         self.wall_thickness = 15.0 * u.cm
+        
         self.tank = SedimentationTank()
         self.chan = SedimentationChannel()
+        self.subcomponents = [self.tank, self.chan]
 
-        super().__init__(subcomponents = ['tank', 'chan'], **kwargs)
+        super().__init__(**kwargs)
+        super().set_subcomponents()
 
         self._design_chan()
         self._design_tank()
