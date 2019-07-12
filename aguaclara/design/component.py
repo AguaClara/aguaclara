@@ -69,7 +69,7 @@ class Component(object):
                 subcomp.temp = self.temp
 
             if hasattr(subcomp, 'subcomponents'):
-                subcomp.propogate_config()
+                subcomp.set_subcomponents()
         
     def serialize_properties(self):
         """Convert the properties (fields and ``@property`` functions) of a 
