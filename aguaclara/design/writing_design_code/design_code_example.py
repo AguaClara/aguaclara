@@ -28,8 +28,6 @@ class PressureCooker(Component):
       defaults to 0.5)
     """
     def __init__(self, **kwargs):
-        self.q = 20.0 * u.L/u.s
-        self.temp = 20.0 * u.degC
         self.rice_and_beans_ratio = 0.5
         
         super().__init__(**kwargs)
@@ -68,8 +66,6 @@ class Monroe(Component):
     BEAN_DENSITY = 4.0 * u.g / u.L
 
     def __init__(self, **kwargs):
-        self.q = 20.0 * u.L/u.s
-        self.temp = 20.0 * u.degC
         self.rice_and_beans_eaten = 5.0 * u.L
         self.pc = PressureCooker()
         self.subcomponents = [self.pc]
