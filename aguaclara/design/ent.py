@@ -115,7 +115,7 @@ class EntranceTank(Component):
                     np.cos(self.plate_angle.to(u.rad))
                 )
             ) - (self.plate_s * np.tan(self.plate_angle.to(u.rad))).to(u.cm)
-        plate_l_rounded = ut.stepceil_with_units(plate_l, 1.0, u.cm)
+        plate_l_rounded = ut.ceil_step(plate_l, 1.0 * u.cm)
         return plate_l_rounded
 
     @property
