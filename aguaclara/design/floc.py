@@ -73,7 +73,8 @@ class Flocculator(Component):
                  gt=37000,
                  hl = 40.0 * u.cm,
                  end_water_depth = 2.0 * u.m,
-                 drain_t=30.0 * u.min):
+                 drain_t=30.0 * u.min,
+                 baffle_scaffold_id=1.45 * u.cm):
         super().__init__(q = q, temp = temp)
         self.l_max = l_max
         self.gt = gt
