@@ -22,42 +22,31 @@ class CDC(Component):
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (required)
     """
-    def __init__(self, q=20.0 * u.L/u.s, temp=20 * u.degC,
-             hl = 20 * u.cm,
-             coag_type='pacl',
-             coag_dose_conc_max=2 * u.g / u.L, #What should this default to? -Oliver L., 6 Jun 19
-             coag_stock_conc_est=150 * u.g / u.L,
-             coag_stock_min_est_time=1 * u.day,
-             chem_tank_vol_supplier=[208.198, 450, 600, 750, 1100, 2500] * u.L,
-             chem_tank_dimensions_supplier=[
-                 [0.571, 0.851],
-                 [0.85, 0.99],
-                 [0.96, 1.10],
-                 [1.10, 1.02],
-                 [1.10, 1.39],
-                 [1.55, 1.65]
-             ] * u.m,
-             train_n=1,
-             coag_sack_mass = 25 * u.kg,
-             coag_tube_id = 0.125 * u.inch,
-             error_ratio=0.1,
-             tube_k = 2):
-
-        super().__init__(q= q, temp = temp)
-        if coag_type.lower() not in ['pacl', 'alum']:
+    def __init__(self, **kwargs):
+        self.hl = 20 * u.cm,
+        self.coag_type='pacl'
+        if self.coag_type.lower() not in ['pacl', 'alum']:
             raise ValueError('coag_type must be either PACl or Alum.')
-        self.coag_type = coag_type
-        self.coag_dose_conc_max = coag_dose_conc_max
-        self.coag_stock_conc_est = coag_stock_conc_est
-        self.chem_tank_vol_supplier = chem_tank_vol_supplier
-        self.chem_tank_dimensions_supplier = chem_tank_dimensions_supplier
-        self.coag_stock_min_est_time = coag_stock_min_est_time
-        self.train_n = train_n
-        self.coag_sack_mass = coag_sack_mass
-        self.coag_tube_id = coag_tube_id
-        self.error_ratio = error_ratio
-        self.hl = hl
-        self.tube_k = tube_k
+        
+        self.coag_dose_conc_max=2 * u.g / u.L #What should this default to? -Oliver L., 6 Jun 19
+        self.coag_stock_conc_est=150 * u.g / u.L
+        self.coag_stock_min_est_time=1 * u.day
+        self.chem_tank_vol_supplier=[208.198, 450, 600, 750, 1100, 2500] * u.L
+        self.chem_tank_dimensions_supplier=[
+            [0.571, 0.851],
+            [0.85, 0.99],
+            [0.96, 1.10],
+            [1.10, 1.02],
+            [1.10, 1.39],
+            [1.55, 1.65]
+        ] * u.m
+        self.train_n=1
+        self.coag_sack_mass = 25 * u.kg
+        self.coag_tube_id = 0.125 * u.inch
+        self.error_ratio=0.1
+        self.tube_k = 2
+
+        super().__init__(**kwargs)
 
     def _alum_nu(self, coag_conc):
         """Return the dynamic viscosity of water at a given temperature.
