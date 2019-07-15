@@ -7,18 +7,18 @@ Example:
     from aguaclara.design.component import Component
     
     class SubComponent(Component):
-        def __init__(self, **kwargs):
+        def __init__(self, \**kwargs):
             self.h = 3 * u.m
             
-            super().__init__(**kwargs)
+            super().__init__(\**kwargs)
 
     class MainComponent(Component):
-        def __init__(self, **kwargs):
+        def __init__(self, \**kwargs):
             self.l = 2 * u.m
             self.sub = SubComponent()
             self.subcomponents = [self.sub]
 
-            super().__init__(**kwargs)
+            super().__init__(\**kwargs)
             super().propogate_config()
 """
 from aguaclara.core.units import unit_registry as u
