@@ -33,6 +33,8 @@ def optional_units(arg_positions, keys):
         - ``keys (str list)``: Names of positional and keyword arguments with
           optional units
     """
+    # func is the function that is being decorated, and *args/**kwargs are the 
+    # arguments being passed to that function.
     def decorator(func):
         def wrapper(*args, **kwargs):
             args = list(args)
@@ -154,6 +156,21 @@ def ceil_nearest(x, array):
     return array[i]
 
 def _minmax(*args, func=np.max):
+    """Get the minuimum/maximum value of some Pint quantities with units.
+    
+    Args:
+        - ``func (function)``: the min/max function being used.
+
+    Note:
+        - All quantities must have the same dimensionality, but can have
+          different units.
+        - The output will have the same units as the first argument.
+
+    Example:
+        >>> from aguaclara.play import *
+        >>> ut.max(10 * u.m, 100 * u.cm, 32 * u.cm, 40 * u.inch, 40 * u.km)
+        <Quantity(40000.0, 'meter')>
+    """
     base_quantity = args[0]
     lst = []
 
@@ -164,7 +181,7 @@ def _minmax(*args, func=np.max):
     return result
 
 def max(*args):
-    """Get the maximum value of some quantities with units.
+    """Get the maximum value of some Pint quantities with units.
     
     Note:
         - All quantities must have the same dimensionality, but can have
