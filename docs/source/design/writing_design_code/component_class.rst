@@ -204,3 +204,56 @@ Ex: Making PressureCooker a Subcomponent of Monroe
 
         self.subcomponents = [self.pc] # Step 2: Make self.subcomponets variable with a list of it's subcomponents
         super().set_subcomponents() # Step 3: Set those subcomponents with super().set_subcomponents()
+
+Try it out for yourself!
+========================
+
+Now that you know how to write component design classes, it is time for you to
+put that knowledge to the test and design your own ``Oliver`` design class!
+
+The ``Oliver`` class must have the following specification:
+
+* A constant ``LOVE_FOR_COFFEE``, set to ``1000``
+* An ``__init__()`` function with the following expert inputs:
+    * ``self.chromebook`` (defaults to the default instance of a ``Chromebook``
+      class)
+    * ``self.supression_rate`` (defaults to 0.7 meter / second) *
+    * ``puns_per_day`` (choose your own default, but the units should be meter /
+      day)
+* A ``@property`` function ``love_of_boba`` which uses ``q``,
+  ``suppression_rate`` and ``LOVE_FOR_COFFEE`` in the calculation 
+* A ``@property`` function ``olratio``, that uses ``puns_per_day``
+* A function that takes in a ``chromebook_failure_chance`` argument and uses the
+  fields of ``self.chromebook`` to tell me how trash his chromebook is
+
+Write the ``Chromebook`` class above the ``Oliver`` class with the following
+specification
+
+* An ``__init__()`` function with the following expert inputs:
+    * ``crashes_per_day`` (defaults to 100 * u.s ** -1)
+
+You should write this class in a code block of a Google Colab notebook that 
+begins with ``!pip install aguaclara``:
+
+.. code-block:: python
+
+    from aguaclara.play import *
+
+    class Chromebook(Component):
+        ...
+
+    class Oliver(Component):
+        ...
+
+You can then test the class out by instantiating an ``Oliver`` and calling its
+functions:
+
+.. code-block:: python
+
+    >>> oliver = Oliver()
+    >>> oliver.q
+    20 liter/second
+
+Remember to reference the ``Monroe`` class below if you're stuck!
+
+:ref:`design_code_example`

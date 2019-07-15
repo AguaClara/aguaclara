@@ -20,3 +20,4 @@ This guide assumes knowledge of basic Python syntax. For a refresher, see the
 
     coding_conventions
     component_class
+    design_code_example
