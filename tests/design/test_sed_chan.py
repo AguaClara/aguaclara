@@ -93,6 +93,6 @@ sed_chan_60 = SedimentationChannel(q = 60.0 * u.L / u.s)
 	(sed_chan_60.inlet_slope_l, 4.1052 * u.m),
 ])
 def test_sed_chan(actual, expected):
-    assert actual == pytest.approx(expected)
+    assert actual == expected
 
     
