@@ -11,7 +11,7 @@ By: Hannah Si
 #Note: All answer values in this file should be checked against MathCad
 #before this file is released to the Master branch!
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import unittest
 
 developing = False

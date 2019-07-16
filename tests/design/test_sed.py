@@ -1,5 +1,5 @@
 from aguaclara.design.sed import Sedimentor
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 import pytest
 

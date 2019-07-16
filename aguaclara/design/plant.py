@@ -9,7 +9,7 @@ from aguaclara.design.sed import Sedimentor
 from aguaclara.design.sed_tank import SedimentationTank
 from aguaclara.design.sed_chan import SedimentationChannel
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 
 class Plant(Component):

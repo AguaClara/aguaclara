@@ -11,7 +11,7 @@ Example:
 from aguaclara.design.sed_tank import SedimentationTank
 from aguaclara.design.sed_chan import SedimentationChannel
 from aguaclara.design.component import Component
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import aguaclara.core.constants as con
 
 import numpy as np

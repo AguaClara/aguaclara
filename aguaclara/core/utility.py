@@ -8,7 +8,7 @@ Example:
     >>> ut.round_sig_figs(1234567, 3)
     1230000
 """
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 import numpy as np
 from math import log10, floor, ceil
