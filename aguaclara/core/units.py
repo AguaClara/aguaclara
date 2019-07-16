@@ -31,11 +31,12 @@ import os
 import pint
 import pandas as pd
 
-u = pint.UnitRegistry(
+# A global unit registry that can be used by any of other module.
+unit_registry = pint.UnitRegistry(
     system='mks',
     autoconvert_offset_to_baseunit=True
 )
-"""A global unit registry that can be used by any of other module."""
+u = unit_registry
 
 # default formatting includes 4 significant digits.
 # This can be overridden on a per-print basis with
