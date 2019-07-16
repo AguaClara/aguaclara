@@ -73,9 +73,19 @@ def round_sig_figs(num, figs=4):
     return num
 
 def round_sf(num, figs=4):
+    """Round a number to some amount of significant figures.
+
+    Args:
+        - ``num (float)``: Value to be rounded (optional units)
+        - ``figs (int)``: Number of significant digits to be rounded to 
+          (recommended, defaults to 4)
+
+    Note: This function will be deprecated after 21 Dec 2019. Use
+    round_sig_figs instead.
+    """
     warnings.warn(
         'round_sf will be deprecated after 21 Dec 2019. Use '
-            'ceil_step instead.',
+            'round_sig_figs instead.',
         FutureWarning
     )
     round_sig_figs(num, figs = figs)
