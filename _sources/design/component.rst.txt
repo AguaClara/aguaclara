@@ -1,4 +1,5 @@
 .. _design-component:
+
 Component
 =============
 

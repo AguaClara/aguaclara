@@ -1,5 +1,5 @@
 ===========================
-``aguaclara`` Documentation
+Home
 ===========================
 
 .. image:: images/logo.png

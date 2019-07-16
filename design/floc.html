@@ -8,22 +8,31 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Flocculator &mdash; AguaClara v0.1.1 documentation</title>
+  <title>Flocculator &mdash; AguaClara v0.1.2 documentation</title>
   
 
   
   
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
   
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
@@ -32,21 +41,16 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Linear Flow Orifice Meter (LFOM)" href="lfom.html" />
     <link rel="prev" title="Entrance Tank" href="ent.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -60,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.1
+                v0.1.2
               </div>
             
           
@@ -92,6 +96,9 @@
 <li class="toctree-l2"><a class="reference internal" href="ent.html">Entrance Tank</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Flocculator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lfom.html">Linear Flow Orifice Meter (LFOM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sed.html">Sedimentor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sed_chan.html">Sedimentation Channel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sed_tank.html">Sedimentation Tank</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
@@ -162,7 +169,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-aguaclara.design.floc">
-<span id="flocculator"></span><h1>Flocculator<a class="headerlink" href="#module-aguaclara.design.floc" title="Permalink to this headline">¶</a></h1>
+<span id="flocculator"></span><span id="design-floc"></span><h1>Flocculator<a class="headerlink" href="#module-aguaclara.design.floc" title="Permalink to this headline">¶</a></h1>
 <p>The flocculator of an AguaClara water treatment plant uses turbulence to
 cause coagulant and other particles to accumulate, forming flocs.</p>
 <dl>
@@ -176,7 +183,7 @@ cause coagulant and other particles to accumulate, forming flocs.</p>
 </dl>
 <dl class="class">
 <dt id="aguaclara.design.floc.Flocculator">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.floc.</code><code class="sig-name descname">Flocculator</code><span class="sig-paren">(</span><em class="sig-param">q=&lt;Quantity(20.0</em>, <em class="sig-param">'liter / second')&gt;</em>, <em class="sig-param">temp=&lt;Quantity(20.0</em>, <em class="sig-param">'degC')&gt;</em>, <em class="sig-param">ent_l=&lt;Quantity(1.5</em>, <em class="sig-param">'meter')&gt;</em>, <em class="sig-param">chan_w_max=&lt;Quantity(42.0</em>, <em class="sig-param">'inch')&gt;</em>, <em class="sig-param">l_max=&lt;Quantity(6.0</em>, <em class="sig-param">'meter')&gt;</em>, <em class="sig-param">gt=37000</em>, <em class="sig-param">hl=&lt;Quantity(40.0</em>, <em class="sig-param">'centimeter')&gt;</em>, <em class="sig-param">end_water_depth=&lt;Quantity(2.0</em>, <em class="sig-param">'meter')&gt;</em>, <em class="sig-param">drain_t=&lt;Quantity(30.0</em>, <em class="sig-param">'minute')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/floc.html#Flocculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.floc.</code><code class="sig-name descname">Flocculator</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/floc.html#Flocculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design an AguaClara plant’s flocculator.</p>
 <p>A flocculator’s design relies on the entrance tank’s design in the same
 plant, but assumed/default values may be used to design a flocculator by
@@ -338,7 +345,7 @@ created by head loss.</p>
         <a href="lfom.html" class="btn btn-neutral float-right" title="Linear Flow Orifice Meter (LFOM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ent.html" class="btn btn-neutral" title="Entrance Tank" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ent.html" class="btn btn-neutral float-left" title="Entrance Tank" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -347,7 +354,7 @@ created by head loss.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AguaClara Cornell.
+        &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
@@ -364,33 +371,16 @@ created by head loss.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'v0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="../_static/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

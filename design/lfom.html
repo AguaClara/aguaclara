@@ -8,45 +8,49 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Linear Flow Orifice Meter (LFOM) &mdash; AguaClara v0.1.1 documentation</title>
+  <title>Linear Flow Orifice Meter (LFOM) &mdash; AguaClara v0.1.2 documentation</title>
   
 
   
   
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
   
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Research" href="../research/research.html" />
+    <link rel="next" title="Sedimentor" href="sed.html" />
     <link rel="prev" title="Flocculator" href="floc.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -60,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.1
+                v0.1.2
               </div>
             
           
@@ -92,6 +96,9 @@
 <li class="toctree-l2"><a class="reference internal" href="ent.html">Entrance Tank</a></li>
 <li class="toctree-l2"><a class="reference internal" href="floc.html">Flocculator</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Linear Flow Orifice Meter (LFOM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sed.html">Sedimentor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sed_chan.html">Sedimentation Channel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sed_tank.html">Sedimentation Tank</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
@@ -162,7 +169,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-aguaclara.design.lfom">
-<span id="linear-flow-orifice-meter-lfom"></span><h1>Linear Flow Orifice Meter (LFOM)<a class="headerlink" href="#module-aguaclara.design.lfom" title="Permalink to this headline">¶</a></h1>
+<span id="linear-flow-orifice-meter-lfom"></span><span id="design-lfom"></span><h1>Linear Flow Orifice Meter (LFOM)<a class="headerlink" href="#module-aguaclara.design.lfom" title="Permalink to this headline">¶</a></h1>
 <p>The Linear Flow Orifice Meter (LFOM) of an AguaClara water treatment plant
 imitates a sutro weir and produces a linear relation between flow rate and
 water level within the entrance tank.</p>
@@ -177,7 +184,7 @@ water level within the entrance tank.</p>
 </dl>
 <dl class="class">
 <dt id="aguaclara.design.lfom.LFOM">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.lfom.</code><code class="sig-name descname">LFOM</code><span class="sig-paren">(</span><em class="sig-param">q=&lt;Quantity(20.0, 'liter / second')&gt;, temp=&lt;Quantity(20.0, 'degC')&gt;, hl=&lt;Quantity(20.0, 'centimeter')&gt;, safety_factor=1.5, sdr=26.0, drill_bits=&lt;Quantity([0.03125 0.0625  0.09375 0.125   0.15625 0.1875  0.21875 0.25    0.375  0.5     0.625   0.75    0.875   1.      1.25    1.5     1.75    2.     ], 'inch')&gt;, orifice_s=&lt;Quantity(0.5, 'centimeter')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.lfom.</code><code class="sig-name descname">LFOM</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design and AguaClara plant’s LFOM.</p>
 <dl class="simple">
 <dt>Design Inputs:</dt><dd><ul class="simple">
@@ -317,10 +324,10 @@ at the bottom of the orfices.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../research/research.html" class="btn btn-neutral float-right" title="Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="sed.html" class="btn btn-neutral float-right" title="Sedimentor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="floc.html" class="btn btn-neutral" title="Flocculator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="floc.html" class="btn btn-neutral float-left" title="Flocculator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -329,7 +336,7 @@ at the bottom of the orfices.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AguaClara Cornell.
+        &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
@@ -346,33 +353,16 @@ at the bottom of the orfices.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'v0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="../_static/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

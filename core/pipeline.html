@@ -8,22 +8,31 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pipeline &mdash; AguaClara v0.1.1 documentation</title>
+  <title>Pipeline &mdash; AguaClara v0.1.2 documentation</title>
   
 
   
   
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
   
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
@@ -32,21 +41,16 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Pipes" href="pipes.html" />
     <link rel="prev" title="PhysChem" href="physchem.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -60,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.1
+                v0.1.2
               </div>
             
           
@@ -168,6 +172,24 @@
 <span id="pipeline"></span><h1>Pipeline<a class="headerlink" href="#module-aguaclara.core.pipeline" title="Permalink to this headline">¶</a></h1>
 <p>This utility is used to provide useful functions for all things related to
 pipeline design.</p>
+<dl class="class">
+<dt id="aguaclara.core.pipeline.Connector">
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.core.pipeline.</code><code class="sig-name descname">Connector</code><span class="sig-paren">(</span><em class="sig-param">diameter_inner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipeline.html#Connector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipeline.Connector" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class calculates necessary functions and holds fields for connectors</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aguaclara.core.pipeline.Pipe">
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.core.pipeline.</code><code class="sig-name descname">Pipe</code><span class="sig-paren">(</span><em class="sig-param">diameter_inner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipeline.html#Pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipeline.Pipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class calculates necessary functions and holds fields for pipes</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aguaclara.core.pipeline.PipeComponent">
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.core.pipeline.</code><code class="sig-name descname">PipeComponent</code><span class="sig-paren">(</span><em class="sig-param">diameter_inner=&lt;Quantity(0.125</em>, <em class="sig-param">'inch')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipeline.html#PipeComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipeline.PipeComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class has functions and fields common to Pipe and Connector</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="aguaclara.core.pipeline.flow_pipeline">
 <code class="sig-prename descclassname">aguaclara.core.pipeline.</code><code class="sig-name descname">flow_pipeline</code><span class="sig-paren">(</span><em class="sig-param">diameters</em>, <em class="sig-param">lengths</em>, <em class="sig-param">k_minors</em>, <em class="sig-param">target_headloss</em>, <em class="sig-param">nu=&lt;Quantity(1e-06</em>, <em class="sig-param">'meter ** 2 / second')&gt;</em>, <em class="sig-param">pipe_rough=&lt;Quantity(0.12</em>, <em class="sig-param">'millimeter')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipeline.html#flow_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipeline.flow_pipeline" title="Permalink to this definition">¶</a></dt>
@@ -206,7 +228,7 @@ lengths and minor loss coefficients and determines the flow rate for a given hea
         <a href="pipes.html" class="btn btn-neutral float-right" title="Pipes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="physchem.html" class="btn btn-neutral" title="PhysChem" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="physchem.html" class="btn btn-neutral float-left" title="PhysChem" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -215,7 +237,7 @@ lengths and minor loss coefficients and determines the flow rate for a given hea
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AguaClara Cornell.
+        &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
@@ -232,33 +254,16 @@ lengths and minor loss coefficients and determines the flow rate for a given hea
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'v0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="../_static/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

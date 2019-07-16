@@ -8,43 +8,47 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.component &mdash; AguaClara v0.1.1 documentation</title>
+  <title>aguaclara.design.component &mdash; AguaClara v0.1.2 documentation</title>
   
 
   
   
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
   
   
 
   
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.1
+                v0.1.2
               </div>
             
           
@@ -149,120 +153,122 @@
            <div itemprop="articleBody">
             
   <h1>Source code for aguaclara.design.component</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;This module provides compositional component classes the ability to propogate</span>
-<span class="sd">plant-wide design inputs throughout all of its subcomponents.</span>
+<span></span><span class="sd">&quot;&quot;&quot;This module allows plant component classes to</span>
 
-<span class="sd">Since it becomes tedious to pass said plant-wide design inputs manually to each</span>
-<span class="sd">subcomponent, this module creates a cache-like data structure that allows a</span>
-<span class="sd">component and all of its subcomponents to access a set of shared inputs.</span>
+<span class="sd">#. specify expert inputs and their defaults automatically</span>
+<span class="sd">#. propogate plant-wide design inputs throughout all of its subcomponents.</span>
 
 <span class="sd">Example:</span>
-<span class="sd">    from aguaclara.design.component import *</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    from aguaclara.design.component import Component</span>
 <span class="sd">    </span>
 <span class="sd">    class SubComponent(Component):</span>
-<span class="sd">        def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC,</span>
-<span class="sd">                     h=3 * u.m):</span>
-<span class="sd">            super().__init__(q = q, hl = hl)</span>
-<span class="sd">            self.h = h</span>
+<span class="sd">        def __init__(self, **kwargs):</span>
+<span class="sd">            self.h = 3 * u.m</span>
+<span class="sd">            </span>
+<span class="sd">            super().__init__(**kwargs)</span>
 
 <span class="sd">    class MainComponent(Component):</span>
-<span class="sd">        def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC,</span>
-<span class="sd">                     l=2 * u.m,</span>
-<span class="sd">                     sub=SubComponent()):</span>
-<span class="sd">            super().__init__(q = q, hl = hl)</span>
-<span class="sd">            self.l = l</span>
+<span class="sd">        def __init__(self, **kwargs):</span>
+<span class="sd">            self.l = 2 * u.m</span>
+<span class="sd">            self.sub = SubComponent()</span>
+<span class="sd">            self.subcomponents = [self.sub]</span>
 
-<span class="sd">            super().propogate_config([self.sub])</span>
+<span class="sd">            super().__init__(**kwargs)</span>
+<span class="sd">            super().propogate_config()</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
 <span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">json</span> 
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
 
-<div class="viewcode-block" id="PlantInput"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.PlantInput">[docs]</a><span class="k">class</span> <span class="nc">PlantInput</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents the design inputs that are shared between all components</span>
-<span class="sd">    of an AguaClara water treatment plant.</span>
-<span class="sd">    </span>
-<span class="sd">    Attributes:</span>
-<span class="sd">        - ``configs ({string: PlantInput})``: A dictionary mapping the hexcode</span>
-<span class="sd">          memory locations of component objects to their plant design inputs.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20 l/s)</span>
-<span class="sd">        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to</span>
-<span class="sd">          20°C)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">configs</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span></div>
-        
 <div class="viewcode-block" id="Component"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component">[docs]</a><span class="k">class</span> <span class="nc">Component</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An abstract class that should be extended by other component classes.</span>
 
 <span class="sd">    This class provides the ability to record and propogate a configuration of</span>
 <span class="sd">    plant design variables for a component and all of its subcomponents.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        - ``pi (PlantInput)``: The shared plant design inputs for a component</span>
-<span class="sd">          object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mem_loc</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+    <span class="n">Q_DEFAULT</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+    <span class="n">TEMP_DEFAULT</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem_loc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PlantInput</span><span class="o">.</span><span class="n">configs</span><span class="p">:</span>
-            <span class="n">PlantInput</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_loc</span><span class="p">]</span> <span class="o">=</span> <span class="n">PlantInput</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="n">Component</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s1">&#39;The Component class should not be instantiated. Instead, &#39;</span>
+                <span class="s1">&#39;instantiate a class that extends Component.&#39;</span>
+            <span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The flow rate. (L/s)&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">PlantInput</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_loc</span><span class="p">]</span><span class="o">.</span><span class="n">q</span>
-    
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">temp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The water temperature. (°C)&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">PlantInput</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_loc</span><span class="p">]</span><span class="o">.</span><span class="n">temp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_DEFAULT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TEMP_DEFAULT</span>
 
-<div class="viewcode-block" id="Component.propogate_config"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.propogate_config">[docs]</a>    <span class="k">def</span> <span class="nf">propogate_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subcomponents</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Propogate the configuration of plant design inputs to all</span>
-<span class="sd">        subcomponents.</span>
-<span class="sd">        </span>
-<span class="sd">        Args:</span>
-<span class="sd">            - ``subcomponents ([Component])``: A list of subcomponents for the</span>
-<span class="sd">              Component class.</span>
+        <span class="c1"># Update the Component object with new expert inputs, if any were given</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Component.set_subcomponents"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.set_subcomponents">[docs]</a>    <span class="k">def</span> <span class="nf">set_subcomponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the plant-wide inputs of all subcomponents.</span>
+
+<span class="sd">        When a Component-type object is instantiated (the supercomponent), this</span>
+<span class="sd">        function will set ``q`` and ``temp`` of all subcomponents in</span>
+<span class="sd">        ``self.subcomponents`` to match the supercomponent. However, if the</span>
+<span class="sd">        supercomponent is instantiated with a subcomponent as an argument, and</span>
+<span class="sd">        the subcomponent is instantiated with its own ``q``/``temp``, then the</span>
+<span class="sd">        subcomponent&#39;s ``q``/``temp`` is used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">subcomp</span> <span class="ow">in</span> <span class="n">subcomponents</span><span class="p">:</span>
-            <span class="n">sub_mem_loc</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">subcomp</span><span class="p">))</span>
-            <span class="n">PlantInput</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="n">sub_mem_loc</span><span class="p">]</span> <span class="o">=</span> \
-                <span class="n">PlantInput</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mem_loc</span><span class="p">]</span></div>
+        <span class="k">for</span> <span class="n">subcomp</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;subcomponents&#39;</span><span class="p">):</span>
 
+            <span class="k">if</span> <span class="n">subcomp</span><span class="o">.</span><span class="n">q</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_DEFAULT</span><span class="p">:</span>
+                <span class="n">subcomp</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+            <span class="k">if</span> <span class="n">subcomp</span><span class="o">.</span><span class="n">temp</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">TEMP_DEFAULT</span><span class="p">:</span>
+                <span class="n">subcomp</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">subcomp</span><span class="p">,</span> <span class="s1">&#39;subcomponents&#39;</span><span class="p">):</span>
+                <span class="n">subcomp</span><span class="o">.</span><span class="n">set_subcomponents</span><span class="p">()</span></div>
+        
 <div class="viewcode-block" id="Component.serialize_properties"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.serialize_properties">[docs]</a>    <span class="k">def</span> <span class="nf">serialize_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the properties (fields and ``@property`` functions) of a </span>
-<span class="sd">        component into a dictionary.</span>
+<span class="sd">        component into a dictionary string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">built_in_properties</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">ignored_properties</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span>
             <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span>
             <span class="s1">&#39;__module__&#39;</span><span class="p">,</span>
             <span class="s1">&#39;__weakref__&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;mem_loc&#39;</span>
+            <span class="s1">&#39;subcomponents&#39;</span>
         <span class="p">]</span>
+        <span class="c1"># Get all of the object&#39;s fields</span>
         <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var_name</span><span class="p">)</span>
+
+            <span class="c1"># Serialize subcomponents</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Component</span><span class="p">):</span>
                 <span class="n">properties</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">serialize_properties</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">var_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">built_in_properties</span><span class="p">:</span>
+
+            <span class="c1"># Serialize non-component properties</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">var_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignored_properties</span><span class="p">:</span>
+
+                <span class="c1"># Serialize lists or arrays</span>
                 <span class="k">try</span><span class="p">:</span> 
                     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
                         <span class="n">properties</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">array_qtys_to_strs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">properties</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                
+                <span class="c1"># Serialize non-iterable properties</span>
                 <span class="k">except</span><span class="p">:</span> 
                     <span class="n">properties</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    
         <span class="k">return</span> <span class="n">properties</span></div>
 
+<div class="viewcode-block" id="Component.print_properties"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print the serialized properties with pretty indentation.&quot;&quot;&quot;</span>
+        <span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serialize_properties</span><span class="p">())</span></div>
+    
 <div class="viewcode-block" id="Component.write_properties_to_file"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.write_properties_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_properties_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Append the properties of a component to a file. If it does not exist,</span>
 <span class="sd">        then the file is created.</span>
@@ -284,7 +290,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AguaClara Cornell.
+        &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
@@ -301,33 +307,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'v0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

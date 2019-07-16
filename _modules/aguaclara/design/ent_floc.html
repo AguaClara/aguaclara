@@ -8,43 +8,47 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.ent_floc &mdash; AguaClara v0.1.1 documentation</title>
+  <title>aguaclara.design.ent_floc &mdash; AguaClara v0.1.2 documentation</title>
   
 
   
   
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
   
   
 
   
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.1
+                v0.1.2
               </div>
             
           
@@ -187,17 +191,16 @@
 <span class="sd">        - ``lfom (LFOM)``: Linear Flow Orifice Meter</span>
 <span class="sd">          (optional, see :class:`aguaclara.design.lfom.LFOM` for defaults)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="mf">20.</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span>
-                 <span class="n">ent</span> <span class="o">=</span> <span class="n">EntranceTank</span><span class="p">(),</span> <span class="n">floc</span> <span class="o">=</span> <span class="n">Flocculator</span><span class="p">(),</span> <span class="n">lfom</span> <span class="o">=</span> <span class="n">LFOM</span><span class="p">()):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lfom</span> <span class="o">=</span> <span class="n">lfom</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ent</span> <span class="o">=</span> <span class="n">ent</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">floc</span> <span class="o">=</span> <span class="n">floc</span>
-        
-        <span class="c1"># Design the entrance tank and flocculator in tandem</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_design_ent_floc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">ent_l</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">ent</span> <span class="o">=</span> <span class="n">EntranceTank</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floc</span> <span class="o">=</span> <span class="n">Flocculator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lfom</span> <span class="o">=</span> <span class="n">LFOM</span><span class="p">()</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">subcomponents</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfom</span><span class="p">]</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">propogate_config</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">lfom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="p">])</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_subcomponents</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_design_ent_floc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">ent_l</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_design_ent_floc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ent_l</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Design the entrance tank and flocculator in tandem.</span>
@@ -212,26 +215,10 @@
 <span class="sd">              length, used to design the first iteration of the flocculator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Design the flocculator using a guess of the entrance tank&#39;s length.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">floc</span> <span class="o">=</span> <span class="n">Flocculator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">temp</span><span class="p">,</span>
-                                <span class="n">ent_l</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">chan_w_max</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">l_max</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">gt</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">hl</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">end_water_depth</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">drain_t</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">ent_l</span> <span class="o">=</span> <span class="n">ent_l</span>
         
         <span class="c1"># Design the entrance tank using the flocculator&#39;s channel width.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ent</span> <span class="o">=</span> <span class="n">EntranceTank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">temp</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">lfom_nd</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">chan_w</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">floc_end_depth</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">plate_s</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">plate_thickness</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">plate_angle</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">plate_capture_vel</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">fab_s</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">sdr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">floc_chan_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floc</span><span class="o">.</span><span class="n">chan_w</span>
 
         <span class="c1"># Recalculate if the actual length of the entrance tank is not close</span>
         <span class="c1"># enough.</span>
@@ -249,7 +236,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AguaClara Cornell.
+        &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
@@ -266,33 +253,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'v0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

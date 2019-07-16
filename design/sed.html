@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sedimentor &mdash; AguaClara v0.1.2 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sedimentation Channel" href="sed_chan.html" />
+    <link rel="prev" title="Linear Flow Orifice Meter (LFOM)" href="lfom.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/core.html">Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="design.html">Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="component.html">Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ent_floc.html">Entrance Tank/Flocculator Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ent.html">Entrance Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floc.html">Flocculator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lfom.html">Linear Flow Orifice Meter (LFOM)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sedimentor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sed_chan.html">Sedimentation Channel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sed_tank.html">Sedimentation Tank</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="design.html">Design</a> &raquo;</li>
+        
+      <li>Sedimentor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/design/sed.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-aguaclara.design.sed">
+<span id="sedimentor"></span><span id="design-sed"></span><h1>Sedimentor<a class="headerlink" href="#module-aguaclara.design.sed" title="Permalink to this headline">¶</a></h1>
+<p>The sedimentor of an AguaClara water treatment plant receives flocculated
+water from the flocculator, then settles the flocs out via upflow and an array
+of plate settlers.</p>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.sed</span> <span class="k">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sed</span> <span class="o">=</span> <span class="n">Sedimentor</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sed</span><span class="o">.</span><span class="n">tank_n</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="class">
+<dt id="aguaclara.design.sed.Sedimentor">
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.sed.</code><code class="sig-name descname">Sedimentor</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/sed.html#Sedimentor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.sed.Sedimentor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Design an AguaClara sedimentor.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Sedimentor</span></code> class designs the sedimentation tank and channel in
+tandem. For more information on those classes, see
+<a class="reference internal" href="sed_tank.html#aguaclara.design.sed_tank.SedimentationTank" title="aguaclara.design.sed_tank.SedimentationTank"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed_tank.SedimentationTank</span></code></a> and
+<a class="reference internal" href="sed_chan.html#aguaclara.design.sed_chan.SedimentationChannel" title="aguaclara.design.sed_chan.SedimentationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed_chan.SedimentationChannel</span></code></a>.</p>
+<dl class="simple">
+<dt>Design inputs:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Flow rate (recommended, defaults to 20L/s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature (recommended, defaults to
+20°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wall_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Wall thickness (optional, defaults
+to 15 * u.cm)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tank</span> <span class="pre">(SedimentationTank)</span></code>: Sedimentation Tank
+(optional, see <a class="reference internal" href="sed_tank.html#aguaclara.design.sed_tank.SedimentationTank" title="aguaclara.design.sed_tank.SedimentationTank"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed_tank.SedimentationTank</span></code></a>
+for defaults)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span> <span class="pre">(SedimentationChannel)</span></code>: Sedimentation Channel
+(optional, see
+<a class="reference internal" href="sed_chan.html#aguaclara.design.sed_chan.SedimentationChannel" title="aguaclara.design.sed_chan.SedimentationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed_chan.SedimentationChannel</span></code></a> for defaults)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="aguaclara.design.sed.Sedimentor.tank_n">
+<em class="property">property </em><code class="sig-name descname">tank_n</code><a class="headerlink" href="#aguaclara.design.sed.Sedimentor.tank_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of sedimentation tanks.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sed_chan.html" class="btn btn-neutral float-right" title="Sedimentation Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="lfom.html" class="btn btn-neutral float-left" title="Linear Flow Orifice Meter (LFOM)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, AguaClara Cornell
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

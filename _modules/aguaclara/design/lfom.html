@@ -8,43 +8,47 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.lfom &mdash; AguaClara v0.1.1 documentation</title>
+  <title>aguaclara.design.lfom &mdash; AguaClara v0.1.2 documentation</title>
   
 
   
   
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
   
   
 
   
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.1
+                v0.1.2
               </div>
             
           
@@ -186,18 +190,14 @@
 <span class="sd">        - ``orifice_s (float * u.cm)``: The spacing between orifices (optional, </span>
 <span class="sd">          defaults to 0.5cm)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span>
-                 <span class="n">hl</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">,</span>
-                 <span class="n">safety_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-                 <span class="n">sdr</span><span class="o">=</span><span class="mf">26.0</span><span class="p">,</span>
-                 <span class="n">drill_bits</span><span class="o">=</span><span class="n">drills</span><span class="o">.</span><span class="n">DRILL_BITS_D_IMPERIAL</span><span class="p">,</span>
-                 <span class="n">orifice_s</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">=</span> <span class="n">hl</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">safety_factor</span> <span class="o">=</span> <span class="n">safety_factor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span> <span class="o">=</span> <span class="n">sdr</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">drill_bits</span> <span class="o">=</span> <span class="n">drill_bits</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">orifice_s</span> <span class="o">=</span> <span class="n">orifice_s</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">safety_factor</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span> <span class="o">=</span> <span class="mf">26.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drill_bits</span> <span class="o">=</span> <span class="n">drills</span><span class="o">.</span><span class="n">DRILL_BITS_D_IMPERIAL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orifice_s</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LFOM.stout_w_per_flow"><a class="viewcode-back" href="../../../design/lfom.html#aguaclara.design.lfom.LFOM.stout_w_per_flow">[docs]</a>    <span class="k">def</span> <span class="nf">stout_w_per_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The width of a stout weir at a given elevation.</span>
@@ -336,7 +336,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AguaClara Cornell.
+        &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
@@ -353,33 +353,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'v0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -8,43 +8,47 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.floc &mdash; AguaClara v0.1.1 documentation</title>
+  <title>aguaclara.design.floc &mdash; AguaClara v0.1.2 documentation</title>
   
 
   
   
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
   
   
 
   
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.1
+                v0.1.2
               </div>
             
           
@@ -167,6 +171,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="c1"># TODO: check math with calculating number of channels</span>
 
 <div class="viewcode-block" id="Flocculator"><a class="viewcode-back" href="../../../design/floc.html#aguaclara.design.floc.Flocculator">[docs]</a><span class="k">class</span> <span class="nc">Flocculator</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Design an AguaClara plant&#39;s flocculator.</span>
@@ -208,7 +213,6 @@
     <span class="c1"># trying to achieve.</span>
     <span class="c1"># Originally calculated to be 2.3 from the equations:</span>
 
-    <span class="c1"># K_MINOR_FLOC_BAFFLE = (1/VC_BAFFLE_RATIO - 1)**2</span>
     <span class="n">BAFFLE_K</span> <span class="o">=</span> <span class="mf">2.5</span>
     <span class="n">CHAN_N_MIN</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">HS_RATIO_MIN</span> <span class="o">=</span> <span class="mf">3.0</span>
@@ -217,23 +221,16 @@
                <span class="c1"># input as well? -Oliver L., oal22, 5 Jun 19</span>
     <span class="n">OBSTACLE_OFFSET</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span>
-                 <span class="n">ent_l</span><span class="o">=</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
-                 <span class="n">chan_w_max</span><span class="o">=</span><span class="mf">42.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span>
-                 <span class="n">l_max</span><span class="o">=</span><span class="mf">6.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
-                 <span class="n">gt</span><span class="o">=</span><span class="mi">37000</span><span class="p">,</span>
-                 <span class="n">hl</span> <span class="o">=</span> <span class="mf">40.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">,</span>
-                 <span class="n">end_water_depth</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
-                 <span class="n">drain_t</span><span class="o">=</span><span class="mf">30.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">l_max</span> <span class="o">=</span> <span class="n">l_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gt</span> <span class="o">=</span> <span class="n">gt</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">=</span> <span class="n">hl</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end_water_depth</span> <span class="o">=</span> <span class="n">end_water_depth</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ent_l</span> <span class="o">=</span> <span class="n">ent_l</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">chan_w_max</span> <span class="o">=</span> <span class="n">chan_w_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">drain_t</span> <span class="o">=</span> <span class="n">drain_t</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ent_l</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chan_w_max</span> <span class="o">=</span> <span class="mf">42.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_max</span> <span class="o">=</span> <span class="mf">6.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gt</span> <span class="o">=</span> <span class="mi">37000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hl</span>  <span class="o">=</span>  <span class="mf">40.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_water_depth</span>  <span class="o">=</span>  <span class="mf">2.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drain_t</span> <span class="o">=</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">min</span>
 
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">vel_grad_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -449,7 +446,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AguaClara Cornell.
+        &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
@@ -466,33 +463,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'v0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

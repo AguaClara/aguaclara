@@ -8,22 +8,31 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PhysChem &mdash; AguaClara v0.1.1 documentation</title>
+  <title>PhysChem &mdash; AguaClara v0.1.2 documentation</title>
   
 
   
   
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
   
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
@@ -32,21 +41,16 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Pipeline" href="pipeline.html" />
     <link rel="prev" title="Materials" href="materials.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -60,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.1
+                v0.1.2
               </div>
             
           
@@ -381,9 +385,23 @@ This equation applies to both laminar and turbulent flows.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="aguaclara.core.physchem.manifold_id_alt">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">manifold_id_alt</code><span class="sig-paren">(</span><em class="sig-param">q</em>, <em class="sig-param">pr_max</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#manifold_id_alt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.manifold_id_alt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the inner diameter of a manifold when major losses are
+negligible.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.core.physchem.num_orifices">
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">num_orifices</code><span class="sig-paren">(</span><em class="sig-param">FlowPlant</em>, <em class="sig-param">RatioVCOrifice</em>, <em class="sig-param">HeadLossOrifice</em>, <em class="sig-param">DiamOrifice</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#num_orifices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.num_orifices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of orifices.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.pipe_ID">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">pipe_ID</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#pipe_ID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.pipe_ID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the internal diameter of a pipe for a given pressure
+recovery constraint.</p>
 </dd></dl>
 
 <dl class="function">
@@ -451,7 +469,7 @@ If not given units, the function will assume Kelvin.</p>
         <a href="pipeline.html" class="btn btn-neutral float-right" title="Pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="materials.html" class="btn btn-neutral" title="Materials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="materials.html" class="btn btn-neutral float-left" title="Materials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -460,7 +478,7 @@ If not given units, the function will assume Kelvin.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AguaClara Cornell.
+        &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
@@ -477,33 +495,16 @@ If not given units, the function will assume Kelvin.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'v0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="../_static/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
