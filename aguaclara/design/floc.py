@@ -11,6 +11,7 @@ import aguaclara.core.head_loss as hl
 import aguaclara.design.human_access as ha
 import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipes
+import aguaclara.core.utility as ut
 from aguaclara.core.units import unit_registry as u
 from aguaclara.design.component import Component
 
@@ -127,27 +128,30 @@ class Flocculator(Component):
         """
         chan_n = self.w_tot / self.w_min
         return np.ceil(chan_n.to_base_units())
-        
+
+    # @property
+    # def chan_w_min_efficient(self):
+    
+    # @property
+    # def chan_w_min_plate(self):
+
+
+    # @property
+    # def chan_w_min_gt(self):
+    #     chan_w_min_gt = self.f
+
+    # @property
+    # def chan_w_min(self):
+    #     chan_w_min = np.max(self.chan_w_min_efficient, self.chan_w_min_plate)
+    #     return chan_w_min
     @property
     def chan_w(self):
         """The minimum and hence optimal channel width."""
-        # chan_est_W = (
-        #         self.vol / (
-        #             self.end_water_depth *
-        #             (self.chan_n * self.l_max - self.ent_l)
-        #         )
-        #     ).to(u.m)
-
-        # print("chan_est_W", chan_est_W)
-        # # The channel may need to wider than the width that would get the exact required volume.
-        # # In that case we will need to shorten the flocculator
-        # chan_W = np.amax(
-        #         np.array([
-        #             1,
-        #             (ha.HUMAN_W_MIN/chan_est_W).to(u.dimensionless),
-        #             (self.w_min_hs_ratio/chan_est_W).to(u.dimensionless)
-        #         ])
-        #     ) * chan_est_W
+        
+        # chan_w = ut.ceil_step(
+        #     np.max(self.chan_w_min_gt, self.chan_w_min),
+        #     step = 1 * u.cm
+        #     )
         chan_w = self.w_tot / self.chan_n
         return chan_w
 
@@ -279,3 +283,26 @@ class Flocculator(Component):
             'baffle_S': self.baffle_s,
         }
 
+
+def print_vals():
+    # myF = floc.Flocculator(q=flow,ent_l=0*u.m,temp=Temperature,hl=50*u.cm,)
+    n = 50
+    mytemp = 15*u.degC
+    GraphQ = np.linspace(0,1,n)*200*u.L/u.s
+    myFs =np.empty(n, dtype=type(Flocculator))
+    residencetimes = np.empty(n)*u.s
+    gradients = np.empty(n)*u.Hz
+    bafflespacing = np.empty(n)*u.cm
+    channels = np.empty(n)
+    channel_w = np.empty(n)*u.cm
+    for i in range(1,n):
+        myFs[i] = Flocculator(q=GraphQ[i],temp = mytemp)
+        residencetimes[i] = myFs[i].retention_time
+        gradients[i] = myFs[i].vel_grad_avg
+        bafflespacing[i] = myFs[i].baffle_s
+        channels[i] = myFs[i].chan_n
+        channel_w[i] = myFs[i].chan_w
+
+    print(channels)
+    for w in channel_w:
+        print(w)
