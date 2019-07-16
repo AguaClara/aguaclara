@@ -36,11 +36,11 @@ test:
     - aguaclara
 
 about:
-  home: https://github.com/AguaClara/aguaclara_design
+  home: https://github.com/AguaClara/aguaclara
   license: MIT
   license_family: MIT
   license_file: ''
-  summary: AguaClara Infrastructure Design Engine
+  summary: AguaClara Software Package
   description: ''
   doc_url: ''
   dev_url: ''

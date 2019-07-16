@@ -36,17 +36,16 @@ class EntTankFloc(Component):
         - ``lfom (LFOM)``: Linear Flow Orifice Meter
           (optional, see :class:`aguaclara.design.lfom.LFOM` for defaults)
     """
-    def __init__(self, q =20.0 * u.L/u.s, temp=20. * u.degC,
-                 ent = EntranceTank(), floc = Flocculator(), lfom = LFOM()):
-        super().__init__(q = q, temp = temp)
-        self.lfom = lfom
-        self.ent = ent
-        self.floc = floc
-        
-        # Design the entrance tank and flocculator in tandem
-        self._design_ent_floc(self.floc.ent_l)
+    def __init__(self, **kwargs): 
+        self.ent = EntranceTank()
+        self.floc = Flocculator()
+        self.lfom = LFOM()    
+        self.subcomponents = [self.ent, self.floc, self.lfom]
 
-        super().propogate_config([self.lfom, self.ent, self.floc])
+        super().__init__(**kwargs)
+        super().set_subcomponents()
+
+        self._design_ent_floc(self.floc.ent_l)
 
     def _design_ent_floc(self, ent_l):
         """Design the entrance tank and flocculator in tandem.
@@ -61,26 +60,10 @@ class EntTankFloc(Component):
               length, used to design the first iteration of the flocculator.
         """
         # Design the flocculator using a guess of the entrance tank's length.
-        self.floc = Flocculator(self.floc.q, self.floc.temp,
-                                ent_l,
-                                self.floc.chan_w_max,
-                                self.floc.l_max,
-                                self.floc.gt,
-                                self.floc.hl,
-                                self.floc.end_water_depth,
-                                self.floc.drain_t)
+        self.floc.ent_l = ent_l
         
         # Design the entrance tank using the flocculator's channel width.
-        self.ent = EntranceTank(self.ent.q, self.ent.temp,
-                                self.ent.lfom_nd,
-                                self.floc.chan_w,
-                                self.ent.floc_end_depth,
-                                self.ent.plate_s,
-                                self.ent.plate_thickness,
-                                self.ent.plate_angle,
-                                self.ent.plate_capture_vel,
-                                self.ent.fab_s,
-                                self.ent.sdr)
+        self.ent.floc_chan_w = self.floc.chan_w
 
         # Recalculate if the actual length of the entrance tank is not close
         # enough.

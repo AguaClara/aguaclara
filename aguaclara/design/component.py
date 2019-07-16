@@ -1,9 +1,7 @@
-"""This module provides compositional component classes the ability to propogate
-plant-wide design inputs throughout all of its subcomponents.
+"""This module allows plant component classes to
 
-Since it becomes tedious to pass said plant-wide design inputs manually to each
-subcomponent, this module creates a cache-like data structure that allows a
-component and all of its subcomponents to access a set of shared inputs.
+#. specify expert inputs and their defaults automatically
+#. propogate plant-wide design inputs throughout all of its subcomponents.
 
 **Example:**
 
@@ -12,44 +10,28 @@ component and all of its subcomponents to access a set of shared inputs.
     from aguaclara.design.component import *
     
     class SubComponent(Component):
-        def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC,
-                     h=3 * u.m):
-            super().__init__(q = q, hl = hl)
-            self.h = h
+        def __init__(self, **kwargs):
+            self.h = 3 * u.m
+            
+            super().__init__(**kwargs)
 
     class MainComponent(Component):
-        def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC,
-                     l=2 * u.m,
-                     sub=SubComponent()):
-            super().__init__(q = q, hl = hl)
-            self.l = l
+        def __init__(self, **kwargs):
+            self.l = 2 * u.m
+            self.sub = SubComponent()
+            self.subcomponents = [self.sub]
 
-            super().propogate_config([self.sub])
+            super().__init__(**kwargs)
+            super().propogate_config()
 """
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.utility as ut
+
 import numpy as np
-import json 
+import json
+from pprint import pprint
 
-class PlantInput(object):
-    """Represents the design inputs that are shared between all components
-    of an AguaClara water treatment plant.
-    
-    Attributes:
-        - ``configs ({string: PlantInput})``: A dictionary mapping the hexcode
-          memory locations of component objects to their plant design inputs.
 
-    Args:
-        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20 l/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
-    """
-    configs = {}
-
-    def __init__(self, q=20 * u.L / u.s, temp=20 * u.degC):
-        self.q = q
-        self.temp = temp
-        
 class Component(object):
     """An abstract class that should be extended by other component classes.
 
@@ -61,61 +43,82 @@ class Component(object):
         - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
           20°C)
     """
-    def __init__(self, q=20.0 * u.L/u.s, temp=20.0 * u.degC):
-        self.mem_loc = hex(id(self))
+    Q_DEFAULT = 20 * u.L / u.s
+    TEMP_DEFAULT = 20 * u.degC
 
-        if self.mem_loc not in PlantInput.configs:
-            PlantInput.configs[self.mem_loc] = PlantInput(q, temp)
+    def __init__(self, **kwargs):
+        if type(self) is Component:
+            raise Exception(
+                'The Component class should not be instantiated. Instead, '
+                'instantiate a class that extends Component.'
+            )
 
-    @property
-    def q(self):
-        """The flow rate. (L/s)"""
-        return PlantInput.configs[self.mem_loc].q
-    
-    @property
-    def temp(self):
-        """The water temperature. (°C)"""
-        return PlantInput.configs[self.mem_loc].temp
+        self.q = self.Q_DEFAULT
+        self.temp = self.TEMP_DEFAULT
 
-    def propogate_config(self, subcomponents):
-        """Propogate the configuration of plant design inputs to all
-        subcomponents.
-        
-        Args:
-            - ``subcomponents ([Component])``: A list of subcomponents for the
-              Component class.
+        # Update the Component object with new expert inputs, if any were given
+        self.__dict__.update(**kwargs)
+
+    def set_subcomponents(self):
+        """Set the plant-wide inputs of all subcomponents.
+
+        When a Component-type object is instantiated (the supercomponent), this
+        function will set ``q`` and ``temp`` of all subcomponents in
+        ``self.subcomponents`` to match the supercomponent. However, if the
+        supercomponent is instantiated with a subcomponent as an argument, and
+        the subcomponent is instantiated with its own ``q``/``temp``, then the
+        subcomponent's ``q``/``temp`` is used.
         """
-        for subcomp in subcomponents:
-            sub_mem_loc = hex(id(subcomp))
-            PlantInput.configs[sub_mem_loc] = \
-                PlantInput.configs[self.mem_loc]
+        for subcomp in getattr(self, 'subcomponents'):
 
+            if subcomp.q == self.Q_DEFAULT:
+                subcomp.q = self.q
+            if subcomp.temp == self.TEMP_DEFAULT:
+                subcomp.temp = self.temp
+
+            if hasattr(subcomp, 'subcomponents'):
+                subcomp.set_subcomponents()
+        
     def serialize_properties(self):
         """Convert the properties (fields and ``@property`` functions) of a 
-        component into a dictionary.
+        component into a dictionary string.
         """
         properties = {}
-        built_in_properties = [
+        ignored_properties = [
             '__dict__',
             '__doc__',
             '__module__',
             '__weakref__',
-            'mem_loc'
+            'subcomponents'
         ]
+        # Get all of the object's fields
         for var_name in dir(self):
             value = getattr(self, var_name)
+
+            # Serialize subcomponents
             if isinstance(value, Component):
                 properties[var_name] = value.serialize_properties()
-            elif not callable(value) and var_name not in built_in_properties:
+
+            # Serialize non-component properties
+            elif not callable(value) and var_name not in ignored_properties:
+
+                # Serialize lists or arrays
                 try: 
                     if type(value.magnitude) is np.ndarray:
                         properties[var_name] = ut.array_qtys_to_strs(value)
                     else:
                         properties[var_name] = str(value)
+                
+                # Serialize non-iterable properties
                 except: 
                     properties[var_name] = str(value)
+    
         return properties
 
+    def print_properties(self):
+        """Print the serialized properties with pretty indentation."""
+        pprint(self.serialize_properties())
+    
     def write_properties_to_file(self, filename):
         """Append the properties of a component to a file. If it does not exist,
         then the file is created.

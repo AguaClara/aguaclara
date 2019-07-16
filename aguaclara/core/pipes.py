@@ -1,6 +1,5 @@
 """This file contains functions which convert between the nominal, inner, and
 outer diameters of pipes based on their standard dimension ratio (SDR).
-
 """
 
 #Let's begin to create the pipe database
@@ -53,6 +52,13 @@ def OD(ND):
     """
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
     return pipedb.iloc[index, 1]
+
+def fitting_od(pipe_nd, fitting_sdr=41):
+    pipe_od = OD(pipe_nd)
+    fitting_nd = ND_SDR_available(pipe_od, fitting_sdr)
+    fitting_od = OD(fitting_nd)
+    return fitting_od
+
 
 @u.wraps(u.inch, [u.inch, None], False)
 def ID_SDR(ND, SDR):
@@ -138,7 +144,7 @@ def ND_available(NDguess):
 
 def od_available(od_guess):
     """Return the minimum OD that is available.
-
+    
     1. Extract the magnitude in inches from the outer diameter.
     2. Find the index of the closest outer diameter.
     3. Take the values of the array, subtract the OD, take the
@@ -146,3 +152,10 @@ def od_available(od_guess):
     """
     myindex = (od_all_available() >= od_guess)
     return min(od_all_available()[myindex])
+
+def socket_depth(nd):
+    return nd / 2
+
+def cap_thickness(nd):
+    cap_thickness = (fitting_od(nd) - OD(ND_available(nd))) / 2
+    return cap_thickness
