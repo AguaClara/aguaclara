@@ -72,6 +72,14 @@ def round_sig_figs(num, figs=4):
 
     return num
 
+def round_sf(num, figs=4):
+    warnings.warn(
+        'round_sf will be deprecated after 21 Dec 2019. Use '
+            'ceil_step instead.',
+        FutureWarning
+    )
+    round_sig_figs(num, figs = figs)
+
 @optional_units([0, 1], ['num', 'step'])
 def _stepper(num, step=10, func=round):
     """Round a number to be a multiple of some step.
