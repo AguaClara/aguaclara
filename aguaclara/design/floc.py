@@ -75,7 +75,7 @@ class Flocculator(Component):
         self.hl  =  40.0 * u.cm
         self.end_water_depth  =  2.0 * u.m
         self.drain_t = 30.0 * u.min
-
+        self.w_min_sheet = 42.0 * u.inch
         super().__init__(**kwargs)
 
     @property
@@ -114,36 +114,41 @@ class Flocculator(Component):
         return w_min_hs_ratio
 
     @property
+    def w_max_hs_ratio(self):
+        """The maximum channel width."""
+        w_min_hs_ratio = (
+                (self.HS_RATIO_MAX * self.q / self.end_water_depth) *
+                (
+                    self.BAFFLE_K / (
+                        2 * self.end_water_depth *
+                        pc.viscosity_kinematic(self.temp) *
+                        self.vel_grad_avg ** 2
+                    )
+                ) ** (1/3)
+            ).to(u.cm)
+        return w_min_hs_ratio
+
+    @property
     def w_tot(self):
         return self.vol / (self.end_water_depth * self.chan_l)
     
     @property
+    def chan_w_est(self):
+        return ut.min(self.w_max_hs_ratio, self.w_min_sheet)
+    
+    @property
     def w_min(self):
-        return max(self.w_min_hs_ratio, ha.HUMAN_W_MIN)
-
+        return ut.min(self.w_min_hs_ratio, ha.HUMAN_W_MIN)
+        
     @property
     def chan_n(self):
         """The minimum number of channels based on the maximum
         possible channel width and the maximum length of the channels.
         """
-        chan_n = self.w_tot / self.w_min
-        return np.ceil(chan_n.to_base_units())
+        #chan_n = self.w_tot / self.w_min
+        chan_n = self.w_tot / self.chan_w_est
+        return ut.ceil_step(chan_n.to_base_units(), step=2)
 
-    # @property
-    # def chan_w_min_efficient(self):
-    
-    # @property
-    # def chan_w_min_plate(self):
-
-
-    # @property
-    # def chan_w_min_gt(self):
-    #     chan_w_min_gt = self.f
-
-    # @property
-    # def chan_w_min(self):
-    #     chan_w_min = np.max(self.chan_w_min_efficient, self.chan_w_min_plate)
-    #     return chan_w_min
     @property
     def chan_w(self):
         """The minimum and hence optimal channel width."""
