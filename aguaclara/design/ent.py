@@ -114,8 +114,8 @@ class EntranceTank(Component):
                     self.plate_n * self.floc_chan_w * self.plate_capture_vel *
                     np.cos(self.plate_angle.to(u.rad))
                 )
-            ) - (self.plate_s * np.tan(self.plate_angle.to(u.rad))).to(u.cm)
-        plate_l_rounded = ut.ceil_step(plate_l, 1.0 * u.cm)
+            ) - (self.plate_s * np.tan(self.plate_angle.to(u.rad)))
+        plate_l_rounded = ut.ceil_step(plate_l.to(u.cm), 1.0 * u.cm)
         return plate_l_rounded
 
     @property

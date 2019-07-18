@@ -21,3 +21,8 @@ class Plant(Component):
 
         super().__init__(**kwargs)
         super().set_subcomponents()
+
+        self.design_floc()
+
+    def design_floc(self):
+        self.etf.floc.sed_chan_inlet_w_pre_weir = self.sed.chan.inlet_w_pre_weir

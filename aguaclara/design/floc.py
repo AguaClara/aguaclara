@@ -75,8 +75,16 @@ class Flocculator(Component):
         self.hl  =  40.0 * u.cm
         self.end_water_depth  =  2.0 * u.m
         self.drain_t = 30.0 * u.min
-        self.w_min_sheet = 42.0 * u.inch
+        self.w_polycarbonate_sheet = 42.0 * u.inch
+        self.sed_chan_inlet_w_pre_weir = 42.0 * u.inch
+        self.dividing_wall_thickness = 15.0 * u.cm
+        self.chan_n_parity = 'even'
         super().__init__(**kwargs)
+
+        if self.chan_n_parity not in ('even', 'odd', 'any'):
+            raise AttributeError(
+                'chan_n_parity must be set to \'even\', \'odd\', or \'any\'.'
+            )
 
     @property
     def vel_grad_avg(self):
@@ -99,9 +107,9 @@ class Flocculator(Component):
         return (self.q * self.retention_time).to(u.m ** 3)
 
     @property
-    def w_min_hs_ratio(self):
+    def chan_w_min_hs_ratio(self):
         """The minimum channel width."""
-        w_min_hs_ratio = (
+        chan_w_min_hs_ratio = (
                 (self.HS_RATIO_MIN * self.q / self.end_water_depth) *
                 (
                     self.BAFFLE_K / (
@@ -111,59 +119,58 @@ class Flocculator(Component):
                     )
                 ) ** (1/3)
             ).to(u.cm)
-        return w_min_hs_ratio
-
-    @property
-    def w_max_hs_ratio(self):
-        """The maximum channel width."""
-        w_min_hs_ratio = (
-                (self.HS_RATIO_MAX * self.q / self.end_water_depth) *
-                (
-                    self.BAFFLE_K / (
-                        2 * self.end_water_depth *
-                        pc.viscosity_kinematic(self.temp) *
-                        self.vel_grad_avg ** 2
-                    )
-                ) ** (1/3)
-            ).to(u.cm)
-        return w_min_hs_ratio
+        return chan_w_min_hs_ratio
 
     @property
     def w_tot(self):
         return self.vol / (self.end_water_depth * self.chan_l)
     
     @property
-    def chan_w_est(self):
-        return ut.min(self.w_max_hs_ratio, self.w_min_sheet)
-    
-    @property
-    def w_min(self):
-        return ut.min(self.w_min_hs_ratio, ha.HUMAN_W_MIN)
+    def chan_w_min(self):
+        return ut.min(self.chan_w_min_hs_ratio, self.w_polycarbonate_sheet).to(u.cm)
         
     @property
     def chan_n(self):
         """The minimum number of channels based on the maximum
         possible channel width and the maximum length of the channels.
         """
-        #chan_n = self.w_tot / self.w_min
-        chan_n = self.w_tot / self.chan_w_est
-        return ut.ceil_step(chan_n.to_base_units(), step=2)
+        if self.q < 16 * u.L / u.s:
+            return 1
+        else:
+            chan_n = (
+                    (self.vol /
+                        (self.w_polycarbonate_sheet * self.end_water_depth)
+                    ) + self.ent_l
+                ) / self.chan_l
+
+            if self.chan_n_parity is 'even':
+                return ut.ceil_step(chan_n, step = 2)
+            elif self.chan_n_parity is 'odd':
+                return ut.ceil_step(chan_n, step = 2) - 1
+            elif self.chan_n_parity is 'any':
+                return ut.ceil_step(chan_n, step = 1)
+
+    @property
+    def chan_w_min_gt(self):
+        chan_w_min_gt = self.vol / (
+                self.end_water_depth * (self.chan_n * self.chan_l - self.ent_l)
+            )
+        return chan_w_min_gt.to(u.cm)
 
     @property
     def chan_w(self):
         """The minimum and hence optimal channel width."""
-        
-        # chan_w = ut.ceil_step(
-        #     np.max(self.chan_w_min_gt, self.chan_w_min),
-        #     step = 1 * u.cm
-        #     )
-        chan_w = self.w_tot / self.chan_n
+        chan_w = ut.ceil_step(
+            ut.max(self.chan_w_min_gt, self.chan_w_min),
+            step = 1 * u.cm
+            )
+        # chan_w = self.w_tot / self.chan_n
         return chan_w
 
     @property
     def l_max_vol(self):
         l_max_vol = self.vol / \
-            (self.CHAN_N_MIN * ha.HUMAN_W_MIN * self.end_water_depth)
+            (self.CHAN_N_MIN * self.chan_w_min * self.end_water_depth)
         return l_max_vol
 
     @property
