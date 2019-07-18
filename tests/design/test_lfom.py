@@ -1,5 +1,5 @@
 from aguaclara.design.lfom import LFOM
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 import pytest
 import numpy as np

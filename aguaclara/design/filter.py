@@ -1,5 +1,5 @@
-from aguaclara.core.units import unit_registry as u
-
+from aguaclara.core.units import u
+from aguaclara.design.component import Component
 
 class Filter(Component):
 

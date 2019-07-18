@@ -6,7 +6,7 @@ Example:
     >>> sed_tank.diffuser_hl
     <Quantity(0.009259259259259259, 'centimeter')>
 """
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
 import aguaclara.core.pipes as pipe
