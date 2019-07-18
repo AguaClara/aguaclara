@@ -98,9 +98,35 @@ def viscosity_kinematic(temp):
     If not given units, the function will assume Kelvin.
     """
     ut.check_range([temp, ">0", "Temperature in Kelvin"])
-    return (viscosity_dynamic(temp).magnitude
-            / density_water(temp).magnitude)
+    return viscosity_dynamic(temp).magnitude / density_water(temp).magnitude
 
+def alum_viscosity_kinematic(temp, coag_conc):
+    """Return the dynamic viscosity of water at a given temperature.
+
+    If given units, the function will automatically convert to Kelvin.
+    If not given units, the function will assume Kelvin.
+    This function assumes that the temperature dependence can be explained
+    based on the effect on water and that there is no confounding effect from
+    the coagulant.
+    """
+    alum_nu = \
+        (1 + (4.255 * 10 ** -6) * coag_conc.magnitude ** 2.289) * \
+        viscosity_kinematic(temp)
+    return alum_nu
+
+def pacl_viscosity_kinematic(temp, coag_conc):
+    """Return the dynamic viscosity of water at a given temperature.
+
+    If given units, the function will automatically convert to Kelvin.
+    If not given units, the function will assume Kelvin.
+    This function assumes that the temperature dependence can be explained
+    based on the effect on water and that there is no confounding effect from
+    the coagulant.
+    """
+    pacl_nu = \
+        (1 + (2.383 * 10 ** -5) * (coag_conc).magnitude ** 1.893) * \
+        viscosity_kinematic(temp)
+    return pacl_nu
 
 @u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s], False)
 def re_pipe(FlowRate, Diam, Nu):

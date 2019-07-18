@@ -10,7 +10,7 @@ GRAVITY = 9.80665 * u.m / u.s ** 2
 
 #: Density of water
 WATER_DENSITY = 1000 * u.kg / u.m ** 3
-#: Kinematic viscosity of water
+#: Kinematic viscosity of water at around room temperature.
 WATER_NU = 1 * 10 ** -6 * u.m ** 2 / u.s
 
 #: Atmospheric pressure
