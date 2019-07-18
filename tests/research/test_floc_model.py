@@ -3,7 +3,7 @@ Tests for the research package's floc_model functions
 """
 
 import unittest
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 developing = False
 if developing:
