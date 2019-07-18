@@ -15,7 +15,7 @@ its own units to the ``u``:
 
 :Examples:
 
->>> from aguaclara.core.units import u as u
+>>> from aguaclara.core.units import u
 >>> rpm = 10 * u.rev/u.min
 >>> rpm
 <Quantity(10.0, 'rev / minute')>
