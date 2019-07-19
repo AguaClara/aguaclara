@@ -11,45 +11,48 @@ import os.path
 dir_path = os.path.dirname(__file__)
 csv_path = os.path.join(dir_path, '/../core/data/pipe_database.csv')
 with open(csv_path) as pipedbfile:
-    pipedb = pd.read_csv(pipedbfile)
+    pipedb = pd.read_csv(pipedbfile).to_numpy()
+
+ND_all_available = []
+for i in range(len(pipedb['NDinch'])):
+    if pipedb.iloc[i, 4] == 1:
+        ND_all_available.append((pipedb['NDinch'][i]))
+NDs = ND_all_available * u.inch
+
+ID_SCH40_all_available = []
+for i in range(len(pipedb['NDinch'])):
+    if pipedb.iloc[i, 4] == 1:
+        ID_SCH40_all_available.append((pipedb['ID_SCH40'][i]))
+ID_SCH40s = ID_SCH40_all_available * u.inch
 
 class PipelineComponent(Component):
     def __init__(self, **kwargs):
         self.size = 1 / 8 * u.inch
         super().__init__(**kwargs)
 
-        self.size = ND_available(self.size)
+        self.size = self.get_available_size(self.size)
 
-    def ND_all_available():
-    """Return an array of available nominal diameters.
+    def get_available_size(self, NDguess):
+        """Return the minimum ND that is available.
 
-    NDs available are those commonly used as based on the 'Used' column
-    in the pipedb.
-    """
-        ND_all_available = []
-        for i in range(len(pipedb['NDinch'])):
-            if pipedb.iloc[i, 4] == 1:
-                ND_all_available.append((pipedb['NDinch'][i]))
-        return ND_all_available * u.inch
-
-    def ND_available(NDguess):
-    """Return the minimum ND that is available.
-
-    1. Extract the magnitude in inches from the nominal diameter.
-    2. Find the index of the closest nominal diameter.
-    3. Take the values of the array, subtract the ND, take the
-       absolute value, find the index of the minimium value.
-    
-    """
-        myindex = (ND_all_available() >= NDguess)
-        return min(ND_all_available()[myindex])
+        1. Extract the magnitude in inches from the nominal diameter.
+        2. Find the index of the closest nominal diameter.
+        3. Take the values of the array, subtract the ND, take the
+        absolute value, find the index of the minimium value.
+        """
+        myindex = (NDs >= NDguess)
+        return min(NDs[myindex])
 
 
 class Pipe(PipelineComponent):
     SPEC_AVAILABLE = ['sdr26', 'sdr41', 'sch40']
 
     def __init__(self, **kwargs):
-        if spec not in self.SPEC_AVAILABLE:
+        self.id = 0.3842 * u.inch
+        self.spec = 'sdr41'
+        self.length = 1 * u.m
+        
+        if self.spec not in self.SPEC_AVAILABLE:
             raise AttributeError('spec must be one of:', self.SPEC_AVAILABLE)
         
         if all (key in kwargs for key in ('size', 'id')):
@@ -58,53 +61,62 @@ class Pipe(PipelineComponent):
                 'diameter, but not both.'
             )
 
-        self.id = 0.3842 * u.inch
-        self.spec = 'sdr41'
-
         super().__init__(**kwargs)
 
-        elif 'size' in kwargs:
-            self.id = self.get_id(self.size, self.spec)
+        if 'size' in kwargs:
+            self.id = self._get_id(self.size, self.spec)
         elif 'id' in kwargs:
-
+            self.size = self._get_size(self.id, self.spec)
+            
     @property
     def od(self):
-        index = (np.abs(np.array(self.pipedb['NDinch']) - self.size.magnitude)).argmin()
-        return self.pipedb.iloc[index, 1] * u.inch
-    
-    def get_size(id, spec)
-        if spec[:3] is 'sdr':
-            return ND_SDR_available(id, spec[3:])
-        else if spec is 'sch40':
-            raise AttributeError('spec must be a sdr in order to calculate size')
+        """The outer diameter of the pipe"""
+        index = (np.abs(np.array(pipedb['NDinch']) - self.size.magnitude)).argmin()
+        return pipedb.iloc[index, 1] * u.inch
 
-    def get_id(self, size, spec):
+    def _get_size(self, id_, spec):
+        """Get the size of """
         if spec[:3] is 'sdr':
-            return _id_sdr(size, int(spec[3:]))
-        else if spec is 'sch40':
-            return _id_sch(size)
+            return self.nd_sdr(id_, spec[3:])
+        elif spec is 'sch40':
+            return self.nd_sch40(id_)
+
+    def _get_id(self, size, spec):
+        if spec[:3] is 'sdr':
+            return self._id_sdr(size, int(spec[3:]))
+        elif spec is 'sch40':
+            return self._id_sch40(size)
 
     def _id_sdr(self, size, sdr):
         return size.magnitude * (sdr - 2) / sdr
 
     def _id_sch40(self, size):
-        myindex = (np.abs(np.array(self.pipedb['NDinch']) - size.magnitude)).argmin()
-        return (self.pipedb.iloc[myindex, 1] - 2 * (self.pipedb.iloc[myindex, 5]))
+        myindex = (np.abs(np.array(pipedb['NDinch']) - size.magnitude)).argmin()
+        return ID_SCH40s[myindex]
 
-    def ND_SDR_available(ID, SDR):
-    """ Return an available ND given an ID and a schedule.
+    def nd_sdr(self, id_, sdr):
+        nd_approx = (id_ * sdr) / (sdr - 2)
+        return super().get_available_size(nd_approx)
 
-    Takes the values of the array, compares to the ID, and finds the index
-    of the first value greater or equal.
-    """
-    for i in range(len(np.array(ID_SDR_all_available(SDR)))):
-        if np.array(ID_SDR_all_available(SDR))[i] >= (ID.to(u.inch)).magnitude:
-            return ND_all_available()[i]
+    def nd_sch40(self, id_):
+        myindex = (np.abs(ID_SCH40s - id_.magnitude)).argmin()
+        return NDs[myindex]
 
+    def ID_SDR_all_available(self, SDR):
+        """Return an array of inner diameters with a given SDR.
+
+        IDs available are those commonly used based on the 'Used' column
+        in the pipedb.
+        """
+        ID = []
+        for i in range(len(NDs)):
+            ID.append(self._id_sdr(NDs[i], SDR).magnitude)
+        return ID * u.inch
 
 class Elbow(PipelineComponent):
      """This class calculates necessary functions and holds fields for connectors"""
      def __init__(self, **kwargs):
+
          super().__init__(self, **kwargs)
     # angle
 
@@ -158,4 +170,3 @@ class Pipeline(PipelineComponent):
             flow = flow + err * flow
 
         return flow
-
