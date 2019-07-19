@@ -79,7 +79,7 @@ class EntranceTank(Component):
                                 nu,
                                 mat.PVC_PIPE_ROUGH,
                                 k_minor)
-        return drain_id
+        return drain_id.to(u.cm)
 
     @property
     def drain_nd(self):

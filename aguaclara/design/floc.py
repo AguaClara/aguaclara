@@ -17,7 +17,6 @@ from aguaclara.design.component import Component
 
 import numpy as np
 
-# TODO: check math with calculating number of channels
 
 class Flocculator(Component):
     """Design an AguaClara plant's flocculator.
@@ -45,20 +44,21 @@ class Flocculator(Component):
         - ``chan_w_max (float * u.inch)``: Maximum width (optional, defaults to
           42")
         - ``l_max (float * u.m)``: Maximum length (optional, defaults to 6m)
+        - ``gt (float)``: Collision potential (optional, defaults to 37000)
+        - ``hl (float * u.cm)``: Head loss (optional, defaults to 40cm)
         - ``end_water_depth (float * u.m)``: Depth at the end 
           (optional, defaults to 2m)
         - ``drain_t (float * u.min)``: Drain time (optional, 
           defaults to 30 mins)
-        - ``gt (float)``: Collision potential (optional, defaults to 37000)
-        - ``hl (float * u.cm)``: Head loss (optional, defaults to 40cm)
+        - ``polycarb_sheet_w (float * u.inch)``: Width of polycarbonate sheets
+          used to construct baffles (optional, defaults to 42 in)
+        - ``sed_chan_inlet_w_pre_weir (float * u.inch)``: Width of the inlet
+          sedimentation channel pre-weir (optional, defaults to 42 in)
+        - ``dividing_wall_thickness (float * u.cm)``: Thickness of dividing
+          walls between each flocculator channel (optional, defaults to 15 cm)
+        - ``chan_n_parity (str)``: Parity of the number of channels. Can be
+          \'even\', \'odd\', or \'any\' (optional, defaults to \'even\')
     """
-    # Should the following constants be expert inputs? -Oliver L., oal22, 5 Jun 2019
-
-    # Increased both to provide a safety margin on flocculator head loss and
-    # to simultaneously scale back on the actual collision potential we are
-    # trying to achieve.
-    # Originally calculated to be 2.3 from the equations:
-
     BAFFLE_K = 2.5
     CHAN_N_MIN = 2
     HS_RATIO_MIN = 3.0
@@ -75,10 +75,11 @@ class Flocculator(Component):
         self.hl  =  40.0 * u.cm
         self.end_water_depth  =  2.0 * u.m
         self.drain_t = 30.0 * u.min
-        self.w_polycarbonate_sheet = 42.0 * u.inch
+        self.polycarb_sheet_w = 42.0 * u.inch
         self.sed_chan_inlet_w_pre_weir = 42.0 * u.inch
         self.dividing_wall_thickness = 15.0 * u.cm
         self.chan_n_parity = 'even'
+
         super().__init__(**kwargs)
 
         if self.chan_n_parity not in ('even', 'odd', 'any'):
@@ -122,12 +123,9 @@ class Flocculator(Component):
         return chan_w_min_hs_ratio
 
     @property
-    def w_tot(self):
-        return self.vol / (self.end_water_depth * self.chan_l)
-    
-    @property
     def chan_w_min(self):
-        return ut.min(self.chan_w_min_hs_ratio, self.w_polycarbonate_sheet).to(u.cm)
+        """The minimum channel width."""
+        return ut.min(self.chan_w_min_hs_ratio, self.polycarb_sheet_w).to(u.cm)
         
     @property
     def chan_n(self):
@@ -137,11 +135,11 @@ class Flocculator(Component):
         if self.q < 16 * u.L / u.s:
             return 1
         else:
-            chan_n = (
+            chan_n = ((
                     (self.vol /
-                        (self.w_polycarbonate_sheet * self.end_water_depth)
+                        (self.polycarb_sheet_w * self.end_water_depth)
                     ) + self.ent_l
-                ) / self.chan_l
+                ) / self.chan_l).to_base_units()
 
             if self.chan_n_parity is 'even':
                 return ut.ceil_step(chan_n, step = 2)
@@ -152,6 +150,7 @@ class Flocculator(Component):
 
     @property
     def chan_w_min_gt(self):
+        """The channel width minimum regarding the collision potential."""
         chan_w_min_gt = self.vol / (
                 self.end_water_depth * (self.chan_n * self.chan_l - self.ent_l)
             )
@@ -159,29 +158,23 @@ class Flocculator(Component):
 
     @property
     def chan_w(self):
-        """The minimum and hence optimal channel width."""
+        """The channel width."""
         chan_w = ut.ceil_step(
             ut.max(self.chan_w_min_gt, self.chan_w_min),
             step = 1 * u.cm
             )
-        # chan_w = self.w_tot / self.chan_n
         return chan_w
 
     @property
     def l_max_vol(self):
+        """The maximum length depeneding on the volume."""
         l_max_vol = self.vol / \
             (self.CHAN_N_MIN * self.chan_w_min * self.end_water_depth)
-        return l_max_vol
+        return l_max_vol.to(u.m)
 
     @property
     def chan_l(self):
         """The channel length."""
-        # chan_l = (
-        #         (
-        #             self.vol / (self.chan_w * self.end_water_depth) +
-        #             self.ent_l
-        #         ) / self.chan_n
-        #     ).to(u.m)
         chan_l = min(self.l_max, self.l_max_vol)
         return chan_l.to_base_units()
 
@@ -201,9 +194,6 @@ class Flocculator(Component):
                     (self.q * self.HS_RATIO_MAX / self.chan_w) ** 3
                 ) ** (1/4)
             ).to(u.m)
-
-        # expansion_h_max = (((self.BAFFLE_K/ (2 * pc.viscosity_kinematic(self.temp) * self.vel_grad_avg **2)) * \
-        #      (((self.q * self.HS_RATIO_MAX)/ self.chan_w) ** 3)) ** (1/4)).to(u.m)
         return expansion_h_max
 
     @property
@@ -273,7 +263,7 @@ class Flocculator(Component):
                     )
                 )
             ).to_base_units()
-        return drain_id
+        return drain_id.to(u.inch)
 
     @property
     def drain_nd(self):
