@@ -17,14 +17,14 @@ def density_air(Pressure, MolarMass, Temperature):
     """Return the density of air at the given pressure, molar mass, and
     temperature.
 
-    :param Pressure: pressure of the air in the system
+    :param Pressure: pressure of air in the system
     :type Pressure: u.pascal
-    :param MolarMass: molar mass of the air in the system
+    :param MolarMass: molar mass of air in the system
     :type MolarMass: u.gram/u.mol
-    :param Temperature: Temperature of the air in the system
+    :param Temperature: Temperature of air in the system
     :type Temperature: u.degK
 
-    :return: density of the air in the system
+    :return: density of air in the system
     :rtype: u.kg/u.m**3
     """
     return (Pressure * MolarMass / (u.R * Temperature)).to(u.kg/u.m**3)
@@ -32,17 +32,16 @@ def density_air(Pressure, MolarMass, Temperature):
 ###################### Simple geometry ######################
 
 """A few equations for useful geometry.
-Is there a geometry package that we should be using?
-"""
+Is there a geometry package that we should be using?"""
 
 @ut.list_handler()
 def area_circle(DiamCircle):
     """Return the area of a circle given its diameter.
 
-    :param DiamCircle: diameter of the circle
+    :param DiamCircle: diameter of circle
     :type DiamCircle: u.m
 
-    :return: area of the circle
+    :return: area of circle
     :rtype: u.m**2
     """
     ut.check_range([DiamCircle.magnitude, ">0", "DiamCircle"])
@@ -53,10 +52,10 @@ def area_circle(DiamCircle):
 def diam_circle(AreaCircle):
     """Return the diameter of a circle given its area.
 
-    :param AreaCircle: area of the circle
+    :param AreaCircle: area of circle
     :type AreaCircle: u.m**2
 
-    :return: diameter of the circle
+    :return: diameter of circle
     :rtype: u.m
     """
 
@@ -108,7 +107,7 @@ def density_water(temp):
     """
     ut.check_range([temp.magnitude, ">0", "Temperature in Kelvin"])
     rhointerpolated = interpolate.CubicSpline(WATER_DENSITY_TABLE[0],
-                                                    WATER_DENSITY_TABLE[1])
+                                              WATER_DENSITY_TABLE[1])
     temp = temp.to(u.degK).magnitude
     return rhointerpolated(temp).item() * u.kg/u.m**3
 
@@ -127,74 +126,135 @@ def viscosity_kinematic(temp):
     return (viscosity_dynamic(temp) / density_water(temp))
 
 
-@u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s], False)
-def re_pipe(FlowRate, Diam, Nu):
-    """Return the Reynolds Number for a pipe."""
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Diam, ">0", "Diameter"],
-                   [Nu, ">0", "Nu"])
-    return (4 * FlowRate) / (np.pi * Diam * Nu)
-
-
-# @u.wraps(u.m, [u.m, u.m], False)
 @ut.list_handler()
 def radius_hydraulic(Width, DistCenter, openchannel):
-    """Return the hydraulic radius.
+    """Return the hydraulic radius of a rectangular channel, given width and
+     depth of flow.
 
-    Width and DistCenter are length values and openchannel is a boolean.
+    :param Width: width of channel
+    :type Width: u.m
+    :param DistCenter: depth of flow in channel
+    :type DistCenter: u.m
+    :param openchannel: true if channel is open, false if closed
+    :type openchannel: boolean
+
+    :return: hydraulic radius of channel
+    :rtype: u.m
     """
-    ut.check_range([Width.magnitude, ">0", "Width"], [DistCenter.magnitude, ">0", "DistCenter"],
+    ut.check_range([Width.magnitude, ">0", "Width"],
+                   [DistCenter.magnitude, ">0", "DistCenter"],
                    [openchannel, "boolean", "openchannel"])
     if openchannel:
         return (Width*DistCenter) / (Width + 2*DistCenter)
-        # if openchannel is True, the channel is open. Otherwise, the channel
-        # is assumed to have a top.
     else:
         return (Width*DistCenter) / (2 * (Width+DistCenter))
 
 
-@u.wraps(u.m, [u.m**2, u.m], False)
+@ut.list_handler()
 def radius_hydraulic_general(Area, PerimWetted):
-    """Return the general hydraulic radius."""
-    ut.check_range([Area, ">0", "Area"], [PerimWetted, ">0", "Wetted perimeter"])
+    """Return the hydraulic radius of any channel, given cross sectional area
+    and wetted perimeter.
+
+    :param Area: cross sectional area of channel
+    :type Area: u.m**2
+    :param PerimWetted: wetted perimeter of channel
+    :type PerimWetted: u.m
+
+    :return: hydraulic radius of channel
+    :rtype: u.m
+    """
+    ut.check_range([Area.magnitude, ">0", "Area"],
+                   [PerimWetted.magnitude, ">0", "Wetted perimeter"])
     return Area / PerimWetted
 
 
-# @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s], False)
+@ut.list_handler()
+def re_pipe(FlowRate, Diam, Nu):
+    """Return the Reynolds number for a pipe.
+
+    :param FlowRate: flow rate through pipe
+    :type FlowRate: u.m**3/u.s
+    :param Diam: diameter of pipe
+    :type Diam: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+
+    :return: Reynolds number of flow through pipe
+    :rtype: u.dimensionless
+    """
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Diam.magnitude, ">0", "Diameter"],
+                   [Nu.magnitude, ">0", "Nu"])
+    return ((4 * FlowRate) / (np.pi * Diam * Nu))
+
+
 @ut.list_handler()
 def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
-    """Return the Reynolds Number for a rectangular channel."""
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"], [Nu.magnitude, ">0", "Nu"])
-    return (4 * FlowRate
-            * radius_hydraulic(Width, DistCenter, openchannel)
+    """Return the Reynolds number for a rectangular channel.
+
+    :param FlowRate: flow rate through channel
+    :type FlowRate: u.m**3/u.s
+    :param Width: width of channel
+    :type Width: u.m
+    :param DistCenter: depth of flow in channel
+    :type DistCenter: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param openchannel: true if channel is open, false if closed
+    :type openchannel: boolean
+
+    :return: Reynolds number of flow through channel
+    :rtype: u.dimensionless
+    """
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Nu.magnitude, ">0", "Nu"])
+    return (4 * FlowRate * radius_hydraulic(Width, DistCenter, openchannel)
             / (Width * DistCenter * Nu))
-    #Reynolds Number for rectangular channel; open = False if all sides
-    #are wetted; l = Diam and Diam = 4*R.h
 
 
-@u.wraps(None, [u.m/u.s, u.m**2, u.m, u.m**2/u.s], False)
+@ut.list_handler()
 def re_general(Vel, Area, PerimWetted, Nu):
-    """Return the Reynolds Number for a general cross section."""
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([Vel, ">=0", "Velocity"], [Nu, ">0", "Nu"])
-    return 4 * radius_hydraulic_general(Area, PerimWetted).magnitude * Vel / Nu
+    """Return the Reynolds number for a general cross section.
+
+    :param Vel: velocity of fluid
+    :type Vel: u.m/u.s
+    :param Area: cross sectional area of channel
+    :type Area: u.m**2
+    :param PerimWetted: wetted perimeter of channel
+    :type PerimWetted: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+
+    :return: Reynolds number of flow through cross section
+    :rtype: u.dimensionless
+    """
+    ut.check_range([Vel.magnitude, ">=0", "Velocity"],
+                   [Nu.magnitude, ">0", "Nu"])
+    return 4 * radius_hydraulic_general(Area, PerimWetted) * Vel / Nu
 
 
-@u.wraps(None, [u.m**3/u.s, u.m, u.m**2/u.s, u.m], False)
 @ut.list_handler()
 def fric(FlowRate, Diam, Nu, PipeRough):
     """Return the friction factor for pipe flow.
 
-    This equation applies to both laminar and turbulent flows.
+    For laminar flow, the friction factor is 64 is divided the Reynolds number.
+    For turbulent flows, friction factor is calculated using the Swamee-Jain
+    equation, which works best for Re > 3000 and ε/Diam < 0.02.
+
+    :param FlowRate: flow rate through pipe
+    :type FlowRate: u.m**3/u.s
+    :param Diam: diameter of pipe
+    :type Diam: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of pipe
+    :type PipeRough: u.m
+
+    :return: friction factor for flow through pipe
+    :rtype: u.dimensionless
     """
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([PipeRough, "0-1", "Pipe roughness"])
+    ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
     if re_pipe(FlowRate, Diam, Nu) >= RE_TRANSITION_PIPE:
-        #Swamee-Jain friction factor for turbulent flow; best for
-        #Re>3000 and ε/Diam < 0.02
         f = (0.25 / (np.log10(PipeRough / (3.7 * Diam)
                               + 5.74 / re_pipe(FlowRate, Diam, Nu) ** 0.9
                               )
@@ -205,16 +265,32 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     return f
 
 
-# @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
 @ut.list_handler()
 def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
-    """Return the friction factor for a rectangular channel."""
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
+    """Return the friction factor for a rectangular channel.
+
+    The Swamee-Jain equation is adapted for a rectangular channel.
+    #Diam = 4*R_h in this case.
+
+    :param FlowRate: flow rate through channel
+    :type FlowRate: u.m**3/u.s
+    :param Width: width of channel
+    :type Width: u.m
+    :param DistCenter: depth of flow in channel
+    :type DistCenter: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of channel surface
+    :type PipeRough: u.m
+    :param openchannel: true if channel is open, false if closed
+    :type openchannel: boolean
+
+    :return: friction factor for flow through channel
+    :rtype: u.dimensionless
+    """
     ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
     if re_rect(FlowRate,Width,DistCenter,Nu,openchannel) >= RE_TRANSITION_PIPE:
-        #Swamee-Jain friction factor adapted for rectangular channel.
-        #Diam = 4*R_h in this case.
+        # Diam = 4*R_h in adapted Swamee-Jain equation
         return (0.25
                 / (np.log10((PipeRough
                              / (3.7 * 4
@@ -226,34 +302,47 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
                                                Nu, openchannel) ** 0.9)
                                )
                             )
-                    ) ** 2
+                   ) ** 2
                 )
     else:
         return 64 / re_rect(FlowRate, Width, DistCenter, Nu, openchannel)
 
 
-@u.wraps(None, [u.m**2, u.m, u.m/u.s, u.m**2/u.s, u.m], False)
 @ut.list_handler()
 def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
-    """Return the friction factor for a general channel."""
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([PipeRough, "0-1", "Pipe roughness"])
+    """Return the friction factor for a general channel.
+
+    The Swamee-Jain equation is adapted for a general cross-section.
+
+    :param Area: cross sectional area of channel
+    :type Area: u.m**2
+    :param PerimWetted: wetted perimeter of channel
+    :type PerimWetted: u.m
+    :param Vel: velocity of fluid
+    :type Vel: u.m/u.s
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of channel surface
+    :type PipeRough: u.m
+
+    :return: friction factor for flow through channel
+    :rtype: u.dimensionless
+    """
+    ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
     if re_general(Vel, Area, PerimWetted, Nu) >= RE_TRANSITION_PIPE:
-        #Swamee-Jain friction factor adapted for any cross-section.
-        #Diam = 4*R*h
-        f= (0.25 /
-            (np.log10((PipeRough
-                       / (3.7 * 4
-                          * radius_hydraulic_general(Area, PerimWetted).magnitude
+        # Diam = 4*R_h in adapted Swamee-Jain equation
+        f = (0.25 /
+             (np.log10((PipeRough
+                        / (3.7 * 4
+                           * radius_hydraulic_general(Area, PerimWetted)
+                           )
+                        )
+                       + (5.74
+                          / re_general(Vel, Area, PerimWetted, Nu) ** 0.9
                           )
                        )
-                      + (5.74
-                         / re_general(Vel, Area, PerimWetted, Nu) ** 0.9
-                         )
-                      )
-             ) ** 2
-            )
+              ) ** 2
+             )
     else:
         f = 64 / re_general(Vel, Area, PerimWetted, Nu)
     return f
