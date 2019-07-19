@@ -8,7 +8,7 @@ Example:
     >>> from aguaclara.design.ent_floc import *
     >>> etf = EntTankFloc(q=20 * u.L / u.s, floc=Flocculator(hl=35 * u.cm))
     >>> etf.ent.l
-    <Quantity(37.6732811402825, 'inch')>
+    <Quantity(40.56720950298926, 'inch')>
 """
 from aguaclara.design.ent import *
 from aguaclara.design.lfom import *
