@@ -1,5 +1,5 @@
 from aguaclara.design.floc import Flocculator
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 import pytest
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Constant quantities of widely-accepted physical properties."""
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 # NOTE: "#: <optional_description>"  required for Sphinx autodocumentation
 

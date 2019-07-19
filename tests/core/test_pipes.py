@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import numpy as np
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 from aguaclara.core import pipes
 
 # TODO: Rewrite this testing class.

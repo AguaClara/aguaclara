@@ -8,7 +8,7 @@ Example:
     >>> ut.round_sig_figs(1234567, 3)
     1230000
 """
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 import numpy as np
 from math import log10, floor, ceil
@@ -71,6 +71,24 @@ def round_sig_figs(num, figs=4):
         num = np.round(num.magnitude, decimals) * num.units
 
     return num
+
+def round_sf(num, figs=4):
+    """Round a number to some amount of significant figures.
+
+    Args:
+        - ``num (float)``: Value to be rounded (optional units)
+        - ``figs (int)``: Number of significant digits to be rounded to 
+          (recommended, defaults to 4)
+
+    Note: This function will be deprecated after 21 Dec 2019. Use
+    round_sig_figs instead.
+    """
+    warnings.warn(
+        'round_sf will be deprecated after 21 Dec 2019. Use '
+            'round_sig_figs instead.',
+        FutureWarning
+    )
+    round_sig_figs(num, figs = figs)
 
 @optional_units([0, 1], ['num', 'step'])
 def _stepper(num, step=10, func=round):

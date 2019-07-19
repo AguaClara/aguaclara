@@ -1,5 +1,5 @@
 from aguaclara.research.procoda_parser import *
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import pandas as pd
 import numpy as np
 from scipy import special
@@ -111,7 +111,7 @@ def ANC_closed(pH, total_carbonates):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import ANC_closed
-    >>> from aguaclara.core.units import unit_registry as u
+    >>> from aguaclara.core.units import u
     >>> round(ANC_closed(10, 1*u.mol/u.L), 7)
     <Quantity(1.359831, 'equivalent / liter')>
     """
@@ -193,7 +193,7 @@ def O2_sat(P_air, temp):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import O2_sat
-    >>> from aguaclara.core.units import unit_registry as u
+    >>> from aguaclara.core.units import u
     >>> round(O2_sat(1*u.atm , 300*u.kelvin), 7)
     <Quantity(8.0931572, 'milligram / liter')>
     """
@@ -254,7 +254,7 @@ def CMFR(t, C_initial, C_influent):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import CMFR
-    >>> from aguaclara.core.units import unit_registry as u
+    >>> from aguaclara.core.units import u
     >>> round(CMFR(0.1, 0*u.mg/u.L, 10*u.mg/u.L), 7)
     <Quantity(0.9516258, 'milligram / liter')>
     >>> round(CMFR(0.9, 5*u.mg/u.L, 10*u.mg/u.L), 7)
@@ -331,7 +331,7 @@ def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import Tracer_CMFR_N
-    >>> from aguaclara.core.units import unit_registry as u
+    >>> from aguaclara.core.units import u
     >>> Tracer_CMFR_N([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 3)
     <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423], 'milligram / liter')>
     """
@@ -391,7 +391,7 @@ def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import Tracer_AD_Pe
-    >>> from aguaclara.core.units import unit_registry as u
+    >>> from aguaclara.core.units import u
     >>> Tracer_AD_Pe([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 5)
     <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], 'milligram / liter')>
 

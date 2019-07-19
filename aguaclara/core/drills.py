@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Lists of drill bit diameters."""
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 import numpy as np
 
