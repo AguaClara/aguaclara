@@ -9,20 +9,20 @@ import numpy as np
 import os.path
 
 dir_path = os.path.dirname(__file__)
-csv_path = os.path.join(dir_path, '/../core/data/pipe_database.csv')
-with open(csv_path) as pipedbfile:
-    pipedb = pd.read_csv(pipedbfile).to_numpy()
+pipe_database_path = os.path.join(dir_path, 'data/pipe_database.csv')
+with open(pipe_database_path) as pipe_database_file:
+    pipe_database = pd.read_csv(pipe_database_file)
 
 ND_all_available = []
-for i in range(len(pipedb['NDinch'])):
-    if pipedb.iloc[i, 4] == 1:
-        ND_all_available.append((pipedb['NDinch'][i]))
+for i in range(len(pipe_database['NDinch'])):
+    if pipe_database.iloc[i, 4] == 1:
+        ND_all_available.append((pipe_database['NDinch'][i]))
 NDs = ND_all_available * u.inch
 
 ID_SCH40_all_available = []
-for i in range(len(pipedb['NDinch'])):
-    if pipedb.iloc[i, 4] == 1:
-        ID_SCH40_all_available.append((pipedb['ID_SCH40'][i]))
+for i in range(len(pipe_database['NDinch'])):
+    if pipe_database.iloc[i, 4] == 1:
+        ID_SCH40_all_available.append((pipe_database['ID_SCH40'][i]))
 ID_SCH40s = ID_SCH40_all_available * u.inch
 
 class PipelineComponent(Component):
@@ -71,8 +71,8 @@ class Pipe(PipelineComponent):
     @property
     def od(self):
         """The outer diameter of the pipe"""
-        index = (np.abs(np.array(pipedb['NDinch']) - self.size.magnitude)).argmin()
-        return pipedb.iloc[index, 1] * u.inch
+        index = (np.abs(np.array(pipe_database['NDinch']) - self.size.magnitude)).argmin()
+        return pipe_database.iloc[index, 1] * u.inch
 
     def _get_size(self, id_, spec):
         """Get the size of """
@@ -91,7 +91,7 @@ class Pipe(PipelineComponent):
         return size.magnitude * (sdr - 2) / sdr
 
     def _id_sch40(self, size):
-        myindex = (np.abs(np.array(pipedb['NDinch']) - size.magnitude)).argmin()
+        myindex = (np.abs(np.array(pipe_database['NDinch']) - size.magnitude)).argmin()
         return ID_SCH40s[myindex]
 
     def nd_sdr(self, id_, sdr):
