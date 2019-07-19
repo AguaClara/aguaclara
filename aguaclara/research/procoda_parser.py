@@ -1,4 +1,4 @@
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta

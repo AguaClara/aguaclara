@@ -13,7 +13,7 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipe
 import aguaclara.core.utility as ut
 import aguaclara.core.drills as drills
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 from aguaclara.design.component import Component
 
 import numpy as np

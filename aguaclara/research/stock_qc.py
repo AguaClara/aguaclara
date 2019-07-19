@@ -1,4 +1,4 @@
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 
 class Stock(object):
@@ -30,7 +30,7 @@ class Variable_C_Stock(Stock):
     :Examples:
 
     >>> from aguaclara.research.stock_qc import Variable_C_Stock
-    >>> from aguaclara.core.units import unit_registry as u
+    >>> from aguaclara.core.units import u
     >>> reactor = Variable_C_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, Q_stock = .01*u.mL/u.s)
     >>> reactor.C_stock()
     <Quantity(140.0, 'milligram / liter')>
@@ -154,7 +154,7 @@ class Variable_Q_Stock(Stock):
     :Examples:
 
     >>> from aguaclara.research.stock_qc import Variable_Q_Stock
-    >>> from aguaclara.core.units import unit_registry as u
+    >>> from aguaclara.core.units import u
     >>> reactor = Variable_Q_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, C_stock = 7.6*u.mg/u.L)
     >>> reactor.Q_stock()
     <Quantity(0.18421052631578946, 'milliliter / second')>

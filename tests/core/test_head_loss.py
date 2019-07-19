@@ -1,6 +1,6 @@
 import unittest
 import aguaclara.core.head_loss as k
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 from aguaclara.core import pipes as pipe
 
 """ There are still many cases to test."""

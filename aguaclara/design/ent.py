@@ -15,7 +15,7 @@ import aguaclara.core.head_loss as hl
 import aguaclara.core.materials as mat
 import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipe
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import aguaclara.core.utility as ut
 
 from aguaclara.design.component import Component
