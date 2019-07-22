@@ -373,6 +373,10 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
               )
             )
 
+def elbow_minor_loss(q, id_, k):
+    vel = q / pc.area_circle(id_)
+    minor_loss = k * vel ** 2 / 2 * con.GRAVITY
+    return minor_loss
 
 @u.wraps(u.m**3/u.s, [u.m, u.m], False)
 @ut.list_handler()
