@@ -15,7 +15,7 @@ import aguaclara.core.head_loss as hl
 import aguaclara.core.materials as mat
 import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipe
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import aguaclara.core.utility as ut
 
 from aguaclara.design.component import Component
@@ -79,7 +79,7 @@ class EntranceTank(Component):
                                 nu,
                                 mat.PVC_PIPE_ROUGH,
                                 k_minor)
-        return drain_id
+        return drain_id.to(u.cm)
 
     @property
     def drain_nd(self):
@@ -114,8 +114,8 @@ class EntranceTank(Component):
                     self.plate_n * self.floc_chan_w * self.plate_capture_vel *
                     np.cos(self.plate_angle.to(u.rad))
                 )
-            ) - (self.plate_s * np.tan(self.plate_angle.to(u.rad))).to(u.cm)
-        plate_l_rounded = ut.ceil_step(plate_l, 1.0 * u.cm)
+            ) - (self.plate_s * np.tan(self.plate_angle.to(u.rad)))
+        plate_l_rounded = ut.ceil_step(plate_l.to(u.cm), 1.0 * u.cm)
         return plate_l_rounded
 
     @property

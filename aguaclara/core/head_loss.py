@@ -8,7 +8,7 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mats
 import aguaclara.core.utility as ut
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 import numpy as np
 
