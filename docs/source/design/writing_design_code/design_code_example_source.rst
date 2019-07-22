@@ -1,4 +1,4 @@
-.. _design_code_example:
+.. _design_code_example_source:
 
 ****************************************************
 Source code for aguaclara.design.design_code_example
