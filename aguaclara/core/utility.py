@@ -135,6 +135,9 @@ def stepceil_with_units(param, step, unit):
         counter += step * unit
     return counter
 
+# TODO: I'm not sure if these next two functions work for unsorted arrays, so it
+# would be good to check in the future -Oliver Leung (oal22), 19 Jul '19
+
 def floor_nearest(x, array):
     """Get the nearest element of a NumPy array less than or equal to a value.
 
