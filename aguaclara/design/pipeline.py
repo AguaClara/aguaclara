@@ -14,6 +14,11 @@ _pipe_database_path = os.path.join(_dir_path, 'data/pipe_database.csv')
 with open(_pipe_database_path) as pipe_database_file:
     _pipe_database = pd.read_csv(pipe_database_file)
 
+_90_deg_elbow_database_path = \
+    os.path.join(_dir_path, 'data/90_deg_elbow_database.csv')
+with open(_90_deg_elbow_database_path) as _90_deg_elbow_database_file:
+    _90_deg_elbow_database = pd.read_csv(_90_deg_elbow_database_file)
+
 # TODO: Once we support a Pint version that supports use with Pandas DataFrame's
 # (>=0.10.0), we can assign units to DataFrame's rather than converting them to
 # NumPy arrays.
@@ -23,9 +28,29 @@ AVAILABLE_SIZES = _available_sizes_raw.to_numpy() * u.inch
 _available_ids_sch40_raw = _pipe_database.query('Used==1')['ID_SCH40']
 AVAILABLE_IDS_SCH40 = _available_ids_sch40_raw.to_numpy() * u.inch
 
+_available_90_deg_elbow_sizes_raw = \
+    _90_deg_elbow_database.query('Used==1')['size']
+AVAILABLE_90_DEG_ELBOW_SIZES = \
+    _available_90_deg_elbow_sizes_raw.to_numpy() * u.inch
+
+_available_90_deg_elbow_ids_raw = \
+    _90_deg_elbow_database.query('Used==1')['id_inch']
+AVAILABLE_90_DEG_ELBOW_IDS = _available_90_deg_elbow_ids_raw.to_numpy() * u.inch
+
 
 class PipelineComponent(Component):
     def __init__(self, **kwargs):
+        if type(self) is PipelineComponent:
+            raise Exception(
+                'The PipelineComponent class should not be instantiated. Instead, '
+                'instantiate a Pipe or Elbow.'
+            )
+        if all (key in kwargs for key in ('size', 'id')):
+            raise AttributeError(
+                'A Pipe or Elbow must be instantiated with either the size '
+                'or inner diameter, but not both.'
+            )
+
         self.size = 1 / 8 * u.inch
         super().__init__(**kwargs)
 
@@ -40,12 +65,6 @@ class Pipe(PipelineComponent):
     AVAILABLE_SPECS = ['sdr26', 'sdr41', 'sch40']
 
     def __init__(self, **kwargs):
-        if all (key in kwargs for key in ('size', 'id')):
-            raise AttributeError(
-                'Pipe must be instantiated with either the size or inner '
-                'diameter, but not both.'
-            )
-
         self.id = 0.3842 * u.inch
         self.spec = 'sdr41'
         self.length = 1 * u.m
@@ -91,7 +110,7 @@ class Pipe(PipelineComponent):
         return super().get_available_size(nd_approx)
 
     def _get_size_sch40(self, id_):
-        myindex = (np.abs(ID_SCH40s - id_.magnitude)).argmin()
+        myindex = (np.abs(AVAILABLE_IDS_SCH40 - id_.magnitude)).argmin()
         return AVAILABLE_SIZES[myindex]
 
     def ID_SDR_all_available(self, SDR):
@@ -102,19 +121,52 @@ class Pipe(PipelineComponent):
         """
         ID = []
         for i in range(len(AVAILABLE_SIZES)):
-            ID.append(self._get_id_sdr(NDs[i], SDR).magnitude)
+            ID.append(self._get_id_sdr(AVAILABLE_SIZES[i], SDR).magnitude)
         return ID * u.inch
 
 class Elbow(PipelineComponent):
-     """This class calculates necessary functions and holds fields for connectors"""
-     def __init__(self, **kwargs):
+    """This class calculates necessary functions and holds fields for connectors"""
+    def __init__(self, **kwargs):
+        if all (key in kwargs for key in ('size', 'id')):
+            raise AttributeError(
+                'Elbow must be instantiated with either the size or inner '
+                'diameter, but not both.'
+            )
+        
+        self.angle = 90 * u.deg
+        self.id = 0.417 * u.inch
+        super().__init__(self, **kwargs)
+        
+        # TODO: Add more angles once their data pts are added.
+        if self.angle not in (90 * u.deg):
+            raise ValueError('angle must be 90 * u.deg')
 
-         super().__init__(self, **kwargs)
-    # angle
+        if 'size' in kwargs:
+            self.id = self._get_id(self.size)
+        elif 'id' in kwargs:
+            self.size = self._get_size(self.id)
+    
+    def _get_size(self, id_):
+        """Get the size of """
+        id_ = id_.to(u.inch)
+        myindex = (
+                np.abs(
+                    np.array(_90_deg_elbow_database['id_inch']) - id_.magnitude
+                )
+            ).argmin()
+        return AVAILABLE_90_DEG_ELBOW_SIZES[myindex]
+
+    def _get_id(self, size):
+        size = size.to(u.inch)
+        myindex = (
+                np.abs(
+                    np.array(_90_deg_elbow_database['size']) - size.magnitude
+                )
+            ).argmin()
+        return AVAILABLE_90_DEG_ELBOW_IDS[myindex]
 
 
 class Pipeline(PipelineComponent):
-# @u.wraps(u.m**3/u.s, [u.m, u.m, None, u.m], False)
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
