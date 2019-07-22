@@ -395,6 +395,15 @@
             ],
             "version": "==0.15.post1"
         },
+        "enum34": {
+            "hashes": [
+                "sha256:2d81cbbe0e73112bdfe6ef8576f2238f2ba27dd0d55752a776c41d38b7da2850",
+                "sha256:644837f692e5f550741432dd3f223bbb9852018674981b1664e5dc339387588a",
+                "sha256:6bd0f6ad48ec2aa117d3d141940d484deccda84d4fcd884f5c3d93c23ecd8c79",
+                "sha256:8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1"
+            ],
+            "version": "==1.1.6"
+        },
         "idna": {
             "hashes": [
                 "sha256:c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407",
@@ -580,11 +589,20 @@
             ],
             "version": "==1.16.4"
         },
-        "onshapepy": {
+        "oauthlib": {
             "hashes": [
-                "sha256:9cf59d33359ece5f3f1566e9f6773c18a9fdf23b6cc758ee971861d074cc4783"
+                "sha256:40a63637707e9163eda62d0f5345120c65e001a790480b8256448543c1f78f66",
+                "sha256:b4d99ae8ccfb7d33ba9591b59355c64eef5241534aa3da2e4c0435346b84bc8e"
             ],
-            "version": "==0.0.18"
+            "version": "==3.0.2"
+        },
+        "onshape-client": {
+            "hashes": [
+                "sha256:389ebe2c701e733d1a1fef329b2de6642c453153e10b069face51a2af5a8da54",
+                "sha256:4aea9c361394966231d69f16c98442428daab605f9167146a533defc034dc26c"
+            ],
+            "index": "pypi",
+            "version": "==0.0.25"
         },
         "packaging": {
             "hashes": [
@@ -612,6 +630,12 @@
             ],
             "index": "pypi",
             "version": "==0.25.0"
+        },
+        "pathlib": {
+            "hashes": [
+                "sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f"
+            ],
+            "version": "==1.0.1"
         },
         "pint": {
             "hashes": [
@@ -707,6 +731,13 @@
                 "sha256:9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"
             ],
             "version": "==2.22.0"
+        },
+        "requests-oauthlib": {
+            "hashes": [
+                "sha256:bd6533330e8748e94bf0b214775fed487d309b8b8fe823dc45641ebcd9a32f57",
+                "sha256:d3ed0c8f2e3bbc6b344fa63d6f933745ab394469da38db16bdddb461c7e25140"
+            ],
+            "version": "==1.2.0"
         },
         "rope": {
             "hashes": [
