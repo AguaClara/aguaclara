@@ -16,7 +16,7 @@ aguaclara = {editable = true, path = "."}
 autopep8 = "*"
 codecov = "*"
 coverage = "*"
-docutils = "==0.15" # Avoids installing nonexistent 0.15.post1
+docutils = "==0.15" # See https://github.com/pypa/pipenv/issues/3865
 pylint = "*"
 pytest = "*"
 pytest-cov = "*"
