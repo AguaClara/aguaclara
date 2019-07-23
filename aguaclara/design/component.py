@@ -29,7 +29,34 @@ import aguaclara.core.utility as ut
 
 import numpy as np
 import json
+from onshape_client.client import Client
+from onshape_client.onshape_url import ConfiguredOnshapeElement
 from pprint import pprint
+
+
+# I've placed Onshape authorization functionality in this module since it works
+# with Component objects, while not being unique to a given Component object.
+# Placing it within the Component class or in its own aguaclara.design.onshape
+# module are potential alternatives. - Oliver Leung (oal22) 23 Jul '19
+client = None
+
+def authorize_onshape(config_file_path="~/.onshape_client_config.yaml",
+                      configuration=None):
+    # Check if the client was already instantiated.
+    global client
+    if client:
+        raise Exception('Onshape has already been authorized.')
+
+    try:
+        client = Client(
+            keys_file = config_file_path,
+            configuration = configuration
+        )
+    except (FileNotFoundError, KeyError):
+        raise Exception(
+            'A configuration dictionary was not given, and the configuration '
+            'file either doesn\'t exist or is invalid.'
+        )
 
 
 class Component(object):

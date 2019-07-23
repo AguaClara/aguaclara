@@ -27,7 +27,7 @@ from aguaclara.core.units import u
 import aguaclara.core.utility as ut
 
 from aguaclara.design.cdc import CDC
-from aguaclara.design.component import Component
+from aguaclara.design.component import Component, authorize_onshape
 from aguaclara.design.ent_floc import EntTankFloc
 from aguaclara.design.ent import EntranceTank
 from aguaclara.design.filter import Filter
@@ -56,7 +56,6 @@ def set_sig_figs(n=4):
     """
     u.default_format = '.' + str(n) + 'g'
     pd.options.display.float_format = ('{:,.' + str(n) + '}').format
-
 
 set_sig_figs()
 matplotlib.style.use('ggplot')
