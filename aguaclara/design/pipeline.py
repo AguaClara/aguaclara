@@ -80,7 +80,7 @@ class PipelineComponent(Component, ABC):
     def set_next_components_q(self):
         if self.next is not None:
             self.next.q = self.q
-            self.next.set_q()
+            self.next.set_next_components_q()
 
     def flow_pipeline(self, target_headloss):
         """
@@ -240,3 +240,73 @@ class Elbow(PipelineComponent):
     @property
     def headloss(self):
         return pc.elbow_minor_loss(self.q, self.id, self.k_minor).to(u.m)
+
+
+class Tee(PipelineComponent):
+
+    AVAILABLE_PATHS = ['branch', 'run', 'stopper']
+    
+    def __init__(self, **kwargs):
+        
+        self.left = None
+        self.left_type = 'branch'
+        self.left_k_minor = None
+
+        self.right = None
+        self.right_type = 'stopper'
+        self.right_k_minor = None
+        
+        self.id = 0.417 * u.inch
+
+        super().__init__(**kwargs)
+        self.rep_ok()
+        
+        if self.left_type == 'branch':
+            self.left_k_minor = hl.TEE_FLOW_BR_K_MINOR
+        elif self.left_type == 'run':
+            self.left_k_minor = hl.TEE_FLOW_RUN_K_MINOR
+        elif self.left_type == 'stopper':
+            self.left_k_minor = None
+
+        if self.right_type == 'branch':
+            self.right_k_minor = hl.TEE_FLOW_BR_K_MINOR
+        elif self.right_type == 'run':
+            self.right_k_minor = hl.TEE_FLOW_RUN_K_MINOR
+        elif self.right_type == 'stopper':
+            self.right_k_minor = None
+        
+        if self.left_type == 'stopper':
+            self.next = self.right
+        else:
+            self.next = self.left
+    
+    @property
+    def _headloss_left(self):
+        return pc.elbow_minor_loss(self.q, self.id, self.left_k_minor).to(u.m)
+
+    @property
+    def _headloss_right(self):
+        return pc.elbow_minor_loss(self.q, self.id, self.right_k_minor).to(u.m)
+
+    @property
+    def headloss(self):
+        if self.left_type =='stopper':
+            return self._headloss_right
+        else:
+            return self._headloss_left 
+            
+    def rep_ok(self):
+        if [self.left_type, self.right_type].count('stopper') != 1:
+            raise ValueError('All tees must have one stopper.')
+        if self.left_type not in self.AVAILABLE_PATHS:
+            raise ValueError(
+                'type of branch for left outlet must be in ', 
+                self.AVAILABLE_PATHS)
+        
+        if self.right_type not in self.AVAILABLE_PATHS:
+            raise ValueError(
+                'type of branch for right outlet must be in ', 
+                self.AVAILABLE_PATHS)
+
+        if self.next is not None and self.size != self.next.size:
+            raise ValueError('The next component doesn\'t have the same size.')
