@@ -9,16 +9,17 @@ from aguaclara.design.component import Component
 import pandas as pd
 import numpy as np
 import os.path
+from abc import ABC, abstractmethod
 
 _dir_path = os.path.dirname(__file__)
 _pipe_database_path = os.path.join(_dir_path, 'data/pipe_database.csv')
 with open(_pipe_database_path) as pipe_database_file:
     _pipe_database = pd.read_csv(pipe_database_file)
 
-_90_deg_elbow_database_path = \
-    os.path.join(_dir_path, 'data/90_deg_elbow_database.csv')
-with open(_90_deg_elbow_database_path) as _90_deg_elbow_database_file:
-    _90_deg_elbow_database = pd.read_csv(_90_deg_elbow_database_file)
+_elbow_database_path = \
+    os.path.join(_dir_path, 'data/elbow_database.csv')
+with open(_elbow_database_path) as _elbow_database_file:
+    _elbow_database = pd.read_csv(_elbow_database_file)
 
 # TODO: Once we support a Pint version that supports use with Pandas DataFrame's
 # (>=0.10.0), we can assign units to DataFrame's rather than converting them to
@@ -29,96 +30,93 @@ AVAILABLE_SIZES = _available_sizes_raw.to_numpy() * u.inch
 _available_ids_sch40_raw = _pipe_database.query('Used==1')['ID_SCH40']
 AVAILABLE_IDS_SCH40 = _available_ids_sch40_raw.to_numpy() * u.inch
 
-_available_90_deg_elbow_sizes_raw = \
-    _90_deg_elbow_database.query('Used==1')['size']
-AVAILABLE_90_DEG_ELBOW_SIZES = \
-    _available_90_deg_elbow_sizes_raw.to_numpy() * u.inch
+_available_elbow_sizes_raw = \
+    _elbow_database.query('Used==1')['size']
+AVAILABLE_ELBOW_SIZES = \
+    _available_elbow_sizes_raw.to_numpy() * u.inch
 
-_available_90_deg_elbow_ids_raw = \
-    _90_deg_elbow_database.query('Used==1')['id_inch']
-AVAILABLE_90_DEG_ELBOW_IDS = _available_90_deg_elbow_ids_raw.to_numpy() * u.inch
+_available_elbow_ids_raw = \
+    _elbow_database.query('Used==1')['id_inch']
+AVAILABLE_ELBOW_IDS = _available_elbow_ids_raw.to_numpy() * u.inch
 
 
-class PipelineComponent(Component):
-
-    PVC_ROUGH = 0.12 * u.mm
+class PipelineComponent(Component, ABC):
 
     def __init__(self, **kwargs):
-        if type(self) is PipelineComponent:
-            raise Exception(
-                'The PipelineComponent class should not be instantiated. Instead, '
-                'instantiate a Pipe or Elbow.'
-            )
         if all (key in kwargs for key in ('size', 'id')):
             raise AttributeError(
-                'A Pipe or Elbow must be instantiated with either the size '
+                'A PipelineComponent must be instantiated with either the size '
                 'or inner diameter, but not both.'
             )
 
         self.size = 1 / 8 * u.inch
+        self.temp = 20 * u.degC
+        self.nu = pc.viscosity_kinematic(self.temp)
+        self.next = None
+        self.k_minor = 0
+
         super().__init__(**kwargs)
+
+        if type(self) is type(self.next):
+            raise TypeError('Pipeline components cannot be repeated.')
 
         self.size = self.get_available_size(self.size)
 
     def get_available_size(self, size):
         """Return the next larger size which is available."""
         return ut.ceil_nearest(size, AVAILABLE_SIZES)
-    
-    def headloss_pipeline(self, ):
-    
+
+    @abstractmethod
     def headloss(self):
-        return super().headloss_pipeline(self.left) + super().headloss_pipeline(self.right)
+        pass
 
+    @property
+    def headloss_pipeline(self):
+        if self.next is None:
+            return self.headloss
+        else:
+            return self.headloss + self.next.headloss_pipeline
+    
+    def set_next_components_q(self):
+        if self.next is not None:
+            self.next.q = self.q
+            self.next.set_q()
 
-
-
-    def flow_pipeline(self, diameters, lengths, k_minors, target_headloss,
-                    nu=con.WATER_NU, pipe_rough=mats.PVC_PIPE_ROUGH):
+    def flow_pipeline(self, target_headloss):
         """
         This function takes a single pipeline with multiple sections, each potentially with different diameters,
         lengths and minor loss coefficients and determines the flow rate for a given headloss.
-
-        :param diameters: list of diameters, where the i_th diameter corresponds to the i_th pipe section
-        :type diameters: numpy.ndarray
-        :param lengths: list of diameters, where the i_th diameter corresponds to the i_th pipe section
-        :type lengths: numpy.ndarray
-        :param k_minors: list of diameters, where the i_th diameter corresponds to the i_th pipe section
-        :type k_minors: numpy.ndarray
-        :param target_headloss: a single headloss describing the total headloss through the system
-        :type target_headloss: float
-        :param nu: The fluid dynamic viscosity of the fluid. Defaults to water at room temperature (1 * 10**-6 * m**2/s)
-        :type nu: float
-        :param pipe_rough:  The pipe roughness. Defaults to PVC roughness.
-        :type pipe_rough: float
-
-        :return: the total flow through the system
-        :rtype: float
         """
-
-        # Ensure all the arguments except total headloss are the same length
-        #TODO
-
-        # Total number of pipe lengths
-        n = diameters.size
-
-        # Start with a flow rate guess based on the flow through a single pipe section
-        flow = pc.flow_pipe(diameters[0], target_headloss, lengths[0], nu, pipe_rough, k_minors[0])
+        if type(self) is Pipe:
+            flow = pc.flow_pipe(self.id, 
+                    target_headloss, 
+                    self.length, 
+                    self.nu,
+                    self.pipe_rough, 
+                    self.k_minor)
+        else:
+            try:
+                flow = pc.flow_pipe(
+                    self.next.id,
+                    target_headloss,
+                    self.next.length,
+                    self.next.nu,
+                    self.next.pipe_rough,
+                    self.next.k_minor)
+            except AttributeError:
+                raise AttributeError('Neither of the first two components in'
+                    'this pipeline are Pipe objects.')
         err = 1.0
-
-        # Add all the pipe length headlosses together to test the error
+        headloss = self.headloss_pipeline
+        
         while abs(err) > 0.01 :
-            headloss = sum([pc.headloss(flow, diameters[i], lengths[i], nu, pipe_rough,
-                                        k_minors[i]).to(u.m).magnitude for i in range(n)])
-            # Test the error. This is always less than one.
             err = (target_headloss - headloss) / (target_headloss + headloss)
-            # Adjust the total flow in the direction of the error. If there is more headloss than target headloss,
-            # The flow should be reduced, and vice-versa.
             flow = flow + err * flow
-
+            self.q = flow
+            self.set_next_components_q()
+            headloss = self.headloss_pipeline
         return flow
-
-
-
+        
 class Pipe(PipelineComponent):
     AVAILABLE_SPECS = ['sdr26', 'sdr41', 'sch40']
 
@@ -126,7 +124,7 @@ class Pipe(PipelineComponent):
         self.id = 0.3842 * u.inch
         self.spec = 'sdr41'
         self.length = 1 * u.m
-        self.next = None
+        self.pipe_rough = mats.PVC_PIPE_ROUGH
 
         super().__init__(**kwargs)
 
@@ -137,6 +135,10 @@ class Pipe(PipelineComponent):
             self.id = self._get_id(self.size, self.spec)
         elif 'id' in kwargs:
             self.size = self._get_size(self.id, self.spec)
+
+        if self.next is not None and self.size != self.next.size:
+            raise ValueError('size of the next pipeline component must be the',
+            'same size as the current pipeline component')
             
     @property
     def od(self):
@@ -152,9 +154,9 @@ class Pipe(PipelineComponent):
             return self._get_size_sch40(id_)
 
     def _get_id(self, size, spec):
-        if spec[:3] is 'sdr':
+        if spec[:3] == 'sdr':
             return self._get_id_sdr(size, int(spec[3:]))
-        elif spec is 'sch40':
+        elif spec == 'sch40':
             return self._get_id_sch40(size)
 
     def _get_id_sdr(self, size, sdr):
@@ -182,57 +184,59 @@ class Pipe(PipelineComponent):
         for i in range(len(AVAILABLE_SIZES)):
             ID.append(self._get_id_sdr(AVAILABLE_SIZES[i], SDR).magnitude)
         return ID * u.inch
-
-    def headloss(self, nu):
+    
+    @property
+    def headloss(self):
         """Return the total head loss from major and minor losses in a pipe."""
         return pc.headloss_fric(
-                self.q, self.id, self.length, nu, self.PVC_ROUGH
-            ).magnitude
+                self.q, self.id, self.length, self.nu, self.pipe_rough
+            )
+    
 
 class Elbow(PipelineComponent):
-    """This class calculates necessary functions and holds fields for connectors"""
+
+    AVAILABLE_ANGLES = [90 * u.deg, 45 * u.deg]
+
     def __init__(self, **kwargs):
-        if all (key in kwargs for key in ('size', 'id')):
-            raise AttributeError(
-                'Elbow must be instantiated with either the size or inner '
-                'diameter, but not both.'
-            )
-        
         self.angle = 90 * u.deg
         self.id = 0.417 * u.inch
-        self.next = None
-        super().__init__(self, **kwargs)
-        
-        # TODO: Add more angles once their data pts are added.
-        if self.angle not in (90 * u.deg):
-            raise ValueError('angle must be 90 * u.deg')
+
+        super().__init__(**kwargs)
+
+        if self.angle == 45 * u.deg:
+            self.k_minor = hl.EL45_K_MINOR
+        elif self.angle == 90 * u.deg:
+            self.k_minor = hl.EL90_K_MINOR
+        else:
+            raise ValueError('angle must be in ', self.AVAILABLE_ANGLES)
 
         if 'size' in kwargs:
             self.id = self._get_id(self.size)
         elif 'id' in kwargs:
             self.size = self._get_size(self.id)
+
+        if self.next is not None and self.size != self.next.size:
+            raise ValueError('The next component doesn\'t have the same size.')
     
     def _get_size(self, id_):
         """Get the size of """
         id_ = id_.to(u.inch)
         myindex = (
                 np.abs(
-                    np.array(_90_deg_elbow_database['id_inch']) - id_.magnitude
+                    AVAILABLE_ELBOW_IDS - id_
                 )
             ).argmin()
-        return AVAILABLE_90_DEG_ELBOW_SIZES[myindex]
+        return AVAILABLE_ELBOW_SIZES[myindex]
 
     def _get_id(self, size):
         size = size.to(u.inch)
         myindex = (
                 np.abs(
-                    np.array(_90_deg_elbow_database['size']) - size.magnitude
+                    AVAILABLE_ELBOW_SIZES - size
                 )
             ).argmin()
-        return AVAILABLE_90_DEG_ELBOW_IDS[myindex]
+        return AVAILABLE_ELBOW_IDS[myindex]
 
+    @property
     def headloss(self):
-        return pc.elbow_minor_loss(self.q, self.id, hl.EL90_K_MINOR)
-
-#Pipe(length = 5, next = elbow(angle = 45, next = t(left = pipe(next = elbow), right = pipe())))
-
+        return pc.elbow_minor_loss(self.q, self.id, self.k_minor).to(u.m)
