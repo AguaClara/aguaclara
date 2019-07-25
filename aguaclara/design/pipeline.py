@@ -25,19 +25,17 @@ with open(_fitting_database_path) as _fitting_database_file:
 # (>=0.10.0), we can assign units to DataFrame's rather than converting them to
 # NumPy arrays.
 _available_sizes_raw = _pipe_database.query('Used==1')['NDinch']
-AVAILABLE_SIZES = _available_sizes_raw.to_numpy() * u.inch
+AVAILABLE_SIZES = np.array(_available_sizes_raw) * u.inch
 
 _available_ids_sch40_raw = _pipe_database.query('Used==1')['ID_SCH40']
-AVAILABLE_IDS_SCH40 = _available_ids_sch40_raw.to_numpy() * u.inch
+AVAILABLE_IDS_SCH40 = np.array(_available_ids_sch40_raw) * u.inch
 
-_available_fitting_sizes_raw = \
-    _fitting_database.query('Used==1')['size']
-AVAILABLE_FITTING_SIZES = \
-    _available_fitting_sizes_raw.to_numpy() * u.inch
 
-_available_fitting_ids_raw = \
-    _fitting_database.query('Used==1')['id_inch']
-AVAILABLE_FITTING_IDS = _available_fitting_ids_raw.to_numpy() * u.inch
+_available_fitting_sizes_raw = _fitting_database.query('Used==1')['size']
+AVAILABLE_FITTING_SIZES = np.array(_available_fitting_sizes_raw) * u.inch
+
+_available_fitting_ids_raw = _fitting_database.query('Used==1')['id_inch']
+AVAILABLE_FITTING_IDS = np.array(_available_fitting_ids_raw)* u.inch
 
 
 class PipelineComponent(Component, ABC):
@@ -60,10 +58,12 @@ class PipelineComponent(Component, ABC):
         if type(self) is type(self.next):
             raise TypeError('Pipeline components cannot be repeated.')
 
-        self.size = self.get_available_size(self.size)
+    #     self.size = self.get_available_size(self.size)
 
     def get_available_size(self, size):
         """Return the next larger size which is available."""
+        print(5)
+        print(ut.ceil_nearest(size, AVAILABLE_SIZES))
         return ut.ceil_nearest(size, AVAILABLE_SIZES)
 
     @abstractmethod
@@ -130,10 +130,10 @@ class Pipe(PipelineComponent):
 
         if self.spec not in self.AVAILABLE_SPECS:
             raise AttributeError('spec must be one of:', self.AVAILABLE_SPECS)
-
         if 'size' in kwargs:
             self.id = self._get_id(self.size, self.spec)
         elif 'id' in kwargs:
+            print(1)
             self.size = self._get_size(self.id, self.spec)
 
         if self.next is not None and self.size != self.next.size:
@@ -147,10 +147,14 @@ class Pipe(PipelineComponent):
         return _pipe_database.iloc[index, 1] * u.inch
 
     def _get_size(self, id_, spec):
+        print(2)
+        print(spec)
         """Get the size of """
-        if spec[:3] is 'sdr':
+        if spec[:3] == 'sdr':
+            print('3a')
             return self._get_size_sdr(id_, int(spec[3:]))
-        elif spec is 'sch40':
+        elif spec == 'sch40':
+            print('3b')
             return self._get_size_sch40(id_)
 
     def _get_id(self, size, spec):
@@ -163,15 +167,16 @@ class Pipe(PipelineComponent):
         return size.magnitude * (sdr - 2) / sdr
 
     def _get_id_sch40(self, size):
-        myindex = (np.abs(np.array(_pipe_database['NDinch']) - size.magnitude)).argmin()
+        myindex = (np.abs(AVAILABLE_SIZES - size)).argmin()
         return AVAILABLE_IDS_SCH40[myindex]
 
     def _get_size_sdr(self, id_, sdr):
+        print(4)
         nd_approx = (id_ * sdr) / (sdr - 2)
         return super().get_available_size(nd_approx)
 
     def _get_size_sch40(self, id_):
-        myindex = (np.abs(AVAILABLE_IDS_SCH40 - id_.magnitude)).argmin()
+        myindex = (np.abs(AVAILABLE_IDS_SCH40 - id_)).argmin()
         return AVAILABLE_SIZES[myindex]
 
     def ID_SDR_all_available(self, SDR):
