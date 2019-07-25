@@ -16,10 +16,10 @@ _pipe_database_path = os.path.join(_dir_path, 'data/pipe_database.csv')
 with open(_pipe_database_path) as pipe_database_file:
     _pipe_database = pd.read_csv(pipe_database_file)
 
-_elbow_database_path = \
-    os.path.join(_dir_path, 'data/elbow_database.csv')
-with open(_elbow_database_path) as _elbow_database_file:
-    _elbow_database = pd.read_csv(_elbow_database_file)
+_fitting_database_path = \
+    os.path.join(_dir_path, 'data/fitting_database.csv')
+with open(_fitting_database_path) as _fitting_database_file:
+    _fitting_database = pd.read_csv(_fitting_database_file)
 
 # TODO: Once we support a Pint version that supports use with Pandas DataFrame's
 # (>=0.10.0), we can assign units to DataFrame's rather than converting them to
@@ -30,14 +30,14 @@ AVAILABLE_SIZES = _available_sizes_raw.to_numpy() * u.inch
 _available_ids_sch40_raw = _pipe_database.query('Used==1')['ID_SCH40']
 AVAILABLE_IDS_SCH40 = _available_ids_sch40_raw.to_numpy() * u.inch
 
-_available_elbow_sizes_raw = \
-    _elbow_database.query('Used==1')['size']
-AVAILABLE_ELBOW_SIZES = \
-    _available_elbow_sizes_raw.to_numpy() * u.inch
+_available_fitting_sizes_raw = \
+    _fitting_database.query('Used==1')['size']
+AVAILABLE_FITTING_SIZES = \
+    _available_fitting_sizes_raw.to_numpy() * u.inch
 
-_available_elbow_ids_raw = \
-    _elbow_database.query('Used==1')['id_inch']
-AVAILABLE_ELBOW_IDS = _available_elbow_ids_raw.to_numpy() * u.inch
+_available_fitting_ids_raw = \
+    _fitting_database.query('Used==1')['id_inch']
+AVAILABLE_FITTING_IDS = _available_fitting_ids_raw.to_numpy() * u.inch
 
 
 class PipelineComponent(Component, ABC):
@@ -223,19 +223,19 @@ class Elbow(PipelineComponent):
         id_ = id_.to(u.inch)
         myindex = (
                 np.abs(
-                    AVAILABLE_ELBOW_IDS - id_
+                    AVAILABLE_FITTING_IDS - id_
                 )
             ).argmin()
-        return AVAILABLE_ELBOW_SIZES[myindex]
+        return AVAILABLE_FITTING_SIZES[myindex]
 
     def _get_id(self, size):
         size = size.to(u.inch)
         myindex = (
                 np.abs(
-                    AVAILABLE_ELBOW_SIZES - size
+                    AVAILABLE_FITTING_SIZES - size
                 )
             ).argmin()
-        return AVAILABLE_ELBOW_IDS[myindex]
+        return AVAILABLE_FITTING_IDS[myindex]
 
     @property
     def headloss(self):
@@ -279,6 +279,11 @@ class Tee(PipelineComponent):
             self.next = self.right
         else:
             self.next = self.left
+
+        if 'size' in kwargs:
+            self.id = self._get_id(self.size)
+        elif 'id' in kwargs:
+            self.size = self._get_size(self.id)
     
     @property
     def _headloss_left(self):
@@ -294,6 +299,25 @@ class Tee(PipelineComponent):
             return self._headloss_right
         else:
             return self._headloss_left 
+
+    def _get_size(self, id_):
+        """Get the size of """
+        id_ = id_.to(u.inch)
+        myindex = (
+                np.abs(
+                    AVAILABLE_FITTING_IDS - id_
+                )
+            ).argmin()
+        return AVAILABLE_FITTING_SIZES[myindex]
+
+    def _get_id(self, size):
+        size = size.to(u.inch)
+        myindex = (
+                np.abs(
+                    AVAILABLE_FITTING_SIZES - size
+                )
+            ).argmin()
+        return AVAILABLE_FITTING_IDS[myindex]
             
     def rep_ok(self):
         if [self.left_type, self.right_type].count('stopper') != 1:
