@@ -111,7 +111,23 @@ class PipelineComponent(Component, ABC):
             self.q = flow
             self.set_next_components_q()
             headloss = self.headloss_pipeline
-        return flow
+        return flow.to(u.L / u.s)
+    
+    @abstractmethod
+    def format_print(self):
+        pass
+
+    def pprint(self):
+        if self.next is None:
+            return self.format_print()
+        else:
+            return self.format_print() + '\n' + self.next.pprint()
+ 
+    def __str__(self):
+        return self.pprint()
+        
+    def __repr__(self):
+        return self.__str__()
 
     def _rep_ok(self):
         if self.next is not None:
@@ -140,7 +156,7 @@ class Pipe(PipelineComponent):
             self.size = self._get_size(self.id, self.spec)
 
         if self.next is not None and self.size != self.next.size:
-            raise ValueError('size of the next pipeline component must be the',
+            raise ValueError('size of the next pipeline component must be the '
             'same size as the current pipeline component')
             
     @property
@@ -198,8 +214,12 @@ class Pipe(PipelineComponent):
         return pc.headloss_fric(
                 self.q, self.id, self.length, self.nu, self.pipe_rough
             )
-    
 
+    def format_print(self):
+        return 'Pipe: (OD: {}, Size: {}, ID: {}, Length: {}, Spec: {})'.format(
+            self.od, self.size, self.id, self.length, self.spec)
+   
+        
 class Elbow(PipelineComponent):
 
     AVAILABLE_ANGLES = [90 * u.deg, 45 * u.deg]
@@ -241,6 +261,9 @@ class Elbow(PipelineComponent):
     def headloss(self):
         return pc.elbow_minor_loss(self.q, self.id, self.k_minor).to(u.m)
 
+    def format_print(self):
+        return 'Elbow: (Size: {}, ID: {}, Angle: {})'.format(
+            self.size, self.id, self.angle)
 
 class Tee(PipelineComponent):
 
@@ -276,8 +299,10 @@ class Tee(PipelineComponent):
         
         if self.left_type == 'stopper':
             self.next = self.right
+            self.next_type = self.right_type
         else:
             self.next = self.left
+            self.next_type = self.left_type
 
         if 'size' in kwargs:
             self.id = self._get_id(self.size)
@@ -312,6 +337,10 @@ class Tee(PipelineComponent):
         self.size = AVAILABLE_FITTING_SIZES[myindex]        
         return AVAILABLE_FITTING_IDS[myindex]
 
+    def format_print(self):
+        return 'Tee: (Size: {}, ID: {}, Next Path Type: {})'.format(
+            self.size, self.id, self.next_type)
+    
     def _rep_ok(self):
         if [self.left_type, self.right_type].count('stopper') != 1:
             raise ValueError('All tees must have one stopper.')
