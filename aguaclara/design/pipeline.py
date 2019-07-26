@@ -47,23 +47,19 @@ class PipelineComponent(Component, ABC):
                 'or inner diameter, but not both.'
             )
 
-        self.size = 1 / 8 * u.inch
-        self.temp = 20 * u.degC
-        self.nu = pc.viscosity_kinematic(self.temp)
+        self.size = 0.5 * u.inch
+        self.nu = pc.viscosity_kinematic(20 * u.degC)
         self.next = None
         self.k_minor = 0
 
         super().__init__(**kwargs)
 
-        if type(self) is type(self.next):
-            raise TypeError('Pipeline components cannot be repeated.')
+        self._rep_ok()
 
-    #     self.size = self.get_available_size(self.size)
+        self.size = self.get_available_size(self.size)
 
     def get_available_size(self, size):
         """Return the next larger size which is available."""
-        print(5)
-        print(ut.ceil_nearest(size, AVAILABLE_SIZES))
         return ut.ceil_nearest(size, AVAILABLE_SIZES)
 
     @abstractmethod
@@ -116,12 +112,20 @@ class PipelineComponent(Component, ABC):
             self.set_next_components_q()
             headloss = self.headloss_pipeline
         return flow
+
+    def _rep_ok(self):
+        if self.next is not None:
+            if type(self) is Pipe and type(self.next) not in [Elbow, Tee]:
+                raise TypeError('Pipes must be connected with fittings.')
+            elif type(self) in [Elbow] and type(self.next) not in [Pipe]:
+                raise TypeError('Fittings must be followed by pipes.')
+            
         
 class Pipe(PipelineComponent):
     AVAILABLE_SPECS = ['sdr26', 'sdr41', 'sch40']
 
     def __init__(self, **kwargs):
-        self.id = 0.3842 * u.inch
+        self.id = 0.476 * u.inch
         self.spec = 'sdr41'
         self.length = 1 * u.m
         self.pipe_rough = mats.PVC_PIPE_ROUGH
@@ -133,7 +137,6 @@ class Pipe(PipelineComponent):
         if 'size' in kwargs:
             self.id = self._get_id(self.size, self.spec)
         elif 'id' in kwargs:
-            print(1)
             self.size = self._get_size(self.id, self.spec)
 
         if self.next is not None and self.size != self.next.size:
@@ -147,14 +150,10 @@ class Pipe(PipelineComponent):
         return _pipe_database.iloc[index, 1] * u.inch
 
     def _get_size(self, id_, spec):
-        print(2)
-        print(spec)
         """Get the size of """
         if spec[:3] == 'sdr':
-            print('3a')
             return self._get_size_sdr(id_, int(spec[3:]))
         elif spec == 'sch40':
-            print('3b')
             return self._get_size_sch40(id_)
 
     def _get_id(self, size, spec):
@@ -164,19 +163,22 @@ class Pipe(PipelineComponent):
             return self._get_id_sch40(size)
 
     def _get_id_sdr(self, size, sdr):
-        return size.magnitude * (sdr - 2) / sdr
+        self.size = super().get_available_size(size)
+        return self.size * (sdr - 2) / sdr
 
     def _get_id_sch40(self, size):
-        myindex = (np.abs(AVAILABLE_SIZES - size)).argmin()
+        self.size = super().get_available_size(size)
+        myindex = (np.abs(AVAILABLE_SIZES - self.size)).argmin()
         return AVAILABLE_IDS_SCH40[myindex]
 
     def _get_size_sdr(self, id_, sdr):
-        print(4)
-        nd_approx = (id_ * sdr) / (sdr - 2)
-        return super().get_available_size(nd_approx)
+        nd = super().get_available_size((id_ * sdr) / (sdr - 2))
+        self.id = self._get_id_sdr(nd, sdr)
+        return nd
 
     def _get_size_sch40(self, id_):
         myindex = (np.abs(AVAILABLE_IDS_SCH40 - id_)).argmin()
+        self.id = AVAILABLE_IDS_SCH40[myindex]  
         return AVAILABLE_SIZES[myindex]
 
     def ID_SDR_all_available(self, SDR):
@@ -204,7 +206,7 @@ class Elbow(PipelineComponent):
 
     def __init__(self, **kwargs):
         self.angle = 90 * u.deg
-        self.id = 0.417 * u.inch
+        self.id = 0.848 * u.inch
 
         super().__init__(**kwargs)
 
@@ -222,24 +224,17 @@ class Elbow(PipelineComponent):
 
         if self.next is not None and self.size != self.next.size:
             raise ValueError('The next component doesn\'t have the same size.')
-    
+
+
     def _get_size(self, id_):
         """Get the size of """
-        id_ = id_.to(u.inch)
-        myindex = (
-                np.abs(
-                    AVAILABLE_FITTING_IDS - id_
-                )
-            ).argmin()
+        myindex = (np.abs(AVAILABLE_FITTING_IDS - id_)).argmin()
+        self.id = AVAILABLE_FITTING_IDS[myindex]
         return AVAILABLE_FITTING_SIZES[myindex]
 
     def _get_id(self, size):
-        size = size.to(u.inch)
-        myindex = (
-                np.abs(
-                    AVAILABLE_FITTING_SIZES - size
-                )
-            ).argmin()
+        myindex = (np.abs(AVAILABLE_FITTING_SIZES - size)).argmin()
+        self.size = AVAILABLE_FITTING_SIZES[myindex]
         return AVAILABLE_FITTING_IDS[myindex]
 
     @property
@@ -261,10 +256,9 @@ class Tee(PipelineComponent):
         self.right_type = 'stopper'
         self.right_k_minor = None
         
-        self.id = 0.417 * u.inch
+        self.id = 0.848 * u.inch
 
         super().__init__(**kwargs)
-        self.rep_ok()
         
         if self.left_type == 'branch':
             self.left_k_minor = hl.TEE_FLOW_BR_K_MINOR
@@ -289,7 +283,9 @@ class Tee(PipelineComponent):
             self.id = self._get_id(self.size)
         elif 'id' in kwargs:
             self.size = self._get_size(self.id)
-    
+        
+        self._rep_ok()
+
     @property
     def _headloss_left(self):
         return pc.elbow_minor_loss(self.q, self.id, self.left_k_minor).to(u.m)
@@ -307,26 +303,19 @@ class Tee(PipelineComponent):
 
     def _get_size(self, id_):
         """Get the size of """
-        id_ = id_.to(u.inch)
-        myindex = (
-                np.abs(
-                    AVAILABLE_FITTING_IDS - id_
-                )
-            ).argmin()
+        myindex = (np.abs(AVAILABLE_FITTING_IDS - id_)).argmin()
+        self.id = AVAILABLE_FITTING_IDS[myindex]
         return AVAILABLE_FITTING_SIZES[myindex]
 
     def _get_id(self, size):
-        size = size.to(u.inch)
-        myindex = (
-                np.abs(
-                    AVAILABLE_FITTING_SIZES - size
-                )
-            ).argmin()
+        myindex = (np.abs(AVAILABLE_FITTING_SIZES - size)).argmin()
+        self.size = AVAILABLE_FITTING_SIZES[myindex]        
         return AVAILABLE_FITTING_IDS[myindex]
-            
-    def rep_ok(self):
+
+    def _rep_ok(self):
         if [self.left_type, self.right_type].count('stopper') != 1:
             raise ValueError('All tees must have one stopper.')
+            
         if self.left_type not in self.AVAILABLE_PATHS:
             raise ValueError(
                 'type of branch for left outlet must be in ', 
@@ -339,3 +328,6 @@ class Tee(PipelineComponent):
 
         if self.next is not None and self.size != self.next.size:
             raise ValueError('The next component doesn\'t have the same size.')
+        
+        if self.next is not None and type(self.next) in [Elbow, Tee]:
+             raise ValueError('Tees cannot be followed by other fittings.')
