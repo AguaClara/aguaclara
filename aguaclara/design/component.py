@@ -1,7 +1,42 @@
-"""This module allows plant component classes to
+"""Design abilities for AguaClara drinking water treatment plant components
+
+This module allows plant component classes to
 
 #. specify expert inputs and their defaults automatically
-#. propogate plant-wide design inputs throughout all of its subcomponents.
+#. propogate plant-wide design inputs throughout all of its subcomponents
+#. reconfigure Onshape Part Studios and Assemblies that represent plant
+   components.
+
+If a ``Component`` is instantiated with custom subcomponents, and the
+subcomponents have their own ``q`` and/or ``temp`` specified:
+
+.. code-block:: python
+
+    plant = Plant(
+            q = 40 * u.L / u.s,
+            filter = Filter(q = 20 * u.L / u.s)
+        )
+
+then the subcomponets will preserve their ``q`` and ``temp``:
+
+.. code-block:: python
+
+    >>> plant.q
+    40 liter / second
+    >>> plant.filter.q
+    20 liter / second
+
+Otherwise, subcomponents will inherit the main component's ``q`` and ``temp``:
+
+.. code-block:: python
+
+    >>> plant = Plant(q = 40 * u.L / u.s)
+    >>> plant.q
+    40 liter / second
+    >>> plant.filter.q
+    40 liter / second
+
+TODO: update the below example with the complete Onshape design flow.
 
 Example:
 
@@ -32,78 +67,83 @@ import json
 from onshape_client.client import Client
 from onshape_client.onshape_url import ConfiguredOnshapeElement
 from pprint import pprint
-
+from abc import ABC
 
 # I've placed Onshape authorization functionality in this module since it works
 # with Component objects, while not being unique to a given Component object.
 # Placing it within the Component class or in its own aguaclara.design.onshape
 # module are potential alternatives. - Oliver Leung (oal22) 23 Jul '19
-client = None
 
+_client = None
+"""onshape_client.client.Client: Store the initialized Client object to verify
+that Onshape has been authorized.
+"""
+
+# TODO: verify that this function appears in the Sphinx-generated docs
 def authorize_onshape(config_file_path="~/.onshape_client_config.yaml",
                       configuration=None):
-    # Check if the client was already instantiated.
-    global client
-    if client:
+    """Authorize use of the Onshape API
+    
+    TODO: explain getting access/secret keys and function params in depth.
+    """
+    global _client
+    if _client:
         raise Exception('Onshape has already been authorized.')
 
     try:
-        client = Client(
-            keys_file = config_file_path,
-            configuration = configuration
-        )
+        _client = Client(
+                keys_file = config_file_path,
+                configuration = configuration
+            )
     except (FileNotFoundError, KeyError):
         raise Exception(
-            'A configuration dictionary was not given, and the configuration '
-            'file either doesn\'t exist or is invalid.'
-        )
+                'A configuration dictionary was not given, and the '
+                'configuration file either doesn\'t exist or is invalid.'
+            )
 
 
-class Component(object):
-    """An abstract class that should be extended by other component classes.
-
-    This class provides the ability to record and propogate a configuration of
-    plant design variables for a component and all of its subcomponents.
+class Component(ABC):
+    """An abstract class representing AguaClara plant components.
+    
+    This class provides subclasses with the ability to record and propogate a
+    configuration of plant design variables (``q`` and ``temp``) for a component
+    and all of its subcomponents.
     """
     Q_DEFAULT = 20 * u.L / u.s
     TEMP_DEFAULT = 20 * u.degC
 
     def __init__(self, **kwargs):
-        if type(self) is Component:
-            raise Exception(
-                'The Component class should not be instantiated. Instead, '
-                'instantiate a class that extends Component.'
-            )
-
         self.q = self.Q_DEFAULT
         self.temp = self.TEMP_DEFAULT
+        self.onshape_url = None
+        self.element = None
 
-        # Update the Component object with new expert inputs, if any were given
+        # Update the Component with new expert inputs, if any were given
         self.__dict__.update(**kwargs)
 
+    # TODO: make this function private
     def set_subcomponents(self):
         """Set the plant-wide inputs of all subcomponents.
 
-        When a Component-type object is instantiated (the supercomponent), this
-        function will set ``q`` and ``temp`` of all subcomponents in
-        ``self.subcomponents`` to match the supercomponent. However, if the
-        supercomponent is instantiated with a subcomponent as an argument, and
-        the subcomponent is instantiated with its own ``q``/``temp``, then the
-        subcomponent's ``q``/``temp`` is used.
+        Call this function at the end of a subclass's ``__init__()`` set ``q``
+        and ``temp`` for subcomponents, except when a subcomponent specifies its
+        own custom ``q`` and ``temp``.
         """
         for subcomp in getattr(self, 'subcomponents'):
-
+            # Set the subcomponent's ``q`` and ``temp`` to match this component
+            # unless they were changed during instantiation.
             if subcomp.q == self.Q_DEFAULT:
                 subcomp.q = self.q
             if subcomp.temp == self.TEMP_DEFAULT:
                 subcomp.temp = self.temp
 
+            # Recursively set sub-subcomponents.
             if hasattr(subcomp, 'subcomponents'):
                 subcomp.set_subcomponents()
         
     def serialize_properties(self):
-        """Convert the properties (fields and ``@property`` functions) of a 
-        component into a dictionary string.
+        """Return the properties (fields and ``@property`` functions) of a 
+        component as a dictionary string.
         """
         properties = {}
         ignored_properties = [
@@ -117,9 +157,10 @@ class Component(object):
         for var_name in dir(self):
             value = getattr(self, var_name)
 
-            # Serialize subcomponents
+            # Serialize subcomponents to strings so that they are accessible by
+            # Onshape's Super Derive feature
             if isinstance(value, Component):
-                properties[var_name] = value.serialize_properties()
+                properties[var_name] = str(value.serialize_properties())
 
             # Serialize non-component properties
             elif not callable(value) and var_name not in ignored_properties:
@@ -132,7 +173,7 @@ class Component(object):
                         properties[var_name] = str(value)
                 
                 # Serialize non-iterable properties
-                except: 
+                except AttributeError: 
                     properties[var_name] = str(value)
     
         return properties
@@ -150,3 +191,19 @@ class Component(object):
         """
         json.dump(self.serialize_properties(), open(filename, mode='a'),
             indent = 4)
+
+    def configure_onshape(self):
+        global _client
+        if _client is None:
+            raise Exception(
+                'Onshape hasn\'t been authorized yet. Use the '
+                'authorize_onshape() function.'
+            )
+        
+        if self.onshape_url is None:
+            raise AttributeError(
+                'This Component object hasn\'t been connected '
+                'to an Onshape Part Studio or Assembly.'
+            )
+        
+        self.element = ConfiguredOnshapeElement(self.onshape_url)

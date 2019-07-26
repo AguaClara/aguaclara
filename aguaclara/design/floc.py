@@ -17,6 +17,8 @@ from aguaclara.design.component import Component
 
 import numpy as np
 
+from onshape_client.onshape_url import ConfiguredOnshapeElement
+
 
 class Flocculator(Component):
     """Design an AguaClara plant's flocculator.
@@ -80,7 +82,11 @@ class Flocculator(Component):
         self.dividing_wall_thickness = 15.0 * u.cm
         self.chan_n_parity = 'even'
 
-        super().__init__(**kwargs)
+        self.onshape_url = (
+            'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/93cd89de6935ef3345557187/e/d16d675f6ee5bf8fa88bca66'
+        )
+
+        super().__init__(self.onshape_url, **kwargs)
 
         if self.chan_n_parity not in ('even', 'odd', 'any'):
             raise AttributeError(
@@ -271,40 +277,8 @@ class Flocculator(Component):
         drain_ND = pipes.ND_SDR_available(self.drain_id, self.SDR)
         return drain_ND
 
-    def draw(self):
+    def configure_onshape(self):
         """Draw the Onshape flocculator model based off of this object."""
-        from onshapepy import Part
-        CAD = Part(
-            'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
-        )
-        CAD.params = {
-            'channel_L': self.chan_l,
-            'channel_W': self.chan_w,
-            'channel_H': self.end_water_depth,
-            'channel_pairs': self.chan_n/2,
-            'baffle_S': self.baffle_s,
-        }
-
-
-def print_vals():
-    # myF = floc.Flocculator(q=flow,ent_l=0*u.m,temp=Temperature,hl=50*u.cm,)
-    n = 50
-    mytemp = 15*u.degC
-    GraphQ = np.linspace(0,1,n)*200*u.L/u.s
-    myFs =np.empty(n, dtype=type(Flocculator))
-    residencetimes = np.empty(n)*u.s
-    gradients = np.empty(n)*u.Hz
-    bafflespacing = np.empty(n)*u.cm
-    channels = np.empty(n)
-    channel_w = np.empty(n)*u.cm
-    for i in range(1,n):
-        myFs[i] = Flocculator(q=GraphQ[i],temp = mytemp)
-        residencetimes[i] = myFs[i].retention_time
-        gradients[i] = myFs[i].vel_grad_avg
-        bafflespacing[i] = myFs[i].baffle_s
-        channels[i] = myFs[i].chan_n
-        channel_w[i] = myFs[i].chan_w
-
-    print(channels)
-    for w in channel_w:
-        print(w)
+        self.element = ConfiguredOnshapeElement(self.onshape_url)
+        self.element.update_current_configuration({'Channel_l': self.chan_l})
+        self.element.get_url_with_configuration()
