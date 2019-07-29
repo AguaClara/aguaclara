@@ -1,3 +1,5 @@
+.. _how_to_write_design_code:
+
 How to Write Design Code
 ========================
 

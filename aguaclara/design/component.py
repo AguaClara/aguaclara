@@ -1,32 +1,14 @@
-"""Common features for writing design classes of AguaClara plant components
+"""Component design for AguaClara drinking water treatment plants
 
 This module provides common functionality that can be used to write plant
 component design classes, such as:
 
 #. specifing expert inputs and their defaults automatically
-#. propogating global design inputs (like flow rate and water temperature)
+#. propogating plant-wide design inputs (like flow rate and water temperature)
    throughout all of its subcomponents.
 
-**Example:**
-
-.. code-block:: python
-
-    from aguaclara.design.component import *
-
-    class SubComponent(Component):
-        def __init__(self, **kwargs):
-            self.h = 3 * u.m
-
-            super().__init__(**kwargs)
-
-    class MainComponent(Component):
-        def __init__(self, **kwargs):
-            self.l = 2 * u.m
-            self.sub = SubComponent()
-            self.subcomponents = [self.sub]
-
-            super().__init__(**kwargs)
-            super().propogate_config()
+See :ref:`how_to_write_design_code` for full instructions on how to use this
+module.
 """
 from aguaclara.core.units import u
 import aguaclara.core.utility as ut
@@ -34,29 +16,20 @@ import aguaclara.core.utility as ut
 import numpy as np
 import json
 from pprint import pprint
+from abc import ABC
 
 
-class Component(object):
-    """An abstract class that should be extended by other component classes.
+class Component(ABC):
+    """An abstract class that represents a component in an AguaClara drinking
+    water treatment plant.
 
     This class provides the ability to record and propogate a configuration of
     plant design variables for a component and all of its subcomponents.
-
-    Args:
-        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20 l/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
     """
     Q_DEFAULT = 20 * u.L / u.s
     TEMP_DEFAULT = 20 * u.degC
 
     def __init__(self, **kwargs):
-        if type(self) is Component:
-            raise Exception(
-                'The Component class should not be instantiated. Instead, '
-                'instantiate a class that extends Component.'
-            )
-
         self.q = self.Q_DEFAULT
         self.temp = self.TEMP_DEFAULT
 
@@ -64,28 +37,27 @@ class Component(object):
         self.__dict__.update(**kwargs)
 
     def set_subcomponents(self):
-        """Set the plant-wide inputs of all subcomponents.
+        """Set the plant-wide design inputs of all subcomponents.
 
-        When a Component-type object is instantiated (the supercomponent), this
-        function will set ``q`` and ``temp`` of all subcomponents in
-        ``self.subcomponents`` to match the supercomponent. However, if the
-        supercomponent is instantiated with a subcomponent as an argument, and
-        the subcomponent is instantiated with its own ``q``/``temp``, then the
-        subcomponent's ``q``/``temp`` is used.
+        This function processes each of the subcomponents listed in
+        ``self.subcomponents``. If the user did not configure custom plant-wide
+        inputs for a subcomponent, the subcomponent's plant-wide design inputs
+        are changed to match that of this component.
         """
         for subcomp in getattr(self, 'subcomponents'):
-
+            
             if subcomp.q == self.Q_DEFAULT:
                 subcomp.q = self.q
             if subcomp.temp == self.TEMP_DEFAULT:
                 subcomp.temp = self.temp
 
+            # Recursively set sub-subcomponents
             if hasattr(subcomp, 'subcomponents'):
                 subcomp.set_subcomponents()
         
     def serialize_properties(self):
-        """Convert the properties (fields and ``@property`` functions) of a 
-        component into a dictionary string.
+        """Serialize the properties (fields and ``@property`` functions) of a 
+        component as a dictionary.
         """
         properties = {}
         ignored_properties = [
@@ -128,7 +100,7 @@ class Component(object):
         then the file is created.
         
         Args:
-            - ``filename (str)``: The name of the file
+            ``filename (str)``: The name of the file
         """
         json.dump(self.serialize_properties(), open(filename, mode='a'),
             indent = 4)

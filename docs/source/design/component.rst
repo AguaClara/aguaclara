@@ -1,7 +1,7 @@
 .. _design-component:
 
-Component
-=============
+``component`` Module
+=====================
 
 .. automodule:: aguaclara.design.component
     :members:
