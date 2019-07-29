@@ -1,18 +1,22 @@
-"""This module allows plant component classes to
+"""Common features for writing design classes of AguaClara plant components
 
-#. specify expert inputs and their defaults automatically
-#. propogate plant-wide design inputs throughout all of its subcomponents.
+This module provides common functionality that can be used to write plant
+component design classes, such as:
+
+#. specifing expert inputs and their defaults automatically
+#. propogating global design inputs (like flow rate and water temperature)
+   throughout all of its subcomponents.
 
 **Example:**
 
 .. code-block:: python
 
     from aguaclara.design.component import *
-    
+
     class SubComponent(Component):
         def __init__(self, **kwargs):
             self.h = 3 * u.m
-            
+
             super().__init__(**kwargs)
 
     class MainComponent(Component):
