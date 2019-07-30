@@ -14,11 +14,11 @@ import aguaclara.core.constants as con
 import aguaclara.core.head_loss as hl
 import aguaclara.core.materials as mat
 import aguaclara.core.physchem as pc
-import aguaclara.core.pipes as pipe
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.utility as ut
 
 from aguaclara.design.component import Component
+from aguaclara.design.pipeline import Pipe
 
 import numpy as np
 
@@ -63,12 +63,16 @@ class EntranceTank(Component):
         self.plate_angle  =  50.0 * u.deg
         self.plate_capture_vel  =  8.0 * u.mm / u.s
         self.fab_s = 5.0 * u.cm
-        self.sdr = 41.0
+        self.spec = 'sdr41'
+
+        self.drain_pipe = Pipe()
+        self.subcomponents = [self.drain_pipe]
 
         super().__init__(**kwargs)
-
-    @property
-    def drain_id(self):
+        self._set_drain_pipe()
+        super().set_subcomponents()
+        
+    def _set_drain_pipe(self):
         """The inner diameter of the entrance tank drain pipe."""
         nu = pc.viscosity_kinematic(self.temp)
         k_minor = \
@@ -79,18 +83,8 @@ class EntranceTank(Component):
                                 nu,
                                 mat.PVC_PIPE_ROUGH,
                                 k_minor)
-        return drain_id
-
-    @property
-    def drain_nd(self):
-        """The nominal diameter of the entrance tank drain pipe.""" 
-        return pipe.ND_SDR_available(self.drain_id, self.sdr)
-
-    @property
-    def drain_od(self):
-        """The outer diameter of the entrance tank drain pipe."""
-        drain_pipe = pipe.Pipe(self.drain_nd, self.sdr)
-        return drain_pipe.od
+        self.drain_pipe.id = drain_id
+        self.drain_pipe.spec = self.spec
         
     @property
     def plate_n(self):
@@ -125,7 +119,7 @@ class EntranceTank(Component):
             (self.plate_thickness * self.plate_n) + \
             (self.plate_s * (self.plate_n - 1))
             
-        l = self.drain_od + (self.fab_s * 2) + \
+        l = self.drain_pipe.od + (self.fab_s * 2) + \
             (
                 plate_array_thickness * np.cos(((90 * u.deg) -
                 self.plate_angle).to(u.rad))
