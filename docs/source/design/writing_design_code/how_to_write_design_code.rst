@@ -30,8 +30,11 @@ The answer lies in **class instantiation**!
 All Python classes (with the exception of abstract classes - we'll explain that
 in a bit) can be instantiated as **objects**. An object is a representative of
 the class from which it comes - in other words, an *instance* of the class. It
-can use all of its class's functions, while maintaining its own set of values
-that may be different from the values of other objects from the same class.
+can use all of its class's functions (also known as *methods*), while
+maintaining its own set of values that may be different from the values of other
+objects from the same class.
+
+.. image:: ../../images/oop-diagram.png
 
 Here is a general overview of how objects are used:
 
