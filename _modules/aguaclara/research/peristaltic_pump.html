@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.peristaltic_pump &mdash; AguaClara v0.1.3 documentation</title>
+  <title>aguaclara.research.peristaltic_pump &mdash; AguaClara v0.1.4 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.3
+                v0.1.4
               </div>
             
           
@@ -153,7 +153,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for aguaclara.research.peristaltic_pump</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -190,7 +190,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.peristaltic_pump import vol_per_rev_3_stop</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; round(vol_per_rev_3_stop(color=&quot;yellow-blue&quot;), 6)</span>
 <span class="sd">    &lt;Quantity(0.148846, &#39;milliliter / rev&#39;)&gt;</span>
 <span class="sd">    &gt;&gt;&gt; round(vol_per_rev_3_stop(inner_diameter=.20*u.mm), 6)</span>
@@ -215,7 +215,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.peristaltic_pump import ID_colored_tube</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; ID_colored_tube(&quot;yellow-blue&quot;)</span>
 <span class="sd">    &lt;Quantity(1.52, &#39;millimeter&#39;)&gt;</span>
 <span class="sd">    &gt;&gt;&gt; ID_colored_tube(&quot;orange-yellow&quot;)</span>
@@ -243,7 +243,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.peristaltic_pump import vol_per_rev_LS</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; vol_per_rev_LS(13)</span>
 <span class="sd">    &lt;Quantity(0.06, &#39;milliliter / turn&#39;)&gt;</span>
 <span class="sd">    &gt;&gt;&gt; vol_per_rev_LS(18)</span>
@@ -271,7 +271,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.peristaltic_pump import flow_rate</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; flow_rate(3*u.mL/u.rev, 5*u.rev/u.min)</span>
 <span class="sd">    &lt;Quantity(0.25, &#39;milliliter / second&#39;)&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>

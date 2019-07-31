@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Peristaltic Pump &mdash; AguaClara v0.1.3 documentation</title>
+  <title>Peristaltic Pump &mdash; AguaClara v0.1.4 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.3
+                v0.1.4
               </div>
             
           
@@ -185,7 +185,7 @@
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">ID_colored_tube</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;yellow-blue&quot;</span><span class="p">)</span>
 <span class="go">&lt;Quantity(1.52, &#39;millimeter&#39;)&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;orange-yellow&quot;</span><span class="p">)</span>
@@ -218,7 +218,7 @@ revolution and the desired pump speed.</p>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">flow_rate</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">flow_rate</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
 <span class="go">&lt;Quantity(0.25, &#39;milliliter / second&#39;)&gt;</span>
 </pre></div>
@@ -255,7 +255,7 @@ mm. Accuracy is not guaranteed for tubes with smaller or larger diameters.</p>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">vol_per_rev_3_stop</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;yellow-blue&quot;</span><span class="p">),</span> <span class="mi">6</span><span class="p">)</span>
 <span class="go">&lt;Quantity(0.148846, &#39;milliliter / rev&#39;)&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">inner_diameter</span><span class="o">=.</span><span class="mi">20</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mm</span><span class="p">),</span> <span class="mi">6</span><span class="p">)</span>
@@ -283,7 +283,7 @@ through L/S tubing of the given ID number.</p>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">vol_per_rev_LS</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vol_per_rev_LS</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
 <span class="go">&lt;Quantity(0.06, &#39;milliliter / turn&#39;)&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vol_per_rev_LS</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>

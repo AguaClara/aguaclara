@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stock QC &mdash; AguaClara v0.1.3 documentation</title>
+  <title>Stock QC &mdash; AguaClara v0.1.4 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                v0.1.3
+                v0.1.4
               </div>
             
           
@@ -176,7 +176,7 @@ concentration.</p>
 <dd class="field-odd"><p></p></dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.stock_qc</span> <span class="k">import</span> <span class="n">Variable_C_Stock</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reactor</span> <span class="o">=</span> <span class="n">Variable_C_Stock</span><span class="p">(</span><span class="n">Q_sys</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">C_sys</span> <span class="o">=</span> <span class="mf">1.4</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="n">Q_stock</span> <span class="o">=</span> <span class="o">.</span><span class="mi">01</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reactor</span><span class="o">.</span><span class="n">C_stock</span><span class="p">()</span>
 <span class="go">&lt;Quantity(140.0, &#39;milligram / liter&#39;)&gt;</span>
@@ -360,7 +360,7 @@ rate.</p>
 <dd class="field-odd"><p></p></dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.stock_qc</span> <span class="k">import</span> <span class="n">Variable_Q_Stock</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reactor</span> <span class="o">=</span> <span class="n">Variable_Q_Stock</span><span class="p">(</span><span class="n">Q_sys</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">C_sys</span> <span class="o">=</span> <span class="mf">1.4</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="n">C_stock</span> <span class="o">=</span> <span class="mf">7.6</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reactor</span><span class="o">.</span><span class="n">Q_stock</span><span class="p">()</span>
 <span class="go">&lt;Quantity(0.18421052631578946, &#39;milliliter / second&#39;)&gt;</span>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.environmental_processes_analysis &mdash; AguaClara v0.1.3 documentation</title>
+  <title>aguaclara.research.environmental_processes_analysis &mdash; AguaClara v0.1.4 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.3
+                v0.1.4
               </div>
             
           
@@ -154,7 +154,7 @@
             
   <h1>Source code for aguaclara.research.environmental_processes_analysis</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">aguaclara.research.procoda_parser</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">special</span>
@@ -266,7 +266,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import ANC_closed</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; round(ANC_closed(10, 1*u.mol/u.L), 7)</span>
 <span class="sd">    &lt;Quantity(1.359831, &#39;equivalent / liter&#39;)&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -348,7 +348,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import O2_sat</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; round(O2_sat(1*u.atm , 300*u.kelvin), 7)</span>
 <span class="sd">    &lt;Quantity(8.0931572, &#39;milligram / liter&#39;)&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -409,7 +409,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import CMFR</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; round(CMFR(0.1, 0*u.mg/u.L, 10*u.mg/u.L), 7)</span>
 <span class="sd">    &lt;Quantity(0.9516258, &#39;milligram / liter&#39;)&gt;</span>
 <span class="sd">    &gt;&gt;&gt; round(CMFR(0.9, 5*u.mg/u.L, 10*u.mg/u.L), 7)</span>
@@ -486,7 +486,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import Tracer_CMFR_N</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; Tracer_CMFR_N([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 3)</span>
 <span class="sd">    &lt;Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423], &#39;milligram / liter&#39;)&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -546,7 +546,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import Tracer_AD_Pe</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; Tracer_AD_Pe([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 5)</span>
 <span class="sd">    &lt;Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], &#39;milligram / liter&#39;)&gt;</span>
 

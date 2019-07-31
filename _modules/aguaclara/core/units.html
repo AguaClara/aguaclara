@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.units &mdash; AguaClara v0.1.3 documentation</title>
+  <title>aguaclara.core.units &mdash; AguaClara v0.1.4 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.3
+                v0.1.4
               </div>
             
           
@@ -158,9 +158,9 @@
 <span class="sd">The ``pint`` package supports arithmetic involving **physical quantities**</span>
 <span class="sd">each of which has a magnitude and units, for example 1 cm or 3 kg m/s^2.</span>
 <span class="sd">The units of a quantity come from ``pint``&#39;s **unit registry**. This module</span>
-<span class="sd">contains a single global unit registry ``unit_registry`` that can be used by any</span>
+<span class="sd">contains a single global unit registry ``u`` that can be used by any</span>
 <span class="sd">number of other modules. The ``aguaclara`` has also defined and added some of</span>
-<span class="sd">its own units to the ``unit_registry``:</span>
+<span class="sd">its own units to the ``u``:</span>
 
 <span class="sd">  * NTU = 1.47 * (mg / L)</span>
 <span class="sd">  * dollar = [money] = USD</span>
@@ -170,7 +170,7 @@
 
 <span class="sd">:Examples:</span>
 
-<span class="sd">&gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">&gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">&gt;&gt;&gt; rpm = 10 * u.rev/u.min</span>
 <span class="sd">&gt;&gt;&gt; rpm</span>
 <span class="sd">&lt;Quantity(10.0, &#39;rev / minute&#39;)&gt;</span>
@@ -186,19 +186,20 @@
 <span class="kn">import</span> <span class="nn">pint</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
+<span class="c1"># A global unit registry that can be used by any of other module.</span>
 <span class="n">unit_registry</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span>
     <span class="n">system</span><span class="o">=</span><span class="s1">&#39;mks&#39;</span><span class="p">,</span>
     <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
-<span class="sd">&quot;&quot;&quot;A global unit registry that can be used by any of other module.&quot;&quot;&quot;</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">unit_registry</span>
 
 <span class="c1"># default formatting includes 4 significant digits.</span>
 <span class="c1"># This can be overridden on a per-print basis with</span>
 <span class="c1"># print(&#39;{:.3f}&#39;.format(3 * ureg.m / 9)).</span>
-<span class="n">unit_registry</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="s1">&#39;.4g&#39;</span>
+<span class="n">u</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="s1">&#39;.4g&#39;</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,.4g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
 
-<span class="n">unit_registry</span><span class="o">.</span><span class="n">load_definitions</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+<span class="n">u</span><span class="o">.</span><span class="n">load_definitions</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
                                             <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;unit_definitions.txt&quot;</span><span class="p">))</span>
 
 
@@ -211,7 +212,7 @@
 
 <span class="sd">    :Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import set_sig_figs, unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import set_sig_figs, u as u</span>
 <span class="sd">    &gt;&gt;&gt; h = 2.5532532522352543*u.m</span>
 <span class="sd">    &gt;&gt;&gt; e = 25532532522352543*u.m</span>
 <span class="sd">    &gt;&gt;&gt; print(&#39;h before sigfig adjustment:&#39;,h)</span>
@@ -224,7 +225,7 @@
 <span class="sd">    &gt;&gt;&gt; print(&#39;e after sigfig adjustment:&#39;,e)</span>
 <span class="sd">    e after sigfig adjustment: 2.553253252e+16 meter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">unit_registry</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;g&#39;</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;g&#39;</span>
     <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;{:,.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span></div>
 </pre></div>
 

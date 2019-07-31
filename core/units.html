@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Units &mdash; AguaClara v0.1.3 documentation</title>
+  <title>Units &mdash; AguaClara v0.1.4 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.3
+                v0.1.4
               </div>
             
           
@@ -174,9 +174,9 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">pint</span></code> package supports arithmetic involving <strong>physical quantities</strong>
 each of which has a magnitude and units, for example 1 cm or 3 kg m/s^2.
 The units of a quantity come from <code class="docutils literal notranslate"><span class="pre">pint</span></code>’s <strong>unit registry</strong>. This module
-contains a single global unit registry <code class="docutils literal notranslate"><span class="pre">unit_registry</span></code> that can be used by any
+contains a single global unit registry <code class="docutils literal notranslate"><span class="pre">u</span></code> that can be used by any
 number of other modules. The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> has also defined and added some of
-its own units to the <code class="docutils literal notranslate"><span class="pre">unit_registry</span></code>:</p>
+its own units to the <code class="docutils literal notranslate"><span class="pre">u</span></code>:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>NTU = 1.47 * (mg / L)</p></li>
@@ -190,7 +190,7 @@ its own units to the <code class="docutils literal notranslate"><span class="pre
 <dt class="field-odd">Examples</dt>
 <dd class="field-odd"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span>
 <span class="go">&lt;Quantity(10.0, &#39;rev / minute&#39;)&gt;</span>
@@ -214,7 +214,7 @@ pandas and numpy values quantities. Defaults to 4.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">set_sig_figs</span><span class="p">,</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">set_sig_figs</span><span class="p">,</span> <span class="n">u</span> <span class="k">as</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="mf">2.5532532522352543</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">m</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="mi">25532532522352543</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">m</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;h before sigfig adjustment:&#39;</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
@@ -228,12 +228,6 @@ pandas and numpy values quantities. Defaults to 4.</p>
 <span class="go">e after sigfig adjustment: 2.553253252e+16 meter</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="data">
-<dt id="aguaclara.core.units.unit_registry">
-<code class="sig-prename descclassname">aguaclara.core.units.</code><code class="sig-name descname">unit_registry</code><em class="property"> = &lt;pint.registry.UnitRegistry object&gt;</em><a class="headerlink" href="#aguaclara.core.units.unit_registry" title="Permalink to this definition">¶</a></dt>
-<dd><p>A global unit registry that can be used by any of other module.</p>
 </dd></dl>
 
 </div>

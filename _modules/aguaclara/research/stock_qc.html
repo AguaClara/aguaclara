@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.stock_qc &mdash; AguaClara v0.1.3 documentation</title>
+  <title>aguaclara.research.stock_qc &mdash; AguaClara v0.1.4 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.3
+                v0.1.4
               </div>
             
           
@@ -153,7 +153,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for aguaclara.research.stock_qc</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">unit_registry</span> <span class="k">as</span> <span class="n">u</span>
+<span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 
 
 <span class="k">class</span> <span class="nc">Stock</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -185,7 +185,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.stock_qc import Variable_C_Stock</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; reactor = Variable_C_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, Q_stock = .01*u.mL/u.s)</span>
 <span class="sd">    &gt;&gt;&gt; reactor.C_stock()</span>
 <span class="sd">    &lt;Quantity(140.0, &#39;milligram / liter&#39;)&gt;</span>
@@ -309,7 +309,7 @@
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    &gt;&gt;&gt; from aguaclara.research.stock_qc import Variable_Q_Stock</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import unit_registry as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
 <span class="sd">    &gt;&gt;&gt; reactor = Variable_Q_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, C_stock = 7.6*u.mg/u.L)</span>
 <span class="sd">    &gt;&gt;&gt; reactor.Q_stock()</span>
 <span class="sd">    &lt;Quantity(0.18421052631578946, &#39;milliliter / second&#39;)&gt;</span>
