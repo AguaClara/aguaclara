@@ -153,7 +153,7 @@ class PipelineComponent(Component, ABC):
         if type(self) is Pipe:
             flow = pc.flow_pipe(self.id, 
                     target_headloss, 
-                    self.length, 
+                    self.l, 
                     self.nu,
                     self.pipe_rough, 
                     self.k_minor)
@@ -162,7 +162,7 @@ class PipelineComponent(Component, ABC):
                 flow = pc.flow_pipe(
                     self.next.id,
                     target_headloss,
-                    self.next.length,
+                    self.next.l,
                     self.next.nu,
                     self.next.pipe_rough,
                     self.next.k_minor)
@@ -241,17 +241,19 @@ class Pipe(PipelineComponent):
           in)
         - ``spec (str)``: The pipe specification. Must be one of 'sdr26',
           'sdr41', or 'sch40'. (optional, defaults to 'sdr41')
-        - ``length (float * u.m)``: Length of the pipe (optional, defaults to
+        - ``l (float * u.m)``: Length of the pipe (optional, defaults to
           1 m)
         - ``pipe_rough (float * u.mm)``: Pipe roughness (optional, defaults to
           PVC pipe roughness of 12 mm)
+        - ``k_minor (float)``: The minor loss coefficient (k-value) (optional,
+          defaults to 0)
     """
     AVAILABLE_SPECS = ['sdr26', 'sdr41', 'sch40']
 
     def __init__(self, **kwargs):
         self.id = 0.476 * u.inch
         self.spec = 'sdr41'
-        self.length = 1 * u.m
+        self.l = 1 * u.m
         self.pipe_rough = mats.PVC_PIPE_ROUGH
 
         super().__init__(**kwargs)
@@ -345,13 +347,13 @@ class Pipe(PipelineComponent):
     def headloss(self):
         """Return the total head loss from major and minor losses in a pipe."""
         return pc.headloss_fric(
-                self.q, self.id, self.length, self.nu, self.pipe_rough
+                self.q, self.id, self.l, self.nu, self.pipe_rough
             )
 
     def format_print(self):
         """Return the string representation of this pipe."""
         return 'Pipe: (OD: {}, Size: {}, ID: {}, Length: {}, Spec: {})'.format(
-            self.od, self.size, self.id, self.length, self.spec)
+            self.od, self.size, self.id, self.l, self.spec)
    
     def _rep_ok(self):
         """Verify that this representation of a Pipe is valid."""

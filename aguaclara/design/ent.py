@@ -74,17 +74,22 @@ class EntranceTank(Component):
         
     def _set_drain_pipe(self):
         """The inner diameter of the entrance tank drain pipe."""
-        nu = pc.viscosity_kinematic(self.temp)
-        k_minor = \
+        drain_pipe_k_minor = \
             hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_EXIT_K_MINOR + hl.EL90_K_MINOR
+
+        nu = pc.viscosity_kinematic(self.temp)
         drain_id = pc.diam_pipe(self.q,
                                 self.floc_end_depth,
                                 self.floc_end_depth,
                                 nu,
                                 mat.PVC_PIPE_ROUGH,
-                                k_minor)
-        self.drain_pipe.id = drain_id
-        self.drain_pipe.spec = self.spec
+                                drain_pipe_k_minor)
+
+        self.drain_pipe = Pipe(
+            id = drain_id,
+            k_minor = drain_pipe_k_minor,
+            spec = self.spec
+        )
         
     @property
     def plate_n(self):

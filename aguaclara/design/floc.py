@@ -13,6 +13,7 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipes
 from aguaclara.core.units import unit_registry as u
 from aguaclara.design.component import Component
+from aguaclara.design.pipeline import Pipe
 
 import numpy as np
 
@@ -74,8 +75,13 @@ class Flocculator(Component):
         self.hl  =  40.0 * u.cm
         self.end_water_depth  =  2.0 * u.m
         self.drain_t = 30.0 * u.min
-
+        self.spec = 'sdr41'
+        self.drain_pipe = Pipe()
+        self.subcomponents = [self.drain_pipe]
+        
         super().__init__(**kwargs)
+        self._set_drain_pipe()
+        super().set_subcomponents()
 
     @property
     def vel_grad_avg(self):
@@ -236,35 +242,28 @@ class Flocculator(Component):
 
         return pipe_od
 
-    @property
-    def drain_k(self):
-        """The minor loss coefficient of the drain pipe."""
-        drain_K = \
+    def _set_drain_pipe(self):
+        drain_k_minor = \
             hl.PIPE_ENTRANCE_K_MINOR + \
             hl.PIPE_ENTRANCE_K_MINOR + \
             hl.PIPE_EXIT_K_MINOR
-        return drain_K
-
-    @property
-    def drain_id(self):
-        """The depth of the drain pipe."""
+        
         chan_pair_a = 2 * self.chan_l * self.chan_w
         drain_id = (
                 np.sqrt(8 * chan_pair_a / (np.pi * self.drain_t) *
                     np.sqrt(
-                        self.end_water_depth * self.drain_k /
+                        self.end_water_depth * drain_k_minor /
                         (2 * u.standard_gravity)
                     )
                 )
             ).to_base_units()
-        return drain_id
-
-    @property
-    def drain_nd(self):
-        """The diameter of the drain pipe."""
-        drain_ND = pipes.ND_SDR_available(self.drain_id, self.SDR)
-        return drain_ND
-
+        
+        self.drain_pipe = Pipe(
+            id = drain_id, 
+            k_minor = drain_k_minor, 
+            spec = self.spec
+            )
+        
     def draw(self):
         """Draw the Onshape flocculator model based off of this object."""
         from onshapepy import Part
