@@ -99,7 +99,7 @@ class PipelineComponent(Component, ABC):
 
         self._rep_ok()
 
-        self.size = self.get_available_size(self.size)
+        self.size = self._get_available_size(self.size)
 
     @property
     def nu(self):
@@ -115,7 +115,7 @@ class PipelineComponent(Component, ABC):
             print('unimplemented')
             pass      
 
-    def get_available_size(self, size):
+    def _get_available_size(self, size):
         """Return the next larger size which is available, given the list of
         available sizes.
         """
@@ -134,13 +134,13 @@ class PipelineComponent(Component, ABC):
         else:
             return self.headloss + self.next.headloss_pipeline
     
-    def set_next_components_q(self):
+    def _set_next_components_q(self):
         """Set the flow rates of the next components in this pipeline to be
         the same as this component.
         """
         if self.next is not None:
             self.next.q = self.q
-            self.next.set_next_components_q()
+            self.next._set_next_components_q()
 
     def flow_pipeline(self, target_headloss):
         """Calculate the required flow through a pipeline component and all of
@@ -176,7 +176,7 @@ class PipelineComponent(Component, ABC):
             err = (target_headloss - headloss) / (target_headloss + headloss)
             flow = flow + err * flow
             self.q = flow
-            self.set_next_components_q()
+            self._set_next_components_q()
             headloss = self.headloss_pipeline
         return flow.to(u.L / u.s)
     
@@ -302,7 +302,7 @@ class Pipe(PipelineComponent):
             - ``size (float * u.inch)``: Nominal size
             - ``sdr (int)``: Standard dimension ratio
         """
-        self.size = super().get_available_size(size)
+        self.size = super()._get_available_size(size)
         return self.size * (sdr - 2) / sdr
 
     def _get_id_sch40(self, size):
@@ -348,7 +348,7 @@ class Pipe(PipelineComponent):
         """Return the total head loss from major and minor losses in a pipe."""
         return pc.headloss_fric(
                 self.q, self.id, self.l, self.nu, self.pipe_rough
-            )
+            ).to(u.cm)
 
     def format_print(self):
         """Return the string representation of this pipe."""
@@ -376,24 +376,28 @@ class Elbow(PipelineComponent):
 
     Constants:
         - ``AVAILABLE_ANGLES (int * u.deg list)``: The possible angles for this 
-        fitting.
+          fitting.
     
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (recommended, defaults to 20L/s)
         - ``temp (float * u.degC)``: Water temperature 
-        (recommended, defaults to 20°C)
+          (recommended, defaults to 20°C)
         - ``size (float * u.inch)``: The nominal size 
-        (recommended, defaults to 0.5 in.)
-        - ``fluid_type (str)``: The type of fluid flowing inside 
-        (optional, defaults to water)
+          (recommended, defaults to 0.5 in.)
+        - ``fluid_type (str)``: Fluid type. Must be 'water', 'pacl', or 'alum'
+          (optional, defaults to 'water')
         - ``next (PipelineComponent)``: The next pipeline component after the 
-        outlet, cannot be another Elbow or a Tee fitting.
-        (optional, defaults to None)
-        -  ``angle (float * u.deg)``: The angle of the fitting, which must be 
-        found in ``AVAILABLE_ANGLES`` (recommended, defaults to 90 °)
+          outlet, cannot be another Elbow or a Tee fitting. 
+          outlet, cannot be another Elbow or a Tee fitting.
+          outlet, cannot be another Elbow or a Tee fitting. 
+          (optional, defaults to None)
+        - ``angle (float * u.deg)``: The angle of the fitting, which must be 
+          found in ``AVAILABLE_ANGLES`` (recommended, defaults to 90 °)
         - ``id (float * u.inch)``: The inner diameter.  
-        (recommended, defaults to 0.848 * u.inch)
-        """
+          (recommended, defaults to 0.848 * u.inch)
+    """
+    AVAILABLE_ANGLES = [90 * u.deg, 45 * u.deg]
+
     def __init__(self, **kwargs):
         self.angle = 90 * u.deg
         self.id = 0.848 * u.inch
@@ -440,7 +444,7 @@ class Elbow(PipelineComponent):
     @property
     def headloss(self):
         """The headloss"""
-        return pc.elbow_minor_loss(self.q, self.id, self.k_minor).to(u.m)
+        return pc.elbow_minor_loss(self.q, self.id, self.k_minor).to(u.cm)
 
     def format_print(self):
         """The string representation for an Elbow Fitting."""
@@ -466,29 +470,34 @@ class Tee(PipelineComponent):
 
     Constants:
         - ``AVAILABLE_PATHS (str list)``: The available paths for the left and 
-        right outlet. Branch meaning the flow would turn, run meaning the flow 
-        stays straight, and stopper meaning there is no flow for that outlet 
-        due to a stopper.  
+          right outlet. Branch meaning the flow would turn, run meaning the flow 
+          stays straight, and stopper meaning there is no flow for that outlet 
+          due to a stopper.  
     
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
         - ``temp (float * u.degC)``: Water temperature 
-        (recommended, defaults to 20°C )
+          (recommended, defaults to 20°C )
         - ``size (float * u.inch)``: The size (recommended, defaults to 0.5 in.)
-        - ''fluid_type (str)``: The type of fluid flowing inside 
-        (optional, defaults to water)
+        - ``fluid_type (str)``: The type of fluid flowing inside 
+          (optional, defaults to water)
         - ``left (PipelineComponent)``: The type of piping for the left outlet, 
-        cannot be an elbow or tee (recommended, defaults to None)
+          cannot be an elbow or tee (recommended, defaults to None)
         - ``left_type (str)``: The type of path for the left outlet, 
-        can only be one of the elements in AVAILABLE_PATHS. 
-        (recommended, defaults to 'branch')
+          can only be one of the elements in AVAILABLE_PATHS. 
+          can only be one of the elements in AVAILABLE_PATHS. 
+          can only be one of the elements in AVAILABLE_PATHS. 
+          (recommended, defaults to 'branch')
         - ``right (PipelineComponent)``: The type of piping for the right outlet, 
-        cannot be an elbow or tee. (recommended, defaults to None)
+          cannot be an elbow or tee. (recommended, defaults to None)
         - ``right_type (str)``: The type of path for the right outlet, 
-        can only be one of the elements in AVAILABLE_PATHS. 
-        (recommended, defaults to 'stopper')
+          can only be one of the elements in AVAILABLE_PATHS. 
+          can only be one of the elements in AVAILABLE_PATHS. 
+          can only be one of the elements in AVAILABLE_PATHS. 
+          (recommended, defaults to 'stopper')
         - ``id (float * u.inch)``: The inner diameter.  
-        (recommended, defaults to 0.848 * u.inch)
+          (recommended, defaults to 0.848 * u.inch)
+        
         """
     AVAILABLE_PATHS = ['branch', 'run', 'stopper']
     
@@ -542,15 +551,15 @@ class Tee(PipelineComponent):
 
     def _headloss_left(self):
         """The headloss of the left outlet"""
-        return pc.elbow_minor_loss(self.q, self.id, self.left_k_minor).to(u.m)
+        return pc.elbow_minor_loss(self.q, self.id, self.left_k_minor).to(u.cm)
 
     def _headloss_right(self):
         """The headloss of the right outlet"""
-        return pc.elbow_minor_loss(self.q, self.id, self.right_k_minor).to(u.m)
+        return pc.elbow_minor_loss(self.q, self.id, self.right_k_minor).to(u.cm)
 
     @property
     def headloss(self):
-        """The headloss of the next outlet"""
+        """The headloss"""
         if self.left_type =='stopper':
             return self._headloss_right()
         else:
