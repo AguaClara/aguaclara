@@ -11,7 +11,7 @@ from scipy import interpolate, integrate
 
 gravity = u.gravity
 
-########################### Air #############################
+############################ Air ##############################
 @ut.list_handler()
 def density_air(Pressure, MolarMass, Temperature):
     """Return the density of air at the given pressure, molar mass, and
@@ -129,7 +129,7 @@ def viscosity_kinematic(temp):
 @ut.list_handler()
 def radius_hydraulic(Width, DistCenter, openchannel):
     """Return the hydraulic radius of a rectangular channel, given width and
-     depth of flow.
+    depth of flow.
 
     :param Width: width of channel
     :type Width: u.m
@@ -138,7 +138,7 @@ def radius_hydraulic(Width, DistCenter, openchannel):
     :param openchannel: true if channel is open, false if closed
     :type openchannel: boolean
 
-    :return: hydraulic radius of channel
+    :return: hydraulic radius of rectangular channel
     :rtype: u.m
     """
     ut.check_range([Width.magnitude, ">0", "Width"],
@@ -152,15 +152,15 @@ def radius_hydraulic(Width, DistCenter, openchannel):
 
 @ut.list_handler()
 def radius_hydraulic_general(Area, PerimWetted):
-    """Return the hydraulic radius of any channel, given cross sectional area
-    and wetted perimeter.
+    """Return the hydraulic radius of a general channel, given cross sectional
+    area and wetted perimeter.
 
     :param Area: cross sectional area of channel
     :type Area: u.m**2
     :param PerimWetted: wetted perimeter of channel
     :type PerimWetted: u.m
 
-    :return: hydraulic radius of channel
+    :return: hydraulic radius of general channel
     :rtype: u.m
     """
     ut.check_range([Area.magnitude, ">0", "Area"],
@@ -170,7 +170,7 @@ def radius_hydraulic_general(Area, PerimWetted):
 
 @ut.list_handler()
 def re_pipe(FlowRate, Diam, Nu):
-    """Return the Reynolds number for a pipe.
+    """Return the Reynolds number of flow through a pipe.
 
     :param FlowRate: flow rate through pipe
     :type FlowRate: u.m**3/u.s
@@ -190,7 +190,7 @@ def re_pipe(FlowRate, Diam, Nu):
 
 @ut.list_handler()
 def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
-    """Return the Reynolds number for a rectangular channel.
+    """Return the Reynolds number of flow through a rectangular channel.
 
     :param FlowRate: flow rate through channel
     :type FlowRate: u.m**3/u.s
@@ -203,7 +203,7 @@ def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
     :param openchannel: true if channel is open, false if closed
     :type openchannel: boolean
 
-    :return: Reynolds number of flow through channel
+    :return: Reynolds number of flow through rectangular channel
     :rtype: u.dimensionless
     """
     ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
@@ -214,7 +214,7 @@ def re_rect(FlowRate, Width, DistCenter, Nu, openchannel):
 
 @ut.list_handler()
 def re_general(Vel, Area, PerimWetted, Nu):
-    """Return the Reynolds number for a general cross section.
+    """Return the Reynolds number of flow through a general cross section.
 
     :param Vel: velocity of fluid
     :type Vel: u.m/u.s
@@ -225,7 +225,7 @@ def re_general(Vel, Area, PerimWetted, Nu):
     :param Nu: kinematic viscosity of fluid
     :type Nu: u.m**2/u.s
 
-    :return: Reynolds number of flow through cross section
+    :return: Reynolds number of flow through general cross section
     :rtype: u.dimensionless
     """
     ut.check_range([Vel.magnitude, ">=0", "Velocity"],
@@ -250,7 +250,7 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     :param PipeRough: roughness of pipe
     :type PipeRough: u.m
 
-    :return: friction factor for flow through pipe
+    :return: friction factor of flow through pipe
     :rtype: u.dimensionless
     """
     ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
@@ -262,15 +262,14 @@ def fric(FlowRate, Diam, Nu, PipeRough):
              )
     else:
         f = 64 / re_pipe(FlowRate, Diam, Nu)
-    return f
+    return f * u.dimensionless
 
 
 @ut.list_handler()
 def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
-    """Return the friction factor for a rectangular channel.
+    """Return the friction factor of a rectangular channel.
 
     The Swamee-Jain equation is adapted for a rectangular channel.
-    #Diam = 4*R_h in this case.
 
     :param FlowRate: flow rate through channel
     :type FlowRate: u.m**3/u.s
@@ -285,13 +284,13 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
     :param openchannel: true if channel is open, false if closed
     :type openchannel: boolean
 
-    :return: friction factor for flow through channel
+    :return: friction factor of flow through rectangular channel
     :rtype: u.dimensionless
     """
     ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
-    if re_rect(FlowRate,Width,DistCenter,Nu,openchannel) >= RE_TRANSITION_PIPE:
+    if re_rect(FlowRate, Width, DistCenter, Nu, openchannel) >= RE_TRANSITION_PIPE:
         # Diam = 4*R_h in adapted Swamee-Jain equation
-        return (0.25
+        return (0.25 * u.dimensionless
                 / (np.log10((PipeRough
                              / (3.7 * 4
                                 * radius_hydraulic(Width, DistCenter,
@@ -305,7 +304,7 @@ def fric_rect(FlowRate, Width, DistCenter, Nu, PipeRough, openchannel):
                    ) ** 2
                 )
     else:
-        return 64 / re_rect(FlowRate, Width, DistCenter, Nu, openchannel)
+        return 64 * u.dimensionless / re_rect(FlowRate, Width, DistCenter, Nu, openchannel)
 
 
 @ut.list_handler()
@@ -325,7 +324,7 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
     :param PipeRough: roughness of channel surface
     :type PipeRough: u.m
 
-    :return: friction factor for flow through channel
+    :return: friction factor for flow through general channel
     :rtype: u.dimensionless
     """
     ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
@@ -345,46 +344,82 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
              )
     else:
         f = 64 / re_general(Vel, Area, PerimWetted, Nu)
-    return f
+    return f * u.dimensionless
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
     """Return the major head loss (due to wall shear) in a pipe.
 
-    This equation applies to both laminar and turbulent flows.
+    This function applies to both laminar and turbulent flows.
+
+    :param FlowRate: flow rate through pipe
+    :type FlowRate: u.m**3/u.s
+    :param Diam: diameter of pipe
+    :type Diam: u.m
+    :param Length: depth of pipe
+    :type Length: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of channel surface
+    :type PipeRough: u.m
+
+    :return: major head loss in pipe
+    :rtype: u.m
     """
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([Length, ">0", "Length"])
+    ut.check_range([Length.magnitude, ">0", "Length"])
     return (fric(FlowRate, Diam, Nu, PipeRough)
-            * 8 / (gravity.magnitude * np.pi**2)
+            * 8 / (gravity * np.pi**2)
             * (Length * FlowRate**2) / Diam**5
             )
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m], False)
+@ut.list_handler()
 def headloss_exp(FlowRate, Diam, KMinor):
-    """Return the minor head loss (due to expansions) in a pipe.
+    """Return the minor head loss (due to changes in geometry) in a pipe.
 
-    This equation applies to both laminar and turbulent flows.
+    This function applies to both laminar and turbulent flows.
+
+    :param FlowRate: flow rate through pipe
+    :type FlowRate: u.m**3/u.s
+    :param Diam: diameter of pipe
+    :type Diam: u.m
+    :param KMinor: minor loss coefficient
+    :type KMinor: u.dimensionless or unitless
+
+    :return: minor head loss in pipe
+    :rtype: u.m
     """
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Diam, ">0", "Diameter"],
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Diam.magnitude, ">0", "Diameter"],
                    [KMinor, ">=0", "K minor"])
-    return KMinor * 8 / (gravity.magnitude * np.pi**2) * FlowRate**2 / Diam**4
+    return KMinor * 8 / (gravity * np.pi**2) * FlowRate**2 / Diam**4
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     """Return the total head loss from major and minor losses in a pipe.
 
-    This equation applies to both laminar and turbulent flows.
+    This function applies to both laminar and turbulent flows.
+
+    :param FlowRate: flow rate through pipe
+    :type FlowRate: u.m**3/u.s
+    :param Diam: diameter of pipe
+    :type Diam: u.m
+    :param Length: depth of pipe
+    :type Length: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of channel surface
+    :type PipeRough: u.m
+    :param KMinor: minor loss coefficient
+    :type KMinor: u.dimensionless or unitless
+
+    :return: major and minor head loss in pipe
+    :rtype: u.m
     """
-    #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
-    return (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough).magnitude
-            + headloss_exp(FlowRate, Diam, KMinor).magnitude)
+    return (headloss_fric(FlowRate, Diam, Length, Nu, PipeRough)
+            + headloss_exp(FlowRate, Diam, KMinor))
 
 
 @u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, u.m**2/u.s, u.m], False)
@@ -829,3 +864,88 @@ def headloss_kozeny(Length, Diam, Vel, Porosity, Nu):
             / gravity.magnitude * (1-Porosity)**2
             / Porosity**3 * 36 * Vel
             / Diam ** 2)
+
+
+@ut.list_handler()
+def Re_Erdon(ApproachVel, DiamParticle, Temperature, Porosity):
+    """Return the Reynolds number for flow through porous media.
+
+    :param ApproachVel: approach velocity or superficial fluid velocity
+    :type ApproachVel: u.m/u.s
+    :param DiamParticle: particle diameter
+    :type DiamParticle: u.m
+    :param Temperature: temperature of porous medium
+    :type Temperature: u.degK
+    :param Porosity: porosity of porous medium
+    :type Porosity: u.dimensionless
+
+    :return: Reynolds number for flow through porous media
+    :rtype: u.dimensionless
+    """
+    return (ApproachVel * DiamParticle /
+            (viscosity_kinematic(Temperature) * (1 - Porosity)))
+
+
+@ut.list_handler()
+def f_Erdon(ApproachVel, DiamParticle, Temperature, Porosity):
+    """Return the friction factor for flow through porous media.
+
+    :param ApproachVel: superficial fluid velocity (VelSuperficial?)
+    :type ApproachVel: u.m/u.s
+    :param DiamParticle: particle diameter (DiamParticle?)
+    :type DiamParticle: u.m
+    :param Temperature: temperature of porous medium
+    :type Temperature: u.degK
+    :param Porosity: porosity of porous medium
+    :type Porosity: u.dimensionless
+
+    :return: friction factor for flow through porous media
+    :rtype: u.dimensionless
+    """
+    return (300 / Re_Erdon(ApproachVel, DiamParticle, Temperature, Porosity)
+            + 3.5 * u.dimensionless)
+
+
+@ut.list_handler()
+def hf_Erdon(ApproachVel, DiamParticle, Temperature, Porosity, L):
+    """Return the frictional head loss for flow through porous media.
+
+    :param ApproachVel: superficial fluid velocity (VelSuperficial?)
+    :type ApproachVel: u.m/u.s
+    :param DiamParticle: particle diameter (DiamParticle?)
+    :type DiamParticle: u.m
+    :param Temperature: temperature of porous medium
+    :type Temperature: u.degK
+    :param Porosity: porosity of porous medium
+    :type Porosity: u.dimensionless
+    :param L: length of pipe or duct (Length?)
+    :type L: u.m
+
+    :return: frictional head loss for flow through porous media
+    :rtype: u.m
+    """
+    return (f_Erdon(ApproachVel, DiamParticle, Temperature, Porosity)
+            * L / DiamParticle * ApproachVel**2 / (2*gravity) * (1-Porosity)
+            / Porosity**3).to(u.m)
+
+
+@ut.list_handler()
+def G_CS_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
+    """Camp Stein velocity gradient for flow through porous media.
+
+    :param ApproachVel: superficial fluid velocity (VelSuperficial?)
+    :type ApproachVel: u.m/u.s
+    :param DiamParticle: particle diameter (DiamParticle?)
+    :type DiamParticle: u.m
+    :param Temperature: temperature of porous medium
+    :type Temperature: u.degK
+    :param Porosity: porosity of porous medium
+    :type Porosity: u.dimensionless
+
+    :return: Camp Stein velocity gradient for flow through porous media
+    :rtype: u.Hz
+    """
+    return np.sqrt(f_Erdon(ApproachVel, DiamParticle, Temperature, Porosity)
+                   * ApproachVel**3 * (1-Porosity)
+                   / (2 * viscosity_kinematic(Temperature) * DiamParticle
+                      * Porosity**4)).to(u.Hz)
