@@ -1,27 +1,76 @@
+import aguaclara.core.constants as con
+import aguaclara.core.head_loss as hl
+import aguaclara.core.materials as mat
+import aguaclara.core.physchem as pc
+import aguaclara.core.pipes as pipe
 from aguaclara.core.units import u
+import aguaclara.core.utility as ut
+
 from aguaclara.design.component import Component
+from aguaclara.design.pipeline import Pipe
+
+import numpy as np
 
 class Filter(Component):
 
-    sand_layer_thick = 20 *u.cm
-    n_backwash_manifold_diameter = 4 * u.inch
-    max_filtration_head_loss = 30 * u.cm
+    def __init__(self, **kwargs):
+        self.backwash_vel = 11 * u.mm/u.s
+        self.layer_n = 6
+        self.layer_h = 20 * u.cm
+        self.sand_density = 2650 * u.kg/u.m**3
+        self.filter_hl_max = 80 * u.cm 
+        self.siphon_vent_t = 15* u.s
+        self.sand_diam = 0.5 * u.mm
+        self.porosity = 0.4
+        self.branch_s = 10 * u.cm
+        self.trunk_max_size = 8 * u.inch
+        self.backwash_orifice_hl = 15 * u.cm
+        self.trunk_spec = 'sdr26'
+        self.branch_spec = 'sdr26'
+        self.q_ratio = 0.85
+        self.branch_size = 1 * u.inch
+        self.branch_size_backwash = 1.5 * u.inch
+        self.temp_min = 10.0 * u.degC
+        self.temp_max = 30.0 * u.degC
+        
+        super().__init__(**kwargs)
 
     @property
-    def n_tanks():
-        tank = math.ceil(self.q/40)
-        return (tank.magnitude)*2
+    def vel(self):
+        return self.backwash_vel / self.layer_n
+
+    # Temporary functions, delete all ergun functions when hannah merges 
+    # her physchem changes
+    def Re_Ergun(self, v_a, D_Sand, Temperature, Porosity):
+        return (v_a*D_Sand/(pc.viscosity_kinematic(Temperature)*(1-Porosity))).to(u.dimensionless)
+
+    def f_Ergun(self, v_a, D_Sand, Temperature, Porosity):
+        return 300/self.Re_Ergun(v_a, D_Sand, Temperature, Porosity) + 3.5
+
+    def hf_Ergun(self, v_a, D_Sand, Temperature, Porosity, L):
+        return (self.f_Ergun(v_a, D_Sand, Temperature, Porosity)*L/D_Sand*v_a**2/(2*u.gravity)*(1-Porosity)/Porosity**3).to(u.m)
 
     @property
-    def flow_rate_per_tank():
-        n_tanks = n_tanks()
-        return flow_rate/n_tanks
+    def clean_bed_hl_min(self):
+        clean_bed_hl_min = self.hf_Ergun(
+            self.vel,
+            self.sand_diam, 
+            self.temp_max, 
+            self.porosity, 
+            self.layer_h
+        )
+        return clean_bed_hl_min
+    
+    
 
-    #def filt_vel():
 
-    #def backwash_vel():
 
-    #def backwash_manifold_diameter():
+
+
+
+
+
+
 
 #Design guidelines say 11 mm/s. The success of lab-scale backwashing at
 # 10 mm/s suggests that this is a reasonable and conservative value
