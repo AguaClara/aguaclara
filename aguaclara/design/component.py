@@ -151,7 +151,9 @@ class Component(ABC):
             '__doc__',
             '__module__',
             '__weakref__',
-            'subcomponents'
+            'subcomponents',
+            'Q_DEFAULT',
+            'TEMP_DEFAULT'
         ]
         # Get all of the object's fields
         for var_name in dir(self):
