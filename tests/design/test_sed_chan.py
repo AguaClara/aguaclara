@@ -53,6 +53,9 @@ sed_chan_60 = SedimentationChannel(q = 60.0 * u.L / u.s)
 	(sed_chan_20.outlet_w_pre_weir, 30.0 * u.cm),
 	(sed_chan_60.outlet_w_pre_weir, 30.0 * u.cm),
 
+	(sed_chan_60.outlet_pipe_k_minor, 3.3),
+    (sed_chan_20.outlet_pipe_k_minor, 3.3),
+
 	(sed_chan_20.outlet_pipe.l, 3.7119999999999997 * u.m),
 	(sed_chan_60.outlet_pipe.l, 3.7119999999999997 * u.m),
     

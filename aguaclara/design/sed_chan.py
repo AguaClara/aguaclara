@@ -410,10 +410,3 @@ class SedimentationChannel(Component):
         inlet_slope_l = self.l + self.sed_wall_thickness - \
             pipe.fitting_od(self.sed_tank_inlet_man_nd) - self.fitting_s 
         return inlet_slope_l
-
-
-    @property
-    def outlet_pipe_nd(self):
-        """Nominal diameter of the outlet pipe."""
-       
-        return outlet_pipe_nd
