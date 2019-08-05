@@ -3,9 +3,9 @@
 The ``pint`` package supports arithmetic involving **physical quantities**
 each of which has a magnitude and units, for example 1 cm or 3 kg m/s^2.
 The units of a quantity come from ``pint``'s **unit registry**. This module
-contains a single global unit registry ``unit_registry`` that can be used by any
+contains a single global unit registry ``u`` that can be used by any
 number of other modules. The ``aguaclara`` has also defined and added some of
-its own units to the ``unit_registry``:
+its own units to the ``u``:
 
   * NTU = 1.47 * (mg / L)
   * dollar = [money] = USD
@@ -15,7 +15,7 @@ its own units to the ``unit_registry``:
 
 :Examples:
 
->>> from aguaclara.core.units import unit_registry as u
+>>> from aguaclara.core.units import u
 >>> rpm = 10 * u.rev/u.min
 >>> rpm
 <Quantity(10.0, 'rev / minute')>
@@ -31,19 +31,20 @@ import os
 import pint
 import pandas as pd
 
+# A global unit registry that can be used by any of other module.
 unit_registry = pint.UnitRegistry(
     system='mks',
     autoconvert_offset_to_baseunit=True
 )
-"""A global unit registry that can be used by any of other module."""
+u = unit_registry
 
 # default formatting includes 4 significant digits.
 # This can be overridden on a per-print basis with
 # print('{:.3f}'.format(3 * ureg.m / 9)).
-unit_registry.default_format = '.4g'
+u.default_format = '.4g'
 pd.options.display.float_format = '{:,.4g}'.format
 
-unit_registry.load_definitions(os.path.join(os.path.dirname(__file__),
+u.load_definitions(os.path.join(os.path.dirname(__file__),
                                             "data", "unit_definitions.txt"))
 
 
@@ -56,7 +57,7 @@ def set_sig_figs(n):
 
     :Examples:
 
-    >>> from aguaclara.core.units import set_sig_figs, unit_registry as u
+    >>> from aguaclara.core.units import set_sig_figs, u as u
     >>> h = 2.5532532522352543*u.m
     >>> e = 25532532522352543*u.m
     >>> print('h before sigfig adjustment:',h)
@@ -69,5 +70,5 @@ def set_sig_figs(n):
     >>> print('e after sigfig adjustment:',e)
     e after sigfig adjustment: 2.553253252e+16 meter
     """
-    unit_registry.default_format = '.' + str(n) + 'g'
+    u.default_format = '.' + str(n) + 'g'
     pd.options.display.float_format = ('{:,.' + str(n) + '}').format

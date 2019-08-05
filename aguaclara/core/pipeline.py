@@ -3,7 +3,7 @@ pipeline design.
 
 """
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 from aguaclara.core import physchem as pc
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mats
