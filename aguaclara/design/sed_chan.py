@@ -300,7 +300,10 @@ class SedimentationChannel(Component):
             mat.PVC_PIPE_ROUGH, 
             self.outlet_pipe_k_minor
         )
-        return outlet_pipe_q_max.to(u.L / u.s)
+        return ut.round_step(
+            outlet_pipe_q_max.to(u.L / u.s),
+            step = 0.0001 * u.L / u.s
+        )
 
     def _set_outlet_pipe(self):
         outlet_pipe_q = self.q / self.outlet_pipe_n
