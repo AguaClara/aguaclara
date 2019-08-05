@@ -8,7 +8,7 @@ Example:
     >>> sed_chan.inlet_w
     <Quantity(59.52755905511811, 'inch')>
 """
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut

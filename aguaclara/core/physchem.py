@@ -2,7 +2,7 @@
 and chemical unit processes for AguaClara water treatment plants.
 """
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import aguaclara.core.materials as mat
 import aguaclara.core.constants as con
 import aguaclara.core.utility as ut
