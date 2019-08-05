@@ -322,7 +322,7 @@ class Pipe(PipelineComponent):
             - ``id_ (float * u.inch)``: Inner diameter
             - ``sdr (int)``: Standard dimension ratio
         """
-        nd = super().get_available_size((id_ * sdr) / (sdr - 2))
+        nd = super()._get_available_size((id_ * sdr) / (sdr - 2))
         self.id = self._get_id_sdr(nd, sdr)
         return nd
 

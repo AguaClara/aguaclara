@@ -12,7 +12,10 @@ etf_60 = EntTankFloc(q = 60.0 * u.L / u.s)
 	(etf_60.ent.l, 57.820577185244304 * u.inch),
 
 	(etf_20.floc.chan_w, 0.45 * u.m),
-    (etf_60.floc.chan_w, 0.4377982708968249 * u.m)
+    (etf_60.floc.chan_w, 0.4377982708968249 * u.m),
+
+    (etf_20.ent.drain_pipe.id, 3.8048780487804876 * u.inch),
+    (etf_60.ent.drain_pipe.id, 3.8048780487804876 * u.inch)
 ])
 def test_etf(actual, expected):
     assert actual == expected
