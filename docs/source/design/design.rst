@@ -12,3 +12,4 @@ Design
     sed
     sed_chan
     sed_tank
+    pipeline

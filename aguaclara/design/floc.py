@@ -14,6 +14,7 @@ import aguaclara.core.pipes as pipes
 import aguaclara.core.utility as ut
 from aguaclara.core.units import u
 from aguaclara.design.component import Component
+from aguaclara.design.pipeline import Pipe
 
 import numpy as np
 
@@ -75,12 +76,17 @@ class Flocculator(Component):
         self.hl  =  40.0 * u.cm
         self.end_water_depth  =  2.0 * u.m
         self.drain_t = 30.0 * u.min
+        self.spec = 'sdr41'
+        self.drain_pipe = Pipe()
+        self.subcomponents = [self.drain_pipe]
         self.polycarb_sheet_w = 42.0 * u.inch
         self.sed_chan_inlet_w_pre_weir = 42.0 * u.inch
         self.dividing_wall_thickness = 15.0 * u.cm
         self.chan_n_parity = 'even'
-
+        
         super().__init__(**kwargs)
+        self._set_drain_pipe()
+        super().set_subcomponents()
 
         if self.chan_n_parity not in ('even', 'odd', 'any'):
             raise AttributeError(
@@ -242,35 +248,28 @@ class Flocculator(Component):
 
         return pipe_od
 
-    @property
-    def drain_k(self):
-        """The minor loss coefficient of the drain pipe."""
-        drain_K = \
+    def _set_drain_pipe(self):
+        drain_k_minor = \
             hl.PIPE_ENTRANCE_K_MINOR + \
             hl.PIPE_ENTRANCE_K_MINOR + \
             hl.PIPE_EXIT_K_MINOR
-        return drain_K
-
-    @property
-    def drain_id(self):
-        """The depth of the drain pipe."""
+        
         chan_pair_a = 2 * self.chan_l * self.chan_w
         drain_id = (
                 np.sqrt(8 * chan_pair_a / (np.pi * self.drain_t) *
                     np.sqrt(
-                        self.end_water_depth * self.drain_k /
+                        self.end_water_depth * drain_k_minor /
                         (2 * u.standard_gravity)
                     )
                 )
             ).to_base_units()
-        return drain_id.to(u.inch)
 
-    @property
-    def drain_nd(self):
-        """The diameter of the drain pipe."""
-        drain_ND = pipes.ND_SDR_available(self.drain_id, self.SDR)
-        return drain_ND
-
+        self.drain_pipe = Pipe(
+            id = drain_id, 
+            k_minor = drain_k_minor, 
+            spec = self.spec
+            )
+        
     def draw(self):
         """Draw the Onshape flocculator model based off of this object."""
         from onshapepy import Part
@@ -284,27 +283,3 @@ class Flocculator(Component):
             'channel_pairs': self.chan_n/2,
             'baffle_S': self.baffle_s,
         }
-
-
-def print_vals():
-    # myF = floc.Flocculator(q=flow,ent_l=0*u.m,temp=Temperature,hl=50*u.cm,)
-    n = 50
-    mytemp = 15*u.degC
-    GraphQ = np.linspace(0,1,n)*200*u.L/u.s
-    myFs =np.empty(n, dtype=type(Flocculator))
-    residencetimes = np.empty(n)*u.s
-    gradients = np.empty(n)*u.Hz
-    bafflespacing = np.empty(n)*u.cm
-    channels = np.empty(n)
-    channel_w = np.empty(n)*u.cm
-    for i in range(1,n):
-        myFs[i] = Flocculator(q=GraphQ[i],temp = mytemp)
-        residencetimes[i] = myFs[i].retention_time
-        gradients[i] = myFs[i].vel_grad_avg
-        bafflespacing[i] = myFs[i].baffle_s
-        channels[i] = myFs[i].chan_n
-        channel_w[i] = myFs[i].chan_w
-
-    print(channels)
-    for w in channel_w:
-        print(w)
