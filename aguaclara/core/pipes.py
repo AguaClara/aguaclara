@@ -1,13 +1,9 @@
 """This file contains functions which convert between the nominal, inner, and
 outer diameters of pipes based on their standard dimension ratio (SDR).
 """
-
-#Let's begin to create the pipe database
-# https://docs.python.org/2/library/csv.html
 from aguaclara.core.units import u
 import numpy as np
 import pandas as pd
-# load the pipedb from a csv file
 
 import os.path
 dir_path = os.path.dirname(__file__)
@@ -15,7 +11,11 @@ csv_path = os.path.join(dir_path, 'data/pipe_database.csv')
 with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
 
-""""""
+# TODO: Add a deprecation warning for this once manifold design code has been
+# implemented. The socket_depth and cap_thickness functions are used in
+# a manifold calculation in sed_tank, and can also be transferred to pipeline
+# design code once manifold design code has been implemented.
+
 class Pipe:
 
 
