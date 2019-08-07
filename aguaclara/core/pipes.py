@@ -30,12 +30,12 @@ class Pipe:
 
     @property
     def id_sdr(self):
-        return self.od.magnitude * (self.sdr - 2) / self.sdr
+        return (self.od.magnitude * (self.sdr - 2) / self.sdr) * u.inch
 
     @property
     def id_sch40(self):
         myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
-        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5]))
+        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])) * u.inch
 
 @u.wraps(u.inch, u.inch, False)
 def OD(ND):

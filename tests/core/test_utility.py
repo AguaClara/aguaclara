@@ -1,7 +1,6 @@
 import unittest
-
-from aguaclara.play import *
-
+import aguaclara.core.utility as ut
+from aguaclara.core.units import u
 
 class UtilityTest(unittest.TestCase):
 
