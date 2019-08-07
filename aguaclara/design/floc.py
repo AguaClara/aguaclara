@@ -86,7 +86,7 @@ class Flocculator(Component):
             'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/93cd89de6935ef3345557187/e/d16d675f6ee5bf8fa88bca66'
         )
 
-        super().__init__(self.onshape_url, **kwargs)
+        super().__init__(**kwargs)
 
         if self.chan_n_parity not in ('even', 'odd', 'any'):
             raise AttributeError(
@@ -276,9 +276,3 @@ class Flocculator(Component):
         """The diameter of the drain pipe."""
         drain_ND = pipes.ND_SDR_available(self.drain_id, self.SDR)
         return drain_ND
-
-    def configure_onshape(self):
-        """Draw the Onshape flocculator model based off of this object."""
-        self.element = ConfiguredOnshapeElement(self.onshape_url)
-        self.element.update_current_configuration({'Channel_l': self.chan_l})
-        self.element.get_url_with_configuration()

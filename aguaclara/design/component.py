@@ -209,3 +209,6 @@ class Component(ABC):
             )
         
         self.element = ConfiguredOnshapeElement(self.onshape_url)
+        self.element.update_current_configuration(self.serialize_properties())
+        self.element.get_url_with_configuration()
+        
