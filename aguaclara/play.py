@@ -21,7 +21,6 @@ from aguaclara.core import drills
 import aguaclara.core.head_loss as k
 import aguaclara.core.materials as mat
 from aguaclara.core import physchem as pc
-from aguaclara.core import pipeline
 import aguaclara.core.pipes as pipe
 from aguaclara.core.units import u
 import aguaclara.core.utility as ut
