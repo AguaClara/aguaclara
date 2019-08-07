@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Component &mdash; AguaClara v0.1.4 documentation</title>
+  <title>Component &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="sed.html">Sedimentor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sed_chan.html">Sedimentation Channel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sed_tank.html">Sedimentation Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
@@ -201,19 +202,6 @@
 <p>This class provides the ability to record and propogate a configuration of
 plant design variables for a component and all of its subcomponents.</p>
 <dl class="method">
-<dt id="aguaclara.design.component.Component.print_properties">
-<code class="sig-name descname">print_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.print_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.print_properties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print the serialized properties with pretty indentation.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.component.Component.serialize_properties">
-<code class="sig-name descname">serialize_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.serialize_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.serialize_properties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert the properties (fields and <code class="docutils literal notranslate"><span class="pre">&#64;property</span></code> functions) of a 
-component into a dictionary string.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="aguaclara.design.component.Component.set_subcomponents">
 <code class="sig-name descname">set_subcomponents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.set_subcomponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.set_subcomponents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the plant-wide inputs of all subcomponents.</p>
@@ -226,8 +214,21 @@ subcomponent’s <code class="docutils literal notranslate"><span class="pre">q<
 </dd></dl>
 
 <dl class="method">
+<dt id="aguaclara.design.component.Component.serialize_properties">
+<code class="sig-name descname">serialize_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.serialize_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.serialize_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the properties (fields and <code class="docutils literal notranslate"><span class="pre">&#64;property</span></code> functions) of a 
+component into a dictionary string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.component.Component.print_properties">
+<code class="sig-name descname">print_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.print_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.print_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the serialized properties with pretty indentation.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="aguaclara.design.component.Component.write_properties_to_file">
-<code class="sig-name descname">write_properties_to_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.write_properties_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.write_properties_to_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_properties_to_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.write_properties_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.write_properties_to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append the properties of a component to a file. If it does not exist,
 then the file is created.</p>
 <dl class="simple">

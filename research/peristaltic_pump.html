@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Peristaltic Pump &mdash; AguaClara v0.1.4 documentation</title>
+  <title>Peristaltic Pump &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -168,64 +168,6 @@
   <div class="section" id="module-aguaclara.research.peristaltic_pump">
 <span id="peristaltic-pump"></span><h1>Peristaltic Pump<a class="headerlink" href="#module-aguaclara.research.peristaltic_pump" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="aguaclara.research.peristaltic_pump.ID_colored_tube">
-<code class="sig-prename descclassname">aguaclara.research.peristaltic_pump.</code><code class="sig-name descname">ID_colored_tube</code><span class="sig-paren">(</span><em class="sig-param">color</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#ID_colored_tube"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.ID_colored_tube" title="Permalink to this definition">¶</a></dt>
-<dd><p>Look up the inner diameter of Ismatec 3-stop tubing given its color code.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>color</strong> (<em>string</em>) – Color of the 3-stop tubing</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Inner diameter of the 3-stop tubing (mm)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
-</dd>
-<dt class="field-even">Examples</dt>
-<dd class="field-even"><p></p></dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">ID_colored_tube</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;yellow-blue&quot;</span><span class="p">)</span>
-<span class="go">&lt;Quantity(1.52, &#39;millimeter&#39;)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;orange-yellow&quot;</span><span class="p">)</span>
-<span class="go">&lt;Quantity(0.51, &#39;millimeter&#39;)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;purple-white&quot;</span><span class="p">)</span>
-<span class="go">&lt;Quantity(2.79, &#39;millimeter&#39;)&gt;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.peristaltic_pump.flow_rate">
-<code class="sig-prename descclassname">aguaclara.research.peristaltic_pump.</code><code class="sig-name descname">flow_rate</code><span class="sig-paren">(</span><em class="sig-param">vol_per_rev</em>, <em class="sig-param">rpm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#flow_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.flow_rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the flow rate from a pump given the volume of fluid pumped per
-revolution and the desired pump speed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>vol_per_rev</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Volume of fluid output per revolution (dependent on pump and tubing)</p></li>
-<li><p><strong>rpm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Desired pump speed in revolutions per minute</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Flow rate of the pump (mL/s)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
-</dd>
-<dt class="field-even">Examples</dt>
-<dd class="field-even"><p></p></dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">flow_rate</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flow_rate</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
-<span class="go">&lt;Quantity(0.25, &#39;milliliter / second&#39;)&gt;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="aguaclara.research.peristaltic_pump.vol_per_rev_3_stop">
 <code class="sig-prename descclassname">aguaclara.research.peristaltic_pump.</code><code class="sig-name descname">vol_per_rev_3_stop</code><span class="sig-paren">(</span><em class="sig-param">color=''</em>, <em class="sig-param">inner_diameter=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#vol_per_rev_3_stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.vol_per_rev_3_stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the volume per revolution of an Ismatec 6 roller pump
@@ -265,6 +207,35 @@ mm. Accuracy is not guaranteed for tubes with smaller or larger diameters.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="aguaclara.research.peristaltic_pump.ID_colored_tube">
+<code class="sig-prename descclassname">aguaclara.research.peristaltic_pump.</code><code class="sig-name descname">ID_colored_tube</code><span class="sig-paren">(</span><em class="sig-param">color</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#ID_colored_tube"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.ID_colored_tube" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up the inner diameter of Ismatec 3-stop tubing given its color code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>color</strong> (<em>string</em>) – Color of the 3-stop tubing</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Inner diameter of the 3-stop tubing (mm)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</dd>
+<dt class="field-even">Examples</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">ID_colored_tube</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;yellow-blue&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity(1.52, &#39;millimeter&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;orange-yellow&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity(0.51, &#39;millimeter&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ID_colored_tube</span><span class="p">(</span><span class="s2">&quot;purple-white&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity(2.79, &#39;millimeter&#39;)&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.research.peristaltic_pump.vol_per_rev_LS">
 <code class="sig-prename descclassname">aguaclara.research.peristaltic_pump.</code><code class="sig-name descname">vol_per_rev_LS</code><span class="sig-paren">(</span><em class="sig-param">id_number</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#vol_per_rev_LS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.vol_per_rev_LS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Look up the volume per revolution output by a Masterflex L/S pump
@@ -288,6 +259,35 @@ through L/S tubing of the given ID number.</p>
 <span class="go">&lt;Quantity(0.06, &#39;milliliter / turn&#39;)&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vol_per_rev_LS</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
 <span class="go">&lt;Quantity(3.8, &#39;milliliter / turn&#39;)&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.peristaltic_pump.flow_rate">
+<code class="sig-prename descclassname">aguaclara.research.peristaltic_pump.</code><code class="sig-name descname">flow_rate</code><span class="sig-paren">(</span><em class="sig-param">vol_per_rev</em>, <em class="sig-param">rpm</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/peristaltic_pump.html#flow_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.peristaltic_pump.flow_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow rate from a pump given the volume of fluid pumped per
+revolution and the desired pump speed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vol_per_rev</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Volume of fluid output per revolution (dependent on pump and tubing)</p></li>
+<li><p><strong>rpm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Desired pump speed in revolutions per minute</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flow rate of the pump (mL/s)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</dd>
+<dt class="field-even">Examples</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.peristaltic_pump</span> <span class="k">import</span> <span class="n">flow_rate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flow_rate</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+<span class="go">&lt;Quantity(0.25, &#39;milliliter / second&#39;)&gt;</span>
 </pre></div>
 </div>
 </dd></dl>

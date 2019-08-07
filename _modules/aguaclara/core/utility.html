@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.utility &mdash; AguaClara v0.1.4 documentation</title>
+  <title>aguaclara.core.utility &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -308,6 +308,9 @@
         <span class="n">counter</span> <span class="o">+=</span> <span class="n">step</span> <span class="o">*</span> <span class="n">unit</span>
     <span class="k">return</span> <span class="n">counter</span>
 
+<span class="c1"># TODO: I&#39;m not sure if these next two functions work for unsorted arrays, so it</span>
+<span class="c1"># would be good to check in the future -Oliver Leung (oal22), 19 Jul &#39;19</span>
+
 <div class="viewcode-block" id="floor_nearest"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.floor_nearest">[docs]</a><span class="k">def</span> <span class="nf">floor_nearest</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the nearest element of a NumPy array less than or equal to a value.</span>
 
@@ -371,6 +374,15 @@
 <div class="viewcode-block" id="min"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.min">[docs]</a><span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Like :func:`max`, but the minimum of the quantites.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_minmax</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_sdr"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.get_sdr">[docs]</a><span class="k">def</span> <span class="nf">get_sdr</span><span class="p">(</span><span class="n">spec</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the SDR of a string ``spec`` with the form \&quot;sdrXX\&quot;.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        - ``spec (str)``: The specification string to be parsed.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;sdr&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not a valid SDR.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span></div>
 
 <div class="viewcode-block" id="list_handler"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.list_handler">[docs]</a><span class="k">def</span> <span class="nf">list_handler</span><span class="p">(</span><span class="n">HandlerResult</span><span class="o">=</span><span class="s2">&quot;nparray&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wraps a function to handle list inputs.&quot;&quot;&quot;</span>

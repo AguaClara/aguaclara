@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sedimentation Channel &mdash; AguaClara v0.1.4 documentation</title>
+  <title>Sedimentation Channel &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="sed.html">Sedimentor</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Sedimentation Channel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sed_tank.html">Sedimentation Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
@@ -243,27 +244,15 @@ the outlet pipe (optional, defaults to 8 in)</p></li>
 </dd>
 </dl>
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.drain_nd">
-<em class="property">property </em><code class="sig-name descname">drain_nd</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.drain_nd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Nominal diameter of the channel drain pipe.</p>
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.l">
+<em class="property">property </em><code class="sig-name descname">l</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Length of the sedimentation channel.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_depth">
-<em class="property">property </em><code class="sig-name descname">inlet_depth</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_depth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Depth of the inlet channel.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_drain_box_w">
-<em class="property">property </em><code class="sig-name descname">inlet_drain_box_w</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_drain_box_w" title="Permalink to this definition">¶</a></dt>
-<dd><p>Width of the inlet channel drain box</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_h">
-<em class="property">property </em><code class="sig-name descname">inlet_h</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_h" title="Permalink to this definition">¶</a></dt>
-<dd><p>Height of the inlet channel.</p>
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_hl">
+<em class="property">property </em><code class="sig-name descname">outlet_weir_hl</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_hl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Head loss over the outlet channel weir.</p>
 </dd></dl>
 
 <dl class="method">
@@ -273,45 +262,15 @@ the outlet pipe (optional, defaults to 8 in)</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_last_coupling_h">
-<em class="property">property </em><code class="sig-name descname">inlet_last_coupling_h</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_last_coupling_h" title="Permalink to this definition">¶</a></dt>
-<dd><p>Height of the last coupling in the inlet channel.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_slope_l">
-<em class="property">property </em><code class="sig-name descname">inlet_slope_l</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_slope_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>Length of the slopes between each pipe in the inlet channel.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_step_h">
-<em class="property">property </em><code class="sig-name descname">inlet_step_h</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_step_h" title="Permalink to this definition">¶</a></dt>
-<dd><p>Height of the steps between each pipe in the inlet channel.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_w">
-<em class="property">property </em><code class="sig-name descname">inlet_w</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w" title="Permalink to this definition">¶</a></dt>
-<dd><p>Width of the inlet channel</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_w_post_weir">
-<em class="property">property </em><code class="sig-name descname">inlet_w_post_weir</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w_post_weir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Width of the inlet channel (post-weir)</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_w_pre_weir">
 <em class="property">property </em><code class="sig-name descname">inlet_w_pre_weir</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w_pre_weir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Width of the inlet channel (pre-weir).</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_h">
-<em class="property">property </em><code class="sig-name descname">inlet_weir_h</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_h" title="Permalink to this definition">¶</a></dt>
-<dd><p>Height of the inlet channel weir.</p>
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_depth">
+<em class="property">property </em><code class="sig-name descname">inlet_depth</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depth of the inlet channel.</p>
 </dd></dl>
 
 <dl class="method">
@@ -321,9 +280,33 @@ the outlet pipe (optional, defaults to 8 in)</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.l">
-<em class="property">property </em><code class="sig-name descname">l</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.l" title="Permalink to this definition">¶</a></dt>
-<dd><p>Length of the sedimentation channel.</p>
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_h">
+<em class="property">property </em><code class="sig-name descname">inlet_h</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of the inlet channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_h">
+<em class="property">property </em><code class="sig-name descname">inlet_weir_h</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of the inlet channel weir.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_w_post_weir">
+<em class="property">property </em><code class="sig-name descname">inlet_w_post_weir</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w_post_weir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of the inlet channel (post-weir)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_w">
+<em class="property">property </em><code class="sig-name descname">inlet_w</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of the inlet channel</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_drain_box_w">
+<em class="property">property </em><code class="sig-name descname">inlet_drain_box_w</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_drain_box_w" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of the inlet channel drain box</p>
 </dd></dl>
 
 <dl class="method">
@@ -333,39 +316,27 @@ the outlet pipe (optional, defaults to 8 in)</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_drain_box_w">
-<em class="property">property </em><code class="sig-name descname">outlet_drain_box_w</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_drain_box_w" title="Permalink to this definition">¶</a></dt>
-<dd><p>Width of the outlet channel drain box.</p>
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_depth">
+<em class="property">property </em><code class="sig-name descname">outlet_weir_depth</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depth of the outlet channel weir.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_l">
-<em class="property">property </em><code class="sig-name descname">outlet_pipe_l</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>Length of the outlet pipe.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_n">
-<em class="property">property </em><code class="sig-name descname">outlet_pipe_n</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>Number of outlet pipes.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_nd">
-<em class="property">property </em><code class="sig-name descname">outlet_pipe_nd</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_nd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Nominal diameter of the outlet pipe.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_q">
-<em class="property">property </em><code class="sig-name descname">outlet_pipe_q</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_q" title="Permalink to this definition">¶</a></dt>
-<dd><p>Flow through the outlet pipe.</p>
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_w_pre_weir">
+<em class="property">property </em><code class="sig-name descname">outlet_w_pre_weir</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_w_pre_weir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of the outlet channel (pre-weir).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_q_max">
 <em class="property">property </em><code class="sig-name descname">outlet_pipe_q_max</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_q_max" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximum flow through the outlet pipe.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_n">
+<em class="property">property </em><code class="sig-name descname">outlet_pipe_n</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of outlet pipes.</p>
 </dd></dl>
 
 <dl class="method">
@@ -381,15 +352,9 @@ the outlet pipe (optional, defaults to 8 in)</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_w_pre_weir">
-<em class="property">property </em><code class="sig-name descname">outlet_w_pre_weir</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_w_pre_weir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Width of the outlet channel (pre-weir).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_depth">
-<em class="property">property </em><code class="sig-name descname">outlet_weir_depth</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_depth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Depth of the outlet channel weir.</p>
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_drain_box_w">
+<em class="property">property </em><code class="sig-name descname">outlet_drain_box_w</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_drain_box_w" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of the outlet channel drain box.</p>
 </dd></dl>
 
 <dl class="method">
@@ -399,15 +364,27 @@ the outlet pipe (optional, defaults to 8 in)</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_hl">
-<em class="property">property </em><code class="sig-name descname">outlet_weir_hl</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_hl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Head loss over the outlet channel weir.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="aguaclara.design.sed_chan.SedimentationChannel.w_outer">
 <em class="property">property </em><code class="sig-name descname">w_outer</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.w_outer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Outer width of the sedimentation channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_last_coupling_h">
+<em class="property">property </em><code class="sig-name descname">inlet_last_coupling_h</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_last_coupling_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of the last coupling in the inlet channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_step_h">
+<em class="property">property </em><code class="sig-name descname">inlet_step_h</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_step_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of the steps between each pipe in the inlet channel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_chan.SedimentationChannel.inlet_slope_l">
+<em class="property">property </em><code class="sig-name descname">inlet_slope_l</code><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_slope_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Length of the slopes between each pipe in the inlet channel.</p>
 </dd></dl>
 
 </dd></dl>

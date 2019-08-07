@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.floc &mdash; AguaClara v0.1.4 documentation</title>
+  <title>aguaclara.design.floc &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -169,6 +169,7 @@
 <span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="kn">from</span> <span class="nn">aguaclara.design.component</span> <span class="k">import</span> <span class="n">Component</span>
+<span class="kn">from</span> <span class="nn">aguaclara.design.pipeline</span> <span class="k">import</span> <span class="n">Pipe</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -230,12 +231,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hl</span>  <span class="o">=</span>  <span class="mf">40.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end_water_depth</span>  <span class="o">=</span>  <span class="mf">2.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drain_t</span> <span class="o">=</span> <span class="mf">30.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="s1">&#39;sdr41&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drain_pipe</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subcomponents</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">drain_pipe</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">polycarb_sheet_w</span> <span class="o">=</span> <span class="mf">42.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sed_chan_inlet_w_pre_weir</span> <span class="o">=</span> <span class="mf">42.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dividing_wall_thickness</span> <span class="o">=</span> <span class="mf">15.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">chan_n_parity</span> <span class="o">=</span> <span class="s1">&#39;even&#39;</span>
-
+        
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_drain_pipe</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_subcomponents</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chan_n_parity</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;even&#39;</span><span class="p">,</span> <span class="s1">&#39;odd&#39;</span><span class="p">,</span> <span class="s1">&#39;any&#39;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
@@ -397,35 +403,28 @@
 
         <span class="k">return</span> <span class="n">pipe_od</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">drain_k</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The minor loss coefficient of the drain pipe.&quot;&quot;&quot;</span>
-        <span class="n">drain_K</span> <span class="o">=</span> \
+    <span class="k">def</span> <span class="nf">_set_drain_pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">drain_k_minor</span> <span class="o">=</span> \
             <span class="n">hl</span><span class="o">.</span><span class="n">PIPE_ENTRANCE_K_MINOR</span> <span class="o">+</span> \
             <span class="n">hl</span><span class="o">.</span><span class="n">PIPE_ENTRANCE_K_MINOR</span> <span class="o">+</span> \
             <span class="n">hl</span><span class="o">.</span><span class="n">PIPE_EXIT_K_MINOR</span>
-        <span class="k">return</span> <span class="n">drain_K</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">drain_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The depth of the drain pipe.&quot;&quot;&quot;</span>
+        
         <span class="n">chan_pair_a</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">chan_l</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">chan_w</span>
         <span class="n">drain_id</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">chan_pair_a</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">drain_t</span><span class="p">)</span> <span class="o">*</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">end_water_depth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">drain_k</span> <span class="o">/</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">end_water_depth</span> <span class="o">*</span> <span class="n">drain_k_minor</span> <span class="o">/</span>
                         <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">standard_gravity</span><span class="p">)</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">drain_id</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">drain_nd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The diameter of the drain pipe.&quot;&quot;&quot;</span>
-        <span class="n">drain_ND</span> <span class="o">=</span> <span class="n">pipes</span><span class="o">.</span><span class="n">ND_SDR_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drain_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SDR</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">drain_ND</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">drain_pipe</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">drain_id</span><span class="p">,</span> 
+            <span class="n">k_minor</span> <span class="o">=</span> <span class="n">drain_k_minor</span><span class="p">,</span> 
+            <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span>
+            <span class="p">)</span>
+        
 <div class="viewcode-block" id="Flocculator.draw"><a class="viewcode-back" href="../../../design/floc.html#aguaclara.design.floc.Flocculator.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the Onshape flocculator model based off of this object.&quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">onshapepy</span> <span class="k">import</span> <span class="n">Part</span>
@@ -439,30 +438,6 @@
             <span class="s1">&#39;channel_pairs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">chan_n</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
             <span class="s1">&#39;baffle_S&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baffle_s</span><span class="p">,</span>
         <span class="p">}</span></div></div>
-
-
-<span class="k">def</span> <span class="nf">print_vals</span><span class="p">():</span>
-    <span class="c1"># myF = floc.Flocculator(q=flow,ent_l=0*u.m,temp=Temperature,hl=50*u.cm,)</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="mi">50</span>
-    <span class="n">mytemp</span> <span class="o">=</span> <span class="mi">15</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degC</span>
-    <span class="n">GraphQ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mi">200</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span>
-    <span class="n">myFs</span> <span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">Flocculator</span><span class="p">))</span>
-    <span class="n">residencetimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span>
-    <span class="n">gradients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">Hz</span>
-    <span class="n">bafflespacing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span>
-    <span class="n">channels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="n">channel_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">myFs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Flocculator</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">GraphQ</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">temp</span> <span class="o">=</span> <span class="n">mytemp</span><span class="p">)</span>
-        <span class="n">residencetimes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">myFs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">retention_time</span>
-        <span class="n">gradients</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">myFs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">vel_grad_avg</span>
-        <span class="n">bafflespacing</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">myFs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">baffle_s</span>
-        <span class="n">channels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">myFs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">chan_n</span>
-        <span class="n">channel_w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">myFs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">chan_w</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">channel_w</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
 </pre></div>
 
            </div>

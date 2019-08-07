@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sedimentation Tank &mdash; AguaClara v0.1.4 documentation</title>
+  <title>Sedimentation Tank &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Research" href="../research/research.html" />
+    <link rel="next" title="Pipeline" href="pipeline.html" />
     <link rel="prev" title="Sedimentation Channel" href="sed_chan.html" /> 
 </head>
 
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="sed.html">Sedimentor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sed_chan.html">Sedimentation Channel</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Sedimentation Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
@@ -262,9 +263,9 @@ hopper wall slopes to vertical (optional, defaults to 60°)</p></li>
 </dd>
 </dl>
 <dl class="method">
-<dt id="aguaclara.design.sed_tank.SedimentationTank.diffuser_a">
-<em class="property">property </em><code class="sig-name descname">diffuser_a</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.diffuser_a" title="Permalink to this definition">¶</a></dt>
-<dd><p>The area of the diffuser</p>
+<dt id="aguaclara.design.sed_tank.SedimentationTank.q_tank">
+<em class="property">property </em><code class="sig-name descname">q_tank</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.q_tank" title="Permalink to this definition">¶</a></dt>
+<dd><p>The flow rate present in the tank.</p>
 </dd></dl>
 
 <dl class="method">
@@ -286,27 +287,21 @@ hopper wall slopes to vertical (optional, defaults to 60°)</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_tank.SedimentationTank.floc_weir_h">
-<em class="property">property </em><code class="sig-name descname">floc_weir_h</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.floc_weir_h" title="Permalink to this definition">¶</a></dt>
-<dd><p>The height of the floc weir.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_tank.SedimentationTank.inlet_man_h">
-<em class="property">property </em><code class="sig-name descname">inlet_man_h</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.inlet_man_h" title="Permalink to this definition">¶</a></dt>
-<dd><p>The height of the inlet manifold height.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_tank.SedimentationTank.inlet_man_nd">
-<em class="property">property </em><code class="sig-name descname">inlet_man_nd</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.inlet_man_nd" title="Permalink to this definition">¶</a></dt>
-<dd><p>The nominal diameter of the inlet manifold</p>
+<dt id="aguaclara.design.sed_tank.SedimentationTank.diffuser_a">
+<em class="property">property </em><code class="sig-name descname">diffuser_a</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.diffuser_a" title="Permalink to this definition">¶</a></dt>
+<dd><p>The area of the diffuser</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="aguaclara.design.sed_tank.SedimentationTank.inlet_man_v_max">
 <em class="property">property </em><code class="sig-name descname">inlet_man_v_max</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.inlet_man_v_max" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximumum velocity in the inlet manifold.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_tank.SedimentationTank.inlet_man_nd">
+<em class="property">property </em><code class="sig-name descname">inlet_man_nd</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.inlet_man_nd" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nominal diameter of the inlet manifold</p>
 </dd></dl>
 
 <dl class="method">
@@ -322,9 +317,9 @@ hopper wall slopes to vertical (optional, defaults to 60°)</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_tank.SedimentationTank.outlet_man_orifice_n">
-<em class="property">property </em><code class="sig-name descname">outlet_man_orifice_n</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.outlet_man_orifice_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of orifices on the outlet manifold.</p>
+<dt id="aguaclara.design.sed_tank.SedimentationTank.plate_l">
+<em class="property">property </em><code class="sig-name descname">plate_l</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.plate_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>The length of a plate in the plate settlers.</p>
 </dd></dl>
 
 <dl class="method">
@@ -340,21 +335,21 @@ hopper wall slopes to vertical (optional, defaults to 60°)</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="aguaclara.design.sed_tank.SedimentationTank.outlet_man_orifice_n">
+<em class="property">property </em><code class="sig-name descname">outlet_man_orifice_n</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.outlet_man_orifice_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of orifices on the outlet manifold.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="aguaclara.design.sed_tank.SedimentationTank.outlet_orifice_hl">
 <em class="property">property </em><code class="sig-name descname">outlet_orifice_hl</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.outlet_orifice_hl" title="Permalink to this definition">¶</a></dt>
 <dd><p>The headloss for the orifices of the outlet</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_tank.SedimentationTank.plate_l">
-<em class="property">property </em><code class="sig-name descname">plate_l</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.plate_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>The length of a plate in the plate settlers.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.sed_tank.SedimentationTank.q_tank">
-<em class="property">property </em><code class="sig-name descname">q_tank</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.q_tank" title="Permalink to this definition">¶</a></dt>
-<dd><p>The flow rate present in the tank.</p>
+<dt id="aguaclara.design.sed_tank.SedimentationTank.side_slopes_w">
+<em class="property">property </em><code class="sig-name descname">side_slopes_w</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.side_slopes_w" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of the side slopes.</p>
 </dd></dl>
 
 <dl class="method">
@@ -364,9 +359,15 @@ hopper wall slopes to vertical (optional, defaults to 60°)</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.sed_tank.SedimentationTank.side_slopes_w">
-<em class="property">property </em><code class="sig-name descname">side_slopes_w</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.side_slopes_w" title="Permalink to this definition">¶</a></dt>
-<dd><p>The width of the side slopes.</p>
+<dt id="aguaclara.design.sed_tank.SedimentationTank.inlet_man_h">
+<em class="property">property </em><code class="sig-name descname">inlet_man_h</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.inlet_man_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of the inlet manifold height.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.sed_tank.SedimentationTank.floc_weir_h">
+<em class="property">property </em><code class="sig-name descname">floc_weir_h</code><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank.floc_weir_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of the floc weir.</p>
 </dd></dl>
 
 </dd></dl>
@@ -381,7 +382,7 @@ hopper wall slopes to vertical (optional, defaults to 60°)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../research/research.html" class="btn btn-neutral float-right" title="Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pipeline.html" class="btn btn-neutral float-right" title="Pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="sed_chan.html" class="btn btn-neutral float-left" title="Sedimentation Channel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

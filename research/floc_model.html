@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Floc Model &mdash; AguaClara v0.1.4 documentation</title>
+  <title>Floc Model &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -232,47 +232,10 @@ aluminum atoms per molecule, and a precipitate.</p>
 <span class="target" id="module-aguaclara.research.floc_model"></span><p>This file contains functions which can be used to model the behavior of
 flocs based on the chemical interactions of clay, coagulant, and humic acid.</p>
 <dl class="data">
-<dt id="aguaclara.research.floc_model.Alum">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">Alum</code><em class="property"> = &lt;aguaclara.research.floc_model.Chemical object&gt;</em><a class="headerlink" href="#aguaclara.research.floc_model.Alum" title="Permalink to this definition">¶</a></dt>
-<dd><p>A Material representing alum with a diameter of 7e-8 m, density of
-2420 kg/m^3, and molecular weight of 0.59921 kg/mol. It’s precipitate is
-AlOH3, with the same diameter and density, and a molecular weight of 0.078
-kg/mol.</p>
-</dd></dl>
-
-<dl class="data">
 <dt id="aguaclara.research.floc_model.Clay">
 <code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">Clay</code><em class="property"> = &lt;aguaclara.research.floc_model.Material object&gt;</em><a class="headerlink" href="#aguaclara.research.floc_model.Clay" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Material representing clay with a diameter of 7e-6 m and density of 2650
 kg/m^3.</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="aguaclara.research.floc_model.DIM_FRACTAL">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">DIM_FRACTAL</code><em class="property"> = 2.3</em><a class="headerlink" href="#aguaclara.research.floc_model.DIM_FRACTAL" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fractal dimension, based on data from published in Environmental Engineering
-Science, “Fractal Models for Floc Density, Sedimentation Velocity, and Floc
-Volume Fraction for High Peclet Number Reactors” by Monroe Weber-Shirk and
-Leonard Lion (2015).</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="aguaclara.research.floc_model.HumicAcid">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">HumicAcid</code><em class="property"> = &lt;aguaclara.research.floc_model.Chemical object&gt;</em><a class="headerlink" href="#aguaclara.research.floc_model.HumicAcid" title="Permalink to this definition">¶</a></dt>
-<dd><p>A Material representing humic acid with a diameter of 7.2e-8 m and density
-of 1780 kg/m^3. It is its own precipitate.</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="aguaclara.research.floc_model.MOLEC_WEIGHT_ALUMINUM">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">MOLEC_WEIGHT_ALUMINUM</code><em class="property"> = &lt;Quantity(0.027, 'kilogram / mole')&gt;</em><a class="headerlink" href="#aguaclara.research.floc_model.MOLEC_WEIGHT_ALUMINUM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Molecular weight of aluminum in kg/mole.</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="aguaclara.research.floc_model.NUM_AVOGADRO">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">NUM_AVOGADRO</code><em class="property"> = 6.0221414999999996e+23</em><a class="headerlink" href="#aguaclara.research.floc_model.NUM_AVOGADRO" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Avogadro constant.</p>
 </dd></dl>
 
 <dl class="data">
@@ -284,9 +247,28 @@ its own precipitate.</p>
 </dd></dl>
 
 <dl class="data">
-<dt id="aguaclara.research.floc_model.PHI_FLOC">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">PHI_FLOC</code><em class="property"> = 1.875</em><a class="headerlink" href="#aguaclara.research.floc_model.PHI_FLOC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shape factor for drag on flocs used in terminal velocity equation.</p>
+<dt id="aguaclara.research.floc_model.Alum">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">Alum</code><em class="property"> = &lt;aguaclara.research.floc_model.Chemical object&gt;</em><a class="headerlink" href="#aguaclara.research.floc_model.Alum" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Material representing alum with a diameter of 7e-8 m, density of
+2420 kg/m^3, and molecular weight of 0.59921 kg/mol. It’s precipitate is
+AlOH3, with the same diameter and density, and a molecular weight of 0.078
+kg/mol.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="aguaclara.research.floc_model.HumicAcid">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">HumicAcid</code><em class="property"> = &lt;aguaclara.research.floc_model.Chemical object&gt;</em><a class="headerlink" href="#aguaclara.research.floc_model.HumicAcid" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Material representing humic acid with a diameter of 7.2e-8 m and density
+of 1780 kg/m^3. It is its own precipitate.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="aguaclara.research.floc_model.DIM_FRACTAL">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">DIM_FRACTAL</code><em class="property"> = 2.3</em><a class="headerlink" href="#aguaclara.research.floc_model.DIM_FRACTAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fractal dimension, based on data from published in Environmental Engineering
+Science, “Fractal Models for Floc Density, Sedimentation Velocity, and Floc
+Volume Fraction for High Peclet Number Reactors” by Monroe Weber-Shirk and
+Leonard Lion (2015).</p>
 </dd></dl>
 
 <dl class="data">
@@ -301,10 +283,38 @@ its own precipitate.</p>
 <dd><p>Ratio between inner viscous length scale and Kolmogorov length scale.</p>
 </dd></dl>
 
+<dl class="data">
+<dt id="aguaclara.research.floc_model.PHI_FLOC">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">PHI_FLOC</code><em class="property"> = 1.875</em><a class="headerlink" href="#aguaclara.research.floc_model.PHI_FLOC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shape factor for drag on flocs used in terminal velocity equation.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="aguaclara.research.floc_model.NUM_AVOGADRO">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">NUM_AVOGADRO</code><em class="property"> = 6.0221414999999996e+23</em><a class="headerlink" href="#aguaclara.research.floc_model.NUM_AVOGADRO" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Avogadro constant.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="aguaclara.research.floc_model.MOLEC_WEIGHT_ALUMINUM">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">MOLEC_WEIGHT_ALUMINUM</code><em class="property"> = &lt;Quantity(0.027, 'kilogram / mole')&gt;</em><a class="headerlink" href="#aguaclara.research.floc_model.MOLEC_WEIGHT_ALUMINUM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Molecular weight of aluminum in kg/mole.</p>
+</dd></dl>
+
 <dl class="function">
-<dt id="aguaclara.research.floc_model.conc_floc">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">conc_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">concClay</em>, <em class="sig-param">coag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#conc_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.conc_floc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return floc density given aluminum dose, turbidity, and coagulant</p>
+<dt id="aguaclara.research.floc_model.dens_alum_nanocluster">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dens_alum_nanocluster</code><span class="sig-paren">(</span><em class="sig-param">coag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dens_alum_nanocluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dens_alum_nanocluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the density of the aluminum in the nanocluster.</p>
+<p>This is useful for determining the volume of nanoclusters
+given a concentration of aluminum.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.dens_pacl_solution">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dens_pacl_solution</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dens_pacl_solution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dens_pacl_solution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the density of the PACl solution.</p>
+<p>From Stock Tank Mixing report Fall 2013:
+<a class="reference external" href="https://confluence.cornell.edu/download/attachments/137953883/20131213_Research_Report.pdf">https://confluence.cornell.edu/download/attachments/137953883/20131213_Research_Report.pdf</a></p>
 </dd></dl>
 
 <dl class="function">
@@ -334,91 +344,47 @@ function in MathCAD. This is known.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.dean_number">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dean_number</code><span class="sig-paren">(</span><em class="sig-param">PlantFlow</em>, <em class="sig-param">IDTube</em>, <em class="sig-param">RadiusCoil</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dean_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dean_number" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the Dean Number.</p>
-<p>The Dean Number is a dimensionless parameter that is the unfortunate
-combination of Reynolds and tube curvature. It would have been better
-to keep the Reynolds number and define a simple dimensionless geometric
-parameter.</p>
+<dt id="aguaclara.research.floc_model.conc_floc">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">conc_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">concClay</em>, <em class="sig-param">coag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#conc_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.conc_floc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return floc density given aluminum dose, turbidity, and coagulant</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.dens_alum_nanocluster">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dens_alum_nanocluster</code><span class="sig-paren">(</span><em class="sig-param">coag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dens_alum_nanocluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dens_alum_nanocluster" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the density of the aluminum in the nanocluster.</p>
-<p>This is useful for determining the volume of nanoclusters
-given a concentration of aluminum.</p>
+<dt id="aguaclara.research.floc_model.moles_aluminum">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">moles_aluminum</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#moles_aluminum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.moles_aluminum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the # of moles aluminum given aluminum concentration.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.dens_floc">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dens_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAl</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">DiamTarget</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dens_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dens_floc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate floc density as a function of size.</p>
+<dt id="aguaclara.research.floc_model.sep_dist_aluminum">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">sep_dist_aluminum</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#sep_dist_aluminum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.sep_dist_aluminum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the separation distance between aluminum molecules.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.dens_floc_init">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dens_floc_init</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dens_floc_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dens_floc_init" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the density of the initial floc.</p>
-<p>Initial floc is made primarily of the primary colloid and nanoglobs.</p>
+<dt id="aguaclara.research.floc_model.particle_number_concentration">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">particle_number_concentration</code><span class="sig-paren">(</span><em class="sig-param">ConcMat</em>, <em class="sig-param">material</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#particle_number_concentration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.particle_number_concentration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of particles in suspension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ConcMat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Concentration of the material</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="#aguaclara.research.floc_model.Material" title="aguaclara.research.floc_model.Material"><em>floc_model.Material</em></a>) – The material in solution</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.dens_pacl_solution">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dens_pacl_solution</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dens_pacl_solution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dens_pacl_solution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the density of the PACl solution.</p>
-<p>From Stock Tank Mixing report Fall 2013:
-<a class="reference external" href="https://confluence.cornell.edu/download/attachments/137953883/20131213_Research_Report.pdf">https://confluence.cornell.edu/download/attachments/137953883/20131213_Research_Report.pdf</a></p>
+<dt id="aguaclara.research.floc_model.sep_dist_clay">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">sep_dist_clay</code><span class="sig-paren">(</span><em class="sig-param">ConcClay</em>, <em class="sig-param">material</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#sep_dist_clay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.sep_dist_clay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the separation distance between clay particles.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.diam_floc_max">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">diam_floc_max</code><span class="sig-paren">(</span><em class="sig-param">epsMax</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#diam_floc_max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.diam_floc_max" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return floc size as a function of energy dissipation rate.</p>
-<p>Based on Ian Tse’s work with floc size as a function of energy
-dissipation rate. This is for the average energy dissipation rate
-in a tube flocculator. It isn’t clear how to convert this to the
-turbulent flow case. Maybe the flocs are mostly experiencing viscous
-shear. But that isn’t clear. Some authors have made the case that
-floc breakup is due to viscous effects. If that is the case, then
-the results from the tube flocculator should be applicable to the
-turbulent case. We will have to account for the temporal and spatial
-variability in the turbulent energy dissipation rate. The factor of
-95 μm is based on the assumption that the ratio of the max to
-average energy dissipation rate for laminar flow is approximately 2.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.diam_floc_vel_term">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">diam_floc_vel_term</code><span class="sig-paren">(</span><em class="sig-param">ConcAl</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">VelTerm</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#diam_floc_vel_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.diam_floc_vel_term" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate floc diamter as a function of terminal velocity.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.diam_fractal">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">diam_fractal</code><span class="sig-paren">(</span><em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">DiamInitial</em>, <em class="sig-param">NumCol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#diam_fractal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.diam_fractal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the diameter of a floc given NumCol doubling collisions.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.diam_kolmogorov">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">diam_kolmogorov</code><span class="sig-paren">(</span><em class="sig-param">EnergyDis</em>, <em class="sig-param">Temp</em>, <em class="sig-param">ConcAl</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">DIM_FRACTAL</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#diam_kolmogorov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.diam_kolmogorov" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the size of the floc with separation distances equal to
-the Kolmogorov length and the inner viscous length scale.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.ener_dis_diam_floc">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">ener_dis_diam_floc</code><span class="sig-paren">(</span><em class="sig-param">Diam</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#ener_dis_diam_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.ener_dis_diam_floc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return max energy dissipation rate as a function of max floc diameter.</p>
-<p>This equation is under suspicion.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.frac_vol_floc">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">frac_vol_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">material</em>, <em class="sig-param">DiamTarget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#frac_vol_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.frac_vol_floc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the floc volume fraction.</p>
+<dt id="aguaclara.research.floc_model.num_nanoclusters">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">num_nanoclusters</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">coag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#num_nanoclusters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.num_nanoclusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of Aluminum nanoclusters.</p>
 </dd></dl>
 
 <dl class="function">
@@ -444,16 +410,68 @@ the Kolmogorov length and the inner viscous length scale.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.g_coil">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">g_coil</code><span class="sig-paren">(</span><em class="sig-param">FlowPlant</em>, <em class="sig-param">IDTube</em>, <em class="sig-param">RadiusCoil</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#g_coil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.g_coil" title="Permalink to this definition">¶</a></dt>
-<dd><p>We need a reference for this.</p>
-<p>Karen’s thesis likely has this equation and the reference.</p>
+<dt id="aguaclara.research.floc_model.diam_fractal">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">diam_fractal</code><span class="sig-paren">(</span><em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">DiamInitial</em>, <em class="sig-param">NumCol</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#diam_fractal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.diam_fractal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the diameter of a floc given NumCol doubling collisions.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.g_time_res">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">g_time_res</code><span class="sig-paren">(</span><em class="sig-param">FlowPlant</em>, <em class="sig-param">IDTube</em>, <em class="sig-param">RadiusCoil</em>, <em class="sig-param">LengthTube</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#g_time_res"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.g_time_res" title="Permalink to this definition">¶</a></dt>
-<dd><p>G Residence Time calculated for a coiled tube flocculator.</p>
+<dt id="aguaclara.research.floc_model.num_coll_reqd">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">num_coll_reqd</code><span class="sig-paren">(</span><em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">material</em>, <em class="sig-param">DiamTarget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#num_coll_reqd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.num_coll_reqd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of doubling collisions required.</p>
+<p>Calculates the number of doubling collisions required to produce
+a floc of diameter DiamTarget.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.sep_dist_floc">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">sep_dist_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">DiamTarget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#sep_dist_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.sep_dist_floc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return separation distance as a function of floc size.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.frac_vol_floc">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">frac_vol_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">material</em>, <em class="sig-param">DiamTarget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#frac_vol_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.frac_vol_floc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the floc volume fraction.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.dens_floc_init">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dens_floc_init</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dens_floc_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dens_floc_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the density of the initial floc.</p>
+<p>Initial floc is made primarily of the primary colloid and nanoglobs.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.ratio_clay_sphere">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">ratio_clay_sphere</code><span class="sig-paren">(</span><em class="sig-param">RatioHeightDiameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#ratio_clay_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.ratio_clay_sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the surface area to volume ratio for clay.</p>
+<p>Normalized by surface area to volume ratio for a sphere.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.ratio_area_clay_total">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">ratio_area_clay_total</code><span class="sig-paren">(</span><em class="sig-param">ConcClay</em>, <em class="sig-param">material</em>, <em class="sig-param">DiamTube</em>, <em class="sig-param">RatioHeightDiameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#ratio_area_clay_total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.ratio_area_clay_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the surface area of clay normalized by total surface area.</p>
+<p>Total surface area is a combination of clay and reactor wall
+surface areas. This function is used to estimate how much coagulant
+actually goes to the clay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ConcClay</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Concentration of clay in suspension</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="#aguaclara.research.floc_model.Material" title="aguaclara.research.floc_model.Material"><em>floc_model.Material</em></a>) – Type of clay in suspension, e.g. floc_model.Clay</p></li>
+<li><p><strong>DiamTube</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Diameter of flocculator tube (assumes tube flocculator for calculation of reactor surface area)</p></li>
+<li><p><strong>RatioHeightDiameter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Dimensionless ratio describing ratio of clay height to clay diameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The ratio of clay surface area to total available surface area (accounting for reactor walls)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -507,26 +525,6 @@ gradually approaching full coverage as coagulant dose increases.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.moles_aluminum">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">moles_aluminum</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#moles_aluminum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.moles_aluminum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the # of moles aluminum given aluminum concentration.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.num_coll_reqd">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">num_coll_reqd</code><span class="sig-paren">(</span><em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">material</em>, <em class="sig-param">DiamTarget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#num_coll_reqd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.num_coll_reqd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of doubling collisions required.</p>
-<p>Calculates the number of doubling collisions required to produce
-a floc of diameter DiamTarget.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.num_nanoclusters">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">num_nanoclusters</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">coag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#num_nanoclusters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.num_nanoclusters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of Aluminum nanoclusters.</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="aguaclara.research.floc_model.pacl_term">
 <code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">pacl_term</code><span class="sig-paren">(</span><em class="sig-param">DiamTube</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">ConcAl</em>, <em class="sig-param">ConcNatOrgMat</em>, <em class="sig-param">NatOrgMat</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">RatioHeightDiameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#pacl_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.pacl_term" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the fraction of the surface area that is covered with coagulant
@@ -554,67 +552,21 @@ that is not covered with humic acid.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.particle_number_concentration">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">particle_number_concentration</code><span class="sig-paren">(</span><em class="sig-param">ConcMat</em>, <em class="sig-param">material</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#particle_number_concentration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.particle_number_concentration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of particles in suspension.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ConcMat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Concentration of the material</p></li>
-<li><p><strong>material</strong> (<a class="reference internal" href="#aguaclara.research.floc_model.Material" title="aguaclara.research.floc_model.Material"><em>floc_model.Material</em></a>) – The material in solution</p></li>
-</ul>
-</dd>
-</dl>
+<dt id="aguaclara.research.floc_model.dens_floc">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dens_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAl</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">DiamTarget</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dens_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dens_floc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate floc density as a function of size.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.ratio_area_clay_total">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">ratio_area_clay_total</code><span class="sig-paren">(</span><em class="sig-param">ConcClay</em>, <em class="sig-param">material</em>, <em class="sig-param">DiamTube</em>, <em class="sig-param">RatioHeightDiameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#ratio_area_clay_total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.ratio_area_clay_total" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the surface area of clay normalized by total surface area.</p>
-<p>Total surface area is a combination of clay and reactor wall
-surface areas. This function is used to estimate how much coagulant
-actually goes to the clay.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ConcClay</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Concentration of clay in suspension</p></li>
-<li><p><strong>material</strong> (<a class="reference internal" href="#aguaclara.research.floc_model.Material" title="aguaclara.research.floc_model.Material"><em>floc_model.Material</em></a>) – Type of clay in suspension, e.g. floc_model.Clay</p></li>
-<li><p><strong>DiamTube</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Diameter of flocculator tube (assumes tube flocculator for calculation of reactor surface area)</p></li>
-<li><p><strong>RatioHeightDiameter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Dimensionless ratio describing ratio of clay height to clay diameter</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The ratio of clay surface area to total available surface area (accounting for reactor walls)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
-</dd>
-</dl>
+<dt id="aguaclara.research.floc_model.vel_term_floc">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">vel_term_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAl</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">DiamTarget</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#vel_term_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.vel_term_floc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate floc terminal velocity.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.ratio_clay_sphere">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">ratio_clay_sphere</code><span class="sig-paren">(</span><em class="sig-param">RatioHeightDiameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#ratio_clay_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.ratio_clay_sphere" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the surface area to volume ratio for clay.</p>
-<p>Normalized by surface area to volume ratio for a sphere.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.sep_dist_aluminum">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">sep_dist_aluminum</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#sep_dist_aluminum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.sep_dist_aluminum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the separation distance between aluminum molecules.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.sep_dist_clay">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">sep_dist_clay</code><span class="sig-paren">(</span><em class="sig-param">ConcClay</em>, <em class="sig-param">material</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#sep_dist_clay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.sep_dist_clay" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the separation distance between clay particles.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.floc_model.sep_dist_floc">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">sep_dist_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAluminum</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">DiamTarget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#sep_dist_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.sep_dist_floc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return separation distance as a function of floc size.</p>
+<dt id="aguaclara.research.floc_model.diam_floc_vel_term">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">diam_floc_vel_term</code><span class="sig-paren">(</span><em class="sig-param">ConcAl</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">VelTerm</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#diam_floc_vel_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.diam_floc_vel_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate floc diamter as a function of terminal velocity.</p>
 </dd></dl>
 
 <dl class="function">
@@ -632,15 +584,63 @@ actually goes to the clay.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="aguaclara.research.floc_model.diam_kolmogorov">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">diam_kolmogorov</code><span class="sig-paren">(</span><em class="sig-param">EnergyDis</em>, <em class="sig-param">Temp</em>, <em class="sig-param">ConcAl</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">DIM_FRACTAL</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#diam_kolmogorov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.diam_kolmogorov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the size of the floc with separation distances equal to
+the Kolmogorov length and the inner viscous length scale.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.diam_floc_max">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">diam_floc_max</code><span class="sig-paren">(</span><em class="sig-param">epsMax</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#diam_floc_max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.diam_floc_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return floc size as a function of energy dissipation rate.</p>
+<p>Based on Ian Tse’s work with floc size as a function of energy
+dissipation rate. This is for the average energy dissipation rate
+in a tube flocculator. It isn’t clear how to convert this to the
+turbulent flow case. Maybe the flocs are mostly experiencing viscous
+shear. But that isn’t clear. Some authors have made the case that
+floc breakup is due to viscous effects. If that is the case, then
+the results from the tube flocculator should be applicable to the
+turbulent case. We will have to account for the temporal and spatial
+variability in the turbulent energy dissipation rate. The factor of
+95 μm is based on the assumption that the ratio of the max to
+average energy dissipation rate for laminar flow is approximately 2.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.ener_dis_diam_floc">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">ener_dis_diam_floc</code><span class="sig-paren">(</span><em class="sig-param">Diam</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#ener_dis_diam_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.ener_dis_diam_floc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return max energy dissipation rate as a function of max floc diameter.</p>
+<p>This equation is under suspicion.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.dean_number">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">dean_number</code><span class="sig-paren">(</span><em class="sig-param">PlantFlow</em>, <em class="sig-param">IDTube</em>, <em class="sig-param">RadiusCoil</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#dean_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.dean_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Dean Number.</p>
+<p>The Dean Number is a dimensionless parameter that is the unfortunate
+combination of Reynolds and tube curvature. It would have been better
+to keep the Reynolds number and define a simple dimensionless geometric
+parameter.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.floc_model.g_coil">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">g_coil</code><span class="sig-paren">(</span><em class="sig-param">FlowPlant</em>, <em class="sig-param">IDTube</em>, <em class="sig-param">RadiusCoil</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#g_coil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.g_coil" title="Permalink to this definition">¶</a></dt>
+<dd><p>We need a reference for this.</p>
+<p>Karen’s thesis likely has this equation and the reference.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.research.floc_model.time_res_tube">
 <code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">time_res_tube</code><span class="sig-paren">(</span><em class="sig-param">IDTube</em>, <em class="sig-param">LengthTube</em>, <em class="sig-param">FlowPlant</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#time_res_tube"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.time_res_tube" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate residence time in the flocculator.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="aguaclara.research.floc_model.vel_term_floc">
-<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">vel_term_floc</code><span class="sig-paren">(</span><em class="sig-param">ConcAl</em>, <em class="sig-param">ConcClay</em>, <em class="sig-param">coag</em>, <em class="sig-param">material</em>, <em class="sig-param">DIM_FRACTAL</em>, <em class="sig-param">DiamTarget</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#vel_term_floc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.vel_term_floc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate floc terminal velocity.</p>
+<dt id="aguaclara.research.floc_model.g_time_res">
+<code class="sig-prename descclassname">aguaclara.research.floc_model.</code><code class="sig-name descname">g_time_res</code><span class="sig-paren">(</span><em class="sig-param">FlowPlant</em>, <em class="sig-param">IDTube</em>, <em class="sig-param">RadiusCoil</em>, <em class="sig-param">LengthTube</em>, <em class="sig-param">Temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/floc_model.html#g_time_res"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.floc_model.g_time_res" title="Permalink to this definition">¶</a></dt>
+<dd><p>G Residence Time calculated for a coiled tube flocculator.</p>
 </dd></dl>
 
 </div>

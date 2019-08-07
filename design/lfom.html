@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Linear Flow Orifice Meter (LFOM) &mdash; AguaClara v0.1.4 documentation</title>
+  <title>Linear Flow Orifice Meter (LFOM) &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="sed.html">Sedimentor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sed_chan.html">Sedimentation Channel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sed_tank.html">Sedimentation Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
@@ -202,46 +203,34 @@ defaults to 0.5cm)</p></li>
 </dd>
 </dl>
 <dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.drill_bit_a">
-<em class="property">property </em><code class="sig-name descname">drill_bit_a</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.drill_bit_a" title="Permalink to this definition">¶</a></dt>
-<dd><p>The area of the actual drill bit.</p>
+<dt id="aguaclara.design.lfom.LFOM.stout_w_per_flow">
+<code class="sig-name descname">stout_w_per_flow</code><span class="sig-paren">(</span><em class="sig-param">h</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM.stout_w_per_flow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM.stout_w_per_flow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of a stout weir at a given elevation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.m)</span></code>: Elevation height</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.error_per_row">
-<em class="property">property </em><code class="sig-name descname">error_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.error_per_row" title="Permalink to this definition">¶</a></dt>
-<dd><p>The error of the design based off the predicted flow rate and 
-the actual flow rate.</p>
+<dt id="aguaclara.design.lfom.LFOM.row_n">
+<em class="property">property </em><code class="sig-name descname">row_n</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.row_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of rows.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.orifice_d">
-<em class="property">property </em><code class="sig-name descname">orifice_d</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_d" title="Permalink to this definition">¶</a></dt>
-<dd><p>The actual orifice diameter.</p>
+<dt id="aguaclara.design.lfom.LFOM.row_b">
+<em class="property">property </em><code class="sig-name descname">row_b</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.row_b" title="Permalink to this definition">¶</a></dt>
+<dd><p>The distance center to center between each row of orifices.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.orifice_d_max">
-<em class="property">property </em><code class="sig-name descname">orifice_d_max</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_d_max" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum orifice diameter.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.orifice_h_per_row">
-<em class="property">property </em><code class="sig-name descname">orifice_h_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_h_per_row" title="Permalink to this definition">¶</a></dt>
-<dd><p>The height of the center of each row of orifices.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.orifice_n_max_per_row">
-<em class="property">property </em><code class="sig-name descname">orifice_n_max_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_n_max_per_row" title="Permalink to this definition">¶</a></dt>
-<dd><p>The max number of orifices allowed in each row.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.orifice_n_per_row">
-<em class="property">property </em><code class="sig-name descname">orifice_n_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_n_per_row" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of orifices at each level.</p>
+<dt id="aguaclara.design.lfom.LFOM.vel_critical">
+<em class="property">property </em><code class="sig-name descname">vel_critical</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.vel_critical" title="Permalink to this definition">¶</a></dt>
+<dd><p>The average vertical velocity of the water inside the LFOM pipe
+at the bottom of the orfices.</p>
 </dd></dl>
 
 <dl class="method">
@@ -258,9 +247,45 @@ a safety factor.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="aguaclara.design.lfom.LFOM.top_row_orifice_a">
+<em class="property">property </em><code class="sig-name descname">top_row_orifice_a</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.top_row_orifice_a" title="Permalink to this definition">¶</a></dt>
+<dd><p>The orifice area corresponding to the top row of orifices.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.lfom.LFOM.orifice_d_max">
+<em class="property">property </em><code class="sig-name descname">orifice_d_max</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_d_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum orifice diameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.lfom.LFOM.orifice_d">
+<em class="property">property </em><code class="sig-name descname">orifice_d</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_d" title="Permalink to this definition">¶</a></dt>
+<dd><p>The actual orifice diameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.lfom.LFOM.drill_bit_a">
+<em class="property">property </em><code class="sig-name descname">drill_bit_a</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.drill_bit_a" title="Permalink to this definition">¶</a></dt>
+<dd><p>The area of the actual drill bit.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.lfom.LFOM.orifice_n_max_per_row">
+<em class="property">property </em><code class="sig-name descname">orifice_n_max_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_n_max_per_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>The max number of orifices allowed in each row.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="aguaclara.design.lfom.LFOM.q_per_row">
 <em class="property">property </em><code class="sig-name descname">q_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.q_per_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>An array of flow at each row.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aguaclara.design.lfom.LFOM.orifice_h_per_row">
+<em class="property">property </em><code class="sig-name descname">orifice_h_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_h_per_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of the center of each row of orifices.</p>
 </dd></dl>
 
 <dl class="method">
@@ -276,40 +301,16 @@ a safety factor.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.row_b">
-<em class="property">property </em><code class="sig-name descname">row_b</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.row_b" title="Permalink to this definition">¶</a></dt>
-<dd><p>The distance center to center between each row of orifices.</p>
+<dt id="aguaclara.design.lfom.LFOM.orifice_n_per_row">
+<em class="property">property </em><code class="sig-name descname">orifice_n_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_n_per_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of orifices at each level.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.row_n">
-<em class="property">property </em><code class="sig-name descname">row_n</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.row_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of rows.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.stout_w_per_flow">
-<code class="sig-name descname">stout_w_per_flow</code><span class="sig-paren">(</span><em class="sig-param">h</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM.stout_w_per_flow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM.stout_w_per_flow" title="Permalink to this definition">¶</a></dt>
-<dd><p>The width of a stout weir at a given elevation.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">h</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.m)</span></code>: Elevation height</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.top_row_orifice_a">
-<em class="property">property </em><code class="sig-name descname">top_row_orifice_a</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.top_row_orifice_a" title="Permalink to this definition">¶</a></dt>
-<dd><p>The orifice area corresponding to the top row of orifices.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="aguaclara.design.lfom.LFOM.vel_critical">
-<em class="property">property </em><code class="sig-name descname">vel_critical</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.vel_critical" title="Permalink to this definition">¶</a></dt>
-<dd><p>The average vertical velocity of the water inside the LFOM pipe
-at the bottom of the orfices.</p>
+<dt id="aguaclara.design.lfom.LFOM.error_per_row">
+<em class="property">property </em><code class="sig-name descname">error_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.error_per_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>The error of the design based off the predicted flow rate and 
+the actual flow rate.</p>
 </dd></dl>
 
 </dd></dl>

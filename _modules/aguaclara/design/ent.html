@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.ent &mdash; AguaClara v0.1.4 documentation</title>
+  <title>aguaclara.design.ent &mdash; AguaClara v0.1.5 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.4
+                v0.1.5
               </div>
             
           
@@ -174,6 +174,7 @@
 <span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
 
 <span class="kn">from</span> <span class="nn">aguaclara.design.component</span> <span class="k">import</span> <span class="n">Component</span>
+<span class="kn">from</span> <span class="nn">aguaclara.design.pipeline</span> <span class="k">import</span> <span class="n">Pipe</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -218,34 +219,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">plate_angle</span>  <span class="o">=</span>  <span class="mf">50.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plate_capture_vel</span>  <span class="o">=</span>  <span class="mf">8.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fab_s</span> <span class="o">=</span> <span class="mf">5.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span> <span class="o">=</span> <span class="mf">41.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="s1">&#39;sdr41&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">drain_pipe</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subcomponents</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">drain_pipe</span><span class="p">]</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">drain_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_drain_pipe</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_subcomponents</span><span class="p">()</span>
+        
+    <span class="k">def</span> <span class="nf">_set_drain_pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The inner diameter of the entrance tank drain pipe.&quot;&quot;&quot;</span>
-        <span class="n">nu</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span>
-        <span class="n">k_minor</span> <span class="o">=</span> \
+        <span class="n">drain_pipe_k_minor</span> <span class="o">=</span> \
             <span class="n">hl</span><span class="o">.</span><span class="n">PIPE_ENTRANCE_K_MINOR</span> <span class="o">+</span> <span class="n">hl</span><span class="o">.</span><span class="n">PIPE_EXIT_K_MINOR</span> <span class="o">+</span> <span class="n">hl</span><span class="o">.</span><span class="n">EL90_K_MINOR</span>
+
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span>
         <span class="n">drain_id</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">diam_pipe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">floc_end_depth</span><span class="p">,</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">floc_end_depth</span><span class="p">,</span>
                                 <span class="n">nu</span><span class="p">,</span>
                                 <span class="n">mat</span><span class="o">.</span><span class="n">PVC_PIPE_ROUGH</span><span class="p">,</span>
-                                <span class="n">k_minor</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">drain_id</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+                                <span class="n">drain_pipe_k_minor</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">drain_nd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The nominal diameter of the entrance tank drain pipe.&quot;&quot;&quot;</span> 
-        <span class="k">return</span> <span class="n">pipe</span><span class="o">.</span><span class="n">ND_SDR_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drain_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">drain_od</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The outer diameter of the entrance tank drain pipe.&quot;&quot;&quot;</span>
-        <span class="n">drain_pipe</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">Pipe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drain_nd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">drain_pipe</span><span class="o">.</span><span class="n">od</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drain_pipe</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">drain_id</span><span class="p">,</span>
+            <span class="n">k_minor</span> <span class="o">=</span> <span class="n">drain_pipe_k_minor</span><span class="p">,</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span>
+        <span class="p">)</span>
         
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">plate_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -280,7 +280,7 @@
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plate_thickness</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_n</span><span class="p">)</span> <span class="o">+</span> \
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plate_s</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plate_n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
             
-        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drain_od</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fab_s</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drain_pipe</span><span class="o">.</span><span class="n">od</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fab_s</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
             <span class="p">(</span>
                 <span class="n">plate_array_thickness</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(((</span><span class="mi">90</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span> <span class="o">-</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">plate_angle</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">rad</span><span class="p">))</span>
