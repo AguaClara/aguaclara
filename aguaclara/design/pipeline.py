@@ -268,7 +268,9 @@ class Pipe(PipelineComponent):
     @property
     def od(self):
         """The outer diameter of the pipe"""
-        index = (np.abs(np.array(_pipe_database['NDinch']) - self.size.magnitude)).argmin()
+        index = (
+                np.abs(np.array(_pipe_database['NDinch']) - self.size.magnitude)
+            ).argmin()
         return _pipe_database.iloc[index, 1] * u.inch
 
     def _get_size(self, id_, spec):
