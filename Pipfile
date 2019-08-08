@@ -23,6 +23,7 @@ requests = ">=2.20.0"
 rope = "*"
 pylint = "*"
 autopep8 = "*"
+doc8 = "*"
 
 [requires]
 python_version = "3.6"
