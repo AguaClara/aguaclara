@@ -1,4 +1,4 @@
-"""Example design code for a component and subcomponent.
+"""Example design code for a minimal AguaClara sedimentor.
 
 """
 from aguaclara.core.units import unit_registry as u
