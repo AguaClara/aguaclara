@@ -140,6 +140,10 @@ class SedimentationTank(Component):
 
         super().__init__(**kwargs)
 
+    # TODO: now that we have the ability to create subcomponents with q's that
+    # differ from their supercomponents, we can simply adjust the q in
+    # __init__() for this class. The tank should come up with an exact q based
+    # on the number of tanks.
     @property
     def q_tank(self):
         """The flow rate present in the tank."""
