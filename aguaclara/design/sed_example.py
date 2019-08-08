@@ -19,12 +19,11 @@ Example:
     >>> sed.chan.l_inner
     <Quantity(5.0172, 'meter')>
 """
-from aguaclara.core.units import unit_registry as u
-import aguaclara.core.utility as ut
-from aguaclara.design.component import Component
+import aguaclara as ac
+from aguaclara.core.units import u
 
 
-class Sedimentor(Component):
+class Sedimentor(ac.Component):
     """Design a minimal AguaClara sedimentor.
 
     The ``Sedimentor`` class designs the sedimentation tank and channel in
@@ -61,7 +60,7 @@ class Sedimentor(Component):
     @property
     def tank_n(self):
         """The number of sedimentation tanks."""
-        tank_n = ut.ceil_step((self.q / self.tank.q_ideal), 1)
+        tank_n = ac.ceil_step((self.q / self.tank.q_ideal), 1)
         return int(tank_n)
 
     def _set_tank(self):
@@ -75,7 +74,7 @@ class Sedimentor(Component):
         self.chan.sed_wall_thickness = self.wall_thickness
 
 
-class SedimentationChannel(Component):
+class SedimentationChannel(ac.Component):
     """Design a minimal AguaClara sedimentation channel.
     
     The sedimentation channel relies on the number and dimensions of the
@@ -111,7 +110,7 @@ class SedimentationChannel(Component):
         return l.to(u.m)
 
 
-class SedimentationTank(Component):
+class SedimentationTank(ac.Component):
     """Design a minimal AguaClara sedimentation tank.
 
     An sedimentation tank's design relies on the sedimentation channel's design 
