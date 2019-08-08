@@ -24,6 +24,7 @@ rope = "*"
 pylint = "*"
 autopep8 = "*"
 doc8 = "*"
+bpython = "*"
 
 [requires]
 python_version = "3.6"
