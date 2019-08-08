@@ -1,5 +1,23 @@
 """Example design code for a minimal AguaClara sedimentor.
 
+This module provides three example classes that demonstrate proper extension of
+the :class:`aguaclara.design.component.Component` class. Note that they are
+minimal examples of the :class:`aguaclara.design.sed.Sedimentor`,
+:class:`aguaclara.design.sed_tank.SedimentationTank`, and
+:class:`aguaclara.design.sed_chan.SedimentationChannel` classes, and should not
+be used to design real plant components.
+
+Example:
+    >>> from aguaclara.design.sed_example import *
+    >>> sed = Sedimentor()
+    >>> sed.q
+    <Quantity(20.0, 'liter / second')>
+    >>> sed.tank.q
+    <Quantity(5.0, 'liter / second')>
+    >>> sed.tank_n
+    4
+    >>> sed.chan.l_inner
+    <Quantity(5.0172, 'meter')>
 """
 from aguaclara.core.units import unit_registry as u
 import aguaclara.core.utility as ut
