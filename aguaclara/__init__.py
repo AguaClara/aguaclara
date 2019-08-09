@@ -3,7 +3,6 @@ from aguaclara.core.drills import *
 from aguaclara.core.head_loss import *
 from aguaclara.core.materials import *
 from aguaclara.core.physchem import *
-from aguaclara.core.pipeline import *
 from aguaclara.core.pipes import *
 from aguaclara.core.utility import *
 

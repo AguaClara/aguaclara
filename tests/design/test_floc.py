@@ -59,14 +59,14 @@ floc_60 = Flocculator(q = 60 * u.L / u.s)
     (floc_20.obstacle_pipe_od, 4.5 * u.inch),
     (floc_60.obstacle_pipe_od, 4.5 * u.inch),
 
-    (floc_20.drain_k, 2),
-    (floc_60.drain_k, 2),
+    (floc_20.drain_pipe.k_minor, 2),
+    (floc_60.drain_pipe.k_minor, 2),
 
-    (floc_20.drain_id, 2.010052957087986 * u.inch),
-    (floc_60.drain_id, 3.4644055678899486 * u.inch),
+    (floc_20.drain_pipe.id, 2.8536585365853657 * u.inch),
+    (floc_60.drain_pipe.id, 3.8048780487804876 * u.inch),
 
-    (floc_20.drain_nd, 2 * u.inch),
-    (floc_60.drain_nd, 4 * u.inch)
+    (floc_20.drain_pipe.size, 3 * u.inch),
+    (floc_60.drain_pipe.size, 4 * u.inch)
 ])
 
 def test_floc(actual, expected):   

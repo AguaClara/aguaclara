@@ -65,7 +65,12 @@ class Component(ABC):
             '__doc__',
             '__module__',
             '__weakref__',
-            'subcomponents'
+            'subcomponents',
+            '__abstractmethods__',
+            '_abc_cache',
+            '_abc_negative_cache',
+            '_abc_negative_cache_version',
+            '_abc_registry'
         ]
         # Get all of the object's fields
         for var_name in dir(self):
@@ -95,12 +100,14 @@ class Component(ABC):
         """Print the serialized properties with pretty indentation."""
         pprint(self.serialize_properties())
     
-    def write_properties_to_file(self, filename):
+    def write_properties_to_file(self):
         """Append the properties of a component to a file. If it does not exist,
         then the file is created.
         
         Args:
             ``filename (str)``: The name of the file
         """
-        json.dump(self.serialize_properties(), open(filename, mode='a'),
+        filename = "props.json"
+        json.dump(self.serialize_properties(), open(filename, mode='w'),
             indent = 4)
+        print("Properties of component can be found in file props.json")
