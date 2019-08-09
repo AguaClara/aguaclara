@@ -153,6 +153,9 @@ def stepceil_with_units(param, step, unit):
         counter += step * unit
     return counter
 
+# TODO: I'm not sure if these next two functions work for unsorted arrays, so it
+# would be good to check in the future -Oliver Leung (oal22), 19 Jul '19
+
 def floor_nearest(x, array):
     """Get the nearest element of a NumPy array less than or equal to a value.
 
@@ -216,6 +219,15 @@ def max(*args):
 def min(*args):
     """Like :func:`max`, but the minimum of the quantites."""
     return _minmax(*args, func = np.min)
+
+def get_sdr(spec):
+    """Get the SDR of a string ``spec`` with the form \"sdrXX\".
+    
+    Args:
+        - ``spec (str)``: The specification string to be parsed."""
+    if spec[:3] != "sdr":
+        raise ValueError('Not a valid SDR.')
+    return int(spec[3:])
 
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs."""

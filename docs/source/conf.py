@@ -112,6 +112,8 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
+# Order autodoc members by what's in the source code
+autodoc_member_order = 'bysource'
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

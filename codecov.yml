@@ -1,3 +1,4 @@
 ignore:
   - "docs"
   - "aguaclara/design/sed_example.py"
+  - "aguaclara/play.py"

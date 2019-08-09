@@ -1220,7 +1220,7 @@ class MiscPhysFuncsTest(unittest.TestCase):
 
     def test_pipe_ID(self):
         """pipe_ID should return known value for known input"""
-        self.assertAlmostEquals(pc.pipe_ID(0.006, 1.2).magnitude, 0.039682379412712764)
+        self.assertAlmostEqual(pc.pipe_ID(0.006, 1.2).magnitude, 0.039682379412712764)
 
 
 if __name__ == "__main__":

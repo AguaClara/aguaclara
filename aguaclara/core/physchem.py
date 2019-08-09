@@ -373,6 +373,10 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets)
               )
             )
 
+def elbow_minor_loss(q, id_, k):
+    vel = q / area_circle(id_)
+    minor_loss = k * vel ** 2 / (2 * con.GRAVITY)
+    return minor_loss.to(u.m)
 
 @u.wraps(u.m**3/u.s, [u.m, u.m], False)
 @ut.list_handler()
@@ -800,6 +804,8 @@ def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
 
 def pipe_flow_nd(q, sdr, hl, l, nu, eps, k):
     i = 0
-    while q > flow_pipe(pipe.ID_SDR_all_available(sdr)[i], hl, l, nu, eps, k):
+    id_sdr_all_available = pipe.ID_SDR_all_available(sdr)
+    while q > flow_pipe(id_sdr_all_available[i], hl, l, nu, eps, k):
+        i_d = id_sdr_all_available[i]
         i += 1
-    return pipe.ND_SDR_available(pipe.ID_SDR_all_available(sdr)[i], sdr)
+    return pipe.ND_SDR_available(i_d, sdr)
