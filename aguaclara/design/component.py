@@ -95,6 +95,7 @@ def authorize_onshape(config_file_path="~/.onshape_client_config.yaml",
                 keys_file = config_file_path,
                 configuration = configuration
             )
+        print('Success! Onshape was authorized.')
     except (FileNotFoundError, KeyError):
         raise Exception(
                 'A configuration dictionary was not given, and the '
