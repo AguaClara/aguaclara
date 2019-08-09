@@ -16,12 +16,11 @@ aguaclara = {editable = true, path = "."}
 autopep8 = "*"
 codecov = "*"
 coverage = "*"
-docutils = "==0.15" # See https://github.com/pypa/pipenv/issues/3865
 pylint = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-runner = "*"
-requests = ">=2.20.0"
+requests = ">=2.20.0" # Resolves security vulnerability
 rope = "*"
 Sphinx = "*"
 sphinx_rtd_theme = "*"
