@@ -44,17 +44,36 @@ Here is a general overview of how objects are used:
    object's unique values.
 #. Use multiple objects from different classes for even more different outcomes.
 
-Python is an *object-oriented language*, where much of the language's potential
-is unlocked from creating and manipulating objects. In fact, Python takes this
-idea and runs with it: every single "thing" that you use in Python, like
-numbers, functions, and classes, can act like an object.
+So then, why exactly are they called *objects*, and why are we using them for
+water treatment research?
 
+The answer is straightforward: **programming objects are great for representing
+objects in the real world!** More specifically to us, they make it much easier
+to design water treatment plant components. Here are some key ideas that govern
+our use of objects:
 
-This guide will show you how to write code to design a physical object, like an
-AguaClara water treatment plant component. Using a Python class, this design
-code will be able to take in desired parameters of the physical object, like
-flow rate, and return a Python object that contains all of the necessary
-physical values to build that object in real life.
+* Just as how plants and components are designed to meet certain engineering
+  specifications, component design objects can be instantiated such that each
+  one has its own specifications as inputs.
+* For the most part, we can use a given component's design inputs to directly
+  calculate other important aspects of that component, like the expected head
+  loss, or the length/width/height for when it's built in real life.
+* The design of one component will usually affect the design of other
+  components, so we can access multiple objects representing a set of components
+  in order to cohesively design a plant.
+
+.. code-block:: python
+
+    # Complex component design at work
+    >>> import aguaclara as ac
+    >>> from aguaclara.core.units import u
+    >>> sed = ac.Sedimentor(q = 40 * u.L / u.s)
+    >>> sed.tank
+
+This tutorial will show you how to write Python classes for designing an
+AguaClara water treatment plant component. Using that class, you can instantiate
+objects and design hypothetical components which can be built in real life!
+Neat, huh?
 
 This guide assumes knowledge of basic Python syntax. For a refresher, see the
 `AguaClara Writing Python Code guide
