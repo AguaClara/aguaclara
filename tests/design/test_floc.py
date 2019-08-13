@@ -1,6 +1,7 @@
 from aguaclara.design.floc import Flocculator
 from aguaclara.core.units import u
 
+import aguaclara as ac
 import pytest
 
 floc_20 = Flocculator(q = 20 * u.L / u.s)
@@ -71,3 +72,10 @@ floc_60 = Flocculator(q = 60 * u.L / u.s)
 
 def test_floc(actual, expected):   
     assert actual == expected
+
+def test_onshape():
+    floc = ac.Flocculator(q = 80 * u.L / u.s)
+    ac.authorize_onshape()
+    floc.send_to_onshape()
+
+test_onshape()

@@ -36,7 +36,7 @@ Otherwise, subcomponents will inherit the main component's ``q`` and ``temp``:
     >>> plant.filter.q
     40 liter / second
 
-TODO: update the below example with the complete Onshape design flow.
+# TODO: update the below example with the complete Onshape design flow.
 
 Example:
 
@@ -69,22 +69,16 @@ from onshape_client.onshape_url import ConfiguredOnshapeElement
 from pprint import pprint
 from abc import ABC
 
-# I've placed Onshape authorization functionality in this module since it works
-# with Component objects, while not being unique to a given Component object.
-# Placing it within the Component class or in its own aguaclara.design.onshape
-# module are potential alternatives. - Oliver Leung (oal22) 23 Jul '19
-
 _client = None
 """onshape_client.client.Client: Store the initialized Client object to verify
 that Onshape has been authorized.
 """
 
-# TODO: verify that this function appears in the Sphinx-generated docs
 def authorize_onshape(config_file_path="~/.onshape_client_config.yaml",
                       configuration=None):
     """Authorize use of the Onshape API
     
-    TODO: explain getting access/secret keys and function params in depth.
+    # TODO: explain getting access/secret keys and function params in depth.
     """
     global _client
     if _client:
@@ -96,6 +90,7 @@ def authorize_onshape(config_file_path="~/.onshape_client_config.yaml",
                 configuration = configuration
             )
         print('Success! Onshape was authorized.')
+
     except (FileNotFoundError, KeyError):
         raise Exception(
                 'A configuration dictionary was not given, and the '
@@ -112,12 +107,12 @@ class Component(ABC):
     """
     Q_DEFAULT = 20 * u.L / u.s
     TEMP_DEFAULT = 20 * u.degC
+    _onshape_url = None
+    _element = None
 
     def __init__(self, **kwargs):
         self.q = self.Q_DEFAULT
         self.temp = self.TEMP_DEFAULT
-        self.onshape_url = None
-        self.element = None
 
         # Update the Component with new expert inputs, if any were given
         self.__dict__.update(**kwargs)
@@ -130,7 +125,7 @@ class Component(ABC):
         and ``temp`` for subcomponents, except when a subcomponent specifies its
         own custom ``q`` and ``temp``.
         """
-        for subcomp in getattr(self, 'subcomponents'):
+        for subcomp in self.subcomponents:
             # Set the subcomponent's ``q`` and ``temp`` to match this component
             # unless they were changed during instantiation.
             if subcomp.q == self.Q_DEFAULT:
@@ -210,13 +205,13 @@ class Component(ABC):
                 'authorize_onshape() function.'
             )
         
-        if self.onshape_url is None:
+        if self._onshape_url is None:
             raise AttributeError(
                 'This Component object hasn\'t been connected '
                 'to an Onshape Part Studio or Assembly.'
             )
         
-        self.element = ConfiguredOnshapeElement(self.onshape_url)
-        self.element.update_current_configuration(self.serialize_properties())
-        self.element.get_url_with_configuration()
+        self._element = ConfiguredOnshapeElement(self._onshape_url)
+        self._element.update_current_configuration(self.serialize_properties())
+        self._element.get_url_with_configuration()
         
