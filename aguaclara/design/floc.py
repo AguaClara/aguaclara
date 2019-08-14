@@ -18,8 +18,6 @@ from aguaclara.design.pipeline import Pipe
 
 import numpy as np
 
-from onshape_client.onshape_url import ConfiguredOnshapeElement
-
 
 class Flocculator(Component):
     """Design an AguaClara plant's flocculator.
@@ -298,6 +296,3 @@ class Flocculator(Component):
         configured_url = self._onshape_url + encoded
         configured_url += 'BaffScaff_config%3D%257B%257D%3BBaffle_config%3D%257B%257D%3BEntPlates_TrashRack_config%3D%257B%257D%3BEntTankConcreteExt_config%3D%257B%257D%3BEntTankConcrete_config%3D%257B%257D%3BLFOM_config%3D%257B%257D%3BScaffold_config%3D%257B%257D%3BWall_t%3D0.15%2Bmeter%3Bn_channel_pairs%3D1.0'
         return configured_url
-
-floc = Flocculator(q = 30 * u.L / u.s)
-print(floc.onshape_url_configured)
