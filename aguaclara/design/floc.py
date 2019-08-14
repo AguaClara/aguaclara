@@ -17,6 +17,7 @@ from aguaclara.design.component import Component
 from aguaclara.design.pipeline import Pipe
 
 import numpy as np
+from urllib.parse import quote_plus
 
 
 class Flocculator(Component):
@@ -277,22 +278,24 @@ class Flocculator(Component):
 
     @property
     def onshape_url_configured(self):
-        from urllib.parse import quote_plus
+        # Make the configuration string for the flocculator concrete. {{ and }}
+        # are used so that str.format() doesn't recognize them.
+        concrete_config = (
+            '{{"w_channel":"{}", "h_channel":"{}", "l_channel":"{}", "s_baffle"'
+            ':"{}", "n_channel":{}, "t_wall":"{}"}}'.format(
+                self.chan_w,
+                self.end_water_depth,
+                self.chan_l,
+                self.baffle_s,
+                self.chan_n,
+                self.dividing_wall_thickness
+            )
+        )
+        # concrete_config = quote_plus(concrete_config)
+        encoded_config = '?configuration='
 
-        concrete_config = '{{"w_channel":"{}", "h_channel":"{}", "l_channel":"{}", "s_baffle":"{}", "n_channel":{}, "t_wall":"{}"}}'.format(self.chan_w, self.end_water_depth, self.chan_l, self.baffle_s, self.chan_n, self.dividing_wall_thickness)
-        concrete_config = quote_plus(concrete_config)
-        encoded = '?configuration='
-        # for k, v in onshape_config.items():
-        #     if type(v) != str:
-        #         v = str(v)
-        #     encoded += k + quote('=' + v + ';')
+        encoded_config += quote_plus('Concrete_config=' + concrete_config + ';')
+        encoded_config += quote_plus('Channel_L=' + str(self.chan_l) + ';')
 
-        encoded += quote_plus('Concrete_config=' + concrete_config + ';')
-        encoded += quote_plus('Channel_L=' + str(self.chan_l) + ';')
-
-        # self._element = ConfiguredOnshapeElement(self._onshape_url)
-        # self._element.update_current_configuration(onshape_config)
-        # print(self._element.get_url_with_configuration())
-        configured_url = self._onshape_url + encoded
-        configured_url += 'BaffScaff_config%3D%257B%257D%3BBaffle_config%3D%257B%257D%3BEntPlates_TrashRack_config%3D%257B%257D%3BEntTankConcreteExt_config%3D%257B%257D%3BEntTankConcrete_config%3D%257B%257D%3BLFOM_config%3D%257B%257D%3BScaffold_config%3D%257B%257D%3BWall_t%3D0.15%2Bmeter%3Bn_channel_pairs%3D1.0'
+        configured_url = self._onshape_url + encoded_config
         return configured_url
