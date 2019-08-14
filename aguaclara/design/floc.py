@@ -277,36 +277,27 @@ class Flocculator(Component):
             spec=self.spec
         )
 
-    def send_to_onshape(self):
-        concrete_config = {
-            'w_channel' : str(self.chan_w),
-            'h_channel' : str(self.end_water_depth),
-            'l_channel' : str(self.chan_l),
-            's_baffle' : str(self.baffle_s),
-            'n_channel' : self.chan_n,
-            't_wall' : str(self.dividing_wall_thickness)
-            }
-        concrete_config_str = str(concrete_config)
-        onshape_config = {
-            'Concrete_config' : str(concrete_config),
-            'Channel_L' : '5000 mm',
-            'n_channel_pairs' : 1,
-            'LFOM_config' : '{}',
-            'EntTankConcrete_config' : '{}',
-            'BaffScaff_config' : '{}',
-            'EntPlates-TrashRack_config' : '{}',
-            'EntTankConcreteExt_config' : '{}'
-        }
-        onshape_config_str = str(onshape_config)
+    @property
+    def onshape_url_configured(self):
+        from urllib.parse import quote_plus
 
+        concrete_config = '{{"w_channel":"{}", "h_channel":"{}", "l_channel":"{}", "s_baffle":"{}", "n_channel":{}, "t_wall":"{}"}}'.format(self.chan_w, self.end_water_depth, self.chan_l, self.baffle_s, self.chan_n, self.dividing_wall_thickness)
+        concrete_config = quote_plus(concrete_config)
         encoded = '?configuration='
-        from urllib.parse import quote
-        for k, v in onshape_config.items():
-            if type(v) != str:
-                v = str(v)
-            encoded += k + quote('=' + v + ';')
+        # for k, v in onshape_config.items():
+        #     if type(v) != str:
+        #         v = str(v)
+        #     encoded += k + quote('=' + v + ';')
+
+        encoded += quote_plus('Concrete_config=' + concrete_config + ';')
+        encoded += quote_plus('Channel_L=' + str(self.chan_l) + ';')
+
         # self._element = ConfiguredOnshapeElement(self._onshape_url)
         # self._element.update_current_configuration(onshape_config)
         # print(self._element.get_url_with_configuration())
         configured_url = self._onshape_url + encoded
-        print(configured_url)
+        configured_url += 'BaffScaff_config%3D%257B%257D%3BBaffle_config%3D%257B%257D%3BEntPlates_TrashRack_config%3D%257B%257D%3BEntTankConcreteExt_config%3D%257B%257D%3BEntTankConcrete_config%3D%257B%257D%3BLFOM_config%3D%257B%257D%3BScaffold_config%3D%257B%257D%3BWall_t%3D0.15%2Bmeter%3Bn_channel_pairs%3D1.0'
+        return configured_url
+
+floc = Flocculator(q = 30 * u.L / u.s)
+print(floc.onshape_url_configured)
