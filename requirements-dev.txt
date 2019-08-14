@@ -1,8 +1,0 @@
-scipy
-numpy
-pandas
-matplotlib
-pint
-codecov
-pytest-cov
-onshape_client

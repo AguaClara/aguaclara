@@ -1,6 +1,7 @@
 from aguaclara.design.floc import Flocculator
 from aguaclara.core.units import u
 
+import aguaclara as ac
 import pytest
 
 floc_20 = Flocculator(q = 20 * u.L / u.s)

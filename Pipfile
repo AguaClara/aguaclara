@@ -3,26 +3,27 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+# Ensure that this matches setup.py > setup() > install_requires
 [packages]
-pandas = "*"
-pint = "==0.8.1"
-scipy = "*"
-onshape_client = "*"
 matplotlib = "==3.0.3" # Supports Python 3.5
+urllib3 = "*"
+pint = "==0.8.1"
+pandas = "*"
+scipy = "*"
 
 [dev-packages]
+aguaclara = {editable = true, path = "."}
+autopep8 = "*"
 codecov = "*"
 coverage = "*"
+pylint = "*"
 pytest = "*"
 pytest-cov = "*"
+pytest-runner = "*"
+requests = ">=2.20.0" # Resolves security vulnerability
+rope = "*"
 Sphinx = "*"
 sphinx_rtd_theme = "*"
-aguaclara = {editable = true, path = "."}
-pytest-runner = "*"
-requests = ">=2.20.0"
-rope = "*"
-pylint = "*"
-autopep8 = "*"
 
 [requires]
 python_version = "3.6"
