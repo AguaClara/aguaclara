@@ -26,7 +26,7 @@ from aguaclara.core.units import u
 import aguaclara.core.utility as ut
 
 from aguaclara.design.cdc import CDC
-from aguaclara.design.component import Component, authorize_onshape
+from aguaclara.design.component import Component
 from aguaclara.design.ent_floc import EntTankFloc
 from aguaclara.design.ent import EntranceTank
 from aguaclara.design.filter import Filter
