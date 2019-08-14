@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'aguaclara',
-    version = '0.1.3',
+    version = '0.1.6',
     description = (
         'An open-source Python package for designing and performing research '
         'on AguaClara water treatment plants.'
@@ -15,8 +15,8 @@ setup(
 
     # Ensure that this matches Pipfile > [packages]
     install_requires = [
-        'matplotlib==3.0.3',
-        'onshape_client',
+        'matplotlib==3.0.3', # Supports Python 3.5
+        'urllib3',
         'pint==0.8.1',
         'pandas',
         'scipy',
