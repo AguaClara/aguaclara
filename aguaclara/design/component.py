@@ -36,28 +36,7 @@ Otherwise, subcomponents will inherit the main component's ``q`` and ``temp``:
     >>> plant.filter.q
     40 liter / second
 
-# TODO: update the below example with the complete Onshape design flow.
-
-Example:
-
-.. code-block:: python
-
-    from aguaclara.design.component import Component
-    
-    class SubComponent(Component):
-        def __init__(self, **kwargs):
-            self.h = 3 * u.m
-            
-            super().__init__(**kwargs)
-
-    class MainComponent(Component):
-        def __init__(self, **kwargs):
-            self.l = 2 * u.m
-            self.sub = SubComponent()
-            self.subcomponents = [self.sub]
-
-            super().__init__(**kwargs)
-            super().propogate_config()
+.. # TODO: update the a code example with the complete Onshape design flow.
 """
 from aguaclara.core.units import u
 import aguaclara.core.utility as ut
@@ -87,7 +66,6 @@ class Component(ABC):
         # Update the Component with new expert inputs, if any were given
         self.__dict__.update(**kwargs)
 
-    # TODO: make this function private
     def set_subcomponents(self):
         """Set the plant-wide inputs of all subcomponents.
 
@@ -167,10 +145,6 @@ class Component(ABC):
         json.dump(self.serialize_properties(), open(filename, mode='w'),
             indent = 4)
         print("Properties of component can be found in file props.json")
-    
-    # @abstractmethod
-    # def onshape_config(self):
-    #     pass
 
     def _encode_onshape_config(self, config):
         encoding = ''
@@ -189,6 +163,9 @@ class Component(ABC):
             self._encode_onshape_config(self.onshape_config)
         )
         return onshape_url_configured
+
+# TODO: get the following to work in the general case when passing a simple
+# nested dictionary to Onshape.
 
 def nested_dict_to_str(dict_, level=0):
     for key, value in dict_.items():
@@ -218,33 +195,3 @@ def onshape_url_configured(base_url, encoding):
         quote_plus(encoding)
     )
     return onshape_url_configured
-
-dict_ = {
-    'foo' : {
-        'bar' : {
-            'baz' : 14 * u.inch
-        }
-    }
-}
-
-dict_ = {
-  'bar' : {
-    'pattern': 'square',
-    'firstStar': {
-      'size' : '700 mm'
-    }
-  },
-  'baz' : {
-    'pattern':'holdingHands'
-  },
-  'foo' : {}
-}
-
-base_url = 'https://cad.onshape.com/documents/c81fce53dede81ef89860aa3/w/8bbbde6a90615d935c573553/e/18392e7532893120b125c099'
-
-# nested_str = nested_dict_to_str(dict_, level=2)
-# nested_str = ast.literal_eval(json.dumps(nested_str))
-# encoded_str = encode_onshape_config(nested_str)
-# onshape_url = onshape_url_configured(base_url, encoded_str)
-
-# print(onshape_url)
