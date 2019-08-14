@@ -64,38 +64,9 @@ import aguaclara.core.utility as ut
 
 import numpy as np
 import json
-from onshape_client.client import Client
-from onshape_client.onshape_url import ConfiguredOnshapeElement
 from pprint import pprint
-from abc import ABC
-
-_client = None
-"""onshape_client.client.Client: Store the initialized Client object to verify
-that Onshape has been authorized.
-"""
-
-def authorize_onshape(config_file_path="~/.onshape_client_config.yaml",
-                      configuration=None):
-    """Authorize use of the Onshape API
-    
-    # TODO: explain getting access/secret keys and function params in depth.
-    """
-    global _client
-    if _client:
-        raise Exception('Onshape has already been authorized.')
-
-    try:
-        _client = Client(
-                keys_file = config_file_path,
-                configuration = configuration
-            )
-        print('Success! Onshape was authorized.')
-
-    except (FileNotFoundError, KeyError):
-        raise Exception(
-                'A configuration dictionary was not given, and the '
-                'configuration file either doesn\'t exist or is invalid.'
-            )
+from abc import ABC, abstractmethod
+from urllib.parse import quote_plus
 
 
 class Component(ABC):
@@ -107,8 +78,7 @@ class Component(ABC):
     """
     Q_DEFAULT = 20 * u.L / u.s
     TEMP_DEFAULT = 20 * u.degC
-    _onshape_url = None
-    _element = None
+    onshape_url_default = ''
 
     def __init__(self, **kwargs):
         self.q = self.Q_DEFAULT
@@ -154,7 +124,8 @@ class Component(ABC):
             '_abc_cache',
             '_abc_negative_cache',
             '_abc_negative_cache_version',
-            '_abc_registry'
+            '_abc_registry',
+            'onshape_config'
         ]
         # Get all of the object's fields
         for var_name in dir(self):
@@ -196,22 +167,84 @@ class Component(ABC):
         json.dump(self.serialize_properties(), open(filename, mode='w'),
             indent = 4)
         print("Properties of component can be found in file props.json")
+    
+    # @abstractmethod
+    # def onshape_config(self):
+    #     pass
 
-    def configure_onshape(self):
-        global _client
-        if _client is None:
-            raise Exception(
-                'Onshape hasn\'t been authorized yet. Use the '
-                'authorize_onshape() function.'
-            )
-        
-        if self._onshape_url is None:
-            raise AttributeError(
-                'This Component object hasn\'t been connected '
-                'to an Onshape Part Studio or Assembly.'
-            )
-        
-        self._element = ConfiguredOnshapeElement(self._onshape_url)
-        self._element.update_current_configuration(self.serialize_properties())
-        self._element.get_url_with_configuration()
-        
+    def _encode_onshape_config(self, config):
+        encoding = ''
+        for key, value in onshape_config.items():
+            if type(value) is u.Quantity:
+                value = str(value)
+            elif type(value) is dict:
+                value = _encode_onshape_config(value)
+            encoding += key
+
+    @property
+    def onshape_url_configured(self):
+        onshape_url_configured = (
+            self.onshape_url_default + 
+            '?configuration=' +
+            self._encode_onshape_config(self.onshape_config)
+        )
+        return onshape_url_configured
+
+def nested_dict_to_str(dict_, level=0):
+    for key, value in dict_.items():
+        if type(value) is u.Quantity:
+            dict_[key] = str(value)
+        elif type(value) is dict:
+            dict_[key] = nested_dict_to_str(value, level - 1)
+    
+    if level <= 0:
+        dict_ = str(dict_)
+    return dict_
+
+def encode_onshape_config(config):
+    encoding = ''
+    for key, value in config.items():
+        if type(value) in [u.Quantity, dict]:
+            value = str(value)
+        value = quote_plus(value)
+        encoding += '{}={};'.format(key, value)
+
+    return encoding
+
+def onshape_url_configured(base_url, encoding):
+    onshape_url_configured = (
+        base_url + 
+        '?configuration=' +
+        quote_plus(encoding)
+    )
+    return onshape_url_configured
+
+dict_ = {
+    'foo' : {
+        'bar' : {
+            'baz' : 14 * u.inch
+        }
+    }
+}
+
+dict_ = {
+  'bar' : {
+    'pattern': 'square',
+    'firstStar': {
+      'size' : '700 mm'
+    }
+  },
+  'baz' : {
+    'pattern':'holdingHands'
+  },
+  'foo' : {}
+}
+
+base_url = 'https://cad.onshape.com/documents/c81fce53dede81ef89860aa3/w/8bbbde6a90615d935c573553/e/18392e7532893120b125c099'
+
+# nested_str = nested_dict_to_str(dict_, level=2)
+# nested_str = ast.literal_eval(json.dumps(nested_str))
+# encoded_str = encode_onshape_config(nested_str)
+# onshape_url = onshape_url_configured(base_url, encoded_str)
+
+# print(onshape_url)
