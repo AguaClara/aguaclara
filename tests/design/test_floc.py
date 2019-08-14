@@ -72,10 +72,3 @@ floc_60 = Flocculator(q = 60 * u.L / u.s)
 
 def test_floc(actual, expected):   
     assert actual == expected
-
-def test_onshape():
-    floc = ac.Flocculator(q = 80 * u.L / u.s)
-    ac.authorize_onshape()
-    floc.send_to_onshape()
-
-test_onshape()
