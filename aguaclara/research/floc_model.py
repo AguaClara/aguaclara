@@ -133,7 +133,7 @@ def dens_alum_nanocluster(coag):
     """
     density = (coag.PrecipDensity * MOLEC_WEIGHT_ALUMINUM
                * coag.PrecipAluminumMPM / coag.PrecipMolecWeight)
-    return density
+    return density.to(u.kg/u.m**3)
 
 
 # @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.degK], False)
@@ -145,8 +145,8 @@ def dens_pacl_solution(ConcAluminum, temp):
     """
     return ((0.492 * ConcAluminum * PACl.MolecWeight
              / (PACl.AluminumMPM * MOLEC_WEIGHT_ALUMINUM)
-             ) + pc.density_water(temp).magnitude
-            )
+             ) + pc.density_water(temp)
+            ).to(u.kg/u.m**3)
 
 
 def conc_precipitate(ConcAluminum, coag):
@@ -176,19 +176,19 @@ def conc_precipitate(ConcAluminum, coag):
 # @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, None], False)
 def conc_floc(ConcAluminum, concClay, coag):
     """Return floc density given aluminum dose, turbidity, and coagulant"""
-    return conc_precipitate(ConcAluminum, coag).magnitude + concClay
+    return (conc_precipitate(ConcAluminum, coag) + concClay).to(u.kg/u.m**3)
 
 
 # @u.wraps(u.mol/u.m**3, u.kg/u.m**3, False)
 def moles_aluminum(ConcAluminum):
     """Return the # of moles aluminum given aluminum concentration."""
-    return (ConcAluminum / MOLEC_WEIGHT_ALUMINUM)
+    return (ConcAluminum / MOLEC_WEIGHT_ALUMINUM).to(u.mol/u.m**3)
 
 
 # @u.wraps(u.m, u.kg/u.m**3, False)
 def sep_dist_aluminum(ConcAluminum):
     """Return the separation distance between aluminum molecules."""
-    return (1 / (NUM_AVOGADRO * moles_aluminum(ConcAluminum).magnitude))**(1/3)
+    return ((1 / (NUM_AVOGADRO * moles_aluminum(ConcAluminum)))**(1/3)).to(u.m)
 
 
 def particle_number_concentration(ConcMat, material):
@@ -199,21 +199,21 @@ def particle_number_concentration(ConcMat, material):
     :param material: The material in solution
     :type material: floc_model.Material
     """
-    return ConcMat.to(material.Density.units) / ((material.Density * np.pi * material.Diameter**3) / 6)
+    return (ConcMat.to(material.Density.units) / ((material.Density * np.pi * material.Diameter**3) / 6)).to(u.dimensionless)
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.m], False)
 def sep_dist_clay(ConcClay, material):
     """Return the separation distance between clay particles."""
-    return ((material.Density/ConcClay)*((np.pi
-                            * material.Diameter ** 3)/6))**(1/3)
+    return (((material.Density/ConcClay)*((np.pi
+                            * material.Diameter ** 3)/6))**(1/3)).to(u.m)
 
 
 # @u.wraps(1/u.m**3, [u.kg/u.m**3, None], False)
 def num_nanoclusters(ConcAluminum, coag):
     """Return the number of Aluminum nanoclusters."""
-    return (ConcAluminum / (dens_alum_nanocluster(coag).magnitude
-                            * np.pi * coag.Diameter**3))
+    return (ConcAluminum / (dens_alum_nanocluster(coag)
+                            * np.pi * coag.Diameter**3)).to(1/u.m**3)
 
 
 def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
@@ -231,8 +231,8 @@ def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
     :return: Volume fraction of particles initially present
     :rtype: float
     """
-    return ((conc_precipitate(ConcAluminum, coag).magnitude/coag.PrecipDensity)
-            + (ConcClay / material.Density))
+    return ((conc_precipitate(ConcAluminum, coag)/coag.PrecipDensity)
+            + (ConcClay / material.Density)).to(u.dimensionless)
 
 
 ####################### p functions #######################
@@ -248,7 +248,7 @@ def invp(pC, Cprime):
 # @u.wraps(u.m, [u.dimensionless, u.m, u.dimensionless], False)
 def diam_fractal(DIM_FRACTAL, DiamInitial, NumCol):
     """Return the diameter of a floc given NumCol doubling collisions."""
-    return DiamInitial * 2**(NumCol / DIM_FRACTAL)
+    return (DiamInitial * 2**(NumCol / DIM_FRACTAL)).to(u.m)
 
 
 # @u.wraps(None, [u.dimensionless, None, u.m], False)
@@ -258,7 +258,7 @@ def num_coll_reqd(DIM_FRACTAL, material, DiamTarget):
     Calculates the number of doubling collisions required to produce
     a floc of diameter DiamTarget.
     """
-    return DIM_FRACTAL * np.log2(DiamTarget/material.Diameter)
+    return (DIM_FRACTAL * np.log2(DiamTarget/material.Diameter)).to(u.dimensionless)
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None,
@@ -272,7 +272,7 @@ def sep_dist_floc(ConcAluminum, ConcClay, coag, material,
                                               coag, material)
                       ))**(1/3)
             * (DiamTarget / material.Diameter)**(DIM_FRACTAL / 3)
-            )
+            ).to(u.m)
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, u.dimensionless,
@@ -282,7 +282,7 @@ def frac_vol_floc(ConcAluminum, ConcClay, coag, DIM_FRACTAL,
     """Return the floc volume fraction."""
     return (frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material)
             * (DiamTarget / material.Diameter)**(3-DIM_FRACTAL)
-            )
+            ).to(u.m)
 
 
 # @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
@@ -291,9 +291,9 @@ def dens_floc_init(ConcAluminum, ConcClay, coag, material):
 
     Initial floc is made primarily of the primary colloid and nanoglobs.
     """
-    return (conc_floc(ConcAluminum, ConcClay, coag).magnitude
+    return (conc_floc(ConcAluminum, ConcClay, coag)
             / frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material)
-            )
+            ).to(u.kg/u.m**3)
 
 
 #################### Flocculation Model ####################
@@ -303,7 +303,7 @@ def ratio_clay_sphere(RatioHeightDiameter):
 
     Normalized by surface area to volume ratio for a sphere.
     """
-    return (1/2 + RatioHeightDiameter) * (2 / (3*RatioHeightDiameter))**(2/3)
+    return ((1/2 + RatioHeightDiameter) * (2 / (3*RatioHeightDiameter))**(2/3)).to(u.dimensionless)
 
 
 def ratio_area_clay_total(ConcClay, material, DiamTube, RatioHeightDiameter):
@@ -333,7 +333,7 @@ def ratio_area_clay_total(ConcClay, material, DiamTube, RatioHeightDiameter):
                      )
                   )
                )
-            )
+            ).to(u.dimensionless)
 
 
 def gamma_coag(ConcClay, ConcAluminum, coag, material,
@@ -370,7 +370,7 @@ def gamma_coag(ConcClay, ConcAluminum, coag, material,
                        * (ratio_area_clay_total(ConcClay, material,
                                                 DiamTube, RatioHeightDiameter)
                           / ratio_clay_sphere(RatioHeightDiameter))
-                       ))
+                       )).to(u.dimensionless)
 
 # @u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
 # @ut.list_handler()
@@ -389,11 +389,11 @@ def gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag):
     :return: fraction of the coagulant that is coated with humic acid
     :rtype: float
     """
-    return min(((ConcNatOrgMat / conc_precipitate(ConcAl, coag).magnitude)
+    return (min(((ConcNatOrgMat / conc_precipitate(ConcAl, coag))
                 * (coag.Density / NatOrgMat.Density)
                 * (coag.Diameter / (4 * NatOrgMat.Diameter))
                 ),
-               1)
+               1)).to(u.dimensionless)
 
 
 # @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3, None,
@@ -427,7 +427,7 @@ def pacl_term(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, NatOrgMat,
                        RatioHeightDiameter)
             * (1 - gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat,
                                             NatOrgMat, coag))
-            )
+            ).to(u.dimensionless)
 
 
 # @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,
@@ -437,8 +437,8 @@ def alpha_pacl_clay(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
     """"""
     PAClTerm = pacl_term(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                           NatOrgMat, coag, material, RatioHeightDiameter)
-    return 2 * (PAClTerm * (1 - gamma_coag(ConcClay, ConcAl, coag, material,
-                                           DiamTube, RatioHeightDiameter)))
+    return (2 * (PAClTerm * (1 - gamma_coag(ConcClay, ConcAl, coag, material,
+                                           DiamTube, RatioHeightDiameter)))).to(u.dimensionless)
 
 
 # @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,
@@ -461,7 +461,7 @@ def alpha_pacl_nat_org_mat(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
     return (2 * PAClTerm
             * gamma_coag(ConcClay, ConcAl, coag, material, DiamTube,
                          RatioHeightDiameter)
-            * gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag))
+            * gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag)).to(u.dimensionless)
 
 
 # @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,
@@ -476,7 +476,7 @@ def alpha(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                               NatOrgMat, coag, material, RatioHeightDiameter)
             + alpha_pacl_clay(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                               NatOrgMat, coag, material, RatioHeightDiameter)
-            )
+            ).to(u.dimensionless)
 
 
 # @u.wraps(None, [u.W/u.kg, u.degK, u.s, u.m,
@@ -488,29 +488,29 @@ def pc_viscous(EnergyDis, Temp, Time, DiamTube,
     """"""
     return ((3/2)
             * np.log10((2/3) * np.pi * FittingParam * Time
-                       * np.sqrt(EnergyDis / (pc.viscosity_kinematic(Temp).magnitude)
+                       * np.sqrt(EnergyDis / (pc.viscosity_kinematic(Temp))
                                  )
                        * alpha(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                                NatOrgMat, coag, material, RatioHeightDiameter)
                        * (np.pi/6)**(2/3)
-                       * (material.Diameter / sep_dist_clay(ConcClay, material).magnitude
+                       * (material.Diameter / sep_dist_clay(ConcClay, material)
                           ) ** 2
                        + 1
                        )
-            )
+            ).to(u.dimensionless)
 
 
 # @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, u.dimensionless, u.m,
 #                        None, None, u.degK], False)
 def dens_floc(ConcAl, ConcClay, DIM_FRACTAL, DiamTarget, coag, material, Temp):
     """Calculate floc density as a function of size."""
-    WaterDensity = pc.density_water(Temp).magnitude
-    return ((dens_floc_init(ConcAl, ConcClay, coag, material).magnitude
+    WaterDensity = pc.density_water(Temp)
+    return ((dens_floc_init(ConcAl, ConcClay, coag, material)
              - WaterDensity
              )
             * (material.Diameter / DiamTarget)**(3 - DIM_FRACTAL)
             + WaterDensity
-            )
+            ).to(u.kg/u.m**3)
 
 
 # @u.wraps(u.m/u.s, [u.kg/u.m**3, u.kg/u.m**3, None, None, u.dimensionless,
@@ -518,17 +518,17 @@ def dens_floc(ConcAl, ConcClay, DIM_FRACTAL, DiamTarget, coag, material, Temp):
 def vel_term_floc(ConcAl, ConcClay, coag, material, DIM_FRACTAL,
                   DiamTarget, Temp):
     """Calculate floc terminal velocity."""
-    WaterDensity = pc.density_water(Temp).magnitude
-    return (((pc.gravity.magnitude * material.Diameter**2)
-             / (18 * PHI_FLOC * pc.viscosity_kinematic(Temp).magnitude)
+    WaterDensity = pc.density_water(Temp)
+    return (((pc.gravity * material.Diameter**2)
+             / (18 * PHI_FLOC * pc.viscosity_kinematic(Temp))
              )
-            * ((dens_floc_init(ConcAl, ConcClay, coag, material).magnitude
+            * ((dens_floc_init(ConcAl, ConcClay, coag, material)
                 - WaterDensity
                 )
                / WaterDensity
                )
             * (DiamTarget / material.Diameter) ** (DIM_FRACTAL - 1)
-            )
+            ).to(u.m/u.s)
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None,
@@ -536,20 +536,20 @@ def vel_term_floc(ConcAl, ConcClay, coag, material, DIM_FRACTAL,
 def diam_floc_vel_term(ConcAl, ConcClay, coag, material,
                        DIM_FRACTAL, VelTerm, Temp):
     """Calculate floc diamter as a function of terminal velocity."""
-    WaterDensity = pc.density_water(Temp).magnitude
+    WaterDensity = pc.density_water(Temp)
     return (material.Diameter * (((18 * VelTerm * PHI_FLOC
-                          * pc.viscosity_kinematic(Temp).magnitude
+                          * pc.viscosity_kinematic(Temp)
                           )
-                         / (pc.gravity.magnitude * material.Diameter**2)
+                         / (pc.gravity * material.Diameter**2)
                          )
                          * (WaterDensity
                             / (dens_floc_init(ConcAl, ConcClay, coag,
-                                              material).magnitude
+                                              material)
                                - WaterDensity
                                )
                             )
                         ) ** (1 / (DIM_FRACTAL - 1))
-            )
+            ).to(u.m)
 
 
 # @u.wraps(u.s, [u.W/u.kg, u.degK, u.kg/u.m**3, u.kg/u.m**3, None, None,
@@ -563,13 +563,13 @@ def time_col_laminar(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
     """
     return (((1/6) * ((6/np.pi)**(1/3))
              * frac_vol_floc_initial(ConcAl, ConcClay, coag, material) ** (-2/3)
-             * (pc.viscosity_kinematic(Temp).magnitude / EnergyDis) ** (1 / 2)
+             * (pc.viscosity_kinematic(Temp) / EnergyDis) ** (1 / 2)
              * (DiamTarget / material.Diameter) ** (2*DIM_FRACTAL/3 - 2)
              )  # End of the numerator
             / (gamma_coag(ConcClay, ConcAl, coag, material, DiamTube,
                           RatioHeightDiameter)
                )  # End of the denominator
-            )
+            ).to(u.s)
 
 
 # @u.wraps(u.s, [u.W/u.kg, u.kg/u.m**3, u.kg/u.m**3, None, None,
@@ -583,18 +583,18 @@ def time_col_turbulent(EnergyDis, ConcAl, ConcClay, coag, material,
     return((1/6) * (6/np.pi)**(1/9) * EnergyDis**(-1/3) * DiamTarget**(2/3)
            * frac_vol_floc_initial(ConcAl, ConcClay, coag, material)**(-8/9)
            * (DiamTarget / material.Diameter)**((8*(DIM_FRACTAL-3)) / 9)
-           )
+           ).to(u.s)
 
 
 ########### Kolmogorov and viscous length scales ###########
 # @u.wraps(u.m, [u.W/u.kg, u.degK], False)
 def eta_kolmogorov(EnergyDis, Temp):
-    return ((pc.viscosity_kinematic(Temp).magnitude ** 3) / EnergyDis) ** (1 / 4)
+    return (((pc.viscosity_kinematic(Temp) ** 3) / EnergyDis) ** (1 / 4)).to(u.m)
 
 
 # @u.wraps(u.m, [u.W/u.kg, u.degK], False)
 def lambda_vel(EnergyDis, Temp):
-    return RATIO_KOLMOGOROV * eta_kolmogorov(EnergyDis, Temp).magnitude
+    return (RATIO_KOLMOGOROV * eta_kolmogorov(EnergyDis, Temp)).to(u.m)
 
 
 # @u.wraps(u.m, [u.W/u.kg, u.degK, u.kg/u.m**3, u.kg/u.m**3, None, None,
@@ -605,24 +605,24 @@ def diam_kolmogorov(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
     the Kolmogorov length and the inner viscous length scale.
     """
     return (material.Diameter
-            * ((eta_kolmogorov(EnergyDis, Temp).magnitude / material.Diameter)
+            * ((eta_kolmogorov(EnergyDis, Temp) / material.Diameter)
                * ((6 * frac_vol_floc_initial(ConcAl, ConcClay, coag, material))
                   / np.pi
                   )**(1/3)
                )**(3 / DIM_FRACTAL)
-            )
+            ).to(u.m)
 
 
 # @u.wraps(u.m, [u.W/u.kg, u.degK, u.kg/u.m**3, u.kg/u.m**3, None, None,
 #                u.dimensionless], False)
 def diam_vel(EnergyDis, Temp, ConcAl, ConcClay, coag, material, DIM_FRACTAL):
     return (material.Diameter
-            * ((lambda_vel(EnergyDis, Temp).magnitude / material.Diameter)
+            * ((lambda_vel(EnergyDis, Temp) / material.Diameter)
                * ((6 * frac_vol_floc_initial(ConcAl, ConcClay, coag, material))
                   / np.pi
                   )**(1/3)
                )**(3/DIM_FRACTAL)
-            )
+            ).to(u.m)
 
 
 # @u.wraps(u.m, u.W/u.kg, False)
@@ -641,7 +641,7 @@ def diam_floc_max(epsMax):
     95 μm is based on the assumption that the ratio of the max to
     average energy dissipation rate for laminar flow is approximately 2.
     """
-    return 9.5 * 10**-5 * (1 / (epsMax)**(1/3))
+    return (9.5 * 10**-5 * (1 / (epsMax)**(1/3))).to(u.m)
 
 
 # @u.wraps(u.W/u.kg, u.m, False)
@@ -650,19 +650,19 @@ def ener_dis_diam_floc(Diam):
 
     This equation is under suspicion.
     """
-    return (9.5 * 10**-5 / Diam) ** 3
+    return ((9.5 * 10**-5 / Diam) ** 3).to(u.W/u.kg)
 
 
 ##### Velocity gradient in tubing for lab scale laminar flow flocculators #####
 # @u.wraps(1/u.s, [u.m**3/u.s, u.m], False)
 def g_straight(PlantFlow, IDTube):
-    return 64 * PlantFlow / (3 * np.pi * IDTube**3)
+    return (64 * PlantFlow / (3 * np.pi * IDTube**3)).to(1/u.s)
 
 
 # @u.wraps(None, [u.m**3/u.s, u.m, u.degK], False)
 def reynolds_rapid_mix(PlantFlow, IDTube, Temp):
     return (4 * PlantFlow / (np.pi * IDTube
-                             * pc.viscosity_kinematic(Temp).magnitude))
+                             * pc.viscosity_kinematic(Temp))).to(u.dimensionless)
 
 
 # @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.degK], False)
@@ -676,7 +676,7 @@ def dean_number(PlantFlow, IDTube, RadiusCoil, Temp):
     """
     return (reynolds_rapid_mix(PlantFlow, IDTube, Temp)
             * (IDTube / (2 * RadiusCoil))**(1/2)
-            )
+            ).to(u.dimensionless)
 
 
 # @u.wraps(1/u.s, [u.m**3/u.s, u.m, u.m, u.degK], False)
@@ -685,23 +685,23 @@ def g_coil(FlowPlant, IDTube, RadiusCoil, Temp):
 
     Karen's thesis likely has this equation and the reference.
     """
-    return (g_straight(FlowPlant, IDTube).magnitude
+    return (g_straight(FlowPlant, IDTube)
             * (1 + 0.033 *
                 np.log10(dean_number(FlowPlant, IDTube, RadiusCoil, Temp)
                         ) ** 4
                ) ** (1/2)
-            )
+            ).to(1/u.s)
 
 
 # @u.wraps(u.s, [u.m, u.m, u.m**3/u.s], False)
 def time_res_tube(IDTube, LengthTube, FlowPlant):
     """Calculate residence time in the flocculator."""
-    return LengthTube * np.pi * (IDTube**2 / 4) / FlowPlant
+    return (LengthTube * np.pi * (IDTube**2 / 4) / FlowPlant).to(u.s)
 
 
 # @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m, u.degK], False)
 def g_time_res(FlowPlant, IDTube, RadiusCoil, LengthTube, Temp):
     """G Residence Time calculated for a coiled tube flocculator."""
-    return (g_coil(FlowPlant, IDTube, RadiusCoil, Temp).magnitude
-            * time_res_tube(IDTube, LengthTube, FlowPlant).magnitude
-            )
+    return (g_coil(FlowPlant, IDTube, RadiusCoil, Temp)
+            * time_res_tube(IDTube, LengthTube, FlowPlant)
+            ).to(u.dimensionless)
