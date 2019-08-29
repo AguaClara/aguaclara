@@ -1,57 +1,93 @@
 from aguaclara.core.units import u
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import os
 from pathlib import Path
 
 
-def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59'):
-    """Extract columns of data from a ProCoDA datalog based on date(s) and time(s)
+def column_of_data(path, start, column, end="-1", units=""):
+    """This function extracts a column of data from a ProCoDA data file.
 
     Note: Column 0 is time. The first data column is column 1.
 
-    :param path: The path to the folder containing the ProCoDA data file(s)
+    :param path: The file path of the ProCoDA data file
     :type path: string
-    :param columns: A single index of a column OR a list of indices of columns of data to extract.
-    :type columns: int or int list
-    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
-    :type dates: string or string list
-    :param start_time: Starting time of data to extract, formatted 'HH:MM' (24-hour time)
-    :type start_time: string, optional
-    :param end_time: Ending time of data to extract, formatted 'HH:MM' (24-hour time)
-    :type end_time: string, optional
+    :param start: Index of first row of data to extract
+    :type start: int
+    :param end: Index of last row of data to extract. Defaults to last row.
+    :type end: int, optional
+    :param column: Index or label of the column that you want to extract
+    :type column: int or string
+    :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless).
+    :type units: string, optional
 
-    :return: a list containing the single column of data to extract, OR a list of lists containing the columns to extract, in order of the indices given in the columns variable
-    :rtype: list or list list
+    :return: The column of data
+    :rtype: numpy.ndarray in units of [units]
 
     :Examples:
 
     .. code-block:: python
 
-        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, dates=['6-14-2018', '6-15-2018'], start_time='12:20', end_time='10:50')
-        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], dates='6-14-2018', start_time='12:20', end_time='23:59')
-        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], dates='6-14-2018')
+        data = column_of_data("Reactor_data.txt", 0, 1, -1, "mg/L")
     """
-    data = data_from_dates(path, dates)
-
-    first_time_column = pd.to_numeric(data[0].iloc[:, 0])
-    start = max(day_fraction(start_time), first_time_column[0])
-    start_idx = time_column_index(start, first_time_column)
-    end_idx = time_column_index(day_fraction(end_time),
-        pd.to_numeric(data[-1].iloc[:, 0])) + 1
-
-    if isinstance(columns, int):
-        return column_start_to_end(data, columns, start_idx, end_idx)
+    df = pd.read_csv(path, delimiter='\t')
+    df = remove_notes(df)
+    if isinstance(column, int):
+        data = np.array(pd.to_numeric(df.iloc[start:end, column]))*u(units)
     else:
-        result = []
-        for c in columns:
-            result.append(column_start_to_end(data, c, start_idx, end_idx))
-    return result
+        df[column]*u(units)
+    return data
+
+
+def column_of_time(path, start, end=-1):
+    """This function extracts the column of times from a ProCoDA data file.
+
+    :param path: The file path of the ProCoDA data file.
+    :type path: string
+    :param start: Index of first row of data to extract from the data file
+    :type start: int
+    :param end: Index of last row of data to extract from the data. Defaults to last row
+    :type end: int
+
+    :return: Experimental times starting at 0
+    :rtype: numpy.ndarray in units of days
+
+    :Examples:
+
+    .. code-block:: python
+
+        time = column_of_time("Reactor_data.txt", 0)
+    """
+    df = pd.read_csv(path, delimiter='\t')
+    df = remove_notes(df)
+    start_time = pd.to_numeric(df.iloc[start, 0])*u.day
+    day_times = pd.to_numeric(df.iloc[start:end, 0])
+    time_data = np.subtract((np.array(day_times)*u.day), start_time)
+    return time_data
+
+
+def notes(path):
+    """This function extracts any experimental notes from a ProCoDA data file.
+    Use this to identify the section of the data file that you want to extract.
+
+    :param path: The file path of the ProCoDA data file.
+    :type path: string
+
+    :return: The rows of the data file that contain text notes inserted during the experiment.
+    :rtype: pandas.Dataframe
+    """
+    df = pd.read_csv(path, delimiter='\t')
+    text_row = df.iloc[0:-1, 0].str.contains('[a-z]', '[A-Z]')
+    text_row_index = text_row.index[text_row].tolist()
+    notes = df.loc[text_row_index]
+    return notes
 
 
 def remove_notes(data):
-    """Omit notes from a DataFrame object, where notes are identified as rows with non-numerical entries in the first column.
+    """Omit notes from a DataFrame object, where notes are identified as rows
+    with non-numerical entries in the first column.
 
     :param data: DataFrame object to remove notes from
     :type data: Pandas.DataFrame
@@ -64,10 +100,60 @@ def remove_notes(data):
     return data.drop(text_rows)
 
 
-def day_fraction(time):
-    """Convert a 24-hour time to a fraction of a day.
+def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
+                     extension='.tsv', units=""):
+    """Extract columns of data over one or more ProCoDA data files based on date
+    and time. Valid only for files whose names are automatically generated by
+    date, i.e. of the form "datalog M-D-YYYY".
 
-    For example, midnight corresponds to 0.0, and noon to 0.5.
+    Note: Column 0 is time. The first data column is column 1.
+
+    :param path: The path to the folder containing the ProCoDA data file(s)
+    :type path: string
+    :param columns: A single column index or a list of column indexes
+    :type columns: int or int list
+    :param dates: A single date or list of dates, formatted "M-D-YYYY"
+    :type dates: string or string list
+    :param start_time: Starting time of data to extract, formatted 'HH:MM' (24-hour time)
+    :type start_time: string, optional
+    :param end_time: Ending time of data to extract, formatted 'HH:MM' (24-hour time)
+    :type end_time: string, optional
+    :param extension: File extension of the data file(s). Defaults to '.tsv'
+    :type extension: string, optional
+    :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless).
+    :type units: string, optional
+
+    :return: the single column of data or a list of the columns of data (in the order of the indexes given in the columns variable)
+    :rtype: 1D or 2D float list
+
+    :Examples:
+
+    .. code-block:: python
+
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, dates=['6-14-2018', '6-15-2018'], start_time='12:20', end_time='10:50')
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], dates='6-14-2018', start_time='12:20', end_time='23:59')
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], dates='6-14-2018')
+    """
+    data = data_from_dates(path, dates, extension)
+
+    first_time_column = pd.to_numeric(data[0].iloc[:, 0])
+    start = max(day_fraction(start_time), first_time_column[0])
+    start_idx = time_column_index(start, first_time_column)
+    end_idx = time_column_index(day_fraction(end_time),
+                                pd.to_numeric(data[-1].iloc[:, 0])) + 1
+
+    if isinstance(columns, int):
+        return column_start_to_end(data, columns, start_idx, end_idx)
+    else:
+        result = []
+        for c in columns:
+            result.append(column_start_to_end(data, c, start_idx, end_idx))
+    return result
+
+
+def day_fraction(time):
+    """Convert a 24-hour time to a fraction of a day. For example, midnight
+    corresponds to 0.0, and noon to 0.5.
 
     :param time: Time in the form of 'HH:MM' (24-hour time)
     :type time: string
@@ -87,12 +173,12 @@ def day_fraction(time):
 
 
 def time_column_index(time, time_column):
-    """Return the index of lowest time in the column of times that is greater
+    """Return the index of the lowest time in the column of times that is greater
     than or equal to the given time.
 
     :param time: the time to index from the column of time; a day fraction
     :type time: float
-    :param time_column: a list of times (in day fractions), must be increasing and equally spaced
+    :param time_column: a list of times in day fractions, must be increasing and equally spaced
     :type time_column: float list
 
     :return: approximate index of the time from the column of times
@@ -102,25 +188,26 @@ def time_column_index(time, time_column):
     return int(round((time - time_column[0])/interval + .5))
 
 
-def data_from_dates(path, dates):
-    """Return list DataFrames representing the ProCoDA datalogs stored in
+def data_from_dates(path, dates, extension):
+    """Return a list of DataFrames representing the ProCoDA data files stored in
     the given path and recorded on the given dates.
 
     :param path: The path to the folder containing the ProCoDA data file(s)
     :type path: string
     :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
     :type dates: string or string list
+    :param extension: File extension of the data file(s)
+    :type extension: string, optional
 
-    :return: a list DataFrame objects representing the ProCoDA datalogs corresponding with the given dates
+    :return: a list of DataFrames representing the ProCoDA data files recorded on the given dates
     :rtype: pandas.DataFrame list
     """
-
     if not isinstance(dates, list):
         dates = [dates]
 
     data = []
     for d in dates:
-        filepath = os.path.join(path, 'datalog ' + d + '.xls')
+        filepath = os.path.join(path, 'datalog ' + d + extension)
         data.append(remove_notes(pd.read_csv(filepath, delimiter='\t')))
 
     return data
@@ -131,7 +218,7 @@ def column_start_to_end(data, column, start_idx, end_idx):
     index to the ending index. This can list can be compiled over one or more
     DataFrames.
 
-    :param data: a list of DataFrames to extract data in one column from
+    :param data: a list of DataFrames to extract one column from
     :type data: Pandas.DataFrame list
     :param column: a column index
     :type column: int
@@ -158,9 +245,9 @@ def column_start_to_end(data, column, start_idx, end_idx):
     return result
 
 
-def get_data_by_state(path, dates, state, column):
+def get_data_by_state(path, dates, state, column, extension=".tsv"):
     """Reads a ProCoDA file and extracts the time and data column for each
-    iteration ofthe given state.
+    iteration of the given state.
 
     Note: column 0 is time, the first data column is column 1.
 
@@ -168,13 +255,15 @@ def get_data_by_state(path, dates, state, column):
     :type path: string
     :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
     :type dates: string or string list
-    :param state: The state ID number for which data should be plotted
+    :param state: The state ID number for which data should be extracted
     :type state: int
     :param column: The integer index of the column that you want to extract OR the header of the column that you want to extract
     :type column: int or string
+    :param extension: File extension of the data file(s). Defaults to '.tsv'
+    :type extension: string, optional
 
     :return: A list of lists of the time and data columns extracted for each iteration of the state. For example, if "data" is the output, data[i][:,0] gives the time column and data[i][:,1] gives the data column for the ith iteration of the given state and column. data[i][0] would give the first [time, data] pair.
-    :type: list of lists of lists
+    :type: 3D float list
 
     :Examples:
 
@@ -186,7 +275,6 @@ def get_data_by_state(path, dates, state, column):
     day = 0
     first_day = True
     overnight = False
-    extension = ".xls"
     if path[-1] != '/':
         path += '/'
 
@@ -254,93 +342,83 @@ def get_data_by_state(path, dates, state, column):
     return data_agg
 
 
-def column_of_time(path, start, end=-1):
-    """This function extracts the column of times from a ProCoDA data file.
+def plot_columns(path, columns, x_axis=None, sep='\t'):
+    """Plot columns of data, located by labels, in the given data file.
 
-    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.
+    :param path: The file path of the ProCoDA data file
     :type path: string
-    :param start: Index of first row of data to extract from the data file
-    :type start: int
-    :param end: Index of last row of data to extract from the data. Defaults to last row
-    :type end: int
+    :param columns: A single column label or list of column labels
+    :type columns: string or string list
+    :param x_axis: The label of the x-axis column (defaults to None)
+    :type x_axis: string, optional
+    :param sep: The separator or delimiter, of the data file. Use ',' for CSV's, '\t' for TSV's.
+    :type sep: string
 
-    :return: Experimental times starting at 0 day with units of days.
-    :rtype: numpy.array
-
-    :Examples:
-
-    .. code-block:: python
-
-        time = column_of_time("Reactor_data.txt", 0)
+    :return: A list of Line2D objects representing the plotted data
+    :rtype: matplotlib.lines.Line2D list
     """
-    df = pd.read_csv(path, delimiter='\t')
-    start_time = pd.to_numeric(df.iloc[start, 0])*u.day
-    day_times = pd.to_numeric(df.iloc[start:end, 0])
-    time_data = np.subtract((np.array(day_times)*u.day), start_time)
-    return time_data
+    df = pd.read_csv(path, sep=sep)
+    df = remove_notes(df)
 
-
-def column_of_data(path, start, column, end="-1", units=""):
-    """This function extracts a column of data from a ProCoDA data file.
-
-    Note: Column 0 is time. The first data column is column 1.
-
-    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.
-    :type path: string
-    :param start: Index of first row of data to extract from the data file
-    :type start: int
-    :param end: Index of last row of data to extract from the data. Defaults to last row
-    :type end: int, optional
-    :param column: Index of the column that you want to extract OR name of the column header that you want to extract
-    :type column: int or string
-    :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless)
-    :type units: string, optional
-
-    :return: Experimental data with the units applied.
-    :rtype: numpy.array
-
-    :Examples:
-
-    .. code-block:: python
-
-        data = column_of_data("Reactor_data.txt", 0, 1, -1, "mg/L")
-    """
-    if not isinstance(start, int):
-        start = int(start)
-    if not isinstance(end, int):
-        end = int(end)
-
-    df = pd.read_csv(path, delimiter='\t')
-    if units == "":
-        if isinstance(column, int):
-            data = np.array(pd.to_numeric(df.iloc[start:end, column]))
+    if isinstance(columns, str):
+        y = pd.to_numeric(df.loc[:, columns])
+        if x_axis is None:
+            plt.plot(y)
         else:
-            df[column][0:len(df)]
+            x = pd.to_numeric(df.loc[:, x_axis])
+            plt.plot(x, y)
+
+    elif isinstance(columns, list):
+        for c in columns:
+            y = pd.to_numeric(df.loc[:, c])
+            if x_axis is None:
+                plt.plot(y)
+            else:
+                x = pd.to_numeric(df.loc[:, x_axis])
+                plt.plot(x, y)
     else:
-        if isinstance(column, int):
-            data = np.array(pd.to_numeric(df.iloc[start:end, column]))*u(units)
-        else:
-            df[column][0:len(df)]*u(units)
-    return data
+        raise ValueError('columns must be a string or list of strings')
 
 
-def notes(path):
-    """This function extracts any experimental notes from a ProCoDA data file.
+def iplot_columns(path, columns, x_axis=None, sep='\t'):
+    """Plot columns of data, located by indexes, in the given data file.
 
-    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.
+    :param path: The file path of the ProCoDA data file
     :type path: string
+    :param columns: A single column index or list of column indexes
+    :type columns: int or int list
+    :param x_axis: The index of the x-axis column (defaults to None)
+    :type x_axis: int, optional
+    :param sep: The separator or delimiter, of the data file. Use ',' for CSV's, '\t' for TSV's.
+    :type sep: string
 
-    :return: The rows of the data file that contain text notes inserted during the experiment. Use this to identify the section of the data file that you want to extract.
-    :rtype: pandas.Dataframe
+    :return: a list of Line2D objects representing the plotted data
+    :rtype: matplotlib.lines.Line2D list
     """
-    df = pd.read_csv(path, delimiter='\t')
-    text_row = df.iloc[0:-1, 0].str.contains('[a-z]', '[A-Z]')
-    text_row_index = text_row.index[text_row].tolist()
-    notes = df.loc[text_row_index]
-    return notes
+    df = pd.read_csv(path, sep=sep)
+    df = remove_notes(df)
+
+    if isinstance(columns, int):
+        y = pd.to_numeric(df.iloc[:, columns])
+        if x_axis is None:
+            plt.plot(y)
+        else:
+            x = pd.to_numeric(df.iloc[:, x_axis])
+            plt.plot(x, y)
+
+    elif isinstance(columns, list):
+        for c in columns:
+            y = pd.to_numeric(df.iloc[:, c])
+            if x_axis is None:
+                plt.plot(y)
+            else:
+                x = pd.to_numeric(df.iloc[:, x_axis])
+                plt.plot(x, y)
+    else:
+        raise ValueError('columns must be an int or a list of ints')
 
 
-def read_state(dates, state, column, units="", path="", extension=".xls"):
+def read_state(dates, state, column, units="", path="", extension=".tsv"):
     """Reads a ProCoDA file and outputs the data column and time vector for
     each iteration of the given state.
 
@@ -354,13 +432,13 @@ def read_state(dates, state, column, units="", path="", extension=".xls"):
     :type column: int or string
     :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless)
     :type units: string, optional
-    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.
+    :param path: The file path of the ProCoDA data file.
     :type path: string
-    :param extension: The file extension of the tab delimited file. Defaults to ".xls" if no argument is passed in
+    :param extension: The file extension of the tab delimited file. Defaults to ".tsv"
     :type extension: string, optional
 
-    :return: time (numpy.array) - Times corresponding to the data (with units)
-    :return: data (numpy.array) - Data in the given column during the given state with units
+    :return: time (numpy.ndarray) - Times corresponding to the data (with units)
+    :return: data (numpy.ndarray) - Data in the given column during the given state with units
 
     :Examples:
 
@@ -441,7 +519,7 @@ def read_state(dates, state, column, units="", path="", extension=".xls"):
         return data_agg[:, 0]*u.day, data_agg[:, 1]
 
 
-def average_state(dates, state, column, units="", path="", extension=".xls"):
+def average_state(dates, state, column, units="", path="", extension=".tsv"):
     """Outputs the average value of the data for each instance of a state in
     the given ProCoDA files
 
@@ -455,9 +533,9 @@ def average_state(dates, state, column, units="", path="", extension=".xls"):
     :type column: int or string
     :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless)
     :type units: string, optional
-    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.
+    :param path: The file path of the ProCoDA data file.
     :type path: string
-    :param extension: The file extension of the tab delimited file. Defaults to ".xls" if no argument is passed in
+    :param extension: The file extension of the tab delimited file. Defaults to ".tsv"
     :type extension: string, optional
 
     :return: A list of averages for each instance of the given state
@@ -544,7 +622,7 @@ def average_state(dates, state, column, units="", path="", extension=".xls"):
         return averages
 
 
-def perform_function_on_state(func, dates, state, column, units="", path="", extension=".xls"):
+def perform_function_on_state(func, dates, state, column, units="", path="", extension=".tsv"):
     """Performs the function given on each state of the data for the given state
     in the given column and outputs the result for each instance of the state
 
@@ -560,9 +638,9 @@ def perform_function_on_state(func, dates, state, column, units="", path="", ext
     :type column: int or string
     :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless)
     :type units: string, optional
-    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.
+    :param path: The file path of the ProCoDA data file.
     :type path: string
-    :param extension: The file extension of the tab delimited file. Defaults to ".xls" if no argument is passed in
+    :param extension: The file extension of the tab delimited file. Defaults to ".tsv".
     :type extension: string, optional
 
     :requires: func takes in a list of data with units and outputs the correct units
@@ -662,7 +740,7 @@ def perform_function_on_state(func, dates, state, column, units="", path="", ext
 
 
 def read_state_with_metafile(func, state, column, path, metaids=[],
-                             extension=".xls", units=""):
+                             extension=".tsv", units=""):
     """Takes in a ProCoDA meta file and performs a function for all data of a
     certain state in each of the experiments (denoted by file paths in then
     metafile)
@@ -679,7 +757,7 @@ def read_state_with_metafile(func, state, column, path, metaids=[],
     :type path: string
     :param metaids: a list of the experiment IDs you'd like to analyze from the metafile
     :type metaids: string list, optional
-    :param extension: The file extension of the tab delimited file. Defaults to ".xls" if no argument is passed in
+    :param extension: The file extension of the tab delimited file. Defaults to ".tsv"
     :type extension: string, optional
     :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless)
     :type units: string, optional
@@ -700,7 +778,7 @@ def read_state_with_metafile(func, state, column, path, metaids=[],
             return acc / num
 
         path = "../tests/data/Test Meta File.txt"
-        ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], ".xls", "mg/L")
+        ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], ".tsv", "mg/L")
     """
     outputs = []
 
@@ -763,7 +841,7 @@ def read_state_with_metafile(func, state, column, path, metaids=[],
 
 
 def write_calculations_to_csv(funcs, states, columns, path, headers, out_name,
-                              metaids=[], extension=".xls"):
+                              metaids=[], extension=".tsv"):
     """Writes each output of the given functions on the given states and data
     columns to a new column in the specified output file.
 
@@ -783,7 +861,7 @@ def write_calculations_to_csv(funcs, states, columns, path, headers, out_name,
     :type out_name: string
     :param metaids: A list of the experiment IDs you'd like to analyze from the metafile
     :type metaids: string list, optional
-    :param extension: The file extension of the tab delimited file. Defaults to ".xls" if no argument is passed in
+    :param extension: The file extension of the tab delimited file. Defaults to ".tsv"
     :type extension: string, optional
 
     :requires: funcs, states, columns, and headers are all of the same length if they are lists. Some being lists and some single values are okay.
