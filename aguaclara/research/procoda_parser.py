@@ -33,12 +33,12 @@ def column_of_data(path, start, column, end="-1", units=""):
         data = column_of_data("Reactor_data.txt", 0, 1, -1, "mg/L")
     """
     df = pd.read_csv(path, delimiter='\t')
-    df = remove_notes(df)
     if isinstance(column, int):
-        data = np.array(pd.to_numeric(df.iloc[start:end, column]))*u(units)
+        data = df.iloc[start:end, column]
     else:
-        df[column]*u(units)
-    return data
+        data = df.iloc[start:end][column]
+    num_data = data[pd.to_numeric(data, errors='coerce').notnull()]
+    return np.array(num_data) * u(units)
 
 
 def column_of_time(path, start, end=-1):
@@ -61,11 +61,11 @@ def column_of_time(path, start, end=-1):
         time = column_of_time("Reactor_data.txt", 0)
     """
     df = pd.read_csv(path, delimiter='\t')
-    df = remove_notes(df)
-    start_time = pd.to_numeric(df.iloc[start, 0])*u.day
+    start_time = pd.to_numeric(df.iloc[start, 0])
     day_times = pd.to_numeric(df.iloc[start:end, 0])
-    time_data = np.subtract((np.array(day_times)*u.day), start_time)
-    return time_data
+    elapsed_times = day_times - start_time
+    num_elapsed_times = elapsed_times[pd.to_numeric(elapsed_times, errors='coerce').notnull()]
+    return np.array(num_elapsed_times) * u.day
 
 
 def notes(path):
@@ -79,10 +79,7 @@ def notes(path):
     :rtype: pandas.Dataframe
     """
     df = pd.read_csv(path, delimiter='\t')
-    text_row = df.iloc[0:-1, 0].str.contains('[a-z]', '[A-Z]')
-    text_row_index = text_row.index[text_row].tolist()
-    notes = df.loc[text_row_index]
-    return notes
+    return df[pd.to_numeric(df.iloc[:, 0], errors='coerce').isnull()]
 
 
 def remove_notes(data):
@@ -95,9 +92,7 @@ def remove_notes(data):
     :return: DataFrame object with no notes
     :rtype: Pandas.DataFrame
     """
-    has_text = data.iloc[:, 0].astype(str).str.contains('(?!e-)[a-zA-Z]')
-    text_rows = list(has_text.index[has_text])
-    return data.drop(text_rows)
+    return data[pd.to_numeric(data.iloc[:, 0], errors='coerce').notnull()]
 
 
 def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
