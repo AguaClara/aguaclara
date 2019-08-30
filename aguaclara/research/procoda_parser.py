@@ -337,7 +337,7 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
     return data_agg
 
 
-def plot_columns(path, columns, x_axis=None, sep='\t'):
+def plot_columns(path, columns, x_axis=None):
     """Plot columns of data, located by labels, in the given data file.
 
     :param path: The file path of the ProCoDA data file
@@ -352,7 +352,7 @@ def plot_columns(path, columns, x_axis=None, sep='\t'):
     :return: A list of Line2D objects representing the plotted data
     :rtype: matplotlib.lines.Line2D list
     """
-    df = pd.read_csv(path, sep=sep)
+    df = pd.read_csv(path, delimiter='\t')
     df = remove_notes(df)
 
     if isinstance(columns, str):
@@ -375,7 +375,7 @@ def plot_columns(path, columns, x_axis=None, sep='\t'):
         raise ValueError('columns must be a string or list of strings')
 
 
-def iplot_columns(path, columns, x_axis=None, sep='\t'):
+def iplot_columns(path, columns, x_axis=None):
     """Plot columns of data, located by indexes, in the given data file.
 
     :param path: The file path of the ProCoDA data file
@@ -390,7 +390,7 @@ def iplot_columns(path, columns, x_axis=None, sep='\t'):
     :return: a list of Line2D objects representing the plotted data
     :rtype: matplotlib.lines.Line2D list
     """
-    df = pd.read_csv(path, sep=sep)
+    df = pd.read_csv(path, delimiter='\t')
     df = remove_notes(df)
 
     if isinstance(columns, int):
