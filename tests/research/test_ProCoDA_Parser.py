@@ -23,24 +23,24 @@ class TestProCoDAParser(unittest.TestCase):
         data_day2[0][0] = 0  # to remove scientific notation "e-"
 
         # SINGLE COLUMN, ONE DAY
-        output = get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20", end_time="13:00")
+        output = get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20", end_time="13:00", extension=".xls")
         self.assertSequenceEqual(np.round(output, 5).tolist(), data_day1[0][1041:1282])
 
         # SINGLE COLUMN, TWO DAYS
         output = get_data_by_time(path=path, columns=0, dates=["6-14-2018", "6-15-2018"],
-                                  start_time="12:20", end_time="10:50")
+                                  start_time="12:20", end_time="10:50", extension=".xls")
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output, 5).tolist(), time_column)
 
         # MULTI COLUMN, ONE DAY
         output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018"], start_time="12:20",
-                                  end_time="13:00")
+                                  end_time="13:00", extension=".xls")
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), data_day1[0][1041:1282])
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:1282])
 
         # MULTI COLUMN, TWO DAYS
         output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
-                                  start_time="12:20", end_time="10:50")
+                                  start_time="12:20", end_time="10:50", extension=".xls")
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), time_column)
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
@@ -96,7 +96,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
 
-        output = get_data_by_state(path, dates=["6-19-2013"], state=1, column=1)  # , "6-20-2013"
+        output = get_data_by_state(path, dates=["6-19-2013"], state=1, column=1, extension=".xls")  # , "6-20-2013"
 
         datafile = pd.read_csv(path + "/datalog 6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
@@ -222,7 +222,8 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_read_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
-        time, data = read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path)
+        time, data = read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
+                                extension=".xls")
         time = np.round(time, 5)
         self.assertSequenceEqual(
         time.tolist()[1000:1100],
@@ -270,7 +271,8 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_average_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
-        avgs = average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path)
+        avgs = average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
+                             extension=".xls")
         avgs = np.round(avgs, 5)
         self.assertSequenceEqual(
         avgs.tolist(),
@@ -289,7 +291,9 @@ class TestProCoDAParser(unittest.TestCase):
 
             return acc / num
 
-        avgs = perform_function_on_state(avg_with_units, ["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path)
+        avgs = perform_function_on_state(avg_with_units,
+                                         ["6-19-2013", "6-20-2013"], 1, 28,
+                                         "mL/s", path, extension=".xls")
         avgs = np.round(avgs, 5)
         self.assertSequenceEqual(
         avgs.tolist(),
@@ -326,7 +330,8 @@ class TestProCoDAParser(unittest.TestCase):
             return acc / num
 
         output = write_calculations_to_csv(avg_with_units, 1, 28, path,
-                                           ["Average Conc (mg/L)"], out_path)
+                                           ["Average Conc (mg/L)"], out_path,
+                                           extension=".xls")
 
         self.assertSequenceEqual(["1", "2"], output['ID'].tolist())
         self.assertSequenceEqual(
