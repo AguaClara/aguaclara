@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.procoda_parser &mdash; AguaClara v0.1.6 documentation</title>
+  <title>aguaclara.research.procoda_parser &mdash; AguaClara v0.1.7 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.6
+                v0.1.7
               </div>
             
           
@@ -156,29 +156,125 @@
 <span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
 
-<div class="viewcode-block" id="get_data_by_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_time">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;00:00&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;23:59&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extract columns of data from a ProCoDA datalog based on date(s) and time(s)</span>
+<div class="viewcode-block" id="column_of_data"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_data">[docs]</a><span class="k">def</span> <span class="nf">column_of_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts a column of data from a ProCoDA data file.</span>
+
+<span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
+
+<span class="sd">    :param path: The file path of the ProCoDA data file</span>
+<span class="sd">    :type path: string</span>
+<span class="sd">    :param start: Index of first row of data to extract</span>
+<span class="sd">    :type start: int</span>
+<span class="sd">    :param end: Index of last row of data to extract. Defaults to last row.</span>
+<span class="sd">    :type end: int, optional</span>
+<span class="sd">    :param column: Index or label of the column that you want to extract</span>
+<span class="sd">    :type column: int or string</span>
+<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless).</span>
+<span class="sd">    :type units: string, optional</span>
+
+<span class="sd">    :return: The column of data</span>
+<span class="sd">    :rtype: numpy.ndarray in units of [units]</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        data = column_of_data(&quot;Reactor_data.txt&quot;, 0, 1, -1, &quot;mg/L&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">][</span><span class="n">column</span><span class="p">]</span>
+    <span class="n">num_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">num_data</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="column_of_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_time">[docs]</a><span class="k">def</span> <span class="nf">column_of_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts the column of times from a ProCoDA data file.</span>
+
+<span class="sd">    :param path: The file path of the ProCoDA data file.</span>
+<span class="sd">    :type path: string</span>
+<span class="sd">    :param start: Index of first row of data to extract from the data file</span>
+<span class="sd">    :type start: int</span>
+<span class="sd">    :param end: Index of last row of data to extract from the data. Defaults to last row</span>
+<span class="sd">    :type end: int</span>
+
+<span class="sd">    :return: Experimental times starting at 0</span>
+<span class="sd">    :rtype: numpy.ndarray in units of days</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        time = column_of_time(&quot;Reactor_data.txt&quot;, 0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">day_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">elapsed_times</span> <span class="o">=</span> <span class="n">day_times</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="n">num_elapsed_times</span> <span class="o">=</span> <span class="n">elapsed_times</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">elapsed_times</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">num_elapsed_times</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">day</span></div>
+
+
+<div class="viewcode-block" id="notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.notes">[docs]</a><span class="k">def</span> <span class="nf">notes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts any experimental notes from a ProCoDA data file.</span>
+<span class="sd">    Use this to identify the section of the data file that you want to extract.</span>
+
+<span class="sd">    :param path: The file path of the ProCoDA data file.</span>
+<span class="sd">    :type path: string</span>
+
+<span class="sd">    :return: The rows of the data file that contain text notes inserted during the experiment.</span>
+<span class="sd">    :rtype: pandas.Dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span></div>
+
+
+<div class="viewcode-block" id="remove_notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.remove_notes">[docs]</a><span class="k">def</span> <span class="nf">remove_notes</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Omit notes from a DataFrame object, where notes are identified as rows</span>
+<span class="sd">    with non-numerical entries in the first column.</span>
+
+<span class="sd">    :param data: DataFrame object to remove notes from</span>
+<span class="sd">    :type data: Pandas.DataFrame</span>
+
+<span class="sd">    :return: DataFrame object with no notes</span>
+<span class="sd">    :rtype: Pandas.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span></div>
+
+
+<div class="viewcode-block" id="get_data_by_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_time">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;00:00&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;23:59&#39;</span><span class="p">,</span>
+                     <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract columns of data over one or more ProCoDA data files based on date</span>
+<span class="sd">    and time. Valid only for files whose names are automatically generated by</span>
+<span class="sd">    date, i.e. of the form &quot;datalog M-D-YYYY&quot;.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
 
 <span class="sd">    :param path: The path to the folder containing the ProCoDA data file(s)</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param columns: A single index of a column OR a list of indices of columns of data to extract.</span>
+<span class="sd">    :param columns: A single column index or a list of column indexes</span>
 <span class="sd">    :type columns: int or int list</span>
-<span class="sd">    :param dates: A single date or list of dates for which data was recorded, formatted &quot;M-D-YYYY&quot;</span>
+<span class="sd">    :param dates: A single date or list of dates, formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
 <span class="sd">    :param start_time: Starting time of data to extract, formatted &#39;HH:MM&#39; (24-hour time)</span>
 <span class="sd">    :type start_time: string, optional</span>
 <span class="sd">    :param end_time: Ending time of data to extract, formatted &#39;HH:MM&#39; (24-hour time)</span>
 <span class="sd">    :type end_time: string, optional</span>
+<span class="sd">    :param extension: File extension of the data file(s). Defaults to &#39;.tsv&#39;</span>
+<span class="sd">    :type extension: string, optional</span>
+<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless).</span>
+<span class="sd">    :type units: string, optional</span>
 
-<span class="sd">    :return: a list containing the single column of data to extract, OR a list of lists containing the columns to extract, in order of the indices given in the columns variable</span>
-<span class="sd">    :rtype: list or list list</span>
+<span class="sd">    :return: the single column of data or a list of the columns of data (in the order of the indexes given in the columns variable)</span>
+<span class="sd">    :rtype: 1D or 2D float list</span>
 
 <span class="sd">    :Examples:</span>
 
@@ -188,13 +284,13 @@
 <span class="sd">        data = get_data_by_time(path=&#39;/Users/.../ProCoDA Data/&#39;, columns=[0,4], dates=&#39;6-14-2018&#39;, start_time=&#39;12:20&#39;, end_time=&#39;23:59&#39;)</span>
 <span class="sd">        data = get_data_by_time(path=&#39;/Users/.../ProCoDA Data/&#39;, columns=[0,3,4], dates=&#39;6-14-2018&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
 
     <span class="n">first_time_column</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
     <span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">day_fraction</span><span class="p">(</span><span class="n">start_time</span><span class="p">),</span> <span class="n">first_time_column</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">start_idx</span> <span class="o">=</span> <span class="n">time_column_index</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">first_time_column</span><span class="p">)</span>
     <span class="n">end_idx</span> <span class="o">=</span> <span class="n">time_column_index</span><span class="p">(</span><span class="n">day_fraction</span><span class="p">(</span><span class="n">end_time</span><span class="p">),</span>
-        <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span>
+                                <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">)</span>
@@ -205,24 +301,9 @@
     <span class="k">return</span> <span class="n">result</span></div>
 
 
-<div class="viewcode-block" id="remove_notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.remove_notes">[docs]</a><span class="k">def</span> <span class="nf">remove_notes</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Omit notes from a DataFrame object, where notes are identified as rows with non-numerical entries in the first column.</span>
-
-<span class="sd">    :param data: DataFrame object to remove notes from</span>
-<span class="sd">    :type data: Pandas.DataFrame</span>
-
-<span class="sd">    :return: DataFrame object with no notes</span>
-<span class="sd">    :rtype: Pandas.DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">has_text</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;(?!e-)[a-zA-Z]&#39;</span><span class="p">)</span>
-    <span class="n">text_rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">has_text</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">has_text</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">text_rows</span><span class="p">)</span></div>
-
-
 <span class="k">def</span> <span class="nf">day_fraction</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a 24-hour time to a fraction of a day.</span>
-
-<span class="sd">    For example, midnight corresponds to 0.0, and noon to 0.5.</span>
+    <span class="sd">&quot;&quot;&quot;Convert a 24-hour time to a fraction of a day. For example, midnight</span>
+<span class="sd">    corresponds to 0.0, and noon to 0.5.</span>
 
 <span class="sd">    :param time: Time in the form of &#39;HH:MM&#39; (24-hour time)</span>
 <span class="sd">    :type time: string</span>
@@ -242,12 +323,12 @@
 
 
 <span class="k">def</span> <span class="nf">time_column_index</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">time_column</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the index of lowest time in the column of times that is greater</span>
+    <span class="sd">&quot;&quot;&quot;Return the index of the lowest time in the column of times that is greater</span>
 <span class="sd">    than or equal to the given time.</span>
 
 <span class="sd">    :param time: the time to index from the column of time; a day fraction</span>
 <span class="sd">    :type time: float</span>
-<span class="sd">    :param time_column: a list of times (in day fractions), must be increasing and equally spaced</span>
+<span class="sd">    :param time_column: a list of times in day fractions, must be increasing and equally spaced</span>
 <span class="sd">    :type time_column: float list</span>
 
 <span class="sd">    :return: approximate index of the time from the column of times</span>
@@ -257,25 +338,26 @@
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">time</span> <span class="o">-</span> <span class="n">time_column</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">interval</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return list DataFrames representing the ProCoDA datalogs stored in</span>
+<span class="k">def</span> <span class="nf">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a list of DataFrames representing the ProCoDA data files stored in</span>
 <span class="sd">    the given path and recorded on the given dates.</span>
 
 <span class="sd">    :param path: The path to the folder containing the ProCoDA data file(s)</span>
 <span class="sd">    :type path: string</span>
 <span class="sd">    :param dates: A single date or list of dates for which data was recorded, formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
+<span class="sd">    :param extension: File extension of the data file(s)</span>
+<span class="sd">    :type extension: string, optional</span>
 
-<span class="sd">    :return: a list DataFrame objects representing the ProCoDA datalogs corresponding with the given dates</span>
+<span class="sd">    :return: a list of DataFrames representing the ProCoDA data files recorded on the given dates</span>
 <span class="sd">    :rtype: pandas.DataFrame list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dates</span><span class="p">]</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;datalog &#39;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="s1">&#39;.xls&#39;</span><span class="p">)</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;datalog &#39;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span><span class="p">)</span>
         <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remove_notes</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">data</span>
@@ -286,7 +368,7 @@
 <span class="sd">    index to the ending index. This can list can be compiled over one or more</span>
 <span class="sd">    DataFrames.</span>
 
-<span class="sd">    :param data: a list of DataFrames to extract data in one column from</span>
+<span class="sd">    :param data: a list of DataFrames to extract one column from</span>
 <span class="sd">    :type data: Pandas.DataFrame list</span>
 <span class="sd">    :param column: a column index</span>
 <span class="sd">    :type column: int</span>
@@ -313,9 +395,9 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<div class="viewcode-block" id="get_data_by_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_state">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+<div class="viewcode-block" id="get_data_by_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_state">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and extracts the time and data column for each</span>
-<span class="sd">    iteration ofthe given state.</span>
+<span class="sd">    iteration of the given state.</span>
 
 <span class="sd">    Note: column 0 is time, the first data column is column 1.</span>
 
@@ -323,13 +405,15 @@
 <span class="sd">    :type path: string</span>
 <span class="sd">    :param dates: A single date or list of dates for which data was recorded, formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
-<span class="sd">    :param state: The state ID number for which data should be plotted</span>
+<span class="sd">    :param state: The state ID number for which data should be extracted</span>
 <span class="sd">    :type state: int</span>
 <span class="sd">    :param column: The integer index of the column that you want to extract OR the header of the column that you want to extract</span>
 <span class="sd">    :type column: int or string</span>
+<span class="sd">    :param extension: File extension of the data file(s). Defaults to &#39;.tsv&#39;</span>
+<span class="sd">    :type extension: string, optional</span>
 
 <span class="sd">    :return: A list of lists of the time and data columns extracted for each iteration of the state. For example, if &quot;data&quot; is the output, data[i][:,0] gives the time column and data[i][:,1] gives the data column for the ith iteration of the given state and column. data[i][0] would give the first [time, data] pair.</span>
-<span class="sd">    :type: list of lists of lists</span>
+<span class="sd">    :type: 3D float list</span>
 
 <span class="sd">    :Examples:</span>
 
@@ -341,7 +425,6 @@
     <span class="n">day</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">first_day</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">overnight</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">extension</span> <span class="o">=</span> <span class="s2">&quot;.xls&quot;</span>
     <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
         <span class="n">path</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
 
@@ -409,93 +492,83 @@
     <span class="k">return</span> <span class="n">data_agg</span></div>
 
 
-<div class="viewcode-block" id="column_of_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_time">[docs]</a><span class="k">def</span> <span class="nf">column_of_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function extracts the column of times from a ProCoDA data file.</span>
+<div class="viewcode-block" id="plot_columns"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.plot_columns">[docs]</a><span class="k">def</span> <span class="nf">plot_columns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot columns of data, located by labels, in the given data file.</span>
 
-<span class="sd">    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</span>
+<span class="sd">    :param path: The file path of the ProCoDA data file</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param start: Index of first row of data to extract from the data file</span>
-<span class="sd">    :type start: int</span>
-<span class="sd">    :param end: Index of last row of data to extract from the data. Defaults to last row</span>
-<span class="sd">    :type end: int</span>
+<span class="sd">    :param columns: A single column label or list of column labels</span>
+<span class="sd">    :type columns: string or string list</span>
+<span class="sd">    :param x_axis: The label of the x-axis column (defaults to None)</span>
+<span class="sd">    :type x_axis: string, optional</span>
+<span class="sd">    :param sep: The separator or delimiter, of the data file. Use &#39;,&#39; for CSV&#39;s, &#39;\t&#39; for TSV&#39;s.</span>
+<span class="sd">    :type sep: string</span>
 
-<span class="sd">    :return: Experimental times starting at 0 day with units of days.</span>
-<span class="sd">    :rtype: numpy.array</span>
-
-<span class="sd">    :Examples:</span>
-
-<span class="sd">    .. code-block:: python</span>
-
-<span class="sd">        time = column_of_time(&quot;Reactor_data.txt&quot;, 0)</span>
+<span class="sd">    :return: A list of Line2D objects representing the plotted data</span>
+<span class="sd">    :rtype: matplotlib.lines.Line2D list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">start_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span>
-    <span class="n">day_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="n">time_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">day_times</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">),</span> <span class="n">start_time</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">time_data</span></div>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">remove_notes</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="column_of_data"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_data">[docs]</a><span class="k">def</span> <span class="nf">column_of_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function extracts a column of data from a ProCoDA data file.</span>
-
-<span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
-
-<span class="sd">    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</span>
-<span class="sd">    :type path: string</span>
-<span class="sd">    :param start: Index of first row of data to extract from the data file</span>
-<span class="sd">    :type start: int</span>
-<span class="sd">    :param end: Index of last row of data to extract from the data. Defaults to last row</span>
-<span class="sd">    :type end: int, optional</span>
-<span class="sd">    :param column: Index of the column that you want to extract OR name of the column header that you want to extract</span>
-<span class="sd">    :type column: int or string</span>
-<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
-<span class="sd">    :type units: string, optional</span>
-
-<span class="sd">    :return: Experimental data with the units applied.</span>
-<span class="sd">    :rtype: numpy.array</span>
-
-<span class="sd">    :Examples:</span>
-
-<span class="sd">    .. code-block:: python</span>
-
-<span class="sd">        data = column_of_data(&quot;Reactor_data.txt&quot;, 0, 1, -1, &quot;mg/L&quot;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
-
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">column</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">x_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">x_axis</span><span class="p">])</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">c</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">x_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">x_axis</span><span class="p">])</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">column</span><span class="p">]))</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">data</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;columns must be a string or list of strings&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.notes">[docs]</a><span class="k">def</span> <span class="nf">notes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function extracts any experimental notes from a ProCoDA data file.</span>
+<div class="viewcode-block" id="iplot_columns"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.iplot_columns">[docs]</a><span class="k">def</span> <span class="nf">iplot_columns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot columns of data, located by indexes, in the given data file.</span>
 
-<span class="sd">    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</span>
+<span class="sd">    :param path: The file path of the ProCoDA data file</span>
 <span class="sd">    :type path: string</span>
+<span class="sd">    :param columns: A single column index or list of column indexes</span>
+<span class="sd">    :type columns: int or int list</span>
+<span class="sd">    :param x_axis: The index of the x-axis column (defaults to None)</span>
+<span class="sd">    :type x_axis: int, optional</span>
+<span class="sd">    :param sep: The separator or delimiter, of the data file. Use &#39;,&#39; for CSV&#39;s, &#39;\t&#39; for TSV&#39;s.</span>
+<span class="sd">    :type sep: string</span>
 
-<span class="sd">    :return: The rows of the data file that contain text notes inserted during the experiment. Use this to identify the section of the data file that you want to extract.</span>
-<span class="sd">    :rtype: pandas.Dataframe</span>
+<span class="sd">    :return: a list of Line2D objects representing the plotted data</span>
+<span class="sd">    :rtype: matplotlib.lines.Line2D list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">text_row</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;[a-z]&#39;</span><span class="p">,</span> <span class="s1">&#39;[A-Z]&#39;</span><span class="p">)</span>
-    <span class="n">text_row_index</span> <span class="o">=</span> <span class="n">text_row</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">text_row</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">notes</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">text_row_index</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">notes</span></div>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">remove_notes</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">columns</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">x_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">x_axis</span><span class="p">])</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">c</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">x_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">x_axis</span><span class="p">])</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;columns must be an int or a list of ints&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="read_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state">[docs]</a><span class="k">def</span> <span class="nf">read_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="read_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state">[docs]</a><span class="k">def</span> <span class="nf">read_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and outputs the data column and time vector for</span>
 <span class="sd">    each iteration of the given state.</span>
 
@@ -509,13 +582,13 @@
 <span class="sd">    :type column: int or string</span>
 <span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
 <span class="sd">    :type units: string, optional</span>
-<span class="sd">    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</span>
+<span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if no argument is passed in</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;</span>
 <span class="sd">    :type extension: string, optional</span>
 
-<span class="sd">    :return: time (numpy.array) - Times corresponding to the data (with units)</span>
-<span class="sd">    :return: data (numpy.array) - Data in the given column during the given state with units</span>
+<span class="sd">    :return: time (numpy.ndarray) - Times corresponding to the data (with units)</span>
+<span class="sd">    :return: data (numpy.ndarray) - Data in the given column during the given state with units</span>
 
 <span class="sd">    :Examples:</span>
 
@@ -596,7 +669,7 @@
         <span class="k">return</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="average_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.average_state">[docs]</a><span class="k">def</span> <span class="nf">average_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="average_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.average_state">[docs]</a><span class="k">def</span> <span class="nf">average_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Outputs the average value of the data for each instance of a state in</span>
 <span class="sd">    the given ProCoDA files</span>
 
@@ -610,9 +683,9 @@
 <span class="sd">    :type column: int or string</span>
 <span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
 <span class="sd">    :type units: string, optional</span>
-<span class="sd">    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</span>
+<span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if no argument is passed in</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;</span>
 <span class="sd">    :type extension: string, optional</span>
 
 <span class="sd">    :return: A list of averages for each instance of the given state</span>
@@ -699,7 +772,7 @@
         <span class="k">return</span> <span class="n">averages</span></div>
 
 
-<div class="viewcode-block" id="perform_function_on_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.perform_function_on_state">[docs]</a><span class="k">def</span> <span class="nf">perform_function_on_state</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="perform_function_on_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.perform_function_on_state">[docs]</a><span class="k">def</span> <span class="nf">perform_function_on_state</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Performs the function given on each state of the data for the given state</span>
 <span class="sd">    in the given column and outputs the result for each instance of the state</span>
 
@@ -715,9 +788,9 @@
 <span class="sd">    :type column: int or string</span>
 <span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
 <span class="sd">    :type units: string, optional</span>
-<span class="sd">    :param path: The file path of the ProCoDA data file. If the file is in the working directory, then the file name is sufficient.</span>
+<span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if no argument is passed in</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;.</span>
 <span class="sd">    :type extension: string, optional</span>
 
 <span class="sd">    :requires: func takes in a list of data with units and outputs the correct units</span>
@@ -817,7 +890,7 @@
 
 
 <div class="viewcode-block" id="read_state_with_metafile"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state_with_metafile">[docs]</a><span class="k">def</span> <span class="nf">read_state_with_metafile</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span>
-                             <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+                             <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Takes in a ProCoDA meta file and performs a function for all data of a</span>
 <span class="sd">    certain state in each of the experiments (denoted by file paths in then</span>
 <span class="sd">    metafile)</span>
@@ -834,7 +907,7 @@
 <span class="sd">    :type path: string</span>
 <span class="sd">    :param metaids: a list of the experiment IDs you&#39;d like to analyze from the metafile</span>
 <span class="sd">    :type metaids: string list, optional</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if no argument is passed in</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;</span>
 <span class="sd">    :type extension: string, optional</span>
 <span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
 <span class="sd">    :type units: string, optional</span>
@@ -855,7 +928,7 @@
 <span class="sd">            return acc / num</span>
 
 <span class="sd">        path = &quot;../tests/data/Test Meta File.txt&quot;</span>
-<span class="sd">        ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], &quot;.xls&quot;, &quot;mg/L&quot;)</span>
+<span class="sd">        ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], &quot;.tsv&quot;, &quot;mg/L&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -918,7 +991,7 @@
 
 
 <div class="viewcode-block" id="write_calculations_to_csv"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.write_calculations_to_csv">[docs]</a><span class="k">def</span> <span class="nf">write_calculations_to_csv</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">out_name</span><span class="p">,</span>
-                              <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xls&quot;</span><span class="p">):</span>
+                              <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Writes each output of the given functions on the given states and data</span>
 <span class="sd">    columns to a new column in the specified output file.</span>
 
@@ -938,7 +1011,7 @@
 <span class="sd">    :type out_name: string</span>
 <span class="sd">    :param metaids: A list of the experiment IDs you&#39;d like to analyze from the metafile</span>
 <span class="sd">    :type metaids: string list, optional</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.xls&quot; if no argument is passed in</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;</span>
 <span class="sd">    :type extension: string, optional</span>
 
 <span class="sd">    :requires: funcs, states, columns, and headers are all of the same length if they are lists. Some being lists and some single values are okay.</span>
