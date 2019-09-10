@@ -1,6 +1,6 @@
 """Utility functions and features
 
-This module provides functions and features for scientific calculations and 
+This module provides functions and features for scientific calculations and
 complex function inputs.
 
 Example:
@@ -13,10 +13,11 @@ from aguaclara.core.units import u
 import numpy as np
 from math import log10, floor, ceil
 import warnings
+import functools
 
 def optional_units(arg_positions, keys):
     """Wrap a function so that arguments may optionally have units.
-    
+
     This should be used as a function decorator; it will not do anything
     meaningful unless it is appended with a ``@`` before another function.
 
@@ -33,7 +34,7 @@ def optional_units(arg_positions, keys):
         - ``keys (str list)``: Names of positional and keyword arguments with
           optional units
     """
-    # func is the function that is being decorated, and *args/**kwargs are the 
+    # func is the function that is being decorated, and *args/**kwargs are the
     # arguments being passed to that function.
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -62,7 +63,7 @@ def round_sig_figs(num, figs=4):
 
     Args:
         - ``num (float)``: Value to be rounded (optional units)
-        - ``figs (int)``: Number of significant digits to be rounded to 
+        - ``figs (int)``: Number of significant digits to be rounded to
           (recommended, defaults to 4)
     """
     # Prevents undefined log10(0) if num is already 0
@@ -77,7 +78,7 @@ def round_sf(num, figs=4):
 
     Args:
         - ``num (float)``: Value to be rounded (optional units)
-        - ``figs (int)``: Number of significant digits to be rounded to 
+        - ``figs (int)``: Number of significant digits to be rounded to
           (recommended, defaults to 4)
 
     Note: This function will be deprecated after 21 Dec 2019. Use
@@ -93,13 +94,13 @@ def round_sf(num, figs=4):
 @optional_units([0, 1], ['num', 'step'])
 def _stepper(num, step=10, func=round):
     """Round a number to be a multiple of some step.
-    
+
     Args:
         - ``num (float)``: Value to be rounded (optional units)
         - ``step (float)``: Factor to which ``num`` will be rounded (defaults
           to 10).
         - ``func (function)``: Rounding function to use (defaults to round())
-    
+
     Note:
         ``step`` must have the same dimensionality as ``num``, but not
         necessarily the same units (e.g. ``num``: meters and ``step``:
@@ -111,12 +112,12 @@ def _stepper(num, step=10, func=round):
 
 def round_step(num, step=10):
     """Round a number to be a multiple of some step.
-    
+
     Args:
         - ``num (float)``: Value to be rounded (optional units)
         - ``step (float)``: Factor to which ``num`` will be rounded (defaults
           to 10).
-    
+
     Note:
         ``step`` must have the same dimensionality as ``num``, but not
         necessarily the same units (e.g. ``num``: meters and ``step``:
@@ -134,12 +135,12 @@ def floor_step(num, step=10):
 
 def stepceil_with_units(param, step, unit):
     """Round a number up to be a multiple of some step.
-    
+
     Args:
         - ``param (float)``: Value to be rounded (optional units)
         - ``step (float)``: Factor to which ``param`` will be rounded
         - ``unit (Quantity)``: units of ``step``
-    
+
     Note: this function will be deprecated after 21 Dec 2019. Use ceil_step
     instead.
     """
@@ -178,7 +179,7 @@ def ceil_nearest(x, array):
 
 def _minmax(*args, func=np.max):
     """Get the minuimum/maximum value of some Pint quantities with units.
-    
+
     Args:
         - ``func (function)``: the min/max function being used.
 
@@ -203,7 +204,7 @@ def _minmax(*args, func=np.max):
 
 def max(*args):
     """Get the maximum value of some Pint quantities with units.
-    
+
     Note:
         - All quantities must have the same dimensionality, but can have
           different units.
@@ -222,7 +223,7 @@ def min(*args):
 
 def get_sdr(spec):
     """Get the SDR of a string ``spec`` with the form \"sdrXX\".
-    
+
     Args:
         - ``spec (str)``: The specification string to be parsed."""
     if spec[:3] != "sdr":
@@ -232,6 +233,7 @@ def get_sdr(spec):
 def list_handler(HandlerResult="nparray"):
     """Wraps a function to handle list inputs."""
     def decorate(func):
+        @functools.wraps(func) # For Sphinx documentation of decorated functions
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element.
 
@@ -367,7 +369,7 @@ def check_range(*args):
 
 def array_qtys_to_strs(lst):
     """Convert Pint quantities in a NumPy array to strings.
-    
+
     Args:
         - ``lst (numpy.ndarray Quantity)``: a list of values that has a Pint
             unit attached to it
