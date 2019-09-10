@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PhysChem &mdash; AguaClara v0.1.7 documentation</title>
+  <title>PhysChem &mdash; AguaClara v0.1.8 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.7
+                v0.1.8
               </div>
             
           
@@ -247,6 +247,13 @@ If not given units, the function will assume Kelvin.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="aguaclara.core.physchem.radius_hydraulic">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic</code><span class="sig-paren">(</span><em class="sig-param">Width</em>, <em class="sig-param">DistCenter</em>, <em class="sig-param">openchannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the hydraulic radius.</p>
+<p>Width and DistCenter are length values and openchannel is a boolean.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.core.physchem.radius_hydraulic_general">
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic_general</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic_general" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the general hydraulic radius.</p>
@@ -269,6 +276,18 @@ If not given units, the function will assume Kelvin.</p>
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the friction factor for pipe flow.</p>
 <p>This equation applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.fric_rect">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em>, <em class="sig-param">DistCenter</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em>, <em class="sig-param">openchannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the friction factor for a rectangular channel.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.fric_general">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_general</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Vel</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_general" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the friction factor for a general channel.</p>
 </dd></dl>
 
 <dl class="function">
@@ -343,6 +362,18 @@ This equation applies to both laminar and turbulent flows.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="aguaclara.core.physchem.flow_orifice">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_orifice</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">Height</em>, <em class="sig-param">RatioVCOrifice</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_orifice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow rate of the orifice.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.flow_orifice_vert">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_orifice_vert</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">Height</em>, <em class="sig-param">RatioVCOrifice</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_orifice_vert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_orifice_vert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the vertical flow rate of the orifice.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.core.physchem.head_orifice">
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">head_orifice</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">RatioVCOrifice</em>, <em class="sig-param">FlowRate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#head_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.head_orifice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the head of the orifice.</p>
@@ -380,10 +411,25 @@ This equation applies to both laminar and turbulent flows.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="aguaclara.core.physchem.flow_pipemajor">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipemajor</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLossFric</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipemajor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipemajor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the flow rate with only major losses.</p>
+<p>This function applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.core.physchem.flow_pipeminor">
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipeminor</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLossExpans</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipeminor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipeminor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate with only minor losses.</p>
 <p>This function applies to both laminar and turbulent flows.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.flow_pipe">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipe</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLoss</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the the flow in a straight pipe.</p>
+<p>This function works for both major and minor losses and
+works whether the flow is laminar or turbulent.</p>
 </dd></dl>
 
 <dl class="function">
@@ -398,10 +444,25 @@ flow.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="aguaclara.core.physchem.diam_pipemajor">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipemajor</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLossFric</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipemajor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipemajor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the pipe IDiam that would result in given major losses.
+This function applies to both laminar and turbulent flow.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="aguaclara.core.physchem.diam_pipeminor">
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipeminor</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLossExpans</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipeminor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipeminor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the pipe ID that would result in the given minor losses.</p>
 <p>This function applies to both laminar and turbulent flow.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.core.physchem.diam_pipe">
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLoss</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the pipe ID that would result in the given total head loss.</p>
+<p>This function applies to both laminar and turbulent flow and
+incorporates both minor and major losses.</p>
 </dd></dl>
 
 <dl class="function">
