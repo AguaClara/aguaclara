@@ -422,39 +422,38 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
             + headloss_exp(FlowRate, Diam, KMinor))
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def headloss_fric_rect(FlowRate, Width, DistCenter, Length, Nu, PipeRough, openchannel):
     """Return the major head loss due to wall shear in a rectangular channel.
 
     This equation applies to both laminar and turbulent flows.
     """
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([Length, ">0", "Length"])
+    ut.check_range([Length.magnitude, ">0", "Length"])
     return (fric_rect(FlowRate, Width, DistCenter, Nu,
                       PipeRough, openchannel)
             * Length
-            / (4 * radius_hydraulic(Width, DistCenter, openchannel).magnitude)
+            / (4 * radius_hydraulic(Width, DistCenter, openchannel))
             * FlowRate**2
-            / (2 * gravity.magnitude * (Width*DistCenter)**2)
+            / (2 * gravity * (Width*DistCenter)**2)
             )
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m], False)
+@ut.list_handler()
 def headloss_exp_rect(FlowRate, Width, DistCenter, KMinor):
     """Return the minor head loss due to expansion in a rectangular channel.
 
     This equation applies to both laminar and turbulent flows.
     """
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"],
-                   [DistCenter, ">0", "DistCenter"], [KMinor, ">=0", "K minor"])
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Width.magnitude, ">0", "Width"],
+                   [DistCenter.magnitude, ">0", "DistCenter"],
+                   [KMinor, ">=0", "K minor"])
     return (KMinor * FlowRate**2
-            / (2 * gravity.magnitude * (Width*DistCenter)**2)
+            / (2 * gravity * (Width*DistCenter)**2)
             )
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m, None, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def headloss_rect(FlowRate, Width, DistCenter, Length,
                   KMinor, Nu, PipeRough, openchannel):
     """Return the total head loss in a rectangular channel.
@@ -462,98 +461,85 @@ def headloss_rect(FlowRate, Width, DistCenter, Length,
     Total head loss is a combination of the major and minor losses.
     This equation applies to both laminar and turbulent flows.
     """
-    #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
-    return (headloss_exp_rect(FlowRate, Width, DistCenter, KMinor).magnitude
-              + headloss_fric_rect(FlowRate, Width, DistCenter, Length,
-                                   Nu, PipeRough, openchannel).magnitude)
+    return (headloss_exp_rect(FlowRate, Width, DistCenter, KMinor)
+            + headloss_fric_rect(FlowRate, Width, DistCenter, Length,
+                                 Nu, PipeRough, openchannel))
 
 
-@u.wraps(u.m, [u.m**2, u.m, u.m/u.s, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def headloss_fric_general(Area, PerimWetted, Vel, Length, Nu, PipeRough):
     """Return the major head loss due to wall shear in the general case.
 
     This equation applies to both laminar and turbulent flows.
     """
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([Length, ">0", "Length"])
+    ut.check_range([Length.magnitude, ">0", "Length"])
     return (fric_general(Area, PerimWetted, Vel, Nu, PipeRough) * Length
-            / (4 * radius_hydraulic_general(Area, PerimWetted).magnitude)
-            * Vel**2 / (2*gravity.magnitude)
+            / (4 * radius_hydraulic_general(Area, PerimWetted))
+            * Vel**2 / (2*gravity)
             )
 
 
-@u.wraps(u.m, [u.m/u.s], False)
+@ut.list_handler()
 def headloss_exp_general(Vel, KMinor):
     """Return the minor head loss due to expansion in the general case.
 
     This equation applies to both laminar and turbulent flows.
     """
-    #Checking input validity
-    ut.check_range([Vel, ">0", "Velocity"], [KMinor, '>=0', 'K minor'])
-    return KMinor * Vel**2 / (2*gravity.magnitude)
+    ut.check_range([Vel.magnitude, ">0", "Velocity"], [KMinor, '>=0', 'K minor'])
+    return KMinor * Vel**2 / (2*gravity)
 
 
-@u.wraps(u.m, [u.m**2, u.m/u.s, u.m, u.m, None, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def headloss_gen(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough):
     """Return the total head lossin the general case.
 
     Total head loss is a combination of major and minor losses.
     This equation applies to both laminar and turbulent flows.
     """
-    #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
-    return (headloss_exp_general(Vel, KMinor).magnitude
+    return (headloss_exp_general(Vel, KMinor)
             + headloss_fric_general(Area, PerimWetted, Vel,
-                                     Length, Nu, PipeRough).magnitude)
+                                     Length, Nu, PipeRough)).to(u.m)
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, None,
-               u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, PipeRough, NumOutlets):
     """Return the total head loss through the manifold."""
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
     ut.check_range([NumOutlets, ">0, int", 'Number of outlets'])
-    return (headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor).magnitude
+    return (headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor)
             * ((1/3 )
                + (1 / (2*NumOutlets))
                + (1 / (6*NumOutlets**2))
                )
-            )
+            ).to(u.m)
 
 
-@u.wraps(u.m**3/u.s, [u.m, u.m], False)
 @ut.list_handler()
 def flow_orifice(Diam, Height, RatioVCOrifice):
     """Return the flow rate of the orifice."""
-    #Checking input validity
-    ut.check_range([Diam, ">0", "Diameter"],
+    ut.check_range([Diam.magnitude, ">0", "Diameter"],
                    [RatioVCOrifice, "0-1", "VC orifice ratio"])
-    if Height > 0:
-        return (RatioVCOrifice * area_circle(Diam).magnitude
-                * np.sqrt(2 * gravity.magnitude * Height))
+    if Height.magnitude > 0:
+        return (RatioVCOrifice * area_circle(Diam)
+                * np.sqrt(2 * gravity * Height))
     else:
-        return 0
+        return 0 * u.m**3/u.s
 
 
 #Deviates from the MathCad at the 6th decimal place. Worth investigating or not?
-@u.wraps(u.m**3/u.s, [u.m, u.m], False)
+# @u.wraps(u.m**3/u.s, [u.m, u.m], False)
 @ut.list_handler()
 def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     """Return the vertical flow rate of the orifice."""
-    #Checking input validity
     ut.check_range([RatioVCOrifice, "0-1", "VC orifice ratio"])
     if Height > -Diam / 2:
-        flow_vert = integrate.quad(lambda z: (Diam * np.sin(np.arccos(z/(Diam/2)))
-                                                   * np.sqrt(Height - z)
-                                                   ),
-                                                   - Diam / 2,
-                                                   min(Diam/2, Height))
-        return flow_vert[0] * RatioVCOrifice * np.sqrt(2 * gravity.magnitude)
+        flow_vert = integrate.quad(lambda z: (Diam * np.sin(np.arccos(z*u.m/(Diam/2)))
+                                              * np.sqrt(Height - z*u.m)
+                                              ).magnitude,
+                                   - Diam.magnitude / 2,
+                                   min(Diam/2, Height).magnitude)
+        return (flow_vert[0] * u.m**2.5 * RatioVCOrifice * np.sqrt(2 * gravity)).to(u.m**3/u.s)
     else:
-        return 0
+        return 0 * u.m**3/u.s
 
 
 @u.wraps(u.m, [u.m, None, u.m**3/u.s], False)
