@@ -32,7 +32,17 @@ class Filter(Component):
         self.branch_size_backwash = 1.5 * u.inch
         self.temp_min = 10.0 * u.degC
         self.temp_max = 30.0 * u.degC
+        self.ratio_qp = 0.85
+        self.trunk_size = 6*u.inch
+        self.trunk_spec = 'sdr26'
+        self.trunk_length = 6 * u.m
+        self.filter_v = 11*u.mm/u.s/6
+        self.sand_d = 0.5 * u.mm 
+        self.temp_max = 30 * u.degC
+        self.sand_porosity = 0.4
+        self.orifice_filter_hl = 0 * u.cm
         
+        self._set_trunk_pipe()
         super().__init__(**kwargs)
 
     @property
@@ -49,6 +59,9 @@ class Filter(Component):
 
     def hf_Ergun(self, v_a, D_Sand, Temperature, Porosity, L):
         return (self.f_Ergun(v_a, D_Sand, Temperature, Porosity)*L/D_Sand*v_a**2/(2*u.gravity)*(1-Porosity)/Porosity**3).to(u.m)
+    @property
+    def k_e(self):
+        return hl.PIPE_ENTRANCE_K_MINOR + 3*hl.EL90_K_MINOR
 
     @property
     def clean_bed_hl_min(self):
@@ -60,9 +73,38 @@ class Filter(Component):
             self.layer_h
         )
         return clean_bed_hl_min
+        
+    def _set_trunk_pipe(self):  
+        self.trunk_pipe = Pipe(size = self.trunk_size, spec = self.trunk_spec, l = self.trunk_length)
+        
+    @property 
+    def trunk_max_hl(self):
+        """This is the maximum head loss through the bottom filter inlet 
+        (backwash inlet) during FILTRATION mode given the constraint
+        that the flow must be evenly distributed between sand layers """
+        filter_sand_hl = self.hf_Ergun(
+            self.filter_v, 
+            self.sand_d, 
+            self.temp_max, self.sand_porosity, 
+            self.layer_h
+        )
+        term1 = (2 * self.ratio_qp + 1)/3 * (1 - self.ratio_qp)
+        term2 = 4 * self.ratio_qp**2 - 1
+        return (filter_sand_hl * term1)/term2
     
-    
-
+    @property
+    def max_q(self):
+        """This is the maximum flow through a filter with a given size of trunk
+        given the constraint that the flow must be evenly distributed between 
+        sand layers """
+        return 6*pc.flow_pipe(
+            self.trunk_pipe.id, 
+            self.trunk_max_hl, 
+            self.trunk_pipe.l, 
+            pc.viscosity_kinematic(self.temp_max), 
+            mat.PVC_PIPE_ROUGH, 
+            self.k_e
+            )
 
 
 
