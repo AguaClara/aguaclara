@@ -4,6 +4,7 @@ from aguaclara.core.head_loss import *
 from aguaclara.core.materials import *
 from aguaclara.core.physchem import *
 from aguaclara.core.pipes import *
+from aguaclara.core.units import *
 from aguaclara.core.utility import *
 
 from aguaclara.design.cdc import CDC

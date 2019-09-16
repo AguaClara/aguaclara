@@ -48,16 +48,16 @@ u.load_definitions(os.path.join(os.path.dirname(__file__),
                                             "data", "unit_definitions.txt"))
 
 
-def set_sig_figs(n):
-    """Set the default number of significant figures used to print pint,
-    pandas and numpy values quantities. Defaults to 4.
+def set_sig_figs(n=4):
+    """Set the default number of significant figures used to print Pint,
+    Pandas and NumPy value quantities.
 
-    :param n: number of significant figures to display
+    :param n: number of significant figures to display. Defaults to 4.
     :type n: int
 
     :Examples:
 
-    >>> from aguaclara.core.units import set_sig_figs, u as u
+    >>> from aguaclara.core.units import set_sig_figs, u
     >>> h = 2.5532532522352543*u.m
     >>> e = 25532532522352543*u.m
     >>> print('h before sigfig adjustment:',h)
