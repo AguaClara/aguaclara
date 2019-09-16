@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Home &mdash; AguaClara v0.1.8 documentation</title>
+  <title>Welcome to the AguaClara Package Documentation! &mdash; AguaClara v0.1.9 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                v0.1.8
+                v0.1.9
               </div>
             
           
@@ -136,7 +136,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Home</li>
+      <li>Welcome to the AguaClara Package Documentation!</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -155,16 +155,71 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="home">
-<h1>Home<a class="headerlink" href="#home" title="Permalink to this headline">¶</a></h1>
-<img alt="_images/logo.png" src="_images/logo.png" />
-<p><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> is a Python package built by <a class="reference external" href="http://aguaclara.cee.cornell.edu/">AguaClara Cornell</a>. It contains Python classes for designing AguaClara water treatment plants and functions for water treatment research.</p>
+  <div class="section" id="welcome-to-the-aguaclara-package-documentation">
+<h1>Welcome to the AguaClara Package Documentation!<a class="headerlink" href="#welcome-to-the-aguaclara-package-documentation" title="Permalink to this headline">¶</a></h1>
+<img alt="_images/logo.png" class="align-center" src="_images/logo.png" />
+<p><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> is a Python package built by <a class="reference external" href="http://aguaclara.cee.cornell.edu/">AguaClara Cornell</a> for AguaClara water treatment plant design and research.</p>
+<div class="section" id="installing">
+<h2>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package can be installed by running <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">aguaclara</span></code> in the command line. To upgrade an existing installation, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">aguaclara</span> <span class="pre">--upgrade</span></code>.</p>
+</div>
+<div class="section" id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<p>To report a bug or request or feature, make an issue in the <a class="reference external" href="https://github.com/AguaClara/aguaclara">AguaClara package Github repository</a>.</p>
+</div>
+<div class="section" id="using-aguaclara">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code><a class="headerlink" href="#using-aguaclara" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> is organized into three sub-packages.</p>
+<ol class="arabic simple">
+<li><p><strong>Core</strong>: fundamental physical, chemical, and hydraulic functions and values</p></li>
+<li><p><strong>Design</strong>: modules for creating a parameterized design of an AguaClara water treatment plant</p></li>
+<li><p><strong>Research</strong>: modules for process modeling, experimental design, and data analysis in AguaClara research</p></li>
+</ol>
+<p>To use <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s registry of scientific units (based on the <a class="reference external" href="https://pint.readthedocs.io/en/latest/">Pint package</a>), use <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">aguaclara.core.units</span> <span class="pre">import</span> <span class="pre">u</span></code>. Any other function or value in a sub-package can be accessed by importing the package itself:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aguaclara</span> <span class="kn">as</span> <span class="nn">ac</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
+
+<span class="n">ac</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="aguaclara-reference">
+<h2><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> Reference<a class="headerlink" href="#aguaclara-reference" title="Permalink to this headline">¶</a></h2>
+<p>The following pages document the modules, functions, and values available in each sub-package.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="core/core.html">Core</a></li>
-<li class="toctree-l1"><a class="reference internal" href="design/design.html">Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="research/research.html">Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core/core.html">Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/constants.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/drills.html">Drills</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/materials.html">Materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/physchem.html">PhysChem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/pipes.html">Pipes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/units.html">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/utility.html">Utility</a></li>
 </ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="design/design.html">Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design/component.html">Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/ent_floc.html">Entrance Tank/Flocculator Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/ent.html">Entrance Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/floc.html">Flocculator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/lfom.html">Linear Flow Orifice Meter (LFOM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/sed.html">Sedimentor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/sed_chan.html">Sedimentation Channel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/sed_tank.html">Sedimentation Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/pipeline.html">Pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="research/research.html">Research</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="research/environmental_processes_analysis.html">Environmental Processes Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="research/floc_model.html">Floc Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="research/peristaltic_pump.html">Peristaltic Pump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="research/procoda_parser.html">ProCoDA Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="research/stock_qc.html">Stock QC</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 </div>
 

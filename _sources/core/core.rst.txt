@@ -8,5 +8,6 @@ Core
     drills
     materials
     physchem
+    pipes
     units
     utility

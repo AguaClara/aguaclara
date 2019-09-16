@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Units &mdash; AguaClara v0.1.8 documentation</title>
+  <title>Units &mdash; AguaClara v0.1.9 documentation</title>
   
 
   
@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Utility" href="utility.html" />
-    <link rel="prev" title="PhysChem" href="physchem.html" /> 
+    <link rel="prev" title="Pipes" href="pipes.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.8
+                v0.1.9
               </div>
             
           
@@ -94,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="drills.html">Drills</a></li>
 <li class="toctree-l2"><a class="reference internal" href="materials.html">Materials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="physchem.html">PhysChem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipes.html">Pipes</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
 </ul>
@@ -202,17 +203,17 @@ its own units to the <code class="docutils literal notranslate"><span class="pre
 </div>
 <dl class="function">
 <dt id="aguaclara.core.units.set_sig_figs">
-<code class="sig-prename descclassname">aguaclara.core.units.</code><code class="sig-name descname">set_sig_figs</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/units.html#set_sig_figs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.units.set_sig_figs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the default number of significant figures used to print pint,
-pandas and numpy values quantities. Defaults to 4.</p>
+<code class="sig-prename descclassname">aguaclara.core.units.</code><code class="sig-name descname">set_sig_figs</code><span class="sig-paren">(</span><em class="sig-param">n=4</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/units.html#set_sig_figs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.units.set_sig_figs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the default number of significant figures used to print Pint,
+Pandas and NumPy value quantities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of significant figures to display</p>
+<dd class="field-odd"><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of significant figures to display. Defaults to 4.</p>
 </dd>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">set_sig_figs</span><span class="p">,</span> <span class="n">u</span> <span class="k">as</span> <span class="n">u</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">set_sig_figs</span><span class="p">,</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="mf">2.5532532522352543</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">m</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="mi">25532532522352543</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">m</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;h before sigfig adjustment:&#39;</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
@@ -241,7 +242,7 @@ pandas and numpy values quantities. Defaults to 4.</p>
         <a href="utility.html" class="btn btn-neutral float-right" title="Utility" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="physchem.html" class="btn btn-neutral float-left" title="PhysChem" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pipes.html" class="btn btn-neutral float-left" title="Pipes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

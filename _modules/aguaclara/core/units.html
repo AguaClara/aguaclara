@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.units &mdash; AguaClara v0.1.8 documentation</title>
+  <title>aguaclara.core.units &mdash; AguaClara v0.1.9 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.8
+                v0.1.9
               </div>
             
           
@@ -203,16 +203,16 @@
                                             <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;unit_definitions.txt&quot;</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="set_sig_figs"><a class="viewcode-back" href="../../../core/units.html#aguaclara.core.units.set_sig_figs">[docs]</a><span class="k">def</span> <span class="nf">set_sig_figs</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set the default number of significant figures used to print pint,</span>
-<span class="sd">    pandas and numpy values quantities. Defaults to 4.</span>
+<div class="viewcode-block" id="set_sig_figs"><a class="viewcode-back" href="../../../core/units.html#aguaclara.core.units.set_sig_figs">[docs]</a><span class="k">def</span> <span class="nf">set_sig_figs</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set the default number of significant figures used to print Pint,</span>
+<span class="sd">    Pandas and NumPy value quantities.</span>
 
-<span class="sd">    :param n: number of significant figures to display</span>
+<span class="sd">    :param n: number of significant figures to display. Defaults to 4.</span>
 <span class="sd">    :type n: int</span>
 
 <span class="sd">    :Examples:</span>
 
-<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import set_sig_figs, u as u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import set_sig_figs, u</span>
 <span class="sd">    &gt;&gt;&gt; h = 2.5532532522352543*u.m</span>
 <span class="sd">    &gt;&gt;&gt; e = 25532532522352543*u.m</span>
 <span class="sd">    &gt;&gt;&gt; print(&#39;h before sigfig adjustment:&#39;,h)</span>
