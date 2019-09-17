@@ -610,3 +610,173 @@ class Tee(PipelineComponent):
         
         if self.next is not None and type(self.next) in [Elbow, Tee]:
              raise ValueError('Tees cannot be followed by other fittings.')
+
+class Manifold(PipelineComponent):
+
+    def __init__(self, **kwargs):
+        self.port_h_e = 10.0 * u.cm
+        self.port_h_1_series = 0 * u.cm
+        self.ratio_qp = 0.8
+        self.port_s = 10.0 * u.cm
+        self.port_vena_contracta = con.VC_ORIFICE_RATIO
+        self.spec = 'sdr41'
+        self.l = 1.0 * u.m
+        self.size_max = 8.0 * u.inch
+        self.k_minor = 1.0
+        self.size_min = 1.0 * u.inch
+        
+        #self.components = [self.Manifold]
+        #super().__init__(**kwargs)
+        #super().set_subcomponents()        
+        super().__init__(**kwargs)
+
+        if 'size' in kwargs:
+            self.id = self._get_id(self.size, self.spec)
+        elif 'id' in kwargs:
+            self.size = self._get_size(self.id, self.spec)
+
+    @property
+    def od(self):
+        """The outer diameter of the pipe"""
+        index = (np.abs(np.array(_pipe_database['NDinch']) - self.size.magnitude)).argmin()
+        return _pipe_database.iloc[index, 1] * u.inch
+
+    def _get_size(self, id_, spec):
+        """Get the size of a pipe given an inner diameter and specification.
+        
+        Args:
+            - ``id_ (float * u.inch)``: Inner diameter
+            - ``spec (str)``: Pipe specification
+        """
+        if spec[:3] == 'sdr':
+            return self._get_size_sdr(id_, int(spec[3:]))
+        elif spec == 'sch40':
+            return self._get_size_sch40(id_)
+
+    def _get_id(self, size, spec):
+        """Get the inner diameter of a pipe given the size and specification.
+        
+        Args:
+            - ``size (float * u.inch)``: Nominal size
+            - ``spec (str)``: Pipe specifcation
+        """
+        if spec[:3] == 'sdr':
+            return self._get_id_sdr(size, int(spec[3:]))
+        elif spec == 'sch40':
+            return self._get_id_sch40(size)
+
+    def _get_id_sdr(self, size, sdr):
+        """Get the inner diameter of a pipe given the size and SDR.
+
+        Args:
+            - ``size (float * u.inch)``: Nominal size
+            - ``sdr (int)``: Standard dimension ratio
+        """
+        self.size = super()._get_available_size(size)
+        return self.size * (sdr - 2) / sdr
+
+    def _get_id_sch40(self, size):
+        """Get the inner diameter of a SCH40 pipe.
+        
+        Args:
+            - ``size (float * u.inch)``: Nominal size
+        """
+        self.size = super().get_available_size(size)
+        myindex = (np.abs(AVAILABLE_SIZES - self.size)).argmin()
+        return AVAILABLE_IDS_SCH40[myindex]
+
+    def _get_size_sdr(self, id_, sdr):
+        """Get the size of an SDR pipe.
+        
+        Args:
+            - ``id_ (float * u.inch)``: Inner diameter
+            - ``sdr (int)``: Standard dimension ratio
+        """
+        nd = super()._get_available_size((id_ * sdr) / (sdr - 2))
+        self.id = self._get_id_sdr(nd, sdr)
+        return nd
+
+    def _get_size_sch40(self, id_):
+        """Get the size of a SCH40 pipe.
+        
+        Args:
+            - ``id_ (float * u.inch)``: Inner diameter
+        """
+        myindex = (np.abs(AVAILABLE_IDS_SCH40 - id_)).argmin()
+        self.id = AVAILABLE_IDS_SCH40[myindex]  
+        return AVAILABLE_SIZES[myindex]
+
+    def ID_SDR_all_available(self, spec):
+        """Return an array of inner diameters with a given SDR."""
+        if spec.startswith('sdr'):
+            ID = []
+            for i in range(len(AVAILABLE_SIZES)):
+                ID.append(
+                    self._get_id_sdr(AVAILABLE_SIZES[i],
+                    int(spec[3:]))
+                    )
+            return ID * u.inch
+        else:
+            return ValueError(
+                'This function can only be ran if object has an sdr, \
+                schedules will not work')
+        
+        
+    
+    @property
+    def port_v(self):
+        return (np.sqrt(2*u.gravity*self.port_h_e)).to(u.m/u.s)
+    
+    @property
+    def v_max(self):
+        v_max = (2 * np.sqrt(u.gravity*(self.port_h_e + self.port_h_l_series)*\
+            ((1-  self.ratio_qp**2) /(self.ratio_qp**2 + 1))))
+        return v_max.to(u.m/u.s)
+    
+    @property
+    def q_max(self):
+        q_max = (pc.area_circle(self.id))* self.pipe_v_max
+        return q_max.to(u.L/u.s)
+
+    @property
+    def v(self):
+        return (self.q/pc.area_circle(self.pipe_id)).to(u.m/u.s)
+
+    @property
+    def l_max(self):
+        return (self.q_max * self.l/self.q).to (u.m)
+        
+    @property
+    def a_min(self):
+        return (self.q / self.v_max).to (u.m**2)
+    
+    @property
+    def id_min(self):
+        id_min = ut.ceil_nearest(
+            pc.diam_circle(self.a_min), 
+            self.ID_SDR_all_available(self.spec)
+            )
+        return id_min
+    @property
+    def port_n(self):
+        port_n = np.trunc(self.l / self.port_s).to(u.dimensionless)
+        if self.next is not None:
+            port_n *= 2
+        return port_n.to(u.dimensionless)
+
+    @property
+    def port_q(self):
+        # Harold Contributed
+        return self.q / self.port_n
+    
+    @property
+    def port_d(self):
+        port_d = (pc.diam_circle(self.Port_Q/self.Port_V /self.Port_vena_contracta))
+        return port_d.to(u.mm)
+
+    @property
+    def h_e(self):
+        h_e = pc.headloss_exp(self.q, self.id, self.k_minor)
+        return h_e.to(u.cm)
+
+    

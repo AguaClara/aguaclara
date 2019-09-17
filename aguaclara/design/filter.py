@@ -38,7 +38,6 @@ class Filter(Component):
         self.trunk_length = 6 * u.m
         self.filter_v = 11*u.mm/u.s/6
         self.sand_d = 0.5 * u.mm 
-        self.temp_max = 30 * u.degC
         self.sand_porosity = 0.4
         self.orifice_filter_hl = 0 * u.cm
         
@@ -105,6 +104,17 @@ class Filter(Component):
             mat.PVC_PIPE_ROUGH, 
             self.k_e
             )
+
+    @property
+    def ratio_trunk_sand_hl(self):
+        return ((2*self.ratio_qp+1)/3) * \
+            ((1-self.ratio_qp) / (4*self.ratio_qp**2 - 1))
+    
+    @property
+    def backwash_hl(self):
+        return self.layer_h * \
+            (1-self.porosity) * \
+            (self.sand_density/pc.density_water(self.temp)-1)
 
 
 
