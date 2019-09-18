@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Units &mdash; AguaClara v0.1.9 documentation</title>
+  <title>Units &mdash; AguaClara v0.1.10 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.9
+                v0.1.10
               </div>
             
           
@@ -95,7 +95,27 @@
 <li class="toctree-l2"><a class="reference internal" href="materials.html">Materials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="physchem.html">PhysChem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pipes.html">Pipes</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Units</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Units</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#frequently-used-units-and-constants-in-u">Frequently Used Units and Constants in <code class="docutils literal notranslate"><span class="pre">u</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prefixes-for-metric-units">Prefixes for Metric Units</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-length">Units of Length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-mass">Units of Mass</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-time">Units of Time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-temperature">Units of Temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-angle">Units of Angle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-force">Units of Force</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-frequency">Units of Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-money">Units of Money</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-power">Units of Power</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-pressure">Units of Pressure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#units-of-volume">Units of Volume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-units">Other Units</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
 </ul>
 </li>
@@ -169,36 +189,177 @@
             
   <div class="section" id="module-aguaclara.core.units">
 <span id="units"></span><h1>Units<a class="headerlink" href="#module-aguaclara.core.units" title="Permalink to this headline">¶</a></h1>
-<p>Module containing global <code class="docutils literal notranslate"><span class="pre">pint</span></code> unit registry.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">pint</span></code> package supports arithmetic involving <strong>physical quantities</strong>
-each of which has a magnitude and units, for example 1 cm or 3 kg m/s^2.
-The units of a quantity come from <code class="docutils literal notranslate"><span class="pre">pint</span></code>’s <strong>unit registry</strong>. This module
-contains a single global unit registry <code class="docutils literal notranslate"><span class="pre">u</span></code> that can be used by any
-number of other modules. The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> has also defined and added some of
-its own units to the <code class="docutils literal notranslate"><span class="pre">u</span></code>:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>NTU = 1.47 * (mg / L)</p></li>
-<li><p>dollar = [money] = USD</p></li>
-<li><p>lempira = dollar * 0.0427 = HNL</p></li>
-<li><p>equivalent = mole = eq</p></li>
-<li><p>rev = revolution</p></li>
+<p>Module containing global unit registry.</p>
+<p>The <a class="reference external" href="https://pint.readthedocs.io/en/latest/">Pint package</a> supports arithmetic
+of physical quantities, which are combinations of numerical values and units of
+measurement. The units of a quantity come from Pint’s unit registry. This
+module contains a unit registry, named <code class="docutils literal notranslate"><span class="pre">u</span></code>, based on Pint’s unit registry.
+It also defines a few additional units.</p>
+<div class="section" id="frequently-used-units-and-constants-in-u">
+<h2>Frequently Used Units and Constants in <code class="docutils literal notranslate"><span class="pre">u</span></code><a class="headerlink" href="#frequently-used-units-and-constants-in-u" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="prefixes-for-metric-units">
+<h3>Prefixes for Metric Units<a class="headerlink" href="#prefixes-for-metric-units" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>pico- =  1e-12 = p-</p></li>
+<li><p>nano- =  1e-9  = n-</p></li>
+<li><p>micro- = 1e-6  = u- = µ-</p></li>
+<li><p>milli- = 1e-3  = m-</p></li>
+<li><p>centi- = 1e-2  = c-</p></li>
+<li><p>deci- =  1e-1  = d-</p></li>
+<li><p>deca- =  1e+1  = da-</p></li>
+<li><p>hecto- = 1e2   = h-</p></li>
+<li><p>kilo- =  1e3   = k-</p></li>
+<li><p>mega- =  1e6   = M-</p></li>
+<li><p>giga- =  1e9   = G-</p></li>
+<li><p>tera- =  1e12  = T-</p></li>
 </ul>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Examples</dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span>
-<span class="go">&lt;Quantity(10.0, &#39;rev / minute&#39;)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span><span class="o">.</span><span class="n">magnitude</span>
-<span class="go">10.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span><span class="o">.</span><span class="n">units</span>
-<span class="go">&lt;Unit(&#39;rev / minute&#39;)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rpm</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">rad</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
-<span class="go">&lt;Quantity(1.0471975511965976, &#39;radian / second&#39;)&gt;</span>
+</div>
+<div class="section" id="units-of-length">
+<h3>Units of Length<a class="headerlink" href="#units-of-length" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.meter</span></code> = <code class="docutils literal notranslate"><span class="pre">u.metre</span></code> = <code class="docutils literal notranslate"><span class="pre">u.m</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.inch</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.foot</span></code> = <code class="docutils literal notranslate"><span class="pre">u.ft</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.yard</span></code> = <code class="docutils literal notranslate"><span class="pre">u.yd</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.mile</span></code> = <code class="docutils literal notranslate"><span class="pre">u.mi</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-mass">
+<h3>Units of Mass<a class="headerlink" href="#units-of-mass" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.gram</span></code> = <code class="docutils literal notranslate"><span class="pre">u.g</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.metric_ton</span></code> = <code class="docutils literal notranslate"><span class="pre">u.tonne</span></code> = <code class="docutils literal notranslate"><span class="pre">u.t</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.ounce</span></code> = <code class="docutils literal notranslate"><span class="pre">u.oz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.pound</span></code> = <code class="docutils literal notranslate"><span class="pre">u.lb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.ton</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.atomic_mass_unit`</span> <span class="pre">=</span> <span class="pre">``u.amu</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-time">
+<h3>Units of Time<a class="headerlink" href="#units-of-time" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.second</span></code> = <code class="docutils literal notranslate"><span class="pre">u.sec</span></code> = <code class="docutils literal notranslate"><span class="pre">u.s</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.minute</span></code> = <code class="docutils literal notranslate"><span class="pre">u.min</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.hour</span></code> = <code class="docutils literal notranslate"><span class="pre">u.hr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.day</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.week</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.year</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-temperature">
+<h3>Units of Temperature<a class="headerlink" href="#units-of-temperature" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.kelvin</span></code> = <code class="docutils literal notranslate"><span class="pre">u.degK</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.celsius</span></code> = <code class="docutils literal notranslate"><span class="pre">u.degC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.fahrenheit</span></code> = <code class="docutils literal notranslate"><span class="pre">u.degF</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-angle">
+<h3>Units of Angle<a class="headerlink" href="#units-of-angle" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.revolution</span></code> = <code class="docutils literal notranslate"><span class="pre">u.rev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.radian</span></code> = <code class="docutils literal notranslate"><span class="pre">u.rad</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.degree</span></code> = <code class="docutils literal notranslate"><span class="pre">u.deg</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-force">
+<h3>Units of Force<a class="headerlink" href="#units-of-force" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.newton</span></code> = <code class="docutils literal notranslate"><span class="pre">u.N</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.gram_force</span></code> = <code class="docutils literal notranslate"><span class="pre">u.gf</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.kilogram_force</span></code> = <code class="docutils literal notranslate"><span class="pre">u.kgf</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.pound_force</span></code> = <code class="docutils literal notranslate"><span class="pre">u.lbf</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.ton_force</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.kip</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-frequency">
+<h3>Units of Frequency<a class="headerlink" href="#units-of-frequency" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.hertz</span></code> = <code class="docutils literal notranslate"><span class="pre">u.Hz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.revolutions_per_minute</span></code> = <code class="docutils literal notranslate"><span class="pre">u.rpm</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-money">
+<h3>Units of Money<a class="headerlink" href="#units-of-money" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.dollar</span></code> = <code class="docutils literal notranslate"><span class="pre">u.USD</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.lempira</span></code> = <code class="docutils literal notranslate"><span class="pre">u.HNL</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-power">
+<h3>Units of Power<a class="headerlink" href="#units-of-power" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.watt</span></code> = <code class="docutils literal notranslate"><span class="pre">u.W</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.horsepower</span></code> = <code class="docutils literal notranslate"><span class="pre">u.hp</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-pressure">
+<h3>Units of Pressure<a class="headerlink" href="#units-of-pressure" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.pascal</span></code> = <code class="docutils literal notranslate"><span class="pre">u.Pa</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.bar</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.atmosphere</span></code> = <code class="docutils literal notranslate"><span class="pre">u.atm</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.torr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.millimeter_Hg</span></code> = <code class="docutils literal notranslate"><span class="pre">u.mmHg</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="units-of-volume">
+<h3>Units of Volume<a class="headerlink" href="#units-of-volume" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.liter</span></code> = <code class="docutils literal notranslate"><span class="pre">u.litre</span></code> = <code class="docutils literal notranslate"><span class="pre">u.L</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.cubic_centimeter</span></code> = <code class="docutils literal notranslate"><span class="pre">u.cc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.gallon</span></code> = <code class="docutils literal notranslate"><span class="pre">u.gal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.quart</span></code> = <code class="docutils literal notranslate"><span class="pre">u.qt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.pint</span></code> = <code class="docutils literal notranslate"><span class="pre">u.pt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.cup</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.fluid_ounce</span></code> = <code class="docutils literal notranslate"><span class="pre">u.floz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.tablespoon</span></code> = <code class="docutils literal notranslate"><span class="pre">u.tbsp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.teaspoon</span></code> = <code class="docutils literal notranslate"><span class="pre">tsp</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="other-units">
+<h3>Other Units<a class="headerlink" href="#other-units" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.joule</span></code> = <code class="docutils literal notranslate"><span class="pre">u.J</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.mole</span></code> = <code class="docutils literal notranslate"><span class="pre">u.mol</span></code> = <code class="docutils literal notranslate"><span class="pre">u.equivalent</span></code> = <code class="docutils literal notranslate"><span class="pre">u.eq</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.NTU</span></code> = 1.47 * (<code class="docutils literal notranslate"><span class="pre">u.mg</span></code> / <code class="docutils literal notranslate"><span class="pre">u.L</span></code>)</p>
+<ul>
+<li><p>This turbidity-concentration relation applies to kaolinite clay and is
+obtained from <a class="reference external" href="https://doi.org/10.1016/j.cjche.2015.02.003">Coagulation behavior of polyaluminum chloride (Wei et al.,
+2015)</a>.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="constants">
+<h3>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u.gravity</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.molar_gas_constant</span></code> = <code class="docutils literal notranslate"><span class="pre">u.R</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.avogadro_number</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u.boltzmann_constant</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mass</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">height</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">potential_energy</span> <span class="o">=</span> <span class="n">mass</span> <span class="o">*</span> <span class="n">height</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">gravity</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">potential_energy</span>
+<span class="go">&lt;Quantity(12.0, &#39;kilogram * meter * standard_gravity&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">potential_energy</span><span class="o">.</span><span class="n">magnitude</span>
+<span class="go">12.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">potential_energy</span><span class="o">.</span><span class="n">units</span>
+<span class="go">&lt;Unit(&#39;kilogram * meter * standard_gravity&#39;)&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">potential_energy</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">joule</span><span class="p">)</span>
+<span class="go">&lt;Quantity(117.6798, &#39;joule&#39;)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">potential_energy</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
+<span class="go">&lt;Quantity(117.6798, &#39;kilogram * meter ** 2 / second ** 2&#39;)&gt;</span>
 </pre></div>
 </div>
 <dl class="function">
@@ -229,6 +390,7 @@ Pandas and NumPy value quantities.</p>
 </div>
 </dd></dl>
 
+</div>
 </div>
 
 
