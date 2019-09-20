@@ -5,9 +5,9 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipe
 from aguaclara.core.units import u
 import aguaclara.core.utility as ut
-
+from aguaclara.design.filter_box import FilterBox
 from aguaclara.design.component import Component
-from aguaclara.design.pipeline import Pipe
+from aguaclara.design.pipeline import Manifold
 
 import numpy as np
 
@@ -20,8 +20,6 @@ class Filter(Component):
         self.sand_density = 2650 * u.kg/u.m**3
         self.filter_hl_max = 80 * u.cm 
         self.siphon_vent_t = 15* u.s
-        self.sand_diam = 0.5 * u.mm
-        self.porosity = 0.4
         self.branch_s = 10 * u.cm
         self.trunk_max_size = 8 * u.inch
         self.backwash_orifice_hl = 15 * u.cm
@@ -34,19 +32,35 @@ class Filter(Component):
         self.temp_max = 30.0 * u.degC
         self.ratio_qp = 0.85
         self.trunk_size = 6*u.inch
-        self.trunk_spec = 'sdr26'
         self.trunk_length = 6 * u.m
         self.filter_v = 11*u.mm/u.s/6
         self.sand_d = 0.5 * u.mm 
         self.sand_porosity = 0.4
         self.orifice_filter_hl = 0 * u.cm
+        self.drain_t = 1*u.min
+        self.tank_a = 2*u.m**2
+        self.tank_h = 2*u.m
+        self.k_e= 2
         
-        self._set_trunk_pipe()
-        super().__init__(**kwargs)
+        self.box = FilterBox()
+        self.subcomponents = [self.box]
 
-    @property
-    def vel(self):
-        return self.backwash_vel / self.layer_n
+        super().__init__(**kwargs)
+        super().set_subcomponents()
+        self._set_trunk_pipe()
+        self._set_box()
+
+
+    def _set_trunk_pipe(self):  
+        self.trunk_pipe = Manifold(size = self.trunk_size, spec = self.trunk_spec, l = self.trunk_length)
+        
+    def _set_box(self):
+        self.box.trunk_bw_hl_max = self.trunk_max_hl
+        self.box.backwash_vel = self.backwash_vel
+        self.box.layer_n = self.layer_n
+        self.box.sand_density = self.sand_density
+        self.box.filter_hl_max = self.filter_hl_max
+        self.box.trunk_pipe = self.trunk_pipe
 
     # Temporary functions, delete all ergun functions when hannah merges 
     # her physchem changes
@@ -58,6 +72,11 @@ class Filter(Component):
 
     def hf_Ergun(self, v_a, D_Sand, Temperature, Porosity, L):
         return (self.f_Ergun(v_a, D_Sand, Temperature, Porosity)*L/D_Sand*v_a**2/(2*u.gravity)*(1-Porosity)/Porosity**3).to(u.m)
+    
+    @property
+    def vel(self):
+        return self.backwash_vel / self.layer_n
+    
     @property
     def k_e(self):
         return hl.PIPE_ENTRANCE_K_MINOR + 3*hl.EL90_K_MINOR
@@ -72,9 +91,6 @@ class Filter(Component):
             self.layer_h
         )
         return clean_bed_hl_min
-        
-    def _set_trunk_pipe(self):  
-        self.trunk_pipe = Pipe(size = self.trunk_size, spec = self.trunk_spec, l = self.trunk_length)
         
     @property 
     def trunk_max_hl(self):
@@ -115,6 +131,12 @@ class Filter(Component):
         return self.layer_h * \
             (1-self.porosity) * \
             (self.sand_density/pc.density_water(self.temp)-1)
+
+    @property
+    def drain_d(self):
+        drain_d = ((8*self.tank_a)/(np.pi * self.drain_t))**(1/2) * \
+            ((self.tank_h * self.k_e)/(2*u.gravity))**(1/4)
+        return drain_d.to(u.m)
 
 
 
