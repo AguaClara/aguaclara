@@ -613,10 +613,13 @@ class Tee(PipelineComponent):
 
 class Manifold(PipelineComponent):
 
+    AVAILABLE_PATHS = ['run', 'stopper']
+
     def __init__(self, **kwargs):
         self.port_h_e = 10.0 * u.cm
-        self.port_h_1_series = 0 * u.cm
+        self.port_h_l_series = 0 * u.cm
         self.ratio_qp = 0.8
+        self.ration_qp_min = 0.8
         self.port_s = 10.0 * u.cm
         self.port_vena_contracta = con.VC_ORIFICE_RATIO
         self.spec = 'sdr41'
@@ -624,16 +627,25 @@ class Manifold(PipelineComponent):
         self.size_max = 8.0 * u.inch
         self.k_minor = 1.0
         self.size_min = 1.0 * u.inch
-        
+        self.next_type = 'stopper'
+
         #self.components = [self.Manifold]
         #super().__init__(**kwargs)
         #super().set_subcomponents()        
         super().__init__(**kwargs)
-
+        self._set_next()
         if 'size' in kwargs:
             self.id = self._get_id(self.size, self.spec)
         elif 'id' in kwargs:
             self.size = self._get_size(self.id, self.spec)
+
+    def _set_next(self):
+        """Sets the next outlet as well the the type of branch for the next 
+        outlet.
+        """
+        if self.next_type == 'stopper' and self.next is not None:
+            return ValueError('If type of next is stopper, there cannot be a next pipe')
+            
 
     @property
     def od(self):
