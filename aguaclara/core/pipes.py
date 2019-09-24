@@ -6,9 +6,9 @@ outer diameters of pipes based on their standard dimension ratio (SDR).
 #Let's begin to create the pipe database
 # https://docs.python.org/2/library/csv.html
 from aguaclara.core.units import unit_registry as u
+import aguaclara.core.utility as ut
 import numpy as np
 import pandas as pd
-# load the pipedb from a csv file
 
 import os.path
 dir_path = os.path.dirname(__file__)
@@ -38,30 +38,39 @@ class Pipe:
         myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
         return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5]))
 
-@u.wraps(u.inch, u.inch, False)
+
+# @u.wraps(u.inch, u.inch, False)
+@ut.list_handler()
 def OD(ND):
     """Return a pipe's outer diameter according to its nominal diameter.
 
-    The pipe schedule is not required here because all of the pipes of a
-    given nominal diameter have the same outer diameter.
+    :param ND: nominal diameter of pipe, in inches
+    :type ND: u.dimensionless
 
-    Steps:
-    1. Find the index of the closest nominal diameter.
-       (Should this be changed to find the next largest ND?)
-    2. Take the values of the array, subtract the ND, take the absolute
-       value, find the index of the minimium value.
+    :return: outer diameter of pipe, in inches
+    :rtype: u.dimensionless
     """
+    # The pipe schedule is not required here because all of the pipes of a
+    # given nominal diameter have the same outer diameter.
+    #
+    # Steps:
+    # 1. Find the index of the closest nominal diameter.
+    #    (Should this be changed to find the next largest ND?)
+    # 2. Take the values of the array, subtract the ND, take the absolute
+    #    value, find the index of the minimium value.
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
     return pipedb.iloc[index, 1]
 
-@u.wraps(u.inch, [u.inch, None], False)
-def ID_SDR(ND, SDR):
-    """Return the inner diameter for SDR(standard diameter ratio) pipes.
 
-    For these pipes the wall thickness is the outer diameter divided by
-    the SDR.
+# @u.wraps(u.inch, [u.inch, None], False)
+@ut.list_handler()
+def ID_SDR(ND, SDR):
+    """Return the inner diameter of a pipe given its nominal diameter and SDR
+    (standard diameter ratio).
+
+    SDR is the outer diameter divided by the wall thickness.
     """
-    return OD(ND).magnitude * (SDR-2) / SDR
+    return OD(ND) * (SDR-2) / SDR
 
 @u.wraps(u.inch, u.inch, False)
 def ID_sch40(ND):
