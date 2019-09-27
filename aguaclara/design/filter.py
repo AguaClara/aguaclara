@@ -42,6 +42,7 @@ class Filter(Component):
         self.tank_h = 2*u.m
         self.k_e= 2
         
+        
         self.box = FilterBox()
         self.subcomponents = [self.box]
 
@@ -81,16 +82,16 @@ class Filter(Component):
     def k_e(self):
         return hl.PIPE_ENTRANCE_K_MINOR + 3*hl.EL90_K_MINOR
 
-    @property
-    def clean_bed_hl_min(self):
-        clean_bed_hl_min = self.hf_Ergun(
-            self.vel,
-            self.sand_diam, 
-            self.temp_max, 
-            self.porosity, 
-            self.layer_h
-        )
-        return clean_bed_hl_min
+    # @property
+    # def clean_bed_hl_min(self):
+    #     clean_bed_hl_min = self.hf_Ergun(
+    #         self.vel,
+    #         self.sand_diam, 
+    #         self.temp_max, 
+    #         self.porosity, 
+    #         self.layer_h
+    #     )
+    #     return clean_bed_hl_min
         
     @property 
     def trunk_max_hl(self):
@@ -129,7 +130,7 @@ class Filter(Component):
     @property
     def backwash_hl(self):
         return self.layer_h * \
-            (1-self.porosity) * \
+            (1-self.sand_porosity) * \
             (self.sand_density/pc.density_water(self.temp)-1)
 
     @property

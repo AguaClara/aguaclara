@@ -202,7 +202,7 @@ def _k_value_rounded_reduction(id_entrance, id_exit, re):
 ######### Expansions:
 
 
-def _k_value_square_expansion(id_entrance: float, id_exit: float, re: float, f: float) -> float:
+def _k_value_square_expansion(id_entrance, id_exit, re, f):
     # Calculate minor loss coefficient for square expansion
     if re < 4000:
         k = 2 * (1 - (id_entrance / id_exit) ** 4)
@@ -211,7 +211,7 @@ def _k_value_square_expansion(id_entrance: float, id_exit: float, re: float, f: 
     return k
 
 
-def _k_value_tapered_expansion(id_entrance: float, id_exit: float, re: float, f, theta: float) -> float:
+def _k_value_tapered_expansion(id_entrance, id_exit, re, f, theta):
     # Calculate minor loss coefficient for a tapered expansion
     k_square = _k_value_square_expansion(id_entrance, id_exit, re, f)
     if 45 < theta <= 180:
@@ -223,14 +223,14 @@ def _k_value_tapered_expansion(id_entrance: float, id_exit: float, re: float, f,
     return k
 
 
-def _k_value_rounded_expansion(id_entrance: float, id_exit: float, re: float, f: float) -> float:
+def _k_value_rounded_expansion(id_entrance, id_exit, re, f):
     return _k_value_square_expansion(id_entrance, id_exit, re, f)
 
 
 ######### Orifices:
 
 
-def _k_value_thin_sharp_orifice(id_pipe: float, id_orifice: float, re: float) -> float:
+def _k_value_thin_sharp_orifice(id_pipe, id_orifice, re):
     # Calculate minor loss coefficient for a thin, sharp orifice
     if re < 2500:
         k = ((2.72 + (id_orifice / id_pipe) ** 2) * ((120 / re) - 1)) * (1 - (id_orifice / id_pipe) ** 2) * \
@@ -241,7 +241,7 @@ def _k_value_thin_sharp_orifice(id_pipe: float, id_orifice: float, re: float) ->
     return k
 
 
-def _k_value_thick_orifice(id_pipe: float, id_orifice: float, length_orifice: float, re: float) -> float:
+def _k_value_thick_orifice(id_pipe, id_orifice, length_orifice, re):
     # Calculate minor loss coefficient for a thick orifice
     # if L/id_orifice > 5, use the equation for a square reduction and expansion.
     k_thin = _k_value_thin_sharp_orifice(id_pipe, id_orifice, re)

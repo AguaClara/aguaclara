@@ -49,6 +49,9 @@ class FilterBox(Component):
 		self.siphon_orifice_s = 1 * u.cm
 		self.freeboard = 10 * u.cm
 		self.trunk_bw_hl_max = 50 * u.cm
+		self.sand_clean_hl = 3.848 * u.cm
+		self.layer_h = 20 * u.cm
+		self.siphon_l = 10.0 * u.m
 
 		super().__init__(**kwargs)
 		self._set_trunk_pipe()
@@ -88,9 +91,9 @@ class FilterBox(Component):
 		return branch_s
 
 	@property
-	def _siphon_orifice_d(self):
+	def siphon_orifice_d(self):
 		a = np.pi/4
-		b = -a * self.siphon_id**2/self.filter_w
+		b = -a * self.siphon_manifold.id**2/self.filter_w
 		c = b*self.siphon_orifice_s 
 		x = (-b+np.sqrt(b**2 - (4*a*c)))/(4*a)
 		return x.to(u.cm)
@@ -175,13 +178,6 @@ class FilterBox(Component):
   	@property
   	def branch_fi_q(self):
 		return (2 * self.branch_bw_manifold.q) / self.layer_n
-    
-	@property
-	def sand_clean_hl_array(self):
-		return np.zeros(np.size(self.trunk_nd_array)) * u.l/u.s
-	@property
-	def sand_clean_hl(self):
-		return self.sand_clean_hl_array[self.my_i]
 		
  	@property
  	def _set_branch_fi_manifold(self):
@@ -221,12 +217,31 @@ class FilterBox(Component):
 			self.trunk_inner_q,
 			self.trunk_pipe.id, 
 			self.trunk_outlet_k_e)
+	
 	@property
+	def inlet_fi_h_e(self):
+		return pc.headloss_exp(self.trunk_outer_q, 
+		self.trunk_pipe.id, 
+		self.trunk_outer_k_e
+		)
+
+	@property
+	def fluidize_sand_hl(self):
+		fluidize_sand_hl = self.layer_h * (1 - self.sand_porosity) * \
+			(self.sand_density / pc.density_water(self.temp)-1)
+		
+		return fluidize_sand_hl.to(u.m)
+		
 	@property
 	def post_backwash_fill_h(self): 
-		return (self.trunk_bw_hl_max + 2*self.inlet_fi_h_e + \
-		self.orifice_filter_hl + 2*self.freeboard)
+		return (self.fluidize_sand_hl + self.trunk_bw_hl_max + 2*self.trunk_inlet_fi_hl + \
+		self.orifice_fi_hl + 2*self.freeboard + self.sand_clean_hl +\
+		self.trunk_inlet_fi_hl +self.orifice_fi_hl + self.trunk_outlet_hl)
 
+	@property
+	def filter_a(self):
+		return self.filter_l * self.filter_w
+		
 	@property
 	def post_backwash_fill_vol(self):
 		return (self.post_backwash_fill_h * self.filter_a)
@@ -234,7 +249,7 @@ class FilterBox(Component):
 	@property
 	def pre_backwash_flush_h(self):
 		return (self.post_backwash_fill_h + (self.filter_max_hl - \
-				self.filter_clean_hl))
+				self.sand_clean_hl))
 		
 	@property
 	def pre_backwash_flush_vol(self):
@@ -243,39 +258,16 @@ class FilterBox(Component):
 	@property
 	def post_backwash_fill_t(self):
 		return (self.post_backwash_fill_vol / self.filter_q).to(u.s)
+
+	def _set_siphon_manifold(self):
+		q = 2*(self.post_backwash_fill_vol/self.siphon_drain_t+self.filter_q)
+		size = pc.diam_pipe(q, self.pre_backwash_flush_h, self.siphon_l, pc.viscosity_kinematic(self.temp), mat.PVC_PIPE_ROUGH, self.siphon_k_e)
 	
+		self.siphon_manifold = Manifold(q = q, l = self.siphon_l, spec = self.trunk_spec, size = size)
+
 	@property
 	def siphon_drain_t(self):
 		return (self.post_backwash_fill_t)
-	
-	@property
-	def siphon_q_init(self):
-		return 2*(self.post_backwash_fill_vol/self.siphon_drain_t+self.filter_q)
-	
-	@property
-	def siphon_l_estimate (self):
-		return 10*u.m
-	
-	@property
-	def siphon_d_min(self):
-		return (self.drain_d(self.siphon_drain_t, self.filter_a,
-		self.pre_backwash_flush_H,self.siphon_k_e))
-	
-	@property
-	def siphon_nd(self):
-		return (pc.nd_sdr_available(self.siphon_d_min,self.trunk_sdr))
-	
-	@property
-	def siphon_id(self):
-		return (pc.id_sdr(self.siphon_nd,self.trunk_sdr))
-	
-	@property
-	def siphon_hl(self):
-		return (pc.headloss_exp(self.filter_q, self.siphon_id, self.siphon_k_e))
-
-	@property
-	def siphon_orifice_d(self):
-		return (self._siphon_orifice_d())
 	
 	@property
 	def siphon_orifice_n(self):

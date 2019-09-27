@@ -787,8 +787,7 @@ class Manifold(PipelineComponent):
         return port_d.to(u.mm)
 
     @property
-    def h_e(self):
+    def headloss(self):
         h_e = pc.headloss_exp(self.q, self.id, self.k_minor)
         return h_e.to(u.cm)
-
     
