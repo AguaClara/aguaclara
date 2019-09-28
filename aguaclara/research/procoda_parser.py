@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 
 
-def column_of_data(path, start, column, end="-1", units=""):
+def column_of_data(path, start, column, end=-1, units=""):
     """This function extracts a column of data from a ProCoDA data file.
 
     Note: Column 0 is time. The first data column is column 1.

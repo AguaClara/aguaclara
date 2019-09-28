@@ -8,19 +8,9 @@ Last modified: Tue Jun 4 2019
 By: Hannah Si
 """
 
-#Note: All answer values in this file should be checked against MathCad
-#before this file is released to the Master branch!
-
 from aguaclara.core.units import u
+from aguaclara.core import physchem as pc
 import unittest
-
-developing = False
-if developing:
-    import sys
-    sys.path.append("../../aguaclara/core")
-    import physchem as pc
-else:
-    from aguaclara.core import physchem as pc
 
 class AirTest(unittest.TestCase):
     """Test the air density function"""

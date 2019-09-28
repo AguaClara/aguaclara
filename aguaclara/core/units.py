@@ -39,7 +39,7 @@ Units of Mass
 * ``u.ounce`` = ``u.oz``
 * ``u.pound`` = ``u.lb``
 * ``u.ton``
-* ``u.atomic_mass_unit` = ``u.amu``
+* ``u.atomic_mass_unit`` = ``u.amu``
 
 Units of Time
 -------------
