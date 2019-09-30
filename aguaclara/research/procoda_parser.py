@@ -7,16 +7,16 @@ import os
 from pathlib import Path
 
 
-def column_of_data(path, start, column, end=-1, units=""):
+def column_of_data(path, start, column, end=None, units=""):
     """This function extracts a column of data from a ProCoDA data file.
 
     Note: Column 0 is time. The first data column is column 1.
 
     :param path: The file path of the ProCoDA data file
     :type path: string
-    :param start: Index of first row of data to extract
+    :param start: Index of first row of data to extract, inclusive
     :type start: int
-    :param end: Index of last row of data to extract. Defaults to last row.
+    :param end: Index of last row of data to extract until, exclusive. Defaults to extracting all rows.
     :type end: int, optional
     :param column: Index or label of the column that you want to extract
     :type column: int or string
@@ -33,16 +33,18 @@ def column_of_data(path, start, column, end=-1, units=""):
         data = column_of_data("Reactor_data.txt", 0, 1, -1, "mg/L")
     """
     df = pd.read_csv(path, delimiter='\t')
+
     if isinstance(column, int):
         data = df.iloc[start:end, column]
     else:
         data = df.iloc[start:end][column]
     num_data = data[pd.to_numeric(data, errors='coerce').notnull()]
+
     return np.array(num_data) * u(units)
 
 
-def column_of_time(path, start, end=-1):
-    """This function extracts the column of times from a ProCoDA data file.
+def column_of_time(path, start, end=None):
+    """This function extracts the column of times as elasped times from a ProCoDA data file.
 
     :param path: The file path of the ProCoDA data file.
     :type path: string
@@ -61,11 +63,14 @@ def column_of_time(path, start, end=-1):
         time = column_of_time("Reactor_data.txt", 0)
     """
     df = pd.read_csv(path, delimiter='\t')
+
     start_time = pd.to_numeric(df.iloc[start, 0])
-    day_times = pd.to_numeric(df.iloc[start:end, 0])
-    elapsed_times = day_times - start_time
-    num_elapsed_times = elapsed_times[pd.to_numeric(elapsed_times, errors='coerce').notnull()]
-    return np.array(num_elapsed_times) * u.day
+    day_times = df.iloc[start:end, 0]
+    is_numeric = pd.to_numeric(day_times, errors='coerce').notnull()
+    num_day_times = pd.to_numeric(day_times[is_numeric])
+    elapsed_times = num_day_times - start_time
+
+    return np.array(elapsed_times) * u.day
 
 
 def notes(path):

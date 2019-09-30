@@ -117,7 +117,7 @@ class TestProCoDAParser(unittest.TestCase):
         Extract the time column from a data file.
         '''''
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
-        answer = column_of_time(path, 50, -1)
+        answer = column_of_time(path, 50)
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
          answer.tolist(),
@@ -160,7 +160,7 @@ class TestProCoDAParser(unittest.TestCase):
          6.24987260e-03,   6.30772900e-03,   6.36560880e-03,
          6.42346920e-03,   6.48135320e-03,   6.53921020e-03,
          6.59709090e-03,   6.65494290e-03,   6.71281870e-03,
-         6.77069570e-03,   6.82855640e-03])*u.day, 5).tolist()
+         6.77069570e-03,   6.82855640e-03,   6.88642010e-03])*u.day, 5).tolist()
         )
 
 
@@ -169,7 +169,7 @@ class TestProCoDAParser(unittest.TestCase):
         Extract other columns of data and append units.
         '''''
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
-        answer = column_of_data(path, 50, 1, -1, 'mg/L')
+        answer = column_of_data(path, 50, 1, units='mg/L')
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
         answer.tolist(),
@@ -202,7 +202,7 @@ class TestProCoDAParser(unittest.TestCase):
          2.42190933,   2.36228228,   2.30094266,   2.24602866,
          2.19216943,   2.14143515,   2.10641694,   2.07170939,
          2.04412961,   2.0158174 ,   2.00059986,   1.98546684,
-         1.97646523,   1.96455812,   1.95887971])*u('mg/L'), 5).tolist()
+         1.97646523,   1.96455812,   1.95887971,   1.94987118])*u('mg/L'), 5).tolist()
         )
 
     def test_notes(self):
