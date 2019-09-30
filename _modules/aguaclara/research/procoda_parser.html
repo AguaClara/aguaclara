@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.procoda_parser &mdash; AguaClara v0.1.11 documentation</title>
+  <title>aguaclara.research.procoda_parser &mdash; AguaClara v0.1.12 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.11
+                v0.1.12
               </div>
             
           
@@ -162,16 +162,16 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
 
-<div class="viewcode-block" id="column_of_data"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_data">[docs]</a><span class="k">def</span> <span class="nf">column_of_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="column_of_data"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_data">[docs]</a><span class="k">def</span> <span class="nf">column_of_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This function extracts a column of data from a ProCoDA data file.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param start: Index of first row of data to extract</span>
+<span class="sd">    :param start: Index of first row of data to extract, inclusive</span>
 <span class="sd">    :type start: int</span>
-<span class="sd">    :param end: Index of last row of data to extract. Defaults to last row.</span>
+<span class="sd">    :param end: Index of last row of data to extract until, exclusive. Defaults to extracting all rows.</span>
 <span class="sd">    :type end: int, optional</span>
 <span class="sd">    :param column: Index or label of the column that you want to extract</span>
 <span class="sd">    :type column: int or string</span>
@@ -188,16 +188,18 @@
 <span class="sd">        data = column_of_data(&quot;Reactor_data.txt&quot;, 0, 1, -1, &quot;mg/L&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">][</span><span class="n">column</span><span class="p">]</span>
     <span class="n">num_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">num_data</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="column_of_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_time">[docs]</a><span class="k">def</span> <span class="nf">column_of_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function extracts the column of times from a ProCoDA data file.</span>
+<div class="viewcode-block" id="column_of_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_time">[docs]</a><span class="k">def</span> <span class="nf">column_of_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts the column of times as elasped times from a ProCoDA data file.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
@@ -216,11 +218,14 @@
 <span class="sd">        time = column_of_time(&quot;Reactor_data.txt&quot;, 0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="n">day_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="n">elapsed_times</span> <span class="o">=</span> <span class="n">day_times</span> <span class="o">-</span> <span class="n">start_time</span>
-    <span class="n">num_elapsed_times</span> <span class="o">=</span> <span class="n">elapsed_times</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">elapsed_times</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">num_elapsed_times</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">day</span></div>
+    <span class="n">day_times</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">is_numeric</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">day_times</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span>
+    <span class="n">num_day_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">day_times</span><span class="p">[</span><span class="n">is_numeric</span><span class="p">])</span>
+    <span class="n">elapsed_times</span> <span class="o">=</span> <span class="n">num_day_times</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">elapsed_times</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">day</span></div>
 
 
 <div class="viewcode-block" id="notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.notes">[docs]</a><span class="k">def</span> <span class="nf">notes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
