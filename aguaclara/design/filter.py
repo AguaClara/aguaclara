@@ -132,7 +132,7 @@ class Filter(Component):
         return self.layer_h * \
             (1-self.sand_porosity) * \
             (self.sand_density/pc.density_water(self.temp)-1)
-
+            
     @property
     def drain_d(self):
         drain_d = ((8*self.tank_a)/(np.pi * self.drain_t))**(1/2) * \

@@ -16,6 +16,7 @@ class FilterBox(Component):
 	def __init__(self, **kwargs):
 		
 		self.ratio_qp_min = 0.85
+		self.ratio_q_filter_min = 0.95
 		self.datum_z=0*u.m
 		self.trunk_nd_max=8 * u.inch
 		self.layer_h_min=20*u.cm
@@ -118,6 +119,10 @@ class FilterBox(Component):
 	def filter_active_a(self):
 		filter_active_a = self.filter_q / self.backwash_v
 		return filter_active_a.to(u.m**2)
+
+	@property
+	def sand_to_fluidize_h(self):
+		return self.layer_h*self.layer_n
 	
 	@property
 	def trunk_w(self):
@@ -132,6 +137,17 @@ class FilterBox(Component):
 	def filter_l(self):
 		return self.filter_active_a / self.filter_active_w
 
+	@property
+	def filter_a(self):
+		return self.filter_l *self.filter_w
+
+	@property
+	def sand_volume(self):
+		return (self.filter_active_a*self.sand_to_fluidize_h).to(u.kg)
+
+	@property
+	def sand_mass(self):
+		return (self.sand_volume*self.sand_density*self.sand_porosity).to(u.kg)
 
 	@property
 	def branch_layer_n(self):
@@ -140,16 +156,28 @@ class FilterBox(Component):
 	@property
 	def branch_bw_q(self):
 		return self.filter_q / self.branch_layer_n
+	
 	@property
 	def branch_l(self):
 		return self.filter_w / 2
+	
 	@property
 	def trunk_outer_bw_v(self):
 		return self.filter_q / pc.area_circle(self.trunk_pipe.id)
+	
 	@property
 	def orifice_contracted_v(self):
 		return self.trunk_outer_bw_v * \
 			 np.sqrt((self.ratio_qp_min**2 - 1) / (2 * (1- self.ratio_qp_min**2)))
+	
+	@property
+	def orifice_v(self):
+		return con.VC_ORIFICE_RATIO * self.orifice_contracted_v
+
+	@property
+	def orifice_outer_a(self):
+		return self.filter_q / self.orifice_v
+
 	@property
 	def orifice_bw_hl(self):
 		orifice_bw_hl = self.orifice_contracted_v**2 / (2* u.gravity)
@@ -285,3 +313,13 @@ class FilterBox(Component):
 	@property
 	def inlet_weir_z(self):
 		return self.datum_z - self.inlet_weir_h
+
+	@property
+	def inlet_chan_v(self):
+		inlet_chan_v = 2 * np.sqrt(u.gravity * self.inlet_weir_h * (1 - self.ratio_q_filter_min**(2/3)) / (1*self.ratio_q_filter_min**(2/3)))
+		return inlet_chan_v.to(u.m/u.s)
+	
+	@property
+	def inlet_chan_a(self):
+		inlet_chan_a = self.q / self.inlet_chan_v
+		return inlet_chan_a.to(u.m**2)
