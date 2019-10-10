@@ -202,13 +202,13 @@ class FilterBox(Component):
 			k_minor=self.branch_k_e, 
 			size_max=self.branch_bw_size
     	)
-      
-  	@property
-  	def branch_fi_q(self):
+    
+	@property
+	def branch_fi_q(self):
 		return (2 * self.branch_bw_manifold.q) / self.layer_n
 		
- 	@property
- 	def _set_branch_fi_manifold(self):
+	@property
+	def _set_branch_fi_manifold(self):
 		self.branch_fi_manifold = Manifold(
       		q=self.branch_fi_q, 
       		port_h_e=self.orifice_fi_hl, 
@@ -221,9 +221,9 @@ class FilterBox(Component):
       		next_type = 'stopper', 
       		k_minor =self.branch_k_e
       	)
-
-  	@property
-  	def trunk_inlet_fi_hl(self): 
+	
+	@property
+	def trunk_inlet_fi_hl(self): 
 		return pc.headloss_exp(
 			self.trunk_outer_q, 
 			self.trunk_pipe.id, 

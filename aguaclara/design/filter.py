@@ -12,35 +12,71 @@ from aguaclara.design.pipeline import Manifold
 import numpy as np
 
 class Filter(Component):
+    """Design an AguaClara plant's filter.
+    
+    An entrance tank's design relies on the LFOM's and flocculator's design in
+    the same plant, but assumed/default values may be used to design an
+    entrance tank by itself. To design these components in tandem, use
+    :class:`aguaclara.design.ent_floc.EntTankFloc`.
+
+    Design Inputs:
+        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
+        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
+          20°C)
+        
+        - ``backwash_vel (float * u.mm/u.s)``: Backwash velocity (optional, defaults to 11mm/s)
+        - ``layer_n (float)``: Number of Layers (optional, defaults to 6)
+        - ``layer_h (float * u.cm)``: Height of layers (optional, defaults to 20 cm)
+        - ``sand_density (float * u.kg/u.m**3)``: Density of sand (optional, defaults to 2650kg/m**3)
+        - ``filter_hl_max (float * u.cm)``: Max headloss of filter (optional, defaults to 80 cm)
+        - ``siphone_vent_t (float * u.s)``: Time of the siphon vent (optional, defaults to 15 s)
+        - ``branch_s (float * u.cm)``: The spacing between branches (optional, defaults to 10 cm)
+        - ``trunk_max_size (float * u.inch)``: The max size of the trunk (optional, defaults to 8 in)
+        - ``backwash_orifice_hl (float * u.cm)``: Headloss of the orifice backwash (optional, defaults to 15 cm)
+        - ``trunk_spec (string)``: The specs of the trunk (optional, defaults to 'sdr26')
+        - ``branch_spec (string)``: The specs of the branch (optional, defaults to 'sdr26')
+        - ``q_ratio (float)``:  Ratio of the flow rate (optional, defaults to 0.85)
+        - ``branch_size (float * u.in)``: Size of the branches (optional, defaults to 1 in)
+        
+
+
+        
+        
+-        - ``orifice_filter_hl (float * u.cm)11``: Headloss of the orifice filter (optional, default to 0cm)
+        - ``drain_t (float * u.min)``: Duration of draining (optional, defaults to 1 min)
+        - ``tank_a (float * u.m**2)``: The area of the tank (optional, defaults to 2m**2)
+        - ``tank_h (float * u.m)``: Height of the tank (optional, defaults to 2m)
+        - ``k_e (float)``: Minor loss coefficient (optional, defaults to 2)
+    """
 
     def __init__(self, **kwargs):
-        self.backwash_vel = 11 * u.mm/u.s
-        self.layer_n = 6
-        self.layer_h = 20 * u.cm
-        self.sand_density = 2650 * u.kg/u.m**3
-        self.filter_hl_max = 80 * u.cm 
-        self.siphon_vent_t = 15* u.s
-        self.branch_s = 10 * u.cm
-        self.trunk_max_size = 8 * u.inch
-        self.backwash_orifice_hl = 15 * u.cm
+        self.backwash_vel = 11. * u.mm/u.s
+        self.layer_n = 6.
+        self.layer_h = 20. * u.cm
+        self.sand_density = 2650. * u.kg/u.m**3
+        self.filter_hl_max = 80. * u.cm 
+        self.siphon_vent_t = 15.* u.s
+        self.branch_s = 10. * u.cm
+        self.trunk_max_size = 8. * u.inch
+        self.backwash_orifice_hl = 15. * u.cm
         self.trunk_spec = 'sdr26'
         self.branch_spec = 'sdr26'
-        self.q_ratio = 0.85
-        self.branch_size = 1 * u.inch
-        self.branch_size_backwash = 1.5 * u.inch
+        self.q_ratio = 0.85.
+        self.branch_size = 1. * u.inch
+        self.branch_size_backwash = 1.5. * u.inch
         self.temp_min = 10.0 * u.degC
         self.temp_max = 30.0 * u.degC
         self.ratio_qp = 0.85
-        self.trunk_size = 6*u.inch
-        self.trunk_length = 6 * u.m
-        self.filter_v = 11*u.mm/u.s/6
-        self.sand_d = 0.5 * u.mm 
-        self.sand_porosity = 0.4
-        self.orifice_filter_hl = 0 * u.cm
-        self.drain_t = 1*u.min
-        self.tank_a = 2*u.m**2
-        self.tank_h = 2*u.m
-        self.k_e= 2
+        self.trunk_size = 6. * u.inch
+        self.trunk_length = 6. * u.m
+        self.filter_v = 11.*u.mm/u.s/6
+        self.sand_d = 0.5. * u.mm 
+        self.sand_porosity = 0.4.
+        self.orifice_filter_hl = 0. * u.cm
+        self.drain_t = 1. * u.min
+        self.tank_a = 2.*u.m**2
+        self.tank_h = 2.*u.m
+        self.k_e= 2.
         
         
         self.box = FilterBox()
