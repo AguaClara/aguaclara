@@ -3,15 +3,8 @@ Tests for the research package's tube_sizing module.
 """
 
 import unittest
-from aguaclara.core.units import unit_registry as u
-
-developing = False
-if developing:
-    import sys
-    sys.path.append("../../aguaclara/research")
-    import peristaltic_pump as pp
-else:
-    import aguaclara.research.peristaltic_pump as pp
+from aguaclara.core.units import u
+import aguaclara.research.peristaltic_pump as pp
 
 
 class TestTubeSizing(unittest.TestCase):

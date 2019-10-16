@@ -13,7 +13,7 @@ import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipe
 import aguaclara.core.utility as ut
 import aguaclara.core.drills as drills
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 from aguaclara.design.component import Component
 
 import numpy as np
@@ -35,18 +35,14 @@ class LFOM(Component):
         - ``orifice_s (float * u.cm)``: The spacing between orifices (optional, 
           defaults to 0.5cm)
     """
-    def __init__(self, q=20.0 * u.L / u.s, temp=20.0 * u.degC,
-                 hl=20.0 * u.cm,
-                 safety_factor=1.5,
-                 sdr=26.0,
-                 drill_bits=drills.DRILL_BITS_D_IMPERIAL,
-                 orifice_s=0.5 * u.cm):
-        super().__init__(q = q, temp = temp)
-        self.hl = hl
-        self.safety_factor = safety_factor
-        self.sdr = sdr
-        self.drill_bits = drill_bits
-        self.orifice_s = orifice_s
+    def __init__(self, **kwargs): 
+        self.hl = 20.0 * u.cm
+        self.safety_factor = 1.5
+        self.sdr = 26.0
+        self.drill_bits = drills.DRILL_BITS_D_IMPERIAL
+        self.orifice_s = 0.5 * u.cm
+
+        super().__init__(**kwargs)
 
     def stout_w_per_flow(self, h):
         """The width of a stout weir at a given elevation.

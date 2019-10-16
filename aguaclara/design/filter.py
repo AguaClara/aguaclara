@@ -1,4 +1,27 @@
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
+from aguaclara.design.component import Component
+
+class Filter(Component):
+
+    sand_layer_thick = 20 *u.cm
+    n_backwash_manifold_diameter = 4 * u.inch
+    max_filtration_head_loss = 30 * u.cm
+
+    @property
+    def n_tanks():
+        tank = math.ceil(self.q/40)
+        return (tank.magnitude)*2
+
+    @property
+    def flow_rate_per_tank():
+        n_tanks = n_tanks()
+        return flow_rate/n_tanks
+
+    #def filt_vel():
+
+    #def backwash_vel():
+
+    #def backwash_manifold_diameter():
 
 #Design guidelines say 11 mm/s. The success of lab-scale backwashing at
 # 10 mm/s suggests that this is a reasonable and conservative value
@@ -149,25 +172,3 @@ SAND_POROSITY = 0.4
 SAND_DENSITY = 2650 * u.kg / (u.m ** 3)
 
 FLUIDIZED_RATIO = 1.3 #Bed expands 30% when fluidized
-
-class Filter:
-
-    def __init__(self, flow_rate = 20 *u.L/u.s, sand_layer_thick = 20 *u.cm, 
-		n_backwash_manifold_diameter = 4 * u.in, max_filtration_head_loss = 30 * u.cm):
-        self.flow_rate = flow_rate
-        self.sand_layer_thickness = sand_layer_thickness
-        self.nbackwash_manifold_diameter = nbackwash_manifold_diameter
-        self.max_filtration_head_loss = max_filtration_head_loss
-
-    def n_tanks():
-        tank = math.ceil(flow_rate/40)
-        return (tank.magnitude)*2
-    def flow_rate_per_tank)():
-        n_tanks = n_tanks()
-        return flow_rate/n_tanks
-
-    #def filt_vel():
-
-    #def backwash_vel():
-
-    #def backwash_manifold_diameter():

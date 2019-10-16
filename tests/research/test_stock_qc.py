@@ -2,15 +2,8 @@
 Tests for the research package's tube_sizing module.
 """
 import unittest
-from aguaclara.core.units import unit_registry as u
-
-developing = False
-if developing:
-    import sys
-    sys.path.append("../../aguaclara/research")
-    import stock_qc as stock_qc
-else:
-    import aguaclara.research.stock_qc as stock_qc
+from aguaclara.core.units import u
+import aguaclara.research.stock_qc as stock_qc
 
 C_reactor = stock_qc.Variable_C_Stock(1*u.mL/u.s, 2*u.mg/u.L, 0.4*u.mL/u.s)
 Q_reactor = stock_qc.Variable_Q_Stock(4.9*u.mL/u.s, 3.6*u.mg/u.L, 50*u.mg/u.L)

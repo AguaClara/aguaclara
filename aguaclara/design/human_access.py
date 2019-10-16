@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Constant dimensions to allow for human access within a plant."""
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 
 WALKWAY_W_DEFAULT = 1 * u.m
 DRAIN_CHAN_WALKWAY_W = 1.2 * u.m

@@ -1,8 +1,5 @@
 environment:
 
-  my_secret:
-    secure: evqJX31ka4zt+r8BVgqL2rRbWBUzBIWODB851pQczFWKeuohT7osgD/s+H1QQ8Ef
-
   matrix:
 
     # For Python versions available on Appveyor, see
@@ -13,10 +10,6 @@ environment:
     - PYTHON: "C:\\Python36-x64"
 
 install:
-  - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
-  - cmd: appveyor-tools\secure-file -decrypt CI/.onshapepy.enc -secret %my_secret%
-  - sh: ./appveyor-tools/secure-file -decrypt CI/.onshapepy.enc -secret $my_secret
-  - ps: move CI/.onshapepy $HOME/.onshapepy
   - pip install pipenv
   - pipenv install --dev
   - "%PYTHON%\\python.exe -m pip install wheel"

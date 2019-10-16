@@ -1,11 +1,7 @@
 """This file contains functions which convert between the nominal, inner, and
 outer diameters of pipes based on their standard dimension ratio (SDR).
-
 """
-
-#Let's begin to create the pipe database
-# https://docs.python.org/2/library/csv.html
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import aguaclara.core.utility as ut
 import numpy as np
 import pandas as pd
@@ -16,7 +12,11 @@ csv_path = os.path.join(dir_path, 'data/pipe_database.csv')
 with open(csv_path) as pipedbfile:
     pipedb = pd.read_csv(pipedbfile)
 
-""""""
+# TODO: Add a deprecation warning for this once manifold design code has been
+# implemented. The socket_depth and cap_thickness functions are used in
+# a manifold calculation in sed_tank, and can also be transferred to pipeline
+# design code once manifold design code has been implemented.
+
 class Pipe:
 
 
@@ -31,12 +31,12 @@ class Pipe:
 
     @property
     def id_sdr(self):
-        return self.od.magnitude * (self.sdr - 2) / self.sdr
+        return (self.od.magnitude * (self.sdr - 2) / self.sdr) * u.inch
 
     @property
     def id_sch40(self):
         myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
-        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5]))
+        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])) * u.inch
 
 
 # @u.wraps(u.inch, u.inch, False)
@@ -60,6 +60,12 @@ def OD(ND):
     #    value, find the index of the minimium value.
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
     return pipedb.iloc[index, 1]
+
+def fitting_od(pipe_nd, fitting_sdr=41):
+    pipe_od = OD(pipe_nd)
+    fitting_nd = ND_SDR_available(pipe_od, fitting_sdr)
+    fitting_od = OD(fitting_nd)
+    return fitting_od
 
 
 # @u.wraps(u.inch, [u.inch, None], False)
@@ -155,3 +161,10 @@ def od_available(od_guess):
     """
     myindex = (od_all_available() >= od_guess)
     return min(od_all_available()[myindex])
+
+def socket_depth(nd):
+    return nd / 2
+
+def cap_thickness(nd):
+    cap_thickness = (fitting_od(nd) - OD(ND_available(nd))) / 2
+    return cap_thickness

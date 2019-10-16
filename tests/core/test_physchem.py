@@ -8,7 +8,7 @@ Last modified: Tue July 4 2019
 By: Hannah Si
 """
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 from aguaclara.core import physchem as pc
 import unittest
 
@@ -747,6 +747,24 @@ class MiscPhysFuncsTest(unittest.TestCase):
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.headloss_kozeny, *i)
         pc.headloss_kozeny(1, 1, 1, 1, 1)
+
+    def test_headloss_kozeny_units(self):
+        """headloss_kozeny should handle units correctly."""
+        base = pc.headloss_kozeny(1, 1.4, 0.5, 0.625, 0.8).magnitude
+        checks = ([1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s,
+                   0.625 * u.m, 0.8 * u.m**2/u.s],
+                  [100 * u.cm, 1.4, 0.5, 0.625, 0.8],
+                  [1, 0.0014 * u.km, 0.5, 0.625, 0.8],
+                  [1, 1.4, 30 * u.m/u.min, 0.625, 0.8],
+                  [1, 1.4, 0.5, 625 * u.mm, 0.8],
+                  [1, 1.4, 0.5, 0.625, 8000 * u.cm**2/u.s])
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertAlmostEqual(pc.headloss_kozeny(*i).magnitude, base)
+
+    def test_pipe_ID(self):
+        """pipe_ID should return known value for known input"""
+        self.assertAlmostEqual(pc.pipe_ID(0.006, 1.2).magnitude, 0.039682379412712764)
 
 
 if __name__ == "__main__":

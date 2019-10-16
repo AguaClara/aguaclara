@@ -1,22 +1,28 @@
-from aguaclara.design.ent_floc import *
+from aguaclara.design.component import Component
+
+from aguaclara.design.ent_floc import EntTankFloc
+from aguaclara.design.floc import Flocculator
+from aguaclara.design.ent import EntranceTank
+from aguaclara.design.lfom import LFOM
+
+from aguaclara.design.sed import Sedimentor
+from aguaclara.design.sed_tank import SedimentationTank
+from aguaclara.design.sed_chan import SedimentationChannel
+
+from aguaclara.core.units import u
 
 
 class Plant(Component):
     """Functions for designing an AguaClara water treatment plant."""
+    def __init__(self, **kwargs):
+        self.etf = EntTankFloc()
+        self.sed = Sedimentor()
+        self.subcomponents = [self.etf, self.sed]
 
-    def __init__(self, q=20 * u.L/u.s, temp=25 * u.degC,
-                 etf = EntTankFloc()):
-        """Initialize a Plant object that represents a real AguaClara water
-        treatment plant.
+        super().__init__(**kwargs)
+        super().set_subcomponents()
 
-        :param q: Flow rate of water through the plant.
-        :type q: float * u.L/u.s
-        :param temp: Temperature of water through the plant.
-        :type q: float * u.degC
-        :returns: object
-        :rtype: Plant
-        """
-        super().__init__(q = q, temp = temp)
-        self.etf = etf
+        self.design_floc()
 
-        super().propogate_config([self.etf])
+    def design_floc(self):
+        self.etf.floc.sed_chan_inlet_w_pre_weir = self.sed.chan.inlet_w_pre_weir
