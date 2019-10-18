@@ -43,7 +43,6 @@ class FilterBox(Component):
 		self.branch_spec = 'sdr26'
 		self.branch_filter_size = 1 * u.inch
 		self.branch_bw_size = 1.5 * u.inch
-		self.branch_s = 10 * u.cm
 		self.trunk_l = 6 * u.m
 		self.trunk_size = 6 * u.inch
 		
@@ -58,6 +57,7 @@ class FilterBox(Component):
 		self._set_trunk_pipe()
 	
 	def _set_trunk_pipe(self):
+		"""Sets the trunk pipe."""
 		self.trunk_pipe = Manifold(
 			spec = self.trunk_spec,
 			l = self.trunk_l, 
@@ -66,33 +66,40 @@ class FilterBox(Component):
 
 	@property
 	def trunk_inner_k_e(self):
+		"""The minor loss coefficient expansion for the inner trunk."""
 		return 1 + hl.EL90_K_MINOR
 		
 	@property
 	def trunk_outer_k_e(self):
+		"""The minor loss coefficient expansion for the outer trunk."""
 		return 4 * self.trunk_inner_k_e
 	
 	@property
 	def trunk_outlet_k_e(self):
+		"""The minor loss coefficient expansion for the outlet of the trunk."""
 		return 1 + 3*hl.EL90_K_MINOR
 	
 	@property
 	def branch_k_e(self):
+		"""The minor loss coefficient expansion for the branch."""
 		return hl.PIPE_ENTRANCE_K_MINOR
 		
 	@property
 	def siphon_k_e(self):
+		"""The minor loss coefficient expansion for the siphon."""
 		siphon_k_e = hl.PIPE_ENTRANCE_K_MINOR + 3*hl.EL90_K_MINOR + \
 			hl.TEE_FLOW_BR_K_MINOR + hl.PIPE_EXIT_K_MINOR
 		return siphon_k_e
 	
 	@property
 	def branch_s(self):
+		"""The spacing of the branch."""
 		branch_s = self.layer_h_min / 2
 		return branch_s
 
 	@property
 	def siphon_orifice_d(self):
+		"""The diameter of the siphon orifice."""
 		a = np.pi/4
 		b = -a * self.siphon_manifold.id**2/self.filter_w
 		c = b*self.siphon_orifice_s 
@@ -101,94 +108,116 @@ class FilterBox(Component):
 	
 	@property
 	def filter_v(self):
+		"""The velocity of the backwash through the filter."""
 		return self.backwash_v/self.layer_n 
 
 	@property
 	def filter_q(self):
+		"""The flow rate through the filter."""
 		return self.q /self.filter_n
 
 	@property
 	def trunk_inner_q(self):
+		"""The flow rate through the inner trunk."""
 		return (2 * self.filter_q) / self.layer_n
 	
 	@property
 	def trunk_outer_q(self):
+		"""The flow rate through the outer trunk."""
 		return self.filter_q / self.layer_n
 	
 	@property
 	def filter_active_a(self):
+		"""The area of the filter that is active."""
 		filter_active_a = self.filter_q / self.backwash_v
 		return filter_active_a.to(u.m**2)
 
 	@property
 	def sand_to_fluidize_h(self):
+		"""The height of the sand to the fluid."""
 		return self.layer_h*self.layer_n
 	
 	@property
 	def trunk_w(self):
+		"""The width of the trunk."""
 		trunk_w = pc.area_circle(self.trunk_pipe.od) / self.layer_n
 		return trunk_w
 
 	@property
 	def filter_active_w(self):
+		"""The width of the filter that is active."""
 		return self.filter_w - self.trunk_w
 
 	@property
 	def filter_l(self):
+		"""The length of the filter."""
 		return self.filter_active_a / self.filter_active_w
 
 	@property
 	def filter_a(self):
+		"""The area of the the filter."""
 		return self.filter_l *self.filter_w
 
 	@property
 	def sand_volume(self):
+		"""The volume of the sand."""
 		return (self.filter_active_a*self.sand_to_fluidize_h).to(u.kg)
 
 	@property
 	def sand_mass(self):
+		"""The mass of the sand."""
 		return (self.sand_volume*self.sand_density*self.sand_porosity).to(u.kg)
 
 	@property
 	def branch_layer_n(self):
+		"""The branch of layer n"""
 		return 2 * self.filter_l / self.branch_s
 
 	@property
 	def branch_bw_q(self):
+		"""The flow rate of the branch backwash."""
 		return self.filter_q / self.branch_layer_n
 	
 	@property
 	def branch_l(self):
+		"""The length of the branch"""
 		return self.filter_w / 2
 	
 	@property
 	def trunk_outer_bw_v(self):
+		"""This is the outer backwash velocity of the truck pipe"""
 		return self.filter_q / pc.area_circle(self.trunk_pipe.id)
 	
 	@property
 	def orifice_contracted_v(self):
+		"""This is the contracted velocity of the orifice"""
 		return self.trunk_outer_bw_v * \
 			 np.sqrt((self.ratio_qp_min**2 - 1) / (2 * (1- self.ratio_qp_min**2)))
 	
 	@property
 	def orifice_v(self):
+		"""This is the outer velocity of the orifice"""
 		return con.VC_ORIFICE_RATIO * self.orifice_contracted_v
-
+		
 	@property
 	def orifice_outer_a(self):
+		"""This is the outer area of the orifice"""
 		return self.filter_q / self.orifice_v
 
 	@property
 	def orifice_bw_hl(self):
+		"""This is the backwash headloss of the orifice"""
 		orifice_bw_hl = self.orifice_contracted_v**2 / (2* u.gravity)
 		return orifice_bw_hl.to(u.cm)
 		
 	@property 
 	def orifice_fi_hl (self):
-			orifice_fi_hl = (1/self.layer_n)**2 * self.orifice_bw_hl
-			return orifice_fi_hl
+		"""This is the headloss of the orifice"""
+		orifice_fi_hl = (1/self.layer_n)**2 * self.orifice_bw_hl
+		return orifice_fi_hl
 	@property
 	def _set_branch_bw(self):
+		"""This sets the branch backwash"""
 		self.branch_bw_manifold = Manifold(
 			q = self.branch_bw_q, 
 			port_h_e = self.orifice_bw_hl,
@@ -204,13 +233,15 @@ class FilterBox(Component):
     	)
     
 	@property
-	def branch_fi_q(self):
+	def branch_q(self):
+		"""This is the flow rate of the branch"""
 		return (2 * self.branch_bw_manifold.q) / self.layer_n
 		
 	@property
-	def _set_branch_fi_manifold(self):
+	def _set_branch_manifold(self):
+		"""This sets the branch manifold"""
 		self.branch_fi_manifold = Manifold(
-      		q=self.branch_fi_q, 
+      		q=self.branch_q, 
       		port_h_e=self.orifice_fi_hl, 
       		port_h_l_series=self.sand_clean_hl, 
       		ratio_qp_min=self.ratio_qp_min, 
@@ -223,7 +254,8 @@ class FilterBox(Component):
       	)
 	
 	@property
-	def trunk_inlet_fi_hl(self): 
+	def trunk_inlet_hl(self): 
+		"""This is the headloss of the trunk inlet pipe"""
 		return pc.headloss_exp(
 			self.trunk_outer_q, 
 			self.trunk_pipe.id, 
@@ -233,6 +265,7 @@ class FilterBox(Component):
 	
 	@property
 	def trunk_bw_hl(self): 
+		"""This is the backwash headloss of the trunk pipe"""
 		return pc.headloss_exp(
 			self.filter_q, 
 			self.trunk_pipe.id, 
@@ -241,6 +274,7 @@ class FilterBox(Component):
 	
 	@property
 	def trunk_outlet_hl(self):
+		"""This is the headloss of the trunk outlet pipe"""
 		return pc.headloss_exp(
 			self.trunk_inner_q,
 			self.trunk_pipe.id, 
@@ -248,6 +282,7 @@ class FilterBox(Component):
 	
 	@property
 	def inlet_fi_h_e(self):
+		"""This is the height expansion of the inlet filter"""
 		return pc.headloss_exp(self.trunk_outer_q, 
 		self.trunk_pipe.id, 
 		self.trunk_outer_k_e
@@ -255,6 +290,7 @@ class FilterBox(Component):
 
 	@property
 	def fluidize_sand_hl(self):
+		"""This is the headloss of the fluidized sand"""
 		fluidize_sand_hl = self.layer_h * (1 - self.sand_porosity) * \
 			(self.sand_density / pc.density_water(self.temp)-1)
 		
@@ -262,32 +298,34 @@ class FilterBox(Component):
 		
 	@property
 	def post_backwash_fill_h(self): 
-		return (self.fluidize_sand_hl + self.trunk_bw_hl_max + 2*self.trunk_inlet_fi_hl + \
+		"""This is the height of the post backwash fill"""
+		return (self.fluidize_sand_hl + self.trunk_bw_hl_max + 2*self.trunk_inlet_hl + \
 		self.orifice_fi_hl + 2*self.freeboard + self.sand_clean_hl +\
-		self.trunk_inlet_fi_hl +self.orifice_fi_hl + self.trunk_outlet_hl)
-
-	@property
-	def filter_a(self):
-		return self.filter_l * self.filter_w
+		self.trunk_inlet_hl +self.orifice_fi_hl + self.trunk_outlet_hl)
 		
 	@property
 	def post_backwash_fill_vol(self):
+		"""This is the volume of the post backwash fill"""
 		return (self.post_backwash_fill_h * self.filter_a)
 	
 	@property
 	def pre_backwash_flush_h(self):
+		"""This is the height of the pre backwash flush"""
 		return (self.post_backwash_fill_h + (self.filter_max_hl - \
 				self.sand_clean_hl))
 		
 	@property
 	def pre_backwash_flush_vol(self):
+		"""This is the volume of the pre backwash flush"""
 		return (self.pre_backwash_flush_h * self.filter_a)
 	
 	@property
 	def post_backwash_fill_t(self):
+		"""This is the temperature of the post backwash fill"""
 		return (self.post_backwash_fill_vol / self.filter_q).to(u.s)
 
 	def _set_siphon_manifold(self):
+		"""This sets the siphon manifold"""
 		q = 2*(self.post_backwash_fill_vol/self.siphon_drain_t+self.filter_q)
 		size = pc.diam_pipe(q, self.pre_backwash_flush_h, self.siphon_l, pc.viscosity_kinematic(self.temp), mat.PVC_PIPE_ROUGH, self.siphon_k_e)
 	
@@ -295,31 +333,38 @@ class FilterBox(Component):
 
 	@property
 	def siphon_drain_t(self):
+		"""This is the thickness of the siphon drain"""
 		return (self.post_backwash_fill_t)
 	
 	@property
 	def siphon_orifice_n(self):
+		"""This is the number of siphon orifices"""
 		return (ut.floor(self.filter_w/(self.siphon_orifice_d + \
 			self.siphon_orifice_s)))
 	
 	@property
 	def inlet_weir_w(self):
+		"""This is the width of the inlet weir"""
 		return 0.5*self.filter_w
 	
 	@property
 	def inlet_weir_h(self):
+		"""This is the height of the inlet weir"""
 		return pc.headloss_weir(self.filter_q,self.inlet_weir_w)
 	
 	@property
 	def inlet_weir_z(self):
+		"""This is the depth of the inlet weir"""
 		return self.datum_z - self.inlet_weir_h
 
 	@property
 	def inlet_chan_v(self):
+		"""This is the velocity of the inlet channel"""
 		inlet_chan_v = 2 * np.sqrt(u.gravity * self.inlet_weir_h * (1 - self.ratio_q_filter_min**(2/3)) / (1*self.ratio_q_filter_min**(2/3)))
 		return inlet_chan_v.to(u.m/u.s)
 	
 	@property
 	def inlet_chan_a(self):
+		"""This is the area of the inlet channel"""
 		inlet_chan_a = self.q / self.inlet_chan_v
 		return inlet_chan_a.to(u.m**2)

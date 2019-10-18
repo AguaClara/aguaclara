@@ -74,7 +74,7 @@ class EntranceTank(Component):
         super().set_subcomponents()
         
     def _set_drain_pipe(self):
-        """The inner diameter of the entrance tank drain pipe."""
+        """Sets the drain pipe."""
         drain_pipe_k_minor = \
             hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_EXIT_K_MINOR + hl.EL90_K_MINOR
 

@@ -791,3 +791,8 @@ class Manifold(PipelineComponent):
         h_e = pc.headloss_exp(self.q, self.id, self.k_minor)
         return h_e.to(u.cm)
     
+    def format_print(self):
+        """Return the string representation of this pipe."""
+        return 'Manifold: (OD: {}, Size: {}, ID: {}, Length: {}, Spec: {})'.format(
+            self.od, self.size, self.id, self.l, self.spec)
+    
