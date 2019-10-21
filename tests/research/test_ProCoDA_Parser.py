@@ -246,6 +246,14 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertEquals(time, 0.5)
 
 
+    def test_time_column_index(self):
+        '''
+        Return the index of the lowest time in the column of times that is greater than or equal to the given time.
+        '''
+        index = time_column_index(0.75, [0.2, 0.4, 0.6, 0.8, 1])
+        self.assertEquals(index, 3)
+
+
     def test_get_data_by_state(self):
         '''
         Extract the time column and a data column for each iteration of a state
