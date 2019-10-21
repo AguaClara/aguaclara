@@ -1,3 +1,15 @@
+"""The filter box of an AguaClara water treatment plant
+
+#. Subcomponent of the filter component
+#. Contains the sand used to filter the water
+
+Example:
+    >>> from aguaclara.design.filter_box import *
+    >>> box = FilterBox(freeboard = 35 * u.cm)
+    >>> box.branch_l
+    <Quantity(1.0, 'meter')>
+"""
+
 import aguaclara.core.constants as con
 import aguaclara.core.head_loss as hl
 import aguaclara.core.materials as mat
@@ -12,7 +24,57 @@ from aguaclara.design.pipeline import Manifold
 import numpy as np
 
 class FilterBox(Component):
+	"""Design an AguaClara plant's filter box.
 
+	A filter box's design relies on the filter's design in the same plant, but 
+	assumed/default values may be used to design a filter box by itself. To 
+	design these components in tandem, use 
+	:class:`aguaclara.design.filter.Filter`.
+
+	Design Inputs:
+		- ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
+        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
+          20°C)
+		- ``ratio_qp_min (float)``:Ratio of min port flow over max port flow 
+		(optional, defaults to 0.85)
+		- ``ratio_q_filter_min (float)``: Ratio of min filter flow over max 
+		filter flow (optional, defaults to 0.95)
+
+		
+		- ``datum_z (int * u.m)``: 
+		- ``trunk_nd_max (int * u.inch)``: 
+		- ``layer_H_Min (int * u.cm)``: 
+		- ``trunk_bw_hl_max(int*u.cm)``:
+		- ``filter_w (int * u.m)``: Width of filter (optional, defaults to 2m)
+		- ``temp_max (int * u.degC)``: Max temperature (optional, defaults to 30°C)
+		- ``backwash_v (int * u.mm/u.s)``: Backwash velocity (optional, defaults to 11 mm/s)
+		- ``layer_n (int)``: Number of layers (optional, defaults to 6)
+		
+		- ``branch_s (int*u.cm)``: 
+		- ``trunk_s_min	 (int*u.cm)``: (optional, defaults to 3 * u.cm)
+		- ``sand_density (int*u.cm)``: (optional, defaults to 3 * u.cm)2650 * u.kg/u.m**3
+		- ``filter_max_hl (int*u.cm)``: (optional, defaults to 80 * u.cm)
+		- ``sand_d60 (float * u.mm)``: (optional, defaults to 0.8)
+		- ``filter_max_hl (int * u.cm)``: Maximum headloss of filter (optional, defaults to 80cm) 
+		- ``filter_n_min (int)``: Minimum number of filters (optional, defaults to 2)
+		- ``filter_n (int)``: Number of filters (optional, defaults to 5)
+		- ``siphon_vent_t (int * u.s)``: Time for air to vent out of siphon pipe (optional, defaults to 15s)
+		- ``sand_porosity (float): Porosity of sand (optional, defaults to 0.4)
+		- ``orifice_s (int * u.cm)``: Size of orifice (optional, defualts to 5cm)
+		- ``trunk_spec (string)``: Specifications of trunk (optional, defaults to 'sdr26')
+		- ``branch_spec (string)``: Specifications of branch (optional, defaults to 'sdr26')
+		- ``branch_filter_size (int * u.inch)``: Size of branch filter (optional, defaults to 1inch)
+		- ``branch_bw_size (float * u.inch)``: Size of branch backwash (optional, defaults to 1.5inch)
+		- ``trunk_l (int * u.m): Length of trunk (optional, defaults to 6m)
+		- ``trunk_size (int * u.inch): Size of trunk (optional, defaults to 6inch)
+		- ``siphon_orifice_s (int * u.cm)``: Spacing of the siphon orifice (optional, defaults to 1cm)
+		- ``freeboard (int * u.cm)``: The freeboard (optional, defaults to 10cm)
+		- ``trunk_bw_hl_max (int * u.cm)``: Trunk backwash maximum headloss (optional, defaults to 50cm)
+		- ``sand_clean_hl (float * u.cm)``: Sand clean headloss (optional, defaults to 3.848cm)
+		- ``layer_h (int * u.cm)``: Height of layer (optional, defaults to 20cm)
+		- ``siphon_l (float * u.m)``: Length of siphon (optional, defaults to 10.0m)
+
+	"""
 	def __init__(self, **kwargs):
 		
 		self.ratio_qp_min = 0.85
