@@ -198,7 +198,7 @@ class TestProCoDAParser(unittest.TestCase):
                 0.6935364312, 0.6935943119, 0.6936521639, 0.6937100397, 0.6937679167,
                 0.6938257774, 0.6938836411]), 5).tolist())
 
-"""
+    """
     def test_get_data_by_time(self):
         '''
         Extract column(s) of data between given starting and ending days and times
@@ -236,7 +236,7 @@ class TestProCoDAParser(unittest.TestCase):
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), time_column)
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
-"""
+    """
 
     def test_day_fraction(self):
         '''
