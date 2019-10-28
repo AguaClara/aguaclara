@@ -254,6 +254,18 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertEquals(index, 3)
 
 
+    def test_data_from_dates(self):
+        '''
+        Return a list of DataFrames representing the ProCoDA data files stored in the given path and recorded on the given dates.
+        '''
+        path = os.path.join(os.path.dirname(__file__), '.', 'data')
+        data_manual = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+
+        dataDatalog = data_from_dates(path, '6-15-2018', ".xls")[0]
+
+        self.assertTrue(dataDatalog.equals(data_manual))
+
+
     def test_get_data_by_state(self):
         '''
         Extract the time column and a data column for each iteration of a state
