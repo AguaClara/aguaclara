@@ -102,7 +102,7 @@ class FilterBox(Component):
 		self.layer_h_min=20*u.cm
 		self.sand_d60=0.8 * u.mm
 		self.trunk_bw_hl_max = 50 * u.cm
-		self.filter_w = 2* u.m
+		self.filter_w = 1.5* u.m
 	
 		self.temp_max = 30 * u.degC
 		self.backwash_v = 11 * u.mm/u.s
@@ -135,7 +135,24 @@ class FilterBox(Component):
 
 		super().__init__(**kwargs)
 		self._set_trunk_pipe()
+		self._set_siphon_manifold()
+		self._set_branch_bw()
+		self._set_branch_manifold()
 	
+
+	def _set_branch_bw(self):
+		"""This sets the branch backwash"""
+		self.branch_bw_manifold = Manifold(
+			q = self.branch_bw_q, 
+			port_h_e = self.orifice_bw_hl,
+			ratio_qp_min=self.ratio_qp_min, 
+			port_s=self.orifice_s, 
+			port_vena_contracta=con.VC_ORIFICE_RATIO,
+			spec = self.branch_spec,
+			l=self.branch_l, 
+			k_minor=self.branch_k_e, 
+			size_max=self.branch_bw_size
+    	)
 	def _set_trunk_pipe(self):
 		"""Sets the trunk pipe."""
 		self.trunk_pipe = Manifold(
@@ -143,6 +160,24 @@ class FilterBox(Component):
 			l = self.trunk_l, 
 			size = self.trunk_size
 			)
+
+	def _set_siphon_manifold(self):
+		"""This sets the siphon manifold"""
+		q = 2*(self.post_backwash_fill_vol/self.siphon_drain_t+self.filter_q)
+		size = pc.diam_pipe(
+			q, 
+			self.pre_backwash_flush_h, 
+			self.siphon_l, 
+			pc.viscosity_kinematic(self.temp), 
+			mat.PVC_PIPE_ROUGH, 
+			self.siphon_k_e)
+	
+		self.siphon_manifold = Manifold(
+			q = q, 
+			l = self.siphon_l, 
+			spec = self.trunk_spec, 
+			size = size)
+
 
 	@property
 	def trunk_inner_k_e(self):
@@ -220,7 +255,7 @@ class FilterBox(Component):
 	@property
 	def trunk_w(self):
 		"""The width of the trunk."""
-		trunk_w = pc.area_circle(self.trunk_pipe.od) / self.layer_n
+		trunk_w = pc.area_circle(self.trunk_pipe.od)/self.layer_h
 		return trunk_w
 
 	@property
@@ -241,7 +276,7 @@ class FilterBox(Component):
 	@property
 	def sand_volume(self):
 		"""The volume of the sand."""
-		return (self.filter_active_a*self.sand_to_fluidize_h).to(u.kg)
+		return (self.filter_active_a*self.sand_to_fluidize_h).to(u.m**3)
 
 	@property
 	def sand_mass(self):
@@ -272,7 +307,7 @@ class FilterBox(Component):
 	def orifice_contracted_v(self):
 		"""This is the contracted velocity of the orifice"""
 		return self.trunk_outer_bw_v * \
-			 np.sqrt((self.ratio_qp_min**2 - 1) / (2 * (1- self.ratio_qp_min**2)))
+			 np.sqrt((self.ratio_qp_min**2 + 1) / (2 * (1- self.ratio_qp_min**2)))
 	
 	@property
 	def orifice_v(self):
@@ -295,29 +330,13 @@ class FilterBox(Component):
 		"""This is the headloss of the orifice"""
 		orifice_fi_hl = (1/self.layer_n)**2 * self.orifice_bw_hl
 		return orifice_fi_hl
-	@property
-	def _set_branch_bw(self):
-		"""This sets the branch backwash"""
-		self.branch_bw_manifold = Manifold(
-			q = self.branch_bw_q, 
-			port_h_e = self.orifice_bw_hl,
-			port_h_l_series=0*u.cm,
-			ratio_qp_min=self.ratio_qp_min, 
-			port_s=self.orifice_s, 
-			port_vena_contracta=con.VC_ORIFICE_RATIO,
-			spec = self.branch_spec,
-			l=self.branch_l, 
-			next_type='stopper', 
-			k_minor=self.branch_k_e, 
-			size_max=self.branch_bw_size
-    	)
+	
     
 	@property
 	def branch_q(self):
 		"""This is the flow rate of the branch"""
-		return (2 * self.branch_bw_manifold.q) / self.layer_n
+		return (2 * self.branch_bw_q) / self.layer_n
 		
-	@property
 	def _set_branch_manifold(self):
 		"""This sets the branch manifold"""
 		self.branch_fi_manifold = Manifold(
@@ -329,7 +348,6 @@ class FilterBox(Component):
       		port_vena_contracta=con.VC_ORIFICE_RATIO, 
       		spec=self.branch_spec, 
       		l=self.branch_l, 
-      		next_type = 'stopper', 
       		k_minor =self.branch_k_e
       	)
 	
@@ -404,12 +422,6 @@ class FilterBox(Component):
 		"""This is the temperature of the post backwash fill"""
 		return (self.post_backwash_fill_vol / self.filter_q).to(u.s)
 
-	def _set_siphon_manifold(self):
-		"""This sets the siphon manifold"""
-		q = 2*(self.post_backwash_fill_vol/self.siphon_drain_t+self.filter_q)
-		size = pc.diam_pipe(q, self.pre_backwash_flush_h, self.siphon_l, pc.viscosity_kinematic(self.temp), mat.PVC_PIPE_ROUGH, self.siphon_k_e)
-	
-		self.siphon_manifold = Manifold(q = q, l = self.siphon_l, spec = self.trunk_spec, size = size)
 
 	@property
 	def siphon_drain_t(self):

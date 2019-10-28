@@ -119,7 +119,11 @@ class Filter(Component):
 
     def _set_trunk_pipe(self):
         """Sets the trunk pipe."""
-        self.trunk_pipe = Manifold(size = self.trunk_size, spec = self.trunk_spec, l = self.trunk_length)
+        self.trunk_pipe = Manifold(
+            size = self.trunk_size, 
+            spec = self.trunk_spec, 
+            l = self.trunk_length
+            )
         
     def _set_box(self):
         """Sets the box."""
@@ -182,7 +186,7 @@ class Filter(Component):
         """This is the maximum flow through a filter with a given size of trunk
         given the constraint that the flow must be evenly distributed between 
         sand layers """
-        return 6*pc.flow_pipe(
+        max_q = 6*pc.flow_pipe(
             self.trunk_pipe.id, 
             self.trunk_max_hl, 
             self.trunk_pipe.l, 
@@ -190,6 +194,7 @@ class Filter(Component):
             mat.PVC_PIPE_ROUGH, 
             self.k_e
             )
+        return max_q.to(u.L/u.s)
 
     @property
     def ratio_trunk_sand_hl(self):
