@@ -231,8 +231,9 @@ def get_sdr(spec):
         raise ValueError('Not a valid SDR.')
     return int(spec[3:])
 
-def list_handler(HandlerResult="nparray"):
-    """Wraps a function to handle list inputs.
+def list_handler():
+    """Wraps a function to handle list inputs. The function must output a
+    **quantity with units**.
 
     For each argument passed to the function as a sequence (list, tuple, or
     Numpy array), this wrapper will recursively evaluate the function with the
@@ -243,73 +244,60 @@ def list_handler(HandlerResult="nparray"):
     [f(x_1), ..., f(x_n)]. For a function passed multiple sequences of
     dimensions d_1, ..., d_n (from left to right), the result would be a
     d_1 x ... x d_n dimensional array.
-
-    :param HandlerResult: output type. Defaults to Numpy arrays.
     """
     def decorate(func):
         @functools.wraps(func) # For Sphinx documentation of decorated functions
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element.
             """
-            # Loop through the positional arguments (args), identify those that
-            # are sequences, and add their index locations to the list
-            # "argSequences". Pint units must be ignored in order to recognize
-            # sequences with units as sequences instead of Pint Quantities.
-            argsSequences = []
-            for num, arg in enumerate(args):
+            # Identify the first positional argument that is a sequence.
+            # Pint units must be ignored to include sequences with units.
+            argsFirstSequence = None
+            for num, arg in enumerate(args):  # args is a tuple
                 if isinstance(arg, u.Quantity):
                     arg = arg.to_base_units().magnitude
                 if isinstance(arg, (list, tuple, np.ndarray)):
-                    argsSequences.append(num)
-
-            # Repeat the above for keyword arguments (kwargs), but access them
-            # as a dictionary whose keys are keywords/argument names and values
-            # are corresponding argument values.
-            kwargsSequences = []
-            for keyword, arg in kwargs.items():
+                    argsFirstSequence = num
+                    break
+            # Identify the first keyword argument that is a sequence.
+            kwargsFirstSequence = None
+            for keyword, arg in kwargs.items():  # kwargs is a dictionary
                 if isinstance(arg, u.Quantity):
                     arg = arg.to_base_units().magnitude
                 if isinstance(arg, (list, tuple, np.ndarray)):
-                    kwargsSequences.append(keyword)
+                    kwargsFirstSequence = keyword
+                    break
 
-            # If there are no sequences to iterate through, simply return
-            # the function evaluated with the given arguments.
-            if len(argsSequences) == 0 and len(kwargsSequences) == 0:
+            # If there are no sequences, evaluate the function with the given
+            # arguments.
+            if argsFirstSequence is None and kwargsFirstSequence is None:
                 return func(*args, **kwargs)
-
             # If there are sequences, iterate through them from left to right.
             # This means beginning with positional arguments.
-            if len(argsSequences) != 0:
+            elif argsFirstSequence is not None:
                 result = []
                 argsList = list(args)
-                # For each element of the leftmost sequence, evaluate
-                # the function using the original arguments, except with the
-                # sequence replaced by the single element. Store the results of
-                # all the elements in a list (result).
-                for arg in argsList[argsSequences[0]]:
+                # For each element of the leftmost sequence, evaluate the
+                # function with the sequence replaced by the single element.
+                # Store the results of all the elements in a list (result).
+                for arg in argsList[argsFirstSequence]:
                     # We can safely redefine the entire list argument because
                     # the new definition remains within this namespace; it does
                     # alter the loop or penetrate further up the function.
-                    argsList[argsSequences[0]] = arg
-                    # Here we dive down the rabbit hole. This recursive call
-                    # creates a multi-dimensional array.
+                    argsList[argsFirstSequence] = arg
+                    # This recursive call creates a multi-dimensional array if
+                    # there are multiple sequence arguments.
                     result.append(wrapper(*argsList, **kwargs))
-
-            # If there are no sequences in the positional arguments, we can
-            # begin iterating through those in the keyword arguments. The
-            # process is the same as for positional arguments.
+            # If there are no sequences in the positional arguments, iterate
+            # through those in the keyword arguments.
             else:
                 result = []
-                for arg in kwargs[kwargsSequences[0]]:
-                    kwargs[kwargsSequences[0]] = arg
+                for arg in kwargs[kwargsFirstSequence]:
+                    kwargs[kwargsFirstSequence] = arg
                     result.append(wrapper(*args, **kwargs))
 
-            if HandlerResult == "nparray":
-                result = np.array(result)
-            elif HandlerResult == "tuple":
-                result = tuple(result)
-            elif HandlerResult == "list":
-                result == list(result)
+            units = result[0].units
+            result = np.array([r.magnitude for r in result]) * units
 
             return result
         return wrapper
