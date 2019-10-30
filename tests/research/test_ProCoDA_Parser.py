@@ -198,7 +198,7 @@ class TestProCoDAParser(unittest.TestCase):
                 0.6935364312, 0.6935943119, 0.6936521639, 0.6937100397, 0.6937679167,
                 0.6938257774, 0.6938836411]), 5).tolist())
 
-    
+
     def test_get_data_by_time(self):
         '''
         Extract column(s) of data between given starting and ending days and times
@@ -279,11 +279,13 @@ class TestProCoDAParser(unittest.TestCase):
             -1.00214481]
         self.assertSequenceEqual(getColData1, compareColData1)
 
-        #More than one DataFrame
-        data_manual2 = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+        #Three DataFrames
+        data_manual2 = pd.read_csv(path + '/datalog 6-16-2018.xls', delimiter='\t')
+        data_manual3 = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
 
-        getColData2 = column_start_to_end([data_manual1, data_manual2], 2, 5238, 2)
-        compareColData2 = [24.26625443, 24.2669487, 24.26613235, 24.26708603, 24.26683617]
+        getColData2 = column_start_to_end([data_manual1, data_manual2, data_manual3], 2, 5238, 2)
+        compareColData2 = [24.26625443, 24.2669487, 24.26613235, 24.26708603,
+            24.26683617, 24.26708603, 24.26683617]
         self.assertSequenceEqual(getColData2, compareColData2)
 
 
