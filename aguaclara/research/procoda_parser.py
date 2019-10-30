@@ -222,10 +222,10 @@ def column_start_to_end(data, column, start_idx, end_idx):
     :type data: Pandas.DataFrame list
     :param column: a column index
     :type column: int
-    :param start_idx: the index of the starting row
+    :param start_idx: the index of the starting row of the first DataFrame
     :type start_idx: int
-    :param start_idx: the index of the ending row
-    :type start_idx: int
+    :param end_idx: the index of the ending row of the last DataFrame, excluding this row
+    :type end_idx: int
 
     :return: a list of data from the given column
     :rtype: float list

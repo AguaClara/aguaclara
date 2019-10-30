@@ -259,11 +259,32 @@ class TestProCoDAParser(unittest.TestCase):
         Return a list of DataFrames representing the ProCoDA data files stored in the given path and recorded on the given dates.
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
-        data_manual = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+        dataFromPath = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
 
-        dataDatalog = data_from_dates(path, '6-15-2018', ".xls")[0]
+        getDataFromDates = data_from_dates(path, '6-15-2018', ".xls")[0]
 
-        self.assertTrue(dataDatalog.equals(data_manual))
+        self.assertTrue(getDataFromDates.equals(dataFromPath))
+
+
+    def test_column_start_to_end(self):
+        '''
+        Return entries in column from starting index in first DataFrame to ending index in last DataFrame
+        '''
+        #One DataFrame
+        path = os.path.join(os.path.dirname(__file__), '.', 'data')
+        data_manual1 = pd.read_csv(path + '/datalog 6-14-2018.xls', delimiter='\t')
+
+        getColData1 = column_start_to_end([data_manual1], 1, 2, 7)
+        compareColData1 = [-4.34825945, -2.3821919, -2.57200098, -2.40549088,
+            -1.00214481]
+        self.assertSequenceEqual(getColData1, compareColData1)
+
+        #More than one DataFrame
+        data_manual2 = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+
+        getColData2 = column_start_to_end([data_manual1, data_manual2], 2, 5238, 2)
+        compareColData2 = [24.26625443, 24.2669487, 24.26613235, 24.26708603, 24.26683617]
+        self.assertSequenceEqual(getColData2, compareColData2)
 
 
     def test_get_data_by_state(self):
