@@ -64,7 +64,7 @@ class GeometryTest(QuantityTest):
                   (10000 * u.cm**2, 112.83791670955126 * u.cm))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.diam_circle(i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.diam_circle(i[0]), i[1])
 
     def test_diam_circle_range(self):
         """diam_circle should return errors with inputs <= 0."""
@@ -474,98 +474,112 @@ class OrificeFuncsTest(QuantityTest):
 
     def test_head_orifice(self):
         """head_orifice should return known value for known inputs."""
-        checks = (([1, 1, 1], 0.08265508294256473),
-                  ([1.2, 0.1, 0.12], 0.05739936315455882),
-                  ([2, 0.5, 0.04], 3.3062033177025895e-05))
+        checks = (([1 * u.m, 1, 1 * u.m**3/u.s], 0.08265508294256473 * u.m),
+                  ([1.2 * u.m, 0.1, 0.12 * u.m**3/u.s], 0.05739936315455882 * u.m),
+                  ([2 * u.m, 0.5 * u.dimensionless, 0.04 * u.m**3/u.s], 3.3062033177025895e-05 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.head_orifice(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.head_orifice(*i[0]), i[1])
 
     def test_head_orifice_range(self):
         """head_orifice should raise errors when passed invalid inputs."""
-        failChecks = ((0,1,1), (1, 1, 0), (1, -1, 1), (1, 2, 1))
+        failChecks = ((0 * u.m, 1, 1 * u.m**3/u.s),
+                      (1 * u.m, 1, 0 * u.m**3/u.s),
+                      (1 * u.m, -1, 1 * u.m**3/u.s),
+                      (1 * u.m, 2, 1 * u.m**3/u.s))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.head_orifice, *i)
-        pc.head_orifice(1, 1, 1)
-        self.assertRaises(ZeroDivisionError, pc.head_orifice, *(1, 0, 1))
+        self.assertRaises(ZeroDivisionError, pc.head_orifice, *(1 * u.m, 0, 1 * u.m**3/u.s))
 
     def test_area_orifice(self):
         """area_orifice should return known value for known inputs."""
-        checks = (([3, 0.4, 0.06], 0.019554886342464974),
-                  ([2, 0.1, 0.1], 0.15966497839052934),
-                  ([0.5, 0.02, 3], 47.899493517158803))
+        checks = (([3 * u.m, 0.4, 0.06 * u.m**3/u.s], 0.019554886342464974 * u.m**2),
+                  ([2 * u.m, 0.1, 0.1 * u.m**3/u.s], 0.15966497839052934 * u.m**2),
+                  ([0.5 * u.m, 0.02 * u.dimensionless, 3 * u.m**3/u.s], 47.899493517158803 * u.m**2))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.area_orifice(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.area_orifice(*i[0]), i[1])
 
     def test_area_orifice_range(self):
         """area_orifice should raise errors when inputs are out of bounds."""
-        failChecks = ((0, 1, 1), (1, 1, 0), (1, -1, 1), (1, 2, 1), (1, 0, 1))
+        failChecks = ((0 * u.m, 1, 1 * u.m**3/u.s),
+                      (1 * u.m, 1, 0 * u.m**3/u.s),
+                      (1 * u.m, -1, 1 * u.m**3/u.s),
+                      (1 * u.m, 2, 1 * u.m**3/u.s),
+                      (1 * u.m, 0, 1 * u.m**3/u.s))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.area_orifice, *i)
-        pc.area_orifice(1, 1, 1)
 
     def test_num_orifices(self):
         """num_orifices should return known value for known inputs."""
-        checks = (([0.12, 0.04, 0.05, 2], 1),
-                  ([6, 0.8, 0.08, 1.2], 6))
+        checks = (([0.12 * u.m**3/u.s, 0.04, 0.05 * u.m, 2 * u.m], 1 * u.dimensionless),
+                  ([6 * u.m**3/u.s, 0.8, 0.08 * u.m, 1.2 * u.m], 6 * u.dimensionless))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.num_orifices(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.num_orifices(*i[0]), i[1])
 
-class FlowFuncsTest(unittest.TestCase):
+class FlowFuncsTest(QuantityTest):
     """Test the flow functions."""
     def test_flow_transition(self):
         """flow_transition should return known value for known inputs."""
-        checks = (([2, 0.4], 1319.4689145077132),
-                  ([0.8, 1.1], 1451.4158059584847))
+        checks = (([2 * u.m, 0.4 * u.m**2/u.s], 1319.4689145077132 * u.m**3/u.s),
+                  ([0.8 * u.m, 1.1 * u.m**2/u.s], 1451.4158059584847 * u.m**3/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.flow_transition(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.flow_transition(*i[0]), i[1])
 
     def test_flow_transition_range(self):
         """flow_transition should not accept inputs <= 0."""
-        checks = ((1, 0), (0, 1))
+        checks = ((1 * u.m, 0 * u.m**2/u.s), (0 * u.m, 1 * u.m**2/u.s))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.flow_transition, *i)
 
     def test_flow_hagen(self):
         """flow_hagen should return known value for known inputs."""
-        checks = (([1, 0.4, 5.21, 0.6], 0.03079864403023667),
-                  ([0.05, 0.0006, 0.3, 1.1], 2.7351295806397676e-09))
+        checks = (([1 * u.m, 0.4 * u.m, 5.21 * u.m, 0.6 * u.m**2/u.s], 0.03079864403023667 * u.m**3/u.s),
+                  ([0.05 * u.m, 0.0006 * u.m, 0.3 * u.m, 1.1 * u.m**2/u.s], 2.7351295806397676e-09 * u.m**3/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.flow_hagen(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.flow_hagen(*i[0]), i[1])
 
     def test_flow_hagen_range(self):
         """flow_hagen should raise errors when inputs are out of bounds."""
-        failChecks = ((0, 1, 1, 1), (1, -1, 1, 1), (1, 1, 0, 1), (1, 1, 1, 0))
+        failChecks = ((0 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s),
+                      (1 * u.m, -1 * u.m, 1 * u.m, 1 * u.m**2/u.s),
+                      (1 * u.m, 1 * u.m, 0 * u.m, 1 * u.m**2/u.s),
+                      (1 * u.m, 1 * u.m, 1 * u.m, 0 * u.m**2/u.s))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.flow_hagen, *i)
-        passChecks = ((1, 1, 1, 1), (1, 0, 1, 1))
+        passChecks = ((1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s),
+                      (1 * u.m, 0 * u.m, 1 * u.m, 1 * u.m**2/u.s))
         for i in passChecks:
             with self.subTest(i=i):
                 pc.flow_hagen(*i)
 
     def test_flow_swamee(self):
         """flow_swamee should return known value for known inputs."""
-        checks = (([2, 0.04, 3, 0.1, 0.37], 2.9565931732010045),)
+        checks = (([2 * u.m, 0.04 * u.m, 3 * u.m, 0.1 * u.m**2/u.s, 0.37 * u.m], 2.9565931732010045 * u.m**3/u.s),)
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.flow_swamee(*i[0]).magnitude, i[1])
+                self.assertAlmostEqual(pc.flow_swamee(*i[0]), i[1])
 
     def test_flow_swamee_range(self):
         """flow_swamee should raise errors when inputs are out of bounds."""
-        failChecks = ((0, 1, 1, 1, 1), (1, 0, 1, 1, 1), (1, 1, 0, 1, 1),
-                      (1, 1, 1, 0, 1), (1, 1, 1, 1, -0.1), (1, 1, 1, 1, 2))
+        failChecks = ((0 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m, 0 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m, 1 * u.m, 0 * u.m, 1 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m, 1 * u.m, 1 * u.m, 0 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, -0.1 * u.m),
+                      (1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 2 * u.m))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.flow_swamee, *i)
-        passChecks = ((1, 1, 1, 1, 1), (1, 1, 1, 1, 0))
+        passChecks = ((1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 0 * u.m))
         for i in passChecks:
             with self.subTest(i=i):
                 pc.flow_swamee(*i)
