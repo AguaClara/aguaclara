@@ -232,18 +232,16 @@ def get_sdr(spec):
     return int(spec[3:])
 
 def list_handler():
-    """Wraps a function to handle list inputs. The function must output a
-    **quantity with units**.
-
-    For each argument passed to the function as a sequence (list, tuple, or
-    Numpy array), this wrapper will recursively evaluate the function with the
-    sequence replaced by each of its elements and return the results in a
-    sequence.
+    """Wraps a scalar function to output a NumPy array if passed one or more inputs
+    as sequences (lists, tuples or NumPy arrays). For each sequence input, this
+    wrapper will recursively evaluate the function with the sequence replaced
+    by each of its elements and return the results in n-dimensional NumPy array,
+    where n is the number of sequence inputs.
 
     For a function "f" of one argument, f([x_1, ..., x_n]) would be evaluated to
     [f(x_1), ..., f(x_n)]. For a function passed multiple sequences of
     dimensions d_1, ..., d_n (from left to right), the result would be a
-    d_1 x ... x d_n dimensional array.
+    d_1 x ... x d_n array.
     """
     def decorate(func):
         @functools.wraps(func) # For Sphinx documentation of decorated functions
@@ -268,8 +266,7 @@ def list_handler():
                     kwargsFirstSequence = keyword
                     break
 
-            # If there are no sequences, evaluate the function with the given
-            # arguments.
+            # If there are no sequences, evaluate the function.
             if argsFirstSequence is None and kwargsFirstSequence is None:
                 return func(*args, **kwargs)
             # If there are sequences, iterate through them from left to right.
@@ -279,7 +276,7 @@ def list_handler():
                 argsList = list(args)
                 # For each element of the leftmost sequence, evaluate the
                 # function with the sequence replaced by the single element.
-                # Store the results of all the elements in a list (result).
+                # Store the results of all the elements in result.
                 for arg in argsList[argsFirstSequence]:
                     # We can safely redefine the entire list argument because
                     # the new definition remains within this namespace; it does
@@ -296,10 +293,12 @@ def list_handler():
                     kwargs[kwargsFirstSequence] = arg
                     result.append(wrapper(*args, **kwargs))
 
-            units = result[0].units
-            result = np.array([r.magnitude for r in result]) * units
+            if isinstance(result[0], u.Quantity):
+                units = result[0].units
+                return np.array([r.magnitude for r in result]) * units
+            else:
+                return np.array(result)
 
-            return result
         return wrapper
     return decorate
 

@@ -100,3 +100,6 @@ class UtilityTest(QuantityTest):
 
         answer = np.array([254.647908947, 218.26963624, 190.98593171]) * u.dimensionless
         self.assertAlmostEqualArrayQuantity(re_pipe(12 * u.m**3/u.s, [6, 7, 8] * u.m, 0.01 * u.m**2/u.s), answer)
+
+        answer = np.array([254.647908947, 218.26963624, 190.98593171])
+        self.assertAlmostEqualArray(re_pipe(12, [6, 7, 8], 0.01), answer)
