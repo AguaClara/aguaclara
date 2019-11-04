@@ -1,6 +1,6 @@
 """The filter of an AguaClara water treatment plant
 
-#. filters the water through sand and manifold pipes
+#. Uses the OStaRS design to filter water with manifolds and sand
 #. contains the filter box as a subcomponent
 
 Example:
@@ -32,51 +32,51 @@ class Filter(Component):
         - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
           20°C)
         - ``backwash_vel (float * u.mm/u.s)``: Backwash velocity (optional, 
-        defaults to 11mm/s)
+          defaults to 11mm/s)
         - ``layer_n (float)``: Number of Layers (optional, defaults to 6)
         - ``layer_h (float * u.cm)``: Height of layers (optional, defaults to 
-        20 cm)
+          20 cm)
         - ``sand_density (float * u.kg/u.m**3)``: Density of sand (optional, 
-        defaults to 2650kg/m**3)
+          defaults to 2650kg/m**3)
         - ``filter_hl_max (float * u.cm)``: Max headloss of filter (optional, 
-        defaults to 80 cm)
+          defaults to 80 cm)
         - ``siphone_vent_t (float * u.s)``: Time of the siphon vent (optional, 
-        defaults to 15 s)
+          defaults to 15 s)
         - ``branch_s (float * u.cm)``: The spacing between branches (optional, 
-        defaults to 10 cm)
+          defaults to 10 cm)
         - ``trunk_max_size (float * u.inch)``: The max size of the trunk 
-        (optional, defaults to 8 in)
+          (optional, defaults to 8 in)
         - ``backwash_orifice_hl (float * u.cm)``: Headloss of the orifice 
-        backwash (optional, defaults to 15 cm)
+          backwash (optional, defaults to 15 cm)
         - ``trunk_spec (string)``: The specs of the trunk 
-        (optional, defaults to 'sdr26')
+          (optional, defaults to 'sdr26')
         - ``branch_spec (string)``: The specs of the branch 
-        (optional, defaults to 'sdr26')
+          (optional, defaults to 'sdr26')
         - ``q_ratio (float)``:  Ratio of the flow rate 
-        (optional, defaults to 0.85)
+          (optional, defaults to 0.85)
         - ``branch_size (float * u.in)``: Size of the branches 
-        (optional, defaults to 1 in)
+          (optional, defaults to 1 in)
         - ``branch_size_backwash (float * u.in)``: Size of the brach backwash 
-        (optional, defaults to 1.5 in)
+          (optional, defaults to 1.5 in)
         - ``temp_min (float * u.degC)``: Minimum temperature (optional, defaults to 10 deg C)
         - ``temp_max (float * u.degC)``: Maximum temperature (optional, defaults to 30 deg C)
         - ``ratio_qp (float)``: Ratio of min port flow over max port flow (optional, defaults to 0.85)
         - ``trunk_size (float * u.inch)``: The size of the trunk (optional, defaults to 6 in)
         - ``trunk_length (float * u.m)``: The length of the trunk manifold (optional, defaults to 6m)
         - ``filter_v (float * u.mm/u.s/6)``: The velocity of the filter 
-        (optional, defaults to 66 mm/s/6)
+          (optional, defaults to 66 mm/s/6)
         - ``sand_d (float * u.mm)``: The diameter of a sand particle (optional, 
-        defaults to 0.5 * u.mm)
+          defaults to 0.5 * u.mm)
         - ``sand_porosity (float)``: The porosity of the sand (optional, 
-        defaults to 0.4)
+          defaults to 0.4)
         - ``orifice_filter_hl (float * u.cm)``: Headloss of the orifice 
-        filter (optional, default to 0cm)
+          filter (optional, default to 0cm)
         - ``drain_t (float * u.min)``: Duration of draining 
-        (optional, defaults to 1 min)
+          (optional, defaults to 1 min)
         - ``tank_a (float * u.m**2)``: The area of the tank 
-        (optional, defaults to 2m**2)
+          (optional, defaults to 2m**2)
         - ``tank_h (float * u.m)``: Height of the tank 
-        (optional, defaults to 2m)
+          (optional, defaults to 2m)
     """
 
     def __init__(self, **kwargs):

@@ -12,4 +12,6 @@ Design
     sed
     sed_chan
     sed_tank
+    filter
+    filter_box
     pipeline
