@@ -1,13 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jul 7 11:51:51 2017
-
-@author: Sage Weber-Shirk
-
-Last modified: Tue July 4 2019
-By: Hannah Si
-"""
-
 from aguaclara.core.units import u
 from aguaclara.core import physchem as pc
 import unittest
@@ -565,7 +556,7 @@ class FlowFuncsTest(QuantityTest):
         checks = (([2 * u.m, 0.04 * u.m, 3 * u.m, 0.1 * u.m**2/u.s, 0.37 * u.m], 2.9565931732010045 * u.m**3/u.s),)
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.flow_swamee(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.flow_swamee(*i[0]), i[1])
 
     def test_flow_swamee_range(self):
         """flow_swamee should raise errors when inputs are out of bounds."""
@@ -586,199 +577,211 @@ class FlowFuncsTest(QuantityTest):
 
     def test_flow_pipemajor(self):
         """flow_pipemajor should return known result for known inputs."""
-        checks = (([1, 0.97, 0.5, 0.025, 0.06], 18.677652880272845),
-                  ([2, 0.62, 0.5, 0.036, 0.23], 62.457206502701297))
+        checks = (([1 * u.m, 0.97 * u.m, 0.5 * u.m, 0.025 * u.m**2/u.s, 0.06 * u.m], 18.677652880272845 * u.m**3/u.s),
+                  ([2 * u.m, 0.62 * u.m, 0.5 * u.m, 0.036 * u.m**2/u.s, 0.23 * u.m], 62.457206502701297 * u.m**3/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.flow_pipemajor(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.flow_pipemajor(*i[0]), i[1])
 
     def test_flow_pipeminor(self):
         """flow_pipeminor should return known results for known input."""
-        self.assertAlmostEqual(pc.flow_pipeminor(1, 0.125, 3).magnitude,
-                         0.71000203931611083)
+        self.assertAlmostEqualQuantity(pc.flow_pipeminor(1 * u.m, 0.125 * u.m, 3),
+                         0.71000203931611083 * u.m**3/u.s)
 
     def test_flow_pipeminor_range(self):
         """flow_pipeminor should raise errors when inputs are out of bounds."""
-        failChecks = ((1, -1, 1), (1, 1, 0))
+        failChecks = ((1 * u.m, -1 * u.m, 1),
+                      (1 * u.m, 1 * u.m, 0 * u.dimensionless))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.flow_pipeminor, *i)
-        passChecks = ((1, 1, 1), (1, 0, 1))
+        passChecks = ((1 * u.m, 1 * u.m, 1), (1 * u.m, 0 * u.m, 1))
         for i in passChecks:
             with self.subTest(i=i):
                 pc.flow_pipeminor(*i)
 
     def test_flow_pipe(self):
         """flow_pipe should return known value for known inputs."""
-        checks = (([0.25, 0.4, 2, 0.58, 0.029, 0], 0.000324207170118938),
-                  ([0.25, 0.4, 2, 0.58, 0.029, 0.35], 0.000324206539183988))
+        checks = (([0.25 * u.m, 0.4 * u.m, 2 * u.m, 0.58 * u.m**2/u.s, 0.029 * u.m, 0], 0.000324207170118938 * u.m**3/u.s),
+                  ([0.25 * u.m, 0.4 * u.m, 2 * u.m, 0.58 * u.m**2/u.s, 0.029 * u.m, 0.35 * u.dimensionless], 0.000324206539183988 * u.m**3/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.flow_pipe(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.flow_pipe(*i[0]), i[1])
 
 
-class DiamFuncsTest(unittest.TestCase):
+class DiamFuncsTest(QuantityTest):
     """Test the diameter functions."""
     def test_diam_hagen(self):
         """diam_hagen should return known value for known inputs."""
-        self.assertAlmostEqual(pc.diam_hagen(0.006, 0.00025, 0.75, 0.0004).magnitude,
-                         0.4158799465199102)
+        self.assertAlmostEqualQuantity(pc.diam_hagen(0.006 * u.m**3/u.s, 0.00025 * u.m, 0.75 * u.m, 0.0004 * u.m**2/u.s),
+                         0.4158799465199102 * u.m)
 
     def test_diam_hagen_range(self):
         """diam_hagen should raise errors when inputs are out of bounds."""
-        failChecks = ((0, 1, 1, 1), (1, 0, 1, 1), (1, 1, 0, 1), (1, 1, 1, 0))
+        failChecks = ((0 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s),
+                      (1 * u.m**3/u.s, 0 * u.m, 1 * u.m, 1 * u.m**2/u.s),
+                      (1 * u.m**3/u.s, 1 * u.m, 0 * u.m, 1 * u.m**2/u.s),
+                      (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 0 * u.m**2/u.s))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.diam_hagen, *i)
-        pc.diam_hagen(1, 1, 1, 1)
 
     def test_diam_swamee(self):
         """diam_swamee should return known value for known input."""
-        self.assertAlmostEqual(pc.diam_swamee(0.06, 1.2, 7, 0.2, 0.0004).magnitude,
-                         0.19286307314945772)
+        self.assertAlmostEqualQuantity(pc.diam_swamee(0.06 * u.m**3/u.s, 1.2 * u.m, 7 * u.m, 0.2* u.m**2/u.s, 0.0004 * u.m),
+                         0.19286307314945772 * u.m)
 
     def test_diam_swamee_range(self):
         """diam_swamee should raise errors if inputs are out of bounds."""
-        failChecks = ((0, 1, 1, 1, 1), (1, 0, 1, 1, 1), (1, 1, 0, 1, 1),
-                      (1, 1, 1, 0, 1), (1, 1, 1, 1, 2), (1, 1, 1, 1, -1))
+        failChecks = ((0 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m**3/u.s, 0 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m**3/u.s, 1 * u.m, 0 * u.m, 1 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 0 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 2 * u.m),
+                      (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, -1 * u.m))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.diam_swamee, *i)
-        passChecks = ((1, 1, 1, 1, 1), (1, 1, 1, 1, 0))
+        passChecks = ((1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m),
+                      (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 0 * u.m))
         for i in passChecks:
             with self.subTest(i=i):
                 pc.diam_swamee(*i)
 
     def test_diam_pipemajor(self):
         """diam_pipemajor should return known value for known inputs."""
-        checks = (([0.005, 0.03, 1.6, 0.53, 0.002], 0.8753787620849313),
-                  ([1, 2, 0.03, 0.004, 0.005], 0.14865504303291951))
+        checks = (([0.005 * u.m**3/u.s, 0.03 * u.m, 1.6 * u.m, 0.53 * u.m**2/u.s, 0.002 * u.m], 0.8753787620849313 * u.m),
+                  ([1 * u.m**3/u.s, 2 * u.m, 0.03 * u.m, 0.004 * u.m**2/u.s, 0.005 * u.m], 0.14865504303291951 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.diam_pipemajor(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.diam_pipemajor(*i[0]), i[1])
 
     def test_diam_pipeminor(self):
         """diam_pipeminor should return known value for known inputs."""
-        checks = (([0.008, 0.012, 0.93], 0.14229440061589257),
-                  ([0.015, 0.3, 0.472], 0.073547549463488848))
+        checks = (([0.008 * u.m**3/u.s, 0.012 * u.m, 0.93], 0.14229440061589257 * u.m),
+                  ([0.015 * u.m**3/u.s, 0.3 * u.m, 0.472 * u.dimensionless], 0.073547549463488848 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.diam_pipeminor(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.diam_pipeminor(*i[0]), i[1])
 
     def test_diam_pipeminor_range(self):
         """diam_pipeminor should raise errors when inputs are out of bounds."""
-        failChecks = ((0, 1, 1), (1, 0, 1), (1, 1, -1))
+        failChecks = ((0 * u.m**3/u.s, 1 * u.m, 1),
+                      (1 * u.m**3/u.s, 0 * u.m, 1),
+                      (1 * u.m**3/u.s, 1 * u.m, -1 * u.dimensionless))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.diam_pipeminor, *i)
-        passChecks = ((1, 1, 1), (1, 1, 0))
+        passChecks = ((1 * u.m**3/u.s, 1 * u.m, 1),
+                      (1 * u.m**3/u.s, 1 * u.m, 0))
         for i in passChecks:
             with self.subTest(i=i):
                 pc.diam_pipeminor(*i)
 
     def test_diam_pipe(self):
         """diam_pipe should return known value for known inputs."""
-        checks = (([0.007, 0.04, 0.75, 0.16, 0.0079, 0], 0.5434876490369928),
-                  ([0.007, 0.04, 0.75, 0.16, 0.0079, 0.8], 0.5436137491479152))
+        checks = (([0.007 * u.m**3/u.s, 0.04 * u.m, 0.75 * u.m, 0.16 * u.m**2/u.s, 0.0079 * u.m, 0], 0.5434876490369928 * u.m),
+                  ([0.007 * u.m**3/u.s, 0.04 * u.m, 0.75 * u.m, 0.16 * u.m**2/u.s, 0.0079 * u.m, 0.8 * u.dimensionless], 0.5436137491479152 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.diam_pipe(*i[0]).magnitude, i[1])
+                self.assertAlmostEqualQuantity(pc.diam_pipe(*i[0]), i[1])
 
-class WeirFuncsTest(unittest.TestCase):
+class WeirFuncsTest(QuantityTest):
     """Test the weir functions."""
     def test_width_rect_weir(self):
         """width_rect_weir should return known value for known inputs."""
-        self.assertAlmostEqual(pc.width_rect_weir(0.005, 0.2).magnitude,
-                         0.030, places=3)
+        self.assertAlmostEqualQuantity(pc.width_rect_weir(0.005 * u.m**3/u.s, 0.2 * u.m),
+                         0.03005386871 * u.m)
 
     def test_width_rect_weir_range(self):
         """width_rect_weird should raise errors when inputs are out of bounds."""
-        checks = ((0, 1), (1, 0))
+        checks = ((0 * u.m**3/u.s, 1 * u.m), (1 * u.m**3/u.s, 0 * u.m))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.width_rect_weir, *i)
-        pc.width_rect_weir(1, 1)
 
     def test_headloss_weir(self):
         """headloss_weir should return known value for known inputs."""
-        self.assertAlmostEqual(pc.headloss_weir(0.005, 1).magnitude,
-                         0.019, places=3)
+        self.assertAlmostEqualQuantity(pc.headloss_weir(0.005 * u.m**3/u.s, 1 * u.m),
+                                       0.01933289619 * u.m)
 
     def test_headloss_weir_range(self):
         """headloss_weir should raise errors when inputs are out of bounds."""
-        checks = ((0, 1), (1, 0))
+        checks = ((0 * u.m**3/u.s, 1 * u.m), (1 * u.m**3/u.s, 0 * u.m))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.headloss_weir, *i)
-        pc.headloss_weir(1,1)
 
     def test_flow_rect_weir(self):
         """flow_rect_weir should return known value for known inputs."""
-        self.assertAlmostEqual(pc.flow_rect_weir(2, 1).magnitude, 5.261, places=3)
+        self.assertAlmostEqualQuantity(pc.flow_rect_weir(2 * u.m, 1 * u.m),
+                                       5.2610159627 * u.m**3/u.s)
 
     def test_flow_rect_weir_range(self):
         """flow_rect_weir should raise errors when inputs are out of bounds."""
-        checks = ((0, 1), (1, 0))
+        checks = ((0 * u.m, 1 * u.m), (1 * u.m, 0 * u.m))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.flow_rect_weir, *i)
-        pc.flow_rect_weir(1, 1)
 
-
-class MiscPhysFuncsTest(unittest.TestCase):
-    """Test the miscellaneous physchem functions."""
-    def test_height_water_critical(self):
-        """height_water_critical should return known value for known inputs."""
-        self.assertAlmostEqual(pc.height_water_critical(0.006, 1.2).magnitude,
-                         0.013660704939951886)
-
-    def test_height_water_critical_range(self):
-        """height_water_critical should raise errors when inputs are out of bounds."""
-        checks = ((0, 1), (1, 0))
-        for i in checks:
-            with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.height_water_critical, *i)
-        pc.height_water_critical(1, 1)
-
-    def test_vel_horizontal(self):
-        """vel_horizontal should return known value for known inputs."""
-        self.assertAlmostEqual(pc.vel_horizontal(0.03).magnitude, 0.5424016039799292)
-
-    def test_vel_horizontal_range(self):
-        """vel_horizontzal should raise an errors when input is <= 0."""
-        self.assertRaises(ValueError, pc.vel_horizontal, 0)
-
+class PorousMediaFuncsTest(QuantityTest):
     def test_headloss_kozeny(self):
         """headloss_kozeny should return known value for known input."""
-        self.assertAlmostEqual(pc.headloss_kozeny(1, 1.4, 0.5, 0.625, 0.8).magnitude,
-                         2.1576362645214617)
+        self.assertAlmostEqualQuantity(pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s),
+                                       2.1576362645214617 * u.m)
 
     def test_headloss_kozeny_range(self):
         """headloss_kozeny should raise errors when inputs are out of bounds."""
-        checks = ((0, 1, 1, 1, 1), (1, 0, 1, 1, 1), (1, 1, 0, 1, 1),
-                  (1, 1, 1, 1, 0), (1, 1, 1, -1, 1), (1, 1, 1, 2, 1))
+        checks = ((0 * u.m, 1 * u.m, 1 * u.m/u.s, 1, 1 * u.m**2/u.s),
+                  (1 * u.m, 0 * u.m, 1 * u.m/u.s, 1, 1 * u.m**2/u.s),
+                  (1 * u.m, 1 * u.m, 0 * u.m/u.s, 1, 1 * u.m**2/u.s),
+                  (1 * u.m, 1 * u.m, 1 * u.m/u.s, 1, 0 * u.m**2/u.s),
+                  (1 * u.m, 1 * u.m, 1 * u.m/u.s, -1, 1 * u.m**2/u.s),
+                  (1 * u.m, 1 * u.m, 1 * u.m/u.s, 2, 1 * u.m**2/u.s))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.headloss_kozeny, *i)
-        pc.headloss_kozeny(1, 1, 1, 1, 1)
 
-    def test_headloss_kozeny_units(self):
-        """headloss_kozeny should handle units correctly."""
-        base = pc.headloss_kozeny(1, 1.4, 0.5, 0.625, 0.8).magnitude
-        checks = ([1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s,
-                   0.625 * u.m, 0.8 * u.m**2/u.s],
-                  [100 * u.cm, 1.4, 0.5, 0.625, 0.8],
-                  [1, 0.0014 * u.km, 0.5, 0.625, 0.8],
-                  [1, 1.4, 30 * u.m/u.min, 0.625, 0.8],
-                  [1, 1.4, 0.5, 625 * u.mm, 0.8],
-                  [1, 1.4, 0.5, 0.625, 8000 * u.cm**2/u.s])
+    def test_re_ergun(self):
+        self.assertAlmostEqualQuantity(pc.re_Ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2),
+                                       139.49692604 * u.dimensionless)
+
+    def test_re_ergun_range(self):
+        checks = ((0 * u.m/u.s, 1 * u.m, 1 * u.degK, 1),
+                  (1 * u.m/u.s, 0 * u.m, 1 * u.degK, 1),
+                  (1 * u.m/u.s, 1 * u.m, 0 * u.degK, 1 * u.dimensionless),
+                  (1 * u.m/u.s, 1 * u.m, 1 * u.degK, -1 * u.dimensionless))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqual(pc.headloss_kozeny(*i).magnitude, base)
+                self.assertRaises(ValueError, pc.re_Ergun, *i)
+
+
+class MiscPhysFuncsTest(QuantityTest):
+    """Test the miscellaneous physchem functions."""
+    def test_height_water_critical(self):
+        """height_water_critical should return known value for known inputs."""
+        self.assertAlmostEqualQuantity(pc.height_water_critical(0.006 * u.m**3/u.s, 1.2 * u.m),
+                         0.013660704939951886 * u.m)
+
+    def test_height_water_critical_range(self):
+        """height_water_critical should raise errors when inputs are out of bounds."""
+        checks = ((0 * u.m**3/u.s, 1 * u.m), (1 * u.m**3/u.s, 0 * u.m))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(ValueError, pc.height_water_critical, *i)
+
+    def test_vel_horizontal(self):
+        """vel_horizontal should return known value for known inputs."""
+        self.assertAlmostEqualQuantity(pc.vel_horizontal(0.03 * u.m), 0.5424016039799292 * u.m/u.s)
+
+    def test_vel_horizontal_range(self):
+        """vel_horizontzal should raise an errors when input is <= 0."""
+        self.assertRaises(ValueError, pc.vel_horizontal, 0 * u.m)
 
     def test_pipe_ID(self):
         """pipe_ID should return known value for known input"""
-        self.assertAlmostEqual(pc.pipe_ID(0.006, 1.2).magnitude, 0.039682379412712764)
+        self.assertAlmostEqualQuantity(pc.pipe_ID(0.006 * u.m**3/u.s, 1.2 * u.m),
+                                       0.039682379412712764 * u.m)
 
 
 if __name__ == "__main__":

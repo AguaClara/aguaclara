@@ -2,7 +2,7 @@
 and chemical unit processes for AguaClara water treatment plants.
 """
 
-from aguaclara.core.units import unit_registry as u
+from aguaclara.core.units import u
 import aguaclara.core.constants as con
 import aguaclara.core.utility as ut
 import aguaclara.core.pipes as pipe
@@ -30,9 +30,7 @@ def density_air(Pressure, MolarMass, Temperature):
     """
     return (Pressure * MolarMass / (u.R * Temperature)).to(u.kg/u.m**3)
 
-####################### Simple geometry #######################
-"""A few equations for useful geometry.
-Is there a geometry package that we should be using?"""
+########################## Geometry ###########################
 
 
 @ut.list_handler()
@@ -63,13 +61,11 @@ def diam_circle(AreaCircle):
     ut.check_range([AreaCircle.magnitude, ">0", "AreaCircle"])
     return np.sqrt(4 * AreaCircle / np.pi)
 
-######################### Hydraulics #########################
+####################### Water Properties #######################
 
 
 #:
 RE_TRANSITION_PIPE = 2100
-
-K_KOZENY = con.K_KOZENY
 
 #: Table of temperatures and the corresponding water density.
 #:
@@ -128,6 +124,8 @@ def viscosity_kinematic(temp):
     ut.check_range([temp.magnitude, ">0", "Temperature in Kelvin"])
     return (viscosity_dynamic(temp) / density_water(temp))
 
+####################### Hydraulic Radius #######################
+
 
 @ut.list_handler()
 def radius_hydraulic(Width, Depth, openchannel):
@@ -169,6 +167,8 @@ def radius_hydraulic_general(Area, PerimWetted):
     ut.check_range([Area.magnitude, ">0", "Area"],
                    [PerimWetted.magnitude, ">0", "Wetted perimeter"])
     return Area / PerimWetted
+
+####################### Reynolds Number #######################
 
 
 @ut.list_handler()
@@ -234,6 +234,8 @@ def re_general(Vel, Area, PerimWetted, Nu):
     ut.check_range([Vel.magnitude, ">=0", "Velocity"],
                    [Nu.magnitude, ">0", "Nu"])
     return 4 * radius_hydraulic_general(Area, PerimWetted) * Vel / Nu
+
+########################### Friction ###########################
 
 
 @ut.list_handler()
@@ -349,6 +351,8 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
     else:
         f = 64 / re_general(Vel, Area, PerimWetted, Nu)
     return f * u.dimensionless
+
+######################### Head Loss #########################
 
 
 @ut.list_handler()
@@ -633,6 +637,8 @@ def elbow_minor_loss(q, id_, k):
     minor_loss = k * vel ** 2 / (2 * u.gravity)
     return minor_loss.to(u.m)
 
+######################### Orifices #########################
+
 
 @ut.list_handler()
 def flow_orifice(Diam, Height, RatioVCOrifice):
@@ -730,11 +736,11 @@ def area_orifice(Height, RatioVCOrifice, FlowRate):
 
 
 @ut.list_handler()
-def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
+def num_orifices(FlowRate, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
     """Return the number of orifices.
 
-    :param FlowPlant: flow rate of plant
-    :type FlowPlant: u.m**3/u.s
+    :param FlowRate: flow rate of orifice
+    :type FlowRate: u.m**3/u.s
     :param RatioVCOrifice: vena contracta ratio of orifice
     :type RatioVCOrifice: u.dimensionless or unitless
     :param HeadLossOrifice: head loss of orifice
@@ -745,8 +751,10 @@ def num_orifices(FlowPlant, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
     :return: number of orifices
     :rtype: u.dimensionless
     """
-    return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice, FlowPlant)
+    return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice, FlowRate)
                    / area_circle(DiamOrifice)).to(u.dimensionless)
+
+########################### Flows ###########################
 
 
 @ut.list_handler()
@@ -824,71 +832,101 @@ def flow_swamee(Diam, HeadLossFric, Length, Nu, PipeRough):
             ).to(u.m**3/u.s)
 
 
-# @u.wraps(u.m**3/u.s, [u.m, u.m, u.m, u.m**2/u.s, u.m], False)
 @ut.list_handler()
 def flow_pipemajor(Diam, HeadLossFric, Length, Nu, PipeRough):
     """Return the flow rate with only major losses.
 
     This function applies to both laminar and turbulent flows.
+
+    :param Diam: diameter of pipe
+    :type Diam: u.m
+    :param HeadLossFric: head loss due to friction
+    :type HeadLossFric: u.m
+    :param Length: length of pipe
+    :type Length: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of pipe
+    :type PipeRough: u.m
+
+    :return: flow rate with only major losses
+    :rtype: u.m**3/u.s
     """
-    #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
-    FlowHagen = flow_hagen(Diam, HeadLossFric, Length, Nu).magnitude
-    if FlowHagen < flow_transition(Diam, Nu).magnitude:
+    FlowHagen = flow_hagen(Diam, HeadLossFric, Length, Nu)
+    if FlowHagen < flow_transition(Diam, Nu):
         return FlowHagen
     else:
-        return flow_swamee(Diam, HeadLossFric, Length, Nu, PipeRough).magnitude
+        return flow_swamee(Diam, HeadLossFric, Length, Nu, PipeRough)
 
 
-@u.wraps(u.m**3/u.s, [u.m, u.m], False)
+@ut.list_handler()
 def flow_pipeminor(Diam, HeadLossExpans, KMinor):
     """Return the flow rate with only minor losses.
 
     This function applies to both laminar and turbulent flows.
-    """
-    #Checking input validity - inputs not checked here are checked by
-    #functions this function calls.
-    ut.check_range([HeadLossExpans, ">=0", "Headloss due to expansion"],
-                   [KMinor, ">0", "K minor"])
-    return (area_circle(Diam).magnitude * np.sqrt(2 * u.gravity.magnitude
-                                                  * HeadLossExpans
-                                                  / KMinor)
-            )
 
-# Now we put all of the flow equations together and calculate the flow in a
-# straight pipe that has both major and minor losses and might be either
-# laminar or turbulent.
-@u.wraps(u.m**3/u.s, (u.m, u.m, u.m, u.m**2/u.s, u.m), False)
+    :param Diam: diameter of pipe
+    :type Diam: u.m
+    :param HeadLossExpans: head loss due to expansion
+    :type HeadLossExpans: u.m
+    :param KMinor: minor loss coefficient
+    :type KMinor: u.dimensionless or unitless
+
+    :return: flow rate with only minor losses
+    :rtype: u.m**3/u.s
+    """
+    ut.check_range([HeadLossExpans.magnitude, ">=0",
+                    "Headloss due to expansion"],
+                   [KMinor, ">0", "K minor"])
+    return (area_circle(Diam) * np.sqrt(2 * u.gravity * HeadLossExpans
+                                        / KMinor)
+            ).to(u.m**3/u.s)
+
+
 @ut.list_handler()
 def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
-    """Return the the flow in a straight pipe.
+    """Return the flow rate in a pipe.
 
-    This function works for both major and minor losses and
-    works whether the flow is laminar or turbulent.
+    This function works for both major and minor losses as well as
+    both laminar and turbulent flows.
+
+    :param Diam: diameter of pipe
+    :type Diam: u.m
+    :param HeadLoss: total head loss from major and minor losses
+    :type HeadLoss: u.m
+    :param Length: length of pipe
+    :type Length: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of pipe
+    :type PipeRough: u.m
+    :param KMinor: minor loss coefficient
+    :type KMinor: u.dimensionless or unitless
+
+    :return: flow rate in pipe
+    :rtype: u.m**3/u.s
     """
-    #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
     if KMinor == 0:
         FlowRate = flow_pipemajor(Diam, HeadLoss, Length, Nu,
-                                  PipeRough).magnitude
+                                  PipeRough)
     else:
         FlowRatePrev = 0
         err = 1.0
         FlowRate = min(flow_pipemajor(Diam, HeadLoss, Length,
-                                      Nu, PipeRough).magnitude,
-                       flow_pipeminor(Diam, HeadLoss, KMinor).magnitude
+                                      Nu, PipeRough),
+                       flow_pipeminor(Diam, HeadLoss, KMinor)
                        )
         while err > 0.01:
             FlowRatePrev = FlowRate
             HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length,
-                                                  Nu, PipeRough).magnitude
+                                                  Nu, PipeRough)
                          / (headloss_fric(FlowRate, Diam, Length,
-                                          Nu, PipeRough).magnitude
-                            + headloss_exp(FlowRate, Diam, KMinor).magnitude
+                                          Nu, PipeRough)
+                            + headloss_exp(FlowRate, Diam, KMinor)
                             )
                          )
             FlowRate = flow_pipemajor(Diam, HLFricNew, Length,
-                                      Nu, PipeRough).magnitude
+                                      Nu, PipeRough)
             if FlowRate == 0:
                 err = 0.0
             else:
@@ -897,172 +935,299 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, PipeRough, KMinor):
                        )
     return FlowRate
 
+########################## Diameters ##########################
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s], False)
+
+@ut.list_handler()
 def diam_hagen(FlowRate, HeadLossFric, Length, Nu):
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Length, ">0", "Length"],
-                   [HeadLossFric, ">0", "Headloss due to friction"],
-                   [Nu, ">0", "Nu"])
-    return ((128 * Nu * FlowRate * Length)
-            / (u.gravity.magnitude * HeadLossFric * np.pi)
-            ) ** (1/4)
+    """Return the inner diameter of a pipe with laminar flow and no minor losses.
+
+    The Hagen Poiseuille equation is dimensionally correct and returns the
+    inner diameter of a pipe given the flow rate and the head loss due
+    to shear on the pipe walls. The Hagen Poiseuille equation does NOT take
+    minor losses into account. This equation ONLY applies to laminar flow.
+
+    :param FlowRate: flow rate of pipe
+    :type FlowRate: u.m**3/u.s
+    :param HeadLossFric: head loss due to friction
+    :type HeadLossFric: u.m
+    :param Length: length of pipe
+    :type Length: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+
+    :return: inner diameter of pipe
+    :rtype: u.m
+    """
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Length.magnitude, ">0", "Length"],
+                   [HeadLossFric.magnitude, ">0", "Headloss due to friction"],
+                   [Nu.magnitude, ">0", "Nu"])
+    return (((128 * Nu * FlowRate * Length)
+             / (u.gravity * HeadLossFric * np.pi)
+             ) ** (1/4)).to(u.m)
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
+@ut.list_handler()
 def diam_swamee(FlowRate, HeadLossFric, Length, Nu, PipeRough):
-    """Return the inner diameter of a pipe.
+    """Return the inner diameter of a pipe with turbulent flow and no minor losses.
 
     The Swamee Jain equation is dimensionally correct and returns the
     inner diameter of a pipe given the flow rate and the head loss due
     to shear on the pipe walls. The Swamee Jain equation does NOT take
     minor losses into account. This equation ONLY applies to turbulent
     flow.
+
+    :param FlowRate: flow rate of pipe
+    :type FlowRate: u.m**3/u.s
+    :param HeadLossFric: head loss due to friction
+    :type HeadLossFric: u.m
+    :param Length: length of pipe
+    :type Length: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of pipe
+    :type PipeRough: u.m
+
+    :return: inner diameter of pipe
+    :rtype: u.m
     """
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Length, ">0", "Length"],
-                   [HeadLossFric, ">0", "Headloss due to friction"],
-                   [Nu, ">0", "Nu"], [PipeRough, "0-1", "Pipe roughness"])
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Length.magnitude, ">0", "Length"],
+                   [HeadLossFric.magnitude, ">0", "Headloss due to friction"],
+                   [Nu.magnitude, ">0", "Nu"],
+                   [PipeRough.magnitude, "0-1", "Pipe roughness"])
     a = ((PipeRough ** 1.25)
          * ((Length * FlowRate**2)
-            / (u.gravity.magnitude * HeadLossFric)
+            / (u.gravity * HeadLossFric)
             )**4.75
-         )
-    b = (Nu * FlowRate**9.4
-         * (Length / (u.gravity.magnitude *  HeadLossFric)) ** 5.2
-         )
+         ).to_base_units()
+    b = (Nu**5 * FlowRate**47
+         * (Length / (u.gravity * HeadLossFric)) ** 26
+         ).to_base_units()**0.2
     return 0.66 * (a+b)**0.04
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
 @ut.list_handler()
 def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
-    """Return the pipe IDiam that would result in given major losses.
+    """Return the pipe inner diameter that would result in given major losses.
+
     This function applies to both laminar and turbulent flow.
+
+    :param FlowRate: flow rate of pipe
+    :type FlowRate: u.m**3/u.s
+    :param HeadLossFric: head loss due to friction
+    :type HeadLossFric: u.m
+    :param Length: length of pipe
+    :type Length: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of pipe
+    :type PipeRough: u.m
+
+    :return: inner diameter of pipe
+    :rtype: u.m
     """
-    #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
-    DiamLaminar = diam_hagen(FlowRate, HeadLossFric, Length, Nu).magnitude
+    DiamLaminar = diam_hagen(FlowRate, HeadLossFric, Length, Nu)
     if re_pipe(FlowRate, DiamLaminar, Nu) <= RE_TRANSITION_PIPE:
         return DiamLaminar
     else:
         return diam_swamee(FlowRate, HeadLossFric, Length,
-                           Nu, PipeRough).magnitude
+                           Nu, PipeRough)
 
-@u.wraps(u.m, [u.m**3/u.s, u.m], False)
+
+@ut.list_handler()
 def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
-    """Return the pipe ID that would result in the given minor losses.
+    """Return the pipe inner diameter that would result in the given minor losses.
 
     This function applies to both laminar and turbulent flow.
+
+    :param FlowRate: flow rate of pipe
+    :type FlowRate: u.m**3/u.s
+    :param HeadLossExpans: head loss due to expansion
+    :type HeadLossExpans: u.m
+    :param KMinor: minor loss coefficient
+    :type KMinor: u.dimensionless or unitless
+
+    :return: inner diameter of pipe
+    :rtype: u.m
     """
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [KMinor, ">=0", "K minor"],
-                   [HeadLossExpans, ">0", "Headloss due to expansion"])
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [KMinor, ">=0", "K minor"],
+                   [HeadLossExpans.magnitude, ">0", "Headloss due to expansion"])
     return (np.sqrt(4 * FlowRate / np.pi)
-            * (KMinor / (2 * u.gravity.magnitude * HeadLossExpans)) ** (1/4)
-            )
+            * (KMinor / (2 * u.gravity * HeadLossExpans)) ** (1/4)
+            ).to(u.m)
 
 
-@u.wraps(u.m, [u.m**3/u.s, u.m, u.m, u.m**2/u.s, u.m], False)
 @ut.list_handler()
 def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
-    """Return the pipe ID that would result in the given total head loss.
+    """Return the pipe inner diameter that would result in the given total head
+    loss.
 
     This function applies to both laminar and turbulent flow and
     incorporates both minor and major losses.
+
+    :param FlowRate: flow rate of pipe
+    :type FlowRate: u.m**3/u.s
+    :param HeadLoss: total head loss from major and minor losses
+    :type HeadLoss: u.m
+    :param Length: length of pipe
+    :type Length: u.m
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+    :param PipeRough: roughness of pipe
+    :type PipeRough: u.m
+    :param KMinor: minor loss coefficient
+    :type KMinor: u.dimensionless or unitless
+
+    :return: inner diameter of pipe
+    :rtype: u.m
     """
-    #Inputs do not need to be checked here because they are checked by
-    #functions this function calls.
     if KMinor == 0:
         Diam = diam_pipemajor(FlowRate, HeadLoss, Length, Nu,
-                              PipeRough).magnitude
+                              PipeRough)
     else:
         Diam = max(diam_pipemajor(FlowRate, HeadLoss,
-                                  Length, Nu, PipeRough).magnitude,
-                   diam_pipeminor(FlowRate, HeadLoss, KMinor).magnitude)
+                                  Length, Nu, PipeRough),
+                   diam_pipeminor(FlowRate, HeadLoss, KMinor))
         err = 1.00
         while err > 0.001:
             DiamPrev = Diam
             HLFricNew = (HeadLoss * headloss_fric(FlowRate, Diam, Length,
                                                   Nu, PipeRough
-                                                  ).magnitude
+                                                  )
                          / (headloss_fric(FlowRate, Diam, Length,
                                           Nu, PipeRough
-                                          ).magnitude
+                                          )
                                           + headloss_exp(FlowRate,
                                                          Diam, KMinor
-                                                         ).magnitude
+                                                         )
                             )
                          )
             Diam = diam_pipemajor(FlowRate, HLFricNew, Length, Nu, PipeRough
-                                  ).magnitude
+                                  )
             err = abs(Diam - DiamPrev) / ((Diam + DiamPrev) / 2)
     return Diam
 
-# Weir head loss equations
-@u.wraps(u.m, [u.m**3/u.s, u.m], False)
+
+def pipe_ID(FlowRate, Pressure):
+    """Return the inner diameter of a pipe for a given pressure
+    recovery constraint.
+
+    :param FlowRate: flow rate of pipe
+    :type FlowRate: u.m**3/u.s
+    :param Pressure: pressure recovery constraint (???????)
+    :type Pressure: u.m
+
+    :return: inner diameter of pipe
+    :rtype: u.m
+    """
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Pressure.magnitude, ">0", "Pressure"])
+    return np.sqrt(FlowRate/((np.pi/4)*np.sqrt(2*u.gravity*Pressure))).to(u.m)
+
+############################ Weirs ############################
+
+
+@ut.list_handler()
 def width_rect_weir(FlowRate, Height):
-    """Return the width of a rectangular weir."""
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Height, ">0", "Height"])
-    return ((3 / 2) * FlowRate
-            / (con.VC_ORIFICE_RATIO * np.sqrt(2 * u.gravity.magnitude) * Height ** (3 / 2))
-            )
+    """Return the width of a rectangular weir given its flow rate and the
+    height of the water above the weir.
+
+    :param FlowRate: flow rate over weir
+    :type FlowRate: u.m**3/u.s
+    :param Height: height of water above weir
+    :type Height: u.m
+
+    :return: width of weir
+    :rtypes: u.m
+    """
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Height.magnitude, ">0", "Height"])
+    return ((3 / 2) * FlowRate / (con.VC_ORIFICE_RATIO
+                                  * np.sqrt(2 * u.gravity) * Height ** (3 / 2))
+            ).to(u.m)
 
 
 # For a pipe, Width is the circumference of the pipe.
 # Head loss for a weir is the difference in height between the water
 # upstream of the weir and the top of the weir.
-@u.wraps(u.m, [u.m**3/u.s, u.m], False)
+# @u.wraps(u.m, [u.m**3/u.s, u.m], False)
+@ut.list_handler()
 def headloss_weir(FlowRate, Width):
-    """Return the headloss of a weir."""
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
+    """Return the head loss of a weir.
+
+    Head loss for a weir is the difference in height between the water
+    upstream of the weir and the top of the weir.
+
+    :param FlowRate: flow rate over weir
+    :type FlowRate: u.m**3/u.s
+    :param Width: width of weir or circumference of vertical pipe (length???)
+    :type Width: u.m
+
+    :return: head loss of weir
+    :rtypes: u.m
+    """
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Width.magnitude, ">0", "Width"])
     return (((3/2) * FlowRate
-             / (con.VC_ORIFICE_RATIO * np.sqrt(2 * u.gravity.magnitude) * Width)
-             ) ** (2/3))
+             / (con.VC_ORIFICE_RATIO * np.sqrt(2 * u.gravity) * Width)
+             ) ** (2/3)).to(u.m)
 
-
-@u.wraps(u.m, [u.m, u.m], False)
-def flow_rect_weir(Height, Width):
-    """Return the flow of a rectangular weir."""
-    #Checking input validity
-    ut.check_range([Height, ">0", "Height"], [Width, ">0", "Width"])
-    return ((2/3) * con.VC_ORIFICE_RATIO
-            * (np.sqrt(2*u.gravity.magnitude) * Height**(3/2))
-            * Width)
-
-
-@u.wraps(u.m, [u.m**3/u.s, u.m], False)
-def height_water_critical(FlowRate, Width):
-    """Return the critical local water depth."""
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Width, ">0", "Width"])
-    return (FlowRate / (Width * np.sqrt(u.gravity.magnitude))) ** (2/3)
-
-
-@u.wraps(u.m/u.s, u.m, False)
-def vel_horizontal(HeightWaterCritical):
-    """Return the horizontal velocity."""
-    #Checking input validity
-    ut.check_range([HeightWaterCritical, ">0", "Critical height of water"])
-    return np.sqrt(u.gravity.magnitude * HeightWaterCritical)
-
-
-@u.wraps(u.m, [u.m, u.m, u.m/u.s, u.m, u.m**2/u.s], False)
-def headloss_kozeny(Length, Diam, Vel, Porosity, Nu):
-    """Return the Carmen Kozeny Sand Bed head loss."""
-    #Checking input validity
-    ut.check_range([Length, ">0", "Length"], [Diam, ">0", "Diam"],
-                   [Vel, ">0", "Velocity"], [Nu, ">0", "Nu"],
-                   [Porosity, "0-1", "Porosity"])
-    return (K_KOZENY * Length * Nu
-            / u.gravity.magnitude * (1-Porosity)**2
-            / Porosity**3 * 36 * Vel
-            / Diam ** 2)
 
 @ut.list_handler()
-def Re_Erdon(ApproachVel, DiamParticle, Temperature, Porosity):
+def flow_rect_weir(Height, Width):
+    """Return the flow of a rectangular weir.
+
+    :param Height: height of water above weir
+    :type Height: u.m
+    :param Width: width of weir
+    :type Width: u.m
+
+    :return: flow of weir
+    :rtype: u.m**3/u.s
+    """
+    ut.check_range([Height.magnitude, ">0", "Height"],
+                   [Width.magnitude, ">0", "Width"])
+    return ((2/3) * con.VC_ORIFICE_RATIO
+            * (np.sqrt(2*u.gravity) * Height**(3/2))
+            * Width).to(u.m**3/u.s)
+
+######################## Porous Media ########################
+
+
+@ut.list_handler()
+def headloss_kozeny(Length, Diam, Vel, Porosity, Nu):
+    """Return the Carman Kozeny sand bed head loss.
+
+    :param Length: height of bed (call Height instead ????)
+    :type Length: u.m
+    :param Diam: diameter of sand particle (DiamParticle????)
+    :type Diam: u.m
+    :param Vel: superficial velocity (ApproachVel????)
+    :type Vel: u.m/u.s
+    :param Porosity: porosity of bed
+    :type Porosity: u.dimensionless or unitless
+    :param Nu: kinematic viscosity of fluid
+    :type Nu: u.m**2/u.s
+
+    :return: head loss in sand bed
+    :rtype: u.m
+    """
+    ut.check_range([Length.magnitude, ">0", "Length"],
+                   [Diam.magnitude, ">0", "Diam"],
+                   [Vel.magnitude, ">0", "Velocity"],
+                   [Nu.magnitude, ">0", "Nu"],
+                   [Porosity, "0-1", "Porosity"])
+    return (con.K_KOZENY * Length * Nu
+            / u.gravity * (1-Porosity)**2
+            / Porosity**3 * 36 * Vel
+            / Diam ** 2).to(u.m)
+
+
+@ut.list_handler()
+def re_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
     """Return the Reynolds number for flow through porous media.
 
     :param ApproachVel: approach velocity or superficial fluid velocity
@@ -1077,12 +1242,15 @@ def Re_Erdon(ApproachVel, DiamParticle, Temperature, Porosity):
     :return: Reynolds number for flow through porous media
     :rtype: u.dimensionless
     """
+    ut.check_range([ApproachVel.magnitude, ">0", "ApproachVel"],
+                   [DiamParticle.magnitude, ">0", "DiamParticle"],
+                   [Porosity, "0-1", "Porosity"])
     return (ApproachVel * DiamParticle /
             (viscosity_kinematic(Temperature) * (1 - Porosity)))
 
 
 @ut.list_handler()
-def f_Erdon(ApproachVel, DiamParticle, Temperature, Porosity):
+def f_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
     """Return the friction factor for flow through porous media.
 
     :param ApproachVel: superficial fluid velocity (VelSuperficial?)
@@ -1097,12 +1265,15 @@ def f_Erdon(ApproachVel, DiamParticle, Temperature, Porosity):
     :return: friction factor for flow through porous media
     :rtype: u.dimensionless
     """
-    return (300 / Re_Erdon(ApproachVel, DiamParticle, Temperature, Porosity)
+    ut.check_range([ApproachVel.magnitude, ">0", "ApproachVel"],
+                   [DiamParticle.magnitude, ">0", "DiamParticle"],
+                   [Porosity, "0-1", "Porosity"])
+    return (300 / re_Ergun(ApproachVel, DiamParticle, Temperature, Porosity)
             + 3.5 * u.dimensionless)
 
 
 @ut.list_handler()
-def hf_Erdon(ApproachVel, DiamParticle, Temperature, Porosity, Length):
+def headloss_Ergun(ApproachVel, DiamParticle, Temperature, Porosity, Length):
     """Return the frictional head loss for flow through porous media.
 
     :param ApproachVel: superficial fluid velocity (VelSuperficial?)
@@ -1119,7 +1290,7 @@ def hf_Erdon(ApproachVel, DiamParticle, Temperature, Porosity, Length):
     :return: frictional head loss for flow through porous media
     :rtype: u.m
     """
-    return (f_Erdon(ApproachVel, DiamParticle, Temperature, Porosity)
+    return (f_Ergun(ApproachVel, DiamParticle, Temperature, Porosity)
             * Length / DiamParticle * ApproachVel**2 / (2*u.gravity) * (1-Porosity)
             / Porosity**3).to(u.m)
 
@@ -1140,18 +1311,44 @@ def G_CS_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
     :return: Camp Stein velocity gradient for flow through porous media
     :rtype: u.Hz
     """
-    return np.sqrt(f_Erdon(ApproachVel, DiamParticle, Temperature, Porosity)
+    return np.sqrt(f_Ergun(ApproachVel, DiamParticle, Temperature, Porosity)
                    * ApproachVel**3 * (1-Porosity)
                    / (2 * viscosity_kinematic(Temperature) * DiamParticle
                       * Porosity**4)).to(u.Hz)
 
-@u.wraps(u.m, [u.m**3/u.s, u.m], False)
-def pipe_ID(FlowRate, Pressure):
-    """Return the internal diameter of a pipe for a given pressure
-    recovery constraint. """
-    #Checking input validity
-    ut.check_range([FlowRate, ">0", "Flow rate"], [Pressure, ">0", "Pressure"])
-    return np.sqrt(FlowRate/((np.pi/4)*np.sqrt(2*u.gravity.magnitude*Pressure)))
+######################## Miscellaneous ########################
+
+
+@ut.list_handler()
+def height_water_critical(FlowRate, Width):
+    """Return the critical local water height.
+
+    :param FlowRate: flow rate of water
+    :type FlowRate: u.m**3/u.s
+    :param Width: width of channel (????????)
+    :type Width: u.m
+
+    :return: critical water height
+    :rtype: u.m
+    """
+    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
+                   [Width.magnitude, ">0", "Width"])
+    return ((FlowRate / (Width * np.sqrt(1*u.gravity))) ** (2/3)).to(u.m)
+
+
+@ut.list_handler()
+def vel_horizontal(HeightWaterCritical):
+    """Return the horizontal velocity. (at the critical water depth??????)
+
+    :param HeightWaterCritical: critical water height
+    :type HeightWaterCritical: u.m
+
+    :return: horizontal velocity
+    :rtype: u.m/u.s
+    """
+    ut.check_range([HeightWaterCritical.magnitude, ">0", "Critical height of water"])
+    return np.sqrt(u.gravity * HeightWaterCritical).to(u.m/u.s)
+
 
 def manifold_id_alt(q, pr_max):
     """Return the inner diameter of a manifold when major losses are
@@ -1165,6 +1362,7 @@ def manifold_id_alt(q, pr_max):
         )
     )
     return manifold_id_alt
+
 
 def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
     id_new = 2 * u.inch
@@ -1185,12 +1383,14 @@ def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
         error = np.abs(id_old - id_new) / id_new
     return id_new
 
+
 def manifold_nd(q, h, l, q_ratio, nu, eps, k, n, sdr):
     manifold_nd = pipe.ND_SDR_available(
             manifold_id(q, h, l, q_ratio, nu, eps, k, n),
             sdr
         )
     return manifold_nd
+
 
 def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
     hl = min(hl, depth / 3)
@@ -1212,6 +1412,7 @@ def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
         error = np.abs(horiz_chan_w_new - w) / (horiz_chan_w_new + w)
     return horiz_chan_w_new.to(u.m)
 
+
 def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
     h_new = (q / (w * np.sqrt(2 * u.gravity * hl))) + hl
     error = 1
@@ -1226,6 +1427,7 @@ def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
         )/ (2 * u.gravity * hl_local)) + (hl_local)
         error = np.abs(h_new - h) / (h_new + h)
     return h_new.to(u.m)
+
 
 def pipe_flow_nd(q, sdr, hl, l, nu, eps, k):
     i = 0
