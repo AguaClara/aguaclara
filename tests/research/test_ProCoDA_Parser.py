@@ -324,15 +324,35 @@ class TestProCoDAParser(unittest.TestCase):
         plt.figure(1)
         plot_columns(path=path, columns=" State ID")
         plt.savefig("Image1.png")
-
         plt.figure(2)
         plt.plot([0,1,0,1,2])
         plt.savefig("Image2.png")
-
         self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
+
+        plt.figure(3)
+        plot_columns(path=path, columns=" State ID", x_axis=" State ID")
+        plt.savefig("Image3.png")
+        plt.figure(4)
+        plt.plot([0,1,0,1,2], [0,1,0,1,2])
+        plt.savefig("Image4.png")
+        self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
+
+        plt.figure(5)
+        plot_columns(path=path, columns=[" State ID"])
+        plt.savefig("Image5.png")
+        self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
+
+        plt.figure(6)
+        plot_columns(path=path, columns=[" State ID"], x_axis=" State ID")
+        plt.savefig("Image6.png")
+        self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
 
         os.remove("Image1.png")
         os.remove("Image2.png")
+        os.remove("Image3.png")
+        os.remove("Image4.png")
+        os.remove("Image5.png")
+        os.remove("Image6.png")
 
 
     def test_read_state(self):
