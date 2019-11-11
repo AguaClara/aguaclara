@@ -4,6 +4,8 @@ Tests for the research package's ProCoDA parsing functions
 
 import unittest
 from aguaclara.research.procoda_parser import *
+import matplotlib.pyplot as plt
+from matplotlib.testing.compare import *
 
 
 class TestProCoDAParser(unittest.TestCase):
@@ -242,7 +244,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         Converts time into a fraction of the day
         '''
-        time = day_fraction("12:00")
+        time = day_fraction(time="12:00")
         self.assertEquals(time, 0.5)
 
 
@@ -250,7 +252,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         Return the index of the lowest time in the column of times that is greater than or equal to the given time.
         '''
-        index = time_column_index(0.75, [0.2, 0.4, 0.6, 0.8, 1])
+        index = time_column_index(time=0.75, time_column=[0.2, 0.4, 0.6, 0.8, 1])
         self.assertEquals(index, 3)
 
 
@@ -261,7 +263,7 @@ class TestProCoDAParser(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
         dataFromPath = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
 
-        getDataFromDates = data_from_dates(path, '6-15-2018', ".xls")[0]
+        getDataFromDates = data_from_dates(path=path, dates='6-15-2018', extension=".xls")[0]
 
         self.assertTrue(getDataFromDates.equals(dataFromPath))
 
@@ -274,7 +276,7 @@ class TestProCoDAParser(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
         data_manual1 = pd.read_csv(path + '/datalog 6-14-2018.xls', delimiter='\t')
 
-        getColData1 = column_start_to_end([data_manual1], 1, 2, 7)
+        getColData1 = column_start_to_end(data=[data_manual1], column=1, start_idx=2, end_idx=7)
         compareColData1 = [-4.34825945, -2.3821919, -2.57200098, -2.40549088,
             -1.00214481]
         self.assertSequenceEqual(getColData1, compareColData1)
@@ -283,7 +285,8 @@ class TestProCoDAParser(unittest.TestCase):
         data_manual2 = pd.read_csv(path + '/datalog 6-16-2018.xls', delimiter='\t')
         data_manual3 = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
 
-        getColData2 = column_start_to_end([data_manual1, data_manual2, data_manual3], 2, 5238, 2)
+        getColData2 = column_start_to_end([data_manual1, data_manual2, data_manual3],
+            column=2, start_idx=5238, end_idx=2)
         compareColData2 = [24.26625443, 24.2669487, 24.26613235, 24.26708603,
             24.26683617, 24.26708603, 24.26683617]
         self.assertSequenceEqual(getColData2, compareColData2)
@@ -295,7 +298,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
 
-        output = get_data_by_state(path, dates=["6-19-2013"], state=1, column=1, extension=".xls")  # , "6-20-2013"
+        output = get_data_by_state(path, dates="6-19-2013", state=1, column=1, extension=".xls")  # , "6-20-2013"
 
         datafile = pd.read_csv(path + "/datalog 6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
@@ -310,6 +313,26 @@ class TestProCoDAParser(unittest.TestCase):
             output_i = np.round(np.array(output[i]).astype(np.double), 5)
             self.assertSequenceEqual([j[0] for j in output_i], [round(j-start_time, 5) for j in answer[i][0]])
             self.assertSequenceEqual([j[1] for j in output_i], [j for j in answer[i][1]])
+
+
+    def test_plot_columns(self):
+        '''
+        Plot the columns of data given the file
+        '''
+        path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
+
+        plt.figure(1)
+        plot_columns(path=path, columns=" State ID")
+        plt.savefig("Image1.png")
+
+        plt.figure(2)
+        plt.plot([0,1,0,1,2])
+        plt.savefig("Image2.png")
+
+        self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
+
+        os.remove("Image1.png")
+        os.remove("Image2.png")
 
 
     def test_read_state(self):

@@ -351,8 +351,6 @@ def plot_columns(path, columns, x_axis=None):
     :type columns: string or string list
     :param x_axis: The label of the x-axis column (defaults to None)
     :type x_axis: string, optional
-    :param sep: The separator or delimiter, of the data file. Use ',' for CSV's, '\t' for TSV's.
-    :type sep: string
 
     :return: A list of Line2D objects representing the plotted data
     :rtype: matplotlib.lines.Line2D list
