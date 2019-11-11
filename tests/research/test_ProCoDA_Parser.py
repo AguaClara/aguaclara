@@ -321,28 +321,28 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
 
-        plt.figure(1)
+        plt.figure()
         plot_columns(path=path, columns=" State ID")
         plt.savefig("Image1.png")
-        plt.figure(2)
+        plt.figure()
         plt.plot([0,1,0,1,2])
         plt.savefig("Image2.png")
         self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
 
-        plt.figure(3)
+        plt.figure()
         plot_columns(path=path, columns=" State ID", x_axis=" State ID")
         plt.savefig("Image3.png")
-        plt.figure(4)
+        plt.figure()
         plt.plot([0,1,0,1,2], [0,1,0,1,2])
         plt.savefig("Image4.png")
         self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
 
-        plt.figure(5)
+        plt.figure()
         plot_columns(path=path, columns=[" State ID"])
         plt.savefig("Image5.png")
         self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
 
-        plt.figure(6)
+        plt.figure()
         plot_columns(path=path, columns=[" State ID"], x_axis=" State ID")
         plt.savefig("Image6.png")
         self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
@@ -364,28 +364,28 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
 
-        plt.figure(1)
+        plt.figure()
         iplot_columns(path=path, columns=1)
         plt.savefig("Image1.png")
-        plt.figure(2)
+        plt.figure()
         plt.plot([0,1,0,1,2])
         plt.savefig("Image2.png")
         self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
 
-        plt.figure(3)
+        plt.figure()
         iplot_columns(path=path, columns=1, x_axis=1)
         plt.savefig("Image3.png")
-        plt.figure(4)
+        plt.figure()
         plt.plot([0,1,0,1,2], [0,1,0,1,2])
         plt.savefig("Image4.png")
         self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
 
-        plt.figure(5)
+        plt.figure()
         iplot_columns(path=path, columns=[1])
         plt.savefig("Image5.png")
         self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
 
-        plt.figure(6)
+        plt.figure()
         iplot_columns(path=path, columns=[1], x_axis=1)
         plt.savefig("Image6.png")
         self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
