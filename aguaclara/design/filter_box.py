@@ -256,7 +256,7 @@ class FilterBox(Component):
 	def trunk_w(self):
 		"""The width of the trunk."""
 		trunk_w = pc.area_circle(self.trunk_pipe.od)/self.layer_h
-		return trunk_w
+		return trunk_w.to(u.cm)
 
 	@property
 	def filter_active_w(self):
@@ -274,24 +274,26 @@ class FilterBox(Component):
 		return self.filter_l *self.filter_w
 
 	@property
-	def sand_volume(self):
+	def sand_vol(self):
 		"""The volume of the sand."""
-		return (self.filter_active_a*self.sand_to_fluidize_h).to(u.m**3)
+		return (self.filter_active_a*self.sand_to_fluidize_h).to(u.L)
 
 	@property
 	def sand_mass(self):
 		"""The mass of the sand."""
-		return (self.sand_volume*self.sand_density*self.sand_porosity).to(u.kg)
+		return (self.sand_vol*self.sand_density*self.sand_porosity).to(u.kg)
 
 	@property
 	def branch_layer_n(self):
 		"""The branch of layer n"""
-		return 2 * self.filter_l / self.branch_s
+		branch_layer_n = 2 * self.filter_l / self.branch_s
+		return branch_layer_n.to(u.dimensionless)
 
 	@property
 	def branch_bw_q(self):
 		"""The flow rate of the branch backwash."""
-		return self.filter_q / self.branch_layer_n
+		branch_bw_q = self.filter_q / self.branch_layer_n
+		return branch_bw_q.to(u.L/u.s)
 	
 	@property
 	def branch_l(self):
@@ -301,23 +303,27 @@ class FilterBox(Component):
 	@property
 	def trunk_outer_bw_v(self):
 		"""This is the outer backwash velocity of the truck pipe"""
-		return self.filter_q / pc.area_circle(self.trunk_pipe.id)
+		trunk_outer_bw_v = self.filter_q / pc.area_circle(self.trunk_pipe.id)
+		return trunk_outer_bw_v.to(u.m / u.s)
 	
 	@property
 	def orifice_contracted_v(self):
 		"""This is the contracted velocity of the orifice"""
-		return self.trunk_outer_bw_v * \
+		orifice_contracted_v = self.trunk_outer_bw_v * \
 			 np.sqrt((self.ratio_qp_min**2 + 1) / (2 * (1- self.ratio_qp_min**2)))
+		return orifice_contracted_v.to(u.m / u.s)
 	
 	@property
 	def orifice_v(self):
 		"""This is the outer velocity of the orifice"""
-		return con.VC_ORIFICE_RATIO * self.orifice_contracted_v
+		orifice_v = con.VC_ORIFICE_RATIO * self.orifice_contracted_v
+		return orifice_v.to(u.m / u.s)
 		
 	@property
 	def orifice_outer_a(self):
 		"""This is the outer area of the orifice"""
-		return self.filter_q / self.orifice_v
+		orifice_outer_a = self.filter_q / self.orifice_v
+		return orifice_outer_a.to(u.cm ** 2)
 
 	@property
 	def orifice_bw_hl(self):
@@ -335,7 +341,8 @@ class FilterBox(Component):
 	@property
 	def branch_q(self):
 		"""This is the flow rate of the branch"""
-		return (2 * self.branch_bw_q) / self.layer_n
+		branch_q = (2 * self.branch_bw_q) / self.layer_n
+		return branch_q.to(u.L/u.s)
 		
 	def _set_branch_manifold(self):
 		"""This sets the branch manifold"""
@@ -404,7 +411,8 @@ class FilterBox(Component):
 	@property
 	def post_backwash_fill_vol(self):
 		"""This is the volume of the post backwash fill"""
-		return (self.post_backwash_fill_h * self.filter_a)
+		post_backwash_fill_vol = (self.post_backwash_fill_h * self.filter_a)
+		return post_backwash_fill_vol.to(u.L)
 	
 	@property
 	def pre_backwash_flush_h(self):
@@ -415,7 +423,8 @@ class FilterBox(Component):
 	@property
 	def pre_backwash_flush_vol(self):
 		"""This is the volume of the pre backwash flush"""
-		return (self.pre_backwash_flush_h * self.filter_a)
+		pre_backwash_flush_vol = (self.pre_backwash_flush_h * self.filter_a)
+		return pre_backwash_flush_vol.to(u.L)
 	
 	@property
 	def post_backwash_fill_t(self):

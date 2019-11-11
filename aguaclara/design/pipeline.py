@@ -22,6 +22,7 @@ import aguaclara.core.constants as con
 import aguaclara.core.materials as mats
 import aguaclara.core.utility as ut
 from aguaclara.design.component import Component
+import aguaclara.core.pipes as pipe
 
 import pandas as pd
 import numpy as np
@@ -628,17 +629,27 @@ class Manifold(PipelineComponent):
         self.k_minor = 1.0
         self.size_min = 1.0 * u.inch
         self.next_type = 'stopper'
+        self.is_doublesided = False
 
         #self.components = [self.Manifold]
         #super().__init__(**kwargs)
         #super().set_subcomponents()        
         super().__init__(**kwargs)
         self._set_next()
-        if 'size' in kwargs:
-            self.id = self._get_id(self.size, self.spec)
-        elif 'id' in kwargs:
-            self.size = self._get_size(self.id, self.spec)
+        self._set_size()
 
+    @property
+    def id_min(self):
+        id_min = ut.ceil_nearest(
+            pc.diam_circle(self.a_min), 
+            pipe.ID_SDR(ut.get_sdr(self.spec))
+            )
+        return id_min
+
+    def _set_size(self):
+        """Sets the size / nominal diameter of the manifold"""
+        self.size = ut.max(pipe.ND_SDR_available(self.id_min, ut.get_sdr(self.spec)),self.size_min)
+    
     def _set_next(self):
         """Sets the next outlet as well the the type of branch for the next 
         outlet.
@@ -747,12 +758,12 @@ class Manifold(PipelineComponent):
     
     @property
     def q_max(self):
-        q_max = (pc.area_circle(self.id))* self.pipe_v_max
+        q_max = (pc.area_circle(self.id))* self.v_max
         return q_max.to(u.L/u.s)
 
     @property
     def v(self):
-        return (self.q/pc.area_circle(self.pipe_id)).to(u.m/u.s)
+        return (self.q/pc.area_circle(self.id)).to(u.m/u.s)
 
     @property
     def l_max(self):
@@ -761,20 +772,17 @@ class Manifold(PipelineComponent):
     @property
     def a_min(self):
         return (self.q / self.v_max).to (u.m**2)
-    
-    @property
-    def id_min(self):
-        id_min = ut.ceil_nearest(
-            pc.diam_circle(self.a_min), 
-            self.ID_SDR_all_available(self.spec)
-            )
-        return id_min
+        
     @property
     def port_n(self):
-        port_n = np.trunc(self.l / self.port_s).to(u.dimensionless)
-        if self.next is not None:
+        port_n = np.trunc((self.l / self.port_s).to(u.dimensionless))
+        print(port_n)
+        print(self.l)
+        print(self.port_s)
+        print(np.trunc(self.l / self.port_s).to(u.dimensionless))
+        if self.is_doublesided:
             port_n *= 2
-        return port_n.to(u.dimensionless)
+        return port_n.to(u.dimensionless).magnitude
 
     @property
     def port_q(self):
@@ -783,7 +791,7 @@ class Manifold(PipelineComponent):
     
     @property
     def port_d(self):
-        port_d = (pc.diam_circle(self.Port_Q/self.Port_V /self.Port_vena_contracta))
+        port_d = (pc.diam_circle(self.port_q/self.port_v /self.port_vena_contracta))
         return port_d.to(u.mm)
 
     @property
