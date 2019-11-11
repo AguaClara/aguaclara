@@ -347,6 +347,8 @@ class TestProCoDAParser(unittest.TestCase):
         plt.savefig("Image6.png")
         self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
 
+        self.assertRaises(ValueError, plot_columns, *(path, 9))
+
         os.remove("Image1.png")
         os.remove("Image2.png")
         os.remove("Image3.png")
