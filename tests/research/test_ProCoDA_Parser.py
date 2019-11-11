@@ -317,7 +317,7 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_plot_columns(self):
         '''
-        Plot the columns of data given the file
+        Plot the columns of data given the file located by labels
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
 
@@ -349,6 +349,49 @@ class TestProCoDAParser(unittest.TestCase):
 
         self.assertRaisesRegexp(ValueError, 'columns must be a string or list of strings',
                                                         plot_columns, *(path, 9))
+
+        os.remove("Image1.png")
+        os.remove("Image2.png")
+        os.remove("Image3.png")
+        os.remove("Image4.png")
+        os.remove("Image5.png")
+        os.remove("Image6.png")
+
+
+    def test_iplot_columns(self):
+        '''
+        Plot the columns of data given the file located by indices
+        '''
+        path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
+
+        plt.figure(1)
+        iplot_columns(path=path, columns=1)
+        plt.savefig("Image1.png")
+        plt.figure(2)
+        plt.plot([0,1,0,1,2])
+        plt.savefig("Image2.png")
+        self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
+
+        plt.figure(3)
+        iplot_columns(path=path, columns=1, x_axis=1)
+        plt.savefig("Image3.png")
+        plt.figure(4)
+        plt.plot([0,1,0,1,2], [0,1,0,1,2])
+        plt.savefig("Image4.png")
+        self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
+
+        plt.figure(5)
+        iplot_columns(path=path, columns=[1])
+        plt.savefig("Image5.png")
+        self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
+
+        plt.figure(6)
+        iplot_columns(path=path, columns=[1], x_axis=1)
+        plt.savefig("Image6.png")
+        self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
+
+        self.assertRaisesRegexp(ValueError, 'columns must be an int or a list of ints',
+                                                    iplot_columns, *(path, ' State ID'))
 
         os.remove("Image1.png")
         os.remove("Image2.png")
