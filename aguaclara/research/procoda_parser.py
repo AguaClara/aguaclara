@@ -43,7 +43,7 @@ def column_of_data(path, start, column, end=None, units=""):
     return np.array(num_data) * u(units)
 
 
-def column_of_time(path, start, end=None):
+def column_of_time(path, start, end=None, units="day"):
     """This function extracts the column of times as elasped times from a ProCoDA data file.
 
     :param path: The file path of the ProCoDA data file.
@@ -52,9 +52,11 @@ def column_of_time(path, start, end=None):
     :type start: int
     :param end: Index of last row of data to extract from the data. Defaults to last row
     :type end: int
+    :param units: The return type units, which defaults to day.
+    :type units: string, optional
 
     :return: Experimental times starting at 0
-    :rtype: numpy.ndarray in units of days
+    :rtype: numpy.ndarray in units of days or hours, specified with units parameter
 
     :Examples:
 
@@ -70,7 +72,7 @@ def column_of_time(path, start, end=None):
     num_day_times = pd.to_numeric(day_times[is_numeric])
     elapsed_times = num_day_times - start_time
 
-    return np.array(elapsed_times) * u.day
+    return (np.array(elapsed_times) * u.day).to(u(units))
 
 
 def notes(path):

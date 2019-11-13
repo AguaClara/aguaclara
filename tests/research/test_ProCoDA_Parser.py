@@ -138,6 +138,15 @@ class TestProCoDAParser(unittest.TestCase):
          6.59709090e-03,   6.65494290e-03,   6.71281870e-03,
          6.77069570e-03,   6.82855640e-03,   6.88642010e-03])*u.day, 5).tolist()
         )
+        answer = column_of_time(path, 50, end=60, units='hr')
+        answer = np.round(answer, 5)
+        self.assertSequenceEqual(
+         answer.tolist(),
+         np.round(np.array([0.00000000e+00,   5.78662000e-05,   1.15725500e-04,
+         1.73586900e-04,   2.31470400e-04,   2.89325100e-04,
+         3.47199600e-04,   4.05070800e-04,   4.62941200e-04,
+         5.20805100e-04])*24*u.hr, 5).tolist()
+        )
 
 
     def test_notes(self):
