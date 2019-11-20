@@ -6,7 +6,9 @@ import unittest
 from aguaclara.research.procoda_parser import *
 import matplotlib.pyplot as plt
 from matplotlib.testing.compare import *
-
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 class TestProCoDAParser(unittest.TestCase):
 
@@ -324,95 +326,90 @@ class TestProCoDAParser(unittest.TestCase):
             self.assertSequenceEqual([j[1] for j in output_i], [j for j in answer[i][1]])
 
 
-    def test_matplotlib_backend(self):
-        plt.plot([1,1,1], [1, 2, 3])
-        plt.savefig("Image.png")
+    def test_plot_columns(self):
+        '''
+        Plot the columns of data given the file located by labels
+        '''
+        path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
+
+        plt.figure()
+        plot_columns(path=path, columns=" State ID")
+        plt.savefig("Image1.png")
+        plt.figure()
+        plt.plot([0,1,0,1,2])
+        plt.savefig("Image2.png")
+        self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
+
+        plt.figure()
+        plot_columns(path=path, columns=" State ID", x_axis=" State ID")
+        plt.savefig("Image3.png")
+        plt.figure()
+        plt.plot([0,1,0,1,2], [0,1,0,1,2])
+        plt.savefig("Image4.png")
+        self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
+
+        plt.figure()
+        plot_columns(path=path, columns=[" State ID"])
+        plt.savefig("Image5.png")
+        self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
+
+        plt.figure()
+        plot_columns(path=path, columns=[" State ID"], x_axis=" State ID")
+        plt.savefig("Image6.png")
+        self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
+
+        self.assertRaisesRegexp(ValueError, 'columns must be a string or list of strings',
+                                                        plot_columns, *(path, 9))
+
+        os.remove("Image1.png")
+        os.remove("Image2.png")
+        os.remove("Image3.png")
+        os.remove("Image4.png")
+        os.remove("Image5.png")
+        os.remove("Image6.png")
 
 
-    # def test_plot_columns(self):
-    #     '''
-    #     Plot the columns of data given the file located by labels
-    #     '''
-    #     path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
-    #
-    #     plt.figure()
-    #     plot_columns(path=path, columns=" State ID")
-    #     plt.savefig("Image1.png")
-    #     plt.figure()
-    #     plt.plot([0,1,0,1,2])
-    #     plt.savefig("Image2.png")
-    #     self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
-    #
-    #     plt.figure()
-    #     plot_columns(path=path, columns=" State ID", x_axis=" State ID")
-    #     plt.savefig("Image3.png")
-    #     plt.figure()
-    #     plt.plot([0,1,0,1,2], [0,1,0,1,2])
-    #     plt.savefig("Image4.png")
-    #     self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
-    #
-    #     plt.figure()
-    #     plot_columns(path=path, columns=[" State ID"])
-    #     plt.savefig("Image5.png")
-    #     self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
-    #
-    #     plt.figure()
-    #     plot_columns(path=path, columns=[" State ID"], x_axis=" State ID")
-    #     plt.savefig("Image6.png")
-    #     self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
-    #
-    #     self.assertRaisesRegexp(ValueError, 'columns must be a string or list of strings',
-    #                                                     plot_columns, *(path, 9))
-    #
-    #     os.remove("Image1.png")
-    #     os.remove("Image2.png")
-    #     os.remove("Image3.png")
-    #     os.remove("Image4.png")
-    #     os.remove("Image5.png")
-    #     os.remove("Image6.png")
-    #
-    #
-    # def test_iplot_columns(self):
-    #     '''
-    #     Plot the columns of data given the file located by indices
-    #     '''
-    #     path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
-    #
-    #     plt.figure()
-    #     iplot_columns(path=path, columns=1)
-    #     plt.savefig("Image1.png")
-    #     plt.figure()
-    #     plt.plot([0,1,0,1,2])
-    #     plt.savefig("Image2.png")
-    #     self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
-    #
-    #     plt.figure()
-    #     iplot_columns(path=path, columns=1, x_axis=1)
-    #     plt.savefig("Image3.png")
-    #     plt.figure()
-    #     plt.plot([0,1,0,1,2], [0,1,0,1,2])
-    #     plt.savefig("Image4.png")
-    #     self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
-    #
-    #     plt.figure()
-    #     iplot_columns(path=path, columns=[1])
-    #     plt.savefig("Image5.png")
-    #     self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
-    #
-    #     plt.figure()
-    #     iplot_columns(path=path, columns=[1], x_axis=1)
-    #     plt.savefig("Image6.png")
-    #     self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
-    #
-    #     self.assertRaisesRegexp(ValueError, 'columns must be an int or a list of ints',
-    #                                                 iplot_columns, *(path, ' State ID'))
-    #
-    #     os.remove("Image1.png")
-    #     os.remove("Image2.png")
-    #     os.remove("Image3.png")
-    #     os.remove("Image4.png")
-    #     os.remove("Image5.png")
-    #     os.remove("Image6.png")
+    def test_iplot_columns(self):
+        '''
+        Plot the columns of data given the file located by indices
+        '''
+        path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
+
+        plt.figure()
+        iplot_columns(path=path, columns=1)
+        plt.savefig("Image1.png")
+        plt.figure()
+        plt.plot([0,1,0,1,2])
+        plt.savefig("Image2.png")
+        self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
+
+        plt.figure()
+        iplot_columns(path=path, columns=1, x_axis=1)
+        plt.savefig("Image3.png")
+        plt.figure()
+        plt.plot([0,1,0,1,2], [0,1,0,1,2])
+        plt.savefig("Image4.png")
+        self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
+
+        plt.figure()
+        iplot_columns(path=path, columns=[1])
+        plt.savefig("Image5.png")
+        self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
+
+        plt.figure()
+        iplot_columns(path=path, columns=[1], x_axis=1)
+        plt.savefig("Image6.png")
+        self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
+
+        self.assertRaisesRegexp(ValueError, 'columns must be an int or a list of ints',
+                                                    iplot_columns, *(path, ' State ID'))
+
+        os.remove("Image1.png")
+        os.remove("Image2.png")
+        os.remove("Image3.png")
+        os.remove("Image4.png")
+        os.remove("Image5.png")
+        os.remove("Image6.png")
 
 
     def test_read_state(self):
