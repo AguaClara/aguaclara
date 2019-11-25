@@ -17,6 +17,7 @@ from aguaclara.design.component import Component
 from aguaclara.design.pipeline import Pipe
 
 import numpy as np
+from urllib.parse import quote_plus
 
 
 class Flocculator(Component):
@@ -68,13 +69,17 @@ class Flocculator(Component):
                # input as well? -Oliver L., oal22, 5 Jun 19
     OBSTACLE_OFFSET = True
 
+    _onshape_url = (
+        "https://cad.onshape.com/documents/c3a8ce032e33ebe875b9aab4/w/de9ad5474448b34f33fef097/e/08f41d8bdd9a9c90ab396f8a"
+    )
+
     def __init__(self, **kwargs):
         self.ent_l = 1.5 * u.m
         self.chan_w_max = 42.0 * u.inch
         self.l_max = 6.0 * u.m
         self.gt = 37000
-        self.hl  =  40.0 * u.cm
-        self.end_water_depth  =  2.0 * u.m
+        self.hl = 40.0 * u.cm
+        self.end_water_depth = 2.0 * u.m
         self.drain_t = 30.0 * u.min
         self.spec = 'sdr41'
         self.drain_pipe = Pipe()
@@ -83,8 +88,9 @@ class Flocculator(Component):
         self.sed_chan_inlet_w_pre_weir = 42.0 * u.inch
         self.dividing_wall_thickness = 15.0 * u.cm
         self.chan_n_parity = 'even'
-        
+
         super().__init__(**kwargs)
+
         self._set_drain_pipe()
         super().set_subcomponents()
 
@@ -97,7 +103,7 @@ class Flocculator(Component):
     def vel_grad_avg(self):
         """The average velocity gradient of water."""
         vel_grad_avg = ((u.standard_gravity * self.hl) /
-               (pc.viscosity_kinematic(self.temp) * self.gt)).to(u.s ** -1)
+                        (pc.viscosity_kinematic(self.temp) * self.gt)).to(u.s ** -1)
         return vel_grad_avg
 
     @property
@@ -117,22 +123,22 @@ class Flocculator(Component):
     def chan_w_min_hs_ratio(self):
         """The minimum channel width."""
         chan_w_min_hs_ratio = (
-                (self.HS_RATIO_MIN * self.q / self.end_water_depth) *
-                (
-                    self.BAFFLE_K / (
-                        2 * self.end_water_depth *
-                        pc.viscosity_kinematic(self.temp) *
-                        self.vel_grad_avg ** 2
-                    )
-                ) ** (1/3)
-            ).to(u.cm)
+            (self.HS_RATIO_MIN * self.q / self.end_water_depth) *
+            (
+                self.BAFFLE_K / (
+                    2 * self.end_water_depth *
+                    pc.viscosity_kinematic(self.temp) *
+                    self.vel_grad_avg ** 2
+                )
+            ) ** (1/3)
+        ).to(u.cm)
         return chan_w_min_hs_ratio
 
     @property
     def chan_w_min(self):
         """The minimum channel width."""
         return ut.min(self.chan_w_min_hs_ratio, self.polycarb_sheet_w).to(u.cm)
-        
+
     @property
     def chan_n(self):
         """The minimum number of channels based on the maximum
@@ -142,24 +148,24 @@ class Flocculator(Component):
             return 1
         else:
             chan_n = ((
-                    (self.vol /
-                        (self.polycarb_sheet_w * self.end_water_depth)
-                    ) + self.ent_l
-                ) / self.chan_l).to_base_units()
+                (self.vol /
+                 (self.polycarb_sheet_w * self.end_water_depth)
+                 ) + self.ent_l
+            ) / self.chan_l).to_base_units()
 
             if self.chan_n_parity is 'even':
-                return ut.ceil_step(chan_n, step = 2)
+                return ut.ceil_step(chan_n, step=2)
             elif self.chan_n_parity is 'odd':
-                return ut.ceil_step(chan_n, step = 2) - 1
+                return ut.ceil_step(chan_n, step=2) - 1
             elif self.chan_n_parity is 'any':
-                return ut.ceil_step(chan_n, step = 1)
+                return ut.ceil_step(chan_n, step=1)
 
     @property
     def chan_w_min_gt(self):
         """The channel width minimum regarding the collision potential."""
         chan_w_min_gt = self.vol / (
-                self.end_water_depth * (self.chan_n * self.chan_l - self.ent_l)
-            )
+            self.end_water_depth * (self.chan_n * self.chan_l - self.ent_l)
+        )
         return chan_w_min_gt.to(u.cm)
 
     @property
@@ -167,8 +173,8 @@ class Flocculator(Component):
         """The channel width."""
         chan_w = ut.ceil_step(
             ut.max(self.chan_w_min_gt, self.chan_w_min),
-            step = 1 * u.cm
-            )
+            step=1 * u.cm
+        )
         return chan_w
 
     @property
@@ -190,8 +196,8 @@ class Flocculator(Component):
         allowable H/S ratio.
         """
         expansion_h_max = (
-                (
-                    (self.BAFFLE_K / 
+            (
+                (self.BAFFLE_K /
                         (
                             2 * pc.viscosity_kinematic(self.temp) *
                             (self.vel_grad_avg ** 2)
@@ -216,11 +222,11 @@ class Flocculator(Component):
     def baffle_s(self):
         """The spacing between baffles."""
         baffle_s = (
-                (self.BAFFLE_K /
-                    (
-                        (2 * self.expansion_h * (self.vel_grad_avg ** 2) *
-                        pc.viscosity_kinematic(self.temp))
-                    ).to_base_units()
+            (self.BAFFLE_K /
+             (
+                 (2 * self.expansion_h * (self.vel_grad_avg ** 2) *
+                  pc.viscosity_kinematic(self.temp))
+             ).to_base_units()
                 ) ** (1/3) * 
                 self.q / self.chan_w
             ).to(u.cm)
@@ -253,33 +259,43 @@ class Flocculator(Component):
             hl.PIPE_ENTRANCE_K_MINOR + \
             hl.PIPE_ENTRANCE_K_MINOR + \
             hl.PIPE_EXIT_K_MINOR
-        
+
         chan_pair_a = 2 * self.chan_l * self.chan_w
         drain_id = (
-                np.sqrt(8 * chan_pair_a / (np.pi * self.drain_t) *
+            np.sqrt(8 * chan_pair_a / (np.pi * self.drain_t) *
                     np.sqrt(
-                        self.end_water_depth * drain_k_minor /
-                        (2 * u.standard_gravity)
-                    )
-                )
-            ).to_base_units()
+                self.end_water_depth * drain_k_minor /
+                (2 * u.standard_gravity)
+            )
+            )
+        ).to_base_units()
 
         self.drain_pipe = Pipe(
-            id = drain_id, 
-            k_minor = drain_k_minor, 
-            spec = self.spec
-            )
-        
-    def draw(self):
-        """Draw the Onshape flocculator model based off of this object."""
-        from onshapepy import Part
-        CAD = Part(
-            'https://cad.onshape.com/documents/b4cfd328713460beeb3125ac/w/3928b5c91bb0a0be7858d99e/e/6f2eeada21e494cebb49515f'
+            id=drain_id,
+            k_minor=drain_k_minor,
+            spec=self.spec
         )
-        CAD.params = {
-            'channel_L': self.chan_l,
-            'channel_W': self.chan_w,
-            'channel_H': self.end_water_depth,
-            'channel_pairs': self.chan_n/2,
-            'baffle_S': self.baffle_s,
-        }
+
+    @property
+    def onshape_url_configured(self):
+        # Make the configuration string for the flocculator concrete. {{ and }}
+        # are used so that str.format() doesn't recognize them.
+        concrete_config = (
+            '{{"w_channel":"{}", "h_channel":"{}", "l_channel":"{}", "s_baffle"'
+            ':"{}", "n_channel":{}, "t_wall":"{}"}}'.format(
+                self.chan_w,
+                self.end_water_depth,
+                self.chan_l,
+                self.baffle_s,
+                self.chan_n,
+                self.dividing_wall_thickness
+            )
+        )
+        # concrete_config = quote_plus(concrete_config)
+        encoded_config = '?configuration='
+
+        encoded_config += quote_plus('Concrete_config=' + concrete_config + ';')
+        encoded_config += quote_plus('Channel_L=' + str(self.chan_l) + ';')
+
+        configured_url = self._onshape_url + encoded_config
+        return configured_url

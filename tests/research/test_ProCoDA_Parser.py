@@ -23,24 +23,24 @@ class TestProCoDAParser(unittest.TestCase):
         data_day2[0][0] = 0  # to remove scientific notation "e-"
 
         # SINGLE COLUMN, ONE DAY
-        output = get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20", end_time="13:00")
+        output = get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20", end_time="13:00", extension=".xls")
         self.assertSequenceEqual(np.round(output, 5).tolist(), data_day1[0][1041:1282])
 
         # SINGLE COLUMN, TWO DAYS
         output = get_data_by_time(path=path, columns=0, dates=["6-14-2018", "6-15-2018"],
-                                  start_time="12:20", end_time="10:50")
+                                  start_time="12:20", end_time="10:50", extension=".xls")
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output, 5).tolist(), time_column)
 
         # MULTI COLUMN, ONE DAY
         output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018"], start_time="12:20",
-                                  end_time="13:00")
+                                  end_time="13:00", extension=".xls")
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), data_day1[0][1041:1282])
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:1282])
 
         # MULTI COLUMN, TWO DAYS
         output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
-                                  start_time="12:20", end_time="10:50")
+                                  start_time="12:20", end_time="10:50", extension=".xls")
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), time_column)
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
@@ -96,7 +96,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
 
-        output = get_data_by_state(path, dates=["6-19-2013"], state=1, column=1)  # , "6-20-2013"
+        output = get_data_by_state(path, dates=["6-19-2013"], state=1, column=1, extension=".xls")  # , "6-20-2013"
 
         datafile = pd.read_csv(path + "/datalog 6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
@@ -117,7 +117,7 @@ class TestProCoDAParser(unittest.TestCase):
         Extract the time column from a data file.
         '''''
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
-        answer = column_of_time(path, 50, -1)
+        answer = column_of_time(path, 50)
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
          answer.tolist(),
@@ -160,7 +160,7 @@ class TestProCoDAParser(unittest.TestCase):
          6.24987260e-03,   6.30772900e-03,   6.36560880e-03,
          6.42346920e-03,   6.48135320e-03,   6.53921020e-03,
          6.59709090e-03,   6.65494290e-03,   6.71281870e-03,
-         6.77069570e-03,   6.82855640e-03])*u.day, 5).tolist()
+         6.77069570e-03,   6.82855640e-03,   6.88642010e-03])*u.day, 5).tolist()
         )
 
 
@@ -169,7 +169,7 @@ class TestProCoDAParser(unittest.TestCase):
         Extract other columns of data and append units.
         '''''
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
-        answer = column_of_data(path, 50, 1, -1, 'mg/L')
+        answer = column_of_data(path, 50, 1, units='mg/L')
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
         answer.tolist(),
@@ -202,7 +202,7 @@ class TestProCoDAParser(unittest.TestCase):
          2.42190933,   2.36228228,   2.30094266,   2.24602866,
          2.19216943,   2.14143515,   2.10641694,   2.07170939,
          2.04412961,   2.0158174 ,   2.00059986,   1.98546684,
-         1.97646523,   1.96455812,   1.95887971])*u('mg/L'), 5).tolist()
+         1.97646523,   1.96455812,   1.95887971,   1.94987118])*u('mg/L'), 5).tolist()
         )
 
     def test_notes(self):
@@ -222,7 +222,8 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_read_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
-        time, data = read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path)
+        time, data = read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
+                                extension=".xls")
         time = np.round(time, 5)
         self.assertSequenceEqual(
         time.tolist()[1000:1100],
@@ -270,7 +271,8 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_average_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
-        avgs = average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path)
+        avgs = average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
+                             extension=".xls")
         avgs = np.round(avgs, 5)
         self.assertSequenceEqual(
         avgs.tolist(),
@@ -289,7 +291,9 @@ class TestProCoDAParser(unittest.TestCase):
 
             return acc / num
 
-        avgs = perform_function_on_state(avg_with_units, ["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path)
+        avgs = perform_function_on_state(avg_with_units,
+                                         ["6-19-2013", "6-20-2013"], 1, 28,
+                                         "mL/s", path, extension=".xls")
         avgs = np.round(avgs, 5)
         self.assertSequenceEqual(
         avgs.tolist(),
@@ -326,7 +330,8 @@ class TestProCoDAParser(unittest.TestCase):
             return acc / num
 
         output = write_calculations_to_csv(avg_with_units, 1, 28, path,
-                                           ["Average Conc (mg/L)"], out_path)
+                                           ["Average Conc (mg/L)"], out_path,
+                                           extension=".xls")
 
         self.assertSequenceEqual(["1", "2"], output['ID'].tolist())
         self.assertSequenceEqual(
