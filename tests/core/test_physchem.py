@@ -12,9 +12,9 @@ class QuantityTest(unittest.TestCase):
         self.assertEqual(first.units, second.units, places)
 
 
-class AirTest(QuantityTest):
+class GasTest(QuantityTest):
 
-    def test_air_density(self):
+    def test_density_gas(self):
         """Test the air density function"""
         answer = 1.29320776*u.kg/u.m**3
         self.assertAlmostEqualQuantity(pc.density_air(1*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
@@ -743,7 +743,7 @@ class PorousMediaFuncsTest(QuantityTest):
                 self.assertRaises(ValueError, pc.headloss_kozeny, *i)
 
     def test_re_ergun(self):
-        self.assertAlmostEqualQuantity(pc.re_Ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2),
+        self.assertAlmostEqualQuantity(pc.re_ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2),
                                        139.49692604 * u.dimensionless)
 
     def test_re_ergun_range(self):
@@ -753,7 +753,19 @@ class PorousMediaFuncsTest(QuantityTest):
                   (1 * u.m/u.s, 1 * u.m, 1 * u.degK, -1 * u.dimensionless))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.re_Ergun, *i)
+                self.assertRaises(ValueError, pc.re_ergun, *i)
+
+    def test_fric_ergun(self):
+        self.assertAlmostEqualQuantity(pc.fric_ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2),
+                                       5.6505850237 * u.dimensionless)
+
+    def test_headloss_ergun(self):
+        self.assertAlmostEqualQuantity(pc.headloss_ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2, 4 * u.m),
+                                       1152.39863230 * u.m)
+
+    def test_G_CS_Ergun(self):
+        self.assertAlmostEqualQuantity(pc.G_CS_Ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2),
+                                       39704.892422*u.Hz, 5)
 
 
 class MiscPhysFuncsTest(QuantityTest):

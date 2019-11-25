@@ -1,5 +1,5 @@
-"""Contains unit process functions pertaining to the design of physical
-and chemical unit processes for AguaClara water treatment plants.
+"""Contains functions pertaining to the design of physical and chemical unit
+processes of AguaClara water treatment plants.
 """
 
 from aguaclara.core.units import u
@@ -9,12 +9,24 @@ import aguaclara.core.pipes as pipe
 
 import numpy as np
 from scipy import interpolate, integrate
+import warnings
 
-############################ Air ##############################
+############################ Gas ##############################
 
 
 @ut.list_handler()
 def density_air(Pressure, MolarMass, Temperature):
+    """
+    .. deprecated:: 0.1.13
+        `density_air` is deprecated; use `density_gas` instead.
+    """
+    warnings.warn('density_air is deprecated; use density_gas instead.',
+                  FutureWarning)
+    return density_gas(Pressure, MolarMass, Temperature)
+
+
+@ut.list_handler()
+def density_gas(Pressure, MolarMass, Temperature):
     """Return the density of air at the given pressure, molar mass, and
     temperature.
 
@@ -81,18 +93,29 @@ WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15,
 
 @ut.list_handler()
 def viscosity_dynamic(temp):
+    """
+    .. deprecated:: 0.1.13
+        `viscosity_dynamic` is deprecated; use `viscosity_dynamic_water`
+        instead.
+    """
+    warnings.warn('viscosity_dynamic is deprecated; use '
+                  'viscosity_dynamic_water instead.', FutureWarning)
+    return viscosity_dynamic_water(temp)
+
+
+@ut.list_handler()
+def viscosity_dynamic_water(Temperature):
     """Return the dynamic viscosity of water at a given temperature.
 
-    :param temp: temperature of water
-    :type temp: u.degK
+    :param Temperature: temperature of water
+    :type Temperature: u.degK
 
     :return: dynamic viscosity of water
     :rtype: u.kg/(u.m*u.s)
     """
-    ut.check_range([temp.magnitude, ">0", "Temperature in Kelvin"])
+    ut.check_range([Temperature.magnitude, ">0", "Temperature in Kelvin"])
     return 2.414 * (10**-5) * u.kg/(u.m*u.s) * 10**(247.8*u.degK /
-                                                    (temp - 140*u.degK))
-
+                                                    (Temperature - 140*u.degK))
 
 @ut.list_handler()
 def density_water(temp):
@@ -113,22 +136,44 @@ def density_water(temp):
 
 @ut.list_handler()
 def viscosity_kinematic(temp):
+    """
+    .. deprecated:: 0.1.13
+        `viscosity_kinematic` is deprecated; use `viscosity_kinematic_water`
+        instead.
+    """
+    warnings.warn('viscosity_kinematic is deprecated; use '
+                  'viscosity_kinematic_water instead.', FutureWarning)
+    return viscosity_kinematic_water(temp)
+
+
+@ut.list_handler()
+def viscosity_kinematic_water(Temperature):
     """Return the kinematic viscosity of water at a given temperature.
 
-    :param temp: temperature of water
-    :type temp: u.degK
+    :param Temperature: temperature of water
+    :type Temperature: u.degK
 
     :return: kinematic viscosity of water
     :rtype: u.m**2/u.s
     """
-    ut.check_range([temp.magnitude, ">0", "Temperature in Kelvin"])
-    return (viscosity_dynamic(temp) / density_water(temp))
+    ut.check_range([Temperature.magnitude, ">0", "Temperature in Kelvin"])
+    return (viscosity_dynamic_water(Temperature) / density_water(Temperature))
 
 ####################### Hydraulic Radius #######################
 
 
 @ut.list_handler()
 def radius_hydraulic(Width, Depth, openchannel):
+    """
+    .. deprecated:: 0.1.13
+        `radius_hydraulic` is deprecated; use `radius_hydraulic_rect` instead.
+    """
+    warnings.warn('radius_hydraulic is deprecated; use radius_hydraulic_rect '
+                  'instead.', FutureWarning)
+    return radius_hydraulic_rect(Width, Depth, openchannel)
+
+@ut.list_handler()
+def radius_hydraulic_rect(Width, Depth, OpenChannel):
     """Return the hydraulic radius of a rectangular channel given width and
     depth of water.
 
@@ -136,16 +181,16 @@ def radius_hydraulic(Width, Depth, openchannel):
     :type Width: u.m
     :param Depth: depth of water in channel
     :type Depth: u.m
-    :param openchannel: true if channel is open, false if closed
-    :type openchannel: boolean
+    :param OpenChannel: true if channel is open, false if closed
+    :type OpenChannel: boolean
 
     :return: hydraulic radius of rectangular channel
     :rtype: u.m
     """
     ut.check_range([Width.magnitude, ">0", "Width"],
                    [Depth.magnitude, ">0", "Depth"],
-                   [openchannel, "boolean", "openchannel"])
-    if openchannel:
+                   [OpenChannel, "boolean", "openchannel"])
+    if OpenChannel:
         return (Width*Depth) / (Width + 2*Depth)
     else:
         return (Width*Depth) / (2 * (Width+Depth))
@@ -153,6 +198,18 @@ def radius_hydraulic(Width, Depth, openchannel):
 
 @ut.list_handler()
 def radius_hydraulic_general(Area, PerimWetted):
+    """
+    .. deprecated:: 0.1.13
+        `radius_hydraulic_general` is deprecated; use
+        `radius_hydraulic_channel` instead.
+    """
+    warnings.warn('radius_hydraulic_general is deprecated; use '
+                  'radius_hydraulic_channel instead.', FutureWarning)
+    return radius_hydraulic_channel(Area, PerimWetted)
+
+
+@ut.list_handler()
+def radius_hydraulic_channel(Area, PerimWetted):
     """Return the hydraulic radius of a general channel given cross sectional
     area and wetted perimeter.
 
@@ -211,7 +268,7 @@ def re_rect(FlowRate, Width, Depth, Nu, openchannel):
     """
     ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
                    [Nu.magnitude, ">0", "Nu"])
-    return (4 * FlowRate * radius_hydraulic(Width, Depth, openchannel)
+    return (4 * FlowRate * radius_hydraulic_rect(Width, Depth, openchannel)
             / (Width * Depth * Nu))
 
 
@@ -298,7 +355,7 @@ def fric_rect(FlowRate, Width, Depth, Nu, PipeRough, openchannel):
         return (0.25 * u.dimensionless
                 / (np.log10((PipeRough
                              / (3.7 * 4
-                                * radius_hydraulic(Width, Depth,
+                                * radius_hydraulic_rect(Width, Depth,
                                                    openchannel)
                                 )
                              )
@@ -458,7 +515,7 @@ def headloss_fric_rect(FlowRate, Width, Depth, Length, Nu, PipeRough, openchanne
     return (fric_rect(FlowRate, Width, Depth, Nu,
                       PipeRough, openchannel)
             * Length
-            / (4 * radius_hydraulic(Width, Depth, openchannel))
+            / (4 * radius_hydraulic_rect(Width, Depth, openchannel))
             * FlowRate**2
             / (2 * u.gravity * (Width*Depth)**2)
             )
@@ -1227,7 +1284,7 @@ def headloss_kozeny(Length, Diam, Vel, Porosity, Nu):
 
 
 @ut.list_handler()
-def re_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
+def re_ergun(ApproachVel, DiamParticle, Temperature, Porosity):
     """Return the Reynolds number for flow through porous media.
 
     :param ApproachVel: approach velocity or superficial fluid velocity
@@ -1250,12 +1307,12 @@ def re_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
 
 
 @ut.list_handler()
-def f_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
+def fric_ergun(ApproachVel, DiamParticle, Temperature, Porosity):
     """Return the friction factor for flow through porous media.
 
     :param ApproachVel: superficial fluid velocity (VelSuperficial?)
     :type ApproachVel: u.m/u.s
-    :param DiamParticle: particle diameter (DiamParticle?)
+    :param DiamParticle: particle diameter
     :type DiamParticle: u.m
     :param Temperature: temperature of porous medium
     :type Temperature: u.degK
@@ -1265,15 +1322,12 @@ def f_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
     :return: friction factor for flow through porous media
     :rtype: u.dimensionless
     """
-    ut.check_range([ApproachVel.magnitude, ">0", "ApproachVel"],
-                   [DiamParticle.magnitude, ">0", "DiamParticle"],
-                   [Porosity, "0-1", "Porosity"])
-    return (300 / re_Ergun(ApproachVel, DiamParticle, Temperature, Porosity)
+    return (300 / re_ergun(ApproachVel, DiamParticle, Temperature, Porosity)
             + 3.5 * u.dimensionless)
 
 
 @ut.list_handler()
-def headloss_Ergun(ApproachVel, DiamParticle, Temperature, Porosity, Length):
+def headloss_ergun(ApproachVel, DiamParticle, Temperature, Porosity, Length):
     """Return the frictional head loss for flow through porous media.
 
     :param ApproachVel: superficial fluid velocity (VelSuperficial?)
@@ -1290,7 +1344,7 @@ def headloss_Ergun(ApproachVel, DiamParticle, Temperature, Porosity, Length):
     :return: frictional head loss for flow through porous media
     :rtype: u.m
     """
-    return (f_Ergun(ApproachVel, DiamParticle, Temperature, Porosity)
+    return (fric_ergun(ApproachVel, DiamParticle, Temperature, Porosity)
             * Length / DiamParticle * ApproachVel**2 / (2*u.gravity) * (1-Porosity)
             / Porosity**3).to(u.m)
 
@@ -1311,7 +1365,7 @@ def G_CS_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
     :return: Camp Stein velocity gradient for flow through porous media
     :rtype: u.Hz
     """
-    return np.sqrt(f_Ergun(ApproachVel, DiamParticle, Temperature, Porosity)
+    return np.sqrt(fric_ergun(ApproachVel, DiamParticle, Temperature, Porosity)
                    * ApproachVel**3 * (1-Porosity)
                    / (2 * viscosity_kinematic(Temperature) * DiamParticle
                       * Porosity**4)).to(u.Hz)
@@ -1405,7 +1459,7 @@ def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
             (
                 1 + k +
                     fric_rect(q, w, depth - hl, nu, eps, True) *
-                    (l / (4 * radius_hydraulic(w, depth - hl, True))) *
+                    (l / (4 * radius_hydraulic_rect(w, depth - hl, True))) *
                     (1 - (2 * (int(manifold) / 3)))
             ) / (2 * u.gravity * hl)
         ) * (q / (depth - hl))
@@ -1423,7 +1477,7 @@ def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
         i = i + 1
         h_new = (q/ w) * np.sqrt((1 + \
             fric_rect(q, w, h - hl_local, nu, eps, True) * (l / (4 * \
-                radius_hydraulic(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))
+                radius_hydraulic_rect(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))
         )/ (2 * u.gravity * hl_local)) + (hl_local)
         error = np.abs(h_new - h) / (h_new + h)
     return h_new.to(u.m)
