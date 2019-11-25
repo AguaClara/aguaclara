@@ -9,12 +9,11 @@ Example:
     1230000
 """
 from aguaclara.core.units import u
-import functools
-
 import numpy as np
 from math import log10, floor, ceil
 import warnings
 import functools
+
 
 def optional_units(arg_positions, keys):
     """Wrap a function so that arguments may optionally have units.
@@ -58,6 +57,7 @@ def optional_units(arg_positions, keys):
         return wrapper
     return decorator
 
+
 @optional_units([0], ['num'])
 def round_sig_figs(num, figs=4):
     """Round a number to some amount of significant figures.
@@ -73,6 +73,7 @@ def round_sig_figs(num, figs=4):
         num = np.round(num.magnitude, decimals) * num.units
 
     return num
+
 
 def round_sf(num, figs=4):
     """Round a number to some amount of significant figures.
