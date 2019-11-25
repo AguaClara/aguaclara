@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """This file contains functions which can be used to model the behavior of
 flocs based on the chemical interactions of clay, coagulant, and humic acid.
-
 """
 
 ######################### Imports #########################
@@ -20,7 +19,7 @@ class Material:
     """
 
     def __init__(self, name, diameter, density, molecWeight):
-        """Initialize a material object.
+        """Initialize a Material object.
 
         :param name: Name of the material
         :type name: string
@@ -44,6 +43,20 @@ class Chemical(Material):
 
     def __init__(self, name, diameter, density, molecWeight, Precipitate,
                  AluminumMPM=None):
+        """Initialize a Chemical object.
+
+        :param name: Name of the material
+        :type name: string
+        :param diameter: Diameter of the material in particulate form
+        :type diameter: length
+        :param density: Density of the material
+        :type density: mass/length**3
+        :param molecWeight: Molecular weight of the material
+        :type molecWeight: mass/mole
+        :param Precipitate: Name of the precipitate
+        :type Precipitate: string
+        :param AluminumMPM:
+        """
         Material.__init__(self, name, diameter, density, molecWeight)
         self.AluminumMPM = AluminumMPM
         self.Precip = Precipitate
@@ -170,7 +183,7 @@ def conc_precipitate(ConcAluminum, coag):
     """
     return ((ConcAluminum / MOLEC_WEIGHT_ALUMINUM)
             * (coag.PrecipMolecWeight / coag.PrecipAluminumMPM)
-            )
+            ).to(u.kg/u.m**3)
 
 
 # @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, None], False)
@@ -188,7 +201,7 @@ def moles_aluminum(ConcAluminum):
 # @u.wraps(u.m, u.kg/u.m**3, False)
 def sep_dist_aluminum(ConcAluminum):
     """Return the separation distance between aluminum molecules."""
-    return ((1 / (NUM_AVOGADRO * moles_aluminum(ConcAluminum)))**(1/3)).to(u.m)
+    return ((1 / (NUM_AVOGADRO / u.mol * moles_aluminum(ConcAluminum)))**(1/3)).to(u.m)
 
 
 def particle_number_concentration(ConcMat, material):
@@ -199,7 +212,7 @@ def particle_number_concentration(ConcMat, material):
     :param material: The material in solution
     :type material: floc_model.Material
     """
-    return (ConcMat.to(material.Density.units) / ((material.Density * np.pi * material.Diameter**3) / 6)).to(u.dimensionless)
+    return (ConcMat / ((material.Density * np.pi * material.Diameter**3) / 6)).to(u.m**-3)
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.m], False)
@@ -258,7 +271,7 @@ def num_coll_reqd(DIM_FRACTAL, material, DiamTarget):
     Calculates the number of doubling collisions required to produce
     a floc of diameter DiamTarget.
     """
-    return (DIM_FRACTAL * np.log2(DiamTarget/material.Diameter)).to(u.dimensionless)
+    return (DIM_FRACTAL * np.log(DiamTarget/material.Diameter)/np.log(2)).to(u.dimensionless)
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None,
@@ -282,7 +295,7 @@ def frac_vol_floc(ConcAluminum, ConcClay, coag, DIM_FRACTAL,
     """Return the floc volume fraction."""
     return (frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material)
             * (DiamTarget / material.Diameter)**(3-DIM_FRACTAL)
-            ).to(u.m)
+            ).to(u.dimensionless)
 
 
 # @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)
@@ -303,7 +316,7 @@ def ratio_clay_sphere(RatioHeightDiameter):
 
     Normalized by surface area to volume ratio for a sphere.
     """
-    return ((1/2 + RatioHeightDiameter) * (2 / (3*RatioHeightDiameter))**(2/3)).to(u.dimensionless)
+    return ((1/2 + RatioHeightDiameter) * (2 / (3*RatioHeightDiameter))**(2/3))*u.dimensionless
 
 
 def ratio_area_clay_total(ConcClay, material, DiamTube, RatioHeightDiameter):
@@ -540,7 +553,7 @@ def diam_floc_vel_term(ConcAl, ConcClay, coag, material,
     return (material.Diameter * (((18 * VelTerm * PHI_FLOC
                           * pc.viscosity_kinematic(Temp)
                           )
-                         / (pc.gravity * material.Diameter**2)
+                         / (u.gravity * material.Diameter**2)
                          )
                          * (WaterDensity
                             / (dens_floc_init(ConcAl, ConcClay, coag,
