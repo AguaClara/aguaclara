@@ -17,11 +17,11 @@ import warnings
 @ut.list_handler()
 def density_air(Pressure, MolarMass, Temperature):
     """
-    .. deprecated:: 0.1.13
+    .. deprecated::
         `density_air` is deprecated; use `density_gas` instead.
     """
     warnings.warn('density_air is deprecated; use density_gas instead.',
-                  FutureWarning)
+                  DeprecationWarning)
     return density_gas(Pressure, MolarMass, Temperature)
 
 
@@ -94,12 +94,12 @@ WATER_DENSITY_TABLE = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15,
 @ut.list_handler()
 def viscosity_dynamic(temp):
     """
-    .. deprecated:: 0.1.13
+    .. deprecated::
         `viscosity_dynamic` is deprecated; use `viscosity_dynamic_water`
         instead.
     """
     warnings.warn('viscosity_dynamic is deprecated; use '
-                  'viscosity_dynamic_water instead.', FutureWarning)
+                  'viscosity_dynamic_water instead.', DeprecationWarning)
     return viscosity_dynamic_water(temp)
 
 
@@ -116,6 +116,7 @@ def viscosity_dynamic_water(Temperature):
     ut.check_range([Temperature.magnitude, ">0", "Temperature in Kelvin"])
     return 2.414 * (10**-5) * u.kg/(u.m*u.s) * 10**(247.8*u.degK /
                                                     (Temperature - 140*u.degK))
+
 
 @ut.list_handler()
 def density_water(temp):
@@ -137,12 +138,12 @@ def density_water(temp):
 @ut.list_handler()
 def viscosity_kinematic(temp):
     """
-    .. deprecated:: 0.1.13
+    .. deprecated::
         `viscosity_kinematic` is deprecated; use `viscosity_kinematic_water`
         instead.
     """
     warnings.warn('viscosity_kinematic is deprecated; use '
-                  'viscosity_kinematic_water instead.', FutureWarning)
+                  'viscosity_kinematic_water instead.', DeprecationWarning)
     return viscosity_kinematic_water(temp)
 
 
@@ -165,12 +166,13 @@ def viscosity_kinematic_water(Temperature):
 @ut.list_handler()
 def radius_hydraulic(Width, Depth, openchannel):
     """
-    .. deprecated:: 0.1.13
+    .. deprecated::
         `radius_hydraulic` is deprecated; use `radius_hydraulic_rect` instead.
     """
     warnings.warn('radius_hydraulic is deprecated; use radius_hydraulic_rect '
-                  'instead.', FutureWarning)
+                  'instead.', DeprecationWarning)
     return radius_hydraulic_rect(Width, Depth, openchannel)
+
 
 @ut.list_handler()
 def radius_hydraulic_rect(Width, Depth, OpenChannel):
@@ -189,7 +191,7 @@ def radius_hydraulic_rect(Width, Depth, OpenChannel):
     """
     ut.check_range([Width.magnitude, ">0", "Width"],
                    [Depth.magnitude, ">0", "Depth"],
-                   [OpenChannel, "boolean", "openchannel"])
+                   [OpenChannel, "boolean", "OpenChannel"])
     if OpenChannel:
         return (Width*Depth) / (Width + 2*Depth)
     else:
@@ -199,12 +201,12 @@ def radius_hydraulic_rect(Width, Depth, OpenChannel):
 @ut.list_handler()
 def radius_hydraulic_general(Area, PerimWetted):
     """
-    .. deprecated:: 0.1.13
+    .. deprecated::
         `radius_hydraulic_general` is deprecated; use
         `radius_hydraulic_channel` instead.
     """
     warnings.warn('radius_hydraulic_general is deprecated; use '
-                  'radius_hydraulic_channel instead.', FutureWarning)
+                  'radius_hydraulic_channel instead.', DeprecationWarning)
     return radius_hydraulic_channel(Area, PerimWetted)
 
 
@@ -249,7 +251,7 @@ def re_pipe(FlowRate, Diam, Nu):
 
 
 @ut.list_handler()
-def re_rect(FlowRate, Width, Depth, Nu, openchannel):
+def re_rect(FlowRate, Width, Depth, Nu, OpenChannel=None, *, openchannel=None):
     """Return the Reynolds number of flow through a rectangular channel.
 
     :param FlowRate: flow rate through channel
@@ -260,20 +262,42 @@ def re_rect(FlowRate, Width, Depth, Nu, openchannel):
     :type Depth: u.m
     :param Nu: kinematic viscosity of fluid
     :type Nu: u.m**2/u.s
-    :param openchannel: true if channel is open, false if closed
-    :type openchannel: boolean
+    :param OpenChannel: true if channel is open, false if closed
+    :type OpenChannel: boolean
+    :param openchannel: deprecated; use OpenChannel instead
 
     :return: Reynolds number of flow through rectangular channel
     :rtype: u.dimensionless
     """
     ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
                    [Nu.magnitude, ">0", "Nu"])
-    return (4 * FlowRate * radius_hydraulic_rect(Width, Depth, openchannel)
+    if OpenChannel is not None and openchannel is not None:
+        raise TypeError("re_rect received both OpenChannel and openchannel")
+    elif OpenChannel is not None and openchannel is not None:
+        raise TypeError("re_rect missing OpenChannel argument")
+    elif openchannel is not None:
+        warnings.warn("openchannel is deprecated; use OpenChannel instead.",
+                      DeprecationWarning)
+        return (4 * FlowRate * radius_hydraulic_rect(Width, Depth, openchannel)
+                / (Width * Depth * Nu))
+
+    return (4 * FlowRate * radius_hydraulic_rect(Width, Depth, OpenChannel)
             / (Width * Depth * Nu))
 
 
 @ut.list_handler()
 def re_general(Vel, Area, PerimWetted, Nu):
+    """
+    .. deprecated::
+        `re_general` is deprecated; use `re_channel` instead.
+    """
+    warnings.warn('re_general is deprecated; use re_channel instead.',
+                  DeprecationWarning)
+    return re_channel(Vel, Area, PerimWetted, Nu)
+
+
+@ut.list_handler()
+def re_channel(Vel, Area, PerimWetted, Nu):
     """Return the Reynolds number of flow through a general cross section.
 
     :param Vel: velocity of fluid
@@ -290,13 +314,23 @@ def re_general(Vel, Area, PerimWetted, Nu):
     """
     ut.check_range([Vel.magnitude, ">=0", "Velocity"],
                    [Nu.magnitude, ">0", "Nu"])
-    return 4 * radius_hydraulic_general(Area, PerimWetted) * Vel / Nu
+    return 4 * radius_hydraulic_channel(Area, PerimWetted) * Vel / Nu
 
 ########################### Friction ###########################
 
 
 @ut.list_handler()
 def fric(FlowRate, Diam, Nu, PipeRough):
+    """
+    .. deprecated::
+        `fric` is deprecated; use `fric_pipe` instead.
+    """
+    warnings.warn('fric is deprecated; use fric_pipe instead', DeprecationWarning)
+    return fric_pipe(FlowRate, Diam, Nu, PipeRough)
+
+
+@ut.list_handler()
+def fric_pipe(FlowRate, Diam, Nu, Roughness):
     """Return the friction factor for pipe flow.
 
     For laminar flow, the friction factor is 64 is divided the Reynolds number.
@@ -309,15 +343,15 @@ def fric(FlowRate, Diam, Nu, PipeRough):
     :type Diam: u.m
     :param Nu: kinematic viscosity of fluid
     :type Nu: u.m**2/u.s
-    :param PipeRough: roughness of pipe
-    :type PipeRough: u.m
+    :param Roughness: roughness of pipe
+    :type Roughness: u.m
 
     :return: friction factor of flow through pipe
     :rtype: u.dimensionless
     """
-    ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
+    ut.check_range([Roughness.magnitude, "0-1", "Pipe roughness"])
     if re_pipe(FlowRate, Diam, Nu) >= RE_TRANSITION_PIPE:
-        f = (0.25 / (np.log10(PipeRough / (3.7 * Diam)
+        f = (0.25 / (np.log10(Roughness / (3.7 * Diam)
                               + 5.74 / re_pipe(FlowRate, Diam, Nu) ** 0.9
                               )
                      ) ** 2
@@ -328,7 +362,8 @@ def fric(FlowRate, Diam, Nu, PipeRough):
 
 
 @ut.list_handler()
-def fric_rect(FlowRate, Width, Depth, Nu, PipeRough, openchannel):
+def fric_rect(FlowRate, Width, Depth, Nu, Roughness=None, OpenChannel=None, *,
+              PipeRough=None, openchannel=None):
     """Return the friction factor of a rectangular channel.
 
     The Swamee-Jain equation is adapted for a rectangular channel.
@@ -349,29 +384,53 @@ def fric_rect(FlowRate, Width, Depth, Nu, PipeRough, openchannel):
     :return: friction factor of flow through rectangular channel
     :rtype: u.dimensionless
     """
-    ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
-    if re_rect(FlowRate, Width, Depth, Nu, openchannel) >= RE_TRANSITION_PIPE:
+    if Roughness is not None and PipeRough is not None:
+        raise TypeError("fric_rect received both Roughness and PipeRough")
+    elif OpenChannel is not None and openchannel is not None:
+        raise TypeError("fric_rect received both OpenChannel and openchannel")
+    if PipeRough is not None:
+        warnings.warn("PipeRough is deprecated; use Roughness instead.",
+                      DeprecationWarning)
+        Roughness = PipeRough
+    if openchannel is not None:
+        warnings.warn("openchannel is deprecated; use OpenChannel instead.",
+                      DeprecationWarning)
+        OpenChannel = openchannel
+
+    ut.check_range([Roughness.magnitude, "0-1", "Pipe roughness"])
+    if re_rect(FlowRate, Width, Depth, Nu, OpenChannel) >= RE_TRANSITION_PIPE:
         # Diam = 4*R_h in adapted Swamee-Jain equation
         return (0.25 * u.dimensionless
-                / (np.log10((PipeRough
+                / (np.log10((Roughness
                              / (3.7 * 4
                                 * radius_hydraulic_rect(Width, Depth,
-                                                   openchannel)
+                                                        OpenChannel)
                                 )
                              )
                             + (5.74 / (re_rect(FlowRate, Width, Depth,
-                                               Nu, openchannel) ** 0.9)
+                                               Nu, OpenChannel) ** 0.9)
                                )
                             )
                    ) ** 2
                 )
     else:
         return 64 * u.dimensionless / re_rect(FlowRate, Width, Depth, Nu,
-                                              openchannel)
+                                              OpenChannel)
 
 
 @ut.list_handler()
 def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
+    """
+    .. deprecated::
+        `fric_general` is deprecated; use `fric_channel` instead.
+    """
+    warnings.warn('fric_general is deprecated; use fric_channel instead.',
+                  DeprecationWarning)
+    return fric_channel(Area, PerimWetted, Vel, Nu, PipeRough)
+
+
+@ut.list_handler()
+def fric_channel(Area, PerimWetted, Vel, Nu, Roughness):
     """Return the friction factor for a general channel.
 
     The Swamee-Jain equation is adapted for a general cross-section.
@@ -390,23 +449,23 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
     :return: friction factor for flow through general channel
     :rtype: u.dimensionless
     """
-    ut.check_range([PipeRough.magnitude, "0-1", "Pipe roughness"])
-    if re_general(Vel, Area, PerimWetted, Nu) >= RE_TRANSITION_PIPE:
+    ut.check_range([Roughness.magnitude, "0-1", "Pipe roughness"])
+    if re_channel(Vel, Area, PerimWetted, Nu) >= RE_TRANSITION_PIPE:
         # Diam = 4*R_h in adapted Swamee-Jain equation
         f = (0.25 /
-             (np.log10((PipeRough
+             (np.log10((Roughness
                         / (3.7 * 4
-                           * radius_hydraulic_general(Area, PerimWetted)
+                           * radius_hydraulic_channel(Area, PerimWetted)
                            )
                         )
                        + (5.74
-                          / re_general(Vel, Area, PerimWetted, Nu) ** 0.9
+                          / re_channel(Vel, Area, PerimWetted, Nu) ** 0.9
                           )
                        )
               ) ** 2
              )
     else:
-        f = 64 / re_general(Vel, Area, PerimWetted, Nu)
+        f = 64 / re_channel(Vel, Area, PerimWetted, Nu)
     return f * u.dimensionless
 
 ######################### Head Loss #########################
@@ -433,7 +492,7 @@ def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
     :rtype: u.m
     """
     ut.check_range([Length.magnitude, ">0", "Length"])
-    return (fric(FlowRate, Diam, Nu, PipeRough)
+    return (fric_pipe(FlowRate, Diam, Nu, PipeRough)
             * 8 / (u.gravity * np.pi**2)
             * (Length * FlowRate**2) / Diam**5
             )
@@ -604,8 +663,8 @@ def headloss_fric_general(Area, PerimWetted, Vel, Length, Nu, PipeRough):
     :rtype: u.m
     """
     ut.check_range([Length.magnitude, ">0", "Length"])
-    return (fric_general(Area, PerimWetted, Vel, Nu, PipeRough) * Length
-            / (4 * radius_hydraulic_general(Area, PerimWetted))
+    return (fric_channel(Area, PerimWetted, Vel, Nu, PipeRough) * Length
+            / (4 * radius_hydraulic_channel(Area, PerimWetted))
             * Vel**2 / (2*u.gravity)
             )
 
@@ -1303,7 +1362,7 @@ def re_ergun(ApproachVel, DiamParticle, Temperature, Porosity):
                    [DiamParticle.magnitude, ">0", "DiamParticle"],
                    [Porosity, "0-1", "Porosity"])
     return (ApproachVel * DiamParticle /
-            (viscosity_kinematic(Temperature) * (1 - Porosity)))
+            (viscosity_kinematic_water(Temperature) * (1 - Porosity)))
 
 
 @ut.list_handler()
@@ -1367,7 +1426,7 @@ def G_CS_Ergun(ApproachVel, DiamParticle, Temperature, Porosity):
     """
     return np.sqrt(fric_ergun(ApproachVel, DiamParticle, Temperature, Porosity)
                    * ApproachVel**3 * (1-Porosity)
-                   / (2 * viscosity_kinematic(Temperature) * DiamParticle
+                   / (2 * viscosity_kinematic_water(Temperature) * DiamParticle
                       * Porosity**4)).to(u.Hz)
 
 ######################## Miscellaneous ########################
@@ -1428,7 +1487,7 @@ def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
             ((8 * q ** 2) / (u.gravity * np.pi ** 2 * h)) *
             (
                 (
-                    1 + fric(q, id_old, nu, eps) *
+                    1 + fric_pipe(q, id_old, nu, eps) *
                     (1 / 3 + 1 / (2 * n) + 1 / (6 * n ** 2))
                 ) /
                 (1 - q_ratio ** 2)
