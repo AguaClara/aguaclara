@@ -217,9 +217,11 @@ class TestKolmogorovAndViscous(QuantityTest):
         self.assertAlmostEqualQuantity(fm.diam_vel(2*u.W/u.kg, 298*u.degK, 0.5*u.g/u.L, 10*u.g/u.L, fm.PACl, fm.Clay, fm.DIM_FRACTAL),
                                        0.00078540208*u.m, 10)
 
-    # def test_diam_floc_max(self):
+    def test_diam_floc_max(self):
+        self.assertRaisesRegexp(FutureWarning, "diam_floc_max is deprecated and will be removed after Dec 1 2019. The underlying equation is under suspicion.")
 
-    # def test_ener_dis_diam_floc(self):
+    def test_ener_dis_diam_floc(self):
+        self.assertRaisesRegexp(FutureWarning, "ener_dis_diam_floc is deprecated and will be removed after Dec 1 2019. The underlying equation is under suspicion.")
 
 
 class TestVelocityGradient(QuantityTest):
