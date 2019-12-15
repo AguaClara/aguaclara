@@ -14,18 +14,21 @@ class QuantityTest(unittest.TestCase):
 
 class GasTest(QuantityTest):
 
+    def test_density_air(self):
+        self.assertWarns(UserWarning, pc.density_air, *(1*u.atm, 28.97*u.g/u.mol, 273*u.K))
+
     def test_density_gas(self):
-        """Test the air density function"""
+        """Test the gas density function"""
         answer = 1.29320776*u.kg/u.m**3
-        self.assertAlmostEqualQuantity(pc.density_air(1*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
+        self.assertAlmostEqualQuantity(pc.density_gas(1*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
         answer = 2.06552493*u.kg/u.m**3
-        self.assertAlmostEqualQuantity(pc.density_air(5*u.atm, 10*u.g/u.mol, 295*u.K), answer)
+        self.assertAlmostEqualQuantity(pc.density_gas(5*u.atm, 10*u.g/u.mol, 295*u.K), answer)
         answer = 1.62487961*u.kg/u.m**3
-        self.assertAlmostEqualQuantity(pc.density_air(101325*u.Pa, 40*u.g/u.mol, 300*u.K), answer)
+        self.assertAlmostEqualQuantity(pc.density_gas(101325*u.Pa, 40*u.g/u.mol, 300*u.K), answer)
         answer = 0.20786109*u.kg/u.m**3
-        self.assertAlmostEqualQuantity(pc.density_air(700*u.mmHg, 5*u.g/u.mol, 270*u.K), answer)
+        self.assertAlmostEqualQuantity(pc.density_gas(700*u.mmHg, 5*u.g/u.mol, 270*u.K), answer)
         answer = 0*u.kg/u.m**3
-        self.assertAlmostEqualQuantity(pc.density_air(0*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
+        self.assertAlmostEqualQuantity(pc.density_gas(0*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
 
 
 class GeometryTest(QuantityTest):
@@ -96,17 +99,23 @@ class WaterPropertiesTest(QuantityTest):
                 self.assertAlmostEqualQuantity(pc.density_water(i[0]), i[1])
 
     def test_viscosity_dynamic(self):
-        """viscosity_dynamic should give known result with known input."""
+        self.assertWarns(UserWarning, pc.viscosity_dynamic, 300 * u.degK)
+
+    def test_viscosity_dynamic_water(self):
+        """viscosity_dynamic_water should give known result with known input."""
         checks = ((300 * u.degK, 0.0008540578046518858 * u.kg/(u.m*u.s)),
                   (372 * u.degK, 0.00028238440851243975 * u.kg/(u.m*u.s)),
                   (274 * u.degK, 0.0017060470223965783 * u.kg/(u.m*u.s)),
                   (26.85 * u.degC, 0.0008540578046518858 * u.kg/(u.m*u.s)))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.viscosity_dynamic(i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.viscosity_dynamic_water(i[0]), i[1])
 
     def test_viscosity_kinematic(self):
-        """viscosity_kinematic should give known results with known input."""
+        self.assertWarns(UserWarning, pc.viscosity_kinematic, 300 * u.degK)
+
+    def test_viscosity_kinematic_water(self):
+        """viscosity_kinematic_water should give known results with known input."""
         checks = ((342 * u.degK, 4.1584506710898959e-07 * u.m**2/u.s),
                   (297 * u.degK, 9.1670473903811879e-07 * u.m**2/u.s),
                   (273.15 * u.degK, 1.7532330683680798e-06 * u.m**2/u.s),
@@ -114,22 +123,25 @@ class WaterPropertiesTest(QuantityTest):
                   (100 * u.degC, 2.9108883329847625e-07 * u.m**2/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.viscosity_kinematic(i[0]), i[1])
-                self.assertAlmostEqualQuantity(pc.viscosity_kinematic(i[0]),
-                    (pc.viscosity_dynamic(i[0]) / pc.density_water(i[0])))
+                self.assertAlmostEqualQuantity(pc.viscosity_kinematic_water(i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.viscosity_kinematic_water(i[0]),
+                    (pc.viscosity_dynamic_water(i[0]) / pc.density_water(i[0])))
 
 
 class RadiusFuncsTest(QuantityTest):
     """Test the various radius-acquisition functions."""
 
     def test_radius_hydraulic(self):
-        """radius_hydraulic should return known results with known input."""
+        self.assertWarns(UserWarning, pc.radius_hydraulic, *(10 * u.m, 4 * u.m, False))
+
+    def test_radius_hydraulic_rect(self):
+        """radius_hydraulic_rect should return known results with known input."""
         checks = (([10 * u.m, 4 * u.m, False], 1.4285714285714286 * u.m),
                   ([10 * u.m, 4 * u.m, True], 2.2222222222222223 * u.m),
                   ([0.01 * u.km, 40 * u.dm, False], 1.4285714285714286 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.radius_hydraulic(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.radius_hydraulic_rect(*i[0]), i[1])
 
     def test_radius_hydraulic_range(self):
         """radius_hydraulic should raise errors when inputs are out of bounds."""
@@ -141,23 +153,26 @@ class RadiusFuncsTest(QuantityTest):
                   ([10 * u.m, 4 * u.m, 6 * u.m], TypeError))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(i[1], pc.radius_hydraulic, *i[0])
+                self.assertRaises(i[1], pc.radius_hydraulic_rect, *i[0])
 
     def test_radius_hydraulic_general(self):
-        """radius_hydraulic_general should return known results with known input."""
+        self.assertWarns(UserWarning, pc.radius_hydraulic_general, *(6 * u.m**2, 12 * u.m))
+
+    def test_radius_hydraulic_channel(self):
+        """radius_hydraulic_channel should return known results with known input."""
         checks = (([6 * u.m**2, 12 * u.m], 0.5 * u.m),
                   ([70 * u.m**2, 0.4 * u.m], 175 * u.m),
                   ([40000 * u.cm**2, 7 * u.m], 0.5714285714285715 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.radius_hydraulic_general(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.radius_hydraulic_channel(*i[0]), i[1])
 
-    def test_radius_hydraulic_general_range(self):
-        """radius_hydraulic_general should not accept inputs of 0 or less."""
+    def test_radius_hydraulic_channel_range(self):
+        """radius_hydraulic_channel should not accept inputs of 0 or less."""
         checks = ([0 * u.m**2, 6 * u.m], [6 * u.m**2, 0 * u.m])
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.radius_hydraulic_general, *i)
+                self.assertRaises(ValueError, pc.radius_hydraulic_channel, *i)
 
 
 class ReynoldsNumsTest(QuantityTest):
@@ -200,29 +215,45 @@ class ReynoldsNumsTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.re_rect, *i)
 
+    def test_re_rect_warning(self):
+        """re_rect should raise warnings when passed a deprecated parameter"""
+        checks = (lambda: pc.re_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s),
+                  lambda: pc.re_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, OpenChannel=False, openchannel=False))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        self.assertWarns(UserWarning, lambda: pc.re_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, openchannel=False))
+
     def test_re_general(self):
-        """re_general should return known values with known input."""
+        self.assertWarns(UserWarning, pc.re_general, *(1 * u.m/u.s, 2 * u.m**2, 3 * u.m, 0.4 * u.m**2/u.s))
+
+    def test_re_channel(self):
+        """re_channel should return known values with known input."""
         checks = (([1 * u.m/u.s, 2 * u.m**2, 3 * u.m, 0.4 * u.m**2/u.s], 6.666666666666666),
                   ([17 * u.m/u.s, 6 * u.m**2, 42 * u.m, 1 * u.m**2/u.s], 9.714285714285714),
                   ([0 * u.m/u.s, 1 * u.m**2, 2 * u.m, 0.3 * u.m**2/u.s], 0))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.re_general(*i[0]), i[1]*u.dimensionless)
+                self.assertAlmostEqualQuantity(pc.re_channel(*i[0]), i[1]*u.dimensionless)
 
-    def test_re_general_range(self):
-        """re_general should raise errors when inputs are out of bounds."""
+    def test_re_channel_range(self):
+        """re_channel should raise errors when inputs are out of bounds."""
         checks = ((-1 * u.m/u.s, 2 * u.m**2, 3 * u.m, 0.4 * u.m**2/u.s),
                   (1 * u.m/u.s, 2 * u.m**2, 3 * u.m, 0 * u.m**2/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.re_general, *i)
+                self.assertRaises(ValueError, pc.re_channel, *i)
 
 
 class FrictionFuncsTest(QuantityTest):
     """Test the friction functions."""
 
     def test_fric(self):
-        """fric should return known results with known input."""
+        self.assertWarns(UserWarning, pc.fric, *(100 * u.m**3/u.s, 2 * u.m, 0.001 * u.m**2/u.s, 1 * u.m))
+
+    def test_fric_pipe(self):
+        """fric_pipe should return known results with known input."""
         checks = (([100 * u.m**3/u.s, 2 * u.m, 0.001 * u.m**2/u.s, 1 * u.m], 0.33154589118654193),
                   ([100 * u.m**3/u.s, 2 * u.m, 0.1 * u.m**2/u.s, 1 * u.m], 0.10053096491487337),
                   ([100 * u.m**3/u.s, 2 * u.m, 0.001 * u.m**2/u.s, 0 * u.m], 0.019675384283293733),
@@ -230,15 +261,15 @@ class FrictionFuncsTest(QuantityTest):
                   ([55 * u.m**3/u.s, 0.4 * u.m, 0.5 * u.m**2/u.s, 0.0001 * u.m], 0.18278357257249706))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.fric(*i[0]), i[1] * u.dimensionless)
+                self.assertAlmostEqualQuantity(pc.fric_pipe(*i[0]), i[1] * u.dimensionless)
 
     def test_fric_range(self):
-        """fric should raise an error if 0 <= PipeRough <= 1 is not true."""
+        """fric_pipe should raise an error if 0 <= Roughness <= 1 is not true."""
         checks = ([1 * u.m**3/u.s, 2 * u.m, 0.1 * u.m**2/u.s, -0.1 * u.m],
                   [1 * u.m**3/u.s, 2 * u.m, 0.1 * u.m**2/u.s, 1.1 * u.m])
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.fric, *i)
+                self.assertRaises(ValueError, pc.fric_pipe, *i)
 
     def test_fric_rect(self):
         """fric_rect should return known results with known inputs."""
@@ -259,29 +290,50 @@ class FrictionFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.fric_rect, *i)
 
+    def test_fric_rect_warning(self):
+        """fric_rect should raise warnings when passed deprecated parameters"""
+        error_checks = (lambda: pc.fric_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, Roughness=1 * u.m, PipeRough=1 * u.m, OpenChannel=True),
+                        lambda: pc.fric_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m, OpenChannel=True, openchannel=True))
+        for i in error_checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        warning_checks = (lambda: pc.fric_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, PipeRough=1 * u.m, OpenChannel=True),
+                          lambda: pc.fric_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, PipeRough=1 * u.m, openchannel=True),
+                          lambda: pc.fric_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m, openchannel=True))
+        for i in warning_checks:
+            with self.subTest(i=i):
+                self.assertWarns(UserWarning, i)
+
     def test_fric_general(self):
-        """fric_general should return known results with known inputs."""
+        self.assertWarns(UserWarning, pc.fric_general, *(9 * u.m**2, 0.67 * u.m, 3 * u.m/u.s, 0.987 * u.m**2/u.s, 0.86 * u.m))
+
+    def test_fric_channel(self):
+        """fric_channel should return known results with known inputs."""
         checks = (([9 * u.m**2, 0.67 * u.m, 3 * u.m/u.s, 0.987 * u.m**2/u.s, 0.86 * u.m], 0.3918755555555556),
                   ([1 * u.m**2, 1 * u.m, 1 * u.m/u.s, 1 * u.m**2/u.s, 1 * u.m], 16),
                   ([120 * u.m**2, 0.6 * u.m, 12 * u.m/u.s, 0.3 * u.m**2/u.s, 0.002 * u.m], 0.023024557179148988))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.fric_general(*i[0]), i[1] * u.dimensionless)
+                self.assertAlmostEqualQuantity(pc.fric_channel(*i[0]), i[1] * u.dimensionless)
 
-    def test_fric_general_range(self):
-        """fric_general should raise an error if 0 <= PipeRough <= 1 is not true."""
+    def test_fric_channel_range(self):
+        """fric_channel should raise an error if 0 <= Roughness <= 1 is not true."""
         checks = ((1 * u.m**2, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m**2/u.s, -0.0001 * u.m),
                   (1 * u.m**2, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m**2/u.s, 1.1 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.fric_general, *i)
+                self.assertRaises(ValueError, pc.fric_channel, *i)
 
 
 class HeadlossFuncsTest(QuantityTest):
     """Test the headloss functions."""
 
     def test_headloss_fric(self):
-        """headloss_fric should return known results with known inputs."""
+        self.assertWarns(UserWarning, pc.headloss_fric, *(100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 0.001 * u.m**2/u.s, 1 * u.m))
+
+    def test_headloss_major_pipe(self):
+        """headloss_major_pipe should return known results with known inputs."""
         checks = (([100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 0.001 * u.m**2/u.s, 1 * u.m], 34.2549414191127 * u.m),
                   ([100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 0.1 * u.m**2/u.s, 1 * u.m], 10.386744054168654 * u.m),
                   ([100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 0.001 * u.m**2/u.s, 0 * u.m], 2.032838149828097 * u.m),
@@ -289,34 +341,40 @@ class HeadlossFuncsTest(QuantityTest):
                   ([55 * u.m**3/u.s, 0.4 * u.m, 2 * u.m, 0.5 * u.m**2/u.s, 0.0001 * u.m], 8926.108171551185 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.headloss_fric(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.headloss_major_pipe(*i[0]), i[1])
 
-    def test_headloss_fric_range(self):
-        """headloss_fric should raise an error if Length <= 0."""
+    def test_headloss_major_pipe_range(self):
+        """headloss_major_pipe should raise an error if Length <= 0."""
         checks = ([1 * u.m**3/u.s, 1 * u.m, 0 * u.m, 1 * u.m**2/u.s, 1 * u.m],
                   [1 * u.m**3/u.s, 1 * u.m, -1 * u.m, 1 * u.m**2/u.s, 1 * u.m])
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.headloss_fric, *i)
+                self.assertRaises(ValueError, pc.headloss_major_pipe, *i)
 
     def test_headloss_exp(self):
-        """headloss_exp should return known results with known input."""
+        self.assertWarns(UserWarning, pc.headloss_exp, *(60 * u.m**3/u.s, 0.9 * u.m, 0.067))
+
+    def test_headloss_minor_pipe(self):
+        """headloss_minor_pipe should return known results with known input."""
         checks = (([60 * u.m**3/u.s, 0.9 * u.m, 0.067], 30.386230766265214 * u.m),
                   ([60 * u.m**3/u.s, 0.9 * u.m, 0.067 * u.dimensionless], 30.386230766265214 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.headloss_exp(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.headloss_minor_pipe(*i[0]), i[1])
 
-    def test_headloss_exp_range(self):
-        """headloss_exp should raise errors when inputs are out of bounds."""
+    def test_headloss_minor_pipe_range(self):
+        """headloss_minor_pipe should raise errors when inputs are out of bounds."""
         checks = ([0 * u.m**3/u.s, 1 * u.m, 1], [1 * u.m**3/u.s, 0 * u.m, 1],
                   [1 * u.m**3/u.s, 1 * u.m, -1])
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.headloss_exp, *i)
+                self.assertRaises(ValueError, pc.headloss_minor_pipe, *i)
 
     def test_headloss(self):
-        """headloss should return known results with known inputs."""
+        self.assertWarns(UserWarning, pc.headloss, *(100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 0.001 * u.m**2/u.s, 1 * u.m, 2))
+
+    def test_headloss_pipe(self):
+        """headloss_pipe should return known results with known inputs."""
         checks = (([100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 0.001 * u.m**2/u.s, 1 * u.m, 2], 137.57379509731857 * u.m),
                   ([100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 0.1 * u.m**2/u.s, 1 * u.m, 0.4], 31.05051478980984 * u.m),
                   ([100 * u.m**3/u.s, 2 * u.m, 4 * u.m, 0.001 * u.m**2/u.s, 0 * u.m, 1.2], 64.024150356751633 * u.m),
@@ -324,36 +382,42 @@ class HeadlossFuncsTest(QuantityTest):
                   ([55 * u.m**3/u.s, 0.4 * u.m, 2 * u.m, 0.5 * u.m**2/u.s, 0.0001 * u.m, 0.12], 10098.131417963332 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.headloss(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.headloss_pipe(*i[0]), i[1])
 
     def test_headloss_fric_rect(self):
-        """headloss_fric_rect should return known result with known inputs."""
+        self.assertWarns(UserWarning, pc.headloss_fric_rect, *(0.06 * u.m**3/u.s, 3 * u.m, 0.2 * u.m, 4 * u.m, 0.5 * u.m**2/u.s, 0.006 * u.m, True))
+
+    def test_headloss_major_rect(self):
+        """headloss_major_rect should return known result with known inputs."""
         checks = (([0.06 * u.m**3/u.s, 3 * u.m, 0.2 * u.m, 4 * u.m, 0.5 * u.m**2/u.s, 0.006 * u.m, True], 1.3097688246694272 * u.m),
                   ([0.06 * u.m**3/u.s, 3 * u.m, 0.2 * u.m, 4 * u.m, 0.5 * u.m**2/u.s, 0.006 * u.m, False], 4.640841787063992 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.headloss_fric_rect(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.headloss_major_rect(*i[0]), i[1])
 
-    def test_headloss_fric_rect_range(self):
-        """headloss_fric_rect should raise an error when Length <=0."""
+    def test_headloss_major_rect_range(self):
+        """headloss_major_rect should raise an error when Length <=0."""
         checks = ((1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 0 * u.m, 1 * u.m**2/u.s, 1 * u.m, 1),
                   (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, -1 * u.m, 1 * u.m**2/u.s, 1 * u.m, 1))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.headloss_fric_rect, *i)
+                self.assertRaises(ValueError, pc.headloss_major_rect, *i)
 
     def test_headloss_exp_rect(self):
-        """headloss_exp_rect should return known result for known input."""
-        checks = ([0.06 * u.m**3/u.s, 2 * u.m, 0.004 * u.m, 1], 2.8679518490004234 * u.m)
-        self.assertAlmostEqualQuantity(pc.headloss_exp_rect(*checks[0]), checks[1])
+        self.assertWarns(UserWarning, pc.headloss_exp_rect, *(0.06 * u.m**3/u.s, 2 * u.m, 0.004 * u.m, 1))
 
-    def test_headloss_exp_rect_range(self):
-        """headloss_exp_rect should raise errors when inputs are out of bounds."""
+    def test_headloss_minor_rect(self):
+        """headloss_minor_rect should return known result for known input."""
+        checks = ([0.06 * u.m**3/u.s, 2 * u.m, 0.004 * u.m, 1], 2.8679518490004234 * u.m)
+        self.assertAlmostEqualQuantity(pc.headloss_minor_rect(*checks[0]), checks[1])
+
+    def test_headloss_minor_rect_range(self):
+        """headloss_minor_rect should raise errors when inputs are out of bounds."""
         checks = ((0 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1), (1 * u.m**3/u.s, 0 * u.m, 1 * u.m, 1),
                   (1 * u.m**3/u.s, 1 * u.m, 0 * u.m, 1), (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, -1))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.headloss_exp_rect, *i)
+                self.assertRaises(ValueError, pc.headloss_minor_rect, *i)
 
     def test_headloss_rect(self):
         """headloss_rect should return known result for known inputs."""
@@ -363,41 +427,65 @@ class HeadlossFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.headloss_rect(*i[0]), i[1])
 
+    def test_headloss_rect_warning(self):
+        """headloss_rect should raise warnings when passed deprecated parameters"""
+        error_checks = (lambda: pc.headloss_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 4 * u.m, 1 * u.dimensionless, 1 * u.m**2/u.s, Roughness=1 * u.m, PipeRough=1 * u.m, OpenChannel=True),
+                        lambda: pc.headloss_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 4 * u.m, 1 * u.dimensionless, 1 * u.m**2/u.s, 1 * u.m, OpenChannel=True, openchannel=True))
+        for i in error_checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        warning_checks = (lambda: pc.headloss_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 4 * u.m, 1 * u.dimensionless, 1 * u.m**2/u.s, PipeRough=1 * u.m, OpenChannel=True),
+                          lambda: pc.headloss_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 4 * u.m, 1 * u.dimensionless, 1 * u.m**2/u.s, PipeRough=1 * u.m, openchannel=True),
+                          lambda: pc.headloss_rect(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 4 * u.m, 1 * u.dimensionless, 1 * u.m**2/u.s, 1 * u.m, openchannel=True))
+        for i in warning_checks:
+            with self.subTest(i=i):
+                self.assertWarns(UserWarning, i)
+
     def test_headloss_fric_general(self):
-        """headloss_fric_general should return known result for known inputs."""
+        self.assertWarns(UserWarning, pc.headloss_fric_general, *(1 * u.m**2, 1 * u.m, 1 * u.m/u.s, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m))
+
+    def test_headloss_major_channel(self):
+        """headloss_major_channel should return known result for known inputs."""
         checks = (([1 * u.m**2, 1 * u.m, 1 * u.m/u.s, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m], 0.20394324259558566 * u.m),
                   ([25 * u.m**2, 4 * u.m, 0.6 * u.m/u.s, 2 * u.m, 1 * u.m**2/u.s, 1 * u.m], 0.006265136412536391 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.headloss_fric_general(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.headloss_major_channel(*i[0]), i[1])
 
-    def test_headloss_fric_general_range(self):
-        """headloss_fric_general should raise an error when Length <= 0."""
+    def test_headloss_major_channel_range(self):
+        """headloss_major_channel should raise an error when Length <= 0."""
         checks = ([1 * u.m**2, 1 * u.m, 1 * u.m/u.s, 0 * u.m, 1 * u.m**2/u.s, 1 * u.m],
                   [15 * u.m**2, 1 * u.m, 1 * u.m/u.s, -1 * u.m, 1 * u.m**2/u.s, 1 * u.m])
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.headloss_fric_general, *i)
+                self.assertRaises(ValueError, pc.headloss_major_channel, *i)
 
     def test_headloss_exp_general(self):
-        """headloss_exp_general should return known result for known input."""
-        self.assertAlmostEqualQuantity(pc.headloss_exp_general(0.06 * u.m/u.s, 0.02),
+        self.assertWarns(UserWarning, pc.headloss_exp_general, *(0.06 * u.m/u.s, 0.02))
+
+    def test_headloss_minor_channel(self):
+        """headloss_minor_channel should return known result for known input."""
+        self.assertAlmostEqualQuantity(pc.headloss_minor_channel(0.06 * u.m/u.s, 0.02),
                                3.670978366720542e-06 * u.m)
 
-    def test_headloss_exp_general_range(self):
-        """headloss_exp_general should raise errors if inputs are out of bounds."""
+    def test_headloss_minor_channel_range(self):
+        """headloss_minor_channel should raise errors if inputs are out of bounds."""
         checks = ((0 * u.m/u.s, 1), (1 * u.m/u.s, -1 * u.dimensionless))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.headloss_exp_general, *i)
+                self.assertRaises(ValueError, pc.headloss_minor_channel, *i)
 
     def test_headloss_gen(self):
-        """headloss_gen should return known value for known inputs."""
+        self.assertWarns(UserWarning, pc.headloss_gen, *(36 * u.m**2, 0.1 * u.m/u.s, 4 * u.m, 6 * u.m, 0.02, 0.86 * u.m**2/u.s, 0.0045 * u.m))
+
+    def test_headloss_channel(self):
+        """headloss_channel should return known value for known inputs."""
         checks = (([36 * u.m**2, 0.1 * u.m/u.s, 4 * u.m, 6 * u.m, 0.02, 0.86 * u.m**2/u.s, 0.0045 * u.m], 0.0013093911519979546 * u.m),
                   ([49 * u.m**2, 2.4 * u.m/u.s, 12 * u.m, 3 * u.m, 2 * u.dimensionless, 4 * u.m**2/u.s, 0.6 * u.m], 0.9396236839032805 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.headloss_gen(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.headloss_channel(*i[0]), i[1])
 
     def test_headloss_manifold(self):
         """headloss_manifold should return known value for known input."""
@@ -420,6 +508,21 @@ class HeadlossFuncsTest(QuantityTest):
         for i in passchecks:
             with self.subTest(i=i):
                 pc.headloss_manifold(*i)
+
+    def test_headloss_manifold_warning(self):
+        """headloss_manifold should raise warnings when passed deprecated parameters"""
+        error_checks = (lambda: pc.headloss_manifold(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1, 1 * u.m**2/u.s, Roughness=1 * u.m, NumOutlets=1, PipeRough=1 * u.m),
+                        lambda: pc.headloss_manifold(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1, 1 * u.m**2/u.s, NumOutlets=1),
+                        lambda: pc.headloss_manifold(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1, 1 * u.m**2/u.s, Roughness=1 * u.m))
+        for i in error_checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        warning_checks = (lambda: pc.headloss_manifold(1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1, 1 * u.m**2/u.s, PipeRough=1 * u.m, NumOutlets = 1),)
+
+        for i in warning_checks:
+            with self.subTest(i=i):
+                self.assertWarns(UserWarning, i)
 
 
 class OrificeFuncsTest(QuantityTest):
