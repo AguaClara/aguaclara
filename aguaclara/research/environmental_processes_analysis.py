@@ -228,7 +228,7 @@ def Gran(data_file_path):
     df = pd.read_csv(data_file_path, delimiter='\t', header=5)
     V_t = np.array(pd.to_numeric(df.iloc[0:, 0]))*u.mL
     pH = np.array(pd.to_numeric(df.iloc[0:, 1]))
-    df = pd.read_csv(data_file_path, delimiter='\t', header=-1, nrows=5)
+    df = pd.read_csv(data_file_path, delimiter='\t', header=None, nrows=5)
     V_S = pd.to_numeric(df.iloc[0, 1])*u.mL
     N_t = pd.to_numeric(df.iloc[1, 1])*u.mole/u.L
     V_eq = pd.to_numeric(df.iloc[2, 1])*u.mL
