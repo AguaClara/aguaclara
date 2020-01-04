@@ -530,7 +530,7 @@ def pc_viscous(EnergyDis, Temp, Time, DiamTube,
     """"""
     return ((3/2)
             * np.log10((2/3) * np.pi * FittingParam * Time
-                       * np.sqrt(EnergyDis / (pc.viscosity_kinematic(Temp))
+                       * np.sqrt(EnergyDis / (pc.viscosity_kinematic_water(Temp))
                                  )
                        * alpha(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                                NatOrgMat, coag, material, RatioHeightDiameter)
@@ -564,7 +564,7 @@ def vel_term_floc(ConcAl, ConcClay, coag, material, DIM_FRACTAL,
     """Calculate floc terminal velocity."""
     WaterDensity = pc.density_water(Temp)
     return (((u.gravity * material.Diameter**2)
-             / (18 * PHI_FLOC * pc.viscosity_kinematic(Temp))
+             / (18 * PHI_FLOC * pc.viscosity_kinematic_water(Temp))
              )
             * ((dens_floc_init(ConcAl, ConcClay, coag, material)
                 - WaterDensity
@@ -583,7 +583,7 @@ def diam_floc_vel_term(ConcAl, ConcClay, coag, material,
     """Calculate floc diamter as a function of terminal velocity."""
     WaterDensity = pc.density_water(Temp)
     return (material.Diameter * (((18 * VelTerm * PHI_FLOC
-                                   * pc.viscosity_kinematic(Temp)
+                                   * pc.viscosity_kinematic_water(Temp)
                                    )
                                   / (u.gravity * material.Diameter**2)
                                   )
@@ -609,7 +609,7 @@ def time_col_laminar(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
     """
     return (((1/6) * ((6/np.pi)**(1/3))
              * frac_vol_floc_initial(ConcAl, ConcClay, coag, material) ** (-2/3)
-             * (pc.viscosity_kinematic(Temp) / EnergyDis) ** (1 / 2)
+             * (pc.viscosity_kinematic_water(Temp) / EnergyDis) ** (1 / 2)
              * (DiamTarget / material.Diameter) ** (2*DIM_FRACTAL/3 - 2)
              )  # End of the numerator
             / (gamma_coag(ConcClay, ConcAl, coag, material, DiamTube,
@@ -638,7 +638,7 @@ def time_col_turbulent(EnergyDis, ConcAl, ConcClay, coag, material,
 # @u.wraps(u.m, [u.W/u.kg, u.degK], False)
 @ut.list_handler()
 def eta_kolmogorov(EnergyDis, Temp):
-    return (((pc.viscosity_kinematic(Temp) ** 3) / EnergyDis) ** (1 / 4)).to(u.m)
+    return (((pc.viscosity_kinematic_water(Temp) ** 3) / EnergyDis) ** (1 / 4)).to(u.m)
 
 
 # @u.wraps(u.m, [u.W/u.kg, u.degK], False)
@@ -731,7 +731,7 @@ def g_straight(PlantFlow, IDTube):
 @ut.list_handler()
 def reynolds_rapid_mix(PlantFlow, IDTube, Temp):
     return (4 * PlantFlow / (np.pi * IDTube
-                             * pc.viscosity_kinematic(Temp))).to(u.dimensionless)
+                             * pc.viscosity_kinematic_water(Temp))).to(u.dimensionless)
 
 
 # @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.degK], False)

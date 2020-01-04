@@ -897,7 +897,7 @@ def elbow_minor_loss(q, id_, k):
     .. deprecated::
         `elbow_minor_loss` is deprecated; use `headloss_minor_elbow` instead.
     """
-    warnings.warn('elbow_minor_loss` is deprecated; use `headloss_minor_elbow` instead',
+    warnings.warn('elbow_minor_loss is deprecated; use headloss_minor_elbow instead',
                   UserWarning)
     return headloss_minor_elbow(q, id_, k)
 
@@ -1588,10 +1588,10 @@ def width_weir_rect(FlowRate, Height):
 def headloss_weir(FlowRate, Width):
     """
     .. deprecated::
-        `headloss_weir` is deprecated; use `headloss_rect_weir` instead.
+        `headloss_weir` is deprecated; use `headloss_weir_rect` instead.
     """
     warnings.warn('headloss_weir is deprecated; use '
-                  'headloss_rect_weir instead.', UserWarning)
+                  'headloss_weir_rect instead.', UserWarning)
     return headloss_weir_rect(FlowRate, Width)
 
 
@@ -1612,9 +1612,9 @@ def headloss_weir_rect(FlowRate, Width):
     """
     ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
                    [Width.magnitude, ">0", "Width"])
-    return (((3/2) * FlowRate
-             / (con.VC_ORIFICE_RATIO * np.sqrt(2 * u.gravity) * Width)
-             ) ** (2/3)).to(u.m)
+    return ((((3/2) * FlowRate
+              / (con.VC_ORIFICE_RATIO * np.sqrt(2 * u.gravity) * Width)
+              ) ** 2).to(u.m**3)) ** (1/3)
 
 
 @ut.list_handler()
