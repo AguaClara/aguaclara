@@ -15,7 +15,6 @@ class QuantityTest(unittest.TestCase):
             self.assertAlmostEqual(first[i], second[i], places)
 
     def assertAlmostEqualArrayQuantity(self, first, second, places=7):
-        second = second.to(first.units)
         self.assertEqual(first.units, second.units, places)
         self.assertAlmostEqualArray(first.magnitude, second.magnitude)
 

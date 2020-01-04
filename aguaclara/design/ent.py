@@ -24,9 +24,9 @@ from aguaclara.design.pipeline import Pipe
 import numpy as np
 
 
-class EntranceTank(Component): 
+class EntranceTank(Component):
     """Design an AguaClara plant's entrance tank.
-    
+
     An entrance tank's design relies on the LFOM's and flocculator's design in
     the same plant, but assumed/default values may be used to design an
     entrance tank by itself. To design these components in tandem, use
@@ -44,19 +44,19 @@ class EntranceTank(Component):
           (recommended, defaults to 2m)
         - ``plate_s (float * u.cm)``: The spacing between plates in a plate
           settler (optional, defaults to 2.5cm)
-        - ``plate_thickness (float * u.deg)``: The thickness of a plate in a 
+        - ``plate_thickness (float * u.deg)``: The thickness of a plate in a
           plate settler (optional, defaults to 2mm)
-        - ``plate_angle (float * u.deg)``: The angle of the plate settler 
+        - ``plate_angle (float * u.deg)``: The angle of the plate settler
           (optional, defaults to 60 degrees)
-        - ``plate_capture_vel (float * u.mm / u.s)``: The capture velocity of the 
+        - ``plate_capture_vel (float * u.mm / u.s)``: The capture velocity of the
           plate settler (optional, defaults to 8m/s)
-        - ``fab_s(float * u.cm)``: The space needed for a person to remove 
+        - ``fab_s(float * u.cm)``: The space needed for a person to remove
           the drain pipe (optional, defaults to 5cm)
         - ``sdr (float)``: Standard demension ratio (optional,
-          defaults to 41)  
+          defaults to 41)
     """
     def __init__(self, **kwargs):
-        self.lfom_nd = 2.0 * u.inch # May be innacurate, check with Monroe -Oliver L., oal22, 4 Jun '19 
+        self.lfom_nd = 2.0 * u.inch # May be innacurate, check with Monroe -Oliver L., oal22, 4 Jun '19
         self.floc_chan_w = 42.0 * u.inch
         self.floc_end_depth = 2.0 * u.m
         self.plate_s = 2.5 * u.cm
@@ -72,13 +72,13 @@ class EntranceTank(Component):
         super().__init__(**kwargs)
         self._set_drain_pipe()
         super().set_subcomponents()
-        
+
     def _set_drain_pipe(self):
         """The inner diameter of the entrance tank drain pipe."""
         drain_pipe_k_minor = \
             hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_EXIT_K_MINOR + hl.EL90_K_MINOR
 
-        nu = pc.viscosity_kinematic(self.temp)
+        nu = pc.viscosity_kinematic_water(self.temp)
         drain_id = pc.diam_pipe(self.q,
                                 self.floc_end_depth,
                                 self.floc_end_depth,
@@ -91,7 +91,7 @@ class EntranceTank(Component):
             k_minor = drain_pipe_k_minor,
             spec = self.spec
         )
-        
+
     @property
     def plate_n(self):
         """The number of plates in the plate settlers."""
@@ -124,7 +124,7 @@ class EntranceTank(Component):
         plate_array_thickness = \
             (self.plate_thickness * self.plate_n) + \
             (self.plate_s * (self.plate_n - 1))
-            
+
         l = self.drain_pipe.od + (self.fab_s * 2) + \
             (
                 plate_array_thickness * np.cos(((90 * u.deg) -

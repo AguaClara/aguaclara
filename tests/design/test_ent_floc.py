@@ -20,7 +20,7 @@ etf_60 = EntTankFloc(q = 60.0 * u.L / u.s)
 
     (etf_20.floc.chan_n, 2),
     (etf_60.floc.chan_n, 2),
-    
+
     (etf_20.floc.chan_w_min_gt, 32.02195253008654 * u.cm),
     (etf_60.floc.chan_w_min_gt, 96.24786648922903 * u.cm),
 
@@ -31,4 +31,8 @@ etf_60 = EntTankFloc(q = 60.0 * u.L / u.s)
     (etf_20.ent.plate_n, 20),
 ])
 def test_etf(actual, expected):
-    assert actual == expected
+    if (type(actual) == u.Quantity and type(expected) == u.Quantity):
+        assert actual.units == expected.units
+        assert actual.magnitude == pytest.approx(expected.magnitude)
+    else:
+        assert actual == pytest.approx(expected)

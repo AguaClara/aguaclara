@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'aguaclara',
-    version = '0.1.13',
+    version = '0.1.15',
     description = (
         'An open-source Python package for designing and performing research '
         'on AguaClara water treatment plants.'

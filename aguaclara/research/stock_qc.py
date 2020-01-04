@@ -1,4 +1,5 @@
 from aguaclara.core.units import u
+import aguaclara.core.utility as ut
 
 
 class Stock(object):
@@ -84,6 +85,7 @@ class Variable_C_Stock(Stock):
         """
         return self._C_sys * (self._Q_sys / self._Q_stock).to(u.dimensionless)
 
+    @ut.list_handler()
     def rpm(self, vol_per_rev):
         """Return the pump speed required for the reactor's stock of material
         given the volume of fluid output per revolution by the stock's pump.
@@ -96,6 +98,7 @@ class Variable_C_Stock(Stock):
         """
         return Stock.rpm(self, vol_per_rev, self._Q_stock).to(u.rev/u.min)
 
+    @ut.list_handler()
     def T_stock(self, V_stock):
         """Return the amount of time at which the stock of materal will be
         depleted.
@@ -108,6 +111,7 @@ class Variable_C_Stock(Stock):
         """
         return Stock.T_stock(self, V_stock, self._Q_stock).to(u.hr)
 
+    @ut.list_handler()
     def M_stock(self, V_stock):
         """Return the mass of undiluted material required for the stock
         concentration.
@@ -120,6 +124,7 @@ class Variable_C_Stock(Stock):
         """
         return Stock.M_stock(self, V_stock, self.C_stock())
 
+    @ut.list_handler()
     def V_super_stock(self, V_stock, C_super_stock):
         """Return the volume of super (more concentrated) stock that must be
         diluted for the desired stock volume and required stock concentration.
@@ -134,6 +139,7 @@ class Variable_C_Stock(Stock):
         """
         return Stock.V_super_stock(self, V_stock, self.C_stock(), C_super_stock)
 
+    @ut.list_handler()
     def dilution_factor(self, C_super_stock):
         """Return the dilution factor of the concentration of material in the
         stock relative to the super stock.
@@ -210,6 +216,7 @@ class Variable_Q_Stock(Stock):
         """
         return self._Q_sys * (self._C_sys / self._C_stock).to(u.dimensionless)
 
+    @ut.list_handler()
     def rpm(self, vol_per_rev):
         """Return the pump speed required for the reactor's stock of material
         given the volume of fluid output per revolution by the stock's pump.
@@ -222,6 +229,7 @@ class Variable_Q_Stock(Stock):
         """
         return Stock.rpm(self, vol_per_rev, self.Q_stock()).to(u.rev/u.min)
 
+    @ut.list_handler()
     def T_stock(self, V_stock):
         """Return the amount of time at which the stock of materal will be
         depleted.
@@ -234,6 +242,7 @@ class Variable_Q_Stock(Stock):
         """
         return Stock.T_stock(self, V_stock, self.Q_stock()).to(u.hr)
 
+    @ut.list_handler()
     def M_stock(self, V_stock):
         """Return the mass of undiluted material required for the stock
         concentration.
@@ -246,6 +255,7 @@ class Variable_Q_Stock(Stock):
         """
         return Stock.M_stock(self, V_stock, self._C_stock)
 
+    @ut.list_handler()
     def V_super_stock(self, V_stock, C_super_stock):
         """Return the volume of super (more concentrated) stock that must be
         diluted for the desired stock volume and stock concentration.
@@ -260,6 +270,7 @@ class Variable_Q_Stock(Stock):
         """
         return Stock.V_super_stock(self, V_stock, self._C_stock, C_super_stock)
 
+    @ut.list_handler()
     def dilution_factor(self, C_super_stock):
         """Return the dilution factor of the concentration of material in the
         stock relative to the super stock.

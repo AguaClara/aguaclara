@@ -7,7 +7,6 @@ import unittest
 class QuantityTest(unittest.TestCase):
 
     def assertAlmostEqualQuantity(self, first, second, places=7):
-        second = second.to(first.units)
         self.assertAlmostEqual(first.magnitude, second.magnitude, places)
         self.assertEqual(first.units, second.units, places)
 
@@ -38,7 +37,7 @@ class GeometryTest(QuantityTest):
         """area_circle should should give known result with known input."""
         checks = ((1*u.m, 0.7853981633974483*u.m**2),
                   (495.6*u.m, 192908.99423885669*u.m**2),
-                  (495.6*u.cm, 19.290899423885669*u.m**2))
+                  (495.6*u.m, 192908.99423885669*u.m**2))
         for i in checks:
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.area_circle(i[0]), i[1])
@@ -52,10 +51,10 @@ class GeometryTest(QuantityTest):
 
     def test_diam_circle(self):
         """diam_circle should should give known result with known input."""
-        checks = ((1 * u.cm**2, 1.1283791670955126 * u.cm),
-                  (0.1 * u.cm**2, 0.3568248232305542 * u.cm),
-                  (347 * u.cm**2, 21.019374919894773 * u.cm),
-                  (10000 * u.cm**2, 112.83791670955126 * u.cm))
+        checks = ((1 * u.m**2, 1.1283791670955126 * u.m),
+                  (0.1 * u.m**2, 0.3568248232305542 * u.m),
+                  (347 * u.m**2, 21.019374919894773 * u.m),
+                  (10000 * u.m**2, 112.83791670955126 * u.m))
         for i in checks:
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.diam_circle(i[0]), i[1])
@@ -98,6 +97,15 @@ class WaterPropertiesTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.density_water(i[0]), i[1])
 
+    def test_density_water_warning(self):
+        checks = (lambda: pc.density_water(Temperature=1 * u.degK, temp=1 * u.degK),
+                  lambda: pc.density_water())
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        self.assertWarns(UserWarning, lambda: pc.density_water(temp=1 * u.degK))
+
     def test_viscosity_dynamic(self):
         self.assertWarns(UserWarning, pc.viscosity_dynamic, 300 * u.degK)
 
@@ -137,8 +145,7 @@ class RadiusFuncsTest(QuantityTest):
     def test_radius_hydraulic_rect(self):
         """radius_hydraulic_rect should return known results with known input."""
         checks = (([10 * u.m, 4 * u.m, False], 1.4285714285714286 * u.m),
-                  ([10 * u.m, 4 * u.m, True], 2.2222222222222223 * u.m),
-                  ([0.01 * u.km, 40 * u.dm, False], 1.4285714285714286 * u.m))
+                  ([10 * u.m, 4 * u.m, True], 2.2222222222222223 * u.m))
         for i in checks:
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.radius_hydraulic_rect(*i[0]), i[1])
@@ -162,7 +169,7 @@ class RadiusFuncsTest(QuantityTest):
         """radius_hydraulic_channel should return known results with known input."""
         checks = (([6 * u.m**2, 12 * u.m], 0.5 * u.m),
                   ([70 * u.m**2, 0.4 * u.m], 175 * u.m),
-                  ([40000 * u.cm**2, 7 * u.m], 0.5714285714285715 * u.m))
+                  ([40000 * u.m**2, 7 * u.m], 5714.285714285715 * u.m))
         for i in checks:
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.radius_hydraulic_channel(*i[0]), i[1])
@@ -265,8 +272,7 @@ class FrictionFuncsTest(QuantityTest):
 
     def test_fric_range(self):
         """fric_pipe should raise an error if 0 <= Roughness <= 1 is not true."""
-        checks = ([1 * u.m**3/u.s, 2 * u.m, 0.1 * u.m**2/u.s, -0.1 * u.m],
-                  [1 * u.m**3/u.s, 2 * u.m, 0.1 * u.m**2/u.s, 1.1 * u.m])
+        checks = ([1 * u.m**3/u.s, 2 * u.m, 0.1 * u.m**2/u.s, -0.1 * u.m],)
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.fric_pipe, *i)
@@ -285,7 +291,7 @@ class FrictionFuncsTest(QuantityTest):
 
     def test_fric_rect_range(self):
         """fric_rect should raise an error if 0 <= PipeRough <= 1 is not true."""
-        checks = ([1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1.1 * u.m, True],)
+        checks = ([1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, -1.1 * u.m, True],)
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.fric_rect, *i)
@@ -524,6 +530,16 @@ class HeadlossFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertWarns(UserWarning, i)
 
+    def test_elbow_minor_loss(self):
+        self.assertWarns(UserWarning, pc.elbow_minor_loss, *(.1*u.m**3/u.s, 0.1*u.m, 0.5))
+
+    def test_headloss_minor_elbow(self):
+        checks = (([.1*u.m**3/u.s, 0.1*u.m, 0.5], 4.132754147128235 * u.m),
+                  ([.4*u.m**3/u.s, 0.3*u.m, 0.2], 0.32653859927926804 * u.m))
+        for i in checks:
+            with self.subTest(i=i):
+                self.assertAlmostEqualQuantity(pc.headloss_minor_elbow(*i[0]), i[1])
+
 
 class OrificeFuncsTest(QuantityTest):
     """Test the orifice functions."""
@@ -614,6 +630,7 @@ class OrificeFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.num_orifices(*i[0]), i[1])
 
+
 class FlowFuncsTest(QuantityTest):
     """Test the flow functions."""
     def test_flow_transition(self):
@@ -654,6 +671,21 @@ class FlowFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 pc.flow_hagen(*i)
 
+    def test_flow_hagen_warning(self):
+        """flow_hagen should raise warnings when passed deprecated parameters"""
+        error_checks = (lambda: pc.flow_hagen(1 * u.m, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, HeadLossFric=1 * u.m),
+                        lambda: pc.flow_hagen(1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s),
+                        lambda: pc.flow_hagen(1 * u.m, HeadLossMajor=1 * u.m, Nu=1 * u.m**2/u.s),
+                        lambda: pc.flow_hagen(1 * u.m, HeadLossMajor=1 * u.m, Length=1 * u.m))
+        for i in error_checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        warning_checks = (lambda: pc.flow_hagen(1 * u.m, HeadLossFric=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s),)
+        for i in warning_checks:
+            with self.subTest(i=i):
+                self.assertWarns(UserWarning, i)
+
     def test_flow_swamee(self):
         """flow_swamee should return known value for known inputs."""
         checks = (([2 * u.m, 0.04 * u.m, 3 * u.m, 0.1 * u.m**2/u.s, 0.37 * u.m], 2.9565931732010045 * u.m**3/u.s),)
@@ -668,7 +700,7 @@ class FlowFuncsTest(QuantityTest):
                       (1 * u.m, 1 * u.m, 0 * u.m, 1 * u.m**2/u.s, 1 * u.m),
                       (1 * u.m, 1 * u.m, 1 * u.m, 0 * u.m**2/u.s, 1 * u.m),
                       (1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, -0.1 * u.m),
-                      (1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 2 * u.m))
+                      (1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, -2 * u.m))
         for i in failChecks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.flow_swamee, *i)
@@ -678,30 +710,54 @@ class FlowFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 pc.flow_swamee(*i)
 
+    def test_flow_swamee_warning(self):
+        """flow_swamee should raise warnings when passed deprecated parameters"""
+        error_checks = (lambda: pc.flow_swamee(1 * u.m, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m, HeadLossFric=1 * u.m),
+                        lambda: pc.flow_swamee(1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m),
+                        lambda: pc.flow_swamee(1 * u.m, HeadLossMajor=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m),
+                        lambda: pc.flow_swamee(1 * u.m, HeadLossMajor=1 * u.m, Length=1 * u.m, Roughness=1 * u.m),
+                        lambda: pc.flow_swamee(1 * u.m, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m, PipeRough=1 * u.m),
+                        lambda: pc.flow_swamee(1 * u.m, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s))
+        for i in error_checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        warning_checks = (lambda: pc.flow_swamee(1 * u.m, HeadLossFric=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m),
+                          lambda: pc.flow_swamee(1 * u.m, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, PipeRough=1 * u.m))
+        for i in warning_checks:
+            with self.subTest(i=i):
+                self.assertWarns(UserWarning, i)
+
     def test_flow_pipemajor(self):
-        """flow_pipemajor should return known result for known inputs."""
+        self.assertWarns(UserWarning, pc.flow_pipemajor, *(1 * u.m, 0.97 * u.m, 0.5 * u.m, 0.025 * u.m**2/u.s, 0.06 * u.m))
+
+    def test_flow_major_pipe(self):
+        """flow_major_pipe should return known result for known inputs."""
         checks = (([1 * u.m, 0.97 * u.m, 0.5 * u.m, 0.025 * u.m**2/u.s, 0.06 * u.m], 18.677652880272845 * u.m**3/u.s),
                   ([2 * u.m, 0.62 * u.m, 0.5 * u.m, 0.036 * u.m**2/u.s, 0.23 * u.m], 62.457206502701297 * u.m**3/u.s))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.flow_pipemajor(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.flow_major_pipe(*i[0]), i[1])
 
     def test_flow_pipeminor(self):
-        """flow_pipeminor should return known results for known input."""
-        self.assertAlmostEqualQuantity(pc.flow_pipeminor(1 * u.m, 0.125 * u.m, 3),
+        self.assertWarns(UserWarning, pc.flow_pipeminor, *(1 * u.m, 0.125 * u.m, 3))
+
+    def test_flow_minor_pipe(self):
+        """flow_minor_pipe should return known results for known input."""
+        self.assertAlmostEqualQuantity(pc.flow_minor_pipe(1 * u.m, 0.125 * u.m, 3),
                          0.71000203931611083 * u.m**3/u.s)
 
-    def test_flow_pipeminor_range(self):
-        """flow_pipeminor should raise errors when inputs are out of bounds."""
+    def test_flow_minor_pipe_range(self):
+        """flow_minor_pipe should raise errors when inputs are out of bounds."""
         failChecks = ((1 * u.m, -1 * u.m, 1),
                       (1 * u.m, 1 * u.m, 0 * u.dimensionless))
         for i in failChecks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.flow_pipeminor, *i)
+                self.assertRaises(ValueError, pc.flow_minor_pipe, *i)
         passChecks = ((1 * u.m, 1 * u.m, 1), (1 * u.m, 0 * u.m, 1))
         for i in passChecks:
             with self.subTest(i=i):
-                pc.flow_pipeminor(*i)
+                pc.flow_minor_pipe(*i)
 
     def test_flow_pipe(self):
         """flow_pipe should return known value for known inputs."""
@@ -711,6 +767,19 @@ class FlowFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.flow_pipe(*i[0]), i[1])
 
+    def test_flow_pipe_warning(self):
+        """flow_pipe should raise warnings when passed deprecated parameters"""
+        error_checks = (lambda: pc.flow_pipe(1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, Roughness=1 * u.m, KMinor=1, PipeRough=1 * u.m),
+                        lambda: pc.flow_pipe(1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, KMinor=1),
+                        lambda: pc.flow_pipe(1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, Roughness=1 * u.m),)
+        for i in error_checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        warning_checks = (lambda: pc.flow_pipe(1 * u.m, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, PipeRough=1 * u.m, KMinor=1),)
+        for i in warning_checks:
+            with self.subTest(i=i):
+                self.assertWarns(UserWarning, i)
 
 class DiamFuncsTest(QuantityTest):
     """Test the diameter functions."""
@@ -729,6 +798,21 @@ class DiamFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.diam_hagen, *i)
 
+    def test_diam_hagen_warning(self):
+        """flow_hagen should raise warnings when passed deprecated parameters"""
+        error_checks = (lambda: pc.diam_hagen(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, HeadLossFric=1 * u.m),
+                        lambda: pc.diam_hagen(1 * u.m**3/u.s, Length=1 * u.m, Nu=1 * u.m**2/u.s),
+                        lambda: pc.diam_hagen(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Nu=1 * u.m**2/u.s),
+                        lambda: pc.diam_hagen(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Length=1 * u.m))
+        for i in error_checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        warning_checks = (lambda: pc.diam_hagen(1 * u.m**3/u.s, HeadLossFric=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s),)
+        for i in warning_checks:
+            with self.subTest(i=i):
+                self.assertWarns(UserWarning, i)
+
     def test_diam_swamee(self):
         """diam_swamee should return known value for known input."""
         self.assertAlmostEqualQuantity(pc.diam_swamee(0.06 * u.m**3/u.s, 1.2 * u.m, 7 * u.m, 0.2* u.m**2/u.s, 0.0004 * u.m),
@@ -740,7 +824,7 @@ class DiamFuncsTest(QuantityTest):
                       (1 * u.m**3/u.s, 0 * u.m, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m),
                       (1 * u.m**3/u.s, 1 * u.m, 0 * u.m, 1 * u.m**2/u.s, 1 * u.m),
                       (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 0 * u.m**2/u.s, 1 * u.m),
-                      (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, 2 * u.m),
+                      (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, -2 * u.m),
                       (1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, -1 * u.m))
         for i in failChecks:
             with self.subTest(i=i):
@@ -751,35 +835,59 @@ class DiamFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 pc.diam_swamee(*i)
 
+    def test_diam_swamee_warning(self):
+        """diam_swamee should raise warnings when passed deprecated parameters"""
+        error_checks = (lambda: pc.diam_swamee(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m, HeadLossFric=1 * u.m),
+                        lambda: pc.diam_swamee(1 * u.m**3/u.s, Length=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m),
+                        lambda: pc.diam_swamee(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m),
+                        lambda: pc.diam_swamee(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Length=1 * u.m, Roughness=1 * u.m),
+                        lambda: pc.diam_swamee(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m, PipeRough=1 * u.m),
+                        lambda: pc.diam_swamee(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s))
+        for i in error_checks:
+            with self.subTest(i=i):
+                self.assertRaises(TypeError, i)
+
+        warning_checks = (lambda: pc.diam_swamee(1 * u.m**3/u.s, HeadLossFric=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, Roughness=1 * u.m),
+                          lambda: pc.diam_swamee(1 * u.m**3/u.s, HeadLossMajor=1 * u.m, Length=1 * u.m, Nu=1 * u.m**2/u.s, PipeRough=1 * u.m))
+        for i in warning_checks:
+            with self.subTest(i=i):
+                self.assertWarns(UserWarning, i)
+
     def test_diam_pipemajor(self):
-        """diam_pipemajor should return known value for known inputs."""
+        self.assertWarns(UserWarning, pc.diam_pipemajor, *(0.005 * u.m**3/u.s, 0.03 * u.m, 1.6 * u.m, 0.53 * u.m**2/u.s, 0.002 * u.m))
+
+    def test_diam_major_pipe(self):
+        """diam_major_pipe should return known value for known inputs."""
         checks = (([0.005 * u.m**3/u.s, 0.03 * u.m, 1.6 * u.m, 0.53 * u.m**2/u.s, 0.002 * u.m], 0.8753787620849313 * u.m),
                   ([1 * u.m**3/u.s, 2 * u.m, 0.03 * u.m, 0.004 * u.m**2/u.s, 0.005 * u.m], 0.14865504303291951 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.diam_pipemajor(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.diam_major_pipe(*i[0]), i[1])
 
     def test_diam_pipeminor(self):
-        """diam_pipeminor should return known value for known inputs."""
+        self.assertWarns(UserWarning, pc.diam_pipeminor, *(0.008 * u.m**3/u.s, 0.012 * u.m, 0.93))
+
+    def test_diam_minor_pipe(self):
+        """diam_minor_pipe should return known value for known inputs."""
         checks = (([0.008 * u.m**3/u.s, 0.012 * u.m, 0.93], 0.14229440061589257 * u.m),
                   ([0.015 * u.m**3/u.s, 0.3 * u.m, 0.472 * u.dimensionless], 0.073547549463488848 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertAlmostEqualQuantity(pc.diam_pipeminor(*i[0]), i[1])
+                self.assertAlmostEqualQuantity(pc.diam_minor_pipe(*i[0]), i[1])
 
-    def test_diam_pipeminor_range(self):
-        """diam_pipeminor should raise errors when inputs are out of bounds."""
+    def test_diam_minor_pipe_range(self):
+        """diam_minor_pipe should raise errors when inputs are out of bounds."""
         failChecks = ((0 * u.m**3/u.s, 1 * u.m, 1),
                       (1 * u.m**3/u.s, 0 * u.m, 1),
                       (1 * u.m**3/u.s, 1 * u.m, -1 * u.dimensionless))
         for i in failChecks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.diam_pipeminor, *i)
+                self.assertRaises(ValueError, pc.diam_minor_pipe, *i)
         passChecks = ((1 * u.m**3/u.s, 1 * u.m, 1),
                       (1 * u.m**3/u.s, 1 * u.m, 0))
         for i in passChecks:
             with self.subTest(i=i):
-                pc.diam_pipeminor(*i)
+                pc.diam_minor_pipe(*i)
 
     def test_diam_pipe(self):
         """diam_pipe should return known value for known inputs."""
@@ -789,43 +897,54 @@ class DiamFuncsTest(QuantityTest):
             with self.subTest(i=i):
                 self.assertAlmostEqualQuantity(pc.diam_pipe(*i[0]), i[1])
 
+
 class WeirFuncsTest(QuantityTest):
     """Test the weir functions."""
     def test_width_rect_weir(self):
-        """width_rect_weir should return known value for known inputs."""
-        self.assertAlmostEqualQuantity(pc.width_rect_weir(0.005 * u.m**3/u.s, 0.2 * u.m),
+        self.assertWarns(UserWarning, pc.width_rect_weir, *(0.005 * u.m**3/u.s, 0.2 * u.m))
+
+    def test_width_weir_rect(self):
+        """width_weir_rect should return known value for known inputs."""
+        self.assertAlmostEqualQuantity(pc.width_weir_rect(0.005 * u.m**3/u.s, 0.2 * u.m),
                          0.03005386871 * u.m)
 
-    def test_width_rect_weir_range(self):
-        """width_rect_weird should raise errors when inputs are out of bounds."""
+    def test_width_weir_rect_range(self):
+        """width_weir_rect should raise errors when inputs are out of bounds."""
         checks = ((0 * u.m**3/u.s, 1 * u.m), (1 * u.m**3/u.s, 0 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.width_rect_weir, *i)
+                self.assertRaises(ValueError, pc.width_weir_rect, *i)
 
     def test_headloss_weir(self):
-        """headloss_weir should return known value for known inputs."""
-        self.assertAlmostEqualQuantity(pc.headloss_weir(0.005 * u.m**3/u.s, 1 * u.m),
+        self.assertWarns(UserWarning, pc.headloss_weir, *(0.005 * u.m**3/u.s, 1 * u.m))
+
+    def test_headloss_weir_rect(self):
+        """headloss_rect_weir should return known value for known inputs."""
+        self.assertAlmostEqualQuantity(pc.headloss_weir_rect(0.005 * u.m**3/u.s, 1 * u.m),
                                        0.01933289619 * u.m)
 
-    def test_headloss_weir_range(self):
-        """headloss_weir should raise errors when inputs are out of bounds."""
+    def test_headloss_weir_rect_range(self):
+        """headloss_weir_rect should raise errors when inputs are out of bounds."""
         checks = ((0 * u.m**3/u.s, 1 * u.m), (1 * u.m**3/u.s, 0 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.headloss_weir, *i)
+                self.assertRaises(ValueError, pc.headloss_weir_rect, *i)
 
     def test_flow_rect_weir(self):
-        """flow_rect_weir should return known value for known inputs."""
-        self.assertAlmostEqualQuantity(pc.flow_rect_weir(2 * u.m, 1 * u.m),
+        self.assertWarns(UserWarning, pc.flow_rect_weir, *(2 * u.m, 1 * u.m))
+
+    def test_flow_weir_rect(self):
+        """flow_weir_rect should return known value for known inputs."""
+        self.assertAlmostEqualQuantity(pc.flow_weir_rect(2 * u.m, 1 * u.m),
                                        5.2610159627 * u.m**3/u.s)
 
-    def test_flow_rect_weir_range(self):
-        """flow_rect_weir should raise errors when inputs are out of bounds."""
+    def test_flow_weir_rect_range(self):
+        """flow_weir_rect should raise errors when inputs are out of bounds."""
         checks = ((0 * u.m, 1 * u.m), (1 * u.m, 0 * u.m))
         for i in checks:
             with self.subTest(i=i):
-                self.assertRaises(ValueError, pc.flow_rect_weir, *i)
+                self.assertRaises(ValueError, pc.flow_weir_rect, *i)
+
 
 class PorousMediaFuncsTest(QuantityTest):
     def test_headloss_kozeny(self):
@@ -866,8 +985,8 @@ class PorousMediaFuncsTest(QuantityTest):
         self.assertAlmostEqualQuantity(pc.headloss_ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2, 4 * u.m),
                                        1152.39863230 * u.m)
 
-    def test_G_CS_Ergun(self):
-        self.assertAlmostEqualQuantity(pc.G_CS_Ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2),
+    def test_g_cs_ergun(self):
+        self.assertAlmostEqualQuantity(pc.g_cs_ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2),
                                        39704.892422*u.Hz, 5)
 
 

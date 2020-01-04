@@ -16,7 +16,6 @@ import numpy as np
 # TODO: Add units to docstrings. - Oliver Leung (oal22)
 
 
-@u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s], strict=False)
 @ut.list_handler()
 def k_value_expansion(ent_pipe_id, exit_pipe_id, q,
                       fitting_angle=180, rounded=False,
@@ -51,23 +50,23 @@ def k_value_expansion(ent_pipe_id, exit_pipe_id, q,
                                  fitting_angle, rounded,
                                  nu, pipe_rough)
 
-    f = pc.fric(q, ent_pipe_id, nu, pipe_rough)  # Darcy friction factor.
+    f = pc.fric_pipe(q, ent_pipe_id, nu, pipe_rough)  # Darcy friction factor.
     re = pc.re_pipe(q, ent_pipe_id, nu)          # Entrance pipe's Reynolds number.
 
     fitting_type = _get_fitting_type(fitting_angle, rounded)
 
     if fitting_type == 'square':
-        return _k_value_square_expansion(ent_pipe_id, exit_pipe_id, re, f)
+        result = _k_value_square_expansion(ent_pipe_id, exit_pipe_id, re, f)
     elif fitting_type == 'tapered':
-        return _k_value_tapered_expansion(ent_pipe_id, exit_pipe_id, re, f)
+        result = _k_value_tapered_expansion(ent_pipe_id, exit_pipe_id, re, f)
     elif fitting_type == 'rounded':
-        return _k_value_rounded_expansion(ent_pipe_id, exit_pipe_id, re)
+        result = _k_value_rounded_expansion(ent_pipe_id, exit_pipe_id, re)
     elif fitting_type == 'ambiguous':
-        raise ValueError('The fitting is ambiguously both tapered and rounded. '
+        result = ValueError('The fitting is ambiguously both tapered and rounded. '
                          'Please set only either fitting_angle or rounded.')
+    return result.to(u.dimensionless)
 
 
-@u.wraps(u.dimensionless, [u.m, u.m, u.L / u.s], strict=False)
 @ut.list_handler()
 def k_value_reduction(ent_pipe_id, exit_pipe_id, q,
                       fitting_angle=180, rounded=False,
@@ -102,23 +101,23 @@ def k_value_reduction(ent_pipe_id, exit_pipe_id, q,
                                  fitting_angle, rounded,
                                  nu, pipe_rough)
 
-    f = pc.fric(q, ent_pipe_id, nu, pipe_rough)     # Darcy friction factor.
+    f = pc.fric_pipe(q, ent_pipe_id, nu, pipe_rough)     # Darcy friction factor.
     re = pc.re_pipe(q, ent_pipe_id, nu)             # Entrance pipe's Reynolds number.
 
     fitting_type = _get_fitting_type(fitting_angle, rounded)
 
     if fitting_type == 'square':
-        return _k_value_square_reduction(ent_pipe_id, exit_pipe_id, re, f)
+        result = _k_value_square_reduction(ent_pipe_id, exit_pipe_id, re, f)
     elif fitting_type == 'tapered':
-        return _k_value_tapered_reduction(ent_pipe_id, exit_pipe_id, fitting_angle, re, f)
+        result = _k_value_tapered_reduction(ent_pipe_id, exit_pipe_id, fitting_angle, re, f)
     elif fitting_type == 'rounded':
-        return _k_value_rounded_reduction(ent_pipe_id, exit_pipe_id, re)
+        result = _k_value_rounded_reduction(ent_pipe_id, exit_pipe_id, re)
     elif fitting_type == 'ambiguous':
         raise ValueError('The fitting is ambiguously both tapered and rounded.'
                          'Please set only either fitting_angle or rounded.')
+    return result.to(u.dimensionless)
 
 
-@u.wraps(u.dimensionless, [u.m, u.m, u.m, u.m ** 3 / u.s], strict=False)
 @ut.list_handler()
 def k_value_orifice(pipe_id, orifice_id, orifice_l, q,
                     nu=con.WATER_NU):
@@ -147,12 +146,13 @@ def k_value_orifice(pipe_id, orifice_id, orifice_l, q,
     orifice_type = _get_orifice_type(orifice_l, orifice_id)
 
     if orifice_type == 'thin':
-        return _k_value_thin_sharp_orifice(pipe_id, orifice_id, re)
+        result = _k_value_thin_sharp_orifice(pipe_id, orifice_id, re)
     elif orifice_type == 'thick':
-        return _k_value_thick_orifice(pipe_id, orifice_id, orifice_l, re)
+        result = _k_value_thick_orifice(pipe_id, orifice_id, orifice_l, re)
     elif orifice_type == 'oversize':
-        return k_value_reduction(pipe_id, orifice_id, q) \
+        result = k_value_reduction(pipe_id, orifice_id, q) \
                + k_value_expansion(orifice_id, pipe_id, q)
+    return result.to(u.dimensionless)
 
 
 def _k_value_square_reduction(ent_pipe_id, exit_pipe_id, re, f):
@@ -283,32 +283,44 @@ def _get_orifice_type(orifice_l, orifice_id):
     else:
         return 'oversize'
 
-##90 deg elbow
+#: 90 degree elbow
 EL90_K_MINOR = 0.9
 
+#:
 EL45_K_MINOR = 0.45
-##The loss coefficient for the channel transition in a 90 degree turn
+
+#: The loss coefficient for the channel transition in a 90 degree turn
 RIGHT_ANGLE_K_MINOR = 0.4
 
+#:
 ANGLE_VALVE_K_MINOR = 4.3
 
+#:
 GLOBE_VALVE_K_MINOR = 10
 
+#:
 GATE_VALVE_K_MINOR = 0.39
 
+#:
 CHECK_VALVE_CONV_K_MINOR = 4
 
+#:
 CHECK_VALVE_BALL_K_MINOR = 4.5
 
-##headloss coefficient of jet
+#: Headloss coefficient of a jet
 EXP_K_MINOR = 1
 
+#:
 TEE_FLOW_RUN_K_MINOR = 0.6
 
+#:
 TEE_FLOW_BR_K_MINOR = 1.8
 
+#:
 PIPE_ENTRANCE_K_MINOR = 0.5
 
+#:
 PIPE_EXIT_K_MINOR = 1
 
+#:
 RM_GATE_VIN_K_MINOR = 25
