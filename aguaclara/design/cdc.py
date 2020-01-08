@@ -18,7 +18,7 @@ import numpy as np
 
 class CDC(Component):
     """Design an AguaClara plant's chemical dose controller.
-    
+
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (required)
     """
@@ -27,7 +27,7 @@ class CDC(Component):
         self.coag_type='pacl'
         if self.coag_type.lower() not in ['pacl', 'alum']:
             raise ValueError('coag_type must be either PACl or Alum.')
-        
+
         self.coag_dose_conc_max=2 * u.g / u.L #What should this default to? -Oliver L., 6 Jun 19
         self.coag_stock_conc_est=150 * u.g / u.L
         self.coag_stock_min_est_time=1 * u.day
@@ -59,7 +59,7 @@ class CDC(Component):
         """
         alum_nu = \
             (1 + (4.255 * 10 ** -6) * coag_conc.magnitude ** 2.289) * \
-            pc.viscosity_kinematic(self.temp)
+            pc.viscosity_kinematic_water(self.temp)
         return alum_nu
 
     def _pacl_nu(self, coag_conc):
@@ -73,7 +73,7 @@ class CDC(Component):
         """
         pacl_nu = \
             (1 + (2.383 * 10 ** -5) * (coag_conc).magnitude ** 1.893) * \
-            pc.viscosity_kinematic(self.temp)
+            pc.viscosity_kinematic_water(self.temp)
         return pacl_nu
 
     def _coag_nu(self, coag_conc, coag_type):
@@ -93,16 +93,16 @@ class CDC(Component):
         coag_q_max_est = self.q * self.coag_dose_conc_max / \
             self.coag_stock_conc_est
         return coag_q_max_est
-    
+
     @property
     def coag_stock_vol(self):
         coag_stock_vol = ut.ceil_nearest(
-                self.coag_stock_min_est_time * self.train_n * 
+                self.coag_stock_min_est_time * self.train_n *
                     self.coag_q_max_est,
                 self.chem_tank_vol_supplier
             )
         return coag_stock_vol
-        
+
     @property
     def coag_sack_n(self):
         coag_sack_n = round(
@@ -110,7 +110,7 @@ class CDC(Component):
                 self.coag_sack_mass).to_base_units()
             )
         return coag_sack_n
-    
+
     @property
     def coag_stock_conc(self):
         coag_stock_conc = self.coag_sack_n * self.coag_sack_mass / \
@@ -128,7 +128,7 @@ class CDC(Component):
 
     @property
     def coag_stock_nu(self):
-        return self._coag_nu(self.coag_stock_conc, self.coag_type)    
+        return self._coag_nu(self.coag_stock_conc, self.coag_type)
 #==============================================================================
 # Small-diameter Tube Design
 #==============================================================================
@@ -138,7 +138,7 @@ class CDC(Component):
         coag_tube_q_max = ((np.pi * self.coag_tube_id ** 2)/4) * \
             np.sqrt((2 * self.error_ratio * self.hl * con.GRAVITY)/self.tube_k)
         return coag_tube_q_max
-    
+
     @property
     def coag_tubes_active_n(self):
         coag_tubes_active_n = \
@@ -147,15 +147,15 @@ class CDC(Component):
 
     @property
     def coag_tubes_n(self):
-        coag_tubes_n = self.coag_tubes_active_n + 1 
+        coag_tubes_n = self.coag_tubes_active_n + 1
         return coag_tubes_n
-        
+
     @property
     def coag_tube_operating_q_max(self):
         """The maximum flow through a coagulant tube during actual operation."""
         coag_tube_operating_q_max = self.coag_q_max / self.coag_tubes_active_n
         return coag_tube_operating_q_max
-    
+
     @property
     def coag_tube_l(self):
         coag_tube_l = (
@@ -172,7 +172,7 @@ class CDC(Component):
         index = np.where(self.chem_tank_vol_supplier == self.coag_stock_vol)
         coag_tank_r = self.chem_tank_dimensions_supplier[0][index] / 2
         return coag_tank_r
-        
+
     @property
     def coag_tank_h(self):
         index = np.where(self.chem_tank_vol_supplier == self.coag_stock_vol)
@@ -184,4 +184,3 @@ class CDC(Component):
             return 1*u.mm
         else:
             return (1/16)*u.inch
-

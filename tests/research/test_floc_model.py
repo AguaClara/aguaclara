@@ -218,10 +218,10 @@ class TestKolmogorovAndViscous(QuantityTest):
                                        0.00078540208*u.m, 10)
 
     def test_diam_floc_max(self):
-        self.assertRaisesRegexp(FutureWarning, "diam_floc_max is deprecated and will be removed after Dec 1 2019. The underlying equation is under suspicion.")
+        self.assertRaisesRegex(FutureWarning, "diam_floc_max is deprecated and will be removed after Dec 1 2019. The underlying equation is under suspicion.")
 
     def test_ener_dis_diam_floc(self):
-        self.assertRaisesRegexp(FutureWarning, "ener_dis_diam_floc is deprecated and will be removed after Dec 1 2019. The underlying equation is under suspicion.")
+        self.assertRaisesRegex(FutureWarning, "ener_dis_diam_floc is deprecated and will be removed after Dec 1 2019. The underlying equation is under suspicion.")
 
 
 class TestVelocityGradient(QuantityTest):

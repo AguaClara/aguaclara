@@ -60,6 +60,8 @@ sed_tank_60 = SedimentationTank(q = 60.0 * u.L / u.s)
     (sed_tank_60.outlet_man_orifice_spacing, 0.1048062404520667 * u.m),
 ])
 def test_sed_tank(actual, expected):
-    assert actual == expected
-
-    
+    if (type(actual) == u.Quantity and type(expected) == u.Quantity):
+        assert actual.units == expected.units
+        assert actual.magnitude == pytest.approx(expected.magnitude)
+    else:
+        assert actual == pytest.approx(expected)

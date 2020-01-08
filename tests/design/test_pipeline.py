@@ -51,4 +51,8 @@ pipeline_fp = Pipe(size = 6 * u.inch,
     (pipeline_fp.flow_pipeline(40 * u.cm), 31.45057786475188 * u.L / u.s),
 ])
 def test_pipeline(actual, expected):
-	assert actual == expected
+    if (type(actual) == u.Quantity and type(expected) == u.Quantity):
+        assert actual.units == expected.units
+        assert actual.magnitude == pytest.approx(expected.magnitude)
+    else:
+        assert actual == pytest.approx(expected)
