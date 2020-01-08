@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utility &mdash; AguaClara v0.1.14 documentation</title>
+  <title>Utility &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -317,8 +317,16 @@ different units.</p></li>
 
 <dl class="function">
 <dt id="aguaclara.core.utility.list_handler">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">list_handler</code><span class="sig-paren">(</span><em class="sig-param">HandlerResult='nparray'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#list_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.list_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wraps a function to handle list inputs.</p>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">list_handler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#list_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.list_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps a scalar function to output a NumPy array if passed one or more inputs
+as sequences (lists, tuples or NumPy arrays). For each sequence input, this
+wrapper will recursively evaluate the function with the sequence replaced
+by each of its elements and return the results in n-dimensional NumPy array,
+where n is the number of sequence inputs.</p>
+<p>For a function “f” of one argument, f([x_1, …, x_n]) would be evaluated to
+[f(x_1), …, f(x_n)]. For a function passed multiple sequences of
+dimensions d_1, …, d_n (from left to right), the result would be a
+d_1 x … x d_n array.</p>
 </dd></dl>
 
 <dl class="function">

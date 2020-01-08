@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.stock_qc &mdash; AguaClara v0.1.14 documentation</title>
+  <title>aguaclara.research.stock_qc &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -154,6 +154,7 @@
             
   <h1>Source code for aguaclara.research.stock_qc</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
 
 
 <span class="k">class</span> <span class="nc">Stock</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -239,7 +240,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_C_sys</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Q_sys</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_stock</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_C_Stock.rpm"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.rpm">[docs]</a>    <span class="k">def</span> <span class="nf">rpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vol_per_rev</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_C_Stock.rpm"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.rpm">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">rpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vol_per_rev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the pump speed required for the reactor&#39;s stock of material</span>
 <span class="sd">        given the volume of fluid output per revolution by the stock&#39;s pump.</span>
 
@@ -251,7 +253,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Stock</span><span class="o">.</span><span class="n">rpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vol_per_rev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_stock</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_C_Stock.T_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.T_stock">[docs]</a>    <span class="k">def</span> <span class="nf">T_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_C_Stock.T_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.T_stock">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">T_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the amount of time at which the stock of materal will be</span>
 <span class="sd">        depleted.</span>
 
@@ -263,7 +266,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Stock</span><span class="o">.</span><span class="n">T_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_stock</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">hr</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_C_Stock.M_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.M_stock">[docs]</a>    <span class="k">def</span> <span class="nf">M_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_C_Stock.M_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.M_stock">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">M_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the mass of undiluted material required for the stock</span>
 <span class="sd">        concentration.</span>
 
@@ -275,7 +279,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Stock</span><span class="o">.</span><span class="n">M_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">C_stock</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="Variable_C_Stock.V_super_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.V_super_stock">[docs]</a>    <span class="k">def</span> <span class="nf">V_super_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_C_Stock.V_super_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.V_super_stock">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">V_super_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the volume of super (more concentrated) stock that must be</span>
 <span class="sd">        diluted for the desired stock volume and required stock concentration.</span>
 
@@ -289,7 +294,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Stock</span><span class="o">.</span><span class="n">V_super_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">C_stock</span><span class="p">(),</span> <span class="n">C_super_stock</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_C_Stock.dilution_factor"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.dilution_factor">[docs]</a>    <span class="k">def</span> <span class="nf">dilution_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_C_Stock.dilution_factor"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_C_Stock.dilution_factor">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">dilution_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the dilution factor of the concentration of material in the</span>
 <span class="sd">        stock relative to the super stock.</span>
 
@@ -365,7 +371,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q_sys</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_C_sys</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_C_stock</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_Q_Stock.rpm"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.rpm">[docs]</a>    <span class="k">def</span> <span class="nf">rpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vol_per_rev</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_Q_Stock.rpm"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.rpm">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">rpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vol_per_rev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the pump speed required for the reactor&#39;s stock of material</span>
 <span class="sd">        given the volume of fluid output per revolution by the stock&#39;s pump.</span>
 
@@ -377,7 +384,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Stock</span><span class="o">.</span><span class="n">rpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vol_per_rev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_stock</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_Q_Stock.T_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.T_stock">[docs]</a>    <span class="k">def</span> <span class="nf">T_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_Q_Stock.T_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.T_stock">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">T_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the amount of time at which the stock of materal will be</span>
 <span class="sd">        depleted.</span>
 
@@ -389,7 +397,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Stock</span><span class="o">.</span><span class="n">T_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_stock</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">hr</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_Q_Stock.M_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.M_stock">[docs]</a>    <span class="k">def</span> <span class="nf">M_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_Q_Stock.M_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.M_stock">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">M_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the mass of undiluted material required for the stock</span>
 <span class="sd">        concentration.</span>
 
@@ -401,7 +410,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Stock</span><span class="o">.</span><span class="n">M_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_C_stock</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_Q_Stock.V_super_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.V_super_stock">[docs]</a>    <span class="k">def</span> <span class="nf">V_super_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_Q_Stock.V_super_stock"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.V_super_stock">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">V_super_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the volume of super (more concentrated) stock that must be</span>
 <span class="sd">        diluted for the desired stock volume and stock concentration.</span>
 
@@ -415,7 +425,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Stock</span><span class="o">.</span><span class="n">V_super_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V_stock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_C_stock</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Variable_Q_Stock.dilution_factor"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.dilution_factor">[docs]</a>    <span class="k">def</span> <span class="nf">dilution_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable_Q_Stock.dilution_factor"><a class="viewcode-back" href="../../../research/stock_qc.html#aguaclara.research.stock_qc.Variable_Q_Stock.dilution_factor">[docs]</a>    <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">dilution_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C_super_stock</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the dilution factor of the concentration of material in the</span>
 <span class="sd">        stock relative to the super stock.</span>
 

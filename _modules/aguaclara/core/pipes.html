@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.pipes &mdash; AguaClara v0.1.14 documentation</title>
+  <title>aguaclara.core.pipes &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -157,6 +157,7 @@
 <span class="sd">outer diameters of pipes based on their standard dimension ratio (SDR).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -192,22 +193,31 @@
         <span class="n">myindex</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pipedb</span><span class="p">[</span><span class="s1">&#39;NDinch&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">magnitude</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">myindex</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">myindex</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
 
-<div class="viewcode-block" id="OD"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.OD">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OD"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.OD">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">OD</span><span class="p">(</span><span class="n">ND</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a pipe&#39;s outer diameter according to its nominal diameter.</span>
 
-<span class="sd">    The pipe schedule is not required here because all of the pipes of a</span>
-<span class="sd">    given nominal diameter have the same outer diameter.</span>
+<span class="sd">    :param ND: nominal diameter of pipe</span>
+<span class="sd">    :type ND: u.inch</span>
 
-<span class="sd">    Steps:</span>
-<span class="sd">    1. Find the index of the closest nominal diameter. </span>
-<span class="sd">    (Should this be changed to find the next largest ND?)</span>
-<span class="sd">    2. Take the values of the array, subtract the ND, take the absolute </span>
-<span class="sd">    value, find the index of the minimium value.</span>
+<span class="sd">    :return: outer diameter of pipe, in inches</span>
+<span class="sd">    :rtype: u.inch</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># The pipe schedule is not required here because all of the pipes of a</span>
+    <span class="c1"># given nominal diameter have the same outer diameter.</span>
+    <span class="c1">#</span>
+    <span class="c1"># Steps:</span>
+    <span class="c1"># 1. Find the index of the closest nominal diameter.</span>
+    <span class="c1">#    (Should this be changed to find the next largest ND?)</span>
+    <span class="c1"># 2. Take the values of the array, subtract the ND, take the absolute</span>
+    <span class="c1">#    value, find the index of the minimium value.</span>
+    <span class="n">ND</span> <span class="o">=</span> <span class="n">ND</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
     <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pipedb</span><span class="p">[</span><span class="s1">&#39;NDinch&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">ND</span><span class="p">)))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span></div>
 
+
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">fitting_od</span><span class="p">(</span><span class="n">pipe_nd</span><span class="p">,</span> <span class="n">fitting_sdr</span><span class="o">=</span><span class="mi">41</span><span class="p">):</span>
     <span class="n">pipe_od</span> <span class="o">=</span> <span class="n">OD</span><span class="p">(</span><span class="n">pipe_nd</span><span class="p">)</span>
     <span class="n">fitting_nd</span> <span class="o">=</span> <span class="n">ND_SDR_available</span><span class="p">(</span><span class="n">pipe_od</span><span class="p">,</span> <span class="n">fitting_sdr</span><span class="p">)</span>
@@ -215,16 +225,17 @@
     <span class="k">return</span> <span class="n">fitting_od</span>
 
 
-<div class="viewcode-block" id="ID_SDR"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_SDR">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="ID_SDR"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_SDR">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ID_SDR</span><span class="p">(</span><span class="n">ND</span><span class="p">,</span> <span class="n">SDR</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the inner diameter for SDR(standard diameter ratio) pipes.</span>
+    <span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe given its nominal diameter and SDR</span>
+<span class="sd">    (standard diameter ratio).</span>
 
-<span class="sd">    For these pipes the wall thickness is the outer diameter divided by</span>
-<span class="sd">    the SDR.</span>
+<span class="sd">    SDR is the outer diameter divided by the wall thickness.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">OD</span><span class="p">(</span><span class="n">ND</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="p">(</span><span class="n">SDR</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">SDR</span></div>
+    <span class="k">return</span> <span class="n">OD</span><span class="p">(</span><span class="n">ND</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">SDR</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">SDR</span></div>
 
-<div class="viewcode-block" id="ID_sch40"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_sch40">[docs]</a><span class="nd">@u</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ID_sch40"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_sch40">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ID_sch40</span><span class="p">(</span><span class="n">ND</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the inner diameter for schedule 40 pipes.</span>
 
@@ -233,8 +244,9 @@
 <span class="sd">    Take the values of the array, subtract the ND, take the absolute</span>
 <span class="sd">    value, find the index of the minimium value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ND</span> <span class="o">=</span> <span class="n">ND</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">inch</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
     <span class="n">myindex</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pipedb</span><span class="p">[</span><span class="s1">&#39;NDinch&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">ND</span><span class="p">)))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">myindex</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">myindex</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">myindex</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">myindex</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span></div>
 
 
 <div class="viewcode-block" id="ND_all_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ND_all_available">[docs]</a><span class="k">def</span> <span class="nf">ND_all_available</span><span class="p">():</span>
@@ -249,6 +261,7 @@
             <span class="n">ND_all_available</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pipedb</span><span class="p">[</span><span class="s1">&#39;NDinch&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">ND_all_available</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span></div>
 
+
 <div class="viewcode-block" id="od_all_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.od_all_available">[docs]</a><span class="k">def</span> <span class="nf">od_all_available</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Return an array of available outer diameters.</span>
 
@@ -262,7 +275,8 @@
     <span class="k">return</span> <span class="n">od_all_available</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span></div>
 
 
-<div class="viewcode-block" id="ID_SDR_all_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_SDR_all_available">[docs]</a><span class="k">def</span> <span class="nf">ID_SDR_all_available</span><span class="p">(</span><span class="n">SDR</span><span class="p">):</span>
+<div class="viewcode-block" id="ID_SDR_all_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_SDR_all_available">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ID_SDR_all_available</span><span class="p">(</span><span class="n">SDR</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return an array of inner diameters with a given SDR.</span>
 
 <span class="sd">    IDs available are those commonly used based on the &#39;Used&#39; column</span>
@@ -275,7 +289,8 @@
     <span class="k">return</span> <span class="n">ID</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span></div>
 
 
-<div class="viewcode-block" id="ND_SDR_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ND_SDR_available">[docs]</a><span class="k">def</span> <span class="nf">ND_SDR_available</span><span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="n">SDR</span><span class="p">):</span>
+<div class="viewcode-block" id="ND_SDR_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ND_SDR_available">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ND_SDR_available</span><span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="n">SDR</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Return an available ND given an ID and a schedule.</span>
 
 <span class="sd">    Takes the values of the array, compares to the ID, and finds the index</span>
@@ -286,7 +301,8 @@
             <span class="k">return</span> <span class="n">ND_all_available</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ND_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ND_available">[docs]</a><span class="k">def</span> <span class="nf">ND_available</span><span class="p">(</span><span class="n">NDguess</span><span class="p">):</span>
+<div class="viewcode-block" id="ND_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ND_available">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ND_available</span><span class="p">(</span><span class="n">NDguess</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the minimum ND that is available.</span>
 
 <span class="sd">    1. Extract the magnitude in inches from the nominal diameter.</span>
@@ -297,9 +313,11 @@
     <span class="n">myindex</span> <span class="o">=</span> <span class="p">(</span><span class="n">ND_all_available</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">NDguess</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">ND_all_available</span><span class="p">()[</span><span class="n">myindex</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="od_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.od_available">[docs]</a><span class="k">def</span> <span class="nf">od_available</span><span class="p">(</span><span class="n">od_guess</span><span class="p">):</span>
+
+<div class="viewcode-block" id="od_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.od_available">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">od_available</span><span class="p">(</span><span class="n">od_guess</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the minimum OD that is available.</span>
-<span class="sd">    </span>
+
 <span class="sd">    1. Extract the magnitude in inches from the outer diameter.</span>
 <span class="sd">    2. Find the index of the closest outer diameter.</span>
 <span class="sd">    3. Take the values of the array, subtract the OD, take the</span>
@@ -308,9 +326,13 @@
     <span class="n">myindex</span> <span class="o">=</span> <span class="p">(</span><span class="n">od_all_available</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">od_guess</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">od_all_available</span><span class="p">()[</span><span class="n">myindex</span><span class="p">])</span></div>
 
+
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">socket_depth</span><span class="p">(</span><span class="n">nd</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">nd</span> <span class="o">/</span> <span class="mi">2</span>
 
+
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">cap_thickness</span><span class="p">(</span><span class="n">nd</span><span class="p">):</span>
     <span class="n">cap_thickness</span> <span class="o">=</span> <span class="p">(</span><span class="n">fitting_od</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span> <span class="o">-</span> <span class="n">OD</span><span class="p">(</span><span class="n">ND_available</span><span class="p">(</span><span class="n">nd</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">cap_thickness</span>

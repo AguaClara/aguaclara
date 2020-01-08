@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.floc_model &mdash; AguaClara v0.1.14 documentation</title>
+  <title>aguaclara.research.floc_model &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -564,8 +564,8 @@
 
 
 <span class="c1"># @u.wraps(None, [u.kg/u.m**3, u.kg/u.m**3, None, None], False)</span>
-<span class="c1"># @ut.list_handler()</span>
-<div class="viewcode-block" id="gamma_humic_acid_to_coag"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.gamma_humic_acid_to_coag">[docs]</a><span class="k">def</span> <span class="nf">gamma_humic_acid_to_coag</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span> <span class="n">NatOrgMat</span><span class="p">,</span> <span class="n">coag</span><span class="p">):</span>
+<div class="viewcode-block" id="gamma_humic_acid_to_coag"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.gamma_humic_acid_to_coag">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">gamma_humic_acid_to_coag</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span> <span class="n">NatOrgMat</span><span class="p">,</span> <span class="n">coag</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the fraction of the coagulant that is coated with humic acid.</span>
 
 <span class="sd">    :param ConcAl: Concentration of alumninum in solution</span>
@@ -589,7 +589,8 @@
 
 <span class="c1"># @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3, None,</span>
 <span class="c1">#                 None, None, u.dimensionless], False)</span>
-<div class="viewcode-block" id="pacl_term"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.pacl_term">[docs]</a><span class="k">def</span> <span class="nf">pacl_term</span><span class="p">(</span><span class="n">DiamTube</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span> <span class="n">NatOrgMat</span><span class="p">,</span>
+<div class="viewcode-block" id="pacl_term"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.pacl_term">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">pacl_term</span><span class="p">(</span><span class="n">DiamTube</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span> <span class="n">NatOrgMat</span><span class="p">,</span>
               <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">RatioHeightDiameter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the fraction of the surface area that is covered with coagulant</span>
 <span class="sd">    that is not covered with humic acid.</span>
@@ -623,6 +624,7 @@
 
 <span class="c1"># @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,</span>
 <span class="c1">#                 None, None, None, u.dimensionless], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">alpha_pacl_clay</span><span class="p">(</span><span class="n">DiamTube</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span>
                     <span class="n">NatOrgMat</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">RatioHeightDiameter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
@@ -634,6 +636,7 @@
 
 <span class="c1"># @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,</span>
 <span class="c1">#                 None, None, None, u.dimensionless], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">alpha_pacl_pacl</span><span class="p">(</span><span class="n">DiamTube</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span>
                     <span class="n">NatOrgMat</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">RatioHeightDiameter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
@@ -644,6 +647,7 @@
 
 <span class="c1"># @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,</span>
 <span class="c1">#                 None, None, None, u.dimensionless], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">alpha_pacl_nat_org_mat</span><span class="p">(</span><span class="n">DiamTube</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span>
                            <span class="n">NatOrgMat</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">RatioHeightDiameter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
@@ -657,6 +661,7 @@
 
 <span class="c1"># @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,</span>
 <span class="c1">#                 None, None, None, u.dimensionless], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">alpha</span><span class="p">(</span><span class="n">DiamTube</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span>
           <span class="n">NatOrgMat</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">RatioHeightDiameter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
@@ -673,13 +678,14 @@
 <span class="c1"># @u.wraps(None, [u.W/u.kg, u.degK, u.s, u.m,</span>
 <span class="c1">#                 u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3, None,</span>
 <span class="c1">#                 None, None, u.dimensionless, u.dimensionless], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">pc_viscous</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">Time</span><span class="p">,</span> <span class="n">DiamTube</span><span class="p">,</span>
                <span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span> <span class="n">NatOrgMat</span><span class="p">,</span>
                <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">FittingParam</span><span class="p">,</span> <span class="n">RatioHeightDiameter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">((</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
             <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">FittingParam</span> <span class="o">*</span> <span class="n">Time</span>
-                       <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">EnergyDis</span> <span class="o">/</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="n">Temp</span><span class="p">))</span>
+                       <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">EnergyDis</span> <span class="o">/</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">))</span>
                                  <span class="p">)</span>
                        <span class="o">*</span> <span class="n">alpha</span><span class="p">(</span><span class="n">DiamTube</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcNatOrgMat</span><span class="p">,</span>
                                <span class="n">NatOrgMat</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">RatioHeightDiameter</span><span class="p">)</span>
@@ -693,7 +699,8 @@
 
 <span class="c1"># @u.wraps(u.kg/u.m**3, [u.kg/u.m**3, u.kg/u.m**3, u.dimensionless, u.m,</span>
 <span class="c1">#                        None, None, u.degK], False)</span>
-<div class="viewcode-block" id="dens_floc"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.dens_floc">[docs]</a><span class="k">def</span> <span class="nf">dens_floc</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">DIM_FRACTAL</span><span class="p">,</span> <span class="n">DiamTarget</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
+<div class="viewcode-block" id="dens_floc"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.dens_floc">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">dens_floc</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">DIM_FRACTAL</span><span class="p">,</span> <span class="n">DiamTarget</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate floc density as a function of size.&quot;&quot;&quot;</span>
     <span class="n">WaterDensity</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">density_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">((</span><span class="n">dens_floc_init</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">)</span>
@@ -706,12 +713,13 @@
 
 <span class="c1"># @u.wraps(u.m/u.s, [u.kg/u.m**3, u.kg/u.m**3, None, None, u.dimensionless,</span>
 <span class="c1">#                    u.m, u.degK], False)</span>
-<div class="viewcode-block" id="vel_term_floc"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.vel_term_floc">[docs]</a><span class="k">def</span> <span class="nf">vel_term_floc</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">DIM_FRACTAL</span><span class="p">,</span>
+<div class="viewcode-block" id="vel_term_floc"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.vel_term_floc">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">vel_term_floc</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">DIM_FRACTAL</span><span class="p">,</span>
                   <span class="n">DiamTarget</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate floc terminal velocity.&quot;&quot;&quot;</span>
     <span class="n">WaterDensity</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">density_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(((</span><span class="n">u</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="n">material</span><span class="o">.</span><span class="n">Diameter</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-             <span class="o">/</span> <span class="p">(</span><span class="mi">18</span> <span class="o">*</span> <span class="n">PHI_FLOC</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="n">Temp</span><span class="p">))</span>
+             <span class="o">/</span> <span class="p">(</span><span class="mi">18</span> <span class="o">*</span> <span class="n">PHI_FLOC</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">))</span>
              <span class="p">)</span>
             <span class="o">*</span> <span class="p">((</span><span class="n">dens_floc_init</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">)</span>
                 <span class="o">-</span> <span class="n">WaterDensity</span>
@@ -724,12 +732,13 @@
 
 <span class="c1"># @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None,</span>
 <span class="c1">#                u.dimensionless, u.m/u.s, u.degK], False)</span>
-<div class="viewcode-block" id="diam_floc_vel_term"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.diam_floc_vel_term">[docs]</a><span class="k">def</span> <span class="nf">diam_floc_vel_term</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span>
+<div class="viewcode-block" id="diam_floc_vel_term"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.diam_floc_vel_term">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">diam_floc_vel_term</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span>
                        <span class="n">DIM_FRACTAL</span><span class="p">,</span> <span class="n">VelTerm</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate floc diamter as a function of terminal velocity.&quot;&quot;&quot;</span>
     <span class="n">WaterDensity</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">density_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">*</span> <span class="p">(((</span><span class="mi">18</span> <span class="o">*</span> <span class="n">VelTerm</span> <span class="o">*</span> <span class="n">PHI_FLOC</span>
-                                   <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span>
+                                   <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span>
                                    <span class="p">)</span>
                                   <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="n">material</span><span class="o">.</span><span class="n">Diameter</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
                                   <span class="p">)</span>
@@ -746,7 +755,8 @@
 <span class="c1"># @u.wraps(u.s, [u.W/u.kg, u.degK, u.kg/u.m**3, u.kg/u.m**3, None, None,</span>
 <span class="c1">#                u.m, u.m, u.dimensionless, u.dimensionless],</span>
 <span class="c1">#          False)</span>
-<div class="viewcode-block" id="time_col_laminar"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.time_col_laminar">[docs]</a><span class="k">def</span> <span class="nf">time_col_laminar</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span>
+<div class="viewcode-block" id="time_col_laminar"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.time_col_laminar">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">time_col_laminar</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span>
                      <span class="n">DiamTarget</span><span class="p">,</span> <span class="n">DiamTube</span><span class="p">,</span> <span class="n">DIM_FRACTAL</span><span class="p">,</span> <span class="n">RatioHeightDiameter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate single collision time for laminar flow mediated collisions.</span>
 
@@ -754,7 +764,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(((</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mi">6</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
              <span class="o">*</span> <span class="n">frac_vol_floc_initial</span><span class="p">(</span><span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
-             <span class="o">*</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span> <span class="o">/</span> <span class="n">EnergyDis</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+             <span class="o">*</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span> <span class="o">/</span> <span class="n">EnergyDis</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
              <span class="o">*</span> <span class="p">(</span><span class="n">DiamTarget</span> <span class="o">/</span> <span class="n">material</span><span class="o">.</span><span class="n">Diameter</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">DIM_FRACTAL</span><span class="o">/</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
              <span class="p">)</span>  <span class="c1"># End of the numerator</span>
             <span class="o">/</span> <span class="p">(</span><span class="n">gamma_coag</span><span class="p">(</span><span class="n">ConcClay</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">DiamTube</span><span class="p">,</span>
@@ -765,7 +775,8 @@
 
 <span class="c1"># @u.wraps(u.s, [u.W/u.kg, u.kg/u.m**3, u.kg/u.m**3, None, None,</span>
 <span class="c1">#                u.m, u.dimensionless], False)</span>
-<div class="viewcode-block" id="time_col_turbulent"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.time_col_turbulent">[docs]</a><span class="k">def</span> <span class="nf">time_col_turbulent</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span>
+<div class="viewcode-block" id="time_col_turbulent"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.time_col_turbulent">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">time_col_turbulent</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span>
                        <span class="n">DiamTarget</span><span class="p">,</span> <span class="n">DIM_FRACTAL</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate single collision time for turbulent flow mediated collisions.</span>
 
@@ -780,18 +791,21 @@
 <span class="c1">########### Kolmogorov and viscous length scales ###########</span>
 
 <span class="c1"># @u.wraps(u.m, [u.W/u.kg, u.degK], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">eta_kolmogorov</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(((</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="n">EnergyDis</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(((</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="n">EnergyDis</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
 
 
 <span class="c1"># @u.wraps(u.m, [u.W/u.kg, u.degK], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">lambda_vel</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">RATIO_KOLMOGOROV</span> <span class="o">*</span> <span class="n">eta_kolmogorov</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
 
 
 <span class="c1"># @u.wraps(u.m, [u.W/u.kg, u.degK, u.kg/u.m**3, u.kg/u.m**3, None, None,</span>
 <span class="c1">#                u.dimensionless], False)</span>
-<div class="viewcode-block" id="diam_kolmogorov"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.diam_kolmogorov">[docs]</a><span class="k">def</span> <span class="nf">diam_kolmogorov</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span>
+<div class="viewcode-block" id="diam_kolmogorov"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.diam_kolmogorov">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">diam_kolmogorov</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span>
                     <span class="n">DIM_FRACTAL</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the size of the floc with separation distances equal to</span>
 <span class="sd">    the Kolmogorov length and the inner viscous length scale.</span>
@@ -807,6 +821,7 @@
 
 <span class="c1"># @u.wraps(u.m, [u.W/u.kg, u.degK, u.kg/u.m**3, u.kg/u.m**3, None, None,</span>
 <span class="c1">#                u.dimensionless], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_vel</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">ConcAl</span><span class="p">,</span> <span class="n">ConcClay</span><span class="p">,</span> <span class="n">coag</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">DIM_FRACTAL</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">Diameter</span>
             <span class="o">*</span> <span class="p">((</span><span class="n">lambda_vel</span><span class="p">(</span><span class="n">EnergyDis</span><span class="p">,</span> <span class="n">Temp</span><span class="p">)</span> <span class="o">/</span> <span class="n">material</span><span class="o">.</span><span class="n">Diameter</span><span class="p">)</span>
@@ -818,7 +833,8 @@
 
 
 <span class="c1"># @u.wraps(u.m, u.W/u.kg, False)</span>
-<div class="viewcode-block" id="diam_floc_max"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.diam_floc_max">[docs]</a><span class="k">def</span> <span class="nf">diam_floc_max</span><span class="p">(</span><span class="n">epsMax</span><span class="p">):</span>
+<div class="viewcode-block" id="diam_floc_max"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.diam_floc_max">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">diam_floc_max</span><span class="p">(</span><span class="n">epsMax</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated:: 0.1.13</span>
 <span class="sd">        diam_floc_max is deprecated and will be removed after Dec 1 2019. The</span>
@@ -844,7 +860,8 @@
 
 
 <span class="c1"># @u.wraps(u.W/u.kg, u.m, False)</span>
-<div class="viewcode-block" id="ener_dis_diam_floc"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.ener_dis_diam_floc">[docs]</a><span class="k">def</span> <span class="nf">ener_dis_diam_floc</span><span class="p">(</span><span class="n">Diam</span><span class="p">):</span>
+<div class="viewcode-block" id="ener_dis_diam_floc"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.ener_dis_diam_floc">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ener_dis_diam_floc</span><span class="p">(</span><span class="n">Diam</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated:: 0.1.13</span>
 <span class="sd">        ener_dis_diam_floc is deprecated and will be removed after Dec 1 2019.</span>
@@ -860,18 +877,21 @@
 <span class="c1">##### Velocity gradient in tubing for lab scale laminar flow flocculators #####</span>
 
 <span class="c1"># @u.wraps(1/u.s, [u.m**3/u.s, u.m], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">g_straight</span><span class="p">(</span><span class="n">PlantFlow</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="n">PlantFlow</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">IDTube</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
 
 
 <span class="c1"># @u.wraps(None, [u.m**3/u.s, u.m, u.degK], False)</span>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">reynolds_rapid_mix</span><span class="p">(</span><span class="n">PlantFlow</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">PlantFlow</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">IDTube</span>
-                             <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="n">Temp</span><span class="p">)))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span>
+                             <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="n">Temp</span><span class="p">)))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span>
 
 
 <span class="c1"># @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.degK], False)</span>
-<div class="viewcode-block" id="dean_number"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.dean_number">[docs]</a><span class="k">def</span> <span class="nf">dean_number</span><span class="p">(</span><span class="n">PlantFlow</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">,</span> <span class="n">RadiusCoil</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
+<div class="viewcode-block" id="dean_number"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.dean_number">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">dean_number</span><span class="p">(</span><span class="n">PlantFlow</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">,</span> <span class="n">RadiusCoil</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the Dean Number.</span>
 
 <span class="sd">    The Dean Number is a dimensionless parameter that is the unfortunate</span>
@@ -885,7 +905,8 @@
 
 
 <span class="c1"># @u.wraps(1/u.s, [u.m**3/u.s, u.m, u.m, u.degK], False)</span>
-<div class="viewcode-block" id="g_coil"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.g_coil">[docs]</a><span class="k">def</span> <span class="nf">g_coil</span><span class="p">(</span><span class="n">FlowPlant</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">,</span> <span class="n">RadiusCoil</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
+<div class="viewcode-block" id="g_coil"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.g_coil">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">g_coil</span><span class="p">(</span><span class="n">FlowPlant</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">,</span> <span class="n">RadiusCoil</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;We need a reference for this.</span>
 
 <span class="sd">    Karen&#39;s thesis likely has this equation and the reference.</span>
@@ -899,13 +920,15 @@
 
 
 <span class="c1"># @u.wraps(u.s, [u.m, u.m, u.m**3/u.s], False)</span>
-<div class="viewcode-block" id="time_res_tube"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.time_res_tube">[docs]</a><span class="k">def</span> <span class="nf">time_res_tube</span><span class="p">(</span><span class="n">IDTube</span><span class="p">,</span> <span class="n">LengthTube</span><span class="p">,</span> <span class="n">FlowPlant</span><span class="p">):</span>
+<div class="viewcode-block" id="time_res_tube"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.time_res_tube">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">time_res_tube</span><span class="p">(</span><span class="n">IDTube</span><span class="p">,</span> <span class="n">LengthTube</span><span class="p">,</span> <span class="n">FlowPlant</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate residence time in the flocculator.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">LengthTube</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">IDTube</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="n">FlowPlant</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span></div>
 
 
 <span class="c1"># @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.m, u.degK], False)</span>
-<div class="viewcode-block" id="g_time_res"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.g_time_res">[docs]</a><span class="k">def</span> <span class="nf">g_time_res</span><span class="p">(</span><span class="n">FlowPlant</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">,</span> <span class="n">RadiusCoil</span><span class="p">,</span> <span class="n">LengthTube</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
+<div class="viewcode-block" id="g_time_res"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.g_time_res">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">g_time_res</span><span class="p">(</span><span class="n">FlowPlant</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">,</span> <span class="n">RadiusCoil</span><span class="p">,</span> <span class="n">LengthTube</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;G Residence Time calculated for a coiled tube flocculator.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">g_coil</span><span class="p">(</span><span class="n">FlowPlant</span><span class="p">,</span> <span class="n">IDTube</span><span class="p">,</span> <span class="n">RadiusCoil</span><span class="p">,</span> <span class="n">Temp</span><span class="p">)</span>
             <span class="o">*</span> <span class="n">time_res_tube</span><span class="p">(</span><span class="n">IDTube</span><span class="p">,</span> <span class="n">LengthTube</span><span class="p">,</span> <span class="n">FlowPlant</span><span class="p">)</span>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pipeline &mdash; AguaClara v0.1.14 documentation</title>
+  <title>Pipeline &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -325,32 +325,32 @@ defaults to 0)</p></li>
 <dt id="aguaclara.design.pipeline.Elbow">
 <em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.pipeline.</code><code class="sig-name descname">Elbow</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design class for an Elbow</p>
-<p>Instantiate this class to create a readily constructible Elbow fitting and 
+<p>Instantiate this class to create a readily constructible Elbow fitting and
 calculate its hydraulic features.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Elbow</span></code>’s may be instantiated from a nominal size (to fit into an existing
 pipeline) or inner diameter (to follow hydraulic constraints), but not both.</p>
 <dl class="simple">
 <dt>Constants:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">AVAILABLE_ANGLES</span> <span class="pre">(int</span> <span class="pre">*</span> <span class="pre">u.deg</span> <span class="pre">list)</span></code>: The possible angles for this 
+<li><p><code class="docutils literal notranslate"><span class="pre">AVAILABLE_ANGLES</span> <span class="pre">(int</span> <span class="pre">*</span> <span class="pre">u.deg</span> <span class="pre">list)</span></code>: The possible angles for this
 fitting.</p></li>
 </ul>
 </dd>
 <dt>Design Inputs:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L/u.s)</span></code>: Flow rate (recommended, defaults to 20L/s)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature 
+<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature
 (recommended, defaults to 20°C)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The nominal size 
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The nominal size
 (recommended, defaults to 0.5 in.)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fluid_type</span> <span class="pre">(str)</span></code>: Fluid type. Must be ‘water’, ‘pacl’, or ‘alum’
 (optional, defaults to ‘water’)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">next</span> <span class="pre">(PipelineComponent)</span></code>: The next pipeline component after the 
-outlet, cannot be another Elbow or a Tee fitting. 
+<li><p><code class="docutils literal notranslate"><span class="pre">next</span> <span class="pre">(PipelineComponent)</span></code>: The next pipeline component after the
 outlet, cannot be another Elbow or a Tee fitting.
-outlet, cannot be another Elbow or a Tee fitting. 
+outlet, cannot be another Elbow or a Tee fitting.
+outlet, cannot be another Elbow or a Tee fitting.
 (optional, defaults to None)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">angle</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The angle of the fitting, which must be 
+<li><p><code class="docutils literal notranslate"><span class="pre">angle</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The angle of the fitting, which must be
 found in <code class="docutils literal notranslate"><span class="pre">AVAILABLE_ANGLES</span></code> (recommended, defaults to 90 °)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The inner diameter.  
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The inner diameter.
 (recommended, defaults to 0.848 * u.inch)</p></li>
 </ul>
 </dd>
@@ -373,40 +373,40 @@ found in <code class="docutils literal notranslate"><span class="pre">AVAILABLE_
 <dt id="aguaclara.design.pipeline.Tee">
 <em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.pipeline.</code><code class="sig-name descname">Tee</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design class for a Tee</p>
-<p>Instantiate this class to create a readily constructible tee fitting and 
+<p>Instantiate this class to create a readily constructible tee fitting and
 calculate its hydraulic features.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Tee</span></code>’s may be instantiated from a nominal size (to fit into an existing
 pipeline) or inner diameter (to follow hydraulic constraints), but not both.</p>
 <dl class="simple">
 <dt>Constants:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">AVAILABLE_PATHS</span> <span class="pre">(str</span> <span class="pre">list)</span></code>: The available paths for the left and 
-right outlet. Branch meaning the flow would turn, run meaning the flow 
-stays straight, and stopper meaning there is no flow for that outlet 
+<li><p><code class="docutils literal notranslate"><span class="pre">AVAILABLE_PATHS</span> <span class="pre">(str</span> <span class="pre">list)</span></code>: The available paths for the left and
+right outlet. Branch meaning the flow would turn, run meaning the flow
+stays straight, and stopper meaning there is no flow for that outlet
 due to a stopper.</p></li>
 </ul>
 </dd>
 <dt>Design Inputs:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Flow rate (recommended, defaults to 20L/s)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature 
+<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature
 (recommended, defaults to 20°C )</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The size (recommended, defaults to 0.5 in.)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">fluid_type</span> <span class="pre">(str)</span></code>: The type of fluid flowing inside 
+<li><p><code class="docutils literal notranslate"><span class="pre">fluid_type</span> <span class="pre">(str)</span></code>: The type of fluid flowing inside
 (optional, defaults to water)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">left</span> <span class="pre">(PipelineComponent)</span></code>: The type of piping for the left outlet, 
+<li><p><code class="docutils literal notranslate"><span class="pre">left</span> <span class="pre">(PipelineComponent)</span></code>: The type of piping for the left outlet,
 cannot be an elbow or tee (recommended, defaults to None)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">left_type</span> <span class="pre">(str)</span></code>: The type of path for the left outlet, 
-can only be one of the elements in AVAILABLE_PATHS. 
-can only be one of the elements in AVAILABLE_PATHS. 
-can only be one of the elements in AVAILABLE_PATHS. 
+<li><p><code class="docutils literal notranslate"><span class="pre">left_type</span> <span class="pre">(str)</span></code>: The type of path for the left outlet,
+can only be one of the elements in AVAILABLE_PATHS.
+can only be one of the elements in AVAILABLE_PATHS.
+can only be one of the elements in AVAILABLE_PATHS.
 (recommended, defaults to ‘branch’)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">right</span> <span class="pre">(PipelineComponent)</span></code>: The type of piping for the right outlet, 
+<li><p><code class="docutils literal notranslate"><span class="pre">right</span> <span class="pre">(PipelineComponent)</span></code>: The type of piping for the right outlet,
 cannot be an elbow or tee. (recommended, defaults to None)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">right_type</span> <span class="pre">(str)</span></code>: The type of path for the right outlet, 
-can only be one of the elements in AVAILABLE_PATHS. 
-can only be one of the elements in AVAILABLE_PATHS. 
-can only be one of the elements in AVAILABLE_PATHS. 
+<li><p><code class="docutils literal notranslate"><span class="pre">right_type</span> <span class="pre">(str)</span></code>: The type of path for the right outlet,
+can only be one of the elements in AVAILABLE_PATHS.
+can only be one of the elements in AVAILABLE_PATHS.
+can only be one of the elements in AVAILABLE_PATHS.
 (recommended, defaults to ‘stopper’)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The inner diameter.  
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The inner diameter.
 (recommended, defaults to 0.848 * u.inch)</p></li>
 </ul>
 </dd>

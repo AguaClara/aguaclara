@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sedimentation Tank &mdash; AguaClara v0.1.14 documentation</title>
+  <title>Sedimentation Tank &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -185,79 +185,79 @@
 <dt id="aguaclara.design.sed_tank.SedimentationTank">
 <em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.sed_tank.</code><code class="sig-name descname">SedimentationTank</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/sed_tank.html#SedimentationTank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.sed_tank.SedimentationTank" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design an AguaClara plant’s sedimentation tank.</p>
-<p>An sedimentation tank’s design relies on the sedimentation channel’s design 
+<p>An sedimentation tank’s design relies on the sedimentation channel’s design
 in the same plant, but assumed/default values may be used to design an
 sedimentation tank by itself. To design these components in tandem, use
 <a class="reference internal" href="sed.html#aguaclara.design.sed.Sedimentor" title="aguaclara.design.sed.Sedimentor"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed.Sedimentor</span></code></a>.</p>
 <dl class="simple">
 <dt>Constants:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">INLET_MAN_Q_RATIO</span> <span class="pre">(float)</span></code>: The ratio of the flow in the inlet 
+<li><p><code class="docutils literal notranslate"><span class="pre">INLET_MAN_Q_RATIO</span> <span class="pre">(float)</span></code>: The ratio of the flow in the inlet
 manifold.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">OUTLET_MAN_HL</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The headloss of the outlet manifold</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">JET_REVERSER_ND</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The nominal diameter of the jet 
+<li><p><code class="docutils literal notranslate"><span class="pre">JET_REVERSER_ND</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The nominal diameter of the jet
 reverser.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">JET_PLANE_RATIO</span> <span class="pre">(float)</span></code>: The ratio for the jet plane</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">JET_REVERSER_TO_DIFFUSERS_H</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The height between 
+<li><p><code class="docutils literal notranslate"><span class="pre">JET_REVERSER_TO_DIFFUSERS_H</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The height between
 the jet reverser and diffusers.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">WALL_THICKNESS</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.m)</span></code>: The thickness of the sed tank walls</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">DIFFUSER_L</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The length of a diffuser.</p></li>
 </ul>
 </dd>
 <dt>Design Inputs:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Plant flow rate 
+<li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Plant flow rate
 (recommended, defaults to 20L/s)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature (recommended, defaults to 
+<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature (recommended, defaults to
 20°C)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">vel_upflow</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.mm</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Upflow velocity 
+<li><p><code class="docutils literal notranslate"><span class="pre">vel_upflow</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.mm</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Upflow velocity
 (optional, defaults to 1mm/s)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">l_inner</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.m)</span></code>: The inner length
 (optional, defaults to 5.8m)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">w_inner</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The inner width 
+<li><p><code class="docutils literal notranslate"><span class="pre">w_inner</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The inner width
 (optional, defaults to 42in.)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">diffuser_vel_max</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: The max velocity of a
 diffuser (optional, defaults to 44.29 cm/s)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">diffuser_n</span> <span class="pre">(int)</span></code>:The nunber of diffusers 
+<li><p><code class="docutils literal notranslate"><span class="pre">diffuser_n</span> <span class="pre">(int)</span></code>:The nunber of diffusers
 (optional, defaults to 108)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">diffuser_wall_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The thickness of the 
+<li><p><code class="docutils literal notranslate"><span class="pre">diffuser_wall_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: The thickness of the
 wall of a diffuser (optional, defaults to 1.17in.)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">diffuser_sdr</span> <span class="pre">(int)</span></code>: The standard dimension ratio of a diffuser
 (optional, defaults to 41)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">inlet_man_hl</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The headloss of the inlet manifold
 (optional, defaults to 1cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">inlet_man_sdr</span> <span class="pre">(float)</span></code>: The standard dimension ratio of the inlet 
+<li><p><code class="docutils literal notranslate"><span class="pre">inlet_man_sdr</span> <span class="pre">(float)</span></code>: The standard dimension ratio of the inlet
 manifold (optional, defaults to 41)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">jet_reverser_sdr</span> <span class="pre">(int)</span></code>: The standard dimension ratio of the jet 
+<li><p><code class="docutils literal notranslate"><span class="pre">jet_reverser_sdr</span> <span class="pre">(int)</span></code>: The standard dimension ratio of the jet
 reverser (optional, defaults to 26)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_angle</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The angle of the plate 
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_angle</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The angle of the plate
 settler (optional, defaults to 60°)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_s</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Spacing in between plate settlers 
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_s</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Spacing in between plate settlers
 (optional, defaults to 2.5cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.mm)</span></code>: Thickness of a plate 
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.mm)</span></code>: Thickness of a plate
 settler (optional, defaults to 2mm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_cantilever_l_max</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The max length of 
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_cantilever_l_max</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The max length of
 the plate settler cantilever (optional, defaults to 20cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_vel_capture</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.mm</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: The capture 
+<li><p><code class="docutils literal notranslate"><span class="pre">plate_settler_vel_capture</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.mm</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: The capture
 velocity of a plate settler (optional, defaults to 0.12mm/s)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">outlet_man_orifice_hl</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The headloss of the 
+<li><p><code class="docutils literal notranslate"><span class="pre">outlet_man_orifice_hl</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The headloss of the
 orifices in the outlet manifold (optional, defaults to 4cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">outlet_man_orifice_q_ratio_max</span> <span class="pre">(float)</span></code>: The max ratio of the flow 
+<li><p><code class="docutils literal notranslate"><span class="pre">outlet_man_orifice_q_ratio_max</span> <span class="pre">(float)</span></code>: The max ratio of the flow
 rate for the orifices of the outlet manifold (optional, defaults to 0.8)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">outlet_man_orifice_n_est</span> <span class="pre">(int)</span></code>: The estimated number of orifices 
+<li><p><code class="docutils literal notranslate"><span class="pre">outlet_man_orifice_n_est</span> <span class="pre">(int)</span></code>: The estimated number of orifices
 for the outlet manifold (optional, defaults to 58)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">outlet_man_sdr</span> <span class="pre">(int)</span></code>: The standard dimension ratio of the outlet 
+<li><p><code class="docutils literal notranslate"><span class="pre">outlet_man_sdr</span> <span class="pre">(int)</span></code>: The standard dimension ratio of the outlet
 manifold (optional, defaults to 41)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">slope_angle</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The angle at the bottom of the sed tank
 (optional, defaults to 50°)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">side_slope_to_floc_weir_h_min</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The minimum height 
+<li><p><code class="docutils literal notranslate"><span class="pre">side_slope_to_floc_weir_h_min</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The minimum height
 between the side slope and the floc weir. (optional, defaults to 5cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sed_chan_w_outer</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The outer width of the 
+<li><p><code class="docutils literal notranslate"><span class="pre">sed_chan_w_outer</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The outer width of the
 sedimentation channel (optional, defaults to 60cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sed_chan_weir_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The thickness of the 
+<li><p><code class="docutils literal notranslate"><span class="pre">sed_chan_weir_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The thickness of the
 sedimentation channel weir (optional, defaults to 5cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">floc_weir_to_plate_frame_h</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The height from the 
-top of the floc weir to the plate settler frame (optional, defaults 
+<li><p><code class="docutils literal notranslate"><span class="pre">floc_weir_to_plate_frame_h</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The height from the
+top of the floc weir to the plate settler frame (optional, defaults
 to 10cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hopper_slope_vertical_angle</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The angle of the 
+<li><p><code class="docutils literal notranslate"><span class="pre">hopper_slope_vertical_angle</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.deg)</span></code>: The angle of the
 hopper wall slopes to vertical (optional, defaults to 60°)</p></li>
 </ul>
 </dd>

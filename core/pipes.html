@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pipes &mdash; AguaClara v0.1.14 documentation</title>
+  <title>Pipes &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -175,21 +175,25 @@ outer diameters of pipes based on their standard dimension ratio (SDR).</p>
 <dt id="aguaclara.core.pipes.OD">
 <code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">OD</code><span class="sig-paren">(</span><em class="sig-param">ND</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.OD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a pipe’s outer diameter according to its nominal diameter.</p>
-<p>The pipe schedule is not required here because all of the pipes of a
-given nominal diameter have the same outer diameter.</p>
-<p>Steps:
-1. Find the index of the closest nominal diameter. 
-(Should this be changed to find the next largest ND?)
-2. Take the values of the array, subtract the ND, take the absolute 
-value, find the index of the minimium value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ND</strong> (<em>u.inch</em>) – nominal diameter of pipe</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>outer diameter of pipe, in inches</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>u.inch</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="aguaclara.core.pipes.ID_SDR">
 <code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">ID_SDR</code><span class="sig-paren">(</span><em class="sig-param">ND</em>, <em class="sig-param">SDR</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the inner diameter for SDR(standard diameter ratio) pipes.</p>
-<p>For these pipes the wall thickness is the outer diameter divided by
-the SDR.</p>
+<dd><p>Return the inner diameter of a pipe given its nominal diameter and SDR
+(standard diameter ratio).</p>
+<p>SDR is the outer diameter divided by the wall thickness.</p>
 </dd></dl>
 
 <dl class="function">

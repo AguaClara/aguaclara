@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.lfom &mdash; AguaClara v0.1.14 documentation</title>
+  <title>aguaclara.design.lfom &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -177,7 +177,7 @@
 
 <div class="viewcode-block" id="LFOM"><a class="viewcode-back" href="../../../design/lfom.html#aguaclara.design.lfom.LFOM">[docs]</a><span class="k">class</span> <span class="nc">LFOM</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Design and AguaClara plant&#39;s LFOM.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Design Inputs:</span>
 <span class="sd">        - ``q (float * u.L/u.s)``: Flow rate (recommended, defaults to 20L/s)</span>
 <span class="sd">        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to</span>
@@ -185,12 +185,12 @@
 <span class="sd">        - ``hl (float * u.cm)``: Head loss (optional, defaults to 20cm)</span>
 <span class="sd">        - ``safety_factor (float)``: Safety factor (optional, defaults to 1.5)</span>
 <span class="sd">        - ``sdr (float)``: Standard dimension ratio (optional, defaults to 26)</span>
-<span class="sd">        - ``drill_bits (float * u.inch array)``: List of drill bits </span>
-<span class="sd">          (optional) </span>
-<span class="sd">        - ``orifice_s (float * u.cm)``: The spacing between orifices (optional, </span>
+<span class="sd">        - ``drill_bits (float * u.inch array)``: List of drill bits</span>
+<span class="sd">          (optional)</span>
+<span class="sd">        - ``orifice_s (float * u.cm)``: The spacing between orifices (optional,</span>
 <span class="sd">          defaults to 0.5cm)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">safety_factor</span> <span class="o">=</span> <span class="mf">1.5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span> <span class="o">=</span> <span class="mf">26.0</span>
@@ -201,11 +201,11 @@
 
 <div class="viewcode-block" id="LFOM.stout_w_per_flow"><a class="viewcode-back" href="../../../design/lfom.html#aguaclara.design.lfom.LFOM.stout_w_per_flow">[docs]</a>    <span class="k">def</span> <span class="nf">stout_w_per_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The width of a stout weir at a given elevation.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            - ``h (float * u.m)``: Elevation height</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">w_per_flow</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span>
+        <span class="n">w_per_flow</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span>
                           <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">w_per_flow</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span></div>
 
@@ -226,7 +226,7 @@
     <span class="k">def</span> <span class="nf">vel_critical</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The average vertical velocity of the water inside the LFOM pipe</span>
 <span class="sd">        at the bottom of the orfices.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span><span class="p">)</span> <span class="o">**</span> \
+        <span class="k">return</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span><span class="p">)</span> <span class="o">**</span> \
             <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -285,7 +285,7 @@
 
 <div class="viewcode-block" id="LFOM.q_submerged"><a class="viewcode-back" href="../../../design/lfom.html#aguaclara.design.lfom.LFOM.q_submerged">[docs]</a>    <span class="k">def</span> <span class="nf">q_submerged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_n</span><span class="p">,</span> <span class="n">orifice_n_per_row</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The flow rate through some number of submerged rows.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            - ``row_n``: Number of submerged rows</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -315,7 +315,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">error_per_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The error of the design based off the predicted flow rate and </span>
+        <span class="sd">&quot;&quot;&quot;The error of the design based off the predicted flow rate and</span>
 <span class="sd">        the actual flow rate.&quot;&quot;&quot;</span>
         <span class="n">q_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_n</span><span class="p">):</span>
@@ -323,7 +323,6 @@
             <span class="n">q_error</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(((</span><span class="n">actual_flow</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_per_row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> \
                  <span class="bp">self</span><span class="o">.</span><span class="n">q_per_row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">))</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="k">return</span> <span class="n">q_error</span></div>
-        
 </pre></div>
 
            </div>

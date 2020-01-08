@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.utility &mdash; AguaClara v0.1.14 documentation</title>
+  <title>aguaclara.core.utility &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -164,11 +164,11 @@
 <span class="sd">    1230000</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">log10</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">ceil</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">functools</span>
+
 
 <div class="viewcode-block" id="optional_units"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.optional_units">[docs]</a><span class="k">def</span> <span class="nf">optional_units</span><span class="p">(</span><span class="n">arg_positions</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrap a function so that arguments may optionally have units.</span>
@@ -212,6 +212,7 @@
         <span class="k">return</span> <span class="n">wrapper</span>
     <span class="k">return</span> <span class="n">decorator</span></div>
 
+
 <span class="nd">@optional_units</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;num&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">round_sig_figs</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">figs</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Round a number to some amount of significant figures.</span>
@@ -227,6 +228,7 @@
         <span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">decimals</span><span class="p">)</span> <span class="o">*</span> <span class="n">num</span><span class="o">.</span><span class="n">units</span>
 
     <span class="k">return</span> <span class="n">num</span>
+
 
 <div class="viewcode-block" id="round_sf"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.round_sf">[docs]</a><span class="k">def</span> <span class="nf">round_sf</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">figs</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Round a number to some amount of significant figures.</span>
@@ -385,90 +387,91 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not a valid SDR.&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span></div>
 
-<div class="viewcode-block" id="list_handler"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.list_handler">[docs]</a><span class="k">def</span> <span class="nf">list_handler</span><span class="p">(</span><span class="n">HandlerResult</span><span class="o">=</span><span class="s2">&quot;nparray&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wraps a function to handle list inputs.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="list_handler"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.list_handler">[docs]</a><span class="k">def</span> <span class="nf">list_handler</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Wraps a scalar function to output a NumPy array if passed one or more inputs</span>
+<span class="sd">    as sequences (lists, tuples or NumPy arrays). For each sequence input, this</span>
+<span class="sd">    wrapper will recursively evaluate the function with the sequence replaced</span>
+<span class="sd">    by each of its elements and return the results in n-dimensional NumPy array,</span>
+<span class="sd">    where n is the number of sequence inputs.</span>
+
+<span class="sd">    For a function &quot;f&quot; of one argument, f([x_1, ..., x_n]) would be evaluated to</span>
+<span class="sd">    [f(x_1), ..., f(x_n)]. For a function passed multiple sequences of</span>
+<span class="sd">    dimensions d_1, ..., d_n (from left to right), the result would be a</span>
+<span class="sd">    d_1 x ... x d_n array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="c1"># For Sphinx documentation of decorated functions</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Run through the wrapped function once for each array element.</span>
-
-<span class="sd">            :param HandlerResult: output type. Defaults to numpy arrays.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
-            <span class="n">sequences</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">enumsUnitCheck</span> <span class="o">=</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-            <span class="n">argsList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-            <span class="c1">#This for loop identifies pint unit objects and strips them</span>
-            <span class="c1">#of their units.</span>
-            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">enumsUnitCheck</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>
-                    <span class="n">argsList</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
-            <span class="n">enumsUnitless</span> <span class="o">=</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">argsList</span><span class="p">)</span>
-            <span class="c1">#This for loop identifies arguments that are sequences and</span>
-            <span class="c1">#adds their index location to the list &#39;sequences&#39;.</span>
-            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">enumsUnitless</span><span class="p">:</span>
+            <span class="c1"># Identify the first positional argument that is a sequence.</span>
+            <span class="c1"># Pint units must be ignored to include sequences with units.</span>
+            <span class="n">argsFirstSequence</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>  <span class="c1"># args is a tuple</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+                    <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
-                    <span class="n">sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
-            <span class="c1">#If there are no sequences to iterate through, simply return</span>
-            <span class="c1">#the function.</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1">#iterant keeps track of how many times we&#39;ve iterated and</span>
-                <span class="c1">#limiter stops the loop once we&#39;ve iterated as many times</span>
-                <span class="c1">#as there are list elements. Without this check, a few</span>
-                <span class="c1">#erroneous runs will occur, appending the last couple values</span>
-                <span class="c1">#to the end of the list multiple times.</span>
-                <span class="c1">#</span>
-                <span class="c1">#We only care about the length of sequences[0] because this</span>
-                <span class="c1">#function is recursive, and sequences[0] is always the relevant</span>
-                <span class="c1">#sequences for any given run.</span>
-                <span class="n">limiter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">argsList</span><span class="p">[</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
-                <span class="n">iterant</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">argsFirstSequence</span> <span class="o">=</span> <span class="n">num</span>
+                    <span class="k">break</span>
+            <span class="c1"># Identify the first keyword argument that is a sequence.</span>
+            <span class="n">kwargsFirstSequence</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># kwargs is a dictionary</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+                    <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                    <span class="n">kwargsFirstSequence</span> <span class="o">=</span> <span class="n">keyword</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># If there are no sequences, evaluate the function.</span>
+            <span class="k">if</span> <span class="n">argsFirstSequence</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">kwargsFirstSequence</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="c1"># If there are sequences, iterate through them from left to right.</span>
+            <span class="c1"># This means beginning with positional arguments.</span>
+            <span class="k">elif</span> <span class="n">argsFirstSequence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argsList</span><span class="p">[</span><span class="n">num</span><span class="p">]:</span>
-                        <span class="k">if</span> <span class="n">iterant</span> <span class="o">&gt;=</span> <span class="n">limiter</span><span class="p">:</span>
-                            <span class="k">break</span>
-                        <span class="c1">#We can safely replace the entire list argument</span>
-                        <span class="c1">#with a single element from it because of the looping</span>
-                        <span class="c1">#we&#39;re doing. We redefine the object, but that</span>
-                        <span class="c1">#definition remains within this namespace and does</span>
-                        <span class="c1">#not penetrate further up the function.</span>
-                        <span class="n">argsList</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg</span>
-                        <span class="c1">#Here we dive down the rabbit hole. This ends up</span>
-                        <span class="c1">#creating a multi-dimensional array shaped by the</span>
-                        <span class="c1">#sizes and shapes of the lists passed.</span>
-                        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">argsList</span><span class="p">,</span>
-                                              <span class="n">HandlerResult</span><span class="o">=</span><span class="n">HandlerResult</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-                        <span class="n">iterant</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="c1">#HandlerResult allows the user to specify what type to</span>
-                <span class="c1">#return the generated sequence as. It defaults to numpy</span>
-                <span class="c1">#arrays because functions tend to handle them better, but if</span>
-                <span class="c1">#the user does not wish to import numpy the base Python options</span>
-                <span class="c1">#are available to them.</span>
-                <span class="k">if</span> <span class="n">HandlerResult</span> <span class="o">==</span> <span class="s2">&quot;nparray&quot;</span><span class="p">:</span>
-                    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">HandlerResult</span> <span class="o">==</span> <span class="s2">&quot;tuple&quot;</span><span class="p">:</span>
-                    <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">HandlerResult</span> <span class="o">==</span> <span class="s2">&quot;list&quot;</span><span class="p">:</span>
-                    <span class="n">result</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">result</span>
+                <span class="n">argsList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+                <span class="c1"># For each element of the leftmost sequence, evaluate the</span>
+                <span class="c1"># function with the sequence replaced by the single element.</span>
+                <span class="c1"># Store the results of all the elements in result.</span>
+                <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argsList</span><span class="p">[</span><span class="n">argsFirstSequence</span><span class="p">]:</span>
+                    <span class="c1"># We can safely redefine the entire list argument because</span>
+                    <span class="c1"># the new definition remains within this namespace; it does</span>
+                    <span class="c1"># alter the loop or penetrate further up the function.</span>
+                    <span class="n">argsList</span><span class="p">[</span><span class="n">argsFirstSequence</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg</span>
+                    <span class="c1"># This recursive call creates a multi-dimensional array if</span>
+                    <span class="c1"># there are multiple sequence arguments.</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">argsList</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+            <span class="c1"># If there are no sequences in the positional arguments, iterate</span>
+            <span class="c1"># through those in the keyword arguments.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">kwargsFirstSequence</span><span class="p">]:</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="n">kwargsFirstSequence</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">wrapper</span>
     <span class="k">return</span> <span class="n">decorate</span></div>
 
 
 <div class="viewcode-block" id="check_range"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.check_range">[docs]</a><span class="k">def</span> <span class="nf">check_range</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check whether passed paramters fall within approved ranges.</span>
+    <span class="sd">&quot;&quot;&quot;Check whether passed paramters fall within approved ranges.</span>
 
 <span class="sd">    Does not return anything, but will raise an error if a parameter falls</span>
 <span class="sd">    outside of its defined range.</span>
 
 <span class="sd">    Input should be passed as an array of sequences, with each sequence</span>
 <span class="sd">    having three elements:</span>
+
 <span class="sd">        [0] is the value being checked,</span>
 <span class="sd">        [1] is the range parameter(s) within which the value should fall, and</span>
 <span class="sd">        [2] is the name of the parameter, for better error messages.</span>
+
 <span class="sd">    If [2] is not supplied, &quot;Input&quot; will be appended as a generic name.</span>
 
 <span class="sd">    Range requests that this function understands are listed in the</span>

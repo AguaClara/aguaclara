@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.peristaltic_pump &mdash; AguaClara v0.1.14 documentation</title>
+  <title>aguaclara.research.peristaltic_pump &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -154,6 +154,7 @@
             
   <h1>Source code for aguaclara.research.peristaltic_pump</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -166,7 +167,8 @@
 <span class="n">k_nonlinear</span> <span class="o">=</span> <span class="mi">13</span>
 
 
-<div class="viewcode-block" id="vol_per_rev_3_stop"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_3_stop">[docs]</a><span class="k">def</span> <span class="nf">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">inner_diameter</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="vol_per_rev_3_stop"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_3_stop">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">inner_diameter</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the volume per revolution of an Ismatec 6 roller pump</span>
 <span class="sd">    given the inner diameter (ID) of 3-stop tubing. The calculation is</span>
 <span class="sd">    interpolated from the table found at</span>
@@ -203,7 +205,8 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">term1</span> <span class="o">*</span> <span class="n">term2</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ID_colored_tube"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.ID_colored_tube">[docs]</a><span class="k">def</span> <span class="nf">ID_colored_tube</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
+<div class="viewcode-block" id="ID_colored_tube"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.ID_colored_tube">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ID_colored_tube</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Look up the inner diameter of Ismatec 3-stop tubing given its color code.</span>
 
 <span class="sd">    :param color: Color of the 3-stop tubing</span>
@@ -230,7 +233,8 @@
     <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s1">&#39;Diameter (mm)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span></div>
 
 
-<div class="viewcode-block" id="vol_per_rev_LS"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_LS">[docs]</a><span class="k">def</span> <span class="nf">vol_per_rev_LS</span><span class="p">(</span><span class="n">id_number</span><span class="p">):</span>
+<div class="viewcode-block" id="vol_per_rev_LS"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_LS">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">vol_per_rev_LS</span><span class="p">(</span><span class="n">id_number</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Look up the volume per revolution output by a Masterflex L/S pump</span>
 <span class="sd">    through L/S tubing of the given ID number.</span>
 
@@ -256,7 +260,8 @@
     <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s1">&#39;Flow (mL/rev)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">turn</span></div>
 
 
-<div class="viewcode-block" id="flow_rate"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.flow_rate">[docs]</a><span class="k">def</span> <span class="nf">flow_rate</span><span class="p">(</span><span class="n">vol_per_rev</span><span class="p">,</span> <span class="n">rpm</span><span class="p">):</span>
+<div class="viewcode-block" id="flow_rate"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.flow_rate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">flow_rate</span><span class="p">(</span><span class="n">vol_per_rev</span><span class="p">,</span> <span class="n">rpm</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the flow rate from a pump given the volume of fluid pumped per</span>
 <span class="sd">    revolution and the desired pump speed.</span>
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.environmental_processes_analysis &mdash; AguaClara v0.1.14 documentation</title>
+  <title>aguaclara.research.environmental_processes_analysis &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -155,6 +155,7 @@
   <h1>Source code for aguaclara.research.environmental_processes_analysis</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">aguaclara.research.procoda_parser</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">special</span>
@@ -172,7 +173,8 @@
 <span class="n">P_CO2</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">3.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">atm</span>
 
 
-<div class="viewcode-block" id="invpH"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.invpH">[docs]</a><span class="k">def</span> <span class="nf">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+<div class="viewcode-block" id="invpH"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.invpH">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate inverse pH, i.e. hydronium ion concentration, given pH.</span>
 
 <span class="sd">    :param pH: pH to be inverted</span>
@@ -190,7 +192,8 @@
     <span class="k">return</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">pH</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span></div>
 
 
-<div class="viewcode-block" id="alpha0_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha0_carbonate">[docs]</a><span class="k">def</span> <span class="nf">alpha0_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+<div class="viewcode-block" id="alpha0_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha0_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">alpha0_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in carbonic acid form (H2CO3)</span>
 
 <span class="sd">    :param pH: pH of the system</span>
@@ -210,7 +213,8 @@
     <span class="k">return</span> <span class="n">alpha0_carbonate</span></div>
 
 
-<div class="viewcode-block" id="alpha1_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha1_carbonate">[docs]</a><span class="k">def</span> <span class="nf">alpha1_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+<div class="viewcode-block" id="alpha1_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha1_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">alpha1_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in bicarbonate form (HCO3-)</span>
 
 <span class="sd">    :param pH: pH of the system</span>
@@ -230,7 +234,8 @@
     <span class="k">return</span> <span class="n">alpha1_carbonate</span></div>
 
 
-<div class="viewcode-block" id="alpha2_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha2_carbonate">[docs]</a><span class="k">def</span> <span class="nf">alpha2_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+<div class="viewcode-block" id="alpha2_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha2_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">alpha2_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in carbonate form (CO3-2)</span>
 
 <span class="sd">    :param pH: pH of the system</span>
@@ -250,7 +255,8 @@
     <span class="k">return</span> <span class="n">alpha2_carbonate</span></div>
 
 
-<div class="viewcode-block" id="ANC_closed"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.ANC_closed">[docs]</a><span class="k">def</span> <span class="nf">ANC_closed</span><span class="p">(</span><span class="n">pH</span><span class="p">,</span> <span class="n">total_carbonates</span><span class="p">):</span>
+<div class="viewcode-block" id="ANC_closed"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.ANC_closed">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ANC_closed</span><span class="p">(</span><span class="n">pH</span><span class="p">,</span> <span class="n">total_carbonates</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the acid neutralizing capacity (ANC) under a closed system</span>
 <span class="sd">    in which no carbonates are exchanged with the atmosphere during the</span>
 <span class="sd">    experiment. Based on pH and total carbonates in the system.</span>
@@ -275,7 +281,8 @@
             <span class="mi">1</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">eq</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span> <span class="o">*</span> <span class="n">Kw</span><span class="o">/</span><span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">eq</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span> <span class="o">*</span> <span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="ANC_open"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.ANC_open">[docs]</a><span class="k">def</span> <span class="nf">ANC_open</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+<div class="viewcode-block" id="ANC_open"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.ANC_open">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ANC_open</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the acid neutralizing capacity (ANC) calculated under an open</span>
 <span class="sd">    system based on pH.</span>
 
@@ -334,7 +341,8 @@
     <span class="k">return</span> <span class="n">aeration_results</span></div>
 
 
-<div class="viewcode-block" id="O2_sat"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.O2_sat">[docs]</a><span class="k">def</span> <span class="nf">O2_sat</span><span class="p">(</span><span class="n">P_air</span><span class="p">,</span> <span class="n">temp</span><span class="p">):</span>
+<div class="viewcode-block" id="O2_sat"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.O2_sat">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">O2_sat</span><span class="p">(</span><span class="n">P_air</span><span class="p">,</span> <span class="n">temp</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate saturaed oxygen concentration in mg/L for 278 K &lt; T &lt; 318 K</span>
 
 <span class="sd">    :param P_air: Air pressure with appropriate units</span>

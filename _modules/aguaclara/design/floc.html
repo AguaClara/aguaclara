@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.floc &mdash; AguaClara v0.1.14 documentation</title>
+  <title>aguaclara.design.floc &mdash; AguaClara v0.1.15 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.14
+                v0.1.15
               </div>
             
           
@@ -180,7 +180,7 @@
 
 <span class="sd">    A flocculator&#39;s design relies on the entrance tank&#39;s design in the same</span>
 <span class="sd">    plant, but assumed/default values may be used to design a flocculator by</span>
-<span class="sd">    itself. To design these components in tandem, use </span>
+<span class="sd">    itself. To design these components in tandem, use</span>
 <span class="sd">    :class:`aguaclara.design.ent_floc.EntTankFloc`.</span>
 
 <span class="sd">    Attributes:</span>
@@ -190,7 +190,7 @@
 <span class="sd">        - ``HS_RATIO_MAX (float)``: Maximum H/S ratio</span>
 <span class="sd">        - ``SDR (float)``: Standard dimension ratio</span>
 <span class="sd">        - ``OBSTACLE_OFFSET (bool)``: Whether the baffle obstacles are offset</span>
-<span class="sd">          from each other </span>
+<span class="sd">          from each other</span>
 
 <span class="sd">    Design Inputs:</span>
 <span class="sd">        - ``q (float * u.L/u.s)``: Flow rate (required)</span>
@@ -203,9 +203,9 @@
 <span class="sd">        - ``l_max (float * u.m)``: Maximum length (optional, defaults to 6m)</span>
 <span class="sd">        - ``gt (float)``: Collision potential (optional, defaults to 37000)</span>
 <span class="sd">        - ``hl (float * u.cm)``: Head loss (optional, defaults to 40cm)</span>
-<span class="sd">        - ``end_water_depth (float * u.m)``: Depth at the end </span>
+<span class="sd">        - ``end_water_depth (float * u.m)``: Depth at the end</span>
 <span class="sd">          (optional, defaults to 2m)</span>
-<span class="sd">        - ``drain_t (float * u.min)``: Drain time (optional, </span>
+<span class="sd">        - ``drain_t (float * u.min)``: Drain time (optional,</span>
 <span class="sd">          defaults to 30 mins)</span>
 <span class="sd">        - ``polycarb_sheet_w (float * u.inch)``: Width of polycarbonate sheets</span>
 <span class="sd">          used to construct baffles (optional, defaults to 42 in)</span>
@@ -258,12 +258,12 @@
     <span class="k">def</span> <span class="nf">vel_grad_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The average velocity gradient of water.&quot;&quot;&quot;</span>
         <span class="n">vel_grad_avg</span> <span class="o">=</span> <span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">standard_gravity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span><span class="p">)</span> <span class="o">/</span>
-                        <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gt</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gt</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vel_grad_avg</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">retention_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The hydraulic retention time neglecting the volume </span>
+        <span class="sd">&quot;&quot;&quot;The hydraulic retention time neglecting the volume</span>
 <span class="sd">        created by head loss.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">retention_time</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gt</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
@@ -282,7 +282,7 @@
             <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">BAFFLE_K</span> <span class="o">/</span> <span class="p">(</span>
                     <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_water_depth</span> <span class="o">*</span>
-                    <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span>
+                    <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span> <span class="o">**</span> <span class="mi">2</span>
                 <span class="p">)</span>
             <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
@@ -354,7 +354,7 @@
             <span class="p">(</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BAFFLE_K</span> <span class="o">/</span>
                         <span class="p">(</span>
-                            <span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span>
+                            <span class="mi">2</span> <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span> <span class="o">*</span>
                             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
                         <span class="p">)</span>
                     <span class="p">)</span> <span class="o">*</span>
@@ -380,9 +380,9 @@
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BAFFLE_K</span> <span class="o">/</span>
              <span class="p">(</span>
                  <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">expansion_h</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_grad_avg</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span>
-                  <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">))</span>
+                  <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">))</span>
              <span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
-                <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> 
+                <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">chan_w</span>
             <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">baffle_s</span>
@@ -399,7 +399,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">obstacle_pipe_od</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The outer diameter of an obstacle pipe. If the available pipe is </span>
+        <span class="sd">&quot;&quot;&quot;The outer diameter of an obstacle pipe. If the available pipe is</span>
 <span class="sd">        greater than 1.5 inches, the obstacle offset will become false.&quot;&quot;&quot;</span>
         <span class="n">pipe_od</span> <span class="o">=</span> <span class="n">pipes</span><span class="o">.</span><span class="n">od_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contraction_s</span><span class="p">)</span>
 
