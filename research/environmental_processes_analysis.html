@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Environmental Processes Analysis &mdash; AguaClara v0.1.15 documentation</title>
+  <title>Environmental Processes Analysis &mdash; AguaClara v0.1.16 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.15
+                v0.1.16
               </div>
             
           
@@ -184,7 +184,7 @@
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">invpH</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">invpH</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">invpH</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="go">&lt;Quantity(1e-10, &#39;mole / liter&#39;)&gt;</span>
 </pre></div>
@@ -208,7 +208,7 @@
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">alpha0_carbonate</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">alpha0_carbonate</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">alpha0_carbonate</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">&lt;Quantity(0.00015, &#39;dimensionless&#39;)&gt;</span>
 </pre></div>
@@ -232,7 +232,7 @@
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">alpha1_carbonate</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">alpha1_carbonate</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">alpha1_carbonate</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">&lt;Quantity(0.639969, &#39;dimensionless&#39;)&gt;</span>
 </pre></div>
@@ -256,7 +256,7 @@
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">alpha2_carbonate</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">alpha2_carbonate</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">alpha2_carbonate</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">&lt;Quantity(0.359881, &#39;dimensionless&#39;)&gt;</span>
 </pre></div>
@@ -285,8 +285,8 @@ experiment. Based on pH and total carbonates in the system.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">ANC_closed</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">ANC_closed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ANC_closed</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">&lt;Quantity(1.359831, &#39;equivalent / liter&#39;)&gt;</span>
 </pre></div>
@@ -311,7 +311,7 @@ system based on pH.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">ANC_open</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">ANC_open</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ANC_open</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">&lt;Quantity(0.0907346, &#39;equivalent / liter&#39;)&gt;</span>
 </pre></div>
@@ -368,8 +368,8 @@ the directory containing the data.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">O2_sat</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">O2_sat</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">O2_sat</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">atm</span> <span class="p">,</span> <span class="mi">300</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kelvin</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">&lt;Quantity(8.0931572, &#39;milligram / liter&#39;)&gt;</span>
 </pre></div>
@@ -423,8 +423,8 @@ reactor.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">CMFR</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">CMFR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">CMFR</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="mi">10</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">&lt;Quantity(0.9516258, &#39;milligram / liter&#39;)&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">CMFR</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="mi">10</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
@@ -454,7 +454,7 @@ from a spike input to a series of completely mixed flow reactors.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">E_CMFR_N</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">E_CMFR_N</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">E_CMFR_N</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">0.7530643</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">E_CMFR_N</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
@@ -484,7 +484,7 @@ a spike input to reactor with advection and dispersion.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">E_Advective_Dispersion</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">E_Advective_Dispersion</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">E_Advective_Dispersion</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
 <span class="go">0.4774864</span>
 </pre></div>
@@ -515,8 +515,8 @@ first argument and the parameters to fit as separate remaining arguments.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">Tracer_CMFR_N</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">Tracer_CMFR_N</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Tracer_CMFR_N</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="mi">10</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="go">&lt;Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423], &#39;milligram / liter&#39;)&gt;</span>
 </pre></div>
@@ -573,8 +573,8 @@ first argument and the parameters to fit as separate remaining arguments.</p>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="k">import</span> <span class="n">Tracer_AD_Pe</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">Tracer_AD_Pe</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Tracer_AD_Pe</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="mi">10</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="go">&lt;Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], &#39;milligram / liter&#39;)&gt;</span>
 </pre></div>

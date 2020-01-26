@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.floc_model &mdash; AguaClara v0.1.15 documentation</title>
+  <title>aguaclara.research.floc_model &mdash; AguaClara v0.1.16 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.15
+                v0.1.16
               </div>
             
           
@@ -160,8 +160,8 @@
 
 <span class="c1">######################### Imports #########################</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
-<span class="kn">from</span> <span class="nn">aguaclara.core</span> <span class="k">import</span> <span class="n">physchem</span> <span class="k">as</span> <span class="n">pc</span><span class="p">,</span> <span class="n">utility</span> <span class="k">as</span> <span class="n">ut</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core</span> <span class="kn">import</span> <span class="n">physchem</span> <span class="k">as</span> <span class="n">pc</span><span class="p">,</span> <span class="n">utility</span> <span class="k">as</span> <span class="n">ut</span>
 
 <span class="n">u</span><span class="o">.</span><span class="n">enable_contexts</span><span class="p">(</span><span class="s1">&#39;chem&#39;</span><span class="p">)</span>
 
@@ -173,7 +173,7 @@
 <span class="sd">    molecular weight.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Material.__init__"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.Material.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">molecWeight</span><span class="p">):</span>
+<div class="viewcode-block" id="Material.__init__"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.Material.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">molecWeight</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a Material object.</span>
 
 <span class="sd">        :param name: Name of the material</span>
@@ -196,7 +196,7 @@
 <span class="sd">    aluminum atoms per molecule, and a precipitate.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Chemical.__init__"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.Chemical.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">molecWeight</span><span class="p">,</span> <span class="n">Precipitate</span><span class="p">,</span>
+<div class="viewcode-block" id="Chemical.__init__"><a class="viewcode-back" href="../../../research/floc_model.html#aguaclara.research.floc_model.Chemical.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">molecWeight</span><span class="p">,</span> <span class="n">Precipitate</span><span class="p">,</span>
                  <span class="n">AluminumMPM</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a Chemical object.</span>
 

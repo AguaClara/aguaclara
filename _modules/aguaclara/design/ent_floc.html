@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.ent_floc &mdash; AguaClara v0.1.15 documentation</title>
+  <title>aguaclara.design.ent_floc &mdash; AguaClara v0.1.16 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.15
+                v0.1.16
               </div>
             
           
@@ -165,9 +165,9 @@
 <span class="sd">    &gt;&gt;&gt; etf.ent.l</span>
 <span class="sd">    &lt;Quantity(40.56720950298926, &#39;inch&#39;)&gt;</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">aguaclara.design.ent</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">aguaclara.design.lfom</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">aguaclara.design.floc</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">aguaclara.design.ent</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">aguaclara.design.lfom</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">aguaclara.design.floc</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <div class="viewcode-block" id="EntTankFloc"><a class="viewcode-back" href="../../../design/ent_floc.html#aguaclara.design.ent_floc.EntTankFloc">[docs]</a><span class="k">class</span> <span class="nc">EntTankFloc</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
@@ -191,7 +191,7 @@
 <span class="sd">        - ``lfom (LFOM)``: Linear Flow Orifice Meter</span>
 <span class="sd">          (optional, see :class:`aguaclara.design.lfom.LFOM` for defaults)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">ent</span> <span class="o">=</span> <span class="n">EntranceTank</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">floc</span> <span class="o">=</span> <span class="n">Flocculator</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lfom</span> <span class="o">=</span> <span class="n">LFOM</span><span class="p">()</span>    

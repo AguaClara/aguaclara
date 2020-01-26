@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.sed_tank &mdash; AguaClara v0.1.15 documentation</title>
+  <title>aguaclara.design.sed_tank &mdash; AguaClara v0.1.16 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.1.15
+                v0.1.16
               </div>
             
           
@@ -161,13 +161,13 @@
 <span class="sd">    &gt;&gt;&gt; sed_tank.diffuser_hl</span>
 <span class="sd">    &lt;Quantity(0.009259259259259259, &#39;centimeter&#39;)&gt;</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="k">import</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="kn">import</span> <span class="nn">aguaclara.core.constants</span> <span class="k">as</span> <span class="nn">con</span>
 <span class="kn">import</span> <span class="nn">aguaclara.core.materials</span> <span class="k">as</span> <span class="nn">mat</span>
 <span class="kn">import</span> <span class="nn">aguaclara.core.pipes</span> <span class="k">as</span> <span class="nn">pipe</span>
-<span class="kn">from</span> <span class="nn">aguaclara.core</span> <span class="k">import</span> <span class="n">drills</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core</span> <span class="kn">import</span> <span class="n">drills</span>
 <span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
-<span class="kn">from</span> <span class="nn">aguaclara.design.component</span> <span class="k">import</span> <span class="n">Component</span>
+<span class="kn">from</span> <span class="nn">aguaclara.design.component</span> <span class="kn">import</span> <span class="n">Component</span>
 <span class="kn">import</span> <span class="nn">aguaclara.core.physchem</span> <span class="k">as</span> <span class="nn">pc</span>
 <span class="kn">import</span> <span class="nn">aguaclara.core.head_loss</span> <span class="k">as</span> <span class="nn">hl</span>
 
@@ -261,7 +261,7 @@
     <span class="n">WALL_THICKNESS</span> <span class="o">=</span> <span class="mf">0.15</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
     <span class="n">DIFFUSER_L</span> <span class="o">=</span> <span class="mf">15.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">l_inner</span><span class="o">=</span><span class="mf">5.8</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_inner</span><span class="o">=</span><span class="mf">42.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>

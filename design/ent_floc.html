@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Entrance Tank/Flocculator Assembly &mdash; AguaClara v0.1.15 documentation</title>
+  <title>Entrance Tank/Flocculator Assembly &mdash; AguaClara v0.1.16 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.1.15
+                v0.1.16
               </div>
             
           
@@ -177,7 +177,7 @@ meter (LFOM), and flocculator. It adds the initial dose of coagulant and
 chlorine to the influent water, then causes flocs (accumulated coagulant and
 primary particles) to aggregate.</p>
 <dl>
-<dt>Example:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.ent_floc</span> <span class="k">import</span> <span class="o">*</span>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.ent_floc</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">etf</span> <span class="o">=</span> <span class="n">EntTankFloc</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">floc</span><span class="o">=</span><span class="n">Flocculator</span><span class="p">(</span><span class="n">hl</span><span class="o">=</span><span class="mi">35</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">etf</span><span class="o">.</span><span class="n">ent</span><span class="o">.</span><span class="n">l</span>
 <span class="go">&lt;Quantity(40.56720950298926, &#39;inch&#39;)&gt;</span>
