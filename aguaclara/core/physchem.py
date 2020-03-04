@@ -1650,47 +1650,44 @@ def flow_weir_rect(Height, Width):
 
 
 @ut.list_handler()
-def headloss_kozeny(Length, DiamMedia=None, ApproachVel=None, Porosity=None, Nu=None, *, Diam=None, Vel=None):
+def headloss_kozeny(ApproachVel, DiamMedia, Porosity, Length, Nu): #*,Diam,Vel
     """Return the Carman Kozeny sand bed head loss.
 
-    :param Length: height of bed
-    :type Length: u.m
-    :param DiamMedia: diameter of sand particle
-    :type DiamMedia: u.m
     :param ApproachVel: superficial velocity
     :type ApproachVel: u.m/u.s
+    :param DiamMedia: diameter of sand particle
+    :type DiamMedia: u.m
     :param Porosity: porosity of bed
     :type Porosity: u.dimensionless or unitless
+    :param Length: height of bed
+    :type Length: u.m
     :param Nu: kinematic viscosity of fluid
     :type Nu: u.m**2/u.s
-
-    :param Diam: deprecated; use DiamMedia instead
-    :param Vel: deprecated, use ApproachVel instead
 
     :return: head loss in sand bed
     :rtype: u.m
     """
-    if DiamMedia is not None and Diam is not None:
-        raise TypeError("headloss_kozeny received both DiamMedia and Diam")
-    elif DiamMedia is None and Diam is None:
-        raise TypeError("headloss_kozeny missing DiamMedia argument")
-    elif ApproachVel is not None and Vel is not None:
-        raise TypeError("headloss_kozeny received both ApproachVel and Vel")
-    elif ApproachVel is None and Vel is None:
-        raise TypeError("headloss_kozeny missing ApproachVel argument")
-    elif Porosity is None:
-        raise TypeError("headloss_kozeny missing Porosity argument")
-    elif Nu is None:
-        raise TypeError("headloss_kozeny missing Nu argument")
-    else:
-        if Diam is not None:
-            warnings.warn("Diam is deprecated; use DiamMedia instead.",
-                          UserWarning)
-            DiamMedia = Diam
-        if Vel is not None:
-            warnings.warn("Vel is deprecated; use ApproachVel instead.",
-                          UserWarning)
-            ApproachVel = Vel
+    # if DiamMedia is not None and Diam is not None:
+    #     raise TypeError("headloss_kozeny received both DiamMedia and Diam")
+    # elif DiamMedia is None and Diam is None:
+    #     raise TypeError("headloss_kozeny missing DiamMedia argument")
+    # elif ApproachVel is not None and Vel is not None:
+    #     raise TypeError("headloss_kozeny received both ApproachVel and Vel")
+    # elif ApproachVel is None and Vel is None:
+    #     raise TypeError("headloss_kozeny missing ApproachVel argument")
+    # elif Porosity is None:
+    #     raise TypeError("headloss_kozeny missing Porosity argument")
+    # elif Nu is None:
+    #     raise TypeError("headloss_kozeny missing Nu argument")
+    # else:
+    #     if Diam is not None:
+    #         warnings.warn("Diam is deprecated; use DiamMedia instead.",
+    #                       UserWarning)
+    #         DiamMedia = Diam
+    #     if Vel is not None:
+    #         warnings.warn("Vel is deprecated; use ApproachVel instead.",
+    #                       UserWarning)
+    #         ApproachVel = Vel
 
     ut.check_range([Length.magnitude, ">0", "Length"],
                    [DiamMedia.magnitude, ">0", "Diam"],
@@ -1748,19 +1745,19 @@ def fric_ergun(ApproachVel, DiamMedia, Temperature, Porosity):
 
 
 @ut.list_handler()
-def headloss_ergun(ApproachVel, DiamMedia, Temperature, Porosity, Length):
+def headloss_ergun(ApproachVel, DiamMedia, Porosity, Length, Temperature):
     """Return the frictional head loss for flow through porous media.
 
     :param ApproachVel: superficial fluid velocity (VelSuperficial?)
     :type ApproachVel: u.m/u.s
     :param DiamMedia: particle diameter
     :type DiamMedia: u.m
-    :param Temperature: temperature of porous medium
-    :type Temperature: u.degK
     :param Porosity: porosity of porous medium
     :type Porosity: u.dimensionless or unitless
     :param Length: length of pipe or duct
     :type Length: u.m
+    :param Temperature: temperature of porous medium
+    :type Temperature: u.degK
 
     :return: frictional head loss for flow through porous media
     :rtype: u.m
