@@ -1689,11 +1689,11 @@ def headloss_kozeny(ApproachVel, DiamMedia, Porosity, Length, Nu): #*,Diam,Vel
     #                       UserWarning)
     #         ApproachVel = Vel
 
-    ut.check_range([Length.magnitude, ">0", "Length"],
+    ut.check_range([ApproachVel.magnitude, ">0", "Velocity"],
                    [DiamMedia.magnitude, ">0", "Diam"],
-                   [ApproachVel.magnitude, ">0", "Velocity"],
-                   [Nu.magnitude, ">0", "Nu"],
-                   [Porosity, "0-1", "Porosity"])
+                   [Porosity, "0-1", "Porosity"],
+                   [Length.magnitude, ">0", "Length"],
+                   [Nu.magnitude, ">0", "Nu"])
     return (con.K_KOZENY * Length * Nu
             / u.gravity * (1-Porosity)**2
             / Porosity**3 * 36 * ApproachVel
