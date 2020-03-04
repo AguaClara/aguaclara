@@ -46,7 +46,7 @@ lfom_60 = LFOM(q = 60.0 * u.L / u.s)
     (lfom_60.q_per_row[3], 60.0 * u.L / u.s),
 
     (lfom_20.q_submerged(3, [4, 3, 2]), 5.939085475350429 * u.L / u.s),
-    (lfom_60.q_submerged(3, [4, 3, 2]), 14.34566338987966 * u.L / u.s),  # 25
+    (lfom_60.q_submerged(3, [4, 3, 2]), 14.345663389879661 * u.L / u.s),  # 25
     
     (lfom_20.orifice_n_per_row[0], 12),
     (lfom_60.orifice_n_per_row[0], 21)

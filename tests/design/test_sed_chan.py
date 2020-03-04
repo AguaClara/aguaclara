@@ -56,8 +56,8 @@ sed_chan_60 = SedimentationChannel(q = 60.0 * u.L / u.s)
 	(sed_chan_20.outlet_pipe.l, 3.7119999999999997 * u.m),
 	(sed_chan_60.outlet_pipe.l, 3.7119999999999997 * u.m),
     
-    (sed_chan_20.outlet_pipe_q_max, 7.857105273561186 * u.L / u.s),
-	(sed_chan_60.outlet_pipe_q_max, 7.857105273561186 * u.L / u.s),
+    (sed_chan_20.outlet_pipe_q_max, 7.857105273561187 * u.L / u.s),
+	(sed_chan_60.outlet_pipe_q_max, 7.857105273561187 * u.L / u.s),
 
 	(sed_chan_20.outlet_pipe_n, 3),
 	(sed_chan_60.outlet_pipe_n, 8),

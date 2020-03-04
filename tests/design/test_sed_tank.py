@@ -50,8 +50,8 @@ sed_tank_60 = SedimentationTank(q = 60.0 * u.L / u.s)
     (sed_tank_20.side_slopes_w, 0.4923692307692307 * u.m),
     (sed_tank_60.side_slopes_w, 0.4923692307692307 * u.m),
 
-    (sed_tank_20.side_slopes_h, 0.5867827996520784 * u.m),
-    (sed_tank_60.side_slopes_h, 0.5867827996520784 * u.m),
+    (sed_tank_20.side_slopes_h, 0.5867827996520782 * u.m),
+    (sed_tank_60.side_slopes_h, 0.5867827996520782 * u.m),
 
     (sed_tank_20.outlet_man_orifice_q, 0.11205446937244101 * u.L / u.s),
     (sed_tank_60.outlet_man_orifice_q, 0.11205446937244101 * u.L / u.s),
