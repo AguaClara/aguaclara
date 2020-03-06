@@ -638,11 +638,16 @@ class Manifold(PipelineComponent):
         self._set_next()
         self._set_size()
 
+        if 'size' in kwargs:
+            self.id = self._get_id(self.size, self.spec)
+        elif 'id' in kwargs:
+            self.size = self._get_size(self.id)
+
     @property
     def id_min(self):
-        id_min = ut.ceil_nearest(
+        id_min = ut.max(
             pc.diam_circle(self.a_min), 
-            pipe.ID_SDR(ut.get_sdr(self.spec))
+            pipe.ID_SDR(self.size_min, ut.get_sdr(self.spec))
             )
         return id_min
 
