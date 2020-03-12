@@ -26,8 +26,8 @@ filter_60 = Filter(q = 60.0 * u.L / u.s)
 	(filter_20.backwash_hl, 19.857343217792028 * u.cm),
 	(filter_60.backwash_hl, 19.857343217792028 * u.cm),
 
-	(filter_20.drain_d, 0.22019971648920703 * u.m),
-	(filter_60.drain_d, 0.22019971648920703 * u.m)
+	(filter_20.drain_d, 0.220199716489207 * u.m),
+	(filter_60.drain_d, 0.220199716489207 * u.m)
 	])
 
 def test_filter(actual, expected):   
