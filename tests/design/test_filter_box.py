@@ -128,7 +128,8 @@ box_60 = FilterBox(q = 60.0 * u.L / u.s)
     (box_60.siphon_drain_t, 95.63853389479101 * u.s),
 
     (box_20.siphon_orifice_n, 75),
-    (box_60.siphon_orifice_n, 58),
+    # changed from 58 to 38
+    (box_60.siphon_orifice_n, 38),
 
     (box_20.inlet_weir_w, 0.75 * u.m),
     (box_60.inlet_weir_w, 0.75 * u.m),
