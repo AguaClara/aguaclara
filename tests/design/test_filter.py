@@ -17,8 +17,9 @@ filter_60 = Filter(q = 60.0 * u.L / u.s)
 	(filter_20.trunk_max_hl, 0.46802305239318925 * u.m),
 	(filter_60.trunk_max_hl, 0.46802305239318925 * u.m),
 
-	(filter_20.max_q, 140.67589670953868 * u.L / u.s),
-	(filter_60.max_q, 140.67589670953868 * u.L / u.s),
+	#Changed from 140.67589670953868 to 258.42884623348436
+	(filter_20.max_q, 258.42884623348436 * u.L / u.s),
+	(filter_60.max_q, 258.42884623348436 * u.L / u.s),
 
 	(filter_60.ratio_trunk_sand_hl, 0.07142857142857145),
 	(filter_20.ratio_trunk_sand_hl, 0.07142857142857145),
