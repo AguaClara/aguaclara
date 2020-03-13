@@ -118,18 +118,24 @@ box_60 = FilterBox(q = 60.0 * u.L / u.s)
     (box_20.pre_backwash_flush_h, 1.7026824797746731 * u.m),
     (box_60.pre_backwash_flush_h, 1.7355548605486981 * u.m),
 
-    (box_20.pre_backwash_flush_vol, 668.7319423547691 * u.L),
-    (box_60.pre_backwash_flush_vol, 2044.927906543533 * u.L),
+    #668.7319423547691
+    (box_20.pre_backwash_flush_vol, 706.9642108544632 * u.L),
+    #2044.927906543533
+    (box_60.pre_backwash_flush_vol, 2133.869751258318 * u.L),
 
-    (box_20.post_backwash_fill_t, 92.41086060485554 * u.s),
-    (box_60.post_backwash_fill_t, 95.63853389479101 * u.s),
+    #92.41086060485554
+    (box_20.post_backwash_fill_t, 97.56348940039315 * u.s),
+    #95.63853389479101
+    (box_60.post_backwash_fill_t, 98.64491595830384 * u.s),
 
-    (box_20.siphon_drain_t, 92.41086060485554 * u.s),
-    (box_60.siphon_drain_t, 95.63853389479101 * u.s),
+    #92.41086060485554
+    (box_20.siphon_drain_t, 97.56348940039315 * u.s),
+    #95.63853389479101
+    (box_60.siphon_drain_t, 98.64491595830384 * u.s),
 
     (box_20.siphon_orifice_n, 75),
     # changed from 58 to 38
-    (box_60.siphon_orifice_n, 38),
+    (box_60.siphon_orifice_n, 36),
 
     (box_20.inlet_weir_w, 0.75 * u.m),
     (box_60.inlet_weir_w, 0.75 * u.m),
