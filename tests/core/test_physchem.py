@@ -949,10 +949,9 @@ class WeirFuncsTest(QuantityTest):
 class PorousMediaFuncsTest(QuantityTest):
     def test_headloss_kozeny(self):
         """headloss_kozeny should raise an error when the user tries to use the function."""
-        with self.assertRaises(DeprecatedFunctionError) as dfe:
-            pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s)
-        self.assertEquals(dfe.message, "This function is deprecated. Please use headloss_ergun.")
-        # self.assertRaises(DeprecatedFunctionError, pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s))
+        # with self.assertRaises(DeprecatedFunctionError):
+        #     pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s)
+        self.assertRaises(DeprecatedFunctionError, pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s))
     # def test_headloss_kozeny(self):
     #     """headloss_kozeny should return known value for known input."""
     #     self.assertAlmostEqualQuantity(pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s),
