@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from aguaclara.core.units import u
 from aguaclara.core import physchem as pc
+from aguaclara.core.physchem import DeprecatedFunctionError
 import unittest
 
 
@@ -9,7 +10,6 @@ class QuantityTest(unittest.TestCase):
     def assertAlmostEqualQuantity(self, first, second, places=7):
         self.assertAlmostEqual(first.magnitude, second.magnitude, places)
         self.assertEqual(first.units, second.units, places)
-
 
 class GasTest(QuantityTest):
 
@@ -947,11 +947,17 @@ class WeirFuncsTest(QuantityTest):
 
 
 class PorousMediaFuncsTest(QuantityTest):
+    def test_headloss_kozeny(self):
+        """headloss_kozeny should raise an error when the user tries to use the function."""
+        with self.assertRaises(DeprecatedFunctionError) as dfe:
+            pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s)
+        self.assertEquals(dfe.message, "This function is deprecated. Please use headloss_ergun.")
+        # self.assertRaises(DeprecatedFunctionError, pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s))
     # def test_headloss_kozeny(self):
     #     """headloss_kozeny should return known value for known input."""
     #     self.assertAlmostEqualQuantity(pc.headloss_kozeny(1 * u.m, 1.4 * u.m, 0.5 * u.m/u.s, 0.625, 0.8 * u.m**2/u.s),
     #                                    2.1576362645214617 * u.m)
-    #
+
     # def test_headloss_kozeny_range(self):
     #     """headloss_kozeny should raise errors when inputs are out of bounds."""
     #     checks = ((0 * u.m, 1 * u.m, 1 * u.m/u.s, 1, 1 * u.m**2/u.s),
@@ -963,7 +969,6 @@ class PorousMediaFuncsTest(QuantityTest):
     #     for i in checks:
     #         with self.subTest(i=i):
     #             self.assertRaises(ValueError, pc.headloss_kozeny, *i)
-
     def test_re_ergun(self):
         self.assertAlmostEqualQuantity(pc.re_ergun(0.1 * u.m/u.s, 10**-3 * u.m, 298 * u.degK, 0.2),
                                        139.49692604 * u.dimensionless)

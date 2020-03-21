@@ -1648,6 +1648,9 @@ def flow_weir_rect(Height, Width):
 
 ######################## Porous Media ########################
 
+class DeprecatedFunctionError(Exception):
+    def __init__(self, message):
+        self.message = message
 
 @ut.list_handler()
 def headloss_kozeny(Length, DiamMedia=None, ApproachVel=None, Porosity=None, Nu=None, *, Diam=None, Vel=None):
@@ -1655,9 +1658,6 @@ def headloss_kozeny(Length, DiamMedia=None, ApproachVel=None, Porosity=None, Nu=
     .. deprecated::
         `headloss_kozeny` is deprecated; use `headloss_ergun` instead.
     """
-    class DeprecatedFunctionError(Exception):
-        def __init__(self, message):
-            self.message = message
     raise DeprecatedFunctionError("This function is deprecated. Please use headloss_ergun.")
 
 
