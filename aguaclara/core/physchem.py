@@ -1648,59 +1648,17 @@ def flow_weir_rect(Height, Width):
 
 ######################## Porous Media ########################
 
+class DeprecatedFunctionError(Exception):
+    def __init__(self, message):
+        self.message = message
 
 @ut.list_handler()
 def headloss_kozeny(Length, DiamMedia=None, ApproachVel=None, Porosity=None, Nu=None, *, Diam=None, Vel=None):
-    """Return the Carman Kozeny sand bed head loss.
-
-    :param Length: height of bed
-    :type Length: u.m
-    :param DiamMedia: diameter of sand particle
-    :type DiamMedia: u.m
-    :param ApproachVel: superficial velocity
-    :type ApproachVel: u.m/u.s
-    :param Porosity: porosity of bed
-    :type Porosity: u.dimensionless or unitless
-    :param Nu: kinematic viscosity of fluid
-    :type Nu: u.m**2/u.s
-
-    :param Diam: deprecated; use DiamMedia instead
-    :param Vel: deprecated, use ApproachVel instead
-
-    :return: head loss in sand bed
-    :rtype: u.m
     """
-    if DiamMedia is not None and Diam is not None:
-        raise TypeError("headloss_kozeny received both DiamMedia and Diam")
-    elif DiamMedia is None and Diam is None:
-        raise TypeError("headloss_kozeny missing DiamMedia argument")
-    elif ApproachVel is not None and Vel is not None:
-        raise TypeError("headloss_kozeny received both ApproachVel and Vel")
-    elif ApproachVel is None and Vel is None:
-        raise TypeError("headloss_kozeny missing ApproachVel argument")
-    elif Porosity is None:
-        raise TypeError("headloss_kozeny missing Porosity argument")
-    elif Nu is None:
-        raise TypeError("headloss_kozeny missing Nu argument")
-    else:
-        if Diam is not None:
-            warnings.warn("Diam is deprecated; use DiamMedia instead.",
-                          UserWarning)
-            DiamMedia = Diam
-        if Vel is not None:
-            warnings.warn("Vel is deprecated; use ApproachVel instead.",
-                          UserWarning)
-            ApproachVel = Vel
-
-    ut.check_range([Length.magnitude, ">0", "Length"],
-                   [DiamMedia.magnitude, ">0", "Diam"],
-                   [ApproachVel.magnitude, ">0", "Velocity"],
-                   [Nu.magnitude, ">0", "Nu"],
-                   [Porosity, "0-1", "Porosity"])
-    return (con.K_KOZENY * Length * Nu
-            / u.gravity * (1-Porosity)**2
-            / Porosity**3 * 36 * ApproachVel
-            / DiamMedia ** 2).to(u.m)
+    .. deprecated::
+        `headloss_kozeny` is deprecated; use `headloss_ergun` instead.
+    """
+    raise DeprecatedFunctionError("This function is deprecated. Please use headloss_ergun.")
 
 
 @ut.list_handler()
