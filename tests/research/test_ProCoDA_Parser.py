@@ -309,10 +309,13 @@ class TestProCoDAParser(unittest.TestCase):
         Extract the time column and a data column for each iteration of a state
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
+        print("file" + __file__)
+        print("ospath" +os.path.dirname(__file__))
+        print("path is " + path)
 
         output = get_data_by_state(path, dates="6-19-2013", state=1, column=1, extension=".xls")  # , "6-20-2013"
 
-        datafile = pd.read_csv(path + "/datalog 6-19-2013.xls", delimiter='\t')
+        datafile = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
                                    np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
         start_time = time_and_data1[0, 0]
@@ -325,6 +328,28 @@ class TestProCoDAParser(unittest.TestCase):
             output_i = np.round(np.array(output[i]).astype(np.double), 5)
             self.assertSequenceEqual([j[0] for j in output_i], [round(j-start_time, 5) for j in answer[i][0]])
             self.assertSequenceEqual([j[1] for j in output_i], [j for j in answer[i][1]])
+
+        print("above")
+        output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=2, extension=".xls")
+        print("ospath" +os.path.dirname(__file__))
+        print("path is " + path)
+        # path = 'https://raw.githubusercontent.com/monroews/playing/master/ProCoDA_data'
+        # output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=1, extension='.tsv')
+        # print(output2)
+        # datafile2 = pd.read_csv(path + "/datalog_11-5-2019.tsv", delimiter='\t')
+        # time_and_data2 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
+        #                            np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
+        # start_time2 = time_and_data1[0, 0]
+        #
+        # answer2 = [time_and_data2[:, 98:175], time_and_data2[:, 220:485], time_and_data2[:, 3039:3304],
+        #           time_and_data2[:, 5858:6123], time_and_data2[:, 8677:8942], time_and_data2[:, 11496:11761],
+        #           time_and_data2[:, 14315:14580]]
+        #
+        # for i in range(len(output2)):
+        #     output_i2 = np.round(np.array(output[i]).astype(np.double), 5)
+        #     self.assertSequenceEqual([j[0] for j in output_i2], [round(j-start_time, 5) for j in answer[i][0]])
+        #     self.assertSequenceEqual([j[1] for j in output_i2], [j for j in answer[i][1]])
+
 
 
     def test_plot_columns(self):

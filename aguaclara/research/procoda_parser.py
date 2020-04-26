@@ -273,6 +273,21 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
 
         data = get_data_by_state(path='/Users/.../ProCoDA Data/', dates=["6-19-2013", "6-20-2013"], state=1, column=28)
     """
+
+    # the file path url is not acceptable (ie contains 'github.com')
+    # if path.find('github.com') != -1:
+    #     file = path.find('blob')
+    #     folder = path.find('tree')
+    #     # if file path not url
+    #     firstPeriod = path.find('.')
+    #     if file != -1:
+    #         path = 'https://raw.githubusercontent' + path[firstPeriod, file] + path[file+len('blob')]
+    #         # print('file name' + path)
+    #     # if folder path not url
+    #     if folder != -1:
+    #         path = 'https://raw.githubusercontent' + path[firstPeriod, folder] + path[folder+len('file')]
+    #         # print('folder name' + path)
+    # print('debugging HEREE')
     data_agg = []
     day = 0
     first_day = True
@@ -284,20 +299,41 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
         dates = [dates]
 
     for d in dates:
-        state_file = path + "statelog " + d + extension
-        data_file = path + "datalog " + d + extension
+        state_file = path + "statelog_" + d + extension
+        # state_file = path + "state" + d + extension
 
-        states = pd.read_csv(state_file, delimiter='\t')
-        data = pd.read_csv(data_file, delimiter='\t')
+        # state_file = "/Users/alicezhao/CS/AguaClara/aguaclara/tests/research/data/state11-5-2019.xls"
+
+        print("herererererererere" + state_file)
+
+        # state_file = state_file.replace(' ', '_')
+
+        data_file = path + "datalog_" + d + extension
+        # data_file = path + "data" + d + extension
+
+        # data_file = "/Users/alicezhao/CS/AguaClara/aguaclara/tests/research/data/data11-5-2019.xls"
+
+        # print('debugging now here')
+        # states = pd.read_csv(state_file, delimiter='\t', encoding="ISO-8859-1")
+        states = pd.read_csv(state_file, encoding="ISO-8859-1")
+        # data = pd.read_csv(data_file, delimiter='\t')
+        data = pd.read_csv(data_file)
+        # print('debugging read csv')
 
         states = np.array(states)
         data = np.array(data)
 
         # get the start and end times for the state
+        print(states)
         state_start_idx = states[:, 1] == state
         state_start = states[state_start_idx, 0]
         state_end_idx = np.append([False], state_start_idx[0:-1])
         state_end = states[state_end_idx, 0]
+
+        #print('state_start_idx' + str(state_start_idx))
+        #print('state_start' + str(state_start))
+        #print('state_end_idx' + str(state_end_idx))
+        # print('state_end' + str(state_end))
 
         if overnight:
             state_start = np.insert(state_start, 0, 0)
@@ -309,22 +345,37 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
         # get the corresponding indices in the data array
         data_start = []
         data_end = []
+        #print('state_start two' + str(state_start))
+        # print('state_end two' + str(state_end))
+        # print('state_start size' + str(np.size(state_start)))
+        # print(state_start)
+        #LOOK THROUGH FOR LOOP TO FIND FAULT IF ANY
+
+
         for i in range(np.size(state_start)):
             add_start = True
             for j in range(np.size(data[:, 0])):
                 if (data[j, 0] > state_start[i]) and add_start:
                     data_start.append(j)
+                    print('j is' + str(j))
                     add_start = False
                 if data[j, 0] > state_end[i]:
                     data_end.append(j-1)
+                    print('j-1 is' + str(j-1))
                     break
 
         if first_day:
             start_time = data[0, 0]
 
         # extract data at those times
+        # print('data start array: ' + str(data_start))
+        # print('data end array: ' + str(data_end))
+
         for i in range(np.size(data_start)):
+            # print('i is' + str(i))
+            #print(data[data_start[i]:data_end[i], 0])
             t = data[data_start[i]:data_end[i], 0] + day - start_time
+            #print('t is: ' + str(t))
             if isinstance(column, int):
                 c = data[data_start[i]:data_end[i], column]
             else:
