@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.physchem &mdash; AguaClara v0.2.0 documentation</title>
+  <title>aguaclara.core.physchem &mdash; AguaClara 0.2.1 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.2.0
+                0.2.1
               </div>
             
           
@@ -1803,59 +1803,17 @@
 
 <span class="c1">######################## Porous Media ########################</span>
 
+<div class="viewcode-block" id="DeprecatedFunctionError"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.DeprecatedFunctionError">[docs]</a><span class="k">class</span> <span class="nc">DeprecatedFunctionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span></div>
 
 <div class="viewcode-block" id="headloss_kozeny"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_kozeny">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_kozeny</span><span class="p">(</span><span class="n">Length</span><span class="p">,</span> <span class="n">DiamMedia</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ApproachVel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Porosity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">Diam</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Vel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the Carman Kozeny sand bed head loss.</span>
-
-<span class="sd">    :param Length: height of bed</span>
-<span class="sd">    :type Length: u.m</span>
-<span class="sd">    :param DiamMedia: diameter of sand particle</span>
-<span class="sd">    :type DiamMedia: u.m</span>
-<span class="sd">    :param ApproachVel: superficial velocity</span>
-<span class="sd">    :type ApproachVel: u.m/u.s</span>
-<span class="sd">    :param Porosity: porosity of bed</span>
-<span class="sd">    :type Porosity: u.dimensionless or unitless</span>
-<span class="sd">    :param Nu: kinematic viscosity of fluid</span>
-<span class="sd">    :type Nu: u.m**2/u.s</span>
-
-<span class="sd">    :param Diam: deprecated; use DiamMedia instead</span>
-<span class="sd">    :param Vel: deprecated, use ApproachVel instead</span>
-
-<span class="sd">    :return: head loss in sand bed</span>
-<span class="sd">    :rtype: u.m</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated::</span>
+<span class="sd">        `headloss_kozeny` is deprecated; use `headloss_ergun` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">DiamMedia</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Diam</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;headloss_kozeny received both DiamMedia and Diam&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">DiamMedia</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Diam</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;headloss_kozeny missing DiamMedia argument&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">ApproachVel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Vel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;headloss_kozeny received both ApproachVel and Vel&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">ApproachVel</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Vel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;headloss_kozeny missing ApproachVel argument&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">Porosity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;headloss_kozeny missing Porosity argument&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">Nu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;headloss_kozeny missing Nu argument&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">Diam</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Diam is deprecated; use DiamMedia instead.&quot;</span><span class="p">,</span>
-                          <span class="ne">UserWarning</span><span class="p">)</span>
-            <span class="n">DiamMedia</span> <span class="o">=</span> <span class="n">Diam</span>
-        <span class="k">if</span> <span class="n">Vel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Vel is deprecated; use ApproachVel instead.&quot;</span><span class="p">,</span>
-                          <span class="ne">UserWarning</span><span class="p">)</span>
-            <span class="n">ApproachVel</span> <span class="o">=</span> <span class="n">Vel</span>
-
-    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Length</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">],</span>
-                   <span class="p">[</span><span class="n">DiamMedia</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Diam&quot;</span><span class="p">],</span>
-                   <span class="p">[</span><span class="n">ApproachVel</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Velocity&quot;</span><span class="p">],</span>
-                   <span class="p">[</span><span class="n">Nu</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">],</span>
-                   <span class="p">[</span><span class="n">Porosity</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;Porosity&quot;</span><span class="p">])</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">con</span><span class="o">.</span><span class="n">K_KOZENY</span> <span class="o">*</span> <span class="n">Length</span> <span class="o">*</span> <span class="n">Nu</span>
-            <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">Porosity</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-            <span class="o">/</span> <span class="n">Porosity</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">36</span> <span class="o">*</span> <span class="n">ApproachVel</span>
-            <span class="o">/</span> <span class="n">DiamMedia</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="n">DeprecatedFunctionError</span><span class="p">(</span><span class="s2">&quot;This function is deprecated. Please use headloss_ergun.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="re_ergun"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_ergun">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PhysChem &mdash; AguaClara v0.2.0 documentation</title>
+  <title>PhysChem &mdash; AguaClara 0.2.1 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.2.0
+                0.2.1
               </div>
             
           
@@ -1406,29 +1406,17 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
+<dl class="exception">
+<dt id="aguaclara.core.physchem.DeprecatedFunctionError">
+<em class="property">exception </em><code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">DeprecatedFunctionError</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#DeprecatedFunctionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.DeprecatedFunctionError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="function">
 <dt id="aguaclara.core.physchem.headloss_kozeny">
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_kozeny</code><span class="sig-paren">(</span><em class="sig-param">Length</em>, <em class="sig-param">DiamMedia=None</em>, <em class="sig-param">ApproachVel=None</em>, <em class="sig-param">Porosity=None</em>, <em class="sig-param">Nu=None</em>, <em class="sig-param">*</em>, <em class="sig-param">Diam=None</em>, <em class="sig-param">Vel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_kozeny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_kozeny" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the Carman Kozeny sand bed head loss.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Length</strong> (<em>u.m</em>) – height of bed</p></li>
-<li><p><strong>DiamMedia</strong> (<em>u.m</em>) – diameter of sand particle</p></li>
-<li><p><strong>ApproachVel</strong> (<em>u.m/u.s</em>) – superficial velocity</p></li>
-<li><p><strong>Porosity</strong> (<em>u.dimensionless</em><em> or </em><em>unitless</em>) – porosity of bed</p></li>
-<li><p><strong>Nu</strong> (<em>u.m**2/u.s</em>) – kinematic viscosity of fluid</p></li>
-<li><p><strong>Diam</strong> – deprecated; use DiamMedia instead</p></li>
-<li><p><strong>Vel</strong> – deprecated, use ApproachVel instead</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>head loss in sand bed</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>u.m</p>
-</dd>
-</dl>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version `headloss_kozeny`: </span>is deprecated; use <cite>headloss_ergun</cite> instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
