@@ -262,13 +262,13 @@ def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
 
 ####################### p functions #######################
 @ut.list_handler()
-def p(C, Cprime):
-    return -np.log10(C/Cprime)
+def p(C, C0=1):
+    return -np.log10(C/C0)
 
 
 @ut.list_handler()
-def invp(pC, Cprime):
-    return Cprime * 10**-pC
+def invp(pC, C0=1):
+    return C0 * 10**-pC
 
 
 #################### Fractal functions ####################
@@ -429,7 +429,7 @@ def gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag):
                  * (coag.Density / NatOrgMat.Density)
                  * (coag.Diameter / (4 * NatOrgMat.Diameter))
                  ),
-                1)).to(u.dimensionless)
+                1*u.dimensionless)).to(u.dimensionless)
 
 
 # @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3, None,
