@@ -17,7 +17,7 @@ setup(
     install_requires = [
         'matplotlib',
         'urllib3',
-        'pint==0.8.1',
+        'pint',
         'pandas',
         'scipy',
     ],
