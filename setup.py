@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'aguaclara',
-    version = '0.2.2',
+    version = '0.2.3',
     description = (
         'An open-source Python package for designing and performing research '
         'on AguaClara water treatment plants.'
@@ -28,4 +28,3 @@ setup(
     test_suite="tests",
     zip_safe=False
 )
-# test
