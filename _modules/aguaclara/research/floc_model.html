@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.research.floc_model &mdash; AguaClara 0.2.1 documentation</title>
+  <title>aguaclara.research.floc_model &mdash; AguaClara 0.2.2 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.2.2
               </div>
             
           
@@ -417,13 +417,13 @@
 
 <span class="c1">####################### p functions #######################</span>
 <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">Cprime</span><span class="p">):</span>
-    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">C</span><span class="o">/</span><span class="n">Cprime</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">C0</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">C</span><span class="o">/</span><span class="n">C0</span><span class="p">)</span>
 
 
 <span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">invp</span><span class="p">(</span><span class="n">pC</span><span class="p">,</span> <span class="n">Cprime</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Cprime</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="n">pC</span>
+<span class="k">def</span> <span class="nf">invp</span><span class="p">(</span><span class="n">pC</span><span class="p">,</span> <span class="n">C0</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">C0</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="n">pC</span>
 
 
 <span class="c1">#################### Fractal functions ####################</span>
@@ -584,7 +584,7 @@
                  <span class="o">*</span> <span class="p">(</span><span class="n">coag</span><span class="o">.</span><span class="n">Density</span> <span class="o">/</span> <span class="n">NatOrgMat</span><span class="o">.</span><span class="n">Density</span><span class="p">)</span>
                  <span class="o">*</span> <span class="p">(</span><span class="n">coag</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">NatOrgMat</span><span class="o">.</span><span class="n">Diameter</span><span class="p">))</span>
                  <span class="p">),</span>
-                <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span></div>
+                <span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span></div>
 
 
 <span class="c1"># @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3, None,</span>
