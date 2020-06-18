@@ -49,6 +49,7 @@ The tests should all pass. If they don't, check in with the latest Travis build 
 4. The pull request will initiate several 'checks.' This will take about 5 minutes to run. The first is the Travis CI check. Travis is a cloud-based continuous integration tool that automatically runs all defined tests. Once the tests pass, Travis generates a coverage report. This report analyzed what percentage of the code was "hit" during the testing process, also known as what percentage was 'covered'.
 5. If all the checks passed, you can ping a repo manager to ask them to accept your pull request.
 6. If the repo manager accepts the request, then the next time a version of master is tagged as a release version, the code will be packaged as a source distribution (sdist) and sent off to [pypi](https://pypi.org/search/?q=aguaclara).
+7. In order to release the new version, go to https://github.com/AguaClara/aguaclara/releases -> "draft new release". Tag version using the "v0.2.X" format, add release title and describe the modifications in the current release using their issue number (use the # before the number, in order to automatically link to the issue number. Then publish the release.
 
 ## Changelog
 **aguaclara design is in RAPID development. Things will shange significantly!**
