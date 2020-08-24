@@ -207,7 +207,7 @@ def data_from_dates(path, dates, extension):
 
     data = []
     for d in dates:
-        filepath = os.path.join(path, 'datalog ' + d + extension)
+        filepath = os.path.join(path, 'datalog_' + d + extension)
         data.append(remove_notes(pd.read_csv(filepath, delimiter='\t')))
 
     return data
