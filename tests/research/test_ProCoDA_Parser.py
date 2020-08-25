@@ -13,11 +13,11 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
 
-        data_day1 = pd.read_csv(path + '/datalog 6-14-2018.xls', delimiter='\t')
+        data_day1 = pd.read_csv(path + '/datalog_6-14-2018.xls', delimiter='\t')
         data_day1 = np.round([pd.to_numeric(data_day1.iloc[:, 0]), pd.to_numeric(data_day1.iloc[:, 4])], 5)
         data_day1 = [data_day1[0].tolist(), data_day1[1].tolist()]
 
-        data_day2 = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+        data_day2 = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
         data_day2 = np.round([pd.to_numeric(data_day2.iloc[:, 0]), pd.to_numeric(data_day2.iloc[:, 4])], 5)
         data_day2 = [data_day2[0].tolist(), data_day2[1].tolist()]
         data_day2[0][0] = 0  # to remove scientific notation "e-"
@@ -98,7 +98,7 @@ class TestProCoDAParser(unittest.TestCase):
 
         output = get_data_by_state(path, dates=["6-19-2013"], state=1, column=1, extension=".xls")  # , "6-20-2013"
 
-        datafile = pd.read_csv(path + "/datalog 6-19-2013.xls", delimiter='\t')
+        datafile = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
                                    np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
         start_time = time_and_data1[0, 0]
