@@ -150,6 +150,14 @@ class TestProCoDAParser(unittest.TestCase):
          3.47199600e-04,   4.05070800e-04,   4.62941200e-04,
          5.20805100e-04])*24*u.hr, 5).tolist()
         )
+        data_day1 = pd.read_csv(path + '/datalog_6-14-2018.xls', delimiter='\t')
+        data_day1 = np.round([pd.to_numeric(data_day1.iloc[:, 0]), pd.to_numeric(data_day1.iloc[:, 4])], 5)
+        data_day1 = [data_day1[0].tolist(), data_day1[1].tolist()]
+
+        data_day2 = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
+        data_day2 = np.round([pd.to_numeric(data_day2.iloc[:, 0]), pd.to_numeric(data_day2.iloc[:, 4])], 5)
+        data_day2 = [data_day2[0].tolist(), data_day2[1].tolist()]
+        data_day2[0][0] = 0  # to remove scientific notation "e-"
 
 
     def test_notes(self):

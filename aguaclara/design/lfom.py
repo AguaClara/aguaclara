@@ -22,7 +22,7 @@ import math
 
 class LFOM(Component):
     """Design and AguaClara plant's LFOM.
-    
+
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (recommended, defaults to 20L/s)
         - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
@@ -30,12 +30,12 @@ class LFOM(Component):
         - ``hl (float * u.cm)``: Head loss (optional, defaults to 20cm)
         - ``safety_factor (float)``: Safety factor (optional, defaults to 1.5)
         - ``sdr (float)``: Standard dimension ratio (optional, defaults to 26)
-        - ``drill_bits (float * u.inch array)``: List of drill bits 
-          (optional) 
-        - ``orifice_s (float * u.cm)``: The spacing between orifices (optional, 
+        - ``drill_bits (float * u.inch array)``: List of drill bits
+          (optional)
+        - ``orifice_s (float * u.cm)``: The spacing between orifices (optional,
           defaults to 0.5cm)
     """
-    def __init__(self, **kwargs): 
+    def __init__(self, **kwargs):
         self.hl = 20.0 * u.cm
         self.safety_factor = 1.5
         self.sdr = 26.0
@@ -46,11 +46,11 @@ class LFOM(Component):
 
     def stout_w_per_flow(self, h):
         """The width of a stout weir at a given elevation.
-        
+
         Args:
             - ``h (float * u.m)``: Elevation height
         """
-        w_per_flow = 2 / ((2 * pc.gravity * h) ** (1 / 2) *
+        w_per_flow = 2 / ((2 * u.gravity * h) ** (1 / 2) *
                           con.VC_ORIFICE_RATIO * np.pi * self.hl)
         return w_per_flow.to_base_units()
 
@@ -71,7 +71,7 @@ class LFOM(Component):
     def vel_critical(self):
         """The average vertical velocity of the water inside the LFOM pipe
         at the bottom of the orfices."""
-        return (4 / (3 * math.pi) * (2 * pc.gravity * self.hl) ** \
+        return (4 / (3 * math.pi) * (2 * u.gravity * self.hl) ** \
             (1 / 2)).to(u.m/u.s)
 
     @property
@@ -130,7 +130,7 @@ class LFOM(Component):
 
     def q_submerged(self, row_n, orifice_n_per_row):
         """The flow rate through some number of submerged rows.
-        
+
         Args:
             - ``row_n``: Number of submerged rows
         """
@@ -160,7 +160,7 @@ class LFOM(Component):
 
     @property
     def error_per_row(self):
-        """The error of the design based off the predicted flow rate and 
+        """The error of the design based off the predicted flow rate and
         the actual flow rate."""
         q_error = np.zeros(self.row_n)
         for i in range(self.row_n):
@@ -168,4 +168,3 @@ class LFOM(Component):
             q_error[i] = (((actual_flow - self.q_per_row[i]) / \
                  self.q_per_row[i]).to(u.dimensionless)).magnitude
         return q_error
-        

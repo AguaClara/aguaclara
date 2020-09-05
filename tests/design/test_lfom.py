@@ -17,7 +17,7 @@ lfom_60 = LFOM(q = 60.0 * u.L / u.s)
 
     (lfom_20.row_b.to(u.m), 0.03333333333333333 * u.m),
     (lfom_60.row_b.to(u.m), 0.05 * u.m),  # 5
-    
+
     (lfom_20.vel_critical.to(u.m/u.s), 0.8405802802312778 * u.m/u.s),
     (lfom_60.vel_critical.to(u.m/u.s), 0.8405802802312778 * u.m/u.s),
 
@@ -26,13 +26,13 @@ lfom_60 = LFOM(q = 60.0 * u.L / u.s)
 
     (lfom_20.pipe_nd.to(u.inch), 10.0 * u.inch),  # 10
     (lfom_60.pipe_nd.to(u.inch), 16.0 * u.inch),
-    
+
     (lfom_20.top_row_orifice_a.to(u.m**2), 0.0017763243361009463 * u.m ** 2),
     (lfom_60.top_row_orifice_a.to(u.m**2), 0.00818156664907796 * u.m ** 2),
 
     (lfom_20.orifice_d_max.to(u.m), 0.047557190718114956 * u.m),
     (lfom_60.orifice_d_max.to(u.m), 0.10206416704942245 * u.m),  # 15
-    
+
     (lfom_20.orifice_d.to(u.m), 0.03175 * u.m),
     (lfom_60.orifice_d.to(u.m), 0.044449999999999996 * u.m),
 
@@ -47,12 +47,16 @@ lfom_60 = LFOM(q = 60.0 * u.L / u.s)
 
     (lfom_20.q_submerged(3, [4, 3, 2]), 5.939085475350429 * u.L / u.s),
     (lfom_60.q_submerged(3, [4, 3, 2]), 14.34566338987966 * u.L / u.s),  # 25
-    
+
     (lfom_20.orifice_n_per_row[0], 12),
     (lfom_60.orifice_n_per_row[0], 21)
 ])
 def test_lfom(actual, expected):
-    assert actual == expected
+    if (type(actual) == u.Quantity and type(expected) == u.Quantity):
+        assert actual.units == expected.units
+        assert actual.magnitude == pytest.approx(expected.magnitude)
+    else:
+        assert actual == pytest.approx(expected)
 
 def test_error_per_row():
     assert np.abs(np.average(lfom_20.error_per_row) + 0.22311742777836815) / \

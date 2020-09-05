@@ -2,6 +2,7 @@
 outer diameters of pipes based on their standard dimension ratio (SDR).
 """
 from aguaclara.core.units import u
+import aguaclara.core.utility as ut
 import numpy as np
 import pandas as pd
 
@@ -37,22 +38,31 @@ class Pipe:
         myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
         return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])) * u.inch
 
-@u.wraps(u.inch, u.inch, False)
+
+@ut.list_handler()
 def OD(ND):
     """Return a pipe's outer diameter according to its nominal diameter.
 
-    The pipe schedule is not required here because all of the pipes of a
-    given nominal diameter have the same outer diameter.
+    :param ND: nominal diameter of pipe
+    :type ND: u.inch
 
-    Steps:
-    1. Find the index of the closest nominal diameter. 
-    (Should this be changed to find the next largest ND?)
-    2. Take the values of the array, subtract the ND, take the absolute 
-    value, find the index of the minimium value.
+    :return: outer diameter of pipe, in inches
+    :rtype: u.inch
     """
+    # The pipe schedule is not required here because all of the pipes of a
+    # given nominal diameter have the same outer diameter.
+    #
+    # Steps:
+    # 1. Find the index of the closest nominal diameter.
+    #    (Should this be changed to find the next largest ND?)
+    # 2. Take the values of the array, subtract the ND, take the absolute
+    #    value, find the index of the minimium value.
+    ND = ND.to(u.inch).magnitude
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
-    return pipedb.iloc[index, 1]
+    return pipedb.iloc[index, 1] * u.inch
 
+
+@ut.list_handler()
 def fitting_od(pipe_nd, fitting_sdr=41):
     pipe_od = OD(pipe_nd)
     fitting_nd = ND_SDR_available(pipe_od, fitting_sdr)
@@ -60,16 +70,17 @@ def fitting_od(pipe_nd, fitting_sdr=41):
     return fitting_od
 
 
-@u.wraps(u.inch, [u.inch, None], False)
+@ut.list_handler()
 def ID_SDR(ND, SDR):
-    """Return the inner diameter for SDR(standard diameter ratio) pipes.
+    """Return the inner diameter of a pipe given its nominal diameter and SDR
+    (standard diameter ratio).
 
-    For these pipes the wall thickness is the outer diameter divided by
-    the SDR.
+    SDR is the outer diameter divided by the wall thickness.
     """
-    return OD(ND).magnitude * (SDR-2) / SDR
+    return OD(ND) * (SDR-2) / SDR
 
-@u.wraps(u.inch, u.inch, False)
+
+@ut.list_handler()
 def ID_sch40(ND):
     """Return the inner diameter for schedule 40 pipes.
 
@@ -78,8 +89,9 @@ def ID_sch40(ND):
     Take the values of the array, subtract the ND, take the absolute
     value, find the index of the minimium value.
     """
+    ND = ND.to(u.inch).magnitude
     myindex = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
-    return (pipedb.iloc[myindex, 1] - 2*(pipedb.iloc[myindex, 5]))
+    return (pipedb.iloc[myindex, 1] - 2*(pipedb.iloc[myindex, 5])) * u.inch
 
 
 def ND_all_available():
@@ -94,6 +106,7 @@ def ND_all_available():
             ND_all_available.append((pipedb['NDinch'][i]))
     return ND_all_available * u.inch
 
+
 def od_all_available():
     """Return an array of available outer diameters.
 
@@ -107,6 +120,7 @@ def od_all_available():
     return od_all_available * u.inch
 
 
+@ut.list_handler()
 def ID_SDR_all_available(SDR):
     """Return an array of inner diameters with a given SDR.
 
@@ -120,6 +134,7 @@ def ID_SDR_all_available(SDR):
     return ID * u.inch
 
 
+@ut.list_handler()
 def ND_SDR_available(ID, SDR):
     """ Return an available ND given an ID and a schedule.
 
@@ -131,6 +146,7 @@ def ND_SDR_available(ID, SDR):
             return ND_all_available()[i]
 
 
+@ut.list_handler()
 def ND_available(NDguess):
     """Return the minimum ND that is available.
 
@@ -142,9 +158,11 @@ def ND_available(NDguess):
     myindex = (ND_all_available() >= NDguess)
     return min(ND_all_available()[myindex])
 
+
+@ut.list_handler()
 def od_available(od_guess):
     """Return the minimum OD that is available.
-    
+
     1. Extract the magnitude in inches from the outer diameter.
     2. Find the index of the closest outer diameter.
     3. Take the values of the array, subtract the OD, take the
@@ -153,9 +171,13 @@ def od_available(od_guess):
     myindex = (od_all_available() >= od_guess)
     return min(od_all_available()[myindex])
 
+
+@ut.list_handler()
 def socket_depth(nd):
     return nd / 2
 
+
+@ut.list_handler()
 def cap_thickness(nd):
     cap_thickness = (fitting_od(nd) - OD(ND_available(nd))) / 2
     return cap_thickness

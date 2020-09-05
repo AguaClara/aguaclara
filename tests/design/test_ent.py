@@ -19,5 +19,8 @@ ent_60 = EntranceTank(q = 60.0 * u.L / u.s)
 ])
 
 def test_ent(actual, expected):
-    assert actual == expected
-    
+    if (type(actual) == u.Quantity and type(expected) == u.Quantity):
+        assert actual.units == expected.units
+        assert actual.magnitude == pytest.approx(expected.magnitude)
+    else:
+        assert actual == pytest.approx(expected)

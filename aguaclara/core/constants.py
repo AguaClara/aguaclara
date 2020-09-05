@@ -46,17 +46,6 @@ JET_ROUND_RATIO = 0.08
 #: in the AguaClara textbook for more details.
 JET_PLANE_RATIO = 0.0124
 
-#: DEPRECATED: will be removed by 21 Dec 2019.
-LFP_FLOW_MAX = 16.1 * u.L / u.s
-
-#: Between fittings and tank wall in a tank.
-#:
-#: DEPRECATED: will be removed by 21 Dec 2019.
-FITTING_S_MIN = 5 * u.cm
-
-#: DEPRECATED: will be removed by 21 Dec 2019.
-CHANNEL_W_MIN = 15 * u.cm
-
 #: Vena contracta coefficient through an orifice with 90˚ bends. This is the
 #: ratio of the flow area at the point of maximal contraction to the flow area
 #: before the contraction.
