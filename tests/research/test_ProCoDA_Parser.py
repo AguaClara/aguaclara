@@ -150,14 +150,6 @@ class TestProCoDAParser(unittest.TestCase):
          3.47199600e-04,   4.05070800e-04,   4.62941200e-04,
          5.20805100e-04])*24*u.hr, 5).tolist()
         )
-        data_day1 = pd.read_csv(path + '/datalog_6-14-2018.xls', delimiter='\t')
-        data_day1 = np.round([pd.to_numeric(data_day1.iloc[:, 0]), pd.to_numeric(data_day1.iloc[:, 4])], 5)
-        data_day1 = [data_day1[0].tolist(), data_day1[1].tolist()]
-
-        data_day2 = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
-        data_day2 = np.round([pd.to_numeric(data_day2.iloc[:, 0]), pd.to_numeric(data_day2.iloc[:, 4])], 5)
-        data_day2 = [data_day2[0].tolist(), data_day2[1].tolist()]
-        data_day2[0][0] = 0  # to remove scientific notation "e-"
 
 
     def test_notes(self):
@@ -227,11 +219,11 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
 
-        data_day1 = pd.read_csv(path + '/datalog 6-14-2018.xls', delimiter='\t')
+        data_day1 = pd.read_csv(path + '/datalog_6-14-2018.xls', delimiter='\t')
         data_day1 = np.round([pd.to_numeric(data_day1.iloc[:, 0]), pd.to_numeric(data_day1.iloc[:, 4])], 5)
         data_day1 = [data_day1[0].tolist(), data_day1[1].tolist()]
 
-        data_day2 = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+        data_day2 = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
         data_day2 = np.round([pd.to_numeric(data_day2.iloc[:, 0]), pd.to_numeric(data_day2.iloc[:, 4])], 5)
         data_day2 = [data_day2[0].tolist(), data_day2[1].tolist()]
         data_day2[0][0] = 0  # to remove scientific notation "e-"
@@ -281,7 +273,7 @@ class TestProCoDAParser(unittest.TestCase):
         Return a list of DataFrames representing the ProCoDA data files stored in the given path and recorded on the given dates.
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
-        dataFromPath = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+        dataFromPath = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
 
         getDataFromDates = data_from_dates(path=path, dates='6-15-2018', extension=".xls")[0]
 
@@ -294,7 +286,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         #One DataFrame
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
-        data_manual1 = pd.read_csv(path + '/datalog 6-14-2018.xls', delimiter='\t')
+        data_manual1 = pd.read_csv(path + '/datalog_6-14-2018.xls', delimiter='\t')
 
         getColData1 = column_start_to_end(data=[data_manual1], column=1, start_idx=2, end_idx=7)
         compareColData1 = [-4.34825945, -2.3821919, -2.57200098, -2.40549088,
@@ -302,8 +294,8 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertSequenceEqual(getColData1, compareColData1)
 
         #Three DataFrames
-        data_manual2 = pd.read_csv(path + '/datalog 6-16-2018.xls', delimiter='\t')
-        data_manual3 = pd.read_csv(path + '/datalog 6-15-2018.xls', delimiter='\t')
+        data_manual2 = pd.read_csv(path + '/datalog_6-16-2018.xls', delimiter='\t')
+        data_manual3 = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
 
         getColData2 = column_start_to_end([data_manual1, data_manual2, data_manual3],
             column=2, start_idx=5238, end_idx=2)
@@ -317,9 +309,6 @@ class TestProCoDAParser(unittest.TestCase):
         Extract the time column and a data column for each iteration of a state
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
-        print("file" + __file__)
-        print("ospath" +os.path.dirname(__file__))
-        print("path is " + path)
 
         output = get_data_by_state(path, dates="6-19-2013", state=1, column=1, extension=".xls")  # , "6-20-2013"
 
@@ -328,7 +317,7 @@ class TestProCoDAParser(unittest.TestCase):
                                    np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
         start_time = time_and_data1[0, 0]
 
-        answer = [time_and_data1[:, 98:175], time_and_data1[:, 220:485], time_and_data1[:, 3039:3304],
+        answer = [time_and_data1[:, 98:174], time_and_data1[:, 220:485], time_and_data1[:, 3039:3304],
                   time_and_data1[:, 5858:6123], time_and_data1[:, 8677:8942], time_and_data1[:, 11496:11761],
                   time_and_data1[:, 14315:14580]]
 
@@ -338,7 +327,7 @@ class TestProCoDAParser(unittest.TestCase):
             self.assertSequenceEqual([j[1] for j in output_i], [j for j in answer[i][1]])
 
         print("above")
-        output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=2, extension=".xls")
+        output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=2)
         print("ospath" +os.path.dirname(__file__))
         print("path is " + path)
         # path = 'https://raw.githubusercontent.com/monroews/playing/master/ProCoDA_data'
@@ -364,7 +353,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         Plot the columns of data given the file located by labels
         '''
-        path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
+        path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog_6-14-2018.xls'
 
         plt.figure()
         plot_columns(path=path, columns=" State ID")
@@ -407,7 +396,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         Plot the columns of data given the file located by indices
         '''
-        path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog 6-14-2018.xls'
+        path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog_6-14-2018.xls'
 
         plt.figure()
         iplot_columns(path=path, columns=1)
