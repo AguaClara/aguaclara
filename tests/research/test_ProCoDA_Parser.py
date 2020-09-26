@@ -337,3 +337,39 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertSequenceEqual(
         [5.445427082723495, 5.459751965314751],
         output['Average Conc (mg/L)'].tolist())
+
+    def test_intersect(self):
+        #tests one crossing
+        x = [1,2,3]
+        y1 = [2,6,8]
+        y2 = [6,2,3]
+        output = intersect(x, y1, y2)
+        self.assertSequenceEqual(np.array[1.5], np.array[4], np.array[1], output)
+
+        #tests two crossings
+        x = [1,2,3,4,5,6]
+        y1 = [2,6,8,4,1]
+        y2 = [6,2,3,7,6]
+        output= intersect(x,y1,y2)
+        self.assertSequenceEqual(np.array[1.5, 3.625], np.array[4, 5.5], np.array[1, 3], output)
+
+        #tests parallel lines
+        x = [1,2,3,4]
+        y1 = [3,5,7,9]
+        y2 = [5,7,9,11]
+        output= intersect(x,y1,y2)
+        self.assertSequenceEqual(np.array([]), np.array([]), np.array([]), output)
+
+        #tests equal and crossing
+        x = [-2,-1,0,1,2]
+        y1 = [2,1,0,-1,-2]
+        y2 = [-2,-1,0,1,2]
+        output= intersect(x,y1,y2)
+        self.assertSequenceEqual(np.array[-0, -0], np.array[0, 0], np.array[2, 3], output)
+
+        #tests equal and not crossing
+        x = [0,1,2,3,4]
+        y1 = [4,4,4,4,4]
+        y2 = [3,4,3,0,-5]
+        output= intersect(x,y1,y2)
+        self.assertSequenceEqual(np.array[1, 1], np.array[4, 4], np.array[1, 2], output)

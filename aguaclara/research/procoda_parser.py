@@ -889,3 +889,38 @@ def write_calculations_to_csv(funcs, states, columns, path, headers, out_name,
     output.to_csv(out_name, sep='\t')
 
     return output
+    
+
+  def intersect(x, y1, y2):
+    """Returns the intersections of two lines represented by a common set of x coordinates and
+    two sets of y coordinates as three numpy arrays: the x coordinates of the intersections,
+    the y coordinates of the intersections, and the indexes in x, y1, y2 immediately
+    before the intersections.
+
+    :param x: common set of x coordinates for the two lines
+    :type x: numpy.ndarray
+    :param y1: the y coordinates of the first line
+    :type y1: numpy.ndarray
+    :param y2: the y coordinates of the second line
+    :type y2: numpy.ndarray
+
+    :requires: x have no repeating values and is in ascending order
+
+    :return: x_points-numpy.ndarray of the x coordinates where intersections occur
+    :return: y_points-numpy.ndarray of the y coordinates where intersections occur
+    :return: crossings-numpy.ndarray of the indexes where intersections occur
+    """
+    x_points = np.array([])
+    y_points = np.array([])
+    crossings = (np.argwhere(np.diff(np.sign(y1-y2)))+1).flatten()
+
+    for c in crossings:
+      slope1 = (y1[c] - y1[c-1]) / (x[c] - x[c-1])
+      slope2 = (y2[c] - y2[c-1]) / (x[c] - x[c-1])
+      b1 = y1[c] - slope1 * x[c]
+      b2 = y2[c] - slope2 * x[c]
+
+      x_points = np.append(x_points, (b2-b1)/(slope1-slope2))
+      y_points = np.append(y_points, slope1*(b2-b1)/(slope1-slope2) + b1)
+
+    return x_points, y_points, crossings
