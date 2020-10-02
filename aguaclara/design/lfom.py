@@ -35,8 +35,10 @@ class LFOM(Component):
           (optional)
         - ``orifice_s (float * u.cm)``: The spacing between orifices (optional,
           defaults to 0.5cm)
-        - ``min_rows (int)``: Minimum number of rows of orifices (optional,
+        - ``min_row_n (int)``: Minimum number of rows of orifices (optional,
           defaults to 5)
+        - ``max_row_n (int)``: Maximum number of rows of orifices (optional,
+          defaults to 10)
     """
     def __init__(self, **kwargs):
         self.hl = 20.0 * u.cm
@@ -44,8 +46,8 @@ class LFOM(Component):
         self.sdr = 26.0
         self.drill_bits = drills.DRILL_BITS_D_IMPERIAL
         self.orifice_s = 0.5 * u.cm
-        self.min_rows = 5
-        self.max_rows = 10
+        self.min_row_n = 5
+        self.max_row_n = 10
 
         super().__init__(**kwargs)
 
@@ -64,8 +66,8 @@ class LFOM(Component):
         """ The number of rows."""
         N_estimated = (self.hl * np.pi / (2 * self.stout_w_per_flow(self.hl) * \
              self.q)).to(u.dimensionless)
-        row_n = min(self.max_rows,
-                    max(self.min_rows, math.trunc(N_estimated.magnitude)))
+        row_n = min(self.max_row_n,
+                    max(self.min_row_n, math.trunc(N_estimated.magnitude)))
         return row_n
 
     @property
