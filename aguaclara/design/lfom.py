@@ -36,7 +36,7 @@ class LFOM(Component):
         - ``orifice_s (float * u.cm)``: The spacing between orifices (optional,
           defaults to 0.5cm)
         - ``min_row_n (int)``: Minimum number of rows of orifices (optional,
-          defaults to 5)
+          defaults to 4)
         - ``max_row_n (int)``: Maximum number of rows of orifices (optional,
           defaults to 10)
     """
@@ -46,7 +46,7 @@ class LFOM(Component):
         self.sdr = 26.0
         self.drill_bits = drills.DRILL_BITS_D_IMPERIAL
         self.orifice_s = 0.5 * u.cm
-        self.min_row_n = 5
+        self.min_row_n = 4
         self.max_row_n = 10
 
         super().__init__(**kwargs)
