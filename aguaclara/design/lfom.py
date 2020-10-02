@@ -3,8 +3,9 @@ imitates a sutro weir and produces a linear relation between flow rate and
 water level within the entrance tank.
 
 Example:
-    >>> from aguaclara.design.lfom import *
-    >>> lfom = LFOM(q = 20 * u.L / u.s, hl = 20 * u.cm)
+    >>> from aguaclara.core.units import u
+    >>> from aguaclara.design.lfom import LFOM
+    >>> lfom = LFOM(q=20 * u.L / u.s, hl=20 * u.cm)
     >>> lfom.row_n
     6
 """
@@ -34,6 +35,8 @@ class LFOM(Component):
           (optional)
         - ``orifice_s (float * u.cm)``: The spacing between orifices (optional,
           defaults to 0.5cm)
+        - ``min_rows (int)``: Minimum number of rows of orifices (optional,
+          defaults to 5)
     """
     def __init__(self, **kwargs):
         self.hl = 20.0 * u.cm
@@ -41,6 +44,8 @@ class LFOM(Component):
         self.sdr = 26.0
         self.drill_bits = drills.DRILL_BITS_D_IMPERIAL
         self.orifice_s = 0.5 * u.cm
+        self.min_rows = 5
+        self.max_rows = 10
 
         super().__init__(**kwargs)
 
@@ -59,7 +64,8 @@ class LFOM(Component):
         """ The number of rows."""
         N_estimated = (self.hl * np.pi / (2 * self.stout_w_per_flow(self.hl) * \
              self.q)).to(u.dimensionless)
-        row_n = min(10, max(4, math.trunc(N_estimated.magnitude)))
+        row_n = min(self.max_rows,
+                    max(self.min_rows, math.trunc(N_estimated.magnitude)))
         return row_n
 
     @property
