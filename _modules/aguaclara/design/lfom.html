@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.lfom &mdash; AguaClara v0.2.4 documentation</title>
+  <title>aguaclara.design.lfom &mdash; AguaClara v0.2.5 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                v0.2.4
+                v0.2.5
               </div>
             
           
@@ -158,8 +158,9 @@
 <span class="sd">water level within the entrance tank.</span>
 
 <span class="sd">Example:</span>
-<span class="sd">    &gt;&gt;&gt; from aguaclara.design.lfom import *</span>
-<span class="sd">    &gt;&gt;&gt; lfom = LFOM(q = 20 * u.L / u.s, hl = 20 * u.cm)</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.design.lfom import LFOM</span>
+<span class="sd">    &gt;&gt;&gt; lfom = LFOM(q=20 * u.L / u.s, hl=20 * u.cm)</span>
 <span class="sd">    &gt;&gt;&gt; lfom.row_n</span>
 <span class="sd">    6</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -189,6 +190,10 @@
 <span class="sd">          (optional)</span>
 <span class="sd">        - ``orifice_s (float * u.cm)``: The spacing between orifices (optional,</span>
 <span class="sd">          defaults to 0.5cm)</span>
+<span class="sd">        - ``min_row_n (int)``: Minimum number of rows of orifices (optional,</span>
+<span class="sd">          defaults to 4)</span>
+<span class="sd">        - ``max_row_n (int)``: Maximum number of rows of orifices (optional,</span>
+<span class="sd">          defaults to 10)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
@@ -196,6 +201,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span> <span class="o">=</span> <span class="mf">26.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drill_bits</span> <span class="o">=</span> <span class="n">drills</span><span class="o">.</span><span class="n">DRILL_BITS_D_IMPERIAL</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">orifice_s</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_row_n</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_row_n</span> <span class="o">=</span> <span class="mi">10</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -214,7 +221,8 @@
         <span class="sd">&quot;&quot;&quot; The number of rows.&quot;&quot;&quot;</span>
         <span class="n">N_estimated</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">stout_w_per_flow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hl</span><span class="p">)</span> <span class="o">*</span> \
              <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span>
-        <span class="n">row_n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="n">N_estimated</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)))</span>
+        <span class="n">row_n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_row_n</span><span class="p">,</span>
+                    <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_row_n</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="n">N_estimated</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">row_n</span>
 
     <span class="nd">@property</span>

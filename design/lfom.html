@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Linear Flow Orifice Meter (LFOM) &mdash; AguaClara v0.2.4 documentation</title>
+  <title>Linear Flow Orifice Meter (LFOM) &mdash; AguaClara v0.2.5 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.2.4
+                v0.2.5
               </div>
             
           
@@ -175,8 +175,9 @@
 imitates a sutro weir and produces a linear relation between flow rate and
 water level within the entrance tank.</p>
 <dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.lfom</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lfom</span> <span class="o">=</span> <span class="n">LFOM</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">hl</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.lfom</span> <span class="kn">import</span> <span class="n">LFOM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lfom</span> <span class="o">=</span> <span class="n">LFOM</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">hl</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lfom</span><span class="o">.</span><span class="n">row_n</span>
 <span class="go">6</span>
 </pre></div>
@@ -199,6 +200,10 @@ water level within the entrance tank.</p>
 (optional)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">orifice_s</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: The spacing between orifices (optional,
 defaults to 0.5cm)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_row_n</span> <span class="pre">(int)</span></code>: Minimum number of rows of orifices (optional,
+defaults to 4)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_row_n</span> <span class="pre">(int)</span></code>: Maximum number of rows of orifices (optional,
+defaults to 10)</p></li>
 </ul>
 </dd>
 </dl>

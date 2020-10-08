@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ProCoDA Parser &mdash; AguaClara v0.2.4 documentation</title>
+  <title>ProCoDA Parser &mdash; AguaClara v0.2.5 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.2.4
+                v0.2.5
               </div>
             
           
@@ -176,9 +176,9 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file</p></li>
-<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index of first row of data to extract, inclusive</p></li>
-<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Index of last row of data to extract until, exclusive. Defaults to extracting all rows.</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>string</em>) – Index or label of the column that you want to extract</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Index of first row of data to extract, inclusive</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Index of last row of data to extract until, exclusive. Defaults to extracting all rows.</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>string</em>) – Index or label of the column that you want to extract</p></li>
 <li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless).</p></li>
 </ul>
 </dd>
@@ -204,8 +204,8 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
-<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index of first row of data to extract from the data file</p></li>
-<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Index of last row of data to extract from the data. Defaults to last row</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Index of first row of data to extract from the data file</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Index of last row of data to extract from the data. Defaults to last row</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -269,7 +269,7 @@ date, i.e. of the form “datalog_M-D-YYYY”.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s)</p></li>
-<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or a list of column indexes</p></li>
+<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or a list of column indexes</p></li>
 <li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates, formatted “M-D-YYYY”</p></li>
 <li><p><strong>start_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Starting time of data to extract, formatted ‘HH:MM’ (24-hour time)</p></li>
 <li><p><strong>end_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Ending time of data to extract, formatted ‘HH:MM’ (24-hour time)</p></li>
@@ -304,8 +304,8 @@ iteration of the given state.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s), defaults to the current directory</p></li>
 <li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>string</em>) – The integer index of the column that you want to extract OR the header of the column that you want to extract</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>string</em>) – The integer index of the column that you want to extract OR the header of the column that you want to extract</p></li>
 <li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – File extension of the data file(s). Defaults to ‘.tsv’</p></li>
 </ul>
 </dd>
@@ -353,8 +353,8 @@ iteration of the given state.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file</p></li>
-<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or list of column indexes</p></li>
-<li><p><strong>x_axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The index of the x-axis column (defaults to None)</p></li>
+<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or list of column indexes</p></li>
+<li><p><strong>x_axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – The index of the x-axis column (defaults to None)</p></li>
 <li><p><strong>sep</strong> (<em>string</em>) – The separator or delimiter, of the data file. Use ‘,’ for CSV’s, ‘      ‘ for TSV’s.</p></li>
 </ul>
 </dd>
@@ -377,8 +377,8 @@ each iteration of the given state.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
 <li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
 <li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”</p></li>
@@ -408,8 +408,8 @@ the given ProCoDA files</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
 <li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
 <li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”</p></li>
@@ -440,8 +440,8 @@ in the given column and outputs the result for each instance of the state</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>function</em>) – A function that will be applied to data from each instance of the state</p></li>
 <li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
 <li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
 <li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”.</p></li>
@@ -454,7 +454,7 @@ in the given column and outputs the result for each instance of the state</p>
 <dd class="field-odd"><p>The outputs of the given function for each instance of the given state</p>
 </dd>
 <dt class="field-even">Type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a></p>
 </dd>
 <dt class="field-odd">Examples</dt>
 <dd class="field-odd"><p></p></dd>
@@ -483,8 +483,8 @@ metafile)</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>function</em>) – A function that will be applied to data from each instance of the state</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file (must be tab-delimited)</p></li>
 <li><p><strong>metaids</strong> (<em>string list</em><em>, </em><em>optional</em>) – a list of the experiment IDs you’d like to analyze from the metafile</p></li>
 <li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”</p></li>
@@ -525,7 +525,7 @@ columns to a new column in the specified output file.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>funcs</strong> (<em>function</em><em> or </em><em>function list</em>) – A function or list of functions which will be applied in order to the data. If only one function is given it is applied to all the states/columns</p></li>
 <li><p><strong>states</strong> (<em>string</em><em> or </em><em>string list</em>) – The state ID numbers for which data should be extracted. List should be in order of calculation or if only one state is given then it will be used for all the calculations</p></li>
-<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>string</em><em>, </em><em>int list</em><em>, or </em><em>string list</em>) – The index of a column, the header of a column, a list of indexes, OR a list of headers of the column(s) that you want to apply calculations to</p></li>
+<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>string</em><em>, </em><em>int list</em><em>, or </em><em>string list</em>) – The index of a column, the header of a column, a list of indexes, OR a list of headers of the column(s) that you want to apply calculations to</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – Path to your ProCoDA metafile (must be tab-delimited)</p></li>
 <li><p><strong>headers</strong> (<em>string list</em>) – List of the desired header for each calculation, in order</p></li>
 <li><p><strong>out_name</strong> (<em>string</em>) – Desired name for the output file. Can include a relative path</p></li>
