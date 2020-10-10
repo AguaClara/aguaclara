@@ -4,7 +4,8 @@ Tests for the research package's ProCoDA parsing functions
 
 import unittest
 from aguaclara.research.procoda_parser import *
-import matplotlib.pyplot as plt
+from aguaclara.core.units import u
+# import matplotlib.pyplot as plt
 from matplotlib.testing.compare import *
 import matplotlib
 matplotlib.use("Agg")
@@ -53,6 +54,7 @@ class TestProCoDAParser(unittest.TestCase):
          2.04412961,   2.0158174 ,   2.00059986,   1.98546684,
          1.97646523,   1.96455812,   1.95887971,   1.94987118])*u('mg/L'), 5).tolist()
         )
+
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
         answer = column_of_data(path, 50, "red dye (mg/L)", units='mg/L')
         answer = np.round(answer, 5)
@@ -141,6 +143,7 @@ class TestProCoDAParser(unittest.TestCase):
          6.59709090e-03,   6.65494290e-03,   6.71281870e-03,
          6.77069570e-03,   6.82855640e-03,   6.88642010e-03])*u.day, 5).tolist()
         )
+
         answer = column_of_time(path, 50, end=60, units='hr')
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
@@ -260,14 +263,6 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertEqual(time, 0.5)
 
 
-    def test_time_column_index(self):
-        '''
-        Return the index of the lowest time in the column of times that is greater than or equal to the given time.
-        '''
-        index = time_column_index(time=0.75, time_column=[0.2, 0.4, 0.6, 0.8, 1])
-        self.assertEqual(index, 3)
-
-
     def test_data_from_dates(self):
         '''
         Return a list of DataFrames representing the ProCoDA data files stored in the given path and recorded on the given dates.
@@ -309,16 +304,17 @@ class TestProCoDAParser(unittest.TestCase):
         Extract the time column and a data column for each iteration of a state
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
-
+        
         output = get_data_by_state(path, dates="6-19-2013", state=1, column=1, extension=".xls")  # , "6-20-2013"
-
+        
         datafile = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
-                                   np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
+                                   np.round(pd.to_numeric(datafile.iloc[:, 1]), 
+                                   5)])
         start_time = time_and_data1[0, 0]
-
-        answer = [time_and_data1[:, 98:174], time_and_data1[:, 220:485], time_and_data1[:, 3039:3304],
-                  time_and_data1[:, 5858:6123], time_and_data1[:, 8677:8942], time_and_data1[:, 11496:11761],
+        answer = [time_and_data1[:, 98:175], time_and_data1[:, 220:485], 
+                  time_and_data1[:, 3039:3304], time_and_data1[:, 5858:6123], 
+                  time_and_data1[:, 8677:8942], time_and_data1[:, 11496:11761],
                   time_and_data1[:, 14315:14580]]
 
         for i in range(len(output)):
@@ -326,10 +322,7 @@ class TestProCoDAParser(unittest.TestCase):
             self.assertSequenceEqual([j[0] for j in output_i], [round(j-start_time, 5) for j in answer[i][0]])
             self.assertSequenceEqual([j[1] for j in output_i], [j for j in answer[i][1]])
 
-        print("above")
-        output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=2)
-        print("ospath" +os.path.dirname(__file__))
-        print("path is " + path)
+        # output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=2)
         # path = 'https://raw.githubusercontent.com/monroews/playing/master/ProCoDA_data'
         # output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=1, extension='.tsv')
         # print(output2)
@@ -437,63 +430,71 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_read_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
-        time, data = read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
-                                extension=".xls")
-        time = np.round(time, 5)
-        self.assertSequenceEqual(
-        time.tolist()[1000:1100],
-        np.round(
-        [0.10189837999999996, 0.10190995999999997, 0.10192152999999993,
-         0.10193310999999994, 0.10194468000000001, 0.10195624999999997,
-         0.10196782999999998, 0.10197939999999994, 0.10199097999999995,
-         0.10200254999999991, 0.10201412999999993, 0.1020257,
-         0.10203726999999996, 0.10204884999999997, 0.10206041999999993,
-         0.10207199999999994, 0.10208357000000001, 0.10209513999999997,
-         0.10210671999999998, 0.10211828999999994, 0.10212986999999996,
-         0.10214143999999992, 0.10215300999999999,
-         0.10216459, 0.10217615999999996, 0.10218773999999997,
-         0.10219930999999993, 0.10221088, 0.1022224599999999,
-         0.10223402999999998, 0.10224560999999999, 0.10225717999999995,
-         0.10226874999999991, 0.10228032999999992, 0.10229189999999999,
-         0.10230348, 0.10231504999999996, 0.10232662999999997,
-         0.10233819999999993, 0.10234977, 0.1023613499999999,
-         0.10237291999999998, 0.10238449999999999, 0.10239606999999995,
-         0.10240763999999991, 0.10241921999999992, 0.10243079,
-         0.10244237, 0.10245393999999997, 0.10246550999999993,
-         0.10247708999999994, 0.10248866000000001, 0.10250023999999991,
-         0.10251180999999998, 0.10252337999999994, 0.10253495999999995,
-         0.10254652999999991, 0.10255810999999992, 0.10256968,
-         0.10258124999999996, 0.10259282999999997, 0.10260439999999993,
-         0.10261597999999994, 0.10262755000000001, 0.10263912999999991,
-         0.10265069999999998, 0.10266226999999994, 0.10267384999999996,
-         0.10268541999999992, 0.10269699999999993, 0.10270857,
-         0.10272013999999996, 0.10273171999999997, 0.10274328999999993,
-         0.10275486999999994, 0.1027664399999999, 0.10277800999999998,
-         0.10278958999999999, 0.10280115999999995, 0.10281273999999996,
-         0.10282430999999992, 0.10283587999999999, 0.10284746,
-         0.10285902999999996, 0.10287060999999997, 0.10288229999999998,
-         0.10289375, 0.1029054399999999, 0.10291701999999991,
-         0.10292858999999999, 0.10294017, 0.10295162999999996,
-         0.10296330999999992, 0.10297488999999993, 0.10298646,
-         0.1029980399999999, 0.10300960999999997, 0.10302106999999994,
-         0.10303275999999995, 0.10304421999999991]*u.day, 5).tolist()
-        )
+        output_time, output_data = read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path, extension=".xls")
 
-        self.assertSequenceEqual(
-        data.tolist()[1000:1100],
-        [5.4209375*u.mL/u.s for number in range(100)]
-        )
+        df_day1 = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
+        df_day2 = pd.read_csv(path + "/datalog_6-20-2013.xls", delimiter='\t')
+
+        time_day1 = df_day1.iloc[:,0]
+        data_day1 = df_day1.iloc[:,28]
+        time_day2 = df_day2.iloc[:,0] + 1
+        data_day2 = df_day2.iloc[:,28]
+
+        answer_time = pd.concat([
+            time_day1[98:175], time_day1[220:485], time_day1[3039:3304],
+            time_day1[5858:6123], time_day1[8677:8942], time_day1[11496:11761],
+            time_day1[14315:14580],
+            time_day2[1442:1707], time_day2[4261:4526], time_day2[7080:7345], 
+            time_day2[9899:10164], time_day2[12718:12983], time_day2[36572:40549], 
+            time_day2[41660:41694], time_day2[41696:41698]
+            ]) - time_day1.iloc[0]
+
+        answer_data = pd.concat([
+            data_day1[98:175], data_day1[220:485], data_day1[3039:3304],
+            data_day1[5858:6123], data_day1[8677:8942], data_day1[11496:11761],
+            data_day1[14315:14580],
+            data_day2[1442:1707], data_day2[4261:4526], data_day2[7080:7345], 
+            data_day2[9899:10164], data_day2[12718:12983], data_day2[36572:40549], 
+            data_day2[41660:41694], data_day2[41696:41698]
+            ])
+
+        self.assertEqual(output_time.units, u.day)
+        self.assertSequenceEqual(list(output_time.magnitude), list(answer_time))
+        self.assertEqual(output_data.units, u.mL/u.s)
+        self.assertSequenceEqual(list(output_data.magnitude), list(answer_data))
+        
 
     def test_average_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
         avgs = average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
                              extension=".xls")
         avgs = np.round(avgs, 5)
-        self.assertSequenceEqual(
-        avgs.tolist(),
-        [5.5, 5.5, 5.5, 5.43125, 5.42094, 5.40908, 5.39544, 5.37976, 5.36172,
-        5.34098, 5.31712, 5.28969, 5.5, 5.5, 5.5]*u.mL/u.s
-        )
+        
+        df_day1 = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
+        df_day2 = pd.read_csv(path + "/datalog_6-20-2013.xls", delimiter='\t')
+        data_day1 = df_day1.iloc[:,28]
+        data_day2 = df_day2.iloc[:,28]
+
+        data_combined = [
+            data_day1[98:175], data_day1[220:485], data_day1[3039:3304],
+            data_day1[5858:6123], data_day1[8677:8942], data_day1[11496:11761],
+            data_day1[14315:14580],
+            data_day2[1442:1707], data_day2[4261:4526], data_day2[7080:7345], 
+            data_day2[9899:10164], data_day2[12718:12983], data_day2[36572:40549], 
+            data_day2[41660:41694], data_day2[41696:41698]
+            ]
+        
+        answer = [d.mean() for d in data_combined]
+        print(avgs)
+
+        self.assertEqual(avgs.units, u.mL/u.s)
+        self.assertSequenceEqual(avgs.magnitude.tolist(), answer)
+
+        # self.assertSequenceEqual(
+        # avgs.tolist(),
+        # [5.5, 5.5, 5.5, 5.43125, 5.42094, 5.40908, 5.39544, 5.37976, 5.36172,
+        # 5.34098, 5.31712, 5.28969, 5.5, 5.5, 5.5]*u.mL/u.s
+        # )
 
     def test_perform_function_on_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')

@@ -136,13 +136,18 @@ def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
         data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], dates='6-14-2018', start_time='12:20', end_time='23:59')
         data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], dates='6-14-2018')
     """
-    data = data_from_dates(path, dates, extension)
+    # the file path url is not acceptable (ie contains 'github.com')
+    if 'github.com' in path:
+        path = path.replace('github.com', 'raw.githubusercontent.com')
+        path = path.replace('blob/', '')
+
+    data = data_from_dates(path, dates, extension) # combine data from each date
 
     first_time_column = pd.to_numeric(data[0].iloc[:, 0])
     start = max(day_fraction(start_time), first_time_column[0])
-    start_idx = time_column_index(start, first_time_column)
-    end_idx = time_column_index(day_fraction(end_time),
-                                pd.to_numeric(data[-1].iloc[:, 0])) + 1
+    start_idx = (first_time_column >= start).idxmax()
+    end_idx = (pd.to_numeric(data[-1].iloc[:, 0]) >= 
+               day_fraction(end_time)).idxmax() + 1
 
     if isinstance(columns, int):
         return column_start_to_end(data, columns, start_idx, end_idx)
@@ -172,22 +177,6 @@ def day_fraction(time):
     hour = int(time.split(":")[0])
     minute = int(time.split(":")[1])
     return hour/24 + minute/1440
-
-
-def time_column_index(time, time_column):
-    """Return the index of the lowest time in the column of times that is greater
-    than or equal to the given time.
-
-    :param time: the time to index from the column of time; a day fraction
-    :type time: float
-    :param time_column: a list of times in day fractions, must be increasing and equally spaced
-    :type time_column: float list
-
-    :return: approximate index of the time from the column of times
-    :rtype: int
-    """
-    interval = time_column[1]-time_column[0]
-    return int(round((time - time_column[0])/interval + .5))
 
 
 def data_from_dates(path, dates, extension):
@@ -273,7 +262,6 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
 
         data = get_data_by_state(path='/Users/.../ProCoDA Data/', dates=["6-19-2013", "6-20-2013"], state=1, column=28)
     """
-
     # the file path url is not acceptable (ie contains 'github.com')
     if 'github.com' in path:
         path = path.replace('github.com', 'raw.githubusercontent.com')
@@ -315,16 +303,9 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
         # get the corresponding indices in the data array
         data_start = []
         data_end = []
-
         for i in range(np.size(state_start)):
-            add_start = True
-            for j in range(np.size(data[:, 0])):
-                if (data[j, 0] >= state_start[i]) and add_start:
-                    data_start.append(j)
-                    add_start = False
-                if data[j, 0] >= state_end[i]:
-                    data_end.append(j-1)
-                    break
+            data_start.append((data[:, 0] > state_start[i]).argmax())
+            data_end.append((data[:, 0] > state_end[i]).argmax()-1)
         if np.size(data_end) < np.size(data_start):
             data_end = np.append(data_end, -1)
 
@@ -454,72 +435,7 @@ def read_state(dates, state, column, units="", path="", extension=".tsv"):
 
         time, data = read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s")
     """
-    data_agg = []
-    day = 0
-    first_day = True
-    overnight = False
-
-    if not isinstance(dates, list):
-        dates = [dates]
-
-    for d in dates:
-        state_file = path + "statelog_" + d + extension
-        data_file = path + "datalog_" + d + extension
-
-        states = pd.read_csv(state_file, delimiter='\t')
-        data = pd.read_csv(data_file, delimiter='\t')
-
-        states = np.array(states)
-        data = np.array(data)
-
-        # get the start and end times for the state
-        state_start_idx = states[:, 1] == state
-        state_start = states[state_start_idx, 0]
-        state_end_idx = np.append([False], state_start_idx[0:(np.size(state_start_idx)-1)])
-        state_end = states[state_end_idx, 0]
-
-        if overnight:
-            state_start = np.insert(state_start, 0, 0)
-            state_end = np.insert(state_end, 0, states[0, 0])
-
-        if state_start_idx[-1]:
-            state_end.append(data[0, -1])
-
-        # get the corresponding indices in the data array
-        data_start = []
-        data_end = []
-        for i in range(np.size(state_start)):
-            add_start = True
-            for j in range(np.size(data[:, 0])):
-                if (data[j, 0] > state_start[i]) and add_start:
-                    data_start.append(j)
-                    add_start = False
-                if (data[j, 0] > state_end[i]):
-                    data_end.append(j-1)
-                    break
-
-        if first_day:
-            start_time = data[1, 0]
-
-        # extract data at those times
-        for i in range(np.size(data_start)):
-            t = data[data_start[i]:data_end[i], 0] + day - start_time
-            if isinstance(column, int):
-                c = data[data_start[i]:data_end[i], column]
-            else:
-                c = data[column][data_start[i]:data_end[i]]
-            if overnight and i == 0:
-                data_agg = np.insert(data_agg[-1], np.size(data_agg[-1][:, 0]),
-                                     np.vstack((t, c)).T)
-            else:
-                data_agg.append(np.vstack((t, c)).T)
-
-        day += 1
-        if first_day:
-            first_day = False
-        if state_start_idx[-1]:
-            overnight = True
-
+    data_agg = get_data_by_state(path, dates, state, column, extension)
     data_agg = np.vstack(data_agg)
     if units != "":
         return data_agg[:, 0]*u.day, data_agg[:, 1]*u(units)
@@ -556,69 +472,71 @@ def average_state(dates, state, column, units="", path="", extension=".tsv"):
         data_avgs = average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s")
 
     """
-    data_agg = []
-    day = 0
-    first_day = True
-    overnight = False
+    # data_agg = []
+    # day = 0
+    # first_day = True
+    # overnight = False
 
-    if not isinstance(dates, list):
-        dates = [dates]
+    # if not isinstance(dates, list):
+    #     dates = [dates]
 
-    for d in dates:
-        state_file = path + "statelog_" + d + extension
-        data_file = path + "datalog_" + d + extension
+    # for d in dates:
+    #     state_file = path + "statelog_" + d + extension
+    #     data_file = path + "datalog_" + d + extension
 
-        states = pd.read_csv(state_file, delimiter='\t')
-        data = pd.read_csv(data_file, delimiter='\t')
+    #     states = pd.read_csv(state_file, delimiter='\t')
+    #     data = pd.read_csv(data_file, delimiter='\t')
 
-        states = np.array(states)
-        data = np.array(data)
+    #     states = np.array(states)
+    #     data = np.array(data)
 
-        # get the start and end times for the state
-        state_start_idx = states[:, 1] == state
-        state_start = states[state_start_idx, 0]
-        state_end_idx = np.append([False], state_start_idx[0:(np.size(state_start_idx)-1)])
-        state_end = states[state_end_idx, 0]
+    #     # get the start and end times for the state
+    #     state_start_idx = states[:, 1] == state
+    #     state_start = states[state_start_idx, 0]
+    #     state_end_idx = np.append([False], state_start_idx[0:(np.size(state_start_idx)-1)])
+    #     state_end = states[state_end_idx, 0]
 
-        if overnight:
-            state_start = np.insert(state_start, 0, 0)
-            state_end = np.insert(state_end, 0, states[0, 0])
+    #     if overnight:
+    #         state_start = np.insert(state_start, 0, 0)
+    #         state_end = np.insert(state_end, 0, states[0, 0])
 
-        if state_start_idx[-1]:
-            state_end.append(data[0, -1])
+    #     if state_start_idx[-1]:
+    #         state_end.append(data[0, -1])
 
-        # get the corresponding indices in the data array
-        data_start = []
-        data_end = []
-        for i in range(np.size(state_start)):
-            add_start = True
-            for j in range(np.size(data[:, 0])):
-                if (data[j, 0] > state_start[i]) and add_start:
-                    data_start.append(j)
-                    add_start = False
-                if (data[j, 0] > state_end[i]):
-                    data_end.append(j-1)
-                    break
+    #     # get the corresponding indices in the data array
+    #     data_start = []
+    #     data_end = []
+    #     for i in range(np.size(state_start)):
+    #         add_start = True
+    #         for j in range(np.size(data[:, 0])):
+    #             if (data[j, 0] > state_start[i]) and add_start:
+    #                 data_start.append(j)
+    #                 add_start = False
+    #             if (data[j, 0] > state_end[i]):
+    #                 data_end.append(j-1)
+    #                 break
 
-        if first_day:
-            start_time = data[1, 0]
+    #     if first_day:
+    #         start_time = data[1, 0]
 
-        # extract data at those times
-        for i in range(np.size(data_start)):
-            if isinstance(column, int):
-                c = data[data_start[i]:data_end[i], column]
-            else:
-                c = data[column][data_start[i]:data_end[i]]
-            if overnight and i == 0:
-                data_agg = np.insert(data_agg[-1], np.size(data_agg[-1][:]), c)
-            else:
-                data_agg.append(c)
+    #     # extract data at those times
+    #     for i in range(np.size(data_start)):
+    #         if isinstance(column, int):
+    #             c = data[data_start[i]:data_end[i], column]
+    #         else:
+    #             c = data[column][data_start[i]:data_end[i]]
+    #         if overnight and i == 0:
+    #             data_agg = np.insert(data_agg[-1], np.size(data_agg[-1][:]), c)
+    #         else:
+    #             data_agg.append(c)
 
-        day += 1
-        if first_day:
-            first_day = False
-        if state_start_idx[-1]:
-            overnight = True
+    #     day += 1
+    #     if first_day:
+    #         first_day = False
+    #     if state_start_idx[-1]:
+    #         overnight = True
+
+    data_agg = get_data_by_state(path, dates, state, column, extension)
 
     averages = np.zeros(np.size(data_agg))
     for i in range(np.size(data_agg)):
