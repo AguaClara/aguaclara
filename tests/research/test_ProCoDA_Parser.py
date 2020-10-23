@@ -5,7 +5,6 @@ Tests for the research package's ProCoDA parsing functions
 import unittest
 from aguaclara.research.procoda_parser import *
 from aguaclara.core.units import u
-# import matplotlib.pyplot as plt
 from matplotlib.testing.compare import *
 import matplotlib
 matplotlib.use("Agg")
@@ -254,6 +253,15 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), time_column)
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
 
+        # MULTI COLUMN, TWO DAYS, WITH UNITS
+        output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
+                                  start_time="12:20", end_time="10:50", extension=".xls", units=['day', 'mg/L'])
+        time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
+        self.assertEqual(output[0].units, u.day)
+        self.assertSequenceEqual(np.round(output[0].magnitude, 5).tolist(), time_column)
+        self.assertEqual(output[1].units, u.mg/u.L)
+        self.assertSequenceEqual(np.round(output[1].magnitude, 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
+
 
     def test_day_fraction(self):
         '''
@@ -305,12 +313,12 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
         
+        # Local path
         output = get_data_by_state(path, dates="6-19-2013", state=1, column=1, extension=".xls")  # , "6-20-2013"
         
         datafile = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
-                                   np.round(pd.to_numeric(datafile.iloc[:, 1]), 
-                                   5)])
+                                   np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
         start_time = time_and_data1[0, 0]
         answer = [time_and_data1[:, 98:175], time_and_data1[:, 220:485], 
                   time_and_data1[:, 3039:3304], time_and_data1[:, 5858:6123], 
@@ -322,24 +330,21 @@ class TestProCoDAParser(unittest.TestCase):
             self.assertSequenceEqual([j[0] for j in output_i], [round(j-start_time, 5) for j in answer[i][0]])
             self.assertSequenceEqual([j[1] for j in output_i], [j for j in answer[i][1]])
 
-        # output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=2)
-        # path = 'https://raw.githubusercontent.com/monroews/playing/master/ProCoDA_data'
-        # output2 = get_data_by_state(path, dates="11-5-2019", state=1, column=1, extension='.tsv')
-        # print(output2)
-        # datafile2 = pd.read_csv(path + "/datalog_11-5-2019.tsv", delimiter='\t')
-        # time_and_data2 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
-        #                            np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
-        # start_time2 = time_and_data1[0, 0]
-        #
-        # answer2 = [time_and_data2[:, 98:175], time_and_data2[:, 220:485], time_and_data2[:, 3039:3304],
-        #           time_and_data2[:, 5858:6123], time_and_data2[:, 8677:8942], time_and_data2[:, 11496:11761],
-        #           time_and_data2[:, 14315:14580]]
-        #
-        # for i in range(len(output2)):
-        #     output_i2 = np.round(np.array(output[i]).astype(np.double), 5)
-        #     self.assertSequenceEqual([j[0] for j in output_i2], [round(j-start_time, 5) for j in answer[i][0]])
-        #     self.assertSequenceEqual([j[1] for j in output_i2], [j for j in answer[i][1]])
+        # Acceptable URL
+        url_acceptable = 'https://raw.githubusercontent.com/monroews/playing/master/ProCoDA_data'
+        output = get_data_by_state(url_acceptable, dates="11-5-2019", state=1, column=1, extension='.tsv')
+        answer = get_data_by_state(path, dates="11-5-2019", state=1, column=1, extension='.tsv')
 
+        for i in range(len(output)):
+            self.assertSequenceEqual([round(o, 5) for o in output[i][:,0]], [round(a, 5) for a in answer[i][:,0]])
+            self.assertSequenceEqual([round(o, 5) for o in output[i][:,1]], [round(a, 5) for a in answer[i][:,1]])
+        
+        # Github.com URL
+        url_github = 'https://github.com/monroews/playing/blob/master/ProCoDA_data'
+        output = get_data_by_state(url_github, dates="11-5-2019", state=1, column=1, extension='.tsv')
+        for i in range(len(output)):
+            self.assertSequenceEqual([round(o, 5) for o in output[i][:,0]], [round(a, 5) for a in answer[i][:,0]])
+            self.assertSequenceEqual([round(o, 5) for o in output[i][:,1]], [round(a, 5) for a in answer[i][:,1]])
 
 
     def test_plot_columns(self):
@@ -367,14 +372,14 @@ class TestProCoDAParser(unittest.TestCase):
         plt.figure()
         plot_columns(path=path, columns=[" State ID"])
         plt.savefig("Image5.png")
-        self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
+        self.assertEqual(None, compare_images("Image1.png", "Image5.png", 0))
 
         plt.figure()
         plot_columns(path=path, columns=[" State ID"], x_axis=" State ID")
         plt.savefig("Image6.png")
-        self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
+        self.assertEqual(None, compare_images("Image4.png", "Image6.png", 0))
 
-        self.assertRaisesRegexp(ValueError, 'columns must be a string or list of strings',
+        self.assertRaisesRegex(ValueError, 'columns must be a string or list of strings',
                                                         plot_columns, *(path, 9))
 
         os.remove("Image1.png")
@@ -410,14 +415,14 @@ class TestProCoDAParser(unittest.TestCase):
         plt.figure()
         iplot_columns(path=path, columns=[1])
         plt.savefig("Image5.png")
-        self.assertEquals(None, compare_images("Image1.png", "Image5.png", 0))
+        self.assertEqual(None, compare_images("Image1.png", "Image5.png", 0))
 
         plt.figure()
         iplot_columns(path=path, columns=[1], x_axis=1)
         plt.savefig("Image6.png")
-        self.assertEquals(None, compare_images("Image4.png", "Image6.png", 0))
+        self.assertEqual(None, compare_images("Image4.png", "Image6.png", 0))
 
-        self.assertRaisesRegexp(ValueError, 'columns must be an int or a list of ints',
+        self.assertRaisesRegex(ValueError, 'columns must be an int or a list of ints',
                                                     iplot_columns, *(path, ' State ID'))
 
         os.remove("Image1.png")
@@ -469,32 +474,12 @@ class TestProCoDAParser(unittest.TestCase):
         avgs = average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
                              extension=".xls")
         avgs = np.round(avgs, 5)
-        
-        df_day1 = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
-        df_day2 = pd.read_csv(path + "/datalog_6-20-2013.xls", delimiter='\t')
-        data_day1 = df_day1.iloc[:,28]
-        data_day2 = df_day2.iloc[:,28]
 
-        data_combined = [
-            data_day1[98:175], data_day1[220:485], data_day1[3039:3304],
-            data_day1[5858:6123], data_day1[8677:8942], data_day1[11496:11761],
-            data_day1[14315:14580],
-            data_day2[1442:1707], data_day2[4261:4526], data_day2[7080:7345], 
-            data_day2[9899:10164], data_day2[12718:12983], data_day2[36572:40549], 
-            data_day2[41660:41694], data_day2[41696:41698]
-            ]
-        
-        answer = [d.mean() for d in data_combined]
-        print(avgs)
-
-        self.assertEqual(avgs.units, u.mL/u.s)
-        self.assertSequenceEqual(avgs.magnitude.tolist(), answer)
-
-        # self.assertSequenceEqual(
-        # avgs.tolist(),
-        # [5.5, 5.5, 5.5, 5.43125, 5.42094, 5.40908, 5.39544, 5.37976, 5.36172,
-        # 5.34098, 5.31712, 5.28969, 5.5, 5.5, 5.5]*u.mL/u.s
-        # )
+        self.assertSequenceEqual(
+        avgs.tolist(),
+        [5.5, 5.5, 5.5, 5.43125, 5.42094, 5.40908, 5.39544, 5.37976, 5.36172,
+        5.34098, 5.31712, 5.28969, 5.5, 5.5, 5.5]*u.mL/u.s
+        )
 
     def test_perform_function_on_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
