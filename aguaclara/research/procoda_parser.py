@@ -889,13 +889,13 @@ def write_calculations_to_csv(funcs, states, columns, path, headers, out_name,
     output.to_csv(out_name, sep='\t')
 
     return output
-    
+
 
   def intersect(x, y1, y2):
     """Returns the intersections of two lines represented by a common set of x coordinates and
     two sets of y coordinates as three numpy arrays: the x coordinates of the intersections,
     the y coordinates of the intersections, and the indexes in x, y1, y2 immediately
-    before the intersections.
+    after the intersections.
 
     :param x: common set of x coordinates for the two lines
     :type x: numpy.ndarray
@@ -908,7 +908,7 @@ def write_calculations_to_csv(funcs, states, columns, path, headers, out_name,
 
     :return: x_points-numpy.ndarray of the x coordinates where intersections occur
     :return: y_points-numpy.ndarray of the y coordinates where intersections occur
-    :return: crossings-numpy.ndarray of the indexes where intersections occur
+    :return: crossings-numpy.ndarray of the indexes after the intersections occur
     """
     x_points = np.array([])
     y_points = np.array([])
