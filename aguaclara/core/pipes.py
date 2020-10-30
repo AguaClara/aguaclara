@@ -5,6 +5,8 @@ from aguaclara.core.units import u
 import aguaclara.core.utility as ut
 import numpy as np
 import pandas as pd
+from enum import Enum
+
 
 import os.path
 dir_path = os.path.dirname(__file__)
@@ -17,27 +19,115 @@ with open(csv_path) as pipedbfile:
 # a manifold calculation in sed_tank, and can also be transferred to pipeline
 # design code once manifold design code has been implemented.
 
-class Pipe:
+class SCH(Enum):
+    #labeled by column of this schedule's wall thickness (ex: SCH40Wall is column 5)
+    SCH40 = 'SCH40Wall' #5
+    SCH80 = 'SCH80Wall'#7
+    SCH120 = 'SCH120Wall'#9
+    SCH160 = 'SCH160Wall'#11
 
+
+class Pipe:
 
     def __init__(self, nd,sdr):
         self.nd= nd
         self.sdr = sdr
+        # print("ND "+nd)
 
     @property
     def od(self):
         index = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
         return pipedb.iloc[index, 1] * u.inch
 
+#pass in schedule as enum 
     @property
     def id_sdr(self):
         return (self.od.magnitude * (self.sdr - 2) / self.sdr) * u.inch
 
-    @property
-    def id_sch40(self):
-        myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
-        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])) * u.inch
+    # @property
+    def id_sch(self, schedule):
+        """ 
+        Return the inner diameter of this pipe, given the desired schedule
+        :param schedule: the schedule of the pipe (use SCH.SCH40, SCH.SCH80, etc)
 
+        :return: inner diameter of pipe
+        :rtype: u.inch
+        """
+        myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
+        thickness = pipedb.iloc[myindex][schedule.value]
+        if (thickness == 0): 
+            return schedule ^ "does not exist for this ND"
+        return (pipedb.iloc[myindex, 1] - 2 * (thickness)) * u.inch
+
+    def sch(self, NDarr=[], SCHarr=[]):
+        """ 
+        Return the nominal diameter and schedule that best fits this pipe's criteria and NDarr and SCHarr
+        :param NDarr: an array of preferred nominal diameters
+        :param SCHarr: an array of preferred schedules
+
+        :return: (nominal diameter, schedule) or "no matches"
+        :rtype: (u.inch, SCH) or string
+        """
+
+        #use NDarr and SCHarr values if specified
+        nds = ND_all_available() if (NDarr == []) else NDarr 
+        schs = [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr == []) else SCHarr 
+        minMatch = -1
+        for nd in nds:
+            # row = pipedb[nd == pipedb['NDinch']]
+            # print("here")
+            # print("nd", nd)
+            # print(pipedb)
+            # print("ndinch ", pipedb.loc[:,'NDinch'] )
+            # print("where ", np.where(pipedb.loc[:,'NDinch'] == nd/u.inch))
+            row = pipedb.loc[np.where(pipedb.loc[:,'NDinch'] == nd/u.inch)]
+            for sch in schs:
+                print("row odinch", row['ODinch'])
+                print("row",row)
+                print('row sch', row[sch.value])
+                sdr = row['ODinch']/row[sch.value]
+                print("sdr", sdr)
+                print("where", np.where(sdr.loc[:][:] <= self.sdr))
+                sdr = sdr.loc[sdr[:] <= self.sdr]
+                print("sdr2", sdr)
+
+                # if (sdr < self.sdr and sdr>minMatch): #smaller SDR can handle greater pressure
+                sdrmax = sdr.max()
+                if (sdrmax > minMatch):
+                    minMatch = sdr.max() 
+                    match = (nd, sch.name)
+                    print("tuple",(nd, sch.name))
+
+        return match if (minMatch != -1) else "no matches"
+
+
+
+def makePipe_ND_SDR(ND, SDR):
+    """Return a new pipe, given its ND (nominal diameter) and SDR (standard diameter ratio).
+
+    :param ND: nominal diameter of pipe
+    :param SDR: standard diameter ratio of pipe
+
+    :return: a pipe with the given ND and SDR
+    :rtype: Pipe
+    """
+    return Pipe(ND, SDR)
+
+def makePipe_minID_SDR(minID, SDR):
+    """Return a new pipe, given its minID (minimum inner diameter) and SDR (standard diameter ratio).
+
+    :param minID: minimum inner diameter of pipe
+    :param SDR: standard diameter ratio of pipe
+
+    :return: a pipe with SDR and ND calculated from given minID and SDR
+    :rtype: Pipe
+    """
+
+    # print("ND made "+str(ND_SDR_available(minID, SDR).magnitude))
+    # print('nd assigned')
+    # print(ND_SDR_available(minID, SDR))
+
+    return Pipe(ND_SDR_available(minID, SDR), SDR)
 
 @ut.list_handler()
 def OD(ND):
@@ -60,6 +150,20 @@ def OD(ND):
     ND = ND.to(u.inch).magnitude
     index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
     return pipedb.iloc[index, 1] * u.inch
+
+
+def OD_from_IDSDR(ID,SDR):
+    """ Return the minimum OD that is available given ID and SDR. 
+    1. calculate OD matching with ID and SDR.
+    2. find minimum OD available.
+    raises: ValueError is SDR is 2. 
+
+    ID is the inner diameter.
+    SDR is the outer diameter divided by the wall thickness.
+    """
+    if SDR == 2:
+        raise ValueError("SDR cannot be 2!")
+    return od_available((ID*SDR)/(SDR-2))
 
 
 @ut.list_handler()
@@ -143,6 +247,8 @@ def ND_SDR_available(ID, SDR):
     """
     for i in range(len(np.array(ID_SDR_all_available(SDR)))):
         if np.array(ID_SDR_all_available(SDR))[i] >= (ID.to(u.inch)).magnitude:
+            # print("ND AVAIL")
+            # print(ND_all_available()[i].magnitude)
             return ND_all_available()[i]
 
 
@@ -181,3 +287,32 @@ def socket_depth(nd):
 def cap_thickness(nd):
     cap_thickness = (fitting_od(nd) - OD(ND_available(nd))) / 2
     return cap_thickness
+
+
+
+
+""" TODO: Several updates can be made to core/pipes.py:
+
+1. A class and/or static method should be defined to convert ID and SDR to the minimum available OD. 
+   A class could ask for SDR and minimum ID in the constructor and include methods for available ID, ND, and OD. 
+   A static method could calculate OD from ID and SDR and use the existing od_available(od_guess) method, or calculate ND using ND_SDR_available(ID, SDR) and convert ND to OD.
+
+2. Method and method parameter names should be standardized. For example, ND_available(NDguess) and od_available(od_guess) have different formats.
+
+3. All methods and classes should be fully and properly documented. 
+   "Properly documented" means the descriptions should be accurate and include only information helpful to users 
+   (implementation instructions and internal variable names like pipedb would not be helpful).
+
+4. Functions ending in all_available can be made more efficient. 
+   For example, most of the computation in ND_all_available() can be implemented one-line conditional indexing: return pipedb['NDinch'][pipedb['Used'] == 1]. 
+
+5. Write test cases for each function
+
+"""
+
+
+
+"""
+added to pipe database for schedule 80, 120 and 160 using 
+https://www.engineersedge.com/pipe_schedules.htm#Related 
+"""
