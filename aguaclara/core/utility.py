@@ -9,11 +9,11 @@ Example:
     1230000
 """
 from aguaclara.core.units import u
-
 import numpy as np
 from math import log10, floor, ceil
 import warnings
 import functools
+
 
 def optional_units(arg_positions, keys):
     """Wrap a function so that arguments may optionally have units.
@@ -57,6 +57,7 @@ def optional_units(arg_positions, keys):
         return wrapper
     return decorator
 
+
 @optional_units([0], ['num'])
 def round_sig_figs(num, figs=4):
     """Round a number to some amount of significant figures.
@@ -72,6 +73,7 @@ def round_sig_figs(num, figs=4):
         num = np.round(num.magnitude, decimals) * num.units
 
     return num
+
 
 def round_sf(num, figs=4):
     """Round a number to some amount of significant figures.
@@ -230,90 +232,91 @@ def get_sdr(spec):
         raise ValueError('Not a valid SDR.')
     return int(spec[3:])
 
-def list_handler(HandlerResult="nparray"):
-    """Wraps a function to handle list inputs."""
+def list_handler():
+    """Wraps a scalar function to output a NumPy array if passed one or more inputs
+    as sequences (lists, tuples or NumPy arrays). For each sequence input, this
+    wrapper will recursively evaluate the function with the sequence replaced
+    by each of its elements and return the results in n-dimensional NumPy array,
+    where n is the number of sequence inputs.
+
+    For a function "f" of one argument, f([x_1, ..., x_n]) would be evaluated to
+    [f(x_1), ..., f(x_n)]. For a function passed multiple sequences of
+    dimensions d_1, ..., d_n (from left to right), the result would be a
+    d_1 x ... x d_n array.
+    """
     def decorate(func):
         @functools.wraps(func) # For Sphinx documentation of decorated functions
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element.
-
-            :param HandlerResult: output type. Defaults to numpy arrays.
             """
-            sequences = []
-            enumsUnitCheck = enumerate(args)
-            argsList = list(args)
-            #This for loop identifies pint unit objects and strips them
-            #of their units.
-            for num, arg in enumsUnitCheck:
-                if type(arg) == type(1 * u.m):
-                    argsList[num] = arg.to_base_units().magnitude
-            enumsUnitless = enumerate(argsList)
-            #This for loop identifies arguments that are sequences and
-            #adds their index location to the list 'sequences'.
-            for num, arg in enumsUnitless:
+            # Identify the first positional argument that is a sequence.
+            # Pint units must be ignored to include sequences with units.
+            argsFirstSequence = None
+            for num, arg in enumerate(args):  # args is a tuple
+                if isinstance(arg, u.Quantity):
+                    arg = arg.to_base_units().magnitude
                 if isinstance(arg, (list, tuple, np.ndarray)):
-                    sequences.append(num)
-            #If there are no sequences to iterate through, simply return
-            #the function.
-            if len(sequences) == 0:
-                result = func(*args, **kwargs)
-            else:
-                #iterant keeps track of how many times we've iterated and
-                #limiter stops the loop once we've iterated as many times
-                #as there are list elements. Without this check, a few
-                #erroneous runs will occur, appending the last couple values
-                #to the end of the list multiple times.
-                #
-                #We only care about the length of sequences[0] because this
-                #function is recursive, and sequences[0] is always the relevant
-                #sequences for any given run.
-                limiter = len(argsList[sequences[0]])
-                iterant = 0
+                    argsFirstSequence = num
+                    break
+            # Identify the first keyword argument that is a sequence.
+            kwargsFirstSequence = None
+            for keyword, arg in kwargs.items():  # kwargs is a dictionary
+                if isinstance(arg, u.Quantity):
+                    arg = arg.to_base_units().magnitude
+                if isinstance(arg, (list, tuple, np.ndarray)):
+                    kwargsFirstSequence = keyword
+                    break
+
+            # If there are no sequences, evaluate the function.
+            if argsFirstSequence is None and kwargsFirstSequence is None:
+                return func(*args, **kwargs)
+            # If there are sequences, iterate through them from left to right.
+            # This means beginning with positional arguments.
+            elif argsFirstSequence is not None:
                 result = []
-                for num in sequences:
-                    for arg in argsList[num]:
-                        if iterant >= limiter:
-                            break
-                        #We can safely replace the entire list argument
-                        #with a single element from it because of the looping
-                        #we're doing. We redefine the object, but that
-                        #definition remains within this namespace and does
-                        #not penetrate further up the function.
-                        argsList[num] = arg
-                        #Here we dive down the rabbit hole. This ends up
-                        #creating a multi-dimensional array shaped by the
-                        #sizes and shapes of the lists passed.
-                        result.append(wrapper(*argsList,
-                                              HandlerResult=HandlerResult, **kwargs))
-                        iterant += 1
-                #HandlerResult allows the user to specify what type to
-                #return the generated sequence as. It defaults to numpy
-                #arrays because functions tend to handle them better, but if
-                #the user does not wish to import numpy the base Python options
-                #are available to them.
-                if HandlerResult == "nparray":
-                    result = np.array(result)
-                elif HandlerResult == "tuple":
-                    result = tuple(result)
-                elif HandlerResult == "list":
-                    result == list(result)
-            return result
+                argsList = list(args)
+                # For each element of the leftmost sequence, evaluate the
+                # function with the sequence replaced by the single element.
+                # Store the results of all the elements in result.
+                for arg in argsList[argsFirstSequence]:
+                    # We can safely redefine the entire list argument because
+                    # the new definition remains within this namespace; it does
+                    # alter the loop or penetrate further up the function.
+                    argsList[argsFirstSequence] = arg
+                    # This recursive call creates a multi-dimensional array if
+                    # there are multiple sequence arguments.
+                    result.append(wrapper(*argsList, **kwargs))
+            # If there are no sequences in the positional arguments, iterate
+            # through those in the keyword arguments.
+            else:
+                result = []
+                for arg in kwargs[kwargsFirstSequence]:
+                    kwargs[kwargsFirstSequence] = arg
+                    result.append(wrapper(*args, **kwargs))
+
+            if isinstance(result[0], u.Quantity):
+                units = result[0].units
+                return np.array([r.magnitude for r in result]) * units
+            else:
+                return np.array(result)
+
         return wrapper
     return decorate
 
 
 def check_range(*args):
-    """
-    Check whether passed paramters fall within approved ranges.
+    """Check whether passed paramters fall within approved ranges.
 
     Does not return anything, but will raise an error if a parameter falls
     outside of its defined range.
 
     Input should be passed as an array of sequences, with each sequence
     having three elements:
+
         [0] is the value being checked,
         [1] is the range parameter(s) within which the value should fall, and
         [2] is the name of the parameter, for better error messages.
+
     If [2] is not supplied, "Input" will be appended as a generic name.
 
     Range requests that this function understands are listed in the

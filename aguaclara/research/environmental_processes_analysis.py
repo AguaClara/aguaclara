@@ -1,5 +1,6 @@
 from aguaclara.research.procoda_parser import *
 from aguaclara.core.units import u
+import aguaclara.core.utility as ut
 import pandas as pd
 import numpy as np
 from scipy import special
@@ -17,6 +18,7 @@ K_Henry_CO2 = 10**(-1.5) * u.mole/(u.L*u.atm)
 P_CO2 = 10**(-3.5) * u.atm
 
 
+@ut.list_handler()
 def invpH(pH):
     """Calculate inverse pH, i.e. hydronium ion concentration, given pH.
 
@@ -35,6 +37,7 @@ def invpH(pH):
     return 10**(-pH)*u.mol/u.L
 
 
+@ut.list_handler()
 def alpha0_carbonate(pH):
     """Calculate the fraction of total carbonates in carbonic acid form (H2CO3)
 
@@ -55,6 +58,7 @@ def alpha0_carbonate(pH):
     return alpha0_carbonate
 
 
+@ut.list_handler()
 def alpha1_carbonate(pH):
     """Calculate the fraction of total carbonates in bicarbonate form (HCO3-)
 
@@ -75,6 +79,7 @@ def alpha1_carbonate(pH):
     return alpha1_carbonate
 
 
+@ut.list_handler()
 def alpha2_carbonate(pH):
     """Calculate the fraction of total carbonates in carbonate form (CO3-2)
 
@@ -95,6 +100,7 @@ def alpha2_carbonate(pH):
     return alpha2_carbonate
 
 
+@ut.list_handler()
 def ANC_closed(pH, total_carbonates):
     """Calculate the acid neutralizing capacity (ANC) under a closed system
     in which no carbonates are exchanged with the atmosphere during the
@@ -120,6 +126,7 @@ def ANC_closed(pH, total_carbonates):
             1 * u.eq/u.mol * Kw/invpH(pH) - 1 * u.eq/u.mol * invpH(pH))
 
 
+@ut.list_handler()
 def ANC_open(pH):
     """Calculate the acid neutralizing capacity (ANC) calculated under an open
     system based on pH.
@@ -179,6 +186,7 @@ def aeration_data(DO_column, dirpath):
     return aeration_results
 
 
+@ut.list_handler()
 def O2_sat(P_air, temp):
     """Calculate saturaed oxygen concentration in mg/L for 278 K < T < 318 K
 
@@ -220,7 +228,7 @@ def Gran(data_file_path):
     df = pd.read_csv(data_file_path, delimiter='\t', header=5)
     V_t = np.array(pd.to_numeric(df.iloc[0:, 0]))*u.mL
     pH = np.array(pd.to_numeric(df.iloc[0:, 1]))
-    df = pd.read_csv(data_file_path, delimiter='\t', header=-1, nrows=5)
+    df = pd.read_csv(data_file_path, delimiter='\t', header=None, nrows=5)
     V_S = pd.to_numeric(df.iloc[0, 1])*u.mL
     N_t = pd.to_numeric(df.iloc[1, 1])*u.mole/u.L
     V_eq = pd.to_numeric(df.iloc[2, 1])*u.mL
