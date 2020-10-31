@@ -3,9 +3,12 @@ Tests for the research package's ProCoDA parsing functions
 """
 
 import unittest
-from aguaclara.research.procoda_parser import *
+import aguaclara.research.procoda_parser as pp
 from aguaclara.core.units import u
-from matplotlib.testing.compare import *
+import pandas as pd
+import numpy as np
+import os
+from matplotlib.testing.compare import compare_images
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -18,7 +21,7 @@ class TestProCoDAParser(unittest.TestCase):
         Extract other columns of data and append units.
         '''''
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
-        answer = column_of_data(path, 50, 1, units='mg/L')
+        answer = pp.column_of_data(path, 50, 1, units='mg/L')
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
         answer.tolist(),
@@ -55,7 +58,7 @@ class TestProCoDAParser(unittest.TestCase):
         )
 
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
-        answer = column_of_data(path, 50, "red dye (mg/L)", units='mg/L')
+        answer = pp.column_of_data(path, 50, "red dye (mg/L)", units='mg/L')
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
         answer.tolist(),
@@ -97,7 +100,7 @@ class TestProCoDAParser(unittest.TestCase):
         Extract the time column from a data file.
         '''''
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
-        answer = column_of_time(path, 50)
+        answer = pp.column_of_time(path, 50)
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
          answer.tolist(),
@@ -143,7 +146,7 @@ class TestProCoDAParser(unittest.TestCase):
          6.77069570e-03,   6.82855640e-03,   6.88642010e-03])*u.day, 5).tolist()
         )
 
-        answer = column_of_time(path, 50, end=60, units='hr')
+        answer = pp.column_of_time(path, 50, end=60, units='hr')
         answer = np.round(answer, 5)
         self.assertSequenceEqual(
          answer.tolist(),
@@ -159,7 +162,7 @@ class TestProCoDAParser(unittest.TestCase):
         Test function that extracts meta information from data file.
         '''''
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'example datalog.xls')
-        answer = notes(path)['Day fraction since midnight on ']
+        answer = pp.notes(path)['Day fraction since midnight on ']
         x = pd.DataFrame(index=[1, 29, 35],
                          columns=['Day fraction since midnight on ', 'red dye (mg/L)', 'Run Pump ()', 'Pump ()'])
         x.iloc[0][0] = 'Start'
@@ -176,7 +179,7 @@ class TestProCoDAParser(unittest.TestCase):
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
 
-        output = remove_notes(pd.read_csv(path + '/example datalog.xls', delimiter='\t'))
+        output = pp.remove_notes(pd.read_csv(path + '/example datalog.xls', delimiter='\t'))
 
         self.assertSequenceEqual(np.round(pd.to_numeric(output.iloc[:, 0]), 5).tolist(), np.round(np.array(
             [0.6842773323, 0.6843351954, 0.6843930789, 0.6844509555, 0.6845088278,
@@ -231,30 +234,31 @@ class TestProCoDAParser(unittest.TestCase):
         data_day2[0][0] = 0  # to remove scientific notation "e-"
 
         # SINGLE COLUMN, ONE DAY
-        output = get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20", end_time="13:00", extension=".xls")
+        output = pp.get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20", 
+                                  end_time="13:00", extension=".xls")
         self.assertSequenceEqual(np.round(output, 5).tolist(), data_day1[0][1041:1282])
 
         # SINGLE COLUMN, TWO DAYS
-        output = get_data_by_time(path=path, columns=0, dates=["6-14-2018", "6-15-2018"],
+        output = pp.get_data_by_time(path=path, columns=0, dates=["6-14-2018", "6-15-2018"],
                                   start_time="12:20", end_time="10:50", extension=".xls")
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output, 5).tolist(), time_column)
 
         # MULTI COLUMN, ONE DAY
-        output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018"], start_time="12:20",
+        output = pp.get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018"], start_time="12:20",
                                   end_time="13:00", extension=".xls")
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), data_day1[0][1041:1282])
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:1282])
 
         # MULTI COLUMN, TWO DAYS
-        output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
+        output = pp.get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
                                   start_time="12:20", end_time="10:50", extension=".xls")
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertSequenceEqual(np.round(output[0], 5).tolist(), time_column)
         self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
 
         # MULTI COLUMN, TWO DAYS, WITH UNITS
-        output = get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
+        output = pp.get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
                                   start_time="12:20", end_time="10:50", extension=".xls", units=['day', 'mg/L'])
         time_column = data_day1[0][1041:] + np.round(np.array(data_day2[0][:3901])+1, 5).tolist()
         self.assertEqual(output[0].units, u.day)
@@ -262,12 +266,35 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertEqual(output[1].units, u.mg/u.L)
         self.assertSequenceEqual(np.round(output[1].magnitude, 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
 
+        ######## WITH ELAPSED TIME ########
+        start = pp.day_fraction("12:20")
+        data_day1 = pd.read_csv(path + '/datalog_6-14-2018.xls', delimiter='\t')
+        data_day1 = [np.round(pd.to_numeric(data_day1.iloc[:, 0]) - start, 5).tolist(),
+                     np.round(pd.to_numeric(data_day1.iloc[:, 4]), 5).tolist()]
+
+        data_day2 = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
+        data_day2.iloc[0,0] = 0  # to remove scientific notation "e-"
+        data_day2 = [np.round(pd.to_numeric(data_day2.iloc[:, 0]) - start + 1, 5).tolist(), 
+                     np.round(pd.to_numeric(data_day2.iloc[:, 4]), 5).tolist()]
+                     
+        #  SINGLE COLUMN, ONE DAY
+        output = pp.get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20",
+                                  end_time="13:00", extension=".xls", elapsed=True)
+        self.assertSequenceEqual(np.round(output, 5).tolist(), data_day1[0][1041:1282])
+
+         # MULTI COLUMN, TWO DAYS
+        output = pp.get_data_by_time(path=path, columns=[0, 4], dates=["6-14-2018", "6-15-2018"],
+                                  start_time="12:20", end_time="10:50", extension=".xls",
+                                  elapsed=True)
+        self.assertSequenceEqual(np.round(output[0], 5).tolist(), data_day1[0][1041:]+data_day2[0][:3901])
+        self.assertSequenceEqual(np.round(output[1], 5).tolist(), data_day1[1][1041:]+data_day2[1][:3901])
+
 
     def test_day_fraction(self):
         '''
         Converts time into a fraction of the day
         '''
-        time = day_fraction(time="12:00")
+        time = pp.day_fraction(time="12:00")
         self.assertEqual(time, 0.5)
 
 
@@ -278,7 +305,7 @@ class TestProCoDAParser(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
         dataFromPath = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
 
-        getDataFromDates = data_from_dates(path=path, dates='6-15-2018', extension=".xls")[0]
+        getDataFromDates = pp.data_from_dates(path=path, dates='6-15-2018', extension=".xls")[0]
 
         self.assertTrue(getDataFromDates.equals(dataFromPath))
 
@@ -291,7 +318,7 @@ class TestProCoDAParser(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
         data_manual1 = pd.read_csv(path + '/datalog_6-14-2018.xls', delimiter='\t')
 
-        getColData1 = column_start_to_end(data=[data_manual1], column=1, start_idx=2, end_idx=7)
+        getColData1 = pp.column_start_to_end(data=[data_manual1], column=1, start_idx=2, end_idx=7)
         compareColData1 = [-4.34825945, -2.3821919, -2.57200098, -2.40549088,
             -1.00214481]
         self.assertSequenceEqual(getColData1, compareColData1)
@@ -300,7 +327,7 @@ class TestProCoDAParser(unittest.TestCase):
         data_manual2 = pd.read_csv(path + '/datalog_6-16-2018.xls', delimiter='\t')
         data_manual3 = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
 
-        getColData2 = column_start_to_end([data_manual1, data_manual2, data_manual3],
+        getColData2 = pp.column_start_to_end([data_manual1, data_manual2, data_manual3],
             column=2, start_idx=5238, end_idx=2)
         compareColData2 = [24.26625443, 24.2669487, 24.26613235, 24.26708603,
             24.26683617, 24.26708603, 24.26683617]
@@ -314,7 +341,7 @@ class TestProCoDAParser(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
         
         # Local path
-        output = get_data_by_state(path, dates="6-19-2013", state=1, column=1, extension=".xls")  # , "6-20-2013"
+        output = pp.get_data_by_state(path, dates="6-19-2013", state=1, column=1, extension=".xls")  # , "6-20-2013"
         
         datafile = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
@@ -332,16 +359,23 @@ class TestProCoDAParser(unittest.TestCase):
 
         # Acceptable URL
         url_acceptable = 'https://raw.githubusercontent.com/monroews/playing/master/ProCoDA_data'
-        output = get_data_by_state(url_acceptable, dates="11-5-2019", state=1, column=1, extension='.tsv')
-        answer = get_data_by_state(path, dates="11-5-2019", state=1, column=1, extension='.tsv')
+        output = pp.get_data_by_state(url_acceptable, dates="11-5-2019", state=1, column=1, extension='.tsv')
+        answer = pp.get_data_by_state(path, dates="11-5-2019", state=1, column=1, extension='.tsv')
 
         for i in range(len(output)):
             self.assertSequenceEqual([round(o, 5) for o in output[i][:,0]], [round(a, 5) for a in answer[i][:,0]])
             self.assertSequenceEqual([round(o, 5) for o in output[i][:,1]], [round(a, 5) for a in answer[i][:,1]])
         
-        # Github.com URL
+        # Github.com URL (blob)
         url_github = 'https://github.com/monroews/playing/blob/master/ProCoDA_data'
-        output = get_data_by_state(url_github, dates="11-5-2019", state=1, column=1, extension='.tsv')
+        output = pp.get_data_by_state(url_github, dates="11-5-2019", state=1, column=1, extension='.tsv')
+        for i in range(len(output)):
+            self.assertSequenceEqual([round(o, 5) for o in output[i][:,0]], [round(a, 5) for a in answer[i][:,0]])
+            self.assertSequenceEqual([round(o, 5) for o in output[i][:,1]], [round(a, 5) for a in answer[i][:,1]])
+
+         # Github.com URL (tree)
+        url_github = 'https://github.com/monroews/playing/tree/master/ProCoDA_data'
+        output = pp.get_data_by_state(url_github, dates="11-5-2019", state=1, column=1, extension='.tsv')
         for i in range(len(output)):
             self.assertSequenceEqual([round(o, 5) for o in output[i][:,0]], [round(a, 5) for a in answer[i][:,0]])
             self.assertSequenceEqual([round(o, 5) for o in output[i][:,1]], [round(a, 5) for a in answer[i][:,1]])
@@ -354,7 +388,7 @@ class TestProCoDAParser(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog_6-14-2018.xls'
 
         plt.figure()
-        plot_columns(path=path, columns=" State ID")
+        pp.plot_columns(path=path, columns=" State ID")
         plt.savefig("Image1.png")
         plt.figure()
         plt.plot([0,1,0,1,2])
@@ -362,7 +396,7 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
 
         plt.figure()
-        plot_columns(path=path, columns=" State ID", x_axis=" State ID")
+        pp.plot_columns(path=path, columns=" State ID", x_axis=" State ID")
         plt.savefig("Image3.png")
         plt.figure()
         plt.plot([0,1,0,1,2], [0,1,0,1,2])
@@ -370,17 +404,17 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
 
         plt.figure()
-        plot_columns(path=path, columns=[" State ID"])
+        pp.plot_columns(path=path, columns=[" State ID"])
         plt.savefig("Image5.png")
         self.assertEqual(None, compare_images("Image1.png", "Image5.png", 0))
 
         plt.figure()
-        plot_columns(path=path, columns=[" State ID"], x_axis=" State ID")
+        pp.plot_columns(path=path, columns=[" State ID"], x_axis=" State ID")
         plt.savefig("Image6.png")
         self.assertEqual(None, compare_images("Image4.png", "Image6.png", 0))
 
         self.assertRaisesRegex(ValueError, 'columns must be a string or list of strings',
-                                                        plot_columns, *(path, 9))
+                                                        pp.plot_columns, *(path, 9))
 
         os.remove("Image1.png")
         os.remove("Image2.png")
@@ -397,7 +431,7 @@ class TestProCoDAParser(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), '.', 'data') + '/statelog_6-14-2018.xls'
 
         plt.figure()
-        iplot_columns(path=path, columns=1)
+        pp.iplot_columns(path=path, columns=1)
         plt.savefig("Image1.png")
         plt.figure()
         plt.plot([0,1,0,1,2])
@@ -405,7 +439,7 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertEqual(None, compare_images("Image2.png", "Image1.png", 0))
 
         plt.figure()
-        iplot_columns(path=path, columns=1, x_axis=1)
+        pp.iplot_columns(path=path, columns=1, x_axis=1)
         plt.savefig("Image3.png")
         plt.figure()
         plt.plot([0,1,0,1,2], [0,1,0,1,2])
@@ -413,17 +447,17 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertEqual(None, compare_images("Image4.png", "Image3.png", 0))
 
         plt.figure()
-        iplot_columns(path=path, columns=[1])
+        pp.iplot_columns(path=path, columns=[1])
         plt.savefig("Image5.png")
         self.assertEqual(None, compare_images("Image1.png", "Image5.png", 0))
 
         plt.figure()
-        iplot_columns(path=path, columns=[1], x_axis=1)
+        pp.iplot_columns(path=path, columns=[1], x_axis=1)
         plt.savefig("Image6.png")
         self.assertEqual(None, compare_images("Image4.png", "Image6.png", 0))
 
         self.assertRaisesRegex(ValueError, 'columns must be an int or a list of ints',
-                                                    iplot_columns, *(path, ' State ID'))
+                                                    pp.iplot_columns, *(path, ' State ID'))
 
         os.remove("Image1.png")
         os.remove("Image2.png")
@@ -435,7 +469,7 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_read_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
-        output_time, output_data = read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path, extension=".xls")
+        output_time, output_data = pp.read_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path, extension=".xls")
 
         df_day1 = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
         df_day2 = pd.read_csv(path + "/datalog_6-20-2013.xls", delimiter='\t')
@@ -471,7 +505,7 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_average_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
-        avgs = average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
+        avgs = pp.average_state(["6-19-2013", "6-20-2013"], 1, 28, "mL/s", path,
                              extension=".xls")
         avgs = np.round(avgs, 5)
 
@@ -492,7 +526,7 @@ class TestProCoDAParser(unittest.TestCase):
 
             return acc / num
 
-        avgs = perform_function_on_state(avg_with_units,
+        avgs = pp.perform_function_on_state(avg_with_units,
                                          ["6-19-2013", "6-20-2013"], 1, 28,
                                          "mL/s", path, extension=".xls")
         avgs = np.round(avgs, 5)
@@ -513,7 +547,7 @@ class TestProCoDAParser(unittest.TestCase):
 
             return acc / num
 
-        ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], ".xls", "mg/L")
+        ids, answer = pp.read_state_with_metafile(avg_with_units, 1, 28, path, [], ".xls", "mg/L")
 
         self.assertSequenceEqual(["1", "2"], ids.tolist())
         self.assertSequenceEqual([5.445427082723495, 5.459751965314751]*u.mg/u.L, answer)
@@ -530,7 +564,7 @@ class TestProCoDAParser(unittest.TestCase):
 
             return acc / num
 
-        output = write_calculations_to_csv(avg_with_units, 1, 28, path,
+        output = pp.write_calculations_to_csv(avg_with_units, 1, 28, path,
                                            ["Average Conc (mg/L)"], out_path,
                                            extension=".xls")
 

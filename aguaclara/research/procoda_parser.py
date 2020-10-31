@@ -217,6 +217,7 @@ def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
     if 'github.com' in path:
         path = path.replace('github.com', 'raw.githubusercontent.com')
         path = path.replace('blob/', '')
+        path = path.replace('tree/', '')
 
     data = data_from_dates(path, dates, extension) # combine data from each date
 
@@ -227,15 +228,24 @@ def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
                day_fraction(end_time)).idxmax() + 1
 
     if isinstance(columns, int):
-        return column_start_to_end(data, columns, start_idx, end_idx)*u(units)
+        if columns == 0 and elapsed:
+            col = column_start_to_end(data, columns, start_idx, end_idx)
+            result = list(np.subtract(col, start))*u(units)
+        else:
+            result = column_start_to_end(data, columns, start_idx, end_idx)*u(units)
     else: # columns is a list
         if units == '':
             units = ['']*len(columns)
         result = []
         i = 0
         for c in columns:
-            result.append((column_start_to_end(data, c, start_idx, end_idx))*u(units[i]))
+            if c == 0 and elapsed:
+                col = column_start_to_end(data, c, start_idx, end_idx)
+                result.append(list(np.subtract(col, start))*u(units[i]))
+            else:
+                result.append(column_start_to_end(data, c, start_idx, end_idx)*u(units[i]))
             i += 1
+
     return result
 
 
@@ -309,7 +319,9 @@ def column_start_to_end(data, column, start_idx, end_idx):
         for i in range(1, len(data)-1):
             data[i].iloc[0, 0] = 0
             result += list(pd.to_numeric(data[i].iloc[:, column]) +
-                      (i if column == 0 else 0))
+                      (i if column == 0 else 0)) 
+                      # assuming DataFrames are for consecutive days, add number of 
+                      # DataFrame if dealing with the time column (column 0)
         data[-1].iloc[0, 0] = 0
         result += list(pd.to_numeric(data[-1].iloc[:end_idx, column]) +
                   (len(data)-1 if column == 0 else 0))
@@ -348,6 +360,7 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
     if 'github.com' in path:
         path = path.replace('github.com', 'raw.githubusercontent.com')
         path = path.replace('blob/', '')
+        path = path.replace('tree/', '')
 
     data_agg = []
     day = 0
