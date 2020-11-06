@@ -39,12 +39,10 @@ class Pipe:
         index = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
         return pipedb.iloc[index, 1] * u.inch
 
-#pass in schedule as enum 
     @property
     def id_sdr(self):
         return (self.od.magnitude * (self.sdr - 2) / self.sdr) * u.inch
 
-    # @property
     def id_sch(self, schedule):
         """ 
         Return the inner diameter of this pipe, given the desired schedule
@@ -69,36 +67,57 @@ class Pipe:
         :rtype: (u.inch, SCH) or string
         """
 
-        #use NDarr and SCHarr values if specified
-        nds = ND_all_available() if (NDarr == []) else NDarr 
-        schs = [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr == []) else SCHarr 
-        minMatch = -1
-        for nd in nds:
-            # row = pipedb[nd == pipedb['NDinch']]
-            # print("here")
-            # print("nd", nd)
-            # print(pipedb)
-            # print("ndinch ", pipedb.loc[:,'NDinch'] )
-            # print("where ", np.where(pipedb.loc[:,'NDinch'] == nd/u.inch))
-            row = pipedb.loc[np.where(pipedb.loc[:,'NDinch'] == nd/u.inch)]
-            for sch in schs:
-                print("row odinch", row['ODinch'])
-                print("row",row)
-                print('row sch', row[sch.value])
-                sdr = row['ODinch']/row[sch.value]
-                print("sdr", sdr)
-                print("where", np.where(sdr.loc[:][:] <= self.sdr))
-                sdr = sdr.loc[sdr[:] <= self.sdr]
-                print("sdr2", sdr)
+        available = sch_all_available(self.id_sdr, self.sdr, NDarr, SCHarr)
+        if available==[]:
+            return "no schedules fit"
+        return available[min(available)[0]==available[0]][1:]
+        
 
-                # if (sdr < self.sdr and sdr>minMatch): #smaller SDR can handle greater pressure
-                sdrmax = sdr.max()
-                if (sdrmax > minMatch):
-                    minMatch = sdr.max() 
-                    match = (nd, sch.name)
-                    print("tuple",(nd, sch.name))
+def sch_all_available(minID, maxSDR, NDarr=[], SCHarr=[]):
+    """
+    Returns a list of tuples (inner diameter, nominal diameter, schedule) representing schedule pipes that fit the criteria. 
+    Meeting criteria means: has at least minID, has at most maxSDR, and whose ND and/or SCH are in NDarr and SCHarr respectively. 
+    """
+    #loop through all nd and sch available. 
+    #If find a pipe whose SDR is \le the requirement (smaller SDR=handle more pressure) 
+    # and whose inner diameter is \ge the id_sdr, 
+    # put it in a list. Send back that list. 
 
-        return match if (minMatch != -1) else "no matches"
+    #look through array if given, else look through the whole list
+    nds = (ND_all_available() if (NDarr == []) else NDarr).magnitude
+    schs = [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr == []) else SCHarr 
+
+    # print("nds",nds)
+
+    allschs = []
+    rows = []
+    for i in range(len(pipedb['NDinch'])):
+        # print("row " + str(i), pipedb.iloc[i,:])
+        # print(pipedb.iloc[i, 4] == 1)
+        # print(pipedb.iloc[i]['NDinch'] in nds)
+        if pipedb.iloc[i, 4] == 1 and pipedb.iloc[i]['NDinch'] in nds:
+            # print(str(i) + "made it inside")
+            rows.append((pipedb.iloc[i]))
+    # print('rows', rows)
+
+    for row in rows:
+        # print("nd row",row)
+        for sch in schs:
+
+            od = row['ODinch']
+            t = row[sch.value]
+            sdr = od/t
+            id = od - t
+
+            # print("sch", sch)
+            # print("id and minid",id, minID)
+
+            # print(id >= minID.magnitude)
+            # print(sdr <= maxSDR)
+            if (id >= minID.magnitude and sdr <= maxSDR):
+                allschs.append((id,row['NDinch']*u.inch, sch.name))
+    # print(allschs)
+    return allschs
 
 
 

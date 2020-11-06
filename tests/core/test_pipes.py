@@ -61,6 +61,7 @@ class TestPipes(unittest.TestCase):
         self.assertAlmostEqual(pipe.id_sdr, .824 * u.inch)
         self.assertAlmostEqual(pipe.id_sch(pipes.SCH.SCH40), .824 * u.inch)
         self.assertAlmostEqual(pipe.id_sch(pipes.SCH.SCH80), .742 * u.inch)
+        
 
         #used=0, does not match with sched40 ID
         pipe2 = pipes.makePipe_minID_SDR(.8*u.inch,5)
@@ -68,10 +69,7 @@ class TestPipes(unittest.TestCase):
         self.assertAlmostEqual(pipe2.id_sdr, 1.14 * u.inch)
         self.assertAlmostEqual(pipe2.id_sch(pipes.SCH.SCH40), 1.61 * u.inch)
         self.assertAlmostEqual(pipe2.id_sch(pipes.SCH.SCH80), 1.5 * u.inch)
-
-    # def test(self):
-    #     pipe_df = pd.read_csv(os.path.join(
-    #         os.path.dirname(__file__),
-    #         '../../aguaclara/core/data/pipe_database.csv'
-    #     ))
-    #     print("HEREEEE!!!!!!!!!" + pipe_df.iloc[1, 9].astype(str))
+        print("nd", pipe2.nd)
+        print("id", pipe2.id_sdr)
+        print("sdr", pipe2.sdr)
+        self.assertEqual(pipe2.sch(), (.5*u.inch, (pipes.SCH.SCH160.name)))
