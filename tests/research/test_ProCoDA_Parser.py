@@ -234,7 +234,7 @@ class TestProCoDAParser(unittest.TestCase):
         data_day2[0][0] = 0  # to remove scientific notation "e-"
 
         # SINGLE COLUMN, ONE DAY
-        output = pp.get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20", 
+        output = pp.get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20",
                                   end_time="13:00", extension=".xls")
         self.assertSequenceEqual(np.round(output, 5).tolist(), data_day1[0][1041:1282])
 
@@ -274,9 +274,9 @@ class TestProCoDAParser(unittest.TestCase):
 
         data_day2 = pd.read_csv(path + '/datalog_6-15-2018.xls', delimiter='\t')
         data_day2.iloc[0,0] = 0  # to remove scientific notation "e-"
-        data_day2 = [np.round(pd.to_numeric(data_day2.iloc[:, 0]) - start + 1, 5).tolist(), 
+        data_day2 = [np.round(pd.to_numeric(data_day2.iloc[:, 0]) - start + 1, 5).tolist(),
                      np.round(pd.to_numeric(data_day2.iloc[:, 4]), 5).tolist()]
-                     
+
         #  SINGLE COLUMN, ONE DAY
         output = pp.get_data_by_time(path=path, columns=0, dates="6-14-2018", start_time="12:20",
                                   end_time="13:00", extension=".xls", elapsed=True)
@@ -339,16 +339,16 @@ class TestProCoDAParser(unittest.TestCase):
         Extract the time column and a data column for each iteration of a state
         '''
         path = os.path.join(os.path.dirname(__file__), '.', 'data')
-        
+
         # Local path
         output = pp.get_data_by_state(path, dates="6-19-2013", state=1, column=1, extension=".xls")  # , "6-20-2013"
-        
+
         datafile = pd.read_csv(path + "/datalog_6-19-2013.xls", delimiter='\t')
         time_and_data1 = np.array([pd.to_numeric(datafile.iloc[:, 0]),
                                    np.round(pd.to_numeric(datafile.iloc[:, 1]), 5)])
         start_time = time_and_data1[0, 0]
-        answer = [time_and_data1[:, 98:175], time_and_data1[:, 220:485], 
-                  time_and_data1[:, 3039:3304], time_and_data1[:, 5858:6123], 
+        answer = [time_and_data1[:, 98:175], time_and_data1[:, 220:485],
+                  time_and_data1[:, 3039:3304], time_and_data1[:, 5858:6123],
                   time_and_data1[:, 8677:8942], time_and_data1[:, 11496:11761],
                   time_and_data1[:, 14315:14580]]
 
@@ -365,7 +365,7 @@ class TestProCoDAParser(unittest.TestCase):
         for i in range(len(output)):
             self.assertSequenceEqual([round(o, 5) for o in output[i][:,0]], [round(a, 5) for a in answer[i][:,0]])
             self.assertSequenceEqual([round(o, 5) for o in output[i][:,1]], [round(a, 5) for a in answer[i][:,1]])
-        
+
         # Github.com URL (blob)
         url_github = 'https://github.com/monroews/playing/blob/master/ProCoDA_data'
         output = pp.get_data_by_state(url_github, dates="11-5-2019", state=1, column=1, extension='.tsv')
@@ -483,8 +483,8 @@ class TestProCoDAParser(unittest.TestCase):
             time_day1[98:175], time_day1[220:485], time_day1[3039:3304],
             time_day1[5858:6123], time_day1[8677:8942], time_day1[11496:11761],
             time_day1[14315:14580],
-            time_day2[1442:1707], time_day2[4261:4526], time_day2[7080:7345], 
-            time_day2[9899:10164], time_day2[12718:12983], time_day2[36572:40549], 
+            time_day2[1442:1707], time_day2[4261:4526], time_day2[7080:7345],
+            time_day2[9899:10164], time_day2[12718:12983], time_day2[36572:40549],
             time_day2[41660:41694], time_day2[41696:41698]
             ]) - time_day1.iloc[0]
 
@@ -492,8 +492,8 @@ class TestProCoDAParser(unittest.TestCase):
             data_day1[98:175], data_day1[220:485], data_day1[3039:3304],
             data_day1[5858:6123], data_day1[8677:8942], data_day1[11496:11761],
             data_day1[14315:14580],
-            data_day2[1442:1707], data_day2[4261:4526], data_day2[7080:7345], 
-            data_day2[9899:10164], data_day2[12718:12983], data_day2[36572:40549], 
+            data_day2[1442:1707], data_day2[4261:4526], data_day2[7080:7345],
+            data_day2[9899:10164], data_day2[12718:12983], data_day2[36572:40549],
             data_day2[41660:41694], data_day2[41696:41698]
             ])
 
@@ -501,7 +501,7 @@ class TestProCoDAParser(unittest.TestCase):
         self.assertSequenceEqual(list(output_time.magnitude), list(answer_time))
         self.assertEqual(output_data.units, u.mL/u.s)
         self.assertSequenceEqual(list(output_data.magnitude), list(answer_data))
-        
+
 
     def test_average_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
@@ -575,36 +575,46 @@ class TestProCoDAParser(unittest.TestCase):
 
     def test_intersect(self):
         #tests one crossing
-        x = [1,2,3]
-        y1 = [2,6,8]
-        y2 = [6,2,3]
-        output = intersect(x, y1, y2)
-        self.assertSequenceEqual(np.array[1.5], np.array[4], np.array[1], output)
+        x = np.array([1,2,3])
+        y1 = np.array([2,6,8])
+        y2 = np.array([6,2,3])
+        output = pp.intersect(x, y1, y2)
+        expected = (np.array([1.5]), np.array([4]), np.array([1]))
+        for i in range(len(expected)):
+            self.assertSequenceEqual(list(expected[i]), list(output[i]))
 
         #tests two crossings
-        x = [1,2,3,4,5,6]
-        y1 = [2,6,8,4,1]
-        y2 = [6,2,3,7,6]
-        output= intersect(x,y1,y2)
-        self.assertSequenceEqual(np.array[1.5, 3.625], np.array[4, 5.5], np.array[1, 3], output)
+        x = np.array([1,2,3,4,5,6])
+        y1 = np.array([2,6,8,4,1])
+        y2 = np.array([6,2,3,7,6])
+        output = pp.intersect(x,y1,y2)
+        expected = (np.array([1.5, 3.625]), np.array([4, 5.5]), np.array([1, 3]))
+        for i in range(len(expected)):
+            self.assertSequenceEqual(list(expected[i]), list(output[i]))
 
         #tests parallel lines
-        x = [1,2,3,4]
-        y1 = [3,5,7,9]
-        y2 = [5,7,9,11]
-        output= intersect(x,y1,y2)
-        self.assertSequenceEqual(np.array([]), np.array([]), np.array([]), output)
+        x = np.array([1,2,3,4])
+        y1 = np.array([3,5,7,9])
+        y2 = np.array([5,7,9,11])
+        output = pp.intersect(x,y1,y2)
+        expected = (np.array([]), np.array([]), np.array([]))
+        for i in range(len(expected)):
+            self.assertSequenceEqual(list(expected[i]), list(output[i]))
 
         #tests equal and crossing
-        x = [-2,-1,0,1,2]
-        y1 = [2,1,0,-1,-2]
-        y2 = [-2,-1,0,1,2]
-        output= intersect(x,y1,y2)
-        self.assertSequenceEqual(np.array[-0, -0], np.array[0, 0], np.array[2, 3], output)
+        x = np.array([-2,-1,0,1,2])
+        y1 = np.array([2,1,0,-1,-2])
+        y2 = np.array([-2,-1,0,1,2])
+        output = pp.intersect(x,y1,y2)
+        expected = (np.array([-0, -0]), np.array([0, 0]), np.array([2, 3]))
+        for i in range(len(expected)):
+            self.assertSequenceEqual(list(expected[i]), list(output[i]))
 
         #tests equal and not crossing
-        x = [0,1,2,3,4]
-        y1 = [4,4,4,4,4]
-        y2 = [3,4,3,0,-5]
-        output= intersect(x,y1,y2)
-        self.assertSequenceEqual(np.array[1, 1], np.array[4, 4], np.array[1, 2], output)
+        x = np.array([0,1,2,3,4])
+        y1 = np.array([4,4,4,4,4])
+        y2 = np.array([3,4,3,0,-5])
+        output = pp.intersect(x,y1,y2)
+        expected = (np.array([1, 1]), np.array([4, 4]), np.array([1, 2]))
+        for i in range(len(expected)):
+            self.assertSequenceEqual(list(expected[i]), list(output[i]))
