@@ -10,6 +10,7 @@ urllib3 = "*"
 pint = "*"
 pandas = "*"
 scipy = "*"
+onshape_client = "*"
 
 [dev-packages]
 aguaclara = {editable = true, path = "."}
