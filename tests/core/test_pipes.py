@@ -18,13 +18,10 @@ class TestPipes(unittest.TestCase):
         self.assertAlmostEqual(pipe.od, 7.625 * u.inch)
         self.assertAlmostEqual(pipe.id_sdr, 7.189285714285714 * u.inch)
         self.assertAlmostEqual(pipe.id_sch(pipes.SCH.SCH40), 7.023 * u.inch)
-
         self.assertAlmostEqual(pipes.ND_SDR_available(7.1892857 * u.inch, 35.0), 8.0 * u.inch)
         self.assertAlmostEqual(pipes.ND_available(4.7 * u.inch), 6.0 * u.inch)
-
-
-
-    # def test_OD(self):
+        self.assertEqual(pipe.sch(), (8*u.inch, (pipes.SCH.SCH80.name)))
+        self.assertEqual(pipe.sch(NDarr=[10]*u.inch), (10*u.inch, (pipes.SCH.SCH160.name)))
 
 
     def test_OD_from_IDSDR(self):
@@ -51,8 +48,16 @@ class TestPipes(unittest.TestCase):
         self.assertAlmostEqual(pipe.id_sdr, 18 * u.inch)
         self.assertAlmostEqual(pipe.id_sch(pipes.SCH.SCH40), 19.25 * u.inch)
         self.assertAlmostEqual(pipe.id_sch(pipes.SCH.SCH80), 17.938 * u.inch)
-        self.assertEqual(pipe.sch(), (24*u.inch, (pipes.SCH.SCH80.name)))
-        
+        print("id",pipe.id_sdr)
+        print("sdr",pipe.sdr)
+        self.assertEqual(pipe.sch(), (24*u.inch, (pipes.SCH.SCH160.name)))
+        self.assertEqual(pipe.sch(NDarr=[24]*u.inch,SCHarr=[pipes.SCH.SCH160]), (24*u.inch, (pipes.SCH.SCH160.name)))
+
+        self.assertEqual(pipe.sch(SCHarr=[pipes.SCH.SCH160, pipes.SCH.SCH40]), (24*u.inch, (pipes.SCH.SCH160.name)))
+        print("HERE")
+        self.assertEqual(pipe.sch(NDarr=[20,24]*u.inch), (24*u.inch, (pipes.SCH.SCH160.name)))
+        self.assertEqual(pipe.sch(NDarr=[16]*u.inch), None)
+
 
     def test_makePipe_minID_SDR(self):
         #used=0, matches with sched40 ID
@@ -69,7 +74,4 @@ class TestPipes(unittest.TestCase):
         self.assertAlmostEqual(pipe2.id_sdr, 1.14 * u.inch)
         self.assertAlmostEqual(pipe2.id_sch(pipes.SCH.SCH40), 1.61 * u.inch)
         self.assertAlmostEqual(pipe2.id_sch(pipes.SCH.SCH80), 1.5 * u.inch)
-        print("nd", pipe2.nd)
-        print("id", pipe2.id_sdr)
-        print("sdr", pipe2.sdr)
-        self.assertEqual(pipe2.sch(), (.5*u.inch, (pipes.SCH.SCH160.name)))
+        self.assertEqual(pipe2.sch(), None)

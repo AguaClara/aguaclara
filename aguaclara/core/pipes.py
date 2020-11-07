@@ -22,9 +22,9 @@ with open(csv_path) as pipedbfile:
 class SCH(Enum):
     #labeled by column of this schedule's wall thickness (ex: SCH40Wall is column 5)
     SCH40 = 'SCH40Wall' #5
-    SCH80 = 'SCH80Wall'#7
-    SCH120 = 'SCH120Wall'#9
-    SCH160 = 'SCH160Wall'#11
+    SCH80 = 'SCH80Wall' #7
+    SCH120 = 'SCH120Wall' #9
+    SCH160 = 'SCH160Wall' #11
 
 
 class Pipe:
@@ -32,7 +32,6 @@ class Pipe:
     def __init__(self, nd,sdr):
         self.nd= nd
         self.sdr = sdr
-        # print("ND "+nd)
 
     @property
     def od(self):
@@ -57,7 +56,7 @@ class Pipe:
             return schedule ^ "does not exist for this ND"
         return (pipedb.iloc[myindex, 1] - 2 * (thickness)) * u.inch
 
-    def sch(self, NDarr=[], SCHarr=[]):
+    def sch(self, NDarr=None, SCHarr=None):
         """ 
         Return the nominal diameter and schedule that best fits this pipe's criteria and NDarr and SCHarr
         :param NDarr: an array of preferred nominal diameters
@@ -69,11 +68,12 @@ class Pipe:
 
         available = sch_all_available(self.id_sdr, self.sdr, NDarr, SCHarr)
         if available==[]:
-            return "no schedules fit"
-        return available[min(available)[0]==available[0]][1:]
+            return None
+        m = min(available)[0]
+        return list(filter(lambda x:m in x, available))[0][1:]
         
 
-def sch_all_available(minID, maxSDR, NDarr=[], SCHarr=[]):
+def sch_all_available(minID, maxSDR, NDarr=None, SCHarr=[SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160]):
     """
     Returns a list of tuples (inner diameter, nominal diameter, schedule) representing schedule pipes that fit the criteria. 
     Meeting criteria means: has at least minID, has at most maxSDR, and whose ND and/or SCH are in NDarr and SCHarr respectively. 
@@ -84,39 +84,26 @@ def sch_all_available(minID, maxSDR, NDarr=[], SCHarr=[]):
     # put it in a list. Send back that list. 
 
     #look through array if given, else look through the whole list
-    nds = (ND_all_available() if (NDarr == []) else NDarr).magnitude
-    schs = [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr == []) else SCHarr 
-
-    # print("nds",nds)
+ 
+    nds = ND_all_available()/u.inch if NDarr is None  else NDarr/u.inch
+    schs = [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr is None) else SCHarr 
 
     allschs = []
     rows = []
     for i in range(len(pipedb['NDinch'])):
-        # print("row " + str(i), pipedb.iloc[i,:])
-        # print(pipedb.iloc[i, 4] == 1)
-        # print(pipedb.iloc[i]['NDinch'] in nds)
         if pipedb.iloc[i, 4] == 1 and pipedb.iloc[i]['NDinch'] in nds:
-            # print(str(i) + "made it inside")
             rows.append((pipedb.iloc[i]))
-    # print('rows', rows)
 
     for row in rows:
-        # print("nd row",row)
         for sch in schs:
 
             od = row['ODinch']
             t = row[sch.value]
             sdr = od/t
-            id = od - t
+            id = od - 2*t
 
-            # print("sch", sch)
-            # print("id and minid",id, minID)
-
-            # print(id >= minID.magnitude)
-            # print(sdr <= maxSDR)
             if (id >= minID.magnitude and sdr <= maxSDR):
                 allschs.append((id,row['NDinch']*u.inch, sch.name))
-    # print(allschs)
     return allschs
 
 
@@ -141,10 +128,6 @@ def makePipe_minID_SDR(minID, SDR):
     :return: a pipe with SDR and ND calculated from given minID and SDR
     :rtype: Pipe
     """
-
-    # print("ND made "+str(ND_SDR_available(minID, SDR).magnitude))
-    # print('nd assigned')
-    # print(ND_SDR_available(minID, SDR))
 
     return Pipe(ND_SDR_available(minID, SDR), SDR)
 
@@ -266,8 +249,6 @@ def ND_SDR_available(ID, SDR):
     """
     for i in range(len(np.array(ID_SDR_all_available(SDR)))):
         if np.array(ID_SDR_all_available(SDR))[i] >= (ID.to(u.inch)).magnitude:
-            # print("ND AVAIL")
-            # print(ND_all_available()[i].magnitude)
             return ND_all_available()[i]
 
 
@@ -312,7 +293,7 @@ def cap_thickness(nd):
 
 """ TODO: Several updates can be made to core/pipes.py:
 
-1. A class and/or static method should be defined to convert ID and SDR to the minimum available OD. 
+1. A class and/or static method should be defined to convert ID and SDR to the minimum available OD.        DONE
    A class could ask for SDR and minimum ID in the constructor and include methods for available ID, ND, and OD. 
    A static method could calculate OD from ID and SDR and use the existing od_available(od_guess) method, or calculate ND using ND_SDR_available(ID, SDR) and convert ND to OD.
 
