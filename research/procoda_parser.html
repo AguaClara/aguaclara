@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ProCoDA Parser &mdash; AguaClara v0.2.5 documentation</title>
+  <title>ProCoDA Parser &mdash; AguaClara v0.2.6 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                v0.2.5
+                v0.2.6
               </div>
             
           
@@ -198,7 +198,7 @@
 
 <dl class="function">
 <dt id="aguaclara.research.procoda_parser.column_of_time">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">column_of_time</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">start</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">column_of_time</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">start</em>, <em class="sig-param">end=None</em>, <em class="sig-param">units='day'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts the column of times as elasped times from a ProCoDA data file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -206,13 +206,14 @@
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
 <li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Index of first row of data to extract from the data file</p></li>
 <li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Index of last row of data to extract from the data. Defaults to last row</p></li>
+<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The return type units, which defaults to day.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Experimental times starting at 0</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>numpy.ndarray in units of days</p>
+<dd class="field-odd"><p>numpy.ndarray in units of days or hours, specified with units parameter</p>
 </dd>
 <dt class="field-even">Examples</dt>
 <dd class="field-even"><p></p></dd>
@@ -220,6 +221,49 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">column_of_time</span><span class="p">(</span><span class="s2">&quot;Reactor_data.txt&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.plot_columns">
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">plot_columns</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">x_axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#plot_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.plot_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot columns of data, located by labels, in the given data file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file</p></li>
+<li><p><strong>columns</strong> (<em>string</em><em> or </em><em>string list</em>) – A single column label or list of column labels</p></li>
+<li><p><strong>x_axis</strong> (<em>string</em><em>, </em><em>optional</em>) – The label of the x-axis column (defaults to None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of Line2D objects representing the plotted data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib.lines.Line2D list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.iplot_columns">
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">iplot_columns</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">x_axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#iplot_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.iplot_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot columns of data, located by indexes, in the given data file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file</p></li>
+<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or list of column indexes</p></li>
+<li><p><strong>x_axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – The index of the x-axis column (defaults to None)</p></li>
+<li><p><strong>sep</strong> (<em>string</em>) – The separator or delimiter, of the data file. Use ‘,’ for CSV’s, ‘      ‘ for TSV’s.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of Line2D objects representing the plotted data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib.lines.Line2D list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -260,11 +304,12 @@ with non-numerical entries in the first column.</p>
 
 <dl class="function">
 <dt id="aguaclara.research.procoda_parser.get_data_by_time">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">get_data_by_time</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">dates</em>, <em class="sig-param">start_time='00:00'</em>, <em class="sig-param">end_time='23:59'</em>, <em class="sig-param">extension='.tsv'</em>, <em class="sig-param">units=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">get_data_by_time</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">dates</em>, <em class="sig-param">start_time='00:00'</em>, <em class="sig-param">end_time='23:59'</em>, <em class="sig-param">extension='.tsv'</em>, <em class="sig-param">units=''</em>, <em class="sig-param">elapsed=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract columns of data over one or more ProCoDA data files based on date
 and time. Valid only for files whose names are automatically generated by
 date, i.e. of the form “datalog_M-D-YYYY”.</p>
-<p>Note: Column 0 is time. The first data column is column 1.</p>
+<p>Note: Column 0 is time. The first data column is column 1. Results for the
+time column are adjusted for multi-day experiments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -274,7 +319,8 @@ date, i.e. of the form “datalog_M-D-YYYY”.</p>
 <li><p><strong>start_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Starting time of data to extract, formatted ‘HH:MM’ (24-hour time)</p></li>
 <li><p><strong>end_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Ending time of data to extract, formatted ‘HH:MM’ (24-hour time)</p></li>
 <li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – File extension of the data file(s). Defaults to ‘.tsv’</p></li>
-<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless).</p></li>
+<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – A single unit or list of units to apply to each column, e.g. ‘mg/L’ or [‘hr’, ‘mg/L’]. Defaults to ‘’ (dimensionless).</p></li>
+<li><p><strong>elapsed</strong> (<em>boolean</em>) – If true, results for the time column are given in elapsed time</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -298,7 +344,8 @@ date, i.e. of the form “datalog_M-D-YYYY”.</p>
 <code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">get_data_by_state</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">dates</em>, <em class="sig-param">state</em>, <em class="sig-param">column</em>, <em class="sig-param">extension='.tsv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a ProCoDA file and extracts the time and data column for each
 iteration of the given state.</p>
-<p>Note: column 0 is time, the first data column is column 1.</p>
+<p>Note: column 0 is time, the first data column is column 1. Results for the
+time column are given in elasped time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -321,50 +368,6 @@ iteration of the given state.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="n">state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">28</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.procoda_parser.plot_columns">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">plot_columns</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">x_axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#plot_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.plot_columns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot columns of data, located by labels, in the given data file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file</p></li>
-<li><p><strong>columns</strong> (<em>string</em><em> or </em><em>string list</em>) – A single column label or list of column labels</p></li>
-<li><p><strong>x_axis</strong> (<em>string</em><em>, </em><em>optional</em>) – The label of the x-axis column (defaults to None)</p></li>
-<li><p><strong>sep</strong> (<em>string</em>) – The separator or delimiter, of the data file. Use ‘,’ for CSV’s, ‘      ‘ for TSV’s.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of Line2D objects representing the plotted data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matplotlib.lines.Line2D list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="aguaclara.research.procoda_parser.iplot_columns">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">iplot_columns</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">x_axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#iplot_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.iplot_columns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot columns of data, located by indexes, in the given data file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file</p></li>
-<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or list of column indexes</p></li>
-<li><p><strong>x_axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – The index of the x-axis column (defaults to None)</p></li>
-<li><p><strong>sep</strong> (<em>string</em>) – The separator or delimiter, of the data file. Use ‘,’ for CSV’s, ‘      ‘ for TSV’s.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a list of Line2D objects representing the plotted data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matplotlib.lines.Line2D list</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="function">
@@ -541,6 +544,36 @@ columns to a new column in the specified output file.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>output (Pandas.DataFrame)- Pandas DataFrame holding the same data that was written to the output file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="aguaclara.research.procoda_parser.intersect">
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">intersect</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y1</em>, <em class="sig-param">y2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#intersect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.intersect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the intersections of two lines represented by a common set of x coordinates and
+two sets of y coordinates as three numpy arrays: the x coordinates of the intersections,
+the y coordinates of the intersections, and the indexes in x, y1, y2 immediately
+after the intersections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.ndarray</em>) – common set of x coordinates for the two lines</p></li>
+<li><p><strong>y1</strong> (<em>numpy.ndarray</em>) – the y coordinates of the first line</p></li>
+<li><p><strong>y2</strong> (<em>numpy.ndarray</em>) – the y coordinates of the second line</p></li>
+</ul>
+</dd>
+<dt class="field-even">Requires</dt>
+<dd class="field-even"><p>x have no repeating values and is in ascending order</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>x_points-numpy.ndarray of the x coordinates where intersections occur</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>y_points-numpy.ndarray of the y coordinates where intersections occur</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>crossings-numpy.ndarray of the indexes after the intersections occur</p>
 </dd>
 </dl>
 </dd></dl>
