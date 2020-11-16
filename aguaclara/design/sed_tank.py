@@ -3,8 +3,8 @@
 Example:
     >>> from aguaclara.design.sed_tank import *
     >>> sed_tank = SedimentationTank(q = 60 * u.L / u.s)
-    >>> sed_tank.diffuser_hl
-    <Quantity(0.009259259259259259, 'centimeter')>
+    >>> round(sed_tank.diffuser_hl, 5)
+    <Quantity(0.00926, 'centimeter')>
 """
 from aguaclara.core.units import u
 import aguaclara.core.constants as con

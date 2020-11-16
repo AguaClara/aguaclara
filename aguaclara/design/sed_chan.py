@@ -5,8 +5,8 @@ to happen, the upflow velocity would be too great for flocs to settle out.
 Example:
     >>> from aguaclara.design.sed_chan import *
     >>> sed_chan = SedimentationChannel(q = 20 * u.L / u.s, temp = 20 * u.degC)
-    >>> sed_chan.inlet_w
-    <Quantity(59.52755905511811, 'inch')>
+    >>> round(sed_chan.inlet_w, 5)
+    <Quantity(59.52756, 'inch')>
 """
 from aguaclara.core.units import u
 import aguaclara.core.constants as con
