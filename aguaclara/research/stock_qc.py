@@ -162,10 +162,11 @@ class Variable_Q_Stock(Stock):
     >>> from aguaclara.research.stock_qc import Variable_Q_Stock
     >>> from aguaclara.core.units import u
     >>> reactor = Variable_Q_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, C_stock = 7.6*u.mg/u.L)
-    >>> reactor.Q_stock()
-    <Quantity(0.18421052631578946, 'milliliter / second')>
-    >>> reactor.rpm(vol_per_rev = .5*u.mL/u.rev).to(u.rev/u.min)
-    <Quantity(22.105263157894736, 'rev / minute')>
+    >>> round(reactor.Q_stock(), 6)
+    <Quantity(0.184211, 'milliliter / second')>
+    >>> pump_speed = reactor.rpm(vol_per_rev = .5*u.mL/u.rev).to(u.rev/u.min)
+    >>> round(pump_speed, 6)
+    <Quantity(22.105263, 'rev / minute')>
     """
 
     def __init__(self, Q_sys, C_sys, C_stock):

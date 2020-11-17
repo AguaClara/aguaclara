@@ -4,8 +4,8 @@ cause coagulant and other particles to accumulate, forming flocs.
 Example:
     >>> from aguaclara.design.floc import *
     >>> floc = Flocculator(q = 20 * u.L / u.s, hl = 40 * u.cm)
-    >>> floc.chan_w
-    <Quantity(34.0, 'centimeter')>
+    >>> round(floc.chan_w)
+    <Quantity(34, 'centimeter')>
 """
 import aguaclara.core.head_loss as hl
 import aguaclara.design.human_access as ha
