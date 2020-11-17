@@ -1,0 +1,33 @@
+Day fraction since midnight on 11/5/2019, State ID, State name, Rule that caused previous state to end
+0.36842392,0,OFF,Operator changed the state
+0.3685598,2,Warmup,Operator changed the state
+0.36875633,1,Run,go to run
+0.36877994,2,Warmup,go to warmup
+0.36879175,1,Run,go to run
+0.36881547,2,Warmup,go to warmup
+0.36882739,1,Run,go to run
+0.3688509,2,Warmup,go to warmup
+0.36886304,1,Run,go to run
+0.36888666,2,Warmup,go to warmup
+0.36889881,1,Run,go to run
+0.36892231,2,Warmup,go to warmup
+0.36893422,1,Run,go to run
+0.36895784,2,Warmup,go to warmup
+0.36896999,1,Run,go to run
+0.36899372,2,Warmup,go to warmup
+0.36900587,1,Run,go to run
+0.36902936,2,Warmup,go to warmup
+0.36904117,1,Run,go to run
+0.36906502,2,Warmup,go to warmup
+0.36907704,1,Run,go to run
+0.36910055,2,Warmup,go to warmup
+0.3691127,1,Run,go to run
+0.36913631,2,Warmup,go to warmup
+0.36914801,1,Run,go to run
+0.36917172,2,Warmup,go to warmup
+0.36918353,1,Run,go to run
+0.36920725,2,Warmup,go to warmup
+0.36921894,1,Run,go to run
+0.36924256,2,Warmup,go to warmup
+0.36925471,1,Run,go to run
+0.3692686,0,OFF,Operator changed the state
