@@ -1,7 +1,7 @@
 """Parser to obtain a dictionary of key-value pairs from an Onshape model's URL
 and add those variables to an RST file.
 
-Relies on the Onshape Documenter feature: 
+Relies on the Onshape Documenter feature:
 https://cad.onshape.com/documents/6b5c9b74e331c4d03a7c6b01/w/6f98333f14625dd1bdcac2f7/e/35b3d3018f18ec53eeecded7
 """
 
@@ -11,7 +11,6 @@ import os
 from shutil import copyfile
 from onshape_client.oas import BTFeatureScriptEvalCall2377
 from onshape_client.onshape_url import OnshapeElement
-from onshape_client.utility import parse_quantity
 from onshape_client import Client
 from aguaclara.core.units import u
 
@@ -42,13 +41,12 @@ def parse_quantity(q):
     Returns:
         a string that can be converted to any other unit engine.
 
-    >>> from onshape_client.utility import parse_quantity
     >>> d = {'value': 0.1414213562373095, 'unitToPower': [{'value': 1, 'key': 'METER'}], 'typeTag': ''}
     >>> parse_quantity(d)
-    '0.1414213562373095*meter'
+    14.14 cm
     >>> d = {'value': 0.1414213562373095, 'unitToPower': [{'value': 3, 'key': 'MILLIMETER'}], 'typeTag': ''}
     >>> parse_quantity(d)
-    '0.1414213562373095*millimeter**3'
+    0.14 mm ** 3
     """
     units_s = q[val_str]
     for unit in q["unitToPower"]:
