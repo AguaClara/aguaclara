@@ -40,13 +40,6 @@ def parse_quantity(q):
 
     Returns:
         a string that can be converted to any other unit engine.
-
-    >>> d = {'value': 0.1414213562373095, 'unitToPower': [{'value': 1, 'key': 'METER'}], 'typeTag': ''}
-    >>> parse_quantity(d)
-    14.14 cm
-    >>> d = {'value': 0.1414213562373095, 'unitToPower': [{'value': 3, 'key': 'MILLIMETER'}], 'typeTag': ''}
-    >>> parse_quantity(d)
-    0.14 mm ** 3
     """
     units_s = q[val_str]
     for unit in q["unitToPower"]:
@@ -88,13 +81,6 @@ def is_fs_type(candidate, type_name):
 
     Returns:
         result: True if candidate is of type_name, False otherwise
-
-    >>> import json
-    >>> test_json = json.loads('{"type": 2077, "typeName": "BTFSValueMapEntry", "message": {}}')
-    >>> is_fs_type(test_json, "BTFSValueMapEntry")
-    True
-    >>> is_fs_type(test_json, "BTFSValueNumber")
-    False
     """
     result = False
     try:
@@ -160,11 +146,6 @@ def merge_index_sections(new_section, old_section):
 
     Returns:
         none
-
-    >>> new_section = ['test_line', 'test_line2']
-    >>> old_section = ['test_line', 'test_line3']
-    >>> merge_index_sections(new_section, old_section)
-    ['test_line', 'test_line2', 'test_line3']
     """
     for line in old_section:
         if line in new_section:
@@ -190,15 +171,6 @@ def find_index_section_limits(filename, section_start=".. toctree::\n",
         lines: list of strings of each line in the file
         section_limits: list of the form [[start1, end1], [start2, end2]]
             which marks the separation between sections
-
-    >>> index = '../../tests/rst_files/index_lfom.rst'
-    >>> _, limits = find_index_section_limits(index)
-    >>> limits
-    [[18, 26], [27, 32]]
-    >>> index = '../../tests/rst_files/index_lfom_ET.rst'
-    >>> _, limits = find_index_section_limits(index)
-    >>> limits
-    [[18, 26], [27, 33]]
     """
     section_limits = []
     start = 0
@@ -233,15 +205,6 @@ def merge_indexes(new_index, old_index):
 
     Returns:
         none
-
-    >>> old_index = '../../tests/rst_files/index_lfom.rst'
-    >>> new_index = '../../tests/rst_files/new_index_ET.rst'
-    >>> merge_indexes(new_index, old_index)
-    >>> index_file = open(old_index, "r+")
-    >>> lines = index_file.readlines()
-    >>> test_file = open('../../tests/rst_files/index_lfom_ET.rst')
-    >>> test_lines = test_file.readlines()
-    >>> test_lines == lines
     True
     """
     old_lines, old_section_limits = find_index_section_limits(old_index)
@@ -285,15 +248,6 @@ def find_treatment_section_limits(filename, section_delimiter=".. _heading"):
         lines: list of strings of each line in the file
         section_limits: list of the form [[start1, end1], [start2, end2]]
             which marks the separation between sections
-
-    >>> process = '../../tests/rst_files/Treatment_Process_ET.rst'
-    >>> _, limits = find_treatment_section_limits(process)
-    >>> limits
-    [[0, 14], [15, 20]]
-    >>> process = '../../tests/rst_files/Treatment_Process_ET_Floc.rst'
-    >>> _, limits = find_treatment_section_limits(process)
-    >>> limits
-    [[0, 14], [15, 20], [21, 26]]
     """
     section_limits = []
     start = 0
@@ -322,16 +276,6 @@ def merge_treatment_processes(new_processes, old_processes):
 
     Returns:
         none
-
-    >>> old_processes = '../../tests/rst_files/Treatment_Process_ET.rst'
-    >>> new_processes = '../../tests/rst_files/Treatment_Process_Floc.rst'
-    >>> merge_treatment_processes(new_processes, old_processes)
-    >>> file = open(old_processes, "r+")
-    >>> lines = file.readlines()
-    >>> test_file = open('../../tests/rst_files/Treatment_Process_ET_Floc.rst')
-    >>> test_lines = test_file.readlines()
-    >>> test_lines == lines
-    True
     """
     old_lines, old_section_limits = find_treatment_section_limits(old_processes)
     new_lines, new_section_limits = find_treatment_section_limits(new_processes)
@@ -467,21 +411,6 @@ def get_parsed_measurements(link):
         measurements: dictionary of parsed variables
         templates: list of templates to move from doc_files and render in the
             design specs.
-
-    >>> link = 'https://cad.onshape.com/documents/c3a8ce032e33ebe875b9aab4/v/dc76b3f674d3d5d4f6237f35/e/d75b2f7a41dde39791b154e8'
-    >>> measurements, templates = get_parsed_measurements(link)
-    >>> templates
-    ['./Entrance_Tank/LFOM.rst']
-    >>> measurements['N.LfomOrifices']
-    [17.0, 4.0, 6.0, 3.0, 4.0, 3.0, 3.0, 3.0, 3.0, 2.0, 3.0, 1.0]
-    >>> measurements['HL.Lfom']
-    '20.0 cm'
-    >>> measurements['H.LfomOrifices']
-    ['7.94 mm', '2.47 cm', '4.14 cm', '5.82 cm', '7.49 cm', '9.16 cm', '10.84 cm', '12.51 cm', '14.18 cm', '15.86 cm', '17.53 cm', '19.21 cm']
-    >>> measurements['D.LfomOrifices']
-    '1.59 cm'
-    >>> measurements['B.LfomRows']
-    '1.67 cm'
     """
     script = r"""
         function (context is Context, queries is map)
@@ -547,16 +476,6 @@ def make_replace_list(parsed_dict, filename, var_attachment=''):
 
     Returns:
         none
-
-    >>> var_dict = {'test': '3.0 cm'}
-    >>> file_path = "../../tests/rst_files/test_prepend.rst"
-    >>> make_replace_list(var_dict, file_path)
-    >>> file = open(file_path, "r+")
-    >>> lines = file.readlines()
-    >>> test_file = open('../../tests/rst_files/test_prepend_result.rst')
-    >>> test_lines = test_file.readlines()
-    >>> test_lines == lines
-    True
     """
     prefix = '.. |'
     suffix = '| replace:: '
