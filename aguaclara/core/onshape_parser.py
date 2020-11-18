@@ -1,3 +1,10 @@
+"""Parser to obtain a dictionary of key-value pairs from an Onshape model's URL
+and add those variables to an RST file.
+
+Relies on the Onshape Documenter feature: 
+https://cad.onshape.com/documents/6b5c9b74e331c4d03a7c6b01/w/6f98333f14625dd1bdcac2f7/e/35b3d3018f18ec53eeecded7
+"""
+
 import json
 import math
 import os
@@ -6,7 +13,7 @@ from onshape_client.oas import BTFeatureScriptEvalCall2377
 from onshape_client.onshape_url import OnshapeElement
 from onshape_client.utility import parse_quantity
 from onshape_client import Client
-from .units import u
+from aguaclara.core.units import u
 
 ureg =  u
 
