@@ -1,15 +1,20 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PhysChem &mdash; AguaClara v0.2.6 documentation</title>
+  <title>PhysChem &mdash; AguaClara v0.2.7 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
 
   
   
@@ -19,7 +24,9 @@
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -31,12 +38,6 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Pipes" href="pipes.html" />
@@ -54,7 +55,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> AguaClara
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
           
 
           
@@ -64,7 +65,7 @@
             
             
               <div class="version">
-                v0.2.6
+                v0.2.7
               </div>
             
           
@@ -81,6 +82,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -106,6 +108,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -144,7 +147,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="core.html">Core</a> &raquo;</li>
         
@@ -171,17 +174,17 @@
 <span id="physchem"></span><h1>PhysChem<a class="headerlink" href="#module-aguaclara.core.physchem" title="Permalink to this headline">¶</a></h1>
 <p>Contains functions pertaining to the design of physical and chemical unit
 processes of AguaClara water treatment plants.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.density_air">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">density_air</code><span class="sig-paren">(</span><em class="sig-param">Pressure</em>, <em class="sig-param">MolarMass</em>, <em class="sig-param">Temperature</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_air"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_air" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">density_air</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Pressure</span></em>, <em class="sig-param"><span class="n">MolarMass</span></em>, <em class="sig-param"><span class="n">Temperature</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_air"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_air" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `density_air`: </span>is deprecated; use <cite>density_gas</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.density_gas">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">density_gas</code><span class="sig-paren">(</span><em class="sig-param">Pressure</em>, <em class="sig-param">MolarMass</em>, <em class="sig-param">Temperature</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_gas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_gas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">density_gas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Pressure</span></em>, <em class="sig-param"><span class="n">MolarMass</span></em>, <em class="sig-param"><span class="n">Temperature</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_gas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_gas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the density of air at the given pressure, molar mass, and
 temperature.</p>
 <dl class="field-list simple">
@@ -201,9 +204,9 @@ temperature.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.area_circle">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">area_circle</code><span class="sig-paren">(</span><em class="sig-param">DiamCircle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#area_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.area_circle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">area_circle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DiamCircle</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#area_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.area_circle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the area of a circle given its diameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -218,9 +221,9 @@ temperature.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.diam_circle">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_circle</code><span class="sig-paren">(</span><em class="sig-param">AreaCircle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_circle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_circle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">AreaCircle</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_circle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the diameter of a circle given its area.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -235,12 +238,12 @@ temperature.</p>
 </dl>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="aguaclara.core.physchem.RE_TRANSITION_PIPE">
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">RE_TRANSITION_PIPE</code><em class="property"> = 2100</em><a class="headerlink" href="#aguaclara.core.physchem.RE_TRANSITION_PIPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="aguaclara.core.physchem.WATER_DENSITY_TABLE">
 <code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">WATER_DENSITY_TABLE</code><em class="property"> = [(273.15, 278.15, 283.15, 293.15, 303.15, 313.15, 323.15, 333.15, 343.15, 353.15, 363.15, 373.15), (999.9, 1000, 999.7, 998.2, 995.7, 992.2, 988.1, 983.2, 977.8, 971.8, 965.3, 958.4)]</em><a class="headerlink" href="#aguaclara.core.physchem.WATER_DENSITY_TABLE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Table of temperatures and the corresponding water density.</p>
@@ -248,18 +251,18 @@ temperature.</p>
 WATER_DENSITY_TABLE[1] is the corresponding densities, in kg/m³.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.viscosity_dynamic">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">viscosity_dynamic</code><span class="sig-paren">(</span><em class="sig-param">temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_dynamic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_dynamic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">viscosity_dynamic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">temp</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_dynamic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_dynamic" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `viscosity_dynamic`: </span>is deprecated; use <cite>viscosity_dynamic_water</cite>
 instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.viscosity_dynamic_water">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">viscosity_dynamic_water</code><span class="sig-paren">(</span><em class="sig-param">Temperature</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_dynamic_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_dynamic_water" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">viscosity_dynamic_water</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Temperature</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_dynamic_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_dynamic_water" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dynamic viscosity of water at a given temperature.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -274,9 +277,9 @@ instead.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.density_water">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">density_water</code><span class="sig-paren">(</span><em class="sig-param">Temperature=None</em>, <em class="sig-param">*</em>, <em class="sig-param">temp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_water" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">density_water</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Temperature</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">temp</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#density_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.density_water" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the density of water at a given temperature.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -294,18 +297,18 @@ instead.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.viscosity_kinematic">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">viscosity_kinematic</code><span class="sig-paren">(</span><em class="sig-param">temp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_kinematic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_kinematic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">viscosity_kinematic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">temp</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_kinematic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_kinematic" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `viscosity_kinematic`: </span>is deprecated; use <cite>viscosity_kinematic_water</cite>
 instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.viscosity_kinematic_water">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">viscosity_kinematic_water</code><span class="sig-paren">(</span><em class="sig-param">Temperature</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_kinematic_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_kinematic_water" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">viscosity_kinematic_water</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Temperature</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#viscosity_kinematic_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.viscosity_kinematic_water" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the kinematic viscosity of water at a given temperature.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -320,17 +323,17 @@ instead.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.radius_hydraulic">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic</code><span class="sig-paren">(</span><em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">openchannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">openchannel</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `radius_hydraulic`: </span>is deprecated; use <cite>radius_hydraulic_rect</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.radius_hydraulic_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic_rect</code><span class="sig-paren">(</span><em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">OpenChannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">OpenChannel</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the hydraulic radius of a rectangular channel given width and
 depth of water.</p>
 <dl class="field-list simple">
@@ -350,18 +353,18 @@ depth of water.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.radius_hydraulic_general">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic_general</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic_general" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic_general</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic_general" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `radius_hydraulic_general`: </span>is deprecated; use
 <cite>radius_hydraulic_channel</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.radius_hydraulic_channel">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic_channel</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic_channel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">radius_hydraulic_channel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#radius_hydraulic_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.radius_hydraulic_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the hydraulic radius of a general channel given cross sectional
 area and wetted perimeter.</p>
 <dl class="field-list simple">
@@ -380,9 +383,9 @@ area and wetted perimeter.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.re_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Nu</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Reynolds number of flow through a pipe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -401,9 +404,9 @@ area and wetted perimeter.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.re_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">Nu</em>, <em class="sig-param">OpenChannel=None</em>, <em class="sig-param">*</em>, <em class="sig-param">openchannel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">OpenChannel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">openchannel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Reynolds number of flow through a rectangular channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -425,17 +428,17 @@ area and wetted perimeter.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.re_general">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_general</code><span class="sig-paren">(</span><em class="sig-param">Vel</em>, <em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_general" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_general</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em>, <em class="sig-param"><span class="n">Nu</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_general" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `re_general`: </span>is deprecated; use <cite>re_channel</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.re_channel">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_channel</code><span class="sig-paren">(</span><em class="sig-param">Vel</em>, <em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_channel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_channel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em>, <em class="sig-param"><span class="n">Nu</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Reynolds number of flow through a general cross section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -455,17 +458,17 @@ area and wetted perimeter.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.fric">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `fric`: </span>is deprecated; use <cite>fric_pipe</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.fric_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the friction factor for pipe flow.</p>
 <p>For laminar flow, the friction factor is 64 is divided the Reynolds number.
 For turbulent flows, friction factor is calculated using the Swamee-Jain
@@ -488,9 +491,9 @@ equation, which works best for Re &gt; 3000 and ε/Diam &lt; 0.02.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.fric_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness=None</em>, <em class="sig-param">OpenChannel=None</em>, <em class="sig-param">*</em>, <em class="sig-param">PipeRough=None</em>, <em class="sig-param">openchannel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">OpenChannel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">PipeRough</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">openchannel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the friction factor of a rectangular channel.</p>
 <p>The Swamee-Jain equation is adapted for a rectangular channel.</p>
 <dl class="field-list simple">
@@ -515,17 +518,17 @@ equation, which works best for Re &gt; 3000 and ε/Diam &lt; 0.02.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.fric_general">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_general</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Vel</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_general" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_general</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em>, <em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_general" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `fric_general`: </span>is deprecated; use <cite>fric_channel</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.fric_channel">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_channel</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Vel</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_channel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_channel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em>, <em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the friction factor for a general channel.</p>
 <p>The Swamee-Jain equation is adapted for a general cross-section.</p>
 <dl class="field-list simple">
@@ -547,17 +550,17 @@ equation, which works best for Re &gt; 3000 and ε/Diam &lt; 0.02.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_fric">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_fric</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_fric</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_fric`: </span>is deprecated; use <cite>headloss_major_pipe</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_major_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_major_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_major_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_major_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_major_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_major_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_major_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the major head loss (due to wall shear) in a pipe.</p>
 <p>This function applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -579,17 +582,17 @@ equation, which works best for Re &gt; 3000 and ε/Diam &lt; 0.02.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_exp">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_exp</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_exp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_exp`: </span>is deprecated; use <cite>headloss_minor_pipe</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_minor_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_minor_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_minor_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_minor_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_minor_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_minor_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_minor_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the minor head loss (due to changes in geometry) in a pipe.</p>
 <p>This function applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -609,17 +612,17 @@ equation, which works best for Re &gt; 3000 and ε/Diam &lt; 0.02.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss`: </span>is deprecated; use <cite>headloss_pipe</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the total head loss from major and minor losses in a pipe.</p>
 <p>This function applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -642,17 +645,17 @@ equation, which works best for Re &gt; 3000 and ε/Diam &lt; 0.02.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_fric_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_fric_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em>, <em class="sig-param">openchannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_fric_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em>, <em class="sig-param"><span class="n">openchannel</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric_rect" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_fric_rect`: </span>is deprecated; use <cite>headloss_major_rect</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_major_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_major_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em>, <em class="sig-param">OpenChannel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_major_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_major_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_major_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em>, <em class="sig-param"><span class="n">OpenChannel</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_major_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_major_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the major head loss due to wall shear in a rectangular channel.</p>
 <p>This equation applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -676,17 +679,17 @@ equation, which works best for Re &gt; 3000 and ε/Diam &lt; 0.02.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_exp_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_exp_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_exp_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp_rect" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_exp_rect`: </span>is deprecated; use <cite>headloss_minor_rect</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_minor_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_minor_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_minor_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_minor_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_minor_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_minor_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_minor_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the minor head loss due to expansion in a rectangular channel.</p>
 <p>This equation applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -707,9 +710,9 @@ equation, which works best for Re &gt; 3000 and ε/Diam &lt; 0.02.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em>, <em class="sig-param">Depth</em>, <em class="sig-param">Length</em>, <em class="sig-param">KMinor</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness=None</em>, <em class="sig-param">OpenChannel=None</em>, <em class="sig-param">*</em>, <em class="sig-param">PipeRough=None</em>, <em class="sig-param">openchannel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em>, <em class="sig-param"><span class="n">Depth</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">KMinor</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">OpenChannel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">PipeRough</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">openchannel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the total head loss from major and minor losses in a rectangular
 channel.</p>
 <p>This equation applies to both laminar and turbulent flows.</p>
@@ -736,17 +739,17 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_fric_general">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_fric_general</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Vel</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric_general" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_fric_general</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em>, <em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_fric_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_fric_general" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_fric_general`: </span>is deprecated; use <cite>headloss_major_channel</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_major_channel">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_major_channel</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Vel</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_major_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_major_channel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_major_channel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em>, <em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_major_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_major_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the major head loss due to wall shear in a general channel.</p>
 <p>This equation applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -769,17 +772,17 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_exp_general">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_exp_general</code><span class="sig-paren">(</span><em class="sig-param">Vel</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp_general" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_exp_general</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_exp_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_exp_general" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_exp_general`: </span>is deprecated; use <cite>headloss_minor_channel</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_minor_channel">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_minor_channel</code><span class="sig-paren">(</span><em class="sig-param">Vel</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_minor_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_minor_channel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_minor_channel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_minor_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_minor_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the minor head loss due to expansion in a general channel.</p>
 <p>This equation applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -798,17 +801,17 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_gen">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_gen</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">Vel</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Length</em>, <em class="sig-param">KMinor</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_gen" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_gen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">KMinor</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_gen" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_gen`: </span>is deprecated; use <cite>headloss_channel</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_channel">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_channel</code><span class="sig-paren">(</span><em class="sig-param">Area</em>, <em class="sig-param">Vel</em>, <em class="sig-param">PerimWetted</em>, <em class="sig-param">Length</em>, <em class="sig-param">KMinor</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_channel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_channel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Area</span></em>, <em class="sig-param"><span class="n">Vel</span></em>, <em class="sig-param"><span class="n">PerimWetted</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">KMinor</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the total head loss from major and minor losses in a general
 channel.</p>
 <p>This equation applies to both laminar and turbulent flows.</p>
@@ -833,9 +836,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_manifold">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_manifold</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">Length</em>, <em class="sig-param">KMinor</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness=None</em>, <em class="sig-param">NumOutlets=None</em>, <em class="sig-param">*</em>, <em class="sig-param">PipeRough=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_manifold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_manifold" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_manifold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">KMinor</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">NumOutlets</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">PipeRough</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_manifold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_manifold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the total head loss through the manifold.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -859,17 +862,17 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.elbow_minor_loss">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">elbow_minor_loss</code><span class="sig-paren">(</span><em class="sig-param">q</em>, <em class="sig-param">id_</em>, <em class="sig-param">k</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#elbow_minor_loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.elbow_minor_loss" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">elbow_minor_loss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span></em>, <em class="sig-param"><span class="n">id_</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#elbow_minor_loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.elbow_minor_loss" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `elbow_minor_loss`: </span>is deprecated; use <cite>headloss_minor_elbow</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_minor_elbow">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_minor_elbow</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Diam</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_minor_elbow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_minor_elbow" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_minor_elbow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_minor_elbow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_minor_elbow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the minor head loss (due to changes in geometry) in an elbow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -888,9 +891,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_orifice">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_orifice</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">Height</em>, <em class="sig-param">RatioVCOrifice</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_orifice" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_orifice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Height</span></em>, <em class="sig-param"><span class="n">RatioVCOrifice</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_orifice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate of the orifice.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -909,9 +912,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_orifice_vert">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_orifice_vert</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">Height</em>, <em class="sig-param">RatioVCOrifice</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_orifice_vert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_orifice_vert" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_orifice_vert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Height</span></em>, <em class="sig-param"><span class="n">RatioVCOrifice</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_orifice_vert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_orifice_vert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the vertical flow rate of the orifice.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -930,9 +933,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.head_orifice">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">head_orifice</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">RatioVCOrifice</em>, <em class="sig-param">FlowRate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#head_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.head_orifice" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">head_orifice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">RatioVCOrifice</span></em>, <em class="sig-param"><span class="n">FlowRate</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#head_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.head_orifice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the piezometric head of the orifice.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -951,9 +954,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.area_orifice">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">area_orifice</code><span class="sig-paren">(</span><em class="sig-param">Height</em>, <em class="sig-param">RatioVCOrifice</em>, <em class="sig-param">FlowRate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#area_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.area_orifice" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">area_orifice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Height</span></em>, <em class="sig-param"><span class="n">RatioVCOrifice</span></em>, <em class="sig-param"><span class="n">FlowRate</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#area_orifice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.area_orifice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the area of the orifice.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -972,9 +975,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.num_orifices">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">num_orifices</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">RatioVCOrifice</em>, <em class="sig-param">HeadLossOrifice</em>, <em class="sig-param">DiamOrifice</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#num_orifices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.num_orifices" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">num_orifices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">RatioVCOrifice</span></em>, <em class="sig-param"><span class="n">HeadLossOrifice</span></em>, <em class="sig-param"><span class="n">DiamOrifice</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#num_orifices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.num_orifices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of orifices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -994,9 +997,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_transition">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_transition</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">Nu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_transition" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_transition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">Nu</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_transition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate for the laminar/turbulent transition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1014,9 +1017,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_hagen">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_hagen</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLossMajor=None</em>, <em class="sig-param">Length=None</em>, <em class="sig-param">Nu=None</em>, <em class="sig-param">*</em>, <em class="sig-param">HeadLossFric=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_hagen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_hagen" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_hagen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">HeadLossMajor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Length</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Nu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">HeadLossFric</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_hagen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_hagen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate for laminar flow with only major losses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1037,9 +1040,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_swamee">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_swamee</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLossMajor=None</em>, <em class="sig-param">Length=None</em>, <em class="sig-param">Nu=None</em>, <em class="sig-param">Roughness=None</em>, <em class="sig-param">*</em>, <em class="sig-param">HeadLossFric=None</em>, <em class="sig-param">PipeRough=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_swamee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_swamee" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_swamee</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">HeadLossMajor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Length</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Nu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Roughness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">HeadLossFric</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">PipeRough</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_swamee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_swamee" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate for turbulent flow with only major losses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1062,17 +1065,17 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_pipemajor">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipemajor</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLossFric</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipemajor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipemajor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipemajor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">HeadLossFric</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipemajor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipemajor" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `flow_pipemajor`: </span>is deprecated; use <cite>flow_major_pipe</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_major_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_major_pipe</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLossMajor</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_major_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_major_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_major_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">HeadLossMajor</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_major_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_major_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate with only major losses.</p>
 <p>This function applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -1094,17 +1097,17 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_pipeminor">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipeminor</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLossExpans</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipeminor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipeminor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipeminor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">HeadLossExpans</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipeminor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipeminor" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `flow_pipeminor`: </span>is deprecated; use <cite>flow_minor_pipe</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_minor_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_minor_pipe</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLossMinor</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_minor_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_minor_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_minor_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">HeadLossMinor</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_minor_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_minor_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate with only minor losses.</p>
 <p>This function applies to both laminar and turbulent flows.</p>
 <dl class="field-list simple">
@@ -1124,9 +1127,9 @@ channel.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipe</code><span class="sig-paren">(</span><em class="sig-param">Diam</em>, <em class="sig-param">HeadLoss</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness=None</em>, <em class="sig-param">KMinor=None</em>, <em class="sig-param">*</em>, <em class="sig-param">PipeRough=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Diam</span></em>, <em class="sig-param"><span class="n">HeadLoss</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">KMinor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">PipeRough</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate in a pipe.</p>
 <p>This function works for both major and minor losses as well as
 both laminar and turbulent flows.</p>
@@ -1151,9 +1154,9 @@ both laminar and turbulent flows.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.diam_hagen">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_hagen</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLossMajor=None</em>, <em class="sig-param">Length=None</em>, <em class="sig-param">Nu=None</em>, <em class="sig-param">*</em>, <em class="sig-param">HeadLossFric=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_hagen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_hagen" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_hagen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">HeadLossMajor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Length</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Nu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">HeadLossFric</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_hagen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_hagen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the inner diameter of a pipe with laminar flow and no minor losses.</p>
 <p>The Hagen Poiseuille equation is dimensionally correct and returns the
 inner diameter of a pipe given the flow rate and the head loss due
@@ -1178,9 +1181,9 @@ minor losses into account. This equation ONLY applies to laminar flow.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.diam_swamee">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_swamee</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLossMajor=None</em>, <em class="sig-param">Length=None</em>, <em class="sig-param">Nu=None</em>, <em class="sig-param">Roughness=None</em>, <em class="sig-param">*</em>, <em class="sig-param">HeadLossFric=None</em>, <em class="sig-param">PipeRough=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_swamee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_swamee" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_swamee</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">HeadLossMajor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Length</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Nu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Roughness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">HeadLossFric</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">PipeRough</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_swamee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_swamee" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the inner diameter of a pipe with turbulent flow and no minor losses.</p>
 <p>The Swamee Jain equation is dimensionally correct and returns the
 inner diameter of a pipe given the flow rate and the head loss due
@@ -1208,17 +1211,17 @@ flow.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.diam_pipemajor">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipemajor</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLossFric</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipemajor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipemajor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipemajor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">HeadLossFric</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipemajor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipemajor" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `diam_pipemajor`: </span>is deprecated; use <cite>diam_major_pipe</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.diam_major_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_major_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLossMajor</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">Roughness</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_major_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_major_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_major_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">HeadLossMajor</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">Roughness</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_major_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_major_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the pipe inner diameter that would result in given major losses.</p>
 <p>This function applies to both laminar and turbulent flow.</p>
 <dl class="field-list simple">
@@ -1240,17 +1243,17 @@ flow.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.diam_pipeminor">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipeminor</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLossExpans</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipeminor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipeminor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipeminor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">HeadLossExpans</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipeminor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipeminor" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `diam_pipeminor`: </span>is deprecated; use <cite>diam_minor_pipe</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.diam_minor_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_minor_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLossMinor</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_minor_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_minor_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_minor_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">HeadLossMinor</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_minor_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_minor_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the pipe inner diameter that would result in the given minor losses.</p>
 <p>This function applies to both laminar and turbulent flow.</p>
 <dl class="field-list simple">
@@ -1270,9 +1273,9 @@ flow.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.diam_pipe">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipe</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">HeadLoss</em>, <em class="sig-param">Length</em>, <em class="sig-param">Nu</em>, <em class="sig-param">PipeRough</em>, <em class="sig-param">KMinor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">diam_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">HeadLoss</span></em>, <em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">Nu</span></em>, <em class="sig-param"><span class="n">PipeRough</span></em>, <em class="sig-param"><span class="n">KMinor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#diam_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.diam_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the pipe inner diameter that would result in the given total head
 loss.</p>
 <p>This function applies to both laminar and turbulent flow and
@@ -1297,9 +1300,9 @@ incorporates both minor and major losses.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.pipe_ID">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">pipe_ID</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#pipe_ID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.pipe_ID" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">pipe_ID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Pressure</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#pipe_ID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.pipe_ID" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the inner diameter of a pipe for a given pressure
 recovery constraint.</p>
 <dl class="field-list simple">
@@ -1318,17 +1321,17 @@ recovery constraint.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.width_rect_weir">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">width_rect_weir</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#width_rect_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.width_rect_weir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">width_rect_weir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Height</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#width_rect_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.width_rect_weir" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `width_rect_weir`: </span>is deprecated; use <cite>width_weir_rect</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.width_weir_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">width_weir_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#width_weir_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.width_weir_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">width_weir_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Height</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#width_weir_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.width_weir_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the width of a rectangular weir given its flow rate and the
 height of the water above the weir. For a weir that is a vertical pipe,
 this value is the circumference.</p>
@@ -1348,17 +1351,17 @@ this value is the circumference.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_weir">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_weir</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_weir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_weir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_weir" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_weir`: </span>is deprecated; use <cite>headloss_weir_rect</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_weir_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_weir_rect</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_weir_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_weir_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_weir_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_weir_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_weir_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the head loss of a rectangular or vertical pipe weir.</p>
 <p>Head loss for a weir is the difference in height between the water
 upstream of the weir and the top of the weir.</p>
@@ -1378,17 +1381,17 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_rect_weir">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_rect_weir</code><span class="sig-paren">(</span><em class="sig-param">Height</em>, <em class="sig-param">Width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_rect_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_rect_weir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_rect_weir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Height</span></em>, <em class="sig-param"><span class="n">Width</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_rect_weir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_rect_weir" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `flow_rect_weir`: </span>is deprecated; use <cite>flow_weir_rect</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.flow_weir_rect">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_weir_rect</code><span class="sig-paren">(</span><em class="sig-param">Height</em>, <em class="sig-param">Width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_weir_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_weir_rect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">flow_weir_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Height</span></em>, <em class="sig-param"><span class="n">Width</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#flow_weir_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.flow_weir_rect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the flow rate of a rectangular or vertical pipe weir.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1406,22 +1409,22 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
-<dl class="exception">
+<dl class="py exception">
 <dt id="aguaclara.core.physchem.DeprecatedFunctionError">
-<em class="property">exception </em><code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">DeprecatedFunctionError</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#DeprecatedFunctionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.DeprecatedFunctionError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">DeprecatedFunctionError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#DeprecatedFunctionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.DeprecatedFunctionError" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_kozeny">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_kozeny</code><span class="sig-paren">(</span><em class="sig-param">Length</em>, <em class="sig-param">DiamMedia=None</em>, <em class="sig-param">ApproachVel=None</em>, <em class="sig-param">Porosity=None</em>, <em class="sig-param">Nu=None</em>, <em class="sig-param">*</em>, <em class="sig-param">Diam=None</em>, <em class="sig-param">Vel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_kozeny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_kozeny" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_kozeny</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Length</span></em>, <em class="sig-param"><span class="n">DiamMedia</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ApproachVel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Porosity</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Nu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">Diam</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Vel</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_kozeny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_kozeny" title="Permalink to this definition">¶</a></dt>
 <dd><div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version `headloss_kozeny`: </span>is deprecated; use <cite>headloss_ergun</cite> instead.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.re_ergun">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_ergun</code><span class="sig-paren">(</span><em class="sig-param">ApproachVel</em>, <em class="sig-param">DiamMedia</em>, <em class="sig-param">Temperature</em>, <em class="sig-param">Porosity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_ergun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_ergun" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">re_ergun</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ApproachVel</span></em>, <em class="sig-param"><span class="n">DiamMedia</span></em>, <em class="sig-param"><span class="n">Temperature</span></em>, <em class="sig-param"><span class="n">Porosity</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#re_ergun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.re_ergun" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Reynolds number for flow through porous media.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1441,9 +1444,9 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.fric_ergun">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_ergun</code><span class="sig-paren">(</span><em class="sig-param">ApproachVel</em>, <em class="sig-param">DiamMedia</em>, <em class="sig-param">Temperature</em>, <em class="sig-param">Porosity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_ergun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_ergun" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">fric_ergun</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ApproachVel</span></em>, <em class="sig-param"><span class="n">DiamMedia</span></em>, <em class="sig-param"><span class="n">Temperature</span></em>, <em class="sig-param"><span class="n">Porosity</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#fric_ergun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.fric_ergun" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the friction factor for flow through porous media.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1463,9 +1466,9 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.headloss_ergun">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_ergun</code><span class="sig-paren">(</span><em class="sig-param">ApproachVel</em>, <em class="sig-param">DiamMedia</em>, <em class="sig-param">Temperature</em>, <em class="sig-param">Porosity</em>, <em class="sig-param">Length</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_ergun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_ergun" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">headloss_ergun</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ApproachVel</span></em>, <em class="sig-param"><span class="n">DiamMedia</span></em>, <em class="sig-param"><span class="n">Temperature</span></em>, <em class="sig-param"><span class="n">Porosity</span></em>, <em class="sig-param"><span class="n">Length</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#headloss_ergun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.headloss_ergun" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the frictional head loss for flow through porous media.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1486,9 +1489,9 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.g_cs_ergun">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">g_cs_ergun</code><span class="sig-paren">(</span><em class="sig-param">ApproachVel</em>, <em class="sig-param">DiamMedia</em>, <em class="sig-param">Temperature</em>, <em class="sig-param">Porosity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#g_cs_ergun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.g_cs_ergun" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">g_cs_ergun</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ApproachVel</span></em>, <em class="sig-param"><span class="n">DiamMedia</span></em>, <em class="sig-param"><span class="n">Temperature</span></em>, <em class="sig-param"><span class="n">Porosity</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#g_cs_ergun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.g_cs_ergun" title="Permalink to this definition">¶</a></dt>
 <dd><p>Camp Stein velocity gradient for flow through porous media.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1508,9 +1511,9 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.height_water_critical">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">height_water_critical</code><span class="sig-paren">(</span><em class="sig-param">FlowRate</em>, <em class="sig-param">Width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#height_water_critical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.height_water_critical" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">height_water_critical</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FlowRate</span></em>, <em class="sig-param"><span class="n">Width</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#height_water_critical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.height_water_critical" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the critical local water height.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1528,9 +1531,9 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.vel_horizontal">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">vel_horizontal</code><span class="sig-paren">(</span><em class="sig-param">HeightWaterCritical</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#vel_horizontal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.vel_horizontal" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">vel_horizontal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">HeightWaterCritical</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#vel_horizontal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.vel_horizontal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the horizontal velocity. (at the critical water depth??????)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1545,9 +1548,9 @@ upstream of the weir and the top of the weir.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.physchem.manifold_id_alt">
-<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">manifold_id_alt</code><span class="sig-paren">(</span><em class="sig-param">q</em>, <em class="sig-param">pr_max</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#manifold_id_alt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.manifold_id_alt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.physchem.</code><code class="sig-name descname">manifold_id_alt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span></em>, <em class="sig-param"><span class="n">pr_max</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/physchem.html#manifold_id_alt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.physchem.manifold_id_alt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the inner diameter of a manifold when major losses are
 negligible.</p>
 </dd></dl>
@@ -1574,11 +1577,19 @@ negligible.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1589,7 +1600,6 @@ negligible.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

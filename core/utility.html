@@ -1,15 +1,20 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utility &mdash; AguaClara v0.2.6 documentation</title>
+  <title>Utility &mdash; AguaClara v0.2.7 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
 
   
   
@@ -19,7 +24,9 @@
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -31,12 +38,6 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Design" href="../design/design.html" />
@@ -54,7 +55,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> AguaClara
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
           
 
           
@@ -64,7 +65,7 @@
             
             
               <div class="version">
-                v0.2.6
+                v0.2.7
               </div>
             
           
@@ -81,6 +82,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -106,6 +108,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -144,7 +147,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="core.html">Core</a> &raquo;</li>
         
@@ -180,9 +183,9 @@ complex function inputs.</p>
 </div>
 </dd>
 </dl>
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.optional_units">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">optional_units</code><span class="sig-paren">(</span><em class="sig-param">arg_positions</em>, <em class="sig-param">keys</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#optional_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.optional_units" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">optional_units</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">arg_positions</span></em>, <em class="sig-param"><span class="n">keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#optional_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.optional_units" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap a function so that arguments may optionally have units.</p>
 <p>This should be used as a function decorator; it will not do anything
 meaningful unless it is appended with a <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> before another function.</p>
@@ -205,9 +208,9 @@ optional units</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.round_sf">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">round_sf</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">figs=4</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#round_sf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.round_sf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">round_sf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num</span></em>, <em class="sig-param"><span class="n">figs</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#round_sf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.round_sf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Round a number to some amount of significant figures.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
@@ -221,9 +224,9 @@ optional units</p></li>
 round_sig_figs instead.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.round_step">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">round_step</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">step=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#round_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.round_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">round_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#round_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.round_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Round a number to be a multiple of some step.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
@@ -239,21 +242,21 @@ centimeters are acceptable).</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.ceil_step">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">ceil_step</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">step=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#ceil_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.ceil_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">ceil_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#ceil_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.ceil_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Like <a class="reference internal" href="#aguaclara.core.utility.round_step" title="aguaclara.core.utility.round_step"><code class="xref py py-func docutils literal notranslate"><span class="pre">round_step()</span></code></a>, but <code class="docutils literal notranslate"><span class="pre">num</span></code> is always rounded up.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.floor_step">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">floor_step</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">step=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#floor_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.floor_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">floor_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#floor_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.floor_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Like <a class="reference internal" href="#aguaclara.core.utility.round_step" title="aguaclara.core.utility.round_step"><code class="xref py py-func docutils literal notranslate"><span class="pre">round_step()</span></code></a>, but <code class="docutils literal notranslate"><span class="pre">num</span></code> is always rounded down.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.floor_nearest">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">floor_nearest</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">array</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#floor_nearest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.floor_nearest" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">floor_nearest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">array</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#floor_nearest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.floor_nearest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the nearest element of a NumPy array less than or equal to a value.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
@@ -264,9 +267,9 @@ centimeters are acceptable).</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.ceil_nearest">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">ceil_nearest</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">array</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#ceil_nearest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.ceil_nearest" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">ceil_nearest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">array</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#ceil_nearest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.ceil_nearest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the nearest element of a NumPy array less than or equal to a value.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
@@ -277,9 +280,9 @@ centimeters are acceptable).</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.max">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">max</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.max" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">max</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.max" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the maximum value of some Pint quantities with units.</p>
 <dl>
 <dt>Note:</dt><dd><ul class="simple">
@@ -297,15 +300,15 @@ different units.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.min">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">min</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.min" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">min</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.min" title="Permalink to this definition">¶</a></dt>
 <dd><p>Like <a class="reference internal" href="#aguaclara.core.utility.max" title="aguaclara.core.utility.max"><code class="xref py py-func docutils literal notranslate"><span class="pre">max()</span></code></a>, but the minimum of the quantites.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.get_sdr">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">get_sdr</code><span class="sig-paren">(</span><em class="sig-param">spec</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#get_sdr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.get_sdr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">get_sdr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spec</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#get_sdr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.get_sdr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the SDR of a string <code class="docutils literal notranslate"><span class="pre">spec</span></code> with the form “sdrXX”.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
@@ -315,7 +318,7 @@ different units.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.list_handler">
 <code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">list_handler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#list_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.list_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps a scalar function to output a NumPy array if passed one or more inputs
@@ -329,9 +332,9 @@ dimensions d_1, …, d_n (from left to right), the result would be a
 d_1 x … x d_n array.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.check_range">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">check_range</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#check_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.check_range" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">check_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#check_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.check_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether passed paramters fall within approved ranges.</p>
 <p>Does not return anything, but will raise an error if a parameter falls
 outside of its defined range.</p>
@@ -347,9 +350,9 @@ having three elements:</p>
 knownChecks sequence.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.core.utility.array_qtys_to_strs">
-<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">array_qtys_to_strs</code><span class="sig-paren">(</span><em class="sig-param">lst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#array_qtys_to_strs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.array_qtys_to_strs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.core.utility.</code><code class="sig-name descname">array_qtys_to_strs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/utility.html#array_qtys_to_strs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.utility.array_qtys_to_strs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert Pint quantities in a NumPy array to strings.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
@@ -385,11 +388,19 @@ knownChecks sequence.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -400,7 +411,6 @@ knownChecks sequence.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

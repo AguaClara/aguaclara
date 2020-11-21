@@ -1,15 +1,20 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ProCoDA Parser &mdash; AguaClara v0.2.6 documentation</title>
+  <title>ProCoDA Parser &mdash; AguaClara v0.2.7 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
 
   
   
@@ -19,7 +24,9 @@
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -31,12 +38,6 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Stock QC" href="stock_qc.html" />
@@ -54,7 +55,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> AguaClara
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
           
 
           
@@ -64,7 +65,7 @@
             
             
               <div class="version">
-                v0.2.6
+                v0.2.7
               </div>
             
           
@@ -81,6 +82,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -104,6 +106,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -142,7 +145,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="research.html">Research</a> &raquo;</li>
         
@@ -167,9 +170,9 @@
             
   <div class="section" id="module-aguaclara.research.procoda_parser">
 <span id="procoda-parser"></span><h1>ProCoDA Parser<a class="headerlink" href="#module-aguaclara.research.procoda_parser" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.column_of_data">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">column_of_data</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">start</em>, <em class="sig-param">column</em>, <em class="sig-param">end=None</em>, <em class="sig-param">units=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">column_of_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts a column of data from a ProCoDA data file.</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
 <dl class="field-list simple">
@@ -196,9 +199,9 @@
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.column_of_time">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">column_of_time</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">start</em>, <em class="sig-param">end=None</em>, <em class="sig-param">units='day'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">column_of_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">'day'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts the column of times as elasped times from a ProCoDA data file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -223,9 +226,9 @@
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.plot_columns">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">plot_columns</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">x_axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#plot_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.plot_columns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">plot_columns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">columns</span></em>, <em class="sig-param"><span class="n">x_axis</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#plot_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.plot_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot columns of data, located by labels, in the given data file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -244,9 +247,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.iplot_columns">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">iplot_columns</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">x_axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#iplot_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.iplot_columns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">iplot_columns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">columns</span></em>, <em class="sig-param"><span class="n">x_axis</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#iplot_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.iplot_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot columns of data, located by indexes, in the given data file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -266,9 +269,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.notes">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">notes</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.notes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">notes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts any experimental notes from a ProCoDA data file.
 Use this to identify the section of the data file that you want to extract.</p>
 <dl class="field-list simple">
@@ -284,9 +287,9 @@ Use this to identify the section of the data file that you want to extract.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.remove_notes">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">remove_notes</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#remove_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.remove_notes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">remove_notes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#remove_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.remove_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Omit notes from a DataFrame object, where notes are identified as rows
 with non-numerical entries in the first column.</p>
 <dl class="field-list simple">
@@ -302,9 +305,9 @@ with non-numerical entries in the first column.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.get_data_by_time">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">get_data_by_time</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">columns</em>, <em class="sig-param">dates</em>, <em class="sig-param">start_time='00:00'</em>, <em class="sig-param">end_time='23:59'</em>, <em class="sig-param">extension='.tsv'</em>, <em class="sig-param">units=''</em>, <em class="sig-param">elapsed=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">get_data_by_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">columns</span></em>, <em class="sig-param"><span class="n">dates</span></em>, <em class="sig-param"><span class="n">start_time</span><span class="o">=</span><span class="default_value">'00:00'</span></em>, <em class="sig-param"><span class="n">end_time</span><span class="o">=</span><span class="default_value">'23:59'</span></em>, <em class="sig-param"><span class="n">extension</span><span class="o">=</span><span class="default_value">'.tsv'</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">elapsed</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract columns of data over one or more ProCoDA data files based on date
 and time. Valid only for files whose names are automatically generated by
 date, i.e. of the form “datalog_M-D-YYYY”.</p>
@@ -339,9 +342,9 @@ time column are adjusted for multi-day experiments.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.get_data_by_state">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">get_data_by_state</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">dates</em>, <em class="sig-param">state</em>, <em class="sig-param">column</em>, <em class="sig-param">extension='.tsv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_state" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">get_data_by_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">dates</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">extension</span><span class="o">=</span><span class="default_value">'.tsv'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a ProCoDA file and extracts the time and data column for each
 iteration of the given state.</p>
 <p>Note: column 0 is time, the first data column is column 1. Results for the
@@ -370,9 +373,9 @@ time column are given in elasped time.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.read_state">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">read_state</code><span class="sig-paren">(</span><em class="sig-param">dates</em>, <em class="sig-param">state</em>, <em class="sig-param">column</em>, <em class="sig-param">units=''</em>, <em class="sig-param">path=''</em>, <em class="sig-param">extension='.tsv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">read_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dates</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">extension</span><span class="o">=</span><span class="default_value">'.tsv'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a ProCoDA file and outputs the data column and time vector for
 each iteration of the given state.</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
@@ -401,9 +404,9 @@ each iteration of the given state.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.average_state">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">average_state</code><span class="sig-paren">(</span><em class="sig-param">dates</em>, <em class="sig-param">state</em>, <em class="sig-param">column</em>, <em class="sig-param">units=''</em>, <em class="sig-param">path=''</em>, <em class="sig-param">extension='.tsv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#average_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.average_state" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">average_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dates</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">extension</span><span class="o">=</span><span class="default_value">'.tsv'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#average_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.average_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Outputs the average value of the data for each instance of a state in
 the given ProCoDA files</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
@@ -432,9 +435,9 @@ the given ProCoDA files</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.perform_function_on_state">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">perform_function_on_state</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">dates</em>, <em class="sig-param">state</em>, <em class="sig-param">column</em>, <em class="sig-param">units=''</em>, <em class="sig-param">path=''</em>, <em class="sig-param">extension='.tsv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#perform_function_on_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.perform_function_on_state" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">perform_function_on_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">dates</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">extension</span><span class="o">=</span><span class="default_value">'.tsv'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#perform_function_on_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.perform_function_on_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs the function given on each state of the data for the given state
 in the given column and outputs the result for each instance of the state</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
@@ -475,9 +478,9 @@ in the given column and outputs the result for each instance of the state</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.read_state_with_metafile">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">read_state_with_metafile</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">state</em>, <em class="sig-param">column</em>, <em class="sig-param">path</em>, <em class="sig-param">metaids=[]</em>, <em class="sig-param">extension='.tsv'</em>, <em class="sig-param">units=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state_with_metafile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state_with_metafile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">read_state_with_metafile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">metaids</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">extension</span><span class="o">=</span><span class="default_value">'.tsv'</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state_with_metafile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state_with_metafile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes in a ProCoDA meta file and performs a function for all data of a
 certain state in each of the experiments (denoted by file paths in then
 metafile)</p>
@@ -517,9 +520,9 @@ metafile)</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.write_calculations_to_csv">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">write_calculations_to_csv</code><span class="sig-paren">(</span><em class="sig-param">funcs</em>, <em class="sig-param">states</em>, <em class="sig-param">columns</em>, <em class="sig-param">path</em>, <em class="sig-param">headers</em>, <em class="sig-param">out_name</em>, <em class="sig-param">metaids=[]</em>, <em class="sig-param">extension='.tsv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#write_calculations_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.write_calculations_to_csv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">write_calculations_to_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">funcs</span></em>, <em class="sig-param"><span class="n">states</span></em>, <em class="sig-param"><span class="n">columns</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">headers</span></em>, <em class="sig-param"><span class="n">out_name</span></em>, <em class="sig-param"><span class="n">metaids</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">extension</span><span class="o">=</span><span class="default_value">'.tsv'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#write_calculations_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.write_calculations_to_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes each output of the given functions on the given states and data
 columns to a new column in the specified output file.</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
@@ -548,9 +551,9 @@ columns to a new column in the specified output file.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="aguaclara.research.procoda_parser.intersect">
-<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">intersect</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y1</em>, <em class="sig-param">y2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#intersect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.intersect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aguaclara.research.procoda_parser.</code><code class="sig-name descname">intersect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y1</span></em>, <em class="sig-param"><span class="n">y2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#intersect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.intersect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the intersections of two lines represented by a common set of x coordinates and
 two sets of y coordinates as three numpy arrays: the x coordinates of the intersections,
 the y coordinates of the intersections, and the indexes in x, y1, y2 immediately
@@ -600,11 +603,19 @@ after the intersections.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -615,7 +626,6 @@ after the intersections.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -1,15 +1,20 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Linear Flow Orifice Meter (LFOM) &mdash; AguaClara v0.2.6 documentation</title>
+  <title>Linear Flow Orifice Meter (LFOM) &mdash; AguaClara v0.2.7 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
 
   
   
@@ -19,7 +24,9 @@
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -31,12 +38,6 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Sedimentor" href="sed.html" />
@@ -54,7 +55,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> AguaClara
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
           
 
           
@@ -64,7 +65,7 @@
             
             
               <div class="version">
-                v0.2.6
+                v0.2.7
               </div>
             
           
@@ -81,6 +82,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -108,6 +110,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -146,7 +149,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="design.html">Design</a> &raquo;</li>
         
@@ -184,9 +187,9 @@ water level within the entrance tank.</p>
 </div>
 </dd>
 </dl>
-<dl class="class">
+<dl class="py class">
 <dt id="aguaclara.design.lfom.LFOM">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.lfom.</code><code class="sig-name descname">LFOM</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.lfom.</code><code class="sig-name descname">LFOM</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design and AguaClara plant’s LFOM.</p>
 <dl class="simple">
 <dt>Design Inputs:</dt><dd><ul class="simple">
@@ -207,9 +210,9 @@ defaults to 10)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.stout_w_per_flow">
-<code class="sig-name descname">stout_w_per_flow</code><span class="sig-paren">(</span><em class="sig-param">h</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM.stout_w_per_flow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM.stout_w_per_flow" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">stout_w_per_flow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">h</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM.stout_w_per_flow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM.stout_w_per_flow" title="Permalink to this definition">¶</a></dt>
 <dd><p>The width of a stout weir at a given elevation.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
@@ -219,83 +222,83 @@ defaults to 10)</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.row_n">
 <em class="property">property </em><code class="sig-name descname">row_n</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.row_n" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of rows.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.row_b">
 <em class="property">property </em><code class="sig-name descname">row_b</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.row_b" title="Permalink to this definition">¶</a></dt>
 <dd><p>The distance center to center between each row of orifices.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.vel_critical">
 <em class="property">property </em><code class="sig-name descname">vel_critical</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.vel_critical" title="Permalink to this definition">¶</a></dt>
 <dd><p>The average vertical velocity of the water inside the LFOM pipe
 at the bottom of the orfices.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.pipe_a_min">
 <em class="property">property </em><code class="sig-name descname">pipe_a_min</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.pipe_a_min" title="Permalink to this definition">¶</a></dt>
 <dd><p>The minimum cross-sectional area of the LFOM pipe assuring
 a safety factor.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.pipe_nd">
 <em class="property">property </em><code class="sig-name descname">pipe_nd</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.pipe_nd" title="Permalink to this definition">¶</a></dt>
 <dd><p>The nominal diameter of the LFOM pipe</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.top_row_orifice_a">
 <em class="property">property </em><code class="sig-name descname">top_row_orifice_a</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.top_row_orifice_a" title="Permalink to this definition">¶</a></dt>
 <dd><p>The orifice area corresponding to the top row of orifices.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.orifice_d_max">
 <em class="property">property </em><code class="sig-name descname">orifice_d_max</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_d_max" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximum orifice diameter.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.orifice_d">
 <em class="property">property </em><code class="sig-name descname">orifice_d</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_d" title="Permalink to this definition">¶</a></dt>
 <dd><p>The actual orifice diameter.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.drill_bit_a">
 <em class="property">property </em><code class="sig-name descname">drill_bit_a</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.drill_bit_a" title="Permalink to this definition">¶</a></dt>
 <dd><p>The area of the actual drill bit.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.orifice_n_max_per_row">
 <em class="property">property </em><code class="sig-name descname">orifice_n_max_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_n_max_per_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>The max number of orifices allowed in each row.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.q_per_row">
 <em class="property">property </em><code class="sig-name descname">q_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.q_per_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>An array of flow at each row.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.orifice_h_per_row">
 <em class="property">property </em><code class="sig-name descname">orifice_h_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_h_per_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>The height of the center of each row of orifices.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.q_submerged">
-<code class="sig-name descname">q_submerged</code><span class="sig-paren">(</span><em class="sig-param">row_n</em>, <em class="sig-param">orifice_n_per_row</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM.q_submerged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM.q_submerged" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">q_submerged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row_n</span></em>, <em class="sig-param"><span class="n">orifice_n_per_row</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/lfom.html#LFOM.q_submerged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.lfom.LFOM.q_submerged" title="Permalink to this definition">¶</a></dt>
 <dd><p>The flow rate through some number of submerged rows.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><ul class="simple">
@@ -305,13 +308,13 @@ a safety factor.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.orifice_n_per_row">
 <em class="property">property </em><code class="sig-name descname">orifice_n_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.orifice_n_per_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of orifices at each level.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="aguaclara.design.lfom.LFOM.error_per_row">
 <em class="property">property </em><code class="sig-name descname">error_per_row</code><a class="headerlink" href="#aguaclara.design.lfom.LFOM.error_per_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>The error of the design based off the predicted flow rate and
@@ -342,11 +345,19 @@ the actual flow rate.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, AguaClara Cornell
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -357,7 +368,6 @@ the actual flow rate.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
