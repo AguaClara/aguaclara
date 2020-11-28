@@ -31,7 +31,7 @@ sed_chan_60 = SedimentationChannel(q = 60.0 * u.L / u.s)
 
 	(sed_chan_20.inlet_weir_h, 98.90522757137602 * u.cm),
 	(sed_chan_60.inlet_weir_h, 100.73729553143386 * u.cm),
-	
+
 	(sed_chan_20.inlet_w_post_weir, 30. * u.cm),
 	(sed_chan_60.inlet_w_post_weir, 30. * u.cm),
 
@@ -58,7 +58,7 @@ sed_chan_60 = SedimentationChannel(q = 60.0 * u.L / u.s)
 
 	(sed_chan_20.outlet_pipe.l, 3.7119999999999997 * u.m),
 	(sed_chan_60.outlet_pipe.l, 3.7119999999999997 * u.m),
-    
+
 	(sed_chan_20.outlet_pipe_q_max, 7.8571 * u.L / u.s),
 	(sed_chan_60.outlet_pipe_q_max, 7.8571 * u.L / u.s),
 
@@ -95,5 +95,10 @@ sed_chan_60 = SedimentationChannel(q = 60.0 * u.L / u.s)
 	(sed_chan_20.inlet_slope_l, 4.1052 * u.m),
 	(sed_chan_60.inlet_slope_l, 4.1052 * u.m),
 ])
+
 def test_sed_chan(actual, expected):
-	assert actual == expected
+	if (type(actual) == u.Quantity and type(expected) == u.Quantity):
+		assert actual.units == expected.units
+		assert actual.magnitude == pytest.approx(expected.magnitude)
+	else:
+		assert actual == pytest.approx(expected)

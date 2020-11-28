@@ -1,4 +1,5 @@
 from aguaclara.core.units import u
+import aguaclara.core.utility as ut
 import numpy as np
 import pandas as pd
 import os
@@ -11,6 +12,7 @@ R_pump = 1.62 * u.cm
 k_nonlinear = 13
 
 
+@ut.list_handler()
 def vol_per_rev_3_stop(color="", inner_diameter=0):
     """Return the volume per revolution of an Ismatec 6 roller pump
     given the inner diameter (ID) of 3-stop tubing. The calculation is
@@ -48,6 +50,7 @@ def vol_per_rev_3_stop(color="", inner_diameter=0):
     return (term1 * term2).to(u.mL/u.rev)
 
 
+@ut.list_handler()
 def ID_colored_tube(color):
     """Look up the inner diameter of Ismatec 3-stop tubing given its color code.
 
@@ -75,6 +78,7 @@ def ID_colored_tube(color):
     return df[idx]['Diameter (mm)'].values[0] * u.mm
 
 
+@ut.list_handler()
 def vol_per_rev_LS(id_number):
     """Look up the volume per revolution output by a Masterflex L/S pump
     through L/S tubing of the given ID number.
@@ -101,6 +105,7 @@ def vol_per_rev_LS(id_number):
     return df[idx]['Flow (mL/rev)'].values[0] * u.mL/u.turn
 
 
+@ut.list_handler()
 def flow_rate(vol_per_rev, rpm):
     """Return the flow rate from a pump given the volume of fluid pumped per
     revolution and the desired pump speed.

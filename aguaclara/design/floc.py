@@ -4,8 +4,8 @@ cause coagulant and other particles to accumulate, forming flocs.
 Example:
     >>> from aguaclara.design.floc import *
     >>> floc = Flocculator(q = 20 * u.L / u.s, hl = 40 * u.cm)
-    >>> floc.chan_w
-    <Quantity(34.0, 'centimeter')>
+    >>> round(floc.chan_w)
+    <Quantity(34, 'centimeter')>
 """
 import aguaclara.core.head_loss as hl
 import aguaclara.design.human_access as ha
@@ -25,7 +25,7 @@ class Flocculator(Component):
 
     A flocculator's design relies on the entrance tank's design in the same
     plant, but assumed/default values may be used to design a flocculator by
-    itself. To design these components in tandem, use 
+    itself. To design these components in tandem, use
     :class:`aguaclara.design.ent_floc.EntTankFloc`.
 
     Attributes:
@@ -35,7 +35,7 @@ class Flocculator(Component):
         - ``HS_RATIO_MAX (float)``: Maximum H/S ratio
         - ``SDR (float)``: Standard dimension ratio
         - ``OBSTACLE_OFFSET (bool)``: Whether the baffle obstacles are offset
-          from each other 
+          from each other
 
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (required)
@@ -48,9 +48,9 @@ class Flocculator(Component):
         - ``l_max (float * u.m)``: Maximum length (optional, defaults to 6m)
         - ``gt (float)``: Collision potential (optional, defaults to 37000)
         - ``hl (float * u.cm)``: Head loss (optional, defaults to 40cm)
-        - ``end_water_depth (float * u.m)``: Depth at the end 
+        - ``end_water_depth (float * u.m)``: Depth at the end
           (optional, defaults to 2m)
-        - ``drain_t (float * u.min)``: Drain time (optional, 
+        - ``drain_t (float * u.min)``: Drain time (optional,
           defaults to 30 mins)
         - ``polycarb_sheet_w (float * u.inch)``: Width of polycarbonate sheets
           used to construct baffles (optional, defaults to 42 in)
@@ -103,12 +103,12 @@ class Flocculator(Component):
     def vel_grad_avg(self):
         """The average velocity gradient of water."""
         vel_grad_avg = ((u.standard_gravity * self.hl) /
-                        (pc.viscosity_kinematic(self.temp) * self.gt)).to(u.s ** -1)
+                        (pc.viscosity_kinematic_water(self.temp) * self.gt)).to(u.s ** -1)
         return vel_grad_avg
 
     @property
     def retention_time(self):
-        """The hydraulic retention time neglecting the volume 
+        """The hydraulic retention time neglecting the volume
         created by head loss.
         """
         retention_time = (self.gt / self.vel_grad_avg).to(u.s)
@@ -127,7 +127,7 @@ class Flocculator(Component):
             (
                 self.BAFFLE_K / (
                     2 * self.end_water_depth *
-                    pc.viscosity_kinematic(self.temp) *
+                    pc.viscosity_kinematic_water(self.temp) *
                     self.vel_grad_avg ** 2
                 )
             ) ** (1/3)
@@ -199,7 +199,7 @@ class Flocculator(Component):
             (
                 (self.BAFFLE_K /
                         (
-                            2 * pc.viscosity_kinematic(self.temp) *
+                            2 * pc.viscosity_kinematic_water(self.temp) *
                             (self.vel_grad_avg ** 2)
                         )
                     ) *
@@ -225,9 +225,9 @@ class Flocculator(Component):
             (self.BAFFLE_K /
              (
                  (2 * self.expansion_h * (self.vel_grad_avg ** 2) *
-                  pc.viscosity_kinematic(self.temp))
+                  pc.viscosity_kinematic_water(self.temp))
              ).to_base_units()
-                ) ** (1/3) * 
+                ) ** (1/3) *
                 self.q / self.chan_w
             ).to(u.cm)
         return baffle_s
@@ -244,7 +244,7 @@ class Flocculator(Component):
 
     @property
     def obstacle_pipe_od(self):
-        """The outer diameter of an obstacle pipe. If the available pipe is 
+        """The outer diameter of an obstacle pipe. If the available pipe is
         greater than 1.5 inches, the obstacle offset will become false."""
         pipe_od = pipes.od_available(self.contraction_s)
 

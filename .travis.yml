@@ -1,7 +1,6 @@
 language: python
 sudo: false
 python:
-- '3.5'
 - '3.6'
 before_install:
 - export NOKOGIRI_USE_SYSTEM_LIBRARIES=true

@@ -71,4 +71,8 @@ floc_60 = Flocculator(q = 60 * u.L / u.s)
 ])
 
 def test_floc(actual, expected):   
-    assert actual == expected
+    if (type(actual) == u.Quantity and type(expected) == u.Quantity):
+        expected = expected.to(actual.units)
+        assert actual.magnitude == pytest.approx(expected.magnitude)
+    else:
+        assert actual == pytest.approx(expected)

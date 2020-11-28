@@ -13,5 +13,3 @@ sed_60 = Sedimentor(q = 60.0 * u.L / u.s)
 ])
 def test_sed(actual, expected):
     assert actual == expected
-
-    
