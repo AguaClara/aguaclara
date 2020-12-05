@@ -99,27 +99,31 @@ def is_fs_type(candidate, type_name):
         result = False
     return result
 
-def copy_to_docs(file_path, base="doc_files"):
-    """Copies a file to the current working directory. The new file's path
+def copy_to_docs(file_path, new_name=None, base="doc_files"):
+    """First, searches recursively searches for the base path in parent folders.
+    Then copies a file to the current working directory. The new file's path
     will be identical to the old file's path relative to the base path.
 
     Args:
         file_path: path to the file to be copied
         base: base path to use in creating relative file path of the copy
+        new_name: new name for the file to avoid duplication.
+            Default: None, use existing name
 
     Returns:
         none
     """
-    file = os.path.basename(file_path)
-    dir = os.path.dirname(os.getcwd())
-    while os.path.basename(dir) != base:
-        file = os.path.basename(dir) + "/" + file
+    dir = os.getcwd()
+    while not os.path.exists(os.path.join(dir, base)):
         dir = os.path.dirname(dir)
+
+    basepath = os.path.join(dir, base)
+    new_path = new_name if new_name is not None else file_path
     try:
-        copyfile(file_path, file)
+        copyfile(os.path.join(basepath, file_path), new_path)
     except IOError as io_err:
-        os.makedirs(os.path.dirname(file))
-        copyfile(file_path, file)
+        os.makedirs(os.path.dirname(file_path))
+        copyfile(os.path.join(basepath, file_path), new_path)
 
 def parse_variables_from_list(unparsed, for_docs=True):
     """Helper function for parse_variables_from_map parses values from a list
@@ -331,10 +335,10 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
     elif default_key == "index":
         if unparsed != "" and unparsed is not None and for_docs:
                 if os.path.exists('index.rst'):
-                    copyfile(unparsed, 'new_index.rst')
+                    copy_to_docs(unparsed, 'new_index.rst')
                     merge_indexes('new_index.rst', 'index.rst')
                 else:
-                    copyfile(unparsed, 'index.rst')
+                    copy_to_docs(unparsed, 'index.rst')
         return parsed_variables, templates
     elif default_key == "process":
         if unparsed != "" and unparsed is not None and for_docs:
