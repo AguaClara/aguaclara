@@ -93,11 +93,11 @@ class TestPipes(unittest.TestCase):
         self.assertAlmostEqual(pipes.OD(92 * u.inch), 92 * u.inch)
 
         #values in between official NDs
-        self.assertAlmostEqual(pipes.OD(2.25 * u.inch), 2.875 * u.inch)
-        self.assertAlmostEqual(pipes.OD(4.1 * u.inch), 5 * u.inch)
+        self.assertAlmostEqual(pipes.OD(2.25 * u.inch), 2.375 * u.inch)
+        self.assertAlmostEqual(pipes.OD(4.1 * u.inch), 4.5 * u.inch)
         self.assertAlmostEqual(pipes.OD(4.4 * u.inch), 5 * u.inch)
-        self.assertAlmostEqual(pipes.OD(4.6 * u.inch), 5.563 * u.inch)
-        self.assertAlmostEqual(pipes.OD(33 * u.inch), 34 * u.inch)
+        self.assertAlmostEqual(pipes.OD(4.6 * u.inch), 5 * u.inch)
+        self.assertAlmostEqual(pipes.OD(33 * u.inch), 32 * u.inch)
 
     def test_sch_all_available(self):
         ans = [(10*u.inch, pipes.SCH.SCH160.name),(12*u.inch, pipes.SCH.SCH160.name)]

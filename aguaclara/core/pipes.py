@@ -132,10 +132,8 @@ def makePipe_minID_SDR(minID, SDR):
 @ut.list_handler()
 def OD(ND):
     """Return a pipe's outer diameter according to its nominal diameter.
-
     :param ND: nominal diameter of pipe
     :type ND: u.inch
-
     :return: outer diameter of pipe, in inches
     :rtype: u.inch
     """
@@ -143,12 +141,13 @@ def OD(ND):
     # given nominal diameter have the same outer diameter.
     #
     # Steps:
-    # 1. Find the index of the next largest nominal diameter.
+    # 1. Find the index of the closest nominal diameter.
+    #    (Should this be changed to find the next largest ND?)
     # 2. Take the values of the array, subtract the ND, take the absolute
     #    value, find the index of the minimium value.
-    
-    lst = pipedb['ODinch'][pipedb['NDinch'] >= ND.to(u.inch).magnitude]
-    return min(lst) * u.inch
+    ND = ND.to(u.inch).magnitude
+    index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
+    return pipedb.iloc[index, 1] * u.inch
 
 
 def OD_SDR(ID,SDR):
@@ -399,30 +398,8 @@ def cap_thickness(ND):
     return cap_thickness
 
 
-
-
-""" TODO: Several updates can be made to core/pipes.py:
-
-1. A class and/or static method should be defined to convert ID and SDR to the minimum available OD.        DONE
-   A class could ask for SDR and minimum ID in the constructor and include methods for available ID, ND, and OD. 
-   A static method could calculate OD from ID and SDR and use the existing od_available(od_guess) method, or calculate ND using ND_SDR_available(ID, SDR) and convert ND to OD.
-
-2. Method and method parameter names should be standardized. For example, ND_available(NDguess) and od_available(od_guess) have different formats.
-
-3. All methods and classes should be fully and properly documented. 
-   "Properly documented" means the descriptions should be accurate and include only information helpful to users 
-   (implementation instructions and internal variable names like pipedb would not be helpful).
-
-4. Functions ending in all_available can be made more efficient. 
-   For example, most of the computation in ND_all_available() can be implemented one-line conditional indexing: return pipedb['NDinch'][pipedb['Used'] == 1]. 
-
-5. Write test cases for each function
-
 """
-
-
-
-"""
+Note: 
 added to pipe database for schedule 80, 120 and 160 using 
 https://www.engineersedge.com/pipe_schedules.htm#Related 
 """
