@@ -22,7 +22,7 @@ key_str = "key"
 
 # create global roles using this: https://stackoverflow.com/questions/9698702/how-do-i-create-a-global-role-roles-in-sphinx
 # If this grows too much, we'll need to add a global rst as described in the post above.
-def parse_quantity(q):
+def parse_quantity(q, for_docs=True):
     """Parse an Onshape units definition
 
     Args:
@@ -37,6 +37,8 @@ def parse_quantity(q):
               ],
               'value': 0.0868175271040671
             }
+        for_docs: True if parsing variables for AIDE documentation,
+            False otherwise (e.g. validation)
 
     Returns:
         a string that can be converted to any other unit engine.
@@ -48,29 +50,32 @@ def parse_quantity(q):
             log = math.floor(math.log10(units_s.magnitude))
         except:
             log = 0
-        if unit[key_str] == 'METER' and unit[val_str] == 1:
-            if log >= 3:
-                units_s = units_s.to(ureg.kilometer)
-            elif log >= -2 and log <= -1:
-                units_s = units_s.to(ureg.centimeter)
-            elif log <= -3:
-                units_s = units_s.to(ureg.millimeter)
-        elif unit[key_str] == 'METER' and unit[val_str] == 2:
-            if log >= 6:
-                units_s = units_s.to(ureg.kilometer**2)
-            elif log >= -4 and log <= -1:
-                units_s = units_s.to(ureg.centimeter**2)
-            elif log <= -5:
-                units_s = units_s.to(ureg.millimeter**2)
-        elif unit[key_str] == 'METER' and unit[val_str] == 3:
-            log += 3
-            if log >= 3:
-                units_s = units_s.to(ureg.kiloliter)
-            elif log <= -1:
-                units_s = units_s.to(ureg.milliliter)
-            else:
-                units_s = units_s.to(ureg.liter)
-    return f'{round(units_s, 2):~}'
+        if for_docs:
+            if unit[key_str] == 'METER' and unit[val_str] == 1:
+                if log >= 3:
+                    units_s = units_s.to(ureg.kilometer)
+                elif log >= -2 and log <= -1:
+                    units_s = units_s.to(ureg.centimeter)
+                elif log <= -3:
+                    units_s = units_s.to(ureg.millimeter)
+            elif unit[key_str] == 'METER' and unit[val_str] == 2:
+                if log >= 6:
+                    units_s = units_s.to(ureg.kilometer**2)
+                elif log >= -4 and log <= -1:
+                    units_s = units_s.to(ureg.centimeter**2)
+                elif log <= -5:
+                    units_s = units_s.to(ureg.millimeter**2)
+            elif unit[key_str] == 'METER' and unit[val_str] == 3:
+                log += 3
+                if log >= 3:
+                    units_s = units_s.to(ureg.kiloliter)
+                elif log <= -1:
+                    units_s = units_s.to(ureg.milliliter)
+                else:
+                    units_s = units_s.to(ureg.liter)
+            return f'{round(units_s, 2):~}'
+        else:
+            return units_s
 
 def is_fs_type(candidate, type_name):
     """Checks if the a JSON entry is of a specific FeatureScript type.
@@ -106,7 +111,7 @@ def copy_to_docs(file_path, base="doc_files"):
         none
     """
     file = os.path.basename(file_path)
-    dir = os.path.dirname(file_path)
+    dir = os.path.dirname(os.getcwd())
     while os.path.basename(dir) != base:
         file = os.path.basename(dir) + "/" + file
         dir = os.path.dirname(dir)
@@ -116,12 +121,14 @@ def copy_to_docs(file_path, base="doc_files"):
         os.makedirs(os.path.dirname(file))
         copyfile(file_path, file)
 
-def parse_variables_from_list(unparsed):
+def parse_variables_from_list(unparsed, for_docs=True):
     """Helper function for parse_variables_from_map parses values from a list
     instead of a map.
 
     Args:
         unparsed: portion of deserialized JSON which has yet to be parsed
+        for_docs: True if parsing variables for AIDE documentation,
+            False otherwise (e.g. validation)
 
     Returns:
         measurement_list: list of parsed values
@@ -130,7 +137,7 @@ def parse_variables_from_list(unparsed):
 
     for to_parse in unparsed:
         if is_fs_type(to_parse, "BTFSValueWithUnits"):
-            measurement_list.append(parse_quantity(to_parse[msg_str]))
+            measurement_list.append(parse_quantity(to_parse[msg_str], for_docs))
         elif is_fs_type(to_parse, ["BTFSValueNumber", "BTFSValueString"]):
             measurement_list.append(to_parse[msg_str][val_str])
 
@@ -297,13 +304,15 @@ def merge_treatment_processes(new_processes, old_processes):
     old_file.write("".join(old_lines))
     old_file.close()
 
-def parse_variables_from_map(unparsed, default_key=""):
+def parse_variables_from_map(unparsed, default_key="", for_docs=True):
     """Helper function for parse_attributes which loops through an unparsed map
     that matched one of the desired fields
 
     Args:
         unparsed: portion of deserialized JSON which has yet to be parsed
         default_key: key for the field. Used to detect special entries like index
+        for_docs: True if parsing variables for AIDE documentation,
+            False otherwise (e.g. validation)
 
     Returns:
         parsed_variables: dictionary of parsed variables
@@ -315,19 +324,20 @@ def parse_variables_from_map(unparsed, default_key=""):
     templates = []
 
     if default_key == "template":
-        copy_to_docs(unparsed)
+        if for_docs:
+            copy_to_docs(unparsed)
         templates.append(unparsed)
         return parsed_variables, templates
     elif default_key == "index":
-        if unparsed != "" and unparsed is not None:
-            if os.path.exists('index.rst'):
-                copyfile(unparsed, 'new_index.rst')
-                merge_indexes('new_index.rst', 'index.rst')
-            else:
-                copyfile(unparsed, 'index.rst')
+        if unparsed != "" and unparsed is not None and for_docs:
+                if os.path.exists('index.rst'):
+                    copyfile(unparsed, 'new_index.rst')
+                    merge_indexes('new_index.rst', 'index.rst')
+                else:
+                    copyfile(unparsed, 'index.rst')
         return parsed_variables, templates
     elif default_key == "process":
-        if unparsed != "" and unparsed is not None:
+        if unparsed != "" and unparsed is not None and for_docs:
             file = "Introduction/Treatment_Process.rst"
             file_path = "../../../doc_files/Introduction/Treatment_Process_" + unparsed + ".rst"
             if os.path.exists(file):
@@ -349,9 +359,10 @@ def parse_variables_from_map(unparsed, default_key=""):
                     value, template = parse_variables_from_map(candidate_message[msg_str][val_str])
                     templates.extend(template)
                 elif is_fs_type(candidate_message,  "BTFSValueArray"):
-                    value = parse_variables_from_list(candidate_message[msg_str][val_str])
+                    value = parse_variables_from_list(candidate_message[msg_str][val_str],
+                                                      for_docs)
                 elif is_fs_type(candidate_message, "BTFSValueWithUnits"):
-                    value = parse_quantity(candidate_message[msg_str])
+                    value = parse_quantity(candidate_message[msg_str], for_docs)
                 elif is_fs_type(candidate_message, ["BTFSValueNumber", "BTFSValueString"]):
                     value = candidate_message[msg_str][val_str]
                 parsed_variables[key] = value
@@ -360,13 +371,15 @@ def parse_variables_from_map(unparsed, default_key=""):
 
     return parsed_variables, templates
 
-def parse_attributes(attributes, fields, type_tag="Documenter"):
+def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
     """Helper function for get_parsed_measurements which loops through the
     atributes, parsing only the specified fields.
 
     Args:
         attributes: deserialized JSON object returned by Onshape link
         fields: fields which we are interested in parsing, e.g. 'variables' or 'index'
+        for_docs: True if parsing variables for AIDE documentation,
+            False otherwise (e.g. validation)
         type_tag: type from Onshape of the configuration we are parsing for
             Default: 'Documenter'
 
@@ -389,7 +402,11 @@ def parse_attributes(attributes, fields, type_tag="Documenter"):
                                 key = unparsed[msg_str][key_str][msg_str][val_str]
                                 for field in fields:
                                     if key == field:
-                                        new_measure, new_templates = parse_variables_from_map(unparsed[msg_str][val_str][msg_str][val_str], key)
+                                        new_measure, new_templates = parse_variables_from_map(
+                                            unparsed[msg_str][val_str][msg_str][val_str],
+                                            key,
+                                            for_docs
+                                        )
                                         measurements.update(new_measure)
                                         templates.extend(new_templates)
 
@@ -400,12 +417,17 @@ def parse_attributes(attributes, fields, type_tag="Documenter"):
 
     return measurements, templates
 
-def get_parsed_measurements(link):
+def get_parsed_measurements(link,
+                            fields=["variables", "template", "index", "process"],
+                            for_docs=True):
     """Parses the output of the Onshape Documenter feature found in the Onshape
     document at the given url.
 
     Args:
         link: URL of Onshape document
+        fields: names of fields to search for in the Onshape JSON object
+        for_docs: True if parsing variables for AIDE documentation,
+            False otherwise (e.g. validation)
 
     Returns:
         measurements: dictionary of parsed variables
@@ -442,9 +464,8 @@ def get_parsed_measurements(link):
     )
 
     attributes = json.loads(response.data.decode("utf-8"))["result"][msg_str][val_str]
-    fields = ["variables", "template", "index", "process"]
 
-    measurements, templates = parse_attributes(attributes, fields)
+    measurements, templates = parse_attributes(attributes, fields, for_docs)
 
     return measurements, templates
 
@@ -486,7 +507,3 @@ def make_replace_list(parsed_dict, filename, var_attachment=''):
         else:
             line = prefix + var_attachment + str(var) + suffix + str(parsed_dict[var])
             line_prepender(filename, line)
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

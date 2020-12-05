@@ -71,22 +71,30 @@ class OnshapeParserTest(unittest.TestCase):
         test_lines = test_file.readlines()
 
         self.assertEqual(test_lines, lines)
-    #
-    # def test_get_parsed_measurements(self):
-    #     link = 'https://cad.onshape.com/documents/c3a8ce032e33ebe875b9aab4/v/dc76b3f674d3d5d4f6237f35/e/d75b2f7a41dde39791b154e8'
-    #     measurements, templates = parse.get_parsed_measurements(link)
-    #
-    #     self.assertEqual(templates, ['./Entrance_Tank/LFOM.rst'])
-    #     self.assertEqual(measurements['N.LfomOrifices'],
-    #                      [17.0, 4.0, 6.0, 3.0, 4.0, 3.0, 3.0, 3.0, 3.0, 2.0, 3.0, 1.0])
-    #     self.assertEqual(measurements['HL.Lfom'], '20.0 cm')
-    #     self.assertEqual(
-    #         measurements['H.LfomOrifices'],
-    #         ['7.94 mm', '2.47 cm', '4.14 cm', '5.82 cm', '7.49 cm', '9.16 cm',
-    #         '10.84 cm', '12.51 cm', '14.18 cm', '15.86 cm', '17.53 cm', '19.21 cm']
-    #     )
-    #     self.assertEqual(measurements['D.LfomOrifices'], '1.59 cm')
-    #     self.assertEqual(measurements['B.LfomRows'], '1.67 cm')
+
+    def test_get_parsed_measurements(self):
+        link = 'https://cad.onshape.com/documents/c3a8ce032e33ebe875b9aab4/v/dc76b3f674d3d5d4f6237f35/e/d75b2f7a41dde39791b154e8'
+        measurements, templates = parse.get_parsed_measurements(
+            link,
+            fields=['variables', 'template'],
+            for_docs=False
+        )
+
+        self.assertEqual(templates, ['./Entrance_Tank/LFOM.rst'])
+        self.assertEqual(measurements['N.LfomOrifices'],
+                         [17.0, 4.0, 6.0, 3.0, 4.0, 3.0, 3.0, 3.0, 3.0, 2.0, 3.0, 1.0])
+        self.assertEqual(measurements['HL.Lfom'], 0.2 * u.m)
+        self.assertEqual(
+            measurements['H.LfomOrifices'],
+            [0.0079375 * u.m, 0.02467613636363637 * u.m,
+             0.04141477272727274 * u.m, 0.0581534090909091 * u.m,
+             0.07489204545454548 * u.m, 0.09163068181818185 * u.m,
+             0.1083693181818182 * u.m, 0.1251079545454546 * u.m,
+             0.14184659090909096 * u.m, 0.15858522727272734 * u.m,
+             0.1753238636363637 * u.m, 0.19206250000000008 * u.m]
+        )
+        self.assertEqual(measurements['D.LfomOrifices'], 0.015875 * u.m)
+        self.assertEqual(measurements['B.LfomRows'], 0.016666666666666666 * u.m)
 
     def test_make_replace_list(self):
         var_dict = {'test': '3.0 cm'}
