@@ -7,9 +7,10 @@ name = "pypi"
 [packages]
 matplotlib = "*"
 urllib3 = "*"
-pint = "==0.8.1"
+pint = "*"
 pandas = "*"
 scipy = "*"
+onshape_client = "*"
 
 [dev-packages]
 aguaclara = {editable = true, path = "."}

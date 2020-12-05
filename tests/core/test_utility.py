@@ -56,22 +56,22 @@ class UtilityTest(QuantityTest):
             """
             return (Pressure * MolarMass / (u.R * Temperature)).to(u.kg/u.m**3)
 
-        answer = 1.29320776*u.kg/u.m**3
+        answer = 1.29320768*u.kg/u.m**3
         self.assertAlmostEqualQuantity(density_air(1*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
 
-        answer = 1.29320776*u.kg/u.m**3
+        answer = 1.29320768*u.kg/u.m**3
         self.assertAlmostEqualQuantity(density_air(MolarMass=28.97*u.g/u.mol, Temperature=273*u.K, Pressure=1*u.atm), answer)
 
-        answer = np.array([1.29320776, 2.58641552, 3.87962328, 12.93207761])*u.kg/u.m**3
+        answer = np.array([1.29320768, 2.58641536, 3.87962304, 12.93207681])*u.kg/u.m**3
         self.assertAlmostEqualArrayQuantity(density_air([1, 2, 3, 10]*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
 
-        answer = np.array([1.29320776, 2.58641552, 3.87962328, 12.93207761])*u.kg/u.m**3
+        answer = np.array([1.29320768, 2.58641536, 3.87962304, 12.93207681])*u.kg/u.m**3
         self.assertAlmostEqualArrayQuantity(density_air(MolarMass=28.97*u.g/u.mol, Temperature=273*u.K, Pressure=[1, 2, 3, 10]*u.atm), answer)
 
-        answer = np.array([[1.29320776, 1.20526784, 1.07134919, 0.89279099],
-                           [2.58641552, 2.41053569, 2.14269839, 1.78558199],
-                           [3.87962328, 3.61580354, 3.21404759, 2.67837299],
-                           [12.93207761, 12.05267848, 10.71349198, 8.92790998]])*u.kg/u.m**3
+        answer = np.array([[1.29320768, 1.20526777, 1.07134913, 0.89279094],
+                           [2.58641536, 2.41053555, 2.14269826, 1.78558189],
+                           [3.87962304, 3.61580333, 3.21404740, 2.67837283],
+                           [12.93207681, 12.05267773, 10.71349131, 8.92790943]])*u.kg/u.m**3
         output = density_air([1, 2, 3, 10]*u.atm, [28.97, 27, 24, 20]*u.g/u.mol, 273*u.K)
         self.assertEqual(output.units, answer.units)
         for i in range(len(output.magnitude)):

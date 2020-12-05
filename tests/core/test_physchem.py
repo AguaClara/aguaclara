@@ -18,13 +18,13 @@ class GasTest(QuantityTest):
 
     def test_density_gas(self):
         """Test the gas density function"""
-        answer = 1.29320776*u.kg/u.m**3
+        answer = 1.29320768*u.kg/u.m**3
         self.assertAlmostEqualQuantity(pc.density_gas(1*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
-        answer = 2.06552493*u.kg/u.m**3
+        answer = 2.06552481*u.kg/u.m**3
         self.assertAlmostEqualQuantity(pc.density_gas(5*u.atm, 10*u.g/u.mol, 295*u.K), answer)
-        answer = 1.62487961*u.kg/u.m**3
+        answer = 1.62487951*u.kg/u.m**3
         self.assertAlmostEqualQuantity(pc.density_gas(101325*u.Pa, 40*u.g/u.mol, 300*u.K), answer)
-        answer = 0.20786109*u.kg/u.m**3
+        answer = 0.20786108*u.kg/u.m**3
         self.assertAlmostEqualQuantity(pc.density_gas(700*u.mmHg, 5*u.g/u.mol, 270*u.K), answer)
         answer = 0*u.kg/u.m**3
         self.assertAlmostEqualQuantity(pc.density_gas(0*u.atm, 28.97*u.g/u.mol, 273*u.K), answer)
@@ -271,7 +271,7 @@ class FrictionFuncsTest(QuantityTest):
                 self.assertAlmostEqualQuantity(pc.fric_pipe(*i[0]), i[1] * u.dimensionless)
 
     def test_fric_range(self):
-        """fric_pipe should raise an error if 0 <= Roughness <= 1 is not true."""
+        """fric_pipe should raise an error if 0 <= Roughness is not true."""
         checks = ([1 * u.m**3/u.s, 2 * u.m, 0.1 * u.m**2/u.s, -0.1 * u.m],)
         for i in checks:
             with self.subTest(i=i):
@@ -290,7 +290,7 @@ class FrictionFuncsTest(QuantityTest):
                 self.assertAlmostEqualQuantity(pc.fric_rect(*i[0]), i[1] * u.dimensionless)
 
     def test_fric_rect_range(self):
-        """fric_rect should raise an error if 0 <= PipeRough <= 1 is not true."""
+        """fric_rect should raise an error if 0 <= Roughness not true."""
         checks = ([1 * u.m**3/u.s, 1 * u.m, 1 * u.m, 1 * u.m**2/u.s, -1.1 * u.m, True],)
         for i in checks:
             with self.subTest(i=i):
@@ -324,9 +324,8 @@ class FrictionFuncsTest(QuantityTest):
                 self.assertAlmostEqualQuantity(pc.fric_channel(*i[0]), i[1] * u.dimensionless)
 
     def test_fric_channel_range(self):
-        """fric_channel should raise an error if 0 <= Roughness <= 1 is not true."""
-        checks = ((1 * u.m**2, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m**2/u.s, -0.0001 * u.m),
-                  (1 * u.m**2, 1 * u.m, 1 * u.m**2/u.s, 1 * u.m**2/u.s, 1.1 * u.m))
+        """fric_channel should raise an error if 0 <= Roughness is not true."""
+        checks = ((1 * u.m**2, 1 * u.m, 1 * u.m/u.s, 1 * u.m**2/u.s, -0.0001 * u.m),)
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.fric_channel, *i)
