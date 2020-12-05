@@ -20,99 +20,95 @@ with open(csv_path) as pipedbfile:
 # design code once manifold design code has been implemented.
 
 class SCH(Enum):
-    #labeled by column of this schedule's wall thickness (ex: SCH40Wall is column 5)
-    SCH40 = 'SCH40Wall' #5
-    SCH80 = 'SCH80Wall' #7
-    SCH120 = 'SCH120Wall' #9
-    SCH160 = 'SCH160Wall' #11
+    # value is the column name for a schedule's wall thickness 
+    SCH40 = 'SCH40Wall' 
+    SCH80 = 'SCH80Wall' 
+    SCH120 = 'SCH120Wall' 
+    SCH160 = 'SCH160Wall' 
 
 
 class Pipe:
-
+    """A pipe using the SDR system, represented by its nominal diameter (ND) and standard dimension ratio (SDR)"""
     def __init__(self, nd,sdr):
         self.nd= nd
         self.sdr = sdr
 
     @property
     def od(self):
+        """The outer diameter of the pipe."""
         index = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
         return pipedb.iloc[index, 1] * u.inch
 
     @property
     def id_sdr(self):
+        """The inner diameter of the pipe, calculated using the pipe's OD and SDR."""
         return (self.od.magnitude * (self.sdr - 2) / self.sdr) * u.inch
 
     def id_sch(self, schedule):
         """ 
-        Return the inner diameter of this pipe, given the desired schedule
-        :param schedule: the schedule of the pipe (use SCH.SCH40, SCH.SCH80, etc)
+        The inner diameter of this pipe, based on schedule and nominal diameter
+        :param schedule: the schedule of the pipe (Ex: pipes.SCH.SCH40)
+        :type schedule: pipes.SCH
 
-        :return: inner diameter of pipe
+        :return: The inner diameter of the pipe
         :rtype: u.inch
         """
         myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
         thickness = pipedb.iloc[myindex][schedule.value]
         if (thickness == 0): 
-            return schedule ^ "does not exist for this ND"
+            return schedule ^ " does not exist for this ND"
         return (pipedb.iloc[myindex, 1] - 2 * (thickness)) * u.inch
 
     def sch(self, NDarr=None, SCHarr=None):
         """ 
-        Return the nominal diameter and schedule that best fits this pipe's criteria and NDarr and SCHarr
-        :param NDarr: an array of preferred nominal diameters
-        :param SCHarr: an array of preferred schedules
+        The nominal diameter and schedule that best fits this pipe's criteria and NDarr and SCHarr
+        :param NDarr: an array of preferred nominal diameters (Ex: [10]*u.inch)
+        :type NDarr: numpy.array * u.inch
+        :param SCHarr: an array of preferred schedules (Ex: [pipes.SCH.SCH160, pipes.SCH.SCH40])
+        :type SCHarr: pipes.SCH list 
 
-        :return: (nominal diameter, schedule) or "no matches"
-        :rtype: (u.inch, SCH) or string
+        :return: (nominal diameter, schedule) tuple or None
+        :rtype: (u.inch, SCH) or None
         """
 
-        available = sch_all_available(self.id_sdr, self.sdr, NDarr, SCHarr)
+        # get list of all (ND, SCH) available and return the (ND, SCH) resulting in the least ID 
+        available = SCH_all_available(self.id_sdr, self.sdr, NDarr, SCHarr)
+
         if available==[]:
             return None
+        def sch_based_on_name(n):
+            if n == SCH.SCH40.name:
+                return SCH.SCH40
+            elif n == SCH.SCH80.name:
+                return SCH.SCH80
+            elif n == SCH.SCH120.name:
+                return SCH.SCH120
+            elif n == SCH.SCH160.name:
+                return SCH.SCH160
+        def f (p):
+            #find id that goes with nd sch  
+            # (ND, schedule name)
+            nd = p[0]
+            sch = p[1]
+            row = pipedb.loc[pipedb['NDinch'] == nd.magnitude] # 1 row df
+            t = row[sch_based_on_name(sch).value].iloc[0]
+            od = row['ODinch'].iloc[0]
+
+            return (od-2*t, nd, sch)
+        available = list(map(f, available))
         m = min(available)[0]
-        return list(filter(lambda x:m in x, available))[0][1:]
+
+        return list(filter(lambda x: m == x[0], available))[0][1:]
         
 
-def sch_all_available(minID, maxSDR, NDarr=None, SCHarr=[SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160]):
-    """
-    Returns a list of tuples (inner diameter, nominal diameter, schedule) representing schedule pipes that fit the criteria. 
-    Meeting criteria means: has at least minID, has at most maxSDR, and whose ND and/or SCH are in NDarr and SCHarr respectively. 
-    """
-    #loop through all nd and sch available. 
-    #If find a pipe whose SDR is \le the requirement (smaller SDR=handle more pressure) 
-    # and whose inner diameter is \ge the id_sdr, 
-    # put it in a list. Send back that list. 
-
-    #look through array if given, else look through the whole list
- 
-    nds = ND_all_available()/u.inch if NDarr is None  else NDarr/u.inch
-    schs = [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr is None) else SCHarr 
-
-    allschs = []
-    rows = []
-    for i in range(len(pipedb['NDinch'])):
-        if pipedb.iloc[i, 4] == 1 and pipedb.iloc[i]['NDinch'] in nds:
-            rows.append((pipedb.iloc[i]))
-
-    for row in rows:
-        for sch in schs:
-
-            od = row['ODinch']
-            t = row[sch.value]
-            sdr = od/t
-            id = od - 2*t
-
-            if (id >= minID.magnitude and sdr <= maxSDR):
-                allschs.append((id,row['NDinch']*u.inch, sch.name))
-    return allschs
-
-
-
 def makePipe_ND_SDR(ND, SDR):
-    """Return a new pipe, given its ND (nominal diameter) and SDR (standard diameter ratio).
+    """
+    Return a Pipe object, given a ND (nominal diameter) and SDR (standard diameter ratio).
 
     :param ND: nominal diameter of pipe
+    :type ND: u.inch
     :param SDR: standard diameter ratio of pipe
+    :type SDR: float
 
     :return: a pipe with the given ND and SDR
     :rtype: Pipe
@@ -123,7 +119,9 @@ def makePipe_minID_SDR(minID, SDR):
     """Return a new pipe, given its minID (minimum inner diameter) and SDR (standard diameter ratio).
 
     :param minID: minimum inner diameter of pipe
+    :type minID: u.inch
     :param SDR: standard diameter ratio of pipe
+    :type SDR: float
 
     :return: a pipe with SDR and ND calculated from given minID and SDR
     :rtype: Pipe
@@ -145,31 +143,44 @@ def OD(ND):
     # given nominal diameter have the same outer diameter.
     #
     # Steps:
-    # 1. Find the index of the closest nominal diameter.
-    #    (Should this be changed to find the next largest ND?)
+    # 1. Find the index of the next largest nominal diameter.
     # 2. Take the values of the array, subtract the ND, take the absolute
     #    value, find the index of the minimium value.
-    ND = ND.to(u.inch).magnitude
-    index = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
-    return pipedb.iloc[index, 1] * u.inch
+    
+    lst = pipedb['ODinch'][pipedb['NDinch'] >= ND.to(u.inch).magnitude]
+    return min(lst) * u.inch
 
 
-def OD_from_IDSDR(ID,SDR):
+def OD_SDR(ID,SDR):
     """ Return the minimum OD that is available given ID and SDR. 
-    1. calculate OD matching with ID and SDR.
-    2. find minimum OD available.
-    raises: ValueError is SDR is 2. 
+    raises: ValueError if SDR is 2. 
 
-    ID is the inner diameter.
-    SDR is the outer diameter divided by the wall thickness.
+    :param ID: inner diameter of pipe
+    :type ID: u.inch
+    :param SDR: the standard dimension ratio of the pipe
+    :type SDR: float
+
+    :return: minimum outer diamter available
+    :rtype: u.inch
     """
     if SDR == 2:
         raise ValueError("SDR cannot be 2!")
-    return od_available((ID*SDR)/(SDR-2))
+    return OD_available((ID*SDR)/(SDR-2))
 
 
 @ut.list_handler()
 def fitting_od(pipe_nd, fitting_sdr=41):
+    """
+    Return the OD of a fitting given SDR and the ND of the pipe it will be fitted around
+
+    :param pipe_nd: ND of the pipe to be fitted around
+    :type pipe_nd: u.inch
+    :param fitting_sdr: SDR of the pipe to be fitted around
+    :type fitting_sdr: float
+
+    :return: the outer diameter of a fitting
+    :rtype: u.inch
+    """
     pipe_od = OD(pipe_nd)
     fitting_nd = ND_SDR_available(pipe_od, fitting_sdr)
     fitting_od = OD(fitting_nd)
@@ -179,25 +190,35 @@ def fitting_od(pipe_nd, fitting_sdr=41):
 @ut.list_handler()
 def ID_SDR(ND, SDR):
     """Return the inner diameter of a pipe given its nominal diameter and SDR
-    (standard diameter ratio).
+    (standard dimension ratio).
 
-    SDR is the outer diameter divided by the wall thickness.
+    :param ND: the nominal diameter 
+    :type ND: u.inch
+    :param SDR: the outer diameter divided by the wall thickness.
+    :type SDR: float
+
+    :return: innter diameter of a pipe
+    :rtype: u.inch
     """
     return OD(ND) * (SDR-2) / SDR
 
 
-@ut.list_handler()
-def ID_sch40(ND):
-    """Return the inner diameter for schedule 40 pipes.
+def ID_sch(ND, schedule):
+    """ 
+    Return the inner diameter of this pipe, given the ND and desired schedule
+    :param ND: the nominal diameter of the pipe
+    :type ND: u.inch
+    :param schedule: the schedule of the pipe (use SCH.SCH40, SCH.SCH80, etc)
+    :type schedule: pipes.SCH
 
-    The wall thickness for these pipes is in the pipedb.
-
-    Take the values of the array, subtract the ND, take the absolute
-    value, find the index of the minimium value.
+    :return: inner diameter of pipe
+    :rtype: u.inch
     """
-    ND = ND.to(u.inch).magnitude
-    myindex = (np.abs(np.array(pipedb['NDinch']) - (ND))).argmin()
-    return (pipedb.iloc[myindex, 1] - 2*(pipedb.iloc[myindex, 5])) * u.inch
+    myindex = (np.abs(np.array(pipedb['NDinch']) - ND.magnitude)).argmin()
+    thickness = pipedb.iloc[myindex][schedule.value]
+    if (thickness == 0): 
+        return schedule ^ "does not exist for this ND"
+    return (pipedb.iloc[myindex, 1] - 2 * (thickness)) * u.inch
 
 
 def ND_all_available():
@@ -205,25 +226,25 @@ def ND_all_available():
 
     NDs available are those commonly used as based on the 'Used' column
     in the pipedb.
+
+    :return: an array of available nominal diameters
+    :rtype: numpy.array * u.inch
     """
-    ND_all_available = []
-    for i in range(len(pipedb['NDinch'])):
-        if pipedb.iloc[i, 4] == 1:
-            ND_all_available.append((pipedb['NDinch'][i]))
-    return ND_all_available * u.inch
+    return (pipedb['NDinch'][pipedb['Used'] == 1]).to_numpy() * u.inch
 
 
-def od_all_available():
+
+def OD_all_available():
     """Return an array of available outer diameters.
 
     NDs available are those commonly used as based on the 'Used' column
     in the pipedb.
+
+    :return: an array of available outer diamters
+    :rtype: numpy.array * u.inch
     """
-    od_all_available = []
-    for i in range(len(pipedb['ODinch'])):
-        if pipedb.iloc[i, 4] == 1:
-            od_all_available.append((pipedb['ODinch'][i]))
-    return od_all_available * u.inch
+    return (pipedb['ODinch'][pipedb['Used'] == 1]).to_numpy() * u.inch
+
 
 
 @ut.list_handler()
@@ -232,12 +253,65 @@ def ID_SDR_all_available(SDR):
 
     IDs available are those commonly used based on the 'Used' column
     in the pipedb.
+
+    :param SDR: the standard dimension ratio 
+    :type SDR: float
+
+    :return: an array of inner diamers
+    :rtype: numpy.array * u.inch
     """
+    nds = (pipedb['NDinch'][pipedb['Used'] == 1]).to_numpy() * u.inch
+    return list(map(lambda x: ID_SDR(x,SDR).magnitude, nds)) * u.inch
     ID = []
     ND = ND_all_available()
     for i in range(len(ND)):
         ID.append(ID_SDR(ND[i], SDR).magnitude)
     return ID * u.inch
+
+def SCH_all_available(minID, maxSDR, NDarr=None, SCHarr=[SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160]):
+    """
+    Return a list of tuples (nominal diameter, schedule) representing schedule pipes that fit the criteria. 
+    Meeting criteria means: has at least minID, has at most maxSDR, and whose ND and/or SCH are in NDarr and SCHarr respectively. 
+    Default: NDarr looks through all available ND, SCHarr looks through all schedules
+
+    :param minID: the minimum inner diameter required
+    :type minID: u.inch
+    :param maxSDR: the maximum SDR required
+    :type maxSDR: float
+    :param NDarr: the preferred list of NDs to look through
+    :type NDarr: numpy.array * u.inch
+    :param SCHarr: the preferred list of schedules to look through
+    :type SCHarr: pipes.SCH list
+
+    :return: list of tuples in the form (nominal diameter, schedule). Example: (10*u.inch, pipes.SCH.SCH160.name)
+    :rtype: (float*u.inch, pipes.SCH) list
+    """
+    #loop through all nd and sch available. 
+    #If find a pipe whose SDR is \le the requirement (smaller SDR=handle more pressure) 
+    # and whose inner diameter is \ge the id_sdr, 
+    # put it in a list. Send back that list. 
+
+    #look through array if given, else look through the whole list
+ 
+    nds = ND_all_available()/u.inch if NDarr is None  else NDarr/u.inch
+    schs = [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr is None) else SCHarr 
+
+    allschs = []
+    rows = pipedb.loc[(pipedb['Used'] == 1) & pipedb['NDinch'].isin(nds)]
+
+    for index, row in rows.iterrows():
+        for sch in schs:
+            t = row[sch.value]
+            if t != 0:
+                od = row['ODinch']
+                
+                sdr = od/t
+                id = od - 2*t
+
+                if (id >= minID.magnitude and sdr <= maxSDR):
+                    allschs.append( (row['NDinch']*u.inch, sch.name) )
+    return allschs
+
 
 
 @ut.list_handler()
@@ -246,9 +320,17 @@ def ND_SDR_available(ID, SDR):
 
     Takes the values of the array, compares to the ID, and finds the index
     of the first value greater or equal.
+
+    :param ID: the inner diameter
+    :type ID: u.inch
+    :param SDR: the standard dimension ratio
+    :type SDR: float
+
+    :return: an available ND 
+    :rtype: u.inch
     """
-    for i in range(len(np.array(ID_SDR_all_available(SDR)))):
-        if np.array(ID_SDR_all_available(SDR))[i] >= (ID.to(u.inch)).magnitude:
+    for i in range(len(np.array(ID_SDR_all_available(SDR).magnitude))):
+        if np.array(ID_SDR_all_available(SDR).magnitude)[i] >= (ID.to(u.inch)).magnitude:
             return ND_all_available()[i]
 
 
@@ -256,36 +338,64 @@ def ND_SDR_available(ID, SDR):
 def ND_available(NDguess):
     """Return the minimum ND that is available.
 
-    1. Extract the magnitude in inches from the nominal diameter.
-    2. Find the index of the closest nominal diameter.
-    3. Take the values of the array, subtract the ND, take the
-       absolute value, find the index of the minimium value.
+    :param NDguess: the lower bound nominal diameter 
+    :type NDguess: u.inch
+
+    :return: the minimum ND available greater than NDguess
+    :rtype: u.inch
     """
+    # 1. Extract the magnitude in inches from the nominal diameter.
+    # 2. Find the index of the closest nominal diameter.
+    # 3. Take the values of the array, subtract the ND, take the
+    #    absolute value, find the index of the minimium value.
     myindex = (ND_all_available() >= NDguess)
     return min(ND_all_available()[myindex])
 
 
 @ut.list_handler()
-def od_available(od_guess):
+def OD_available(ODguess):
     """Return the minimum OD that is available.
 
-    1. Extract the magnitude in inches from the outer diameter.
-    2. Find the index of the closest outer diameter.
-    3. Take the values of the array, subtract the OD, take the
-       absolute value, find the index of the minimium value.
+    :param ODguess: the lower bound outer diameter
+    :type ODguess: u.inch
+
+    :return: the minimum OD available greater than ODguess
+    :rtype: u.inch
     """
-    myindex = (od_all_available() >= od_guess)
-    return min(od_all_available()[myindex])
+    # 1. Extract the magnitude in inches from the outer diameter.
+    # 2. Find the index of the closest outer diameter.
+    # 3. Take the values of the array, subtract the OD, take the
+    #    absolute value, find the index of the minimium value.
+    myindex = (OD_all_available() >= ODguess)
+    return min(OD_all_available()[myindex])
 
 
 @ut.list_handler()
-def socket_depth(nd):
-    return nd / 2
+def socket_depth(ND):
+    """
+    Return the socket depth given ND
+
+    :param ND: the nominal diameter
+    :type ND: u.inch 
+
+    :return: the socket depth
+    :rtype: u.inch (or the type of ND)
+    """
+    return ND / 2
 
 
 @ut.list_handler()
-def cap_thickness(nd):
-    cap_thickness = (fitting_od(nd) - OD(ND_available(nd))) / 2
+def cap_thickness(ND):
+    """
+    Return the cap thickness given ND
+
+    :param ND: the nominal diameter
+    :type ND: u.inch
+
+    :return: the cap thickness
+    :rtype: u.inch
+    """
+    cap_thickness = (fitting_od(ND) - OD(ND_available(ND))) / 2
     return cap_thickness
 
 
