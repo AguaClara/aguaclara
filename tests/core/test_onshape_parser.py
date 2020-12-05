@@ -16,6 +16,8 @@ class OnshapeParserTest(unittest.TestCase):
 
         self.assertEqual(parse.parse_quantity(d0), '14.14 cm')
         self.assertEqual(parse.parse_quantity(d1), '0.14 mm ** 3')
+        self.assertEqual(parse.parse_quantity(d0, False),
+                         0.1414213562373095 * u.m)
 
     def test_is_fs_type(self):
         test_json = json.loads('{"type": 2077, "typeName": "BTFSValueMapEntry", "message": {}}')
