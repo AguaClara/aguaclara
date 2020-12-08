@@ -44,6 +44,16 @@ class Pipe:
         """The inner diameter of the pipe, calculated using the pipe's OD and SDR."""
         return (self.od.magnitude * (self.sdr - 2) / self.sdr) * u.inch
 
+    @property
+    def id_sch40(self):
+        """
+    .. deprecated::
+        `id_sch40` is deprecated; use `id_sch` instead.
+    """
+        myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
+        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])) * u.inch
+
+
     def id_sch(self, schedule):
         """ 
         The inner diameter of this pipe, based on schedule and nominal diameter
