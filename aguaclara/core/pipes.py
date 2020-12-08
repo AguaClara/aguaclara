@@ -261,11 +261,7 @@ def ID_SDR_all_available(SDR):
     """
     nds = (pipedb['NDinch'][pipedb['Used'] == 1]).to_numpy() * u.inch
     return list(map(lambda x: ID_SDR(x,SDR).magnitude, nds)) * u.inch
-    ID = []
-    ND = ND_all_available()
-    for i in range(len(ND)):
-        ID.append(ID_SDR(ND[i], SDR).magnitude)
-    return ID * u.inch
+
 
 def SCH_all_available(minID, maxSDR, NDarr=None, SCHarr=[SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160]):
     """
