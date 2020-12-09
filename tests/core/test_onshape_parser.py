@@ -13,11 +13,35 @@ class OnshapeParserTest(unittest.TestCase):
               'unitToPower': [{'value': 1, 'key': 'METER'}], 'typeTag': ''}
         d1 = {'value': 0.1414213562373095,
               'unitToPower': [{'value': 3, 'key': 'MILLIMETER'}], 'typeTag': ''}
+        d2 = {'value': 0.001414213562373095,
+              'unitToPower': [{'value': 1, 'key': 'METER'}], 'typeTag': ''}
+        d3 = {'value': 1414.213562373095,
+              'unitToPower': [{'value': 1, 'key': 'METER'}], 'typeTag': ''}
+        d4 = {'value': 1414213.562373095,
+              'unitToPower': [{'value': 2, 'key': 'METER'}], 'typeTag': ''}
+        d5 = {'value': 0.00043,
+              'unitToPower': [{'value': 2, 'key': 'METER'}], 'typeTag': ''}
+        d6 = {'value': 0.00000043,
+              'unitToPower': [{'value': 2, 'key': 'METER'}], 'typeTag': ''}
+        d7 = {'value': 1414213562.373095,
+              'unitToPower': [{'value': 3, 'key': 'METER'}], 'typeTag': ''}
+        d8 = {'value': 0.00000043,
+              'unitToPower': [{'value': 3, 'key': 'METER'}], 'typeTag': ''}
+        d9 = {'value': 0.0043,
+              'unitToPower': [{'value': 3, 'key': 'METER'}], 'typeTag': ''}
 
         self.assertEqual(parse.parse_quantity(d0), '14.14 cm')
-        self.assertEqual(parse.parse_quantity(d1), '0.14 mm ** 3')
         self.assertEqual(parse.parse_quantity(d0, False),
                          0.1414213562373095 * u.m)
+        self.assertEqual(parse.parse_quantity(d1), '0.14 mm ** 3')
+        self.assertEqual(parse.parse_quantity(d2), '1.41 mm')
+        self.assertEqual(parse.parse_quantity(d3), '1.41 km')
+        self.assertEqual(parse.parse_quantity(d4), '1.41 km ** 2')
+        self.assertEqual(parse.parse_quantity(d5), '4.3 cm ** 2')
+        self.assertEqual(parse.parse_quantity(d6), '0.43 mm ** 2')
+        self.assertEqual(parse.parse_quantity(d7), '1414213562.37 kl')
+        self.assertEqual(parse.parse_quantity(d8), '0.43 ml')
+        self.assertEqual(parse.parse_quantity(d9), '4.3 l')
 
     def test_is_fs_type(self):
         test_json = json.loads('{"type": 2077, "typeName": "BTFSValueMapEntry", "message": {}}')
