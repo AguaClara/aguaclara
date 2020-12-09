@@ -51,7 +51,6 @@ def parse_quantity(q, for_docs=True):
         except:
             log = 0
         if for_docs:
-            print(unit[key_str])
             if unit[key_str] == 'METER' and unit[val_str] == 1:
                 if log >= 3:
                     units_s = units_s.to(ureg.kilometer)

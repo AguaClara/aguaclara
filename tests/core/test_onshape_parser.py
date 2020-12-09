@@ -131,5 +131,11 @@ class OnshapeParserTest(unittest.TestCase):
 
         self.assertEqual(test_lines, lines)
 
+    def test_copy_to_docs(self):
+        file_path = "Rapid Mix/index_ET.rst"
+        parse.copy_to_docs(file_path, base="rst_files")
+
+        assert os.path.exists(file_path)
+
 if __name__ == '__main__':
     unittest.main()
