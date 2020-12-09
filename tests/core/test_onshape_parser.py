@@ -29,6 +29,10 @@ class OnshapeParserTest(unittest.TestCase):
               'unitToPower': [{'value': 3, 'key': 'METER'}], 'typeTag': ''}
         d9 = {'value': 0.0043,
               'unitToPower': [{'value': 3, 'key': 'METER'}], 'typeTag': ''}
+        d10 = {'value': 0.1414213562373095,
+              'unitToPower': [{'value': -1, 'key': 'METER'}], 'typeTag': ''}
+        d11 = {'value': -0.0043,
+              'unitToPower': [{'value': 1, 'key': 'METER'}], 'typeTag': ''}
 
         self.assertEqual(parse.parse_quantity(d0), '14.14 cm')
         self.assertEqual(parse.parse_quantity(d0, False),
@@ -42,12 +46,15 @@ class OnshapeParserTest(unittest.TestCase):
         self.assertEqual(parse.parse_quantity(d7), '1414213562.37 kl')
         self.assertEqual(parse.parse_quantity(d8), '0.43 ml')
         self.assertEqual(parse.parse_quantity(d9), '4.3 l')
+        self.assertEqual(parse.parse_quantity(d10), '0.14 / m')
+        self.assertEqual(parse.parse_quantity(d11), '-0.0 m')
 
     def test_is_fs_type(self):
         test_json = json.loads('{"type": 2077, "typeName": "BTFSValueMapEntry", "message": {}}')
 
         self.assertTrue(parse.is_fs_type(test_json, "BTFSValueMapEntry"))
         self.assertFalse(parse.is_fs_type(test_json, "BTFSValueNumber"))
+        self.assertFalse(parse.is_fs_type(None, "BTFSValueNumber"))
 
     def test_merge_index_sections(self):
         new_section = ['test_line', 'test_line2']
@@ -75,6 +82,14 @@ class OnshapeParserTest(unittest.TestCase):
         test_lines = test_file.readlines()
 
         self.assertEqual(test_lines, lines)
+
+        old_index = '../rst_files/index_ET.rst'
+        new_index = '../rst_files/index_floc.rst'
+        parse.merge_indexes(new_index, old_index)
+        index_file = open(old_index, "r+")
+        lines = index_file.readlines()
+        test_file = open('../rst_files/index_ET_floc.rst')
+        test_lines = test_file.readlines()
 
     def test_find_treatment_section_limits(self):
         process0 = '../rst_files/Treatment_Process_ET.rst'
@@ -132,7 +147,7 @@ class OnshapeParserTest(unittest.TestCase):
         self.assertEqual(test_lines, lines)
 
     def test_copy_to_docs(self):
-        file_path = "Rapid Mix/index_ET.rst"
+        file_path = "Mix/Mix_Design_Data.rst"
         parse.copy_to_docs(file_path, base="rst_files")
 
         assert os.path.exists(file_path)

@@ -26,6 +26,15 @@ Este documento está escrito y mantenido en `Github <https://github.com/AguaClar
   Introduction/AIDE_Tools.rst
 
 .. toctree::
+  :caption: Floculación
+  :maxdepth: 1
+
+  Flocculation/Floc_Purpose_and_Description.rst
+  Flocculation/Floc_Design_Data.rst
+  Flocculation/Floc_Design_Concepts.rst
+  Flocculation/Floc_Design_Algorithm.rst
+
+.. toctree::
   :caption: Tanque de Entrada
   :maxdepth: 1
 

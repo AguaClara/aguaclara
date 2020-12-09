@@ -109,7 +109,7 @@ venv/
 
 # Pytest
 .pytest_cache/
-tests/core/Rapid Mix/index_ET.rst
+tests/core/Mix/
 
 # VSCode
 .vscode
