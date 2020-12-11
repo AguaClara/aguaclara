@@ -13,6 +13,7 @@ import aguaclara.core.utility as ut
 from aguaclara.core.units import u
 import aguaclara.core.constants as con
 from aguaclara.design.component import Component
+import warnings
 
 import numpy as np
 
@@ -48,8 +49,9 @@ class CDC(Component):
 
         super().__init__(**kwargs)
 
-    def _alum_nu(self, coag_conc):
-        """Return the dynamic viscosity of water at a given temperature.
+    def alum_nu(self, coag_conc):
+        """
+        Return the dynamic viscosity of water at a given temperature.
 
         If given units, the function will automatically convert to Kelvin.
         If not given units, the function will assume Kelvin.
@@ -61,8 +63,19 @@ class CDC(Component):
             (1 + (4.255 * 10 ** -6) * coag_conc.magnitude ** 2.289) * \
             pc.viscosity_kinematic_water(self.temp)
         return alum_nu
-
-    def _pacl_nu(self, coag_conc):
+    
+    def _alum_nu(self, coag_conc):
+        """
+        .. deprecated::
+            `_alum_nu` is deprecated; use `alum_nu` instead.
+        """
+        # Deprecation added December 2020
+        warnings.warn('_alum_nu is deprecated; use alum_nu instead.',
+                  UserWarning)
+    
+        return self.alum_nu(coag_conc)
+        
+    def pacl_nu(self, coag_conc):
         """Return the dynamic viscosity of water at a given temperature.
 
         If given units, the function will automatically convert to Kelvin.
@@ -76,16 +89,38 @@ class CDC(Component):
             pc.viscosity_kinematic_water(self.temp)
         return pacl_nu
 
+    def _pacl_nu(self, coag_conc):
+        """
+        .. deprecated::
+            `_pacl_nu` is deprecated; use `pacl_nu` instead.
+        """
+        # Deprecation added December 2020
+        warnings.warn('_pacl_nu is deprecated; use pacl_nu instead.',
+                  UserWarning)
+    
+        return self.pacl_nu(coag_conc)
+        
     def _coag_nu(self, coag_conc, coag_type):
+        """
+        .. deprecated::
+            `_coag_nu` is deprecated; use `coag_nu` instead.
+        """
+        # Deprecation added December 2020
+        warnings.warn('_coag_nu is deprecated; use coag_nu instead.',
+                  UserWarning)
+    
+        return coag_nu(coag_conc, coag_type)
+       
+    def coag_nu(self, coag_conc, coag_type):
         """Return the dynamic viscosity of water at a given temperature.
 
         If given units, the function will automatically convert to Kelvin.
         If not given units, the function will assume Kelvin.
         """
         if coag_type.lower() == 'alum':
-            coag_nu = self._alum_nu(coag_conc)
+            coag_nu = self.alum_nu(coag_conc)
         elif coag_type.lower() == 'pacl':
-            coag_nu = self._pacl_nu(coag_conc)
+            coag_nu = self.pacl_nu(coag_conc)
         return coag_nu
 
     @property
