@@ -23,6 +23,9 @@ class TestPipes(unittest.TestCase):
         self.assertEqual(pipe.sch(), (8*u.inch, (pipes.SCH.SCH80.name)))
         self.assertEqual(pipe.sch(NDarr=[10]*u.inch), (10*u.inch, (pipes.SCH.SCH160.name)))
 
+        self.assertWarns(UserWarning, lambda: pipe.id_sch40)
+        self.assertAlmostEqual(pipe.id_sch40, 7.023 * u.inch)
+
 
     def test_OD_from_IDSDR(self):
         #test that SDR=2 is undefined.

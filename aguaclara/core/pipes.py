@@ -9,6 +9,7 @@ from enum import Enum
 
 
 import os.path
+import warnings
 dir_path = os.path.dirname(__file__)
 csv_path = os.path.join(dir_path, 'data/pipe_database.csv')
 with open(csv_path) as pipedbfile:
@@ -47,9 +48,10 @@ class Pipe:
     @property
     def id_sch40(self):
         """
-    .. deprecated::
+        .. deprecated::
         `id_sch40` is deprecated; use `id_sch` instead.
-    """
+        """
+        warnings.warn('id_sch40 is deprecated; use id_sch instead.', UserWarning)
         myindex = (np.abs(np.array(pipedb['NDinch']) - self.nd.magnitude)).argmin()
         return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])) * u.inch
 
