@@ -322,16 +322,18 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
         parsed_variables: dictionary of parsed variables
         templates: list of templates to move from doc_files and render in the
             design specs.
+        processes: list of unit processes in the given Onshape model
     """
     parsed_variables = {}
     value = None
     templates = []
+    processes = []
 
     if default_key == "template":
         if for_docs:
             copy_to_docs(unparsed)
         templates.append(unparsed)
-        return parsed_variables, templates
+        return parsed_variables, templates, processes
     elif default_key == "index":
         if unparsed != "" and unparsed is not None and for_docs:
                 if os.path.exists('index.rst'):
@@ -339,8 +341,9 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
                     merge_indexes('new_index.rst', 'index.rst')
                 else:
                     copy_to_docs(unparsed, 'index.rst')
-        return parsed_variables, templates
+        return parsed_variables, templates, processes
     elif default_key == "process":
+        processes.append(unparsed)
         if unparsed != "" and unparsed is not None and for_docs:
             file = "Introduction/Treatment_Process.rst"
             file_path = "../../../doc_files/Introduction/Treatment_Process_" + unparsed + ".rst"
@@ -352,7 +355,7 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
                 except IOError as io_err:
                     os.makedirs(os.path.dirname(file))
                     copyfile(file_path, file)
-        return parsed_variables, templates
+        return parsed_variables, templates, processes
 
     if isinstance(unparsed, list):
         for to_parse in unparsed:
@@ -373,7 +376,7 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
     else:
         parsed_variables[default_key] = unparsed
 
-    return parsed_variables, templates
+    return parsed_variables, templates, processes
 
 def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
     """Helper function for get_parsed_measurements which loops through the
@@ -391,9 +394,11 @@ def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
         measurements: dictionary of parsed variables
         templates: list of templates to move from doc_files and render in the
             design specs.
+        processes: list of unit processes in the given Onshape model
     """
     measurements = {}
     templates = []
+    processes = []
 
     for attr in attributes:
         if is_fs_type(attr, "BTFSValueMap"):
@@ -406,20 +411,21 @@ def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
                                 key = unparsed[msg_str][key_str][msg_str][val_str]
                                 for field in fields:
                                     if key == field:
-                                        new_measure, new_templates = parse_variables_from_map(
+                                        new_measure, new_templates, new_processes = parse_variables_from_map(
                                             unparsed[msg_str][val_str][msg_str][val_str],
                                             key,
                                             for_docs
                                         )
                                         measurements.update(new_measure)
                                         templates.extend(new_templates)
+                                        processes.extend(new_processes)
 
     for i in range(len(templates)):
         new_template = './' + os.path.basename(os.path.dirname(templates[i])) + \
                        '/' + os.path.basename(templates[i])
         templates[i] = new_template
 
-    return measurements, templates
+    return measurements, templates, processes
 
 def get_parsed_measurements(link,
                             fields=["variables", "template", "index", "process"],
@@ -437,6 +443,7 @@ def get_parsed_measurements(link,
         measurements: dictionary of parsed variables
         templates: list of templates to move from doc_files and render in the
             design specs.
+        processes: list of unit processes in the given Onshape model
     """
     script = r"""
         function (context is Context, queries is map)
@@ -469,9 +476,9 @@ def get_parsed_measurements(link,
 
     attributes = json.loads(response.data.decode("utf-8"))["result"][msg_str][val_str]
 
-    measurements, templates = parse_attributes(attributes, fields, for_docs)
+    measurements, templates, processes = parse_attributes(attributes, fields, for_docs)
 
-    return measurements, templates
+    return measurements, templates, processes
 
 # from https://stackoverflow.com/questions/5914627/prepend-line-to-beginning-of-a-file
 def line_prepender(filename, line):
