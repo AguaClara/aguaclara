@@ -122,7 +122,7 @@ def copy_to_docs(file_path, new_name=None, base="doc_files"):
     try:
         copyfile(os.path.join(basepath, file_path), new_path)
     except IOError as io_err:
-        os.makedirs(os.path.dirname(file_path))
+        os.makedirs(os.path.dirname(new_path))
         copyfile(os.path.join(basepath, file_path), new_path)
 
 def parse_variables_from_list(unparsed, for_docs=True):
