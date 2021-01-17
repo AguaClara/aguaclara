@@ -125,12 +125,14 @@ class CDC(Component):
 
     @property
     def coag_q_max_est(self):
+        """"""
         coag_q_max_est = self.q * self.coag_dose_conc_max / \
             self.coag_stock_conc_est
         return coag_q_max_est
 
     @property
     def coag_stock_vol(self):
+        """The volume of the coagulant stock."""
         coag_stock_vol = ut.ceil_nearest(
                 self.coag_stock_min_est_time * self.train_n *
                     self.coag_q_max_est,
@@ -140,6 +142,7 @@ class CDC(Component):
 
     @property
     def coag_sack_n(self):
+        """ """
         coag_sack_n = round(
                 (self.coag_stock_vol * self.coag_stock_conc_est /
                 self.coag_sack_mass).to_base_units()
@@ -148,21 +151,25 @@ class CDC(Component):
 
     @property
     def coag_stock_conc(self):
+        """The concentration of the coagulant stock."""
         coag_stock_conc = self.coag_sack_n * self.coag_sack_mass / \
             self.coag_stock_vol
         return coag_stock_conc
 
     @property
     def coag_q_max(self):
+        """The maximum permissible flow rate of the coagulant stock."""
         coag_q_max = self.q * self.coag_dose_conc_max / self.coag_stock_conc
         return coag_q_max.to(u.L / u.s)
 
     @property
     def coag_stock_time_min(self):
+        """ """
         return self.coag_stock_vol / (self.train_n * self.coag_q_max)
 
     @property
     def coag_stock_nu(self):
+        """The kinematic viscosity of the coagulant stock."""
         return self._coag_nu(self.coag_stock_conc, self.coag_type)
 #==============================================================================
 # Small-diameter Tube Design
@@ -176,12 +183,14 @@ class CDC(Component):
 
     @property
     def coag_tubes_active_n(self):
+        """The number of active coagulant tubes."""
         coag_tubes_active_n = \
             np.ceil((self.coag_q_max / self._coag_tube_q_max).to_base_units())
         return coag_tubes_active_n
 
     @property
     def coag_tubes_n(self):
+        """ """
         coag_tubes_n = self.coag_tubes_active_n + 1
         return coag_tubes_n
 
@@ -193,6 +202,7 @@ class CDC(Component):
 
     @property
     def coag_tube_l(self):
+        """ """
         coag_tube_l = (
                 self.hl * con.GRAVITY * np.pi * self.coag_tube_id ** 4 /
                 (128 * self.coag_stock_nu * self.coag_tube_operating_q_max)
@@ -204,12 +214,14 @@ class CDC(Component):
 
     @property
     def coag_tank_r(self):
+        """The radius of the coagulant stock tank."""
         index = np.where(self.chem_tank_vol_supplier == self.coag_stock_vol)
         coag_tank_r = self.chem_tank_dimensions_supplier[0][index] / 2
         return coag_tank_r
 
     @property
     def coag_tank_h(self):
+        """The height of the coagulant stock tank."""
         index = np.where(self.chem_tank_vol_supplier == self.coag_stock_vol)
         coag_tank_h = self.chem_tank_dimensions_supplier[1][index]
         return coag_tank_h
