@@ -1680,6 +1680,9 @@ def re_ergun(ApproachVel, DiamMedia, Temperature, Porosity):
     ut.check_range([ApproachVel.magnitude, ">0", "ApproachVel"],
                    [DiamMedia.magnitude, ">0", "DiamMedia"],
                    [Porosity, "0-1", "Porosity"])
+    if Porosity == 1:
+        raise ValueError("Porosity is " + str(Porosity) + " must be great than\
+            or equal to 0 and less than 1")
     return (ApproachVel * DiamMedia /
             (viscosity_kinematic_water(Temperature)
              * (1 - Porosity))).to(u.dimensionless)
