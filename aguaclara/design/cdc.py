@@ -6,7 +6,7 @@ Example:
     >>> from aguaclara.design.cdc import *
     >>> cdc = CDC(q = 20 * u.L/u.s, coag_type = 'pacl')
     >>> cdc.coag_stock_vol
-    208.198 liter
+    <Quantity(2500.0, 'liter')>
 """
 import aguaclara.core.physchem as pc
 import aguaclara.core.utility as ut
@@ -29,7 +29,7 @@ class CDC(Component):
         if self.coag_type.lower() not in ['pacl', 'alum']:
             raise ValueError('coag_type must be either PACl or Alum.')
 
-        self.coag_dose_conc_max=2 * u.g / u.L #What should this default to? -Oliver L., 6 Jun 19
+        self.coag_dose_conc_max=100 * u.mg / u.L
         self.coag_stock_conc_est=150 * u.g / u.L
         self.coag_stock_min_est_time=1 * u.day
         self.chem_tank_vol_supplier=[208.198, 450, 600, 750, 1100, 2500] * u.L
@@ -125,7 +125,7 @@ class CDC(Component):
 
     @property
     def coag_q_max_est(self):
-        """"""
+        """The estimated maximum permissible flow rate of the coagulant stock."""
         coag_q_max_est = self.q * self.coag_dose_conc_max / \
             self.coag_stock_conc_est
         return coag_q_max_est
@@ -142,7 +142,7 @@ class CDC(Component):
 
     @property
     def coag_sack_n(self):
-        """ """
+        """The number of sacks of coagulant used to make the coagulant stock."""
         coag_sack_n = round(
                 (self.coag_stock_vol * self.coag_stock_conc_est /
                 self.coag_sack_mass).to_base_units()
@@ -164,7 +164,7 @@ class CDC(Component):
 
     @property
     def coag_stock_time_min(self):
-        """ """
+        """The minimum amount of time that the coagulant stock will last."""
         return self.coag_stock_vol / (self.train_n * self.coag_q_max)
 
     @property
@@ -183,14 +183,14 @@ class CDC(Component):
 
     @property
     def coag_tubes_active_n(self):
-        """The number of active coagulant tubes."""
+        """The number of coagulant tubes in use."""
         coag_tubes_active_n = \
             np.ceil((self.coag_q_max / self._coag_tube_q_max).to_base_units())
         return coag_tubes_active_n
 
     @property
     def coag_tubes_n(self):
-        """ """
+        """The number of coagulant tubes in use, plus a spare tube for maintenance."""
         coag_tubes_n = self.coag_tubes_active_n + 1
         return coag_tubes_n
 
@@ -202,7 +202,7 @@ class CDC(Component):
 
     @property
     def coag_tube_l(self):
-        """ """
+        """The length of a coagulant tube."""
         coag_tube_l = (
                 self.hl * con.GRAVITY * np.pi * self.coag_tube_id ** 4 /
                 (128 * self.coag_stock_nu * self.coag_tube_operating_q_max)
