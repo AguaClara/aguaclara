@@ -29,19 +29,18 @@ jobs:
 
     - name: Run pytests and generate coverage report
       run: |
-        pipenv run pytest --cov=./ 
-        # --cov-report=xml
-    
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        fail_ci_if_error: true
+        pipenv run pytest --cov=./ --cov-report=xml
     
     - name: Run doctests
       run: |
         cd docs
         pipenv run make doctest
 
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true
+    
     # - name: Run html-proofer
     #   run: |
     #     cd docs
