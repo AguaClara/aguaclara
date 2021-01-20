@@ -37,6 +37,9 @@ cdc_60 = CDC(q = 60.0 * u.L / u.s, coag_stock_conc = 500 * u.g / u.L)
 	(cdc_20.coag_tubes_active_n, 4),
 	(cdc_60.coag_tubes_active_n, 4),
 
+	(cdc_20.coag_tubes_n, 5),
+	(cdc_60.coag_tubes_n, 5),
+
 	(cdc_20.coag_tube_operating_q_max, 0.003333333 * u.L / u.s),
 	(cdc_60.coag_tube_operating_q_max, 0.003 * u.L / u.s),
 
