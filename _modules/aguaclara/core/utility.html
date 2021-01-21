@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.utility &mdash; AguaClara v0.2.9 documentation</title>
+  <title>aguaclara.core.utility &mdash; AguaClara v0.2.10 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                v0.2.9
+                v0.2.10
               </div>
             
           
@@ -324,18 +324,26 @@
 <span class="sd">        - ``x``: Value to compare</span>
 <span class="sd">        - ``array (numpy.array)``: Array to search</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">array</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
+    <span class="n">sorted_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">array</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># [::-1] syntax reverses array</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">sorted_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is smaller than all values in the array.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">sorted_array</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sorted_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="ceil_nearest"><a class="viewcode-back" href="../../../core/utility.html#aguaclara.core.utility.ceil_nearest">[docs]</a><span class="k">def</span> <span class="nf">ceil_nearest</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the nearest element of a NumPy array less than or equal to a value.</span>
+    <span class="sd">&quot;&quot;&quot;Get the nearest element of a NumPy array greater than or equal to a value.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        - ``x``: Value to compare</span>
 <span class="sd">        - ``array (numpy.array)``: Array to search</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">array</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
+    <span class="n">sorted_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">sorted_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is larger than all values in the array.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">sorted_array</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sorted_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
 
 <span class="k">def</span> <span class="nf">_minmax</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the minuimum/maximum value of some Pint quantities with units.</span>

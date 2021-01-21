@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.core.physchem &mdash; AguaClara v0.2.9 documentation</title>
+  <title>aguaclara.core.physchem &mdash; AguaClara v0.2.10 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                v0.2.9
+                v0.2.10
               </div>
             
           
@@ -271,7 +271,7 @@
 <span class="sd">    :return: dynamic viscosity of water</span>
 <span class="sd">    :rtype: u.kg/(u.m*u.s)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Temperature</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Temperature</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
     <span class="k">return</span> <span class="mf">2.414</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span><span class="o">**-</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kg</span><span class="o">/</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="mf">247.8</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degK</span> <span class="o">/</span>
                                                     <span class="p">(</span><span class="n">Temperature</span> <span class="o">-</span> <span class="mi">140</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degK</span><span class="p">))</span></div>
 
@@ -297,7 +297,7 @@
                       <span class="ne">UserWarning</span><span class="p">)</span>
         <span class="n">Temperature</span> <span class="o">=</span> <span class="n">temp</span>
 
-    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Temperature</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Temperature</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
     <span class="n">rhointerpolated</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">CubicSpline</span><span class="p">(</span><span class="n">WATER_DENSITY_TABLE</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                                               <span class="n">WATER_DENSITY_TABLE</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">Temperature</span> <span class="o">=</span> <span class="n">Temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">degK</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
@@ -326,7 +326,7 @@
 <span class="sd">    :return: kinematic viscosity of water</span>
 <span class="sd">    :rtype: u.m**2/u.s</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Temperature</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
+    <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">Temperature</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;=0&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature in Kelvin&quot;</span><span class="p">])</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">viscosity_dynamic_water</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span> <span class="o">/</span> <span class="n">density_water</span><span class="p">(</span><span class="n">Temperature</span><span class="p">))</span></div>
 
 <span class="c1">####################### Hydraulic Radius #######################</span>
@@ -1838,6 +1838,9 @@
     <span class="n">ut</span><span class="o">.</span><span class="n">check_range</span><span class="p">([</span><span class="n">ApproachVel</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;ApproachVel&quot;</span><span class="p">],</span>
                    <span class="p">[</span><span class="n">DiamMedia</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="s2">&quot;&gt;0&quot;</span><span class="p">,</span> <span class="s2">&quot;DiamMedia&quot;</span><span class="p">],</span>
                    <span class="p">[</span><span class="n">Porosity</span><span class="p">,</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span> <span class="s2">&quot;Porosity&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">Porosity</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Porosity is &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Porosity</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; must be great than</span><span class="se">\</span>
+<span class="s2">            or equal to 0 and less than 1&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">ApproachVel</span> <span class="o">*</span> <span class="n">DiamMedia</span> <span class="o">/</span>
             <span class="p">(</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
              <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Porosity</span><span class="p">)))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless</span><span class="p">)</span></div>

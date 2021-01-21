@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aguaclara.design.pipeline &mdash; AguaClara v0.2.9 documentation</title>
+  <title>aguaclara.design.pipeline &mdash; AguaClara v0.2.10 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                v0.2.9
+                v0.2.10
               </div>
             
           
@@ -506,7 +506,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a pipe.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_fric</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_major_pipe</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipe_rough</span>
             <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
@@ -604,7 +604,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The headloss&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">elbow_minor_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_minor_elbow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Elbow.format_print"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.Elbow.format_print">[docs]</a>    <span class="k">def</span> <span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The string representation for an Elbow Fitting.&quot;&quot;&quot;</span>
@@ -711,11 +711,11 @@
 
     <span class="k">def</span> <span class="nf">_headloss_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The headloss of the left outlet&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">elbow_minor_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_minor_elbow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_headloss_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The headloss of the right outlet&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">elbow_minor_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_minor_elbow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
