@@ -43,6 +43,6 @@ jobs:
 
     - name: Run html-proofer
       uses: chabad360/htmlproofer@master
-        with:
-          directory: "build/html"
-          arguments: --allow_hash_href --file_ignore "build/html/search.html"
+      with:
+        directory: "build/html"
+        arguments: --allow_hash_href --file_ignore "build/html/search.html"
