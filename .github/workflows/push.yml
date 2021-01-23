@@ -1,6 +1,6 @@
-name: Python package
+name: Push or Pull Request
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -25,29 +25,22 @@ jobs:
         python -m pip install --upgrade pip
         pip install pipenv
         pipenv install --dev
-        # gem install html-proofer
+        gem install html-proofer
 
     - name: Run pytests and generate coverage report
       run: |
         pipenv run pytest --cov=./ --cov-report=xml
     
-    - name: Run doctests
-      run: |
-        cd docs
-        pipenv run make doctest
-
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
         fail_ci_if_error: true
     
-    # - name: Run html-proofer
-    #   run: |
-    #     cd docs
-    #     pipenv run make html
-    #     pipenv run make doctest
-    #     htmlproofer build/html --allow_hash_href --file_ignore "build/html/search.html"
-    #     cd ..
-    # test codecov on aguaclara_tutorial
-
+    - name: Run doctests and html-proofer
+      run: |
+        cd docs
+        pipenv run make doctest
+        pipenv run make html
+        htmlproofer build/html --allow_hash_href --file_ignore "build/html/search.html"
+        cd ..
 
