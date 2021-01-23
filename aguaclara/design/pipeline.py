@@ -348,7 +348,7 @@ class Pipe(PipelineComponent):
     @property
     def headloss(self):
         """Return the total head loss from major and minor losses in a pipe."""
-        return pc.headloss_fric(
+        return pc.headloss_major_pipe(
                 self.q, self.id, self.l, self.nu, self.pipe_rough
             ).to(u.cm)
 
@@ -446,7 +446,7 @@ class Elbow(PipelineComponent):
     @property
     def headloss(self):
         """The headloss"""
-        return pc.elbow_minor_loss(self.q, self.id, self.k_minor).to(u.cm)
+        return pc.headloss_minor_elbow(self.q, self.id, self.k_minor).to(u.cm)
 
     def format_print(self):
         """The string representation for an Elbow Fitting."""
@@ -553,11 +553,11 @@ class Tee(PipelineComponent):
 
     def _headloss_left(self):
         """The headloss of the left outlet"""
-        return pc.elbow_minor_loss(self.q, self.id, self.left_k_minor).to(u.cm)
+        return pc.headloss_minor_elbow(self.q, self.id, self.left_k_minor).to(u.cm)
 
     def _headloss_right(self):
         """The headloss of the right outlet"""
-        return pc.elbow_minor_loss(self.q, self.id, self.right_k_minor).to(u.cm)
+        return pc.headloss_minor_elbow(self.q, self.id, self.right_k_minor).to(u.cm)
 
     @property
     def headloss(self):

@@ -972,10 +972,10 @@ class PorousMediaFuncsTest(QuantityTest):
                                        139.49692604 * u.dimensionless)
 
     def test_re_ergun_range(self):
-        checks = ((0 * u.m/u.s, 1 * u.m, 1 * u.degK, 1),
-                  (1 * u.m/u.s, 0 * u.m, 1 * u.degK, 1),
-                  (1 * u.m/u.s, 1 * u.m, 0 * u.degK, 1 * u.dimensionless),
-                  (1 * u.m/u.s, 1 * u.m, 1 * u.degK, -1 * u.dimensionless))
+        checks = ((0 * u.m/u.s, 1 * u.m, 1 * u.degK, .5),
+                  (1 * u.m/u.s, 0 * u.m, 1 * u.degK, .5),
+                  (1 * u.m/u.s, 1 * u.m, -1 * u.degK, .5 * u.dimensionless),
+                  (1 * u.m/u.s, 1 * u.m, 1 * u.degK, 1 * u.dimensionless))
         for i in checks:
             with self.subTest(i=i):
                 self.assertRaises(ValueError, pc.re_ergun, *i)

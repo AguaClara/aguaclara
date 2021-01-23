@@ -24,6 +24,7 @@ from aguaclara.core import physchem as pc
 import aguaclara.core.pipes as pipe
 from aguaclara.core.units import u
 import aguaclara.core.utility as ut
+import aguaclara.core.onshape_parser as par
 
 from aguaclara.design.cdc import CDC
 from aguaclara.design.component import Component
