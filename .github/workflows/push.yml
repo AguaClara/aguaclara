@@ -45,6 +45,4 @@ jobs:
       uses: chabad360/htmlproofer@master
         with:
           directory: "build/html"
-          arguments: 
-            --allow_hash_href
-            --file_ignore "build/html/search.html"
+          arguments: --allow_hash_href --file_ignore "build/html/search.html"
