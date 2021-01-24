@@ -25,7 +25,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install pipenv
         pipenv install --dev
-
+        pip install sphinx_rtd_theme
+        
     - name: Run pytests and generate coverage report
       run: |
         pipenv run pytest --cov=./ --cov-report=xml
@@ -35,13 +36,11 @@ jobs:
       with:
         fail_ci_if_error: true
     
-    - name: Run doctests
+    - name: Run doctests and build html files
       run: |
-        pip install sphinx
-        pip install sphinx_rtd_theme
         cd docs
         pipenv run make doctest
-        pipenv run make html
+        make html
 
     - name: Run html-proofer
       uses: chabad360/htmlproofer@master
