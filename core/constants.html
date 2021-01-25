@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Constants &mdash; AguaClara v0.2.10 documentation</title>
+  <title>Constants &mdash; AguaClara EXPERIMENTAL documentation</title>
   
 
   
@@ -20,7 +20,10 @@
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
+
   
+  
+
   
 
   
@@ -33,7 +36,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -55,7 +57,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
+            <a href="../index.html" class="icon icon-home"> AguaClara
           
 
           
@@ -65,7 +67,7 @@
             
             
               <div class="version">
-                v0.2.10
+                EXPERIMENTAL
               </div>
             
           
@@ -143,6 +145,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -156,7 +160,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/core/constants.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -170,78 +174,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-aguaclara.core.constants">
-<span id="constants"></span><h1>Constants<a class="headerlink" href="#module-aguaclara.core.constants" title="Permalink to this headline">¶</a></h1>
-<p>Constant quantities of widely-accepted physical properties.</p>
-<dl class="py data">
-<dt id="aguaclara.core.constants.GRAVITY">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">GRAVITY</code><em class="property"> = &lt;Quantity(9.80665, 'meter / second ** 2')&gt;</em><a class="headerlink" href="#aguaclara.core.constants.GRAVITY" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gravitational constant</p>
-<p>DEPRECATED: <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">u.gravity</span></code> should be used instead</p>
-</dd></dl>
-
-<dl class="py data">
-<dt id="aguaclara.core.constants.WATER_DENSITY">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">WATER_DENSITY</code><em class="property"> = &lt;Quantity(1000.0, 'kilogram / meter ** 3')&gt;</em><a class="headerlink" href="#aguaclara.core.constants.WATER_DENSITY" title="Permalink to this definition">¶</a></dt>
-<dd><p>Density of water</p>
-<p>DEPRECATED: <code class="docutils literal notranslate"><span class="pre">core.physchem.density_water()</span></code> should be used instead</p>
-</dd></dl>
-
-<dl class="py data">
-<dt id="aguaclara.core.constants.WATER_NU">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">WATER_NU</code><em class="property"> = &lt;Quantity(1e-06, 'meter ** 2 / second')&gt;</em><a class="headerlink" href="#aguaclara.core.constants.WATER_NU" title="Permalink to this definition">¶</a></dt>
-<dd><p>Kinematic viscosity of water</p>
-<p>DEPRECATED: <code class="docutils literal notranslate"><span class="pre">core.physchem.viscosity_kinematic()</span></code> should be used instead</p>
-</dd></dl>
-
-<dl class="py data">
-<dt id="aguaclara.core.constants.ATM_P">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">ATM_P</code><em class="property"> = &lt;Quantity(1, 'standard_atmosphere')&gt;</em><a class="headerlink" href="#aguaclara.core.constants.ATM_P" title="Permalink to this definition">¶</a></dt>
-<dd><p>Atmospheric pressure</p>
-<p>DEPRECATED: <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">u.atm</span></code> should be used instead</p>
-</dd></dl>
-
-<dl class="py data">
-<dt id="aguaclara.core.constants.AIR_NU">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">AIR_NU</code><em class="property"> = &lt;Quantity(12.0, 'millimeter ** 2 / second')&gt;</em><a class="headerlink" href="#aguaclara.core.constants.AIR_NU" title="Permalink to this definition">¶</a></dt>
-<dd><p>Average kinematic viscosity of air</p>
-<p>DEPRECATED: viscosity of air should be determined by temperature and
-atmospheric pressure</p>
-</dd></dl>
-
-<dl class="py data">
-<dt id="aguaclara.core.constants.JET_ROUND_RATIO">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">JET_ROUND_RATIO</code><em class="property"> = 0.08</em><a class="headerlink" href="#aguaclara.core.constants.JET_ROUND_RATIO" title="Permalink to this definition">¶</a></dt>
-<dd><p>The ratio of maximum energy dissipation rate in a round jet to the kinetic
-energy per time required for the jet to travel a distance equal to its
-diameter. See <a class="reference external" href="https://aguaclara.github.io/Textbook/Rapid_Mix/RM_Derivations.html?#round-jet">round jet</a>
-in the AguaClara textbook for more details.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt id="aguaclara.core.constants.JET_PLANE_RATIO">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">JET_PLANE_RATIO</code><em class="property"> = 0.0124</em><a class="headerlink" href="#aguaclara.core.constants.JET_PLANE_RATIO" title="Permalink to this definition">¶</a></dt>
-<dd><p>The ratio of maximum energy dissipation rate in a plane jet to the kinetic
-energy per time required for the jet to travel a distance equal to its
-diameter. This ratio applies to jets in the flocculator and sedimentation
-tank. See <a class="reference external" href="https://aguaclara.github.io/Textbook/Rapid_Mix/RM_Derivations.html?#plane-jet">plane jet</a>
-in the AguaClara textbook for more details.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt id="aguaclara.core.constants.VC_ORIFICE_RATIO">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">VC_ORIFICE_RATIO</code><em class="property"> = 0.63</em><a class="headerlink" href="#aguaclara.core.constants.VC_ORIFICE_RATIO" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vena contracta coefficient through an orifice with 90˚ bends. This is the
-ratio of the flow area at the point of maximal contraction to the flow area
-before the contraction.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt id="aguaclara.core.constants.K_KOZENY">
-<code class="sig-prename descclassname">aguaclara.core.constants.</code><code class="sig-name descname">K_KOZENY</code><em class="property"> = 5</em><a class="headerlink" href="#aguaclara.core.constants.K_KOZENY" title="Permalink to this definition">¶</a></dt>
-<dd><p>Kozeny constant</p>
-</dd></dl>
-
+  <div class="section" id="constants">
+<h1>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -249,37 +183,29 @@ before the contraction.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="drills.html" class="btn btn-neutral float-right" title="Drills" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="core.html" class="btn btn-neutral float-left" title="Core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="drills.html" class="btn btn-neutral float-right" title="Drills" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="core.html" class="btn btn-neutral float-left" title="Core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, AguaClara Cornell
+        &#169; Copyright 2019, AguaClara Cornell.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Component &mdash; AguaClara v0.2.10 documentation</title>
+  <title>Component &mdash; AguaClara EXPERIMENTAL documentation</title>
   
 
   
@@ -20,7 +20,10 @@
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
+
   
+  
+
   
 
   
@@ -33,7 +36,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -55,7 +57,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
+            <a href="../index.html" class="icon icon-home"> AguaClara
           
 
           
@@ -65,7 +67,7 @@
             
             
               <div class="version">
-                v0.2.10
+                EXPERIMENTAL
               </div>
             
           
@@ -146,6 +148,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -159,7 +163,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/design/component.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -173,83 +177,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-aguaclara.design.component">
-<span id="component"></span><span id="design-component"></span><h1>Component<a class="headerlink" href="#module-aguaclara.design.component" title="Permalink to this headline">¶</a></h1>
-<p>Design abilities for AguaClara drinking water treatment plant components</p>
-<p>This module allows plant component classes to</p>
-<ol class="arabic simple">
-<li><p>specify expert inputs and their defaults automatically</p></li>
-<li><p>propogate plant-wide design inputs throughout all of its subcomponents</p></li>
-<li><p>reconfigure Onshape Part Studios and Assemblies that represent plant
-components.</p></li>
-</ol>
-<p>If a <code class="docutils literal notranslate"><span class="pre">Component</span></code> is instantiated with custom subcomponents, and the
-subcomponents have their own <code class="docutils literal notranslate"><span class="pre">q</span></code> and/or <code class="docutils literal notranslate"><span class="pre">temp</span></code> specified:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plant</span> <span class="o">=</span> <span class="n">Plant</span><span class="p">(</span>
-        <span class="n">q</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
-        <span class="nb">filter</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-<p>then the subcomponets will preserve their <code class="docutils literal notranslate"><span class="pre">q</span></code> and <code class="docutils literal notranslate"><span class="pre">temp</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plant</span><span class="o">.</span><span class="n">q</span>
-<span class="go">40 liter / second</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plant</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">q</span>
-<span class="go">20 liter / second</span>
-</pre></div>
-</div>
-<p>Otherwise, subcomponents will inherit the main component’s <code class="docutils literal notranslate"><span class="pre">q</span></code> and <code class="docutils literal notranslate"><span class="pre">temp</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plant</span> <span class="o">=</span> <span class="n">Plant</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plant</span><span class="o">.</span><span class="n">q</span>
-<span class="go">40 liter / second</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plant</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">q</span>
-<span class="go">40 liter / second</span>
-</pre></div>
-</div>
-<dl class="py class">
-<dt id="aguaclara.design.component.Component">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.component.</code><code class="sig-name descname">Component</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component" title="Permalink to this definition">¶</a></dt>
-<dd><p>An abstract class representing AguaClara plant components.</p>
-<p>This class provides subclasses with the ability to record and propogate a
-configuration of plant design variables (<code class="docutils literal notranslate"><span class="pre">q</span></code> and <code class="docutils literal notranslate"><span class="pre">temp</span></code>) for a component
-and all of its subcomponents.</p>
-<dl class="py method">
-<dt id="aguaclara.design.component.Component.set_subcomponents">
-<code class="sig-name descname">set_subcomponents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.set_subcomponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.set_subcomponents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the plant-wide inputs of all subcomponents.</p>
-<p>Call this function at the end of a subclass’s <code class="docutils literal notranslate"><span class="pre">__init__()</span></code> set <code class="docutils literal notranslate"><span class="pre">q</span></code>
-and <code class="docutils literal notranslate"><span class="pre">temp</span></code> for subcomponents, except when a subcomponent specifies its
-own custom <code class="docutils literal notranslate"><span class="pre">q</span></code> and <code class="docutils literal notranslate"><span class="pre">temp</span></code>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.component.Component.serialize_properties">
-<code class="sig-name descname">serialize_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.serialize_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.serialize_properties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the properties (fields and <code class="docutils literal notranslate"><span class="pre">&#64;property</span></code> functions) of a 
-component as a dictionary string.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.component.Component.print_properties">
-<code class="sig-name descname">print_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.print_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.print_properties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print the serialized properties with pretty indentation.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.component.Component.write_properties_to_file">
-<code class="sig-name descname">write_properties_to_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/component.html#Component.write_properties_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.component.Component.write_properties_to_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Append the properties of a component to a file. If it does not exist,
-then the file is created.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">filename</span> <span class="pre">(str)</span></code>: The name of the file</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="component">
+<span id="design-component"></span><h1>Component<a class="headerlink" href="#component" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -257,37 +186,29 @@ then the file is created.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="ent_floc.html" class="btn btn-neutral float-right" title="Entrance Tank/Flocculator Assembly" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="cdc.html" class="btn btn-neutral float-left" title="Chemical Dose Controller" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="ent_floc.html" class="btn btn-neutral float-right" title="Entrance Tank/Flocculator Assembly" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cdc.html" class="btn btn-neutral float-left" title="Chemical Dose Controller" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, AguaClara Cornell
+        &#169; Copyright 2019, AguaClara Cornell.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
