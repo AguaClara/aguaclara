@@ -24,9 +24,9 @@ jobs:
         pip install sphinx_rtd_theme
         
     - name: Build Sphinx documentation
-        run: |
-          cd docs
-          make html
+      run: |
+        cd docs
+        make html
           
       - name: Publish Sphinx documentation
         uses: peaceiris/actions-gh-pages@v3
