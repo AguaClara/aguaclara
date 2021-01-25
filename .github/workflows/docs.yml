@@ -1,44 +1,39 @@
-name: Sphinx Documentation
+name: Documentation
 
 on:
   push:
     branches:
-      - 'master'
+      # - 'master'
+      - 'gh-actions'
 
 jobs:
-  sphinx-build:
-    
+  publish_docs:
     runs-on: ubuntu-latest
     
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.6, 3.8, 3.9]
-    
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pipenv
-          pipenv install --dev
-
-      - name: Build Sphinx documentation
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install sphinx_rtd_theme
+        
+    - name: Build Sphinx documentation
         run: |
           cd docs
-          pipenv make html
+          make html
           
-      - name: Deploy
+      - name: Publish Sphinx documentation
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/build/html/
-          publish_branch: gh-pages
+          # publish_branch: gh-pages
+          publish_branch: mock-gh-pages
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
