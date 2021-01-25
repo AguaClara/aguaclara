@@ -23,6 +23,7 @@ setup(
         'onshape_client',
     ],
 
+    python_requires='>=3.6',
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
     include_package_data=True,
