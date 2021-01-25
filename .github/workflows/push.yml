@@ -41,12 +41,9 @@ jobs:
         cd docs
         pipenv run make doctest
         make html
-        ls
-        cd build
-        ls
 
     - name: Run html-proofer
       uses: chabad360/htmlproofer@master
       with:
         directory: docs/build/html
-        arguments: --file_ignore "build/html/search.html" --allow_hash_href 
+        arguments: '--allow_hash_href --file_ignore "build/html/search.html"'
