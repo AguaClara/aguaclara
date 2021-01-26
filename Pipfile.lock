@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4b3eb422a623c45c7335493f709ab0c28f1dedd7038bf663298f3c9559bdee35"
+            "sha256": "d372c9d24e40e0d79418d2a0702300136614ad92bc4cef3a85d4c5cf35261870"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -398,6 +398,17 @@
             "markers": "python_version >= '3.5'",
             "version": "==2.4.2"
         },
+        "atomicwrites": {
+            "hashes": [
+                "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197",
+                "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"
+            ],
+            "index": "pypi",
+            "sys": {
+                "platform": "win32"
+            },
+            "version": "==1.4.0"
+        },
         "attrs": {
             "hashes": [
                 "sha256:31b2eced602aa8423c2aea9c76a724617ed67cf9513173fd3a4f03e3a929c7e6",
@@ -444,6 +455,17 @@
             ],
             "index": "pypi",
             "version": "==2.1.11"
+        },
+        "colorama": {
+            "hashes": [
+                "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b",
+                "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"
+            ],
+            "index": "pypi",
+            "sys": {
+                "platform": "win32"
+            },
+            "version": "==0.4.4"
         },
         "coverage": {
             "hashes": [

@@ -21,6 +21,8 @@ pylint = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-runner = "*"
+atomicwrites = {version = ">=1.0", sys.platform = "win32"} # pytest dependency
+colorama = {version = "*", sys.platform = "win32"} # pytest dependency
 requests = ">=2.20.0" # Resolves security vulnerability
 rope = "*"
 Sphinx = "*"
