@@ -9,3 +9,4 @@ User Guide
 
     install
     data
+    experimental-design

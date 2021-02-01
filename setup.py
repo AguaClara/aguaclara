@@ -1,5 +1,8 @@
 from setuptools import setup, find_packages
 
+with open("README.md") as readme_file:
+    readme = readme_file.read()
+
 setup(
     name = 'aguaclara',
     version = '0.2.10',
@@ -7,6 +10,8 @@ setup(
         'An open-source Python package for designing and performing research '
         'on AguaClara water treatment plants.'
     ),
+    long_description = readme,
+    long_description_content_type="text/markdown",
     url = 'https://github.com/AguaClara/aguaclara',
     author = 'AguaClara Cornell',
     author_email = 'aguaclara@cornell.edu',

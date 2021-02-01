@@ -12,9 +12,6 @@ Welcome to the AguaClara Package Documentation!
 * **PLANNING** of experimental setup for water treatment research
 * **ANALYSIS** of data collected by `ProCoDA <https://monroews.github.io/EnvEngLabTextbook/ProCoDA/ProCoDA.html>`_ (process control and data acquisition tool)
 
-.. The package is still undergoing rapid development. As it becomes more stable, user guides will be written to demonstrate each of these main functionalities.
-.. At the moment, you can find some examples in specific pages of the API reference.
-
 Installing
 ----------
 The ``aguaclara`` package can be installed from `Pypi <https://pypi.org/project/aguaclara/>`_ by running the following command in the command line: 
@@ -29,7 +26,7 @@ To upgrade an existing installation, run
 
   pip install aguaclara --upgrade
 
-Click here for :ref:`more software installation instructions <install-python-pip>` if you don't have Python or pip installed yet.
+Click here for :ref:`more software installation instructions <install-python-pip>` if you don't have Python or ``pip`` installed yet.
 
 Using ``aguaclara``
 -------------------
@@ -48,13 +45,16 @@ To use ``aguaclara``'s registry of scientific units (based on the `Pint package 
 
   ac.viscosity_kinematic(20 * u.degC)
 
-For more detailed tutorials and examples on using the package, refer to the :ref:`User Guide <guide-user>`.
+.. For more detailed tutorials and examples on using the package, refer to the :ref:`User Guide <guide-user>`.
+
+The package is still undergoing rapid development. As it becomes more stable, user guides will be written to demonstrate each of these main functionalities.
+At the moment, you can find some examples in specific pages of the API reference.
 
 Contributing
 ------------
-To report a bug or request or feature, make an issue in the `AguaClara package Github repository <https://github.com/AguaClara/aguaclara>`_.
+Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, make an `issue <https://github.com/AguaClara/aguaclara/issues/new/choose>`_ in the `AguaClara package Github repository <https://github.com/AguaClara/aguaclara>`_.
 
-For more detailed tutorials on contributing to the package, refer to the :ref:`Developer Guide <guide-dev>`.
+To contribute to the package as a developer, refer to the :ref:`Developer Guide <guide-dev>`.
 
 Table of Contents
 -----------------
@@ -62,5 +62,5 @@ Table of Contents
     :maxdepth: 1
 
     guide-user/guide-user
-    guide-dev/dev-intro
+    guide-dev/guide-dev
     api
