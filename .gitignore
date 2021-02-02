@@ -73,6 +73,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+pyproject.toml
 
 # Installer logs
 pip-log.txt

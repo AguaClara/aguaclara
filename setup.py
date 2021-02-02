@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'aguaclara',
-    version = '0.2.10',
+    version = '0.3.0',
     description = (
         'An open-source Python package for designing and performing research '
         'on AguaClara water treatment plants.'
@@ -23,6 +23,7 @@ setup(
         'onshape_client',
     ],
 
+    python_requires='>=3.8',
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
     include_package_data=True,
