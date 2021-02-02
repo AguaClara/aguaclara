@@ -6,6 +6,12 @@
 .. |aguaclara issues| replace:: ``aguaclara`` Github repository issues
 .. _aguaclara issues: https://github.com/AguaClara/aguaclara/issues
 
+.. |flake8| replace:: ``flake8``, a Python linter (code style checker),
+.. _flake8: https://flake8.pycqa.org/en/latest/
+
+.. |black| replace:: ``black``, an automatic code formatter,
+.. _black: https://black.readthedocs.io/en/stable/
+
 ===============
 Developer Guide
 ===============
@@ -55,6 +61,8 @@ If you want to make changes to ``aguaclara``, you should make the package availa
         cd aguaclara
         pip install --editable . -U --user
 
+    To install the package in editable mode in a virtual environment only, replace the second line with ``pipenv install --dev -e .`` (``.`` passes the current directory as an argument to the ``-e`` flag, short for "editable").
+
 #.  Install the package's user dependencies and development dependencies:
 
     .. code::
@@ -62,9 +70,9 @@ If you want to make changes to ``aguaclara``, you should make the package availa
         pipenv install
         pipenv install --dev
     
-    ``pipenv`` is used to install the dependencies from the file called ``Pipfile`` into a virtual environment. Click :ref:`here <pipenv>` for more details on ``pipenv`` and ``Pipfile``. 
+    ``pipenv`` is used to install the dependencies from the file called ``Pipfile`` into a virtual environment. Click :ref:`here <pipenv>` for more details on ``pipenv``, ``Pipfile``, and virtual environments. 
 
-#.  You can check whether you have a working testing environment by running:
+#.  You can check whether you have a fully provisioned testing environment now by running:
 
     .. code::
 
@@ -87,7 +95,7 @@ The master branch is the branch that houses ``aguaclara``'s published releases. 
 
 Your Development Branch
 ***********************
-This means that all work starts on *development branches* (or task, feature, or release branches. Check out this `article <https://www.atlassian.com/agile/software-development/branching>`_ if you want to learn more!)
+This means that all work starts on *development branches*, or task or feature branches. (Check out this `article <https://www.atlassian.com/agile/software-development/branching>`_ if you want to learn more!)
 It is recommended that you name your branch ``{your_development_type}/short-description``. Some examples of development type are 
 
 .. hlist::
@@ -108,3 +116,85 @@ To make and switch to your new branch, run:
 
 Documentation and Test Driven Development
 -----------------------------------------
+1. Write Documentation
+**********************
+Your development should begin with documentation -- that is, creating a blueprint of the code you plan to write. **In this blueprint, each new or modified module, function, class, or method should be defined with a documentation string (i.e. comments, specifications, docstring) that describes its purpose and functionality, before any code is written**.
+You can read more about documentation driven development (DDD) in this short `blog <https://collectiveidea.com/blog/archives/2014/04/21/on-documentation-driven-development>`_.
+
+.. Commented out: The primary purpose of the documentation is to inform users how the code is intended to be used and behave. The purpose of the documentation process is to make you, as the developer, consider the best interface for the user. Plus, it lays a clearer roadmap to the end product and is crucial for helping others (and yourself!) to understand and debug the code.
+
+The ``aguaclara`` package uses Sphinx and Numpy docstring formats. For more details on writing docstrings, see our :ref:`doc-conventions`. 
+
+**If possible, gather feedback from likely users after writing the documentation.** Modifications are much more easily made to documentation than to code. 
+
+2. Write a Test
+***************
+Next, write a unit test for your code based on the documentation. A unit test tests a basic unit, e.g. function or method, of your code. **If a unit of code produces the expected (documented) outputs for accepted inputs, its test should pass. If it behaves any differently from what is described in its documentation, its test should fail.**
+Make sure to test all types and/or edge cases of accepted inputs (this last part is known as `black box testing <https://www.guru99.com/black-box-testing.html>`_). You can read more about test driven development (TDD) `here <https://www.agilealliance.org/glossary/tdd/>`_.
+
+.. Commented out: Like documentation driven development (DDD), test driven development (TDD) focuses on specifying the code most optimally for the user by putting the developer in the user's shoes. TDD also leads to cleaner and better designed code. 
+
+The ``aguaclara`` package uses the ``numpy`` and ``unittest`` packages for testing Python code. For more details on Python testing, see [ADD TUTORIAL LINK HERE].
+
+All test files should be located in the ``tests/`` directory. To execute the tests in a test file, run the following command in the command line:
+
+.. code::
+
+    pipenv run pytest path/to/file -v
+
+where the ``-v`` flag gives a verbose (more descriptive) output. To execute specific tests in a test file, run:
+
+.. code::
+
+    pipenv run pytest path/to/file -v -k name_of_test
+
+3. Write Code to Pass Failing Test
+**********************************
+Since you haven't written any code yet, your test should fail. Now write just enough code to pass the failing test.
+
+For code style conventions, refer to `Python's Style Guide <https://www.python.org/dev/peps/pep-0008/>`_. You can also use |flake8|_ and |black|_ to achieve proper style.
+
+4. Refactor
+***********
+If your test still fails, refactor (modify) your code, still keeping it as simple as possible, until the test passes.
+
+5. Repeat
+*********
+Repeat steps 3 and 4 until tests cover all the functionalities described in the documentation.
+
+
+Sphinx Documentation
+--------------------
+.. TODO: explain RST, automodules, Sphinx
+
+Some IDEs like Visual Studio Code offer great third party extensions that allow you to preview documentation files written in RST.
+
+
+Committing and Pushing
+----------------------
+It's a good idea to **commit your work early and commit often**. Saving more snapshots of your work through Git facilitates debugging and resetting code while logging your progress.
+
+#.  Before committing, check if your work generated any user, operating system, or IDE specific or other otherwise unnecessary developer files in your ``aguaclara`` repository. If so, add their files names or directories to the ``.gitignore`` file.
+
+#.  If you have files in a directory named ``tests/rst_files``, run in the command line:
+
+    .. code::
+
+        git update-index --skip-worktree tests/rst_files/*
+
+#.  Now, stage your changes and commit them with a short but descriptive commit message. From the ``aguaclara`` root directory, run:
+
+    .. code::
+
+        git add .
+        git commit -m "your message here"
+
+#.  Make sure to also occasionally pull commits from the remote Github repository, if anyone else is working on your branch, and to push your commits:
+
+    .. code::
+
+        git pull
+        git push
+
+For more guidance on using Git in the command line, see the `AguaClara Tutorial Wiki <https://aguaclara.github.io/aguaclara_tutorial/git-and-github/git-in-the-command-line.html>`_.
+
