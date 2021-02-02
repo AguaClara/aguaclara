@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sedimentor &mdash; AguaClara v0.2.10 documentation</title>
+  <title>Sedimentor &mdash; AguaClara EXPERIMENTAL documentation</title>
   
 
   
@@ -20,7 +20,10 @@
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
+
   
+  
+
   
 
   
@@ -33,7 +36,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -55,7 +57,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
+            <a href="../index.html" class="icon icon-home"> AguaClara
           
 
           
@@ -65,7 +67,7 @@
             
             
               <div class="version">
-                v0.2.10
+                EXPERIMENTAL
               </div>
             
           
@@ -146,6 +148,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -159,7 +163,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/design/sed.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -173,52 +177,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-aguaclara.design.sed">
-<span id="sedimentor"></span><span id="design-sed"></span><h1>Sedimentor<a class="headerlink" href="#module-aguaclara.design.sed" title="Permalink to this headline">¶</a></h1>
-<p>The sedimentor of an AguaClara water treatment plant receives flocculated
-water from the flocculator, then settles the flocs out via upflow and an array
-of plate settlers.</p>
-<dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.sed</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sed</span> <span class="o">=</span> <span class="n">Sedimentor</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sed</span><span class="o">.</span><span class="n">tank_n</span>
-<span class="go">4</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<dl class="py class">
-<dt id="aguaclara.design.sed.Sedimentor">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.sed.</code><code class="sig-name descname">Sedimentor</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/sed.html#Sedimentor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.sed.Sedimentor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Design an AguaClara sedimentor.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">Sedimentor</span></code> class designs the sedimentation tank and channel in
-tandem. For more information on those classes, see
-<a class="reference internal" href="sed_tank.html#aguaclara.design.sed_tank.SedimentationTank" title="aguaclara.design.sed_tank.SedimentationTank"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed_tank.SedimentationTank</span></code></a> and
-<a class="reference internal" href="sed_chan.html#aguaclara.design.sed_chan.SedimentationChannel" title="aguaclara.design.sed_chan.SedimentationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed_chan.SedimentationChannel</span></code></a>.</p>
-<dl class="simple">
-<dt>Design inputs:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Flow rate (recommended, defaults to 20L/s)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature (recommended, defaults to
-20°C)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">wall_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Wall thickness (optional, defaults
-to 15 * u.cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tank</span> <span class="pre">(SedimentationTank)</span></code>: Sedimentation Tank
-(optional, see <a class="reference internal" href="sed_tank.html#aguaclara.design.sed_tank.SedimentationTank" title="aguaclara.design.sed_tank.SedimentationTank"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed_tank.SedimentationTank</span></code></a>
-for defaults)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">chan</span> <span class="pre">(SedimentationChannel)</span></code>: Sedimentation Channel
-(optional, see
-<a class="reference internal" href="sed_chan.html#aguaclara.design.sed_chan.SedimentationChannel" title="aguaclara.design.sed_chan.SedimentationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed_chan.SedimentationChannel</span></code></a> for defaults)</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="aguaclara.design.sed.Sedimentor.tank_n">
-<em class="property">property </em><code class="sig-name descname">tank_n</code><a class="headerlink" href="#aguaclara.design.sed.Sedimentor.tank_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of sedimentation tanks.</p>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="sedimentor">
+<span id="design-sed"></span><h1>Sedimentor<a class="headerlink" href="#sedimentor" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -226,37 +186,29 @@ for defaults)</p></li>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="sed_chan.html" class="btn btn-neutral float-right" title="Sedimentation Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="lfom.html" class="btn btn-neutral float-left" title="Linear Flow Orifice Meter (LFOM)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="sed_chan.html" class="btn btn-neutral float-right" title="Sedimentation Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="lfom.html" class="btn btn-neutral float-left" title="Linear Flow Orifice Meter (LFOM)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, AguaClara Cornell
+        &#169; Copyright 2019, AguaClara Cornell.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

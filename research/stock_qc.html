@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Stock QC &mdash; AguaClara v0.2.10 documentation</title>
+  <title>Stock QC &mdash; AguaClara EXPERIMENTAL documentation</title>
   
 
   
@@ -20,7 +20,10 @@
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
+
   
+  
+
   
 
   
@@ -33,7 +36,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -54,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
+            <a href="../index.html" class="icon icon-home"> AguaClara
           
 
           
@@ -64,7 +66,7 @@
             
             
               <div class="version">
-                v0.2.10
+                EXPERIMENTAL
               </div>
             
           
@@ -140,6 +142,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -153,7 +157,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/research/stock_qc.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -169,377 +173,6 @@
             
   <div class="section" id="stock-qc">
 <h1>Stock QC<a class="headerlink" href="#stock-qc" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.research.stock_qc.</code><code class="sig-name descname">Variable_C_Stock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Q_sys</span></em>, <em class="sig-param"><span class="n">C_sys</span></em>, <em class="sig-param"><span class="n">Q_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>A flow reactor with input from a stock of material of unknown
-concentration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Examples</dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.stock_qc</span> <span class="kn">import</span> <span class="n">Variable_C_Stock</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reactor</span> <span class="o">=</span> <span class="n">Variable_C_Stock</span><span class="p">(</span><span class="n">Q_sys</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">C_sys</span> <span class="o">=</span> <span class="mf">1.4</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="n">Q_stock</span> <span class="o">=</span> <span class="o">.</span><span class="mi">01</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reactor</span><span class="o">.</span><span class="n">C_stock</span><span class="p">()</span>
-<span class="go">&lt;Quantity(140.0, &#39;milligram / liter&#39;)&gt;</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Q_sys</span></em>, <em class="sig-param"><span class="n">C_sys</span></em>, <em class="sig-param"><span class="n">Q_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize a reactor of unknown material stock concentration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Q_sys</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Flow rate of the system</p></li>
-<li><p><strong>C_sys</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Concentration of the material in the system</p></li>
-<li><p><strong>Q_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Flow rate from the stock of material</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.Q_sys">
-<code class="sig-name descname">Q_sys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.Q_sys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.Q_sys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the flow rate of the system.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Flow rate of the system</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.C_sys">
-<code class="sig-name descname">C_sys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.C_sys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.C_sys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the concentration of the material in the system.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Concentration of the material in the system</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.Q_stock">
-<code class="sig-name descname">Q_stock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.Q_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.Q_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the flow rate from the stock of material.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Flow rate from the stock of material</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.C_stock">
-<code class="sig-name descname">C_stock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.C_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.C_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the required concentration of material in the stock given a
-reactor’s desired system flow rate, system concentration, and stock
-flow rate.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Concentration of material in the stock</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.rpm">
-<code class="sig-name descname">rpm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vol_per_rev</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.rpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.rpm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the pump speed required for the reactor’s stock of material
-given the volume of fluid output per revolution by the stock’s pump.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>vol_per_rev</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Volume of fluid pumped per revolution (dependent on pump and tubing)</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Pump speed for the material stock, in revolutions per minute</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.T_stock">
-<code class="sig-name descname">T_stock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">V_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.T_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.T_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the amount of time at which the stock of materal will be
-depleted.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>V_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Volume of the stock of material</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Time at which the stock will be depleted</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.M_stock">
-<code class="sig-name descname">M_stock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">V_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.M_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.M_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the mass of undiluted material required for the stock
-concentration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>V_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Volume of the stock of material</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Mass of undiluted stock material</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.V_super_stock">
-<code class="sig-name descname">V_super_stock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">V_stock</span></em>, <em class="sig-param"><span class="n">C_super_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.V_super_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.V_super_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the volume of super (more concentrated) stock that must be
-diluted for the desired stock volume and required stock concentration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>V_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Volume of the stock of material</p></li>
-<li><p><strong>C_super_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Concentration of the super stock</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Volume of super stock to dilute</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_C_Stock.dilution_factor">
-<code class="sig-name descname">dilution_factor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">C_super_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_C_Stock.dilution_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_C_Stock.dilution_factor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the dilution factor of the concentration of material in the
-stock relative to the super stock.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>C_super_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Concentration of the super stock</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dilution factor of stock concentration over super stock concentration (&lt; 1)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.research.stock_qc.</code><code class="sig-name descname">Variable_Q_Stock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Q_sys</span></em>, <em class="sig-param"><span class="n">C_sys</span></em>, <em class="sig-param"><span class="n">C_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>A flow reactor with input from a stock of material at an unknown flow
-rate.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Examples</dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.stock_qc</span> <span class="kn">import</span> <span class="n">Variable_Q_Stock</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reactor</span> <span class="o">=</span> <span class="n">Variable_Q_Stock</span><span class="p">(</span><span class="n">Q_sys</span> <span class="o">=</span> <span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">C_sys</span> <span class="o">=</span> <span class="mf">1.4</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="n">C_stock</span> <span class="o">=</span> <span class="mf">7.6</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">reactor</span><span class="o">.</span><span class="n">Q_stock</span><span class="p">(),</span> <span class="mi">6</span><span class="p">)</span>
-<span class="go">&lt;Quantity(0.184211, &#39;milliliter / second&#39;)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pump_speed</span> <span class="o">=</span> <span class="n">reactor</span><span class="o">.</span><span class="n">rpm</span><span class="p">(</span><span class="n">vol_per_rev</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">pump_speed</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-<span class="go">&lt;Quantity(22.105263, &#39;rev / minute&#39;)&gt;</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Q_sys</span></em>, <em class="sig-param"><span class="n">C_sys</span></em>, <em class="sig-param"><span class="n">C_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize a reactor of unknown material stock flow rate.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Q_sys</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Flow rate of the system</p></li>
-<li><p><strong>C_sys</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Concentration of the material in the system</p></li>
-<li><p><strong>C_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Concentration of the material in the stock</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.Q_sys">
-<code class="sig-name descname">Q_sys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.Q_sys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.Q_sys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the flow rate of the system.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Flow rate of the system</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.C_sys">
-<code class="sig-name descname">C_sys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.C_sys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.C_sys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the concentration of the material in the system.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Concentration of the material in the system</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.C_stock">
-<code class="sig-name descname">C_stock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.C_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.C_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the concentration of the material in the stock.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Concentration of the material in the stock</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.Q_stock">
-<code class="sig-name descname">Q_stock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.Q_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.Q_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the required flow rate from the stock of material given
-a reactor’s desired system flow rate, system concentration, and stock
-concentration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Flow rate from the stock of material</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.rpm">
-<code class="sig-name descname">rpm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vol_per_rev</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.rpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.rpm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the pump speed required for the reactor’s stock of material
-given the volume of fluid output per revolution by the stock’s pump.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>vol_per_rev</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Volume of fluid pumped per revolution (dependent on pump and tubing)</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Pump speed for the material stock, in revolutions per minute</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.T_stock">
-<code class="sig-name descname">T_stock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">V_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.T_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.T_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the amount of time at which the stock of materal will be
-depleted.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>V_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Volume of the stock of material</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Time at which the stock will be depleted</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.M_stock">
-<code class="sig-name descname">M_stock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">V_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.M_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.M_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the mass of undiluted material required for the stock
-concentration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>V_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Volume of the stock of material</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Mass of undiluted stock material</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.V_super_stock">
-<code class="sig-name descname">V_super_stock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">V_stock</span></em>, <em class="sig-param"><span class="n">C_super_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.V_super_stock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.V_super_stock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the volume of super (more concentrated) stock that must be
-diluted for the desired stock volume and stock concentration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>V_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Volume of the stock of material</p></li>
-<li><p><strong>C_super_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Concentration of the super stock</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Volume of super stock to dilute</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.research.stock_qc.Variable_Q_Stock.dilution_factor">
-<code class="sig-name descname">dilution_factor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">C_super_stock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/stock_qc.html#Variable_Q_Stock.dilution_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.research.stock_qc.Variable_Q_Stock.dilution_factor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the dilution factor of the concentration of material in the
-stock relative to the super stock.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>C_super_stock</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Concentration of the super stock</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dilution factor of stock concentration over super stock concentration (&lt; 1)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 
 
@@ -547,35 +180,28 @@ stock relative to the super stock.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="procoda_parser.html" class="btn btn-neutral float-left" title="ProCoDA Parser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="procoda_parser.html" class="btn btn-neutral float-left" title="ProCoDA Parser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, AguaClara Cornell
+        &#169; Copyright 2019, AguaClara Cornell.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

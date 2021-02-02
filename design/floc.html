@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Flocculator &mdash; AguaClara v0.2.10 documentation</title>
+  <title>Flocculator &mdash; AguaClara EXPERIMENTAL documentation</title>
   
 
   
@@ -20,7 +20,10 @@
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
+
   
+  
+
   
 
   
@@ -33,7 +36,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -55,7 +57,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> AguaClara
+            <a href="../index.html" class="icon icon-home"> AguaClara
           
 
           
@@ -65,7 +67,7 @@
             
             
               <div class="version">
-                v0.2.10
+                EXPERIMENTAL
               </div>
             
           
@@ -146,6 +148,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -159,7 +163,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/design/floc.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -173,172 +177,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-aguaclara.design.floc">
-<span id="flocculator"></span><span id="design-floc"></span><h1>Flocculator<a class="headerlink" href="#module-aguaclara.design.floc" title="Permalink to this headline">¶</a></h1>
-<p>The flocculator of an AguaClara water treatment plant uses turbulence to
-cause coagulant and other particles to accumulate, forming flocs.</p>
-<dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.floc</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">floc</span> <span class="o">=</span> <span class="n">Flocculator</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">hl</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">floc</span><span class="o">.</span><span class="n">chan_w</span><span class="p">)</span>
-<span class="go">&lt;Quantity(34, &#39;centimeter&#39;)&gt;</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<dl class="py class">
-<dt id="aguaclara.design.floc.Flocculator">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.floc.</code><code class="sig-name descname">Flocculator</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/floc.html#Flocculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Design an AguaClara plant’s flocculator.</p>
-<p>A flocculator’s design relies on the entrance tank’s design in the same
-plant, but assumed/default values may be used to design a flocculator by
-itself. To design these components in tandem, use
-<a class="reference internal" href="ent_floc.html#aguaclara.design.ent_floc.EntTankFloc" title="aguaclara.design.ent_floc.EntTankFloc"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.ent_floc.EntTankFloc</span></code></a>.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">BAFFLE_K</span> <span class="pre">(float)</span></code>: Minor loss coefficient around a baffle edge</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CHAN_N_MIN</span> <span class="pre">(int)</span></code>: Minimum channel number</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HS_RATIO_MIN</span> <span class="pre">(float)</span></code>: Minimum H/S ratio</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HS_RATIO_MAX</span> <span class="pre">(float)</span></code>: Maximum H/S ratio</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SDR</span> <span class="pre">(float)</span></code>: Standard dimension ratio</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">OBSTACLE_OFFSET</span> <span class="pre">(bool)</span></code>: Whether the baffle obstacles are offset
-from each other</p></li>
-</ul>
-</dd>
-<dt>Design Inputs:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L/u.s)</span></code>: Flow rate (required)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature (optional, defaults to
-20°C)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ent_l</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.m)</span></code>: Entrance tank length
-(recommmended, defaults to 1.5m)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">chan_w_max</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: Maximum width (optional, defaults to
-42”)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">l_max</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.m)</span></code>: Maximum length (optional, defaults to 6m)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gt</span> <span class="pre">(float)</span></code>: Collision potential (optional, defaults to 37000)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hl</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Head loss (optional, defaults to 40cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">end_water_depth</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.m)</span></code>: Depth at the end
-(optional, defaults to 2m)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">drain_t</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.min)</span></code>: Drain time (optional,
-defaults to 30 mins)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">polycarb_sheet_w</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: Width of polycarbonate sheets
-used to construct baffles (optional, defaults to 42 in)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sed_chan_inlet_w_pre_weir</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: Width of the inlet
-sedimentation channel pre-weir (optional, defaults to 42 in)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dividing_wall_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Thickness of dividing
-walls between each flocculator channel (optional, defaults to 15 cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">chan_n_parity</span> <span class="pre">(str)</span></code>: Parity of the number of channels. Can be
-‘even’, ‘odd’, or ‘any’ (optional, defaults to ‘even’)</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.vel_grad_avg">
-<em class="property">property </em><code class="sig-name descname">vel_grad_avg</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vel_grad_avg" title="Permalink to this definition">¶</a></dt>
-<dd><p>The average velocity gradient of water.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.retention_time">
-<em class="property">property </em><code class="sig-name descname">retention_time</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.retention_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>The hydraulic retention time neglecting the volume
-created by head loss.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.vol">
-<em class="property">property </em><code class="sig-name descname">vol</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vol" title="Permalink to this definition">¶</a></dt>
-<dd><p>The target volume (not counting the volume added by head loss).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.chan_w_min_hs_ratio">
-<em class="property">property </em><code class="sig-name descname">chan_w_min_hs_ratio</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min_hs_ratio" title="Permalink to this definition">¶</a></dt>
-<dd><p>The minimum channel width.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.chan_w_min">
-<em class="property">property </em><code class="sig-name descname">chan_w_min</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min" title="Permalink to this definition">¶</a></dt>
-<dd><p>The minimum channel width.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.chan_n">
-<em class="property">property </em><code class="sig-name descname">chan_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>The minimum number of channels based on the maximum
-possible channel width and the maximum length of the channels.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.chan_w_min_gt">
-<em class="property">property </em><code class="sig-name descname">chan_w_min_gt</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min_gt" title="Permalink to this definition">¶</a></dt>
-<dd><p>The channel width minimum regarding the collision potential.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.chan_w">
-<em class="property">property </em><code class="sig-name descname">chan_w</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w" title="Permalink to this definition">¶</a></dt>
-<dd><p>The channel width.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.l_max_vol">
-<em class="property">property </em><code class="sig-name descname">l_max_vol</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.l_max_vol" title="Permalink to this definition">¶</a></dt>
-<dd><p>The maximum length depeneding on the volume.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.chan_l">
-<em class="property">property </em><code class="sig-name descname">chan_l</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>The channel length.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.expansion_h_max">
-<em class="property">property </em><code class="sig-name descname">expansion_h_max</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h_max" title="Permalink to this definition">¶</a></dt>
-<dd><p>“The maximum distance between expansions for the largest
-allowable H/S ratio.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.expansion_n">
-<em class="property">property </em><code class="sig-name descname">expansion_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>The minimum number of expansions per baffle space.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.expansion_h">
-<em class="property">property </em><code class="sig-name descname">expansion_h</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h" title="Permalink to this definition">¶</a></dt>
-<dd><p>The height between flow expansions.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.baffle_s">
-<em class="property">property </em><code class="sig-name descname">baffle_s</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.baffle_s" title="Permalink to this definition">¶</a></dt>
-<dd><p>The spacing between baffles.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.obstacle_n">
-<em class="property">property </em><code class="sig-name descname">obstacle_n</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.obstacle_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of obstacles per baffle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.contraction_s">
-<em class="property">property </em><code class="sig-name descname">contraction_s</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.contraction_s" title="Permalink to this definition">¶</a></dt>
-<dd><p>The space in the baffle by which the flow contracts.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="aguaclara.design.floc.Flocculator.obstacle_pipe_od">
-<em class="property">property </em><code class="sig-name descname">obstacle_pipe_od</code><a class="headerlink" href="#aguaclara.design.floc.Flocculator.obstacle_pipe_od" title="Permalink to this definition">¶</a></dt>
-<dd><p>The outer diameter of an obstacle pipe. If the available pipe is
-greater than 1.5 inches, the obstacle offset will become false.</p>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="flocculator">
+<span id="design-floc"></span><h1>Flocculator<a class="headerlink" href="#flocculator" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -346,37 +186,29 @@ greater than 1.5 inches, the obstacle offset will become false.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="lfom.html" class="btn btn-neutral float-right" title="Linear Flow Orifice Meter (LFOM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="ent.html" class="btn btn-neutral float-left" title="Entrance Tank" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="lfom.html" class="btn btn-neutral float-right" title="Linear Flow Orifice Meter (LFOM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ent.html" class="btn btn-neutral float-left" title="Entrance Tank" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2019, AguaClara Cornell
+        &#169; Copyright 2019, AguaClara Cornell.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
