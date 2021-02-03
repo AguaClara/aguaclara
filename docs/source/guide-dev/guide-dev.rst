@@ -6,11 +6,17 @@
 .. |aguaclara issues| replace:: ``aguaclara`` Github repository issues
 .. _aguaclara issues: https://github.com/AguaClara/aguaclara/issues
 
+.. |aguaclara actions| replace:: ``aguaclara``'s Github Actions page
+.. _aguaclara actions: https://github.com/AguaClara/aguaclara/actions
+
 .. |flake8| replace:: ``flake8``, a Python linter (code style checker),
 .. _flake8: https://flake8.pycqa.org/en/latest/
 
 .. |black| replace:: ``black``, an automatic code formatter,
 .. _black: https://black.readthedocs.io/en/stable/
+
+.. |Sphinx autodoc extension| replace:: Sphinx ``autodoc`` extension
+.. _Sphinx autodoc extension: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
 
 ===============
 Developer Guide
@@ -32,7 +38,7 @@ Setting Up Your Local Environment
 ---------------------------------
 If you want to make changes to ``aguaclara``, you should make the package available locally.
 
-#.  Make sure to have Python, ``pip``, and Git installed (for guidance, see :ref:`install-python-pip`). The ``aguaclara`` package requires Python versions [COME BACK HERE WITH RIGHT VERSIONS]. If you must have a different version on your computer for another project, refer to the ``pyenv`` tutorial [WRITE THIS LATER] for managing multiple Python versions.
+#.  Make sure to have Python, ``pip``, and Git installed (for guidance, see :ref:`install-software`). Check the package's `Pypi <https://pypi.org/project/aguaclara/>`_ page for the required Python version. If you must have a different version on your computer for another project, you can use `pyenv <https://github.com/pyenv/pyenv#simple-python-version-management-pyenv>`_ to manage multiple Python versions.
 
 #.  Install `Pipenv <https://pypi.org/project/pipenv/>`_, a package management and virtual environment tool, by running the following command in the command line:
    
@@ -132,7 +138,7 @@ The ``aguaclara`` package uses Sphinx and Numpy docstring formats. For more deta
 Next, write a unit test for your code based on the documentation. A unit test tests a basic unit, e.g. function or method, of your code. **If a unit of code produces the expected (documented) outputs for accepted inputs, its test should pass. If it behaves any differently from what is described in its documentation, its test should fail.**
 Make sure to test all types and/or edge cases of accepted inputs (this last part is known as `black box testing <https://www.guru99.com/black-box-testing.html>`_). You can read more about test driven development (TDD) `here <https://www.agilealliance.org/glossary/tdd/>`_.
 
-.. Commented out: Like documentation driven development (DDD), test driven development (TDD) focuses on specifying the code most optimally for the user by putting the developer in the user's shoes. TDD also leads to cleaner and better designed code. 
+.. Commented out: Like DDD, test driven development (TDD) focuses on specifying the code most optimally for the user by putting the developer in the user's shoes. TDD also leads to cleaner and better designed code than traditional testing. 
 
 The ``aguaclara`` package uses the ``numpy`` and ``unittest`` packages for testing Python code. For more details on Python testing, see [ADD TUTORIAL LINK HERE].
 
@@ -165,9 +171,38 @@ Repeat steps 3 and 4 until tests cover all the functionalities described in the 
 
 Sphinx Documentation
 --------------------
-.. TODO: explain RST, automodules, Sphinx
+Sphinx and RST
+**************
+``aguaclara``'s documentation, including this page, is built using a tool called `Sphinx <https://www.sphinx-doc.org/en/master/>`_, which uses reStructuredText (RST, ReST, or reST) as its markup language. RST files have the extension ``.rst``. The source files for ``aguaclara``'s documentation are found in the ``docs/source`` directory.
+For a brief introduction to RST concepts and syntax, see `Sphinx's reStructuredText Primer <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_. 
 
-Some IDEs like Visual Studio Code offer great third party extensions that allow you to preview documentation files written in RST.
+Automated Documentation
+***********************
+You may have noticed that ``aguaclara``'s modules, classes, functions, and constants are not manually documented in the API Reference pages. Instead, they are automatically documented using an RST directive, ``.. automodule::``, which reads the docstrings in the source code. **Hence, docstrings must be written in correst RST and can include all the usual RST markup (e.g. headers, code blocks).** 
+For more details on including documentation from docstrings, see the |Sphinx autodoc extension|_.
+
+Previewing Documentation
+************************
+Some IDEs offer extensions for previewing the HTML pages that Sphinx generates from the RST files. (One great extension is `reStructuredText by LexStudio, Inc. <https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext>`_ for `Visual Studio Code <https://code.visualstudio.com/>`_.) You can also build the documentation from the command line:
+
+.. code::
+
+    cd docs
+    pipenv run make html
+
+The resulting HTML files will be written to the ``docs/build/html`` directory. You can then open and interact with them in a browser.
+
+Validating Documentation
+************************
+The ``html-proofer`` package can be used to check the correctness of the rendered HTML pages (e.g., that there are not broken links). To install the package, `download RubyGems <https://rubygems.org/pages/download>`_ and then run:
+
+.. code::
+
+    gem install html-proofer
+    cd docs
+    htmlproofer build/html --allow_hash_href --file_ignore "build/html/search.html"
+
+Alternatively, you can commit your changes, push them to Github, and check the "Build" workflow for your commit in |aguaclara actions|_ (or that of your forked repository). See :ref:`github-actions` for more details.
 
 
 Committing and Pushing
@@ -198,3 +233,49 @@ It's a good idea to **commit your work early and commit often**. Saving more sna
 
 For more guidance on using Git in the command line, see the `AguaClara Tutorial Wiki <https://aguaclara.github.io/aguaclara_tutorial/git-and-github/git-in-the-command-line.html>`_.
 
+
+.. _github-actions:
+
+Continuous Integration via Github Actions
+-----------------------------------------
+Continuous integration (CI) is a software development practice that allows multiple developers to frequently merge code into a shared repository. CI usually involves automated tests and builds of the code to make sure it is correct before integration.
+The ``aguaclara`` package uses Github Actions for continuous integration. More specifically, several "workflows" have been defined in the ``.github/workflows`` directory to accomplish various tasks:
+
+.. list-table::
+    :header-rows: 1
+
+    *   - Workflow
+        - Trigger
+        - Tasks
+    *   - Build
+        - Push, pull request
+        - Validate code and documentation, check code coverage
+    *   - Documentation
+        - Push to master branch
+        - Build and publish Sphinx documentation 
+    *   - Publish to Pypi
+        - Publishing of release
+        - Build and publish the package to Pypi
+
+The `Github Actions documentation <https://docs.github.com/en/actions>`_ is a great place to learn more about workflows and other aspects of Github's CI platform.
+
+Checking Workflow Results
+*************************
+Results of workflow runs can be viewed in the `Actions <https://github.com/AguaClara/aguaclara/actions>`_ tab of the ``aguaclara`` Github repository. If a job fails in the Build workflow for your latest push, find the error in the job's log and debug from there.
+
+Checking Code Coverage
+**********************
+Code coverage is a measure of the amount of source code that has been executed by tests. Whenever possible, all new or modified code should be covered by tests, so code coverage should either remain the same or increase with each contribution. 
+The Build workflow calculates code coverage and uploads a report to `Codecov <https://app.codecov.io/gh/AguaClara/aguaclara/>`_. The actual change (diff) in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green check or red X).
+
+.. image:: ../images/status_checks.png
+    :align: center
+    :alt: Status Checks Dropdown
+    :scale: 40%
+
+You can also view on Codecov (or on Github with a browser extension) which lines of code were executed during testing and which were skipped. If the coverage for your code is incomplete, and especially if the coverage diff is negative, add test cases to test the skipped lines of code. 
+If you added a file of code that *cannot be reasonably tested*, you may add it to the list of files and directories ignored by Codecov in ``codecov.yml``. (Note: such files are rare!)
+
+
+Pull Requests
+-------------
