@@ -261,21 +261,95 @@ The `Github Actions documentation <https://docs.github.com/en/actions>`_ is a gr
 
 Checking Workflow Results
 *************************
-Results of workflow runs can be viewed in the `Actions <https://github.com/AguaClara/aguaclara/actions>`_ tab of the ``aguaclara`` Github repository. If a job fails in the Build workflow for your latest push, find the error in the job's log and debug from there.
+Results of workflow runs can be viewed in the `Actions <https://github.com/AguaClara/aguaclara/actions>`_ tab of the ``aguaclara`` Github repository. If a job fails in the "Build" workflow for your latest push, find the error in the job's log and debug from there.
 
 Checking Code Coverage
 **********************
-Code coverage is a measure of the amount of source code that has been executed by tests. Whenever possible, all new or modified code should be covered by tests, so code coverage should either remain the same or increase with each contribution. 
-The Build workflow calculates code coverage and uploads a report to `Codecov <https://app.codecov.io/gh/AguaClara/aguaclara/>`_. The actual change (diff) in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green check or red X).
+Code coverage is a measure of the amount of source code that has been executed by tests. **Whenever possible, all new or modified code should be covered by tests, so code coverage should either remain the same or increase with each contribution.**
+If you add a file of code that *cannot reasonably be tested*, you may add it to the list of files and directories ignored by Codecov in ``codecov.yml``. (Note: such files are rare!)
+
+The "Build" workflow calculates code coverage and uploads a report to `Codecov <https://app.codecov.io/gh/AguaClara/aguaclara/>`_. The actual change in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green ✓ or a red ✕).
 
 .. image:: ../images/status_checks.png
     :align: center
     :alt: Status Checks Dropdown
     :scale: 40%
 
-You can also view on Codecov (or on Github with a browser extension) which lines of code were executed during testing and which were skipped. If the coverage for your code is incomplete, and especially if the coverage diff is negative, add test cases to test the skipped lines of code. 
-If you added a file of code that *cannot be reasonably tested*, you may add it to the list of files and directories ignored by Codecov in ``codecov.yml``. (Note: such files are rare!)
+If you're a collaborator of ``aguaclara``, you can also log in to Codecov through your Github account and view the "hit" and "missed" lines of code on Codecov (or directly on Github with a `browser extension <https://docs.codecov.io/docs/browser-extension>`_).
 
+
+Preparing for Release
+---------------------
+If you code has been fully documented, tested, and implemented and is passing all status checks (see previous section), you're ready to prepare for a release.
+
+Semantic Versioning
+*******************
+The ``aguaclara`` package follows `semantic versioning <https://semver.org/>`_, meaning that its version numbers take the form of ``vMAJOR.MINOR.PATCH``. 
+
+**Currently, the package is still in major version 0 (``v0.MINOR.PATCH``)**, i.e. in beta, so it is NOT considered stable. Version numbers during this stage are generally incremented as follows:
+
+#.  ``MINOR`` is incremented with incompatible API changes
+#.  ``PATCH`` is incremented with backwards compatible features and bug fixes
+
+**Once the package is stable, the package version number can be incrememted to ``v1.0.0``.** (This will most likely happen after the ``onshape_parser`` tool and the AguaClara Infrastructure Design Engine, AIDE, and become stable.) From then on, versioning should adhere to the following rules:
+
+#.  ``MAJOR`` is incremented with incompatible API changes
+#.  ``MINOR`` is incremented with backwards compatible feature additions
+#.  ``PATCH`` is incremented with backwards compatible bug fixes
+
+Determine what version number is most appropriate for your release and update ``setup.py`` accordingly:
+
+.. code:: python
+
+    # ...
+    setup(
+        name = 'aguaclara',
+        version = '0.3.0',  # Edit the version number here
+        # ...
+    )
+
+Merging from Master
+*******************
+To ensure that your code can safely integrate with the ``aguaclara`` package, pull any new changes that were made to the master branch and merge them into your development branch.
+
+.. code::
+
+    git checkout master
+    git pull
+    git checkout name_of_your_branch
+    git merge master
+
+.. note:: Follow Github's instructions for `Syncing a fork <https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork>`_ if you're working in a forked repository.
+
+.. Commented out: For more experienced Git users, `think twice before rebasing <https://www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing>`_. 
+
+If the merge is successful, your command line may automatically take you to a text editor to edit or accept a default commit message for the merge. If using the Vi text editor, type ``:x`` and hit Enter to save and exit.
+
+If the command line alerts you of merge conflicts, open the files with conflicts in your IDE and manually resolve them. Many IDE's, such as Visual Studio Code, also have built-in support for handling them. For a better understanding of merge conflicts, check out this `article by Atlassian <https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts>`_.
 
 Pull Requests
--------------
+*************
+Once you're finally ready to merge your code into the master branch...
+
+#.  Push any final commits on your branch.
+#.  `Create a pull request <https://github.com/AguaClara/aguaclara/compare>`_ (PR) on Gitub to merge your development branch with the master branch.
+#.  Follow the pull request template to write a title and description for your PR.
+#.  Add at least one reviewer who is a maintainer of ``aguaclara``. You can also tag, message, or email them to make sure they know to give a review.
+#.  Wait for the reviewer to approve and merge the PR or request changes.
+
+Publishing a Release
+--------------------
+If your PR has been merged into the master branch, publish your release (or ask a collaborator to) as follows:
+
+#. Go to the `Releases <https://github.com/AguaClara/aguaclara/releases>`_ on the ``aguaclara`` Github.
+#. Click "Draft a new release".
+#. Create a new tag with the same name as the new version number (e.g. v0.3.0).
+#. Give your release a title and description.
+#. Publish the release!
+
+Now, the "Publish to Pypi" workflow will trigger in Github Actions to make the new release available on `Pypi <https://pypi.org/project/aguaclara/>`_. 
+The "Documentation" workflow will be running as well to update this documentation website.
+
+Make sure to close relevant issues if they were not automatically closed.
+
+Congratulations on making a release, and thanks for contributing to AguaClara!

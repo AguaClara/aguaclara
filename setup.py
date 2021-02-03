@@ -42,4 +42,3 @@ setup(
     test_suite="tests",
     zip_safe=False
 )
-# test
