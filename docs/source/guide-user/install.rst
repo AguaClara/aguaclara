@@ -1,8 +1,11 @@
 .. _install-software:
+
+===================
 Installing Software
 ===================
 
 .. _install-python-pip:
+
 Installing Python and ``pip``
 -----------------------------
 1. Download the `Anaconda installer <https://www.anaconda.com/download/>`_ and double-click it to begin installation.
@@ -24,6 +27,7 @@ On Windows:
 
 
 .. _install-git:
+
 Installing Git
 --------------
 On MacOS:

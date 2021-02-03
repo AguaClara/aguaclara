@@ -26,7 +26,7 @@ To upgrade an existing installation, run
 
   pip install aguaclara --upgrade
 
-Click here for :ref:`more software installation instructions <install-python-pip>` if you don't have Python or ``pip`` installed yet.
+Click here for :ref:`more software installation instructions<install-python-pip>` if you don't have Python or ``pip`` installed yet.
 
 Using ``aguaclara``
 -------------------
