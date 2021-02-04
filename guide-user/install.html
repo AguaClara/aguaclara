@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Installing Software &mdash; AguaClara EXPERIMENTAL documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data Parsing, Analysis, and Visualization" href="data.html" />
+    <link rel="prev" title="User Guide" href="guide-user.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                EXPERIMENTAL
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="guide-user.html">User Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Installing Software</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-python-and-pip">Installing Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-git">Installing Git</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data Parsing, Analysis, and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experimental-design.html">Experimental Design</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guide-dev/guide-dev.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="guide-user.html">User Guide</a> &raquo;</li>
+        
+      <li>Installing Software</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/guide-user/install.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installing-software">
+<span id="install-software"></span><h1>Installing Software<a class="headerlink" href="#installing-software" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installing-python-and-pip">
+<span id="install-python-pip"></span><h2>Installing Python and <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#installing-python-and-pip" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Download the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda installer</a> and double-click it to begin installation.</p></li>
+<li><p>When the installer displays Advanced Options, select “Add Anaconda to my PATH environment variable”.</p>
+<ul class="simple">
+<li><p>Aside from this, you can just click “Next” through the entire installation.</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>If the installer did not give the option to “Add Anaconda to my PATH environment variable”, follow the steps below after the installation:</strong></p>
+<dl class="simple">
+<dt>On MacOS:</dt><dd><ol class="arabic simple" start="3">
+<li><p>Open the Terminal and enter <code class="docutils literal notranslate"><span class="pre">which</span> <span class="pre">python</span></code></p></li>
+<li><p>Copy the directory the terminal outputs. (This is the directory Python has been installed in.)</p></li>
+<li><p>Enter the command <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=$PATH&lt;directory&gt;</span></code>, replacing <code class="docutils literal notranslate"><span class="pre">&lt;directory&gt;</span></code> with the directory you copied above.</p></li>
+</ol>
+</dd>
+<dt>On Windows:</dt><dd><ol class="arabic simple" start="3">
+<li><p>Open the Command Prompt (not PowerShell) and enter <code class="docutils literal notranslate"><span class="pre">where</span> <span class="pre">python</span></code></p></li>
+<li><p>Copy the path the terminal outputs. (This is the folder Python has been installed in.)</p></li>
+<li><p>Enter the command <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">PATH=%PATH%;C:\path\to\python</span></code>, replacing <code class="docutils literal notranslate"><span class="pre">C:\path\to\python</span></code> with the path you copied above.</p></li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="installing-git">
+<span id="install-git"></span><h2>Installing Git<a class="headerlink" href="#installing-git" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>On MacOS:</dt><dd><ol class="arabic simple">
+<li><p>Open the Terminal/Command Prompt and enter the following command:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">--version</span></code></p></li>
+</ul>
+</li>
+<li><p>If you don’t alread have Git, Xcode will prompt you to install it. Follow the prompts to install Git.</p></li>
+</ol>
+</dd>
+<dt>On Windows:</dt><dd><ol class="arabic simple">
+<li><p>Download the <a class="reference external" href="https://git-scm.com/downloads">Git installer</a> and double-click it to begin installation.</p></li>
+<li><p>When the installer asks which text editor you would like to use with Git (the default is Vim), select Nano instead. While powerful, Vim is difficult to use and not necessary for Git.</p>
+<ul class="simple">
+<li><p>Aside from this, you can just click “Next” through the entire installation.</p></li>
+</ul>
+</li>
+</ol>
+</dd>
+</dl>
+<ol class="arabic simple" start="3">
+<li><p>After the installation is complete, open Terminal, PowerShell, or Command Prompt and run the two following commands with your name and the email associated with your Github account, carefully observing spaces and punctuation (including quotation marks):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span> <span class="pre">user.name</span> <span class="pre">&quot;Firstname</span> <span class="pre">Lastname&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span> <span class="pre">user.email</span> <span class="pre">&quot;example&#64;email.com&quot;</span></code></p></li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="data.html" class="btn btn-neutral float-right" title="Data Parsing, Analysis, and Visualization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="guide-user.html" class="btn btn-neutral float-left" title="User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, AguaClara Cornell.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Experimental Design &mdash; AguaClara EXPERIMENTAL documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer Guide" href="../guide-dev/guide-dev.html" />
+    <link rel="prev" title="Data Parsing, Analysis, and Visualization" href="data.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                EXPERIMENTAL
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="guide-user.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installing Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data Parsing, Analysis, and Visualization</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Experimental Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#designing-an-experiment-with-a-contaminant-and-a-coagulant-of-unknown-concentration">Designing an experiment with a contaminant and a coagulant of unknown concentration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guide-dev/guide-dev.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="guide-user.html">User Guide</a> &raquo;</li>
+        
+      <li>Experimental Design</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/guide-user/experimental-design.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="experimental-design">
+<h1>Experimental Design<a class="headerlink" href="#experimental-design" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="designing-an-experiment-with-a-contaminant-and-a-coagulant-of-unknown-concentration">
+<h2>Designing an experiment with a contaminant and a coagulant of unknown concentration<a class="headerlink" href="#designing-an-experiment-with-a-contaminant-and-a-coagulant-of-unknown-concentration" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aguaclara</span> <span class="k">as</span> <span class="nn">ac</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
+
+<span class="c1"># volume per revolution flowing from the pump for PACl (coagulant) stock</span>
+<span class="n">vol_per_rev_PACl</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">vol_per_rev_3_stop</span><span class="p">(</span><span class="s2">&quot;yellow-blue&quot;</span><span class="p">)</span>
+<span class="c1"># revolutions per minute of PACl stock pump</span>
+<span class="n">rpm_PACl</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">min</span>
+<span class="c1"># flow rate from the PACl stock pump</span>
+<span class="n">Q_PACl</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">flow_rate</span><span class="p">(</span><span class="n">vol_per_rev_PACl</span><span class="p">,</span> <span class="n">rpm_PACl</span><span class="p">)</span>
+
+<span class="c1"># desired system flow rate</span>
+<span class="n">Q_sys</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span>
+<span class="c1"># desired system concentration of PACl</span>
+<span class="n">C_sys</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span>
+<span class="c1"># a variable representing the reactor and its parameters</span>
+<span class="n">reactor</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">Variable_C_Stock</span><span class="p">(</span><span class="n">Q_sys</span><span class="p">,</span> <span class="n">C_sys</span><span class="p">,</span> <span class="n">Q_PACl</span><span class="p">)</span>
+
+<span class="c1"># required concentration of PACl stock</span>
+<span class="n">C_stock_PACl</span> <span class="o">=</span> <span class="n">reactor</span><span class="o">.</span><span class="n">C_stock</span><span class="p">()</span>
+<span class="c1"># concentration of purchased PACl super stock in lab</span>
+<span class="n">C_super_PACl</span> <span class="o">=</span> <span class="mf">70.28</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">g</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span>
+<span class="c1"># dilution factor of PACl super stock necessary to achieve PACl stock</span>
+<span class="c1"># concentration (in L of super stock per L water)</span>
+<span class="n">dilution</span> <span class="o">=</span> <span class="n">reactor</span><span class="o">.</span><span class="n">dilution_factor</span><span class="p">(</span><span class="n">C_super_PACl</span><span class="p">)</span>
+<span class="n">mL_per_L</span> <span class="o">=</span> <span class="n">dilution</span> <span class="o">*</span> <span class="mi">1000</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A reactor with a system flow rate of&quot;</span><span class="p">,</span> <span class="n">Q_sys</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a system PACl concentration of&quot;</span><span class="p">,</span> <span class="n">C_sys</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;and a PACl stock flow rate of&quot;</span><span class="p">,</span> <span class="n">Q_PACl</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;will require a dilution factor of&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">mL_per_L</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<span class="s2">&quot;milliliters of PACl super&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stock per liter of water for the PACl stock.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../guide-dev/guide-dev.html" class="btn btn-neutral float-right" title="Developer Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="data.html" class="btn btn-neutral float-left" title="Data Parsing, Analysis, and Visualization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, AguaClara Cornell.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

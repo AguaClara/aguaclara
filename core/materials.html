@@ -93,18 +93,23 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="core.html">Core</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="drills.html">Drills</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Materials</a></li>
-<li class="toctree-l2"><a class="reference internal" href="physchem.html">PhysChem</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pipes.html">Pipes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide-user/guide-user.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide-dev/guide-dev.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="core.html">Core</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="drills.html">Drills</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="physchem.html">PhysChem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipes.html">Pipes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html">Utility</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/design.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research/research.html">Research</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -153,6 +158,8 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
           <li><a href="core.html">Core</a> &raquo;</li>
         
       <li>Materials</li>
@@ -174,8 +181,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="materials">
-<h1>Materials<a class="headerlink" href="#materials" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-aguaclara.core.materials">
+<span id="materials"></span><h1>Materials<a class="headerlink" href="#module-aguaclara.core.materials" title="Permalink to this headline">¶</a></h1>
+<p>Data for materials that are used in the construction of AguaClara water
+treatment plants.</p>
+<dl class="py data">
+<dt id="aguaclara.core.materials.PVC_PIPE_ROUGH">
+<code class="sig-prename descclassname">aguaclara.core.materials.</code><code class="sig-name descname">PVC_PIPE_ROUGH</code><em class="property"> = &lt;Quantity(0.12, 'millimeter')&gt;</em><a class="headerlink" href="#aguaclara.core.materials.PVC_PIPE_ROUGH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt id="aguaclara.core.materials.CONCRETE_PIPE_ROUGH">
+<code class="sig-prename descclassname">aguaclara.core.materials.</code><code class="sig-name descname">CONCRETE_PIPE_ROUGH</code><em class="property"> = &lt;Quantity(2, 'millimeter')&gt;</em><a class="headerlink" href="#aguaclara.core.materials.CONCRETE_PIPE_ROUGH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt id="aguaclara.core.materials.CONCRETE_DENSITY">
+<code class="sig-prename descclassname">aguaclara.core.materials.</code><code class="sig-name descname">CONCRETE_DENSITY</code><em class="property"> = &lt;Quantity(2400, 'kilogram / meter ** 3')&gt;</em><a class="headerlink" href="#aguaclara.core.materials.CONCRETE_DENSITY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt id="aguaclara.core.materials.CONCRETE_THICKNESS_MIN">
+<code class="sig-prename descclassname">aguaclara.core.materials.</code><code class="sig-name descname">CONCRETE_THICKNESS_MIN</code><em class="property"> = &lt;Quantity(5, 'centimeter')&gt;</em><a class="headerlink" href="#aguaclara.core.materials.CONCRETE_THICKNESS_MIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt id="aguaclara.core.materials.REBAR_D">
+<code class="sig-prename descclassname">aguaclara.core.materials.</code><code class="sig-name descname">REBAR_D</code><em class="property"> = &lt;Quantity(0.5, 'inch')&gt;</em><a class="headerlink" href="#aguaclara.core.materials.REBAR_D" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt id="aguaclara.core.materials.ACRYLIC_T">
+<code class="sig-prename descclassname">aguaclara.core.materials.</code><code class="sig-name descname">ACRYLIC_T</code><em class="property"> = &lt;Quantity(1, 'centimeter')&gt;</em><a class="headerlink" href="#aguaclara.core.materials.ACRYLIC_T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 
