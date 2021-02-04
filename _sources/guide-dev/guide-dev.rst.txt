@@ -1,5 +1,3 @@
-.. _guide-dev:
-
 .. |aguaclara Github| replace:: ``aguaclara`` Github repository
 .. _aguaclara Github: https://github.com/AguaClara/aguaclara
 
@@ -18,6 +16,8 @@
 .. |Sphinx autodoc extension| replace:: Sphinx ``autodoc`` extension
 .. _Sphinx autodoc extension: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
 
+.. _guide-dev:
+
 ===============
 Developer Guide
 ===============
@@ -26,7 +26,7 @@ Where to Start
 --------------
 Whether you're are maintainer of ``aguaclara`` or a user with a bug fix, feature, or enhancement in mind, the |aguaclara issues|_ are a great place to start. 
 
-Before working, **browse the issues to check if the update you have in mind has already been documented and assigned to a developer**. If a relevant issue doesn't exist, go ahead and make one with the green button labeled "New Issue". If/once an issue does exist, there a few ways to proceed:
+Before working, **browse the issues to check if the update you have in mind has already been documented and assigned to a developer**. If a relevant issue doesn't exist, go ahead and make one with the button labeled "New Issue". If/once an issue does exist, there a few ways to proceed:
 
 * if you're a collaborator of the ``aguaclara`` repository, assign yourself to the issue.
 * if you're not a collaborator, either ask a collaborator to make you a collaborator as well, or ask the collaborator to assign you to the issue.
@@ -73,10 +73,9 @@ If you want to make changes to ``aguaclara``, you should make the package availa
 
     .. code::
 
-        pipenv install
         pipenv install --dev
     
-    ``pipenv`` is used to install the dependencies from the file called ``Pipfile`` into a virtual environment. Click :ref:`here <pipenv>` for more details on ``pipenv``, ``Pipfile``, and virtual environments. 
+    ``pipenv`` is used to install the dependencies from the file called ``Pipfile`` into a virtual environment. See the :ref:`Additional Topics <envs>` for more details on ``pipenv``, ``Pipfile``, and virtual environments. 
 
 #.  You can check whether you have a fully provisioned testing environment now by running:
 
@@ -129,7 +128,9 @@ You can read more about documentation driven development (DDD) in this short `bl
 
 .. Commented out: The primary purpose of the documentation is to inform users how the code is intended to be used and behave. The purpose of the documentation process is to make you, as the developer, consider the best interface for the user. Plus, it lays a clearer roadmap to the end product and is crucial for helping others (and yourself!) to understand and debug the code.
 
-The ``aguaclara`` package uses Sphinx and Numpy docstring formats. For more details on writing docstrings, see our :ref:`doc-conventions`. 
+The ``aguaclara`` package uses the `Sphinx format <https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html>`_ and the `NumPy format <https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard>`_ for docstrings. For more details on writing docstrings, see :ref:`sphinx-docs`. 
+
+.. TODO: add more info about documentation conventions
 
 **If possible, gather feedback from likely users after writing the documentation.** Modifications are much more easily made to documentation than to code. 
 
@@ -140,7 +141,9 @@ Make sure to test all types and/or edge cases of accepted inputs (this last part
 
 .. Commented out: Like DDD, test driven development (TDD) focuses on specifying the code most optimally for the user by putting the developer in the user's shoes. TDD also leads to cleaner and better designed code than traditional testing. 
 
-The ``aguaclara`` package uses the ``numpy`` and ``unittest`` packages for testing Python code. For more details on Python testing, see [ADD TUTORIAL LINK HERE].
+The ``aguaclara`` package uses the ``pytest`` and ``unittest`` packages for testing Python code. More details will be coming on Python testing. 
+
+.. TODO: add more info about pytest and unittest
 
 All test files should be located in the ``tests/`` directory. To execute the tests in a test file, run the following command in the command line:
 
@@ -168,6 +171,7 @@ If your test still fails, refactor (modify) your code, still keeping it as simpl
 *********
 Repeat steps 3 and 4 until tests cover all the functionalities described in the documentation.
 
+.. _sphinx-docs:
 
 Sphinx Documentation
 --------------------
@@ -286,12 +290,12 @@ Semantic Versioning
 *******************
 The ``aguaclara`` package follows `semantic versioning <https://semver.org/>`_, meaning that its version numbers take the form of ``vMAJOR.MINOR.PATCH``. 
 
-**Currently, the package is still in major version 0 (``v0.MINOR.PATCH``)**, i.e. in beta, so it is NOT considered stable. Version numbers during this stage are generally incremented as follows:
+**Currently, the package is still in major version 0** (``v0.MINOR.PATCH``), i.e. in beta, so it is NOT considered stable. Version numbers during this stage are generally incremented as follows:
 
 #.  ``MINOR`` is incremented with incompatible API changes
 #.  ``PATCH`` is incremented with backwards compatible features and bug fixes
 
-**Once the package is stable, the package version number can be incrememted to ``v1.0.0``.** (This will most likely happen after the ``onshape_parser`` tool and the AguaClara Infrastructure Design Engine, AIDE, and become stable.) From then on, versioning should adhere to the following rules:
+**Once the package is stable, the package version number can be incremented to** ``v1.0.0``. (This will most likely happen after the ``onshape_parser`` tool and the AguaClara Infrastructure Design Engine, AIDE, and become stable.) From then on, versioning should adhere to the following rules:
 
 #.  ``MAJOR`` is incremented with incompatible API changes
 #.  ``MINOR`` is incremented with backwards compatible feature additions
@@ -321,7 +325,7 @@ To ensure that your code can safely integrate with the ``aguaclara`` package, pu
 
 .. note:: Follow Github's instructions for `Syncing a fork <https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork>`_ if you're working in a forked repository.
 
-.. Commented out: For more experienced Git users, `think twice before rebasing <https://www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing>`_. 
+.. Commented out: For slighlty more experienced Git users, `think twice before rebasing <https://www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing>`_. 
 
 If the merge is successful, your command line may automatically take you to a text editor to edit or accept a default commit message for the merge. If using the Vi text editor, type ``:x`` and hit Enter to save and exit.
 
@@ -353,3 +357,19 @@ The "Documentation" workflow will be running as well to update this documentatio
 Make sure to close relevant issues if they were not automatically closed.
 
 Congratulations on making a release, and thanks for contributing to AguaClara!
+
+Additional Topics
+-----------------
+.. _envs:
+
+Dependencies, Virtual Environments, and ``pipenv`` 
+**************************************************
+According to the `Python Standard Library documentation <https://docs.python.org/3/library/venv.html>`_, 
+
+    "A virtual environment is a Python environment such that the Python interpreter, libraries and scripts installed into it are isolated from those installed in other virtual environments, and (by default) any libraries installed in a “system” Python, i.e., one which is installed as part of your operating system."
+
+Since different Python projects on your computer may require different versions of dependencies, virtual environments are important for preventing dependency conflicts. It is also crucial for projects to specify the exact dependencies required for them to behave correctly, so as to not fail on machines other than the developer's.
+
+``pipenv`` is a tool that wraps ``pip`` and ``virtualenv`` together to manage virtual environments and dependency specifications for Python projects, with help of two important files: ``Pipfile`` and ``Pipfile.lock``.
+
+.. ``pipenv`` is a tool that merges ``pip``, a package manager for Python, and ``virtualenv``, a virtual environment tool, so that you can easily create, work in, and replicate isolated Python environments on your machine.

@@ -42,8 +42,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Reference" href="../api.html" />
-    <link rel="prev" title="Experimental Design" href="../guide-user/experimental-design.html" /> 
+    <link rel="prev" title="Stock QC" href="../research/stock_qc.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -93,7 +92,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../guide-user/guide-user.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#where-to-start">Where to Start</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-your-local-environment">Setting Up Your Local Environment</a></li>
@@ -130,9 +129,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#publishing-a-release">Publishing a Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-topics">Additional Topics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies-virtual-environments-and-pipenv">Dependencies, Virtual Environments, and <code class="docutils literal notranslate"><span class="pre">pipenv</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -200,12 +202,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <span class="target" id="guide-dev"></span><div class="section" id="developer-guide">
-<h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="developer-guide">
+<span id="guide-dev"></span><h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="where-to-start">
 <h2>Where to Start<a class="headerlink" href="#where-to-start" title="Permalink to this headline">¶</a></h2>
 <p>Whether you’re are maintainer of <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> or a user with a bug fix, feature, or enhancement in mind, the <a class="reference external" href="https://github.com/AguaClara/aguaclara/issues"><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> Github repository issues</a> are a great place to start.</p>
-<p>Before working, <strong>browse the issues to check if the update you have in mind has already been documented and assigned to a developer</strong>. If a relevant issue doesn’t exist, go ahead and make one with the green button labeled “New Issue”. If/once an issue does exist, there a few ways to proceed:</p>
+<p>Before working, <strong>browse the issues to check if the update you have in mind has already been documented and assigned to a developer</strong>. If a relevant issue doesn’t exist, go ahead and make one with the button labeled “New Issue”. If/once an issue does exist, there a few ways to proceed:</p>
 <ul class="simple">
 <li><p>if you’re a collaborator of the <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> repository, assign yourself to the issue.</p></li>
 <li><p>if you’re not a collaborator, either ask a collaborator to make you a collaborator as well, or ask the collaborator to assign you to the issue.</p></li>
@@ -244,11 +246,10 @@
 <p>To install the package in editable mode in a virtual environment only, replace the second line with <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">--dev</span> <span class="pre">-e</span> <span class="pre">.</span></code> (<code class="docutils literal notranslate"><span class="pre">.</span></code> passes the current directory as an argument to the <code class="docutils literal notranslate"><span class="pre">-e</span></code> flag, short for “editable”).</p>
 </li>
 <li><p>Install the package’s user dependencies and development dependencies:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span>
-<span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">dev</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">dev</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">pipenv</span></code> is used to install the dependencies from the file called <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> into a virtual environment. Click <a class="reference internal" href="environment-tools.html#pipenv"><span class="std std-ref">here</span></a> for more details on <code class="docutils literal notranslate"><span class="pre">pipenv</span></code>, <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>, and virtual environments.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pipenv</span></code> is used to install the dependencies from the file called <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> into a virtual environment. See the <a class="reference internal" href="#envs"><span class="std std-ref">Additional Topics</span></a> for more details on <code class="docutils literal notranslate"><span class="pre">pipenv</span></code>, <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>, and virtual environments.</p>
 </li>
 <li><p>You can check whether you have a fully provisioned testing environment now by running:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">run</span> <span class="n">pytest</span>
@@ -297,14 +298,14 @@ It is recommended that you name your branch <code class="docutils literal notran
 <h3>1. Write Documentation<a class="headerlink" href="#write-documentation" title="Permalink to this headline">¶</a></h3>
 <p>Your development should begin with documentation – that is, creating a blueprint of the code you plan to write. <strong>In this blueprint, each new or modified module, function, class, or method should be defined with a documentation string (i.e. comments, specifications, docstring) that describes its purpose and functionality, before any code is written</strong>.
 You can read more about documentation driven development (DDD) in this short <a class="reference external" href="https://collectiveidea.com/blog/archives/2014/04/21/on-documentation-driven-development">blog</a>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses Sphinx and Numpy docstring formats. For more details on writing docstrings, see our <a class="reference internal" href="documentation.html#doc-conventions"><span class="std std-ref">Documentation Conventions</span></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses the <a class="reference external" href="https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html">Sphinx format</a> and the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard">NumPy format</a> for docstrings. For more details on writing docstrings, see <a class="reference internal" href="#sphinx-docs"><span class="std std-ref">Sphinx Documentation</span></a>.</p>
 <p><strong>If possible, gather feedback from likely users after writing the documentation.</strong> Modifications are much more easily made to documentation than to code.</p>
 </div>
 <div class="section" id="write-a-test">
 <h3>2. Write a Test<a class="headerlink" href="#write-a-test" title="Permalink to this headline">¶</a></h3>
 <p>Next, write a unit test for your code based on the documentation. A unit test tests a basic unit, e.g. function or method, of your code. <strong>If a unit of code produces the expected (documented) outputs for accepted inputs, its test should pass. If it behaves any differently from what is described in its documentation, its test should fail.</strong>
 Make sure to test all types and/or edge cases of accepted inputs (this last part is known as <a class="reference external" href="https://www.guru99.com/black-box-testing.html">black box testing</a>). You can read more about test driven development (TDD) <a class="reference external" href="https://www.agilealliance.org/glossary/tdd/">here</a>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">unittest</span></code> packages for testing Python code. For more details on Python testing, see [ADD TUTORIAL LINK HERE].</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> and <code class="docutils literal notranslate"><span class="pre">unittest</span></code> packages for testing Python code. More details will be coming on Python testing.</p>
 <p>All test files should be located in the <code class="docutils literal notranslate"><span class="pre">tests/</span></code> directory. To execute the tests in a test file, run the following command in the command line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">run</span> <span class="n">pytest</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">file</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
@@ -329,7 +330,7 @@ Make sure to test all types and/or edge cases of accepted inputs (this last part
 </div>
 </div>
 <div class="section" id="sphinx-documentation">
-<h2>Sphinx Documentation<a class="headerlink" href="#sphinx-documentation" title="Permalink to this headline">¶</a></h2>
+<span id="sphinx-docs"></span><h2>Sphinx Documentation<a class="headerlink" href="#sphinx-documentation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="sphinx-and-rst">
 <h3>Sphinx and RST<a class="headerlink" href="#sphinx-and-rst" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s documentation, including this page, is built using a tool called <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a>, which uses reStructuredText (RST, ReST, or reST) as its markup language. RST files have the extension <code class="docutils literal notranslate"><span class="pre">.rst</span></code>. The source files for <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s documentation are found in the <code class="docutils literal notranslate"><span class="pre">docs/source</span></code> directory.
@@ -436,12 +437,12 @@ If you add a file of code that <em>cannot reasonably be tested</em>, you may add
 <div class="section" id="semantic-versioning">
 <h3>Semantic Versioning<a class="headerlink" href="#semantic-versioning" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package follows <a class="reference external" href="https://semver.org/">semantic versioning</a>, meaning that its version numbers take the form of <code class="docutils literal notranslate"><span class="pre">vMAJOR.MINOR.PATCH</span></code>.</p>
-<p><strong>Currently, the package is still in major version 0 (``v0.MINOR.PATCH``)</strong>, i.e. in beta, so it is NOT considered stable. Version numbers during this stage are generally incremented as follows:</p>
+<p><strong>Currently, the package is still in major version 0</strong> (<code class="docutils literal notranslate"><span class="pre">v0.MINOR.PATCH</span></code>), i.e. in beta, so it is NOT considered stable. Version numbers during this stage are generally incremented as follows:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">MINOR</span></code> is incremented with incompatible API changes</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PATCH</span></code> is incremented with backwards compatible features and bug fixes</p></li>
 </ol>
-<p><strong>Once the package is stable, the package version number can be incrememted to ``v1.0.0``.</strong> (This will most likely happen after the <code class="docutils literal notranslate"><span class="pre">onshape_parser</span></code> tool and the AguaClara Infrastructure Design Engine, AIDE, and become stable.) From then on, versioning should adhere to the following rules:</p>
+<p><strong>Once the package is stable, the package version number can be incremented to</strong> <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code>. (This will most likely happen after the <code class="docutils literal notranslate"><span class="pre">onshape_parser</span></code> tool and the AguaClara Infrastructure Design Engine, AIDE, and become stable.) From then on, versioning should adhere to the following rules:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">MAJOR</span></code> is incremented with incompatible API changes</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MINOR</span></code> is incremented with backwards compatible feature additions</p></li>
@@ -500,6 +501,18 @@ The “Documentation” workflow will be running as well to update this document
 <p>Make sure to close relevant issues if they were not automatically closed.</p>
 <p>Congratulations on making a release, and thanks for contributing to AguaClara!</p>
 </div>
+<div class="section" id="additional-topics">
+<h2>Additional Topics<a class="headerlink" href="#additional-topics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dependencies-virtual-environments-and-pipenv">
+<span id="envs"></span><h3>Dependencies, Virtual Environments, and <code class="docutils literal notranslate"><span class="pre">pipenv</span></code><a class="headerlink" href="#dependencies-virtual-environments-and-pipenv" title="Permalink to this headline">¶</a></h3>
+<p>According to the <a class="reference external" href="https://docs.python.org/3/library/venv.html">Python Standard Library documentation</a>,</p>
+<blockquote>
+<div><p>“A virtual environment is a Python environment such that the Python interpreter, libraries and scripts installed into it are isolated from those installed in other virtual environments, and (by default) any libraries installed in a “system” Python, i.e., one which is installed as part of your operating system.”</p>
+</div></blockquote>
+<p>Since different Python projects on your computer may require different versions of dependencies, virtual environments are important for preventing dependency conflicts. It is also crucial for projects to specify the exact dependencies required for them to behave correctly, so as to not fail on machines other than the developer’s.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pipenv</span></code> is a tool that wraps <code class="docutils literal notranslate"><span class="pre">pip</span></code> and <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> together to manage virtual environments and dependency specifications for Python projects, with help of two important files: <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> and <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code>.</p>
+</div>
+</div>
 </div>
 
 
@@ -508,8 +521,7 @@ The “Documentation” workflow will be running as well to update this document
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../guide-user/experimental-design.html" class="btn btn-neutral float-left" title="Experimental Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../research/stock_qc.html" class="btn btn-neutral float-left" title="Stock QC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -2,10 +2,15 @@
 Welcome to the AguaClara Package Documentation!
 ===============================================
 
-.. image:: images/logo.png
-    :align: center
+.. centered:: |ACC| |ACR|
 
-``aguaclara`` is a Python package that assists the development of `AguaClara <https://www.aguaclarareach.org/>`_ sustainable water treatment technology. The package has several main functionalities:
+.. |ACC| image:: images/acc_logo.png
+   :width: 250 px
+
+.. |ACR| image:: images/acr_logo.png
+   :width: 250 px
+
+``aguaclara`` is a Python package developed by `AguaClara Cornell <http://aguaclara.cornell.edu/>`_ and `AguaClara Reach <https://www.aguaclarareach.org/>`_ for designing and performing research on AguaClara water treatment plants. The package has several main functionalities:
 
 * **DESIGN** of AguaClara water treatment plant components
 * **MODELING** of physical, chemical, and hydraulic processes in water treatment
@@ -14,7 +19,7 @@ Welcome to the AguaClara Package Documentation!
 
 Installing
 ----------
-The ``aguaclara`` package can be installed from `Pypi <https://pypi.org/project/aguaclara/>`_ by running the following command in the command line: 
+The ``aguaclara`` package can be installed from Pypi by running the following command in the command line: 
 
 .. code::
 
@@ -48,11 +53,14 @@ To use ``aguaclara``'s registry of scientific units (based on the `Pint package 
 .. For more detailed tutorials and examples on using the package, refer to the :ref:`User Guide <guide-user>`.
 
 The package is still undergoing rapid development. As it becomes more stable, user guides will be written to demonstrate each of these main functionalities.
-At the moment, you can find some examples in specific pages of the API reference.
+At the moment, you can find some examples in specific pages of the :ref:`API reference <api>`.
 
 Contributing
 ------------
-Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, make an `issue <https://github.com/AguaClara/aguaclara/issues/new/choose>`_ in the `AguaClara package Github repository <https://github.com/AguaClara/aguaclara>`_.
+.. |aguaclara Github| replace:: ``aguaclara`` Github repository
+.. _aguaclara Github: https://github.com/AguaClara/aguaclara
+
+Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, `make an issue <https://github.com/AguaClara/aguaclara/issues/new/choose>`_ in the |aguaclara Github|_.
 
 To contribute to the package as a developer, refer to the :ref:`Developer Guide <guide-dev>`.
 
@@ -61,6 +69,5 @@ Table of Contents
 .. toctree::
     :maxdepth: 1
 
-    guide-user/guide-user
-    guide-dev/guide-dev
     api
+    guide-dev/guide-dev
