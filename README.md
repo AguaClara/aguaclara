@@ -1,86 +1,49 @@
-# aguaclara [![Build Status](https://github.com/AguaClara/aguaclara/workflows/Build/badge.svg)](https://github.com/AguaClara/aguaclara/actions) [![Documentation](https://github.com/AguaClara/aguaclara/workflows/Documentation/badge.svg)](https://aguaclara.github.io/aguaclara/) [![codecov](https://codecov.io/gh/AguaClara/aguaclara/branch/master/graph/badge.svg)](https://codecov.io/gh/AguaClara/aguaclara)
+# `aguaclara`
+[![Pypi Version](https://img.shields.io/pypi/v/aguaclara?color=blue&label=PyPI)](https://pypi.org/project/aguaclara/)
+[![Documentation](https://github.com/AguaClara/aguaclara/workflows/Documentation/badge.svg)](https://aguaclara.github.io/aguaclara/) 
+[![Build Status](https://github.com/AguaClara/aguaclara/workflows/Build/badge.svg)](https://github.com/AguaClara/aguaclara/actions) 
+[![Code Coverage](https://codecov.io/gh/AguaClara/aguaclara/branch/master/graph/badge.svg)](https://app.codecov.io/gh/AguaClara/aguaclara/)
 
+`aguaclara` is a Python package developed by [AguaClara Cornell](http://aguaclara.cornell.edu/) and [AguaClara Reach](https://www.aguaclarareach.org/) for designing and performing research on AguaClara water treatment plants. The package has several main functionalities:
 
-Design an AguaClara Water Treatment Plant with just a couple lines of code! Or just design a few components - your choice with aguaclara. aguaclara parametrically designs plant components from basic physics equations. In a nutshell, you can generate a design yaml for a whole plant and print it to your console stream like so:
+* **DESIGN** of AguaClara water treatment plant components
+* **MODELING** of physical, chemical, and hydraulic processes in water treatment
+* **PLANNING** of experimental setup for water treatment research
+* **ANALYSIS** of data collected by [ProCoDA](https://monroews.github.io/EnvEngLabTextbook/ProCoDA/ProCoDA.html) (process control and data acquisition tool)
 
-```python
-from aguaclara.play import *
-from aide_render import render
-import sys
-my_plant = Plant(HP(30, u.L/u.s))
-render(my_plant, sys.stdout)
-```
 
 ## Installing
+The `aguaclara` package can be installed from Pypi by running the following command in the command line:
+
 ```bash
 pip install aguaclara
 ```
+To upgrade an existing installation, run 
 
-## Installing as a developer
-If you want to make pushes to aguaclara, then you should clone this repo and make the package available locally, using the following commands:
 ```bash
-git clone https://github.com/AguaClara/aguaclara.git
-cd aguaclara
-pip install --editable . -U --user
+pip install aguaclara --upgrade
 ```
-The editable flag makes it so that you don't have to continuously install with pip to make the changes you just made visible.
 
-### Running Tests
-To run the test suite, you'll have to install the dev dependencies with pipenv from the repo root directory:
-```bash
-pipenv install 
+## Using `aguaclara`
+`aguaclara`'s main functionalities come from several sub-packages.
+
+1. **Core**: fundamental physical, chemical, and hydraulic functions and values
+2. **Design**: modules for designing components of an AguaClara water treatment plant
+3. **Research**: modules for process modeling, experimental design, and data analysis in AguaClara research
+
+To use `aguaclara`'s registry of scientific units (based on the [Pint package](https://pint.readthedocs.io/en/latest/)), use `from aguaclara.core.units import u`. Any other function or value in a sub-package can be accessed by importing the package itself:
+
+```python
+import aguaclara as ac
+from aguaclara.core.units import u
+
+ac.viscosity_kinematic(20 * u.degC)
 ```
-If pipenv reports you need to install a different version of python, please do so. After pipenv runs successfully, you'll have a fully provisioned testing environment. To run all the tests, now just type:
-```bash
-pipenv run pytest
-```
-The tests should all pass. If they don't, check in with the latest Travis build of master to see what the difference between the Travis environment and your local environment could make the tests not pass.
 
-## Contributing: (v0.0.1 -> v0.1.0)
-1. Write your code!
-2. When you are ready to commit it, make a new branch that describes your changes and push it to github:
-    ```bash
-    $ git add . #add local files to staging area
-    $ git checkout -b the_name_of_my_new_branch #create new branch locally and move to it
-    $ git commit -m "my detailed commit message describing what I did" #commit to the new branch
-    $ git push -u origin the_name_of_my_new_branch #push the new branch and all the commits you made to GitHub.
-    ```
-3. Keep making changes and committing them as you finish your feature. Once you are ready to push your code to the master branch, go online and make a pull request to the master branch.
-4. The pull request will initiate several 'checks.' This will take about 5 minutes to run. The first is the Travis CI check. Travis is a cloud-based continuous integration tool that automatically runs all defined tests. Once the tests pass, Travis generates a coverage report. This report analyzed what percentage of the code was "hit" during the testing process, also known as what percentage was 'covered'.
-5. If all the checks passed, you can ping a repo manager to ask them to accept your pull request.
-6. If the repo manager accepts the request, then the next time a version of master is tagged as a release version, the code will be packaged as a source distribution (sdist) and sent off to [pypi](https://pypi.org/search/?q=aguaclara).
+The package is still undergoing rapid development. As it becomes more stable, user guides will be written to demonstrate each of these main functionalities.
+At the moment, you can find some examples in specific pages of the [API reference](https://aguaclara.github.io/aguaclara/api.html).
 
-## Changelog
-**aguaclara design is in RAPID development. Things will shange significantly!**
+## Contributing
+Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, [make an issue](https://github.com/AguaClara/aguaclara/issues/new/choose) in the [`aguaclara` Github repository](https://github.com/AguaClara/aguaclara>).
 
-We're not tracking changes at the moment here. Once development is at a more reasonable pace, we'll start tracking improvements and bug fixes more carefully!
-
-## Structure
-The aguaclara package has three distinct levels that work together to design a plant. The first level is composed of base classes that define chemicals, quantities, and other parameters. These classes are created and used within the functional layer to define some basic engineering equations. Lastly, the component classes correspond to objects that are modeled in Fusion 360.
-
-    +----------------------------+
-    | COMPONENT CLASSES (.parts) |
-    +-------------+              |
-    | Classes that correspond to |
-    | Fusion components.         |    ^
-    +------------+---------------+    |
-                 ^                    |
-                 |                    |
-    +-----------------------+         |
-    |  FUNCTIONAL|LAYER     |         | Each layer
-    +--------------+        |         | depends on the
-    |  This layer has only  |         | layers below
-    |  functions that rely  |         | it to function.
-    |  on quantity class    |         |
-    |  inputs.              |         |
-    +------------+----------+         |
-                 ^                    |
-                 |                    |
-    +------------+---------------+    |
-    |BASE CLASSES                |    |
-    +-----------                 |    |
-    |Classes needed to make the  |    |
-    |functional and component    |    +
-    |class layers work. Such as  |
-    |Quantity, HP and DP.        |
-    +----------------------------+
+To contribute to the package as a developer, refer to the [Developer Guide](https://aguaclara.github.io/aguaclara/guide-dev/guide-dev.html).
