@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>aguaclara.design.cdc &mdash; AguaClara EXPERIMENTAL documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                EXPERIMENTAL
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide-user/guide-user.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide-dev/guide-dev.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aguaclara.design.cdc</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aguaclara.design.cdc</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The chemical dose controller (CDC) of an AguaClara plant uses the linear</span>
+<span class="sd">relation between flow rate and entrance tank water level (set by the LFOM) to</span>
+<span class="sd">dose the correct amount of coagulant and chlorine into the entrance tank.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.design.cdc import *</span>
+<span class="sd">    &gt;&gt;&gt; cdc = CDC(q = 20 * u.L/u.s, coag_type = &#39;pacl&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; cdc.coag_stock_vol</span>
+<span class="sd">    &lt;Quantity(2500.0, &#39;liter&#39;)&gt;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.physchem</span> <span class="k">as</span> <span class="nn">pc</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">aguaclara.design.component</span> <span class="kn">import</span> <span class="n">Component</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="CDC"><a class="viewcode-back" href="../../../design/cdc.html#aguaclara.design.cdc.CDC">[docs]</a><span class="k">class</span> <span class="nc">CDC</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Design an AguaClara plant&#39;s chemical dose controller.</span>
+
+<span class="sd">    Design Inputs:</span>
+<span class="sd">        - ``q (float * u.L / u.s)``: Flow rate (required)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coag_type</span><span class="o">=</span><span class="s1">&#39;pacl&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pacl&#39;</span><span class="p">,</span> <span class="s1">&#39;alum&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;coag_type must be either PACl or Alum.&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">coag_dose_conc_max</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mg</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_conc</span><span class="o">=</span><span class="mi">150</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_conc_est</span><span class="o">=</span><span class="mi">150</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="c1"># Deprecated since January 2021</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_min_est_time</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">day</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chem_tank_vol_supplier</span><span class="o">=</span><span class="p">[</span><span class="mf">208.198</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">750</span><span class="p">,</span> <span class="mi">1100</span><span class="p">,</span> <span class="mi">2500</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chem_tank_dimensions_supplier</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">[</span><span class="mf">0.571</span><span class="p">,</span> <span class="mf">0.851</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.10</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.10</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.10</span><span class="p">,</span> <span class="mf">1.39</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.55</span><span class="p">,</span> <span class="mf">1.65</span><span class="p">]</span>
+        <span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_n</span><span class="o">=</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coag_sack_mass</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coag_tube_id</span> <span class="o">=</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_ratio</span><span class="o">=</span><span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tube_k</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CDC.alum_nu"><a class="viewcode-back" href="../../../design/cdc.html#aguaclara.design.cdc.CDC.alum_nu">[docs]</a>    <span class="k">def</span> <span class="nf">alum_nu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coag_conc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the dynamic viscosity of water at a given temperature.</span>
+
+<span class="sd">        If given units, the function will automatically convert to Kelvin.</span>
+<span class="sd">        If not given units, the function will assume Kelvin.</span>
+<span class="sd">        This function assumes that the temperature dependence can be explained</span>
+<span class="sd">        based on the effect on water and that there is no confounding effect from</span>
+<span class="sd">        the coagulant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">alum_nu</span> <span class="o">=</span> \
+            <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="mf">4.255</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="mi">6</span><span class="p">)</span> <span class="o">*</span> <span class="n">coag_conc</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">**</span> <span class="mf">2.289</span><span class="p">)</span> <span class="o">*</span> \
+            <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">alum_nu</span></div>
+    
+    <span class="k">def</span> <span class="nf">_alum_nu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coag_conc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. deprecated::</span>
+<span class="sd">            `_alum_nu` is deprecated; use `alum_nu` instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Deprecated since January 2021</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;_alum_nu is deprecated; use alum_nu instead.&#39;</span><span class="p">,</span>
+                  <span class="ne">UserWarning</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">alum_nu</span><span class="p">(</span><span class="n">coag_conc</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="CDC.pacl_nu"><a class="viewcode-back" href="../../../design/cdc.html#aguaclara.design.cdc.CDC.pacl_nu">[docs]</a>    <span class="k">def</span> <span class="nf">pacl_nu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coag_conc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the dynamic viscosity of water at a given temperature.</span>
+
+<span class="sd">        If given units, the function will automatically convert to Kelvin.</span>
+<span class="sd">        If not given units, the function will assume Kelvin.</span>
+<span class="sd">        This function assumes that the temperature dependence can be explained</span>
+<span class="sd">        based on the effect on water and that there is no confounding effect </span>
+<span class="sd">        from the coagulant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pacl_nu</span> <span class="o">=</span> \
+            <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="mf">2.383</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">coag_conc</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">**</span> <span class="mf">1.893</span><span class="p">)</span> <span class="o">*</span> \
+            <span class="n">pc</span><span class="o">.</span><span class="n">viscosity_kinematic_water</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pacl_nu</span></div>
+
+    <span class="k">def</span> <span class="nf">_pacl_nu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coag_conc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. deprecated::</span>
+<span class="sd">            `_pacl_nu` is deprecated; use `pacl_nu` instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Deprecated since January 2021</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;_pacl_nu is deprecated; use pacl_nu instead.&#39;</span><span class="p">,</span>
+                  <span class="ne">UserWarning</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pacl_nu</span><span class="p">(</span><span class="n">coag_conc</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_coag_nu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coag_conc</span><span class="p">,</span> <span class="n">coag_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. deprecated::</span>
+<span class="sd">            `_coag_nu` is deprecated; use `coag_nu` instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Deprecated since January 2021</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;_coag_nu is deprecated; use coag_nu instead.&#39;</span><span class="p">,</span>
+                  <span class="ne">UserWarning</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_nu</span><span class="p">(</span><span class="n">coag_conc</span><span class="p">,</span> <span class="n">coag_type</span><span class="p">)</span>
+       
+<div class="viewcode-block" id="CDC.coag_nu"><a class="viewcode-back" href="../../../design/cdc.html#aguaclara.design.cdc.CDC.coag_nu">[docs]</a>    <span class="k">def</span> <span class="nf">coag_nu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coag_conc</span><span class="p">,</span> <span class="n">coag_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the dynamic viscosity of water at a given temperature.</span>
+
+<span class="sd">        If given units, the function will automatically convert to Kelvin.</span>
+<span class="sd">        If not given units, the function will assume Kelvin.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">coag_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;alum&#39;</span><span class="p">:</span>
+            <span class="n">coag_nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alum_nu</span><span class="p">(</span><span class="n">coag_conc</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">coag_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;pacl&#39;</span><span class="p">:</span>
+            <span class="n">coag_nu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pacl_nu</span><span class="p">(</span><span class="n">coag_conc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">coag_nu</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_q_max_est</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The estimated maximum permissible flow rate of the coagulant stock,</span>
+<span class="sd">        based on a whole number of sacks of coagulant used.</span>
+
+<span class="sd">        .. deprecated::</span>
+<span class="sd">            `coag_q_max_est` is deprecated; use `coag_q_max` instead, which is</span>
+<span class="sd">            based on the exact user-defined coagulant stock concentration, </span>
+<span class="sd">            `coag_stock_conc`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Deprecated since January 2021</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;coag_q_max_est is deprecated; use coag_q_max instead,</span><span class="se">\</span>
+<span class="s1">            which is based on the exact user-defined coagulant stock </span><span class="se">\</span>
+<span class="s1">            concentration, coag_stock_conc.&#39;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+        
+        <span class="n">coag_q_max_est</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_dose_conc_max</span> <span class="o">/</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_conc_est</span>
+        <span class="k">return</span> <span class="n">coag_q_max_est</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_q_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The maximum permissible flow rate of the coagulant stock.&quot;&quot;&quot;</span>
+        <span class="n">coag_q_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_dose_conc_max</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_conc</span>
+        <span class="k">return</span> <span class="n">coag_q_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_stock_vol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The volume of the coagulant stock tank, based on available sizes</span>
+<span class="sd">        from the supplier.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coag_stock_vol</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">ceil_nearest</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_min_est_time</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_n</span> <span class="o">*</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">coag_q_max</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chem_tank_vol_supplier</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">coag_stock_vol</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_sack_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The number of sacks of coagulant needed to make the coagulant stock,</span>
+<span class="sd">        rounded to the nearest whole number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coag_sack_n</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_vol</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_conc</span> <span class="o">/</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">coag_sack_mass</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">coag_sack_n</span>
+
+    <span class="c1"># Commented out January 2021</span>
+    <span class="c1"># @property</span>
+    <span class="c1"># def coag_stock_conc(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;The concentration of the coagulant stock.&quot;&quot;&quot;</span>
+    <span class="c1">#     coag_stock_conc = self.coag_sack_n * self.coag_sack_mass / \</span>
+    <span class="c1">#         self.coag_stock_vol</span>
+    <span class="c1">#     return coag_stock_conc</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_stock_time_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The minimum amount of time that the coagulant stock will last.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_vol</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_q_max</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_stock_nu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The kinematic viscosity of the coagulant stock.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_nu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_type</span><span class="p">)</span>
+<span class="c1">#==============================================================================</span>
+<span class="c1"># Small-diameter Tube Design</span>
+<span class="c1">#==============================================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_coag_tube_q_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The maximum permissible flow through a coagulant tube.&quot;&quot;&quot;</span>
+        <span class="n">coag_tube_q_max</span> <span class="o">=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_tube_id</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">*</span> \
+            <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_ratio</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">gravity</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">tube_k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">coag_tube_q_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_tubes_active_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The number of coagulant tubes in use.&quot;&quot;&quot;</span>
+        <span class="n">coag_tubes_active_n</span> <span class="o">=</span> \
+            <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">coag_q_max</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coag_tube_q_max</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">coag_tubes_active_n</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_tubes_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The number of coagulant tubes in use, plus a spare tube for </span>
+<span class="sd">        maintenance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coag_tubes_n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_tubes_active_n</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">coag_tubes_n</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_tube_operating_q_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The maximum flow through a coagulant tube during actual operation.&quot;&quot;&quot;</span>
+        <span class="n">coag_tube_operating_q_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_q_max</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_tubes_active_n</span>
+        <span class="k">return</span> <span class="n">coag_tube_operating_q_max</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_tube_l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The length of a coagulant tube.&quot;&quot;&quot;</span>
+        <span class="n">coag_tube_l</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hl</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_tube_id</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">/</span>
+                <span class="p">(</span><span class="mi">128</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_nu</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_tube_operating_q_max</span><span class="p">)</span>
+            <span class="p">)</span> <span class="o">-</span> <span class="p">(</span>
+                <span class="mi">8</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_tube_operating_q_max</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tube_k</span> <span class="o">/</span>
+                <span class="p">(</span><span class="mi">128</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_nu</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">coag_tube_l</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_tank_r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The radius of the coagulant stock tank, based on available sizes</span>
+<span class="sd">        from the supplier.&quot;&quot;&quot;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chem_tank_vol_supplier</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_vol</span><span class="p">)</span>
+        <span class="n">coag_tank_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chem_tank_dimensions_supplier</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">coag_tank_r</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coag_tank_h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The height of the coagulant stock tank, based on available sizes</span>
+<span class="sd">        from the supplier.&quot;&quot;&quot;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chem_tank_vol_supplier</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">coag_stock_vol</span><span class="p">)</span>
+        <span class="n">coag_tank_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chem_tank_dimensions_supplier</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">coag_tank_h</span>
+
+    <span class="k">def</span> <span class="nf">_DiamTubeAvail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">en_tube_series</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">en_tube_series</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mm</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">inch</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, AguaClara Cornell.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

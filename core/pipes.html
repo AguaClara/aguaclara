@@ -93,18 +93,23 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="core.html">Core</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="drills.html">Drills</a></li>
-<li class="toctree-l2"><a class="reference internal" href="materials.html">Materials</a></li>
-<li class="toctree-l2"><a class="reference internal" href="physchem.html">PhysChem</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Pipes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide-user/guide-user.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide-dev/guide-dev.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="core.html">Core</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="drills.html">Drills</a></li>
+<li class="toctree-l3"><a class="reference internal" href="materials.html">Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="physchem.html">PhysChem</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Pipes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html">Utility</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../design/design.html">Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../research/research.html">Research</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/design.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research/research.html">Research</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -153,6 +158,8 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
           <li><a href="core.html">Core</a> &raquo;</li>
         
       <li>Pipes</li>
@@ -174,8 +181,100 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pipes">
-<h1>Pipes<a class="headerlink" href="#pipes" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-aguaclara.core.pipes">
+<span id="pipes"></span><h1>Pipes<a class="headerlink" href="#module-aguaclara.core.pipes" title="Permalink to this headline">¶</a></h1>
+<p>This file contains functions which convert between the nominal, inner, and
+outer diameters of pipes based on their standard dimension ratio (SDR).</p>
+<dl class="py function">
+<dt id="aguaclara.core.pipes.OD">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">OD</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ND</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.OD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pipe’s outer diameter according to its nominal diameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ND</strong> (<em>u.inch</em>) – nominal diameter of pipe</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>outer diameter of pipe, in inches</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>u.inch</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aguaclara.core.pipes.ID_SDR">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">ID_SDR</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ND</span></em>, <em class="sig-param"><span class="n">SDR</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the inner diameter of a pipe given its nominal diameter and SDR
+(standard diameter ratio).</p>
+<p>SDR is the outer diameter divided by the wall thickness.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aguaclara.core.pipes.ID_sch40">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">ID_sch40</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ND</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_sch40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_sch40" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the inner diameter for schedule 40 pipes.</p>
+<p>The wall thickness for these pipes is in the pipedb.</p>
+<p>Take the values of the array, subtract the ND, take the absolute
+value, find the index of the minimium value.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aguaclara.core.pipes.ND_all_available">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">ND_all_available</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_all_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_all_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of available nominal diameters.</p>
+<p>NDs available are those commonly used as based on the ‘Used’ column
+in the pipedb.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aguaclara.core.pipes.od_all_available">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">od_all_available</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#od_all_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.od_all_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of available outer diameters.</p>
+<p>NDs available are those commonly used as based on the ‘Used’ column
+in the pipedb.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aguaclara.core.pipes.ID_SDR_all_available">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">ID_SDR_all_available</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SDR</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR_all_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR_all_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of inner diameters with a given SDR.</p>
+<p>IDs available are those commonly used based on the ‘Used’ column
+in the pipedb.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aguaclara.core.pipes.ND_SDR_available">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">ND_SDR_available</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ID</span></em>, <em class="sig-param"><span class="n">SDR</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_SDR_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_SDR_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an available ND given an ID and a schedule.</p>
+<p>Takes the values of the array, compares to the ID, and finds the index
+of the first value greater or equal.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aguaclara.core.pipes.ND_available">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">ND_available</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">NDguess</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minimum ND that is available.</p>
+<ol class="arabic simple">
+<li><p>Extract the magnitude in inches from the nominal diameter.</p></li>
+<li><p>Find the index of the closest nominal diameter.</p></li>
+<li><p>Take the values of the array, subtract the ND, take the
+absolute value, find the index of the minimium value.</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aguaclara.core.pipes.od_available">
+<code class="sig-prename descclassname">aguaclara.core.pipes.</code><code class="sig-name descname">od_available</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">od_guess</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#od_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.core.pipes.od_available" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minimum OD that is available.</p>
+<ol class="arabic simple">
+<li><p>Extract the magnitude in inches from the outer diameter.</p></li>
+<li><p>Find the index of the closest outer diameter.</p></li>
+<li><p>Take the values of the array, subtract the OD, take the
+absolute value, find the index of the minimium value.</p></li>
+</ol>
+</dd></dl>
+
 </div>
 
 

@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Developer Guide &mdash; AguaClara EXPERIMENTAL documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../api.html" />
+    <link rel="prev" title="Experimental Design" href="../guide-user/experimental-design.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                EXPERIMENTAL
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../guide-user/guide-user.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#where-to-start">Where to Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-your-local-environment">Setting Up Your Local Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#branching">Branching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-master-branch">The Master Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#your-development-branch">Your Development Branch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-and-test-driven-development">Documentation and Test Driven Development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#write-documentation">1. Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-a-test">2. Write a Test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-code-to-pass-failing-test">3. Write Code to Pass Failing Test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#refactor">4. Refactor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#repeat">5. Repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sphinx-documentation">Sphinx Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sphinx-and-rst">Sphinx and RST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automated-documentation">Automated Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#previewing-documentation">Previewing Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validating-documentation">Validating Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#committing-and-pushing">Committing and Pushing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-integration-via-github-actions">Continuous Integration via Github Actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#checking-workflow-results">Checking Workflow Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#checking-code-coverage">Checking Code Coverage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#preparing-for-release">Preparing for Release</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#semantic-versioning">Semantic Versioning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merging-from-master">Merging from Master</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pull-requests">Pull Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#publishing-a-release">Publishing a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Developer Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/guide-dev/guide-dev.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="guide-dev"></span><div class="section" id="developer-guide">
+<h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="where-to-start">
+<h2>Where to Start<a class="headerlink" href="#where-to-start" title="Permalink to this headline">¶</a></h2>
+<p>Whether you’re are maintainer of <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> or a user with a bug fix, feature, or enhancement in mind, the <a class="reference external" href="https://github.com/AguaClara/aguaclara/issues"><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> Github repository issues</a> are a great place to start.</p>
+<p>Before working, <strong>browse the issues to check if the update you have in mind has already been documented and assigned to a developer</strong>. If a relevant issue doesn’t exist, go ahead and make one with the green button labeled “New Issue”. If/once an issue does exist, there a few ways to proceed:</p>
+<ul class="simple">
+<li><p>if you’re a collaborator of the <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> repository, assign yourself to the issue.</p></li>
+<li><p>if you’re not a collaborator, either ask a collaborator to make you a collaborator as well, or ask the collaborator to assign you to the issue.</p></li>
+</ul>
+<p>Feel free to use the issue for commenting on your progress or asking other users or collaborators for help with your development.</p>
+</div>
+<div class="section" id="setting-up-your-local-environment">
+<h2>Setting Up Your Local Environment<a class="headerlink" href="#setting-up-your-local-environment" title="Permalink to this headline">¶</a></h2>
+<p>If you want to make changes to <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>, you should make the package available locally.</p>
+<ol class="arabic">
+<li><p>Make sure to have Python, <code class="docutils literal notranslate"><span class="pre">pip</span></code>, and Git installed (for guidance, see <a class="reference internal" href="../guide-user/install.html#install-software"><span class="std std-ref">Installing Software</span></a>). Check the package’s <a class="reference external" href="https://pypi.org/project/aguaclara/">Pypi</a> page for the required Python version. If you must have a different version on your computer for another project, you can use <a class="reference external" href="https://github.com/pyenv/pyenv#simple-python-version-management-pyenv">pyenv</a> to manage multiple Python versions.</p></li>
+<li><p>Install <a class="reference external" href="https://pypi.org/project/pipenv/">Pipenv</a>, a package management and virtual environment tool, by running the following command in the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pipenv</span>
+</pre></div>
+</div>
+</li>
+<li><p>In the command line, navigate to the directory in which you’ll keep your local copy of the <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> Git repository.</p>
+<ul class="simple">
+<li><p>If you’re not a collaborator, you’ll need to first fork the repository on Github.</p></li>
+</ul>
+</li>
+<li><p>Clone the repository or your fork of the repository into that directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">Cloning</span> <span class="n">original</span> <span class="n">repository</span><span class="p">)</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">AguaClara</span><span class="o">/</span><span class="n">aguaclara</span><span class="o">.</span><span class="n">git</span>
+
+<span class="p">(</span><span class="n">Cloning</span> <span class="n">forked</span> <span class="n">repository</span><span class="p">)</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="p">{</span><span class="n">your_username_here</span><span class="p">}</span><span class="o">/</span><span class="n">aguaclara</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+</li>
+<li><p>Navigate into the newly cloned repository and install it in editable mode, so that your environment uses this repository as your <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package, even as you edit it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">aguaclara</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span> <span class="o">-</span><span class="n">U</span> <span class="o">--</span><span class="n">user</span>
+</pre></div>
+</div>
+<p>To install the package in editable mode in a virtual environment only, replace the second line with <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">--dev</span> <span class="pre">-e</span> <span class="pre">.</span></code> (<code class="docutils literal notranslate"><span class="pre">.</span></code> passes the current directory as an argument to the <code class="docutils literal notranslate"><span class="pre">-e</span></code> flag, short for “editable”).</p>
+</li>
+<li><p>Install the package’s user dependencies and development dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span>
+<span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">dev</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pipenv</span></code> is used to install the dependencies from the file called <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> into a virtual environment. Click <a class="reference internal" href="environment-tools.html#pipenv"><span class="std std-ref">here</span></a> for more details on <code class="docutils literal notranslate"><span class="pre">pipenv</span></code>, <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>, and virtual environments.</p>
+</li>
+<li><p>You can check whether you have a fully provisioned testing environment now by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">run</span> <span class="n">pytest</span>
+</pre></div>
+</div>
+<p>The tests should all pass. If they don’t, check in with the latest <a class="reference external" href="https://github.com/AguaClara/aguaclara/actions?query=branch%3Amaster">Github Actions build of the master branch</a> to see what difference between the Github Actions environment and your local environment could make the tests fail.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="branching">
+<h2>Branching<a class="headerlink" href="#branching" title="Permalink to this headline">¶</a></h2>
+<p>Before you develop, it’s important to understand the branching conventions for the <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> repository.</p>
+<div class="section" id="the-master-branch">
+<h3>The Master Branch<a class="headerlink" href="#the-master-branch" title="Permalink to this headline">¶</a></h3>
+<p>The master branch is the branch that houses <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s published releases. Therefore, the master branch is a <em>protected</em> with rules (on Github) that</p>
+<ul class="simple">
+<li><p>pull requests are required before merging into the branch,</p></li>
+<li><p>only administrators and maintainers can push to the branch, and</p></li>
+<li><p>status checks are required before merging or pushing to the branch.</p></li>
+</ul>
+</div>
+<div class="section" id="your-development-branch">
+<h3>Your Development Branch<a class="headerlink" href="#your-development-branch" title="Permalink to this headline">¶</a></h3>
+<p>This means that all work starts on <em>development branches</em>, or task or feature branches. (Check out this <a class="reference external" href="https://www.atlassian.com/agile/software-development/branching">article</a> if you want to learn more!)
+It is recommended that you name your branch <code class="docutils literal notranslate"><span class="pre">{your_development_type}/short-description</span></code>. Some examples of development type are</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">feature</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bugfix</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enhancement</span></code></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">documentation</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test</span></code> (for additions/updates to tests)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build</span></code> (for updates to the build process)</p></li>
+</ul>
+</td></tr></table>
+<p>To make and switch to your new branch, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="p">{</span><span class="n">your_development_type</span><span class="p">}</span><span class="o">/</span><span class="n">short</span><span class="o">-</span><span class="n">description</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="documentation-and-test-driven-development">
+<h2>Documentation and Test Driven Development<a class="headerlink" href="#documentation-and-test-driven-development" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="write-documentation">
+<h3>1. Write Documentation<a class="headerlink" href="#write-documentation" title="Permalink to this headline">¶</a></h3>
+<p>Your development should begin with documentation – that is, creating a blueprint of the code you plan to write. <strong>In this blueprint, each new or modified module, function, class, or method should be defined with a documentation string (i.e. comments, specifications, docstring) that describes its purpose and functionality, before any code is written</strong>.
+You can read more about documentation driven development (DDD) in this short <a class="reference external" href="https://collectiveidea.com/blog/archives/2014/04/21/on-documentation-driven-development">blog</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses Sphinx and Numpy docstring formats. For more details on writing docstrings, see our <a class="reference internal" href="documentation.html#doc-conventions"><span class="std std-ref">Documentation Conventions</span></a>.</p>
+<p><strong>If possible, gather feedback from likely users after writing the documentation.</strong> Modifications are much more easily made to documentation than to code.</p>
+</div>
+<div class="section" id="write-a-test">
+<h3>2. Write a Test<a class="headerlink" href="#write-a-test" title="Permalink to this headline">¶</a></h3>
+<p>Next, write a unit test for your code based on the documentation. A unit test tests a basic unit, e.g. function or method, of your code. <strong>If a unit of code produces the expected (documented) outputs for accepted inputs, its test should pass. If it behaves any differently from what is described in its documentation, its test should fail.</strong>
+Make sure to test all types and/or edge cases of accepted inputs (this last part is known as <a class="reference external" href="https://www.guru99.com/black-box-testing.html">black box testing</a>). You can read more about test driven development (TDD) <a class="reference external" href="https://www.agilealliance.org/glossary/tdd/">here</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">unittest</span></code> packages for testing Python code. For more details on Python testing, see [ADD TUTORIAL LINK HERE].</p>
+<p>All test files should be located in the <code class="docutils literal notranslate"><span class="pre">tests/</span></code> directory. To execute the tests in a test file, run the following command in the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">run</span> <span class="n">pytest</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">file</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+<p>where the <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag gives a verbose (more descriptive) output. To execute specific tests in a test file, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">run</span> <span class="n">pytest</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">file</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">k</span> <span class="n">name_of_test</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-code-to-pass-failing-test">
+<h3>3. Write Code to Pass Failing Test<a class="headerlink" href="#write-code-to-pass-failing-test" title="Permalink to this headline">¶</a></h3>
+<p>Since you haven’t written any code yet, your test should fail. Now write just enough code to pass the failing test.</p>
+<p>For code style conventions, refer to <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">Python’s Style Guide</a>. You can also use <a class="reference external" href="https://flake8.pycqa.org/en/latest/"><code class="docutils literal notranslate"><span class="pre">flake8</span></code>, a Python linter (code style checker),</a> and <a class="reference external" href="https://black.readthedocs.io/en/stable/"><code class="docutils literal notranslate"><span class="pre">black</span></code>, an automatic code formatter,</a> to achieve proper style.</p>
+</div>
+<div class="section" id="refactor">
+<h3>4. Refactor<a class="headerlink" href="#refactor" title="Permalink to this headline">¶</a></h3>
+<p>If your test still fails, refactor (modify) your code, still keeping it as simple as possible, until the test passes.</p>
+</div>
+<div class="section" id="repeat">
+<h3>5. Repeat<a class="headerlink" href="#repeat" title="Permalink to this headline">¶</a></h3>
+<p>Repeat steps 3 and 4 until tests cover all the functionalities described in the documentation.</p>
+</div>
+</div>
+<div class="section" id="sphinx-documentation">
+<h2>Sphinx Documentation<a class="headerlink" href="#sphinx-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sphinx-and-rst">
+<h3>Sphinx and RST<a class="headerlink" href="#sphinx-and-rst" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s documentation, including this page, is built using a tool called <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a>, which uses reStructuredText (RST, ReST, or reST) as its markup language. RST files have the extension <code class="docutils literal notranslate"><span class="pre">.rst</span></code>. The source files for <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s documentation are found in the <code class="docutils literal notranslate"><span class="pre">docs/source</span></code> directory.
+For a brief introduction to RST concepts and syntax, see <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html">Sphinx’s reStructuredText Primer</a>.</p>
+</div>
+<div class="section" id="automated-documentation">
+<h3>Automated Documentation<a class="headerlink" href="#automated-documentation" title="Permalink to this headline">¶</a></h3>
+<p>You may have noticed that <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s modules, classes, functions, and constants are not manually documented in the API Reference pages. Instead, they are automatically documented using an RST directive, <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">automodule::</span></code>, which reads the docstrings in the source code. <strong>Hence, docstrings must be written in correst RST and can include all the usual RST markup (e.g. headers, code blocks).</strong>
+For more details on including documentation from docstrings, see the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html">Sphinx <code class="docutils literal notranslate"><span class="pre">autodoc</span></code> extension</a>.</p>
+</div>
+<div class="section" id="previewing-documentation">
+<h3>Previewing Documentation<a class="headerlink" href="#previewing-documentation" title="Permalink to this headline">¶</a></h3>
+<p>Some IDEs offer extensions for previewing the HTML pages that Sphinx generates from the RST files. (One great extension is <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext">reStructuredText by LexStudio, Inc.</a> for <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a>.) You can also build the documentation from the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>
+<span class="n">pipenv</span> <span class="n">run</span> <span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>The resulting HTML files will be written to the <code class="docutils literal notranslate"><span class="pre">docs/build/html</span></code> directory. You can then open and interact with them in a browser.</p>
+</div>
+<div class="section" id="validating-documentation">
+<h3>Validating Documentation<a class="headerlink" href="#validating-documentation" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">html-proofer</span></code> package can be used to check the correctness of the rendered HTML pages (e.g., that there are not broken links). To install the package, <a class="reference external" href="https://rubygems.org/pages/download">download RubyGems</a> and then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gem</span> <span class="n">install</span> <span class="n">html</span><span class="o">-</span><span class="n">proofer</span>
+<span class="n">cd</span> <span class="n">docs</span>
+<span class="n">htmlproofer</span> <span class="n">build</span><span class="o">/</span><span class="n">html</span> <span class="o">--</span><span class="n">allow_hash_href</span> <span class="o">--</span><span class="n">file_ignore</span> <span class="s2">&quot;build/html/search.html&quot;</span>
+</pre></div>
+</div>
+<p>Alternatively, you can commit your changes, push them to Github, and check the “Build” workflow for your commit in <a class="reference external" href="https://github.com/AguaClara/aguaclara/actions"><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s Github Actions page</a> (or that of your forked repository). See <a class="reference internal" href="#github-actions"><span class="std std-ref">Continuous Integration via Github Actions</span></a> for more details.</p>
+</div>
+</div>
+<div class="section" id="committing-and-pushing">
+<h2>Committing and Pushing<a class="headerlink" href="#committing-and-pushing" title="Permalink to this headline">¶</a></h2>
+<p>It’s a good idea to <strong>commit your work early and commit often</strong>. Saving more snapshots of your work through Git facilitates debugging and resetting code while logging your progress.</p>
+<ol class="arabic">
+<li><p>Before committing, check if your work generated any user, operating system, or IDE specific or other otherwise unnecessary developer files in your <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> repository. If so, add their files names or directories to the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file.</p></li>
+<li><p>If you have files in a directory named <code class="docutils literal notranslate"><span class="pre">tests/rst_files</span></code>, run in the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">update</span><span class="o">-</span><span class="n">index</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">worktree</span> <span class="n">tests</span><span class="o">/</span><span class="n">rst_files</span><span class="o">/*</span>
+</pre></div>
+</div>
+</li>
+<li><p>Now, stage your changes and commit them with a short but descriptive commit message. From the <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> root directory, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">add</span> <span class="o">.</span>
+<span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;your message here&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Make sure to also occasionally pull commits from the remote Github repository, if anyone else is working on your branch, and to push your commits:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">pull</span>
+<span class="n">git</span> <span class="n">push</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>For more guidance on using Git in the command line, see the <a class="reference external" href="https://aguaclara.github.io/aguaclara_tutorial/git-and-github/git-in-the-command-line.html">AguaClara Tutorial Wiki</a>.</p>
+</div>
+<div class="section" id="continuous-integration-via-github-actions">
+<span id="github-actions"></span><h2>Continuous Integration via Github Actions<a class="headerlink" href="#continuous-integration-via-github-actions" title="Permalink to this headline">¶</a></h2>
+<p>Continuous integration (CI) is a software development practice that allows multiple developers to frequently merge code into a shared repository. CI usually involves automated tests and builds of the code to make sure it is correct before integration.
+The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses Github Actions for continuous integration. More specifically, several “workflows” have been defined in the <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> directory to accomplish various tasks:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Workflow</p></th>
+<th class="head"><p>Trigger</p></th>
+<th class="head"><p>Tasks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Build</p></td>
+<td><p>Push, pull request</p></td>
+<td><p>Validate code and documentation, check code coverage</p></td>
+</tr>
+<tr class="row-odd"><td><p>Documentation</p></td>
+<td><p>Push to master branch</p></td>
+<td><p>Build and publish Sphinx documentation</p></td>
+</tr>
+<tr class="row-even"><td><p>Publish to Pypi</p></td>
+<td><p>Publishing of release</p></td>
+<td><p>Build and publish the package to Pypi</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <a class="reference external" href="https://docs.github.com/en/actions">Github Actions documentation</a> is a great place to learn more about workflows and other aspects of Github’s CI platform.</p>
+<div class="section" id="checking-workflow-results">
+<h3>Checking Workflow Results<a class="headerlink" href="#checking-workflow-results" title="Permalink to this headline">¶</a></h3>
+<p>Results of workflow runs can be viewed in the <a class="reference external" href="https://github.com/AguaClara/aguaclara/actions">Actions</a> tab of the <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> Github repository. If a job fails in the “Build” workflow for your latest push, find the error in the job’s log and debug from there.</p>
+</div>
+<div class="section" id="checking-code-coverage">
+<h3>Checking Code Coverage<a class="headerlink" href="#checking-code-coverage" title="Permalink to this headline">¶</a></h3>
+<p>Code coverage is a measure of the amount of source code that has been executed by tests. <strong>Whenever possible, all new or modified code should be covered by tests, so code coverage should either remain the same or increase with each contribution.</strong>
+If you add a file of code that <em>cannot reasonably be tested</em>, you may add it to the list of files and directories ignored by Codecov in <code class="docutils literal notranslate"><span class="pre">codecov.yml</span></code>. (Note: such files are rare!)</p>
+<p>The “Build” workflow calculates code coverage and uploads a report to <a class="reference external" href="https://app.codecov.io/gh/AguaClara/aguaclara/">Codecov</a>. The actual change in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green ✓ or a red ✕).</p>
+<a class="reference internal image-reference" href="../_images/status_checks.png"><img alt="Status Checks Dropdown" class="align-center" src="../_images/status_checks.png" style="width: 464.0px; height: 205.60000000000002px;" /></a>
+<p>If you’re a collaborator of <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>, you can also log in to Codecov through your Github account and view the “hit” and “missed” lines of code on Codecov (or directly on Github with a <a class="reference external" href="https://docs.codecov.io/docs/browser-extension">browser extension</a>).</p>
+</div>
+</div>
+<div class="section" id="preparing-for-release">
+<h2>Preparing for Release<a class="headerlink" href="#preparing-for-release" title="Permalink to this headline">¶</a></h2>
+<p>If you code has been fully documented, tested, and implemented and is passing all status checks (see previous section), you’re ready to prepare for a release.</p>
+<div class="section" id="semantic-versioning">
+<h3>Semantic Versioning<a class="headerlink" href="#semantic-versioning" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package follows <a class="reference external" href="https://semver.org/">semantic versioning</a>, meaning that its version numbers take the form of <code class="docutils literal notranslate"><span class="pre">vMAJOR.MINOR.PATCH</span></code>.</p>
+<p><strong>Currently, the package is still in major version 0 (``v0.MINOR.PATCH``)</strong>, i.e. in beta, so it is NOT considered stable. Version numbers during this stage are generally incremented as follows:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MINOR</span></code> is incremented with incompatible API changes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PATCH</span></code> is incremented with backwards compatible features and bug fixes</p></li>
+</ol>
+<p><strong>Once the package is stable, the package version number can be incrememted to ``v1.0.0``.</strong> (This will most likely happen after the <code class="docutils literal notranslate"><span class="pre">onshape_parser</span></code> tool and the AguaClara Infrastructure Design Engine, AIDE, and become stable.) From then on, versioning should adhere to the following rules:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MAJOR</span></code> is incremented with incompatible API changes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MINOR</span></code> is incremented with backwards compatible feature additions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PATCH</span></code> is incremented with backwards compatible bug fixes</p></li>
+</ol>
+<p>Determine what version number is most appropriate for your release and update <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> accordingly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ...</span>
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;aguaclara&#39;</span><span class="p">,</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;0.3.0&#39;</span><span class="p">,</span>  <span class="c1"># Edit the version number here</span>
+    <span class="c1"># ...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="merging-from-master">
+<h3>Merging from Master<a class="headerlink" href="#merging-from-master" title="Permalink to this headline">¶</a></h3>
+<p>To ensure that your code can safely integrate with the <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package, pull any new changes that were made to the master branch and merge them into your development branch.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
+<span class="n">git</span> <span class="n">pull</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="n">name_of_your_branch</span>
+<span class="n">git</span> <span class="n">merge</span> <span class="n">master</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Follow Github’s instructions for <a class="reference external" href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork">Syncing a fork</a> if you’re working in a forked repository.</p>
+</div>
+<p>If the merge is successful, your command line may automatically take you to a text editor to edit or accept a default commit message for the merge. If using the Vi text editor, type <code class="docutils literal notranslate"><span class="pre">:x</span></code> and hit Enter to save and exit.</p>
+<p>If the command line alerts you of merge conflicts, open the files with conflicts in your IDE and manually resolve them. Many IDE’s, such as Visual Studio Code, also have built-in support for handling them. For a better understanding of merge conflicts, check out this <a class="reference external" href="https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts">article by Atlassian</a>.</p>
+</div>
+<div class="section" id="pull-requests">
+<h3>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h3>
+<p>Once you’re finally ready to merge your code into the master branch…</p>
+<ol class="arabic simple">
+<li><p>Push any final commits on your branch.</p></li>
+<li><p><a class="reference external" href="https://github.com/AguaClara/aguaclara/compare">Create a pull request</a> (PR) on Gitub to merge your development branch with the master branch.</p></li>
+<li><p>Follow the pull request template to write a title and description for your PR.</p></li>
+<li><p>Add at least one reviewer who is a maintainer of <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>. You can also tag, message, or email them to make sure they know to give a review.</p></li>
+<li><p>Wait for the reviewer to approve and merge the PR or request changes.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="publishing-a-release">
+<h2>Publishing a Release<a class="headerlink" href="#publishing-a-release" title="Permalink to this headline">¶</a></h2>
+<p>If your PR has been merged into the master branch, publish your release (or ask a collaborator to) as follows:</p>
+<ol class="arabic simple">
+<li><p>Go to the <a class="reference external" href="https://github.com/AguaClara/aguaclara/releases">Releases</a> on the <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> Github.</p></li>
+<li><p>Click “Draft a new release”.</p></li>
+<li><p>Create a new tag with the same name as the new version number (e.g. v0.3.0).</p></li>
+<li><p>Give your release a title and description.</p></li>
+<li><p>Publish the release!</p></li>
+</ol>
+<p>Now, the “Publish to Pypi” workflow will trigger in Github Actions to make the new release available on <a class="reference external" href="https://pypi.org/project/aguaclara/">Pypi</a>.
+The “Documentation” workflow will be running as well to update this documentation website.</p>
+<p>Make sure to close relevant issues if they were not automatically closed.</p>
+<p>Congratulations on making a release, and thanks for contributing to AguaClara!</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../guide-user/experimental-design.html" class="btn btn-neutral float-left" title="Experimental Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, AguaClara Cornell.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

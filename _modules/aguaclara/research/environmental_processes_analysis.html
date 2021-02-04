@@ -1,0 +1,650 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>aguaclara.research.environmental_processes_analysis &mdash; AguaClara EXPERIMENTAL documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> AguaClara
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                EXPERIMENTAL
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide-user/guide-user.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide-dev/guide-dev.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AguaClara</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>aguaclara.research.environmental_processes_analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for aguaclara.research.environmental_processes_analysis</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">aguaclara.research.procoda_parser</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">special</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+
+<span class="c1"># Carbonates</span>
+<span class="c1"># The following code defines the carbonate system and provides functions for</span>
+<span class="c1"># calculating Acid Neutralizing Capacity.</span>
+<span class="n">Kw</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">14</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">mole</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">K1_carbonate</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">6.37</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span>
+<span class="n">K2_carbonate</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">10.25</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span>
+<span class="n">K_Henry_CO2</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mole</span><span class="o">/</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">atm</span><span class="p">)</span>
+<span class="n">P_CO2</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">3.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">atm</span>
+
+
+<div class="viewcode-block" id="invpH"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.invpH">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate inverse pH, i.e. hydronium ion concentration, given pH.</span>
+
+<span class="sd">    :param pH: pH to be inverted</span>
+<span class="sd">    :type pH: float</span>
+
+<span class="sd">    :return: The inverse pH or hydronium ion concentration (in moles per liter)</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import invpH</span>
+<span class="sd">    &gt;&gt;&gt; invpH(10)</span>
+<span class="sd">    &lt;Quantity(1e-10, &#39;mole / liter&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">pH</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span></div>
+
+
+<div class="viewcode-block" id="alpha0_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha0_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">alpha0_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in carbonic acid form (H2CO3)</span>
+
+<span class="sd">    :param pH: pH of the system</span>
+<span class="sd">    :type pH: float</span>
+
+<span class="sd">    :return: Fraction of carbonates in carbonic acid form (H2CO3)</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import alpha0_carbonate</span>
+<span class="sd">    &gt;&gt;&gt; round(alpha0_carbonate(10), 7)</span>
+<span class="sd">    &lt;Quantity(0.00015, &#39;dimensionless&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alpha0_carbonate</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">K1_carbonate</span><span class="o">/</span><span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">))</span> <span class="o">*</span>
+                            <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">K2_carbonate</span><span class="o">/</span><span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">))))</span>
+    <span class="k">return</span> <span class="n">alpha0_carbonate</span></div>
+
+
+<div class="viewcode-block" id="alpha1_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha1_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">alpha1_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in bicarbonate form (HCO3-)</span>
+
+<span class="sd">    :param pH: pH of the system</span>
+<span class="sd">    :type pH: float</span>
+
+<span class="sd">    :return: Fraction of carbonates in bicarbonate form (HCO3-)</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import alpha1_carbonate</span>
+<span class="sd">    &gt;&gt;&gt; round(alpha1_carbonate(10), 7)</span>
+<span class="sd">    &lt;Quantity(0.639969, &#39;dimensionless&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alpha1_carbonate</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">((</span><span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">)</span><span class="o">/</span><span class="n">K1_carbonate</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span>
+                          <span class="p">(</span><span class="n">K2_carbonate</span><span class="o">/</span><span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">alpha1_carbonate</span></div>
+
+
+<div class="viewcode-block" id="alpha2_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha2_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">alpha2_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in carbonate form (CO3-2)</span>
+
+<span class="sd">    :param pH: pH of the system</span>
+<span class="sd">    :type pH: float</span>
+
+<span class="sd">    :return: Fraction of carbonates in carbonate form (CO3-2)</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import alpha2_carbonate</span>
+<span class="sd">    &gt;&gt;&gt; round(alpha2_carbonate(10), 7)</span>
+<span class="sd">    &lt;Quantity(0.359881, &#39;dimensionless&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alpha2_carbonate</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">)</span><span class="o">/</span><span class="n">K2_carbonate</span><span class="p">)</span> <span class="o">*</span>
+                            <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">)</span><span class="o">/</span><span class="n">K1_carbonate</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">alpha2_carbonate</span></div>
+
+
+<div class="viewcode-block" id="ANC_closed"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.ANC_closed">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ANC_closed</span><span class="p">(</span><span class="n">pH</span><span class="p">,</span> <span class="n">total_carbonates</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the acid neutralizing capacity (ANC) under a closed system</span>
+<span class="sd">    in which no carbonates are exchanged with the atmosphere during the</span>
+<span class="sd">    experiment. Based on pH and total carbonates in the system.</span>
+
+<span class="sd">    :param pH: pH of the system</span>
+<span class="sd">    :type pH: float</span>
+<span class="sd">    :param total_carbonates: Total carbonate concentration in the system (mole/L)</span>
+<span class="sd">    :type total_carbonates: float</span>
+
+<span class="sd">    :return: The acid neutralizing capacity of the closed system (eq/L)</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import ANC_closed</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
+<span class="sd">    &gt;&gt;&gt; round(ANC_closed(10, 1*u.mol/u.L), 7)</span>
+<span class="sd">    &lt;Quantity(1.359831, &#39;equivalent / liter&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">total_carbonates</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">eq</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span> <span class="o">*</span> <span class="n">alpha1_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">)</span> <span class="o">+</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">eq</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span> <span class="o">*</span> <span class="n">alpha2_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">))</span> <span class="o">+</span>
+            <span class="mi">1</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">eq</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span> <span class="o">*</span> <span class="n">Kw</span><span class="o">/</span><span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">eq</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">mol</span> <span class="o">*</span> <span class="n">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="ANC_open"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.ANC_open">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">ANC_open</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the acid neutralizing capacity (ANC) calculated under an open</span>
+<span class="sd">    system based on pH.</span>
+
+<span class="sd">    :param pH: pH of the system</span>
+<span class="sd">    :type pH: float</span>
+
+<span class="sd">    :return: The acid neutralizing capacity of the closed system (eq/L)</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import ANC_open</span>
+<span class="sd">    &gt;&gt;&gt; round(ANC_open(10), 7)</span>
+<span class="sd">    &lt;Quantity(0.0907346, &#39;equivalent / liter&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ANC_closed</span><span class="p">(</span><span class="n">pH</span><span class="p">,</span> <span class="n">P_CO2</span><span class="o">*</span><span class="n">K_Henry_CO2</span><span class="o">/</span><span class="n">alpha0_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="aeration_data"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.aeration_data">[docs]</a><span class="k">def</span> <span class="nf">aeration_data</span><span class="p">(</span><span class="n">DO_column</span><span class="p">,</span> <span class="n">dirpath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract the data from folder containing tab delimited</span>
+<span class="sd">    files of aeration data. The file must be the original tab delimited file.</span>
+<span class="sd">    All text strings below the header must be removed from these files.</span>
+<span class="sd">    The file names must be the air flow rates with units of micromoles/s.</span>
+<span class="sd">    An example file name would be &quot;300.xls&quot; where 300 is the flow rate in</span>
+<span class="sd">    micromoles/s. The function opens a file dialog for the user to select</span>
+<span class="sd">    the directory containing the data.</span>
+
+<span class="sd">    :param DO_column: Index of the column that contains the dissolved oxygen concentration data.</span>
+<span class="sd">    :type DO_columm: int</span>
+<span class="sd">    :param dirpath: Path to the directory containing aeration data you want to analyze</span>
+<span class="sd">    :type dirpath: string</span>
+
+<span class="sd">    :return: collection of</span>
+
+<span class="sd">        * **filepaths** (*string list*) - All file paths in the directory sorted by flow rate</span>
+<span class="sd">        * **airflows** (*numpy.array*) - Sorted array of air flow rates with units of micromole/s</span>
+<span class="sd">        * **DO_data** (*numpy.array list*) - Sorted list of Numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments</span>
+<span class="sd">        * **time_data** (*numpy.array list*) - Sorted list of Numpy arrays containing the times with units of seconds</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#return the list of files in the directory</span>
+    <span class="n">filenames</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span>
+    <span class="c1">#extract the flowrates from the filenames and apply units</span>
+    <span class="n">airflows</span> <span class="o">=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">]))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+    <span class="c1">#sort airflows and filenames so that they are in ascending order of flow rates</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">airflows</span><span class="p">)</span>
+    <span class="n">airflows</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">airflows</span><span class="p">)[</span><span class="n">idx</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">umole</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span>
+    <span class="n">filenames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">filenames</span><span class="p">)[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="n">filepaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">]</span>
+    <span class="c1">#DO_data is a list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments</span>
+    <span class="c1"># cycle through all of the files and extract the column of data with oxygen concentrations and the times</span>
+    <span class="n">DO_data</span><span class="o">=</span><span class="p">[</span><span class="n">column_of_data</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">DO_column</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;mg/L&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">]</span>
+    <span class="n">time_data</span><span class="o">=</span><span class="p">[(</span><span class="n">column_of_time</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">]</span>
+    <span class="n">aeration_collection</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;aeration_results&#39;</span><span class="p">,</span><span class="s1">&#39;filepaths airflows DO_data time_data&#39;</span><span class="p">)</span>
+    <span class="n">aeration_results</span> <span class="o">=</span> <span class="n">aeration_collection</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">airflows</span><span class="p">,</span> <span class="n">DO_data</span><span class="p">,</span> <span class="n">time_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">aeration_results</span></div>
+
+
+<div class="viewcode-block" id="O2_sat"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.O2_sat">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">O2_sat</span><span class="p">(</span><span class="n">P_air</span><span class="p">,</span> <span class="n">temp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate saturaed oxygen concentration in mg/L for 278 K &lt; T &lt; 318 K</span>
+
+<span class="sd">    :param P_air: Air pressure with appropriate units</span>
+<span class="sd">    :type P_air: float</span>
+<span class="sd">    :param temp: Water temperature with appropriate units</span>
+<span class="sd">    :type temp: float</span>
+
+<span class="sd">    :return: Saturated oxygen concentration in mg/L</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import O2_sat</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
+<span class="sd">    &gt;&gt;&gt; round(O2_sat(1*u.atm , 300*u.kelvin), 7)</span>
+<span class="sd">    &lt;Quantity(8.0931572, &#39;milligram / liter&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fraction_O2</span> <span class="o">=</span> <span class="mf">0.21</span>
+    <span class="n">P_O2</span> <span class="o">=</span> <span class="n">P_air</span> <span class="o">*</span> <span class="n">fraction_O2</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">P_O2</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atm</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">mg</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1727</span> <span class="o">/</span> <span class="n">temp</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">-</span> <span class="mf">2.105</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Gran"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Gran">[docs]</a><span class="k">def</span> <span class="nf">Gran</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract the data from a ProCoDA Gran plot file. The file must be the original tab delimited file.</span>
+
+<span class="sd">    :param data_file_path: The path to the file. If the file is in the working directory, then the file name is sufficient.</span>
+
+<span class="sd">    :return: collection of</span>
+
+<span class="sd">        * **V_titrant** (*float*) - Volume of titrant in mL</span>
+<span class="sd">        * **ph_data** (*numpy.array*) - pH of the sample</span>
+<span class="sd">        * **V_sample** (*float*) - Volume of the original sample that was titrated in mL</span>
+<span class="sd">        * **Normality_titrant** (*float*) - Normality of the acid used to titrate the sample in mole/L</span>
+<span class="sd">        * **V_equivalent** (*float*) - Volume of acid required to consume all of the ANC in mL</span>
+<span class="sd">        * **ANC** (*float*) - Acid Neutralizing Capacity of the sample in mole/L</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">V_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]))</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span>
+    <span class="n">pH</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:,</span> <span class="mi">1</span><span class="p">]))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">V_S</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span>
+    <span class="n">N_t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mole</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span>
+    <span class="n">V_eq</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span>
+    <span class="n">ANC_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">mole</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">L</span>
+    <span class="n">Gran_collection</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Gran_results&#39;</span><span class="p">,</span> <span class="s1">&#39;V_titrant ph_data V_sample Normality_titrant V_equivalent ANC&#39;</span><span class="p">)</span>
+    <span class="n">Gran</span> <span class="o">=</span> <span class="n">Gran_collection</span><span class="p">(</span><span class="n">V_titrant</span><span class="o">=</span><span class="n">V_t</span><span class="p">,</span> <span class="n">ph_data</span><span class="o">=</span><span class="n">pH</span><span class="p">,</span> <span class="n">V_sample</span><span class="o">=</span><span class="n">V_S</span><span class="p">,</span>
+                           <span class="n">Normality_titrant</span><span class="o">=</span><span class="n">N_t</span><span class="p">,</span> <span class="n">V_equivalent</span><span class="o">=</span><span class="n">V_eq</span><span class="p">,</span>
+                           <span class="n">ANC</span><span class="o">=</span><span class="n">ANC_sample</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Gran</span></div>
+
+
+<span class="c1"># Reactors</span>
+<span class="c1"># The following code is for reactor responses to tracer inputs.</span>
+<div class="viewcode-block" id="CMFR"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.CMFR">[docs]</a><span class="k">def</span> <span class="nf">CMFR</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">C_initial</span><span class="p">,</span> <span class="n">C_influent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the effluent concentration of a conversative (non-reacting)</span>
+<span class="sd">    material with continuous input to a completely mixed flow reactor.</span>
+
+<span class="sd">    Note: time t=0 is the time at which the material starts to flow into the</span>
+<span class="sd">    reactor.</span>
+
+<span class="sd">    :param C_initial: The concentration in the CMFR at time t=0.</span>
+<span class="sd">    :type C_initial: float</span>
+<span class="sd">    :param C_influent: The concentration entering the CMFR.</span>
+<span class="sd">    :type C_influent: float</span>
+<span class="sd">    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</span>
+<span class="sd">    :type t: float or numpy.array</span>
+
+<span class="sd">    :return: Effluent concentration</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import CMFR</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
+<span class="sd">    &gt;&gt;&gt; round(CMFR(0.1, 0*u.mg/u.L, 10*u.mg/u.L), 7)</span>
+<span class="sd">    &lt;Quantity(0.9516258, &#39;milligram / liter&#39;)&gt;</span>
+<span class="sd">    &gt;&gt;&gt; round(CMFR(0.9, 5*u.mg/u.L, 10*u.mg/u.L), 7)</span>
+<span class="sd">    &lt;Quantity(7.9671517, &#39;milligram / liter&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">C_influent</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">))</span> <span class="o">+</span> <span class="n">C_initial</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="E_CMFR_N"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.E_CMFR_N">[docs]</a><span class="k">def</span> <span class="nf">E_CMFR_N</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate a dimensionless measure of the output tracer concentration</span>
+<span class="sd">    from a spike input to a series of completely mixed flow reactors.</span>
+
+<span class="sd">    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</span>
+<span class="sd">    :type t: float or numpy.array</span>
+<span class="sd">    :param N: The number of completely mixed flow reactors (CMFRS) in series. Must be greater than 1.</span>
+<span class="sd">    :type N: int</span>
+
+<span class="sd">    :return: Dimensionless measure of the output tracer concentration (concentration * volume of 1 CMFR) / (mass of tracer)</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import E_CMFR_N</span>
+<span class="sd">    &gt;&gt;&gt; round(E_CMFR_N(0.5, 3), 7)</span>
+<span class="sd">    0.7530643</span>
+<span class="sd">    &gt;&gt;&gt; round(E_CMFR_N(0.1, 1), 7)</span>
+<span class="sd">    0.9048374</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">N</span><span class="o">**</span><span class="n">N</span><span class="p">)</span><span class="o">/</span><span class="n">special</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span><span class="o">**</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="o">*</span><span class="n">t</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="E_Advective_Dispersion"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.E_Advective_Dispersion">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">E_Advective_Dispersion</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Pe</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate a dimensionless measure of the output tracer concentration from</span>
+<span class="sd">    a spike input to reactor with advection and dispersion.</span>
+
+<span class="sd">    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</span>
+<span class="sd">    :type t: float or numpy.array</span>
+<span class="sd">    :param Pe: The ratio of advection to dispersion ((mean fluid velocity)/(Dispersion*flow path length))</span>
+<span class="sd">    :type Pe: float</span>
+
+<span class="sd">    :return: dimensionless measure of the output tracer concentration (concentration * volume of reactor) / (mass of tracer)</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import E_Advective_Dispersion</span>
+<span class="sd">    &gt;&gt;&gt; round(E_Advective_Dispersion(0.5, 5), 7)</span>
+<span class="sd">    0.4774864</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">Pe</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">t</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="o">-</span><span class="n">Pe</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">t</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Tracer_CMFR_N"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Tracer_CMFR_N">[docs]</a><span class="k">def</span> <span class="nf">Tracer_CMFR_N</span><span class="p">(</span><span class="n">t_seconds</span><span class="p">,</span> <span class="n">t_bar</span><span class="p">,</span> <span class="n">C_bar</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Used by Solver_CMFR_N. All inputs and outputs are unitless. This is</span>
+<span class="sd">    The model function, f(x, ...). It takes the independent variable as the</span>
+<span class="sd">    first argument and the parameters to fit as separate remaining arguments.</span>
+
+<span class="sd">    :param t_seconds: List of times</span>
+<span class="sd">    :type t_seconds: float list</span>
+<span class="sd">    :param t_bar: Average time spent in the reactor</span>
+<span class="sd">    :type t_bar: float</span>
+<span class="sd">    :param C_bar: Average concentration (mass of tracer)/(volume of the reactor)</span>
+<span class="sd">    :type C_bar: float</span>
+<span class="sd">    :param N: Number of completely mixed flow reactors (CMFRs) in series, must be greater than 1</span>
+<span class="sd">    :type N: int</span>
+
+<span class="sd">    :return: The model concentration as a function of time</span>
+<span class="sd">    :rtype: float list</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import Tracer_CMFR_N</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
+<span class="sd">    &gt;&gt;&gt; Tracer_CMFR_N([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 3)</span>
+<span class="sd">    &lt;Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423], &#39;milligram / liter&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">C_bar</span><span class="o">*</span><span class="n">E_CMFR_N</span><span class="p">(</span><span class="n">t_seconds</span><span class="o">/</span><span class="n">t_bar</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Solver_CMFR_N"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Solver_CMFR_N">[docs]</a><span class="k">def</span> <span class="nf">Solver_CMFR_N</span><span class="p">(</span><span class="n">t_data</span><span class="p">,</span> <span class="n">C_data</span><span class="p">,</span> <span class="n">theta_guess</span><span class="p">,</span> <span class="n">C_bar_guess</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Use non-linear least squares to fit the function</span>
+<span class="sd">    Tracer_CMFR_N(t_seconds, t_bar, C_bar, N) to reactor data.</span>
+
+<span class="sd">    :param t_data: Array of times with units</span>
+<span class="sd">    :type t_data: float list</span>
+<span class="sd">    :param C_data: Array of tracer concentration data with units</span>
+<span class="sd">    :type C_data: float list</span>
+<span class="sd">    :param theta_guess: Estimate of time spent in one CMFR with units.</span>
+<span class="sd">    :type theta_guess: float</span>
+<span class="sd">    :param C_bar_guess: Estimate of average concentration with units ((mass of tracer)/(volume of one CMFR))</span>
+<span class="sd">    :type C_bar_guess: float</span>
+
+<span class="sd">    :return: tuple of</span>
+
+<span class="sd">        * **theta** (*float*)- Residence time in seconds</span>
+<span class="sd">        * **C_bar** (*float*) - Average concentration with same units as C_bar_guess</span>
+<span class="sd">        * **N** (*float*)- Number of CMFRS in series that best fit the data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">C_unitless</span> <span class="o">=</span> <span class="n">C_data</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="n">C_units</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">C_bar_guess</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+    <span class="n">t_seconds</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="c1"># assume that a guess of 1 reactor in series is close enough to get a solution</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="p">[</span><span class="n">theta_guess</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">C_bar_guess</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">Tracer_CMFR_N</span><span class="p">,</span> <span class="n">t_seconds</span><span class="p">,</span> <span class="n">C_unitless</span><span class="p">,</span> <span class="n">p0</span><span class="p">)</span>
+    <span class="n">Solver_theta</span> <span class="o">=</span> <span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span>
+    <span class="n">Solver_C_bar</span> <span class="o">=</span> <span class="n">popt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">C_units</span><span class="p">)</span>
+    <span class="n">Solver_N</span> <span class="o">=</span> <span class="n">popt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">Reactor_results</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Reactor_results&#39;</span><span class="p">,</span><span class="s1">&#39;theta C_bar N&#39;</span><span class="p">)</span>
+    <span class="n">CMFR</span> <span class="o">=</span> <span class="n">Reactor_results</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">Solver_theta</span><span class="p">,</span> <span class="n">C_bar</span><span class="o">=</span><span class="n">Solver_C_bar</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="n">Solver_N</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">CMFR</span></div>
+
+
+<div class="viewcode-block" id="Tracer_AD_Pe"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Tracer_AD_Pe">[docs]</a><span class="k">def</span> <span class="nf">Tracer_AD_Pe</span><span class="p">(</span><span class="n">t_seconds</span><span class="p">,</span> <span class="n">t_bar</span><span class="p">,</span> <span class="n">C_bar</span><span class="p">,</span> <span class="n">Pe</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Used by Solver_AD_Pe. All inputs and outputs are unitless. This is the</span>
+<span class="sd">    model function, f(x, ...). It takes the independent variable as the</span>
+<span class="sd">    first argument and the parameters to fit as separate remaining arguments.</span>
+
+<span class="sd">    :param t_seconds: List of times</span>
+<span class="sd">    :type t_seconds: float list</span>
+<span class="sd">    :param t_bar: Average time spent in the reactor</span>
+<span class="sd">    :type t_bar: float</span>
+<span class="sd">    :param C_bar: Average concentration ((mass of tracer)/(volume of the reactor))</span>
+<span class="sd">    :type C_bar: float</span>
+<span class="sd">    :param Pe: The Peclet number for the reactor.</span>
+<span class="sd">    :type Pe: float</span>
+
+<span class="sd">    :return: The model concentration as a function of time</span>
+<span class="sd">    :rtype: float list</span>
+
+<span class="sd">    :Examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; from aguaclara.research.environmental_processes_analysis import Tracer_AD_Pe</span>
+<span class="sd">    &gt;&gt;&gt; from aguaclara.core.units import u</span>
+<span class="sd">    &gt;&gt;&gt; Tracer_AD_Pe([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 5)</span>
+<span class="sd">    &lt;Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], &#39;milligram / liter&#39;)&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">C_bar</span><span class="o">*</span><span class="n">E_Advective_Dispersion</span><span class="p">(</span><span class="n">t_seconds</span><span class="o">/</span><span class="n">t_bar</span><span class="p">,</span> <span class="n">Pe</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Solver_AD_Pe"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Solver_AD_Pe">[docs]</a><span class="k">def</span> <span class="nf">Solver_AD_Pe</span><span class="p">(</span><span class="n">t_data</span><span class="p">,</span> <span class="n">C_data</span><span class="p">,</span> <span class="n">theta_guess</span><span class="p">,</span> <span class="n">C_bar_guess</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Use non-linear least squares to fit the function</span>
+<span class="sd">    Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe) to reactor data.</span>
+
+<span class="sd">    :param t_data: Array of times with units</span>
+<span class="sd">    :type t_data: float list</span>
+<span class="sd">    :param C_data: Array of tracer concentration data with units</span>
+<span class="sd">    :type C_data: float list</span>
+<span class="sd">    :param theta_guess: Estimate of time spent in one CMFR with units.</span>
+<span class="sd">    :type theta_guess: float</span>
+<span class="sd">    :param C_bar_guess: Estimate of average concentration with units ((mass of tracer)/(volume of one CMFR))</span>
+<span class="sd">    :type C_bar_guess: float</span>
+
+<span class="sd">    :return: tuple of</span>
+
+<span class="sd">        * **theta** (*float*)- Residence time in seconds</span>
+<span class="sd">        * **C_bar** (*float*) - Average concentration with same units as C_bar_guess</span>
+<span class="sd">        * **Pe** (*float*) - Peclet number that best fits the data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#remove time=0 data to eliminate divide by zero error</span>
+    <span class="n">t_data</span> <span class="o">=</span> <span class="n">t_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">C_data</span> <span class="o">=</span> <span class="n">C_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">C_unitless</span> <span class="o">=</span> <span class="n">C_data</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="n">C_units</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">C_bar_guess</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+    <span class="n">t_seconds</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="c1"># assume that a guess of 1 reactor in series is close enough to get a solution</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="p">[</span><span class="n">theta_guess</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">C_bar_guess</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">Tracer_AD_Pe</span><span class="p">,</span> <span class="n">t_seconds</span><span class="p">,</span> <span class="n">C_unitless</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">))</span>
+    <span class="n">Solver_theta</span> <span class="o">=</span> <span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">s</span>
+    <span class="n">Solver_C_bar</span> <span class="o">=</span> <span class="n">popt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">C_units</span><span class="p">)</span>
+    <span class="n">Solver_Pe</span> <span class="o">=</span> <span class="n">popt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">Reactor_results</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Reactor_results&#39;</span><span class="p">,</span> <span class="s1">&#39;theta C_bar Pe&#39;</span><span class="p">)</span>
+    <span class="n">AD</span> <span class="o">=</span> <span class="n">Reactor_results</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="n">Solver_theta</span><span class="p">,</span> <span class="n">C_bar</span><span class="o">=</span><span class="n">Solver_C_bar</span><span class="p">,</span> <span class="n">Pe</span><span class="o">=</span><span class="n">Solver_Pe</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">AD</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, AguaClara Cornell.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
