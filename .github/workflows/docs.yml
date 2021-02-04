@@ -3,7 +3,8 @@ name: Documentation
 on:
   push:
     branches:
-      - master
+      # - master
+      - documentation/developer-guide
 
 jobs:
   publish_docs:
@@ -20,18 +21,19 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install sphinx_rtd_theme
+        pip install pipenv
+        pipenv install --dev
         
     - name: Build Sphinx documentation
       run: |
         cd docs
-        make html
+        pipenv run make html
 
     - name: Publish Sphinx documentation
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: docs/build/html/
-        publish_branch: gh-pages
+        publish_branch: mock-gh-pages
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
