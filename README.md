@@ -33,15 +33,60 @@ pip install aguaclara --upgrade
 
 To use `aguaclara`'s registry of scientific units (based on the [Pint package](https://pint.readthedocs.io/en/latest/)), use `from aguaclara.core.units import u`. Any other function or value in a sub-package can be accessed by importing the package itself:
 
+### Example Usage: Design
 ```python
 import aguaclara as ac
 from aguaclara.core.units import u
 
-ac.viscosity_kinematic(20 * u.degC)
+# Design a water treatment plant
+plant = ac.Plant(
+    q = 40 * u.L / u.s,
+    cdc = ac.CDC(coag_type = 'pacl'),
+    floc = ac.Flocculator(hl = 40 * u.cm),
+    sed = ac.Sedimentor(temp = 20 * u.degC),
+    filter = ac.Filter(q = 20 * u.L / u.s)
+)
 ```
 
-The package is still undergoing rapid development. As it becomes more stable, user guides will be written to demonstrate each of these main functionalities.
-At the moment, you can find some examples in specific pages of the [API reference](https://aguaclara.github.io/aguaclara/api.html).
+### Example Usage: Core
+```python
+# continued from Example Usage: Design
+
+# Model physical, chemical, and hydraulic properties 
+cdc = plant.cdc
+coag_tube_reynolds_number = ac.re_pipe(
+    FlowRate = cdc.coag_q_max,
+    Diam = cdc.coag_tube_id,
+    Nu = cdc.coag_nu(cdc.coag_stock_conc, cdc.coag_type)
+)
+```
+
+### Example Usage: Research
+```python
+import aguaclara as ac
+from aguaclara.core.units import u
+import matplotlib.pyplot as plt
+
+# Plan a research experiment
+reactor = ac.Variable_C_Stock(
+    Q_sys = 2 * u.mL / u.s, 
+    C_sys = 1.4 * u.mg / u.L, 
+    Q_stock = 0.01 * u.mL / u.s
+)
+C_stock_PACl = reactor.C_stock()
+
+# Visualize and analyze ProCoDA data
+ac.iplot_columns(
+    path = "https://raw.githubusercontent.com/AguaClara/team_resources/master/Data/datalog%206-14-2018.xls", 
+    columns = [3, 4], 
+    x_axis = 0
+)
+plt.ylabel("Turbidity (NTU)")
+plt.xlabel("Time (hr)")
+plt.legend(("Influent", "Effluent"))
+```
+
+The package is still undergoing rapid development. As it becomes more stable, a user guide will be written with more detailed tutorials. At the moment, you can find some more examples in specific pages of the [API reference](https://aguaclara.github.io/aguaclara/api.html).
 
 ## Contributing
 Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, [make an issue](https://github.com/AguaClara/aguaclara/issues/new/choose) in the [`aguaclara` Github repository](https://github.com/AguaClara/aguaclara>).
