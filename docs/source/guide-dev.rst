@@ -285,7 +285,7 @@ If you add a file of code that *cannot reasonably be tested*, you may add it to 
 
 The "Build" workflow calculates code coverage and uploads a report to `Codecov <https://app.codecov.io/gh/AguaClara/aguaclara/>`_. The actual change in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green ✓ or a red ✕).
 
-.. image:: ../images/status_checks.png
+.. image:: images/status_checks.png
     :align: center
     :alt: Status Checks Dropdown
     :scale: 40%
