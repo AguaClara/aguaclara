@@ -31,7 +31,7 @@ To upgrade an existing installation, run
 
   pip install aguaclara --upgrade
 
-Click here for :ref:`more software installation instructions<install-python-pip>` if you don't have Python or ``pip`` installed yet.
+Click here for :ref:`more software installation instructions<install-python-pip>` if you don't have Python or ``pip``.
 
 Using ``aguaclara``
 -------------------
@@ -41,19 +41,68 @@ Using ``aguaclara``
 2. **Design**: modules for designing components of an AguaClara water treatment plant
 3. **Research**: modules for process modeling, experimental design, and data analysis in AguaClara research
 
-To use ``aguaclara``'s registry of scientific units (based on the `Pint package <https://pint.readthedocs.io/en/latest/>`_), use ``from aguaclara.core.units import u``. Any other function or value in a sub-package can be accessed by importing the package itself:
+To use ``aguaclara``'s registry of scientific units (based on the `Pint package <https://pint.readthedocs.io/en/latest/>`_), use ``from aguaclara.core.units import u``. Any other function or value in a sub-package can be accessed by importing the package itself.
 
+Example Usage: Design
+*********************
 .. code-block:: python
 
   import aguaclara as ac
   from aguaclara.core.units import u
 
-  ac.viscosity_kinematic(20 * u.degC)
+  # Design a water treatment plant
+  plant = ac.Plant(
+      q = 40 * u.L / u.s,
+      cdc = ac.CDC(coag_type = 'pacl'),
+      floc = ac.Flocculator(hl = 40 * u.cm),
+      sed = ac.Sedimentor(temp = 20 * u.degC),
+      filter = ac.Filter(q = 20 * u.L / u.s)
+  )
+
+Example Usage: Core
+*******************
+.. code-block:: python
+
+  # continued from Example Usage: Design
+
+  # Model physical, chemical, and hydraulic properties 
+  cdc = plant.cdc
+  coag_tube_reynolds_number = ac.re_pipe(
+      FlowRate = cdc.coag_q_max,
+      Diam = cdc.coag_tube_id,
+      Nu = cdc.coag_nu(cdc.coag_stock_conc, cdc.coag_type)
+  )
+
+Example Usage: Research
+***********************
+.. code-block:: python
+
+  import aguaclara as ac
+  from aguaclara.core.units import u
+  import matplotlib.pyplot as plt
+
+  # Plan a research experiment
+  reactor = ac.Variable_C_Stock(
+      Q_sys = 2 * u.mL / u.s, 
+      C_sys = 1.4 * u.mg / u.L, 
+      Q_stock = 0.01 * u.mL / u.s
+  )
+  C_stock_PACl = reactor.C_stock()
+
+  # Visualize and analyze ProCoDA data
+  ac.iplot_columns(
+      path = "https://raw.githubusercontent.com/AguaClara/team_resources/master/Data/datalog%206-14-2018.xls", 
+      columns = [3, 4], 
+      x_axis = 0
+  )
+  plt.ylabel("Turbidity (NTU)")
+  plt.xlabel("Time (hr)")
+  plt.legend(("Influent", "Effluent"))
 
 .. For more detailed tutorials and examples on using the package, refer to the :ref:`User Guide <guide-user>`.
 
-The package is still undergoing rapid development. As it becomes more stable, user guides will be written to demonstrate each of these main functionalities.
-At the moment, you can find some examples in specific pages of the :ref:`API reference <api>`.
+The package is still undergoing rapid development. As it becomes more stable, a user guide will be written with more detailed tutorials.
+At the moment, you can find some more examples in specific pages of the :ref:`API reference <api>`.
 
 Contributing
 ------------
@@ -70,4 +119,4 @@ Table of Contents
     :maxdepth: 1
 
     api
-    guide-dev/guide-dev
+    guide-dev

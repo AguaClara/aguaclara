@@ -93,7 +93,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide-dev/guide-dev.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide-dev.html">Developer Guide</a></li>
 </ul>
 
             
@@ -181,7 +181,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">aguaclara</span> <span class="o">--</span><span class="n">upgrade</span>
 </pre></div>
 </div>
-<p>Click here for <a class="reference internal" href="guide-user/install.html#install-python-pip"><span class="std std-ref">more software installation instructions</span></a> if you don’t have Python or <code class="docutils literal notranslate"><span class="pre">pip</span></code> installed yet.</p>
+<p>Click here for <a class="reference internal" href="guide-user/install.html#install-python-pip"><span class="std std-ref">more software installation instructions</span></a> if you don’t have Python or <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
 </div>
 <div class="section" id="using-aguaclara">
 <h2>Using <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code><a class="headerlink" href="#using-aguaclara" title="Permalink to this headline">¶</a></h2>
@@ -191,27 +191,77 @@
 <li><p><strong>Design</strong>: modules for designing components of an AguaClara water treatment plant</p></li>
 <li><p><strong>Research</strong>: modules for process modeling, experimental design, and data analysis in AguaClara research</p></li>
 </ol>
-<p>To use <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s registry of scientific units (based on the <a class="reference external" href="https://pint.readthedocs.io/en/latest/">Pint package</a>), use <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">aguaclara.core.units</span> <span class="pre">import</span> <span class="pre">u</span></code>. Any other function or value in a sub-package can be accessed by importing the package itself:</p>
+<p>To use <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>’s registry of scientific units (based on the <a class="reference external" href="https://pint.readthedocs.io/en/latest/">Pint package</a>), use <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">aguaclara.core.units</span> <span class="pre">import</span> <span class="pre">u</span></code>. Any other function or value in a sub-package can be accessed by importing the package itself.</p>
+<div class="section" id="example-usage-design">
+<h3>Example Usage: Design<a class="headerlink" href="#example-usage-design" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aguaclara</span> <span class="k">as</span> <span class="nn">ac</span>
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 
-<span class="n">ac</span><span class="o">.</span><span class="n">viscosity_kinematic</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+<span class="c1"># Design a water treatment plant</span>
+<span class="n">plant</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">Plant</span><span class="p">(</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+    <span class="n">cdc</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">CDC</span><span class="p">(</span><span class="n">coag_type</span> <span class="o">=</span> <span class="s1">&#39;pacl&#39;</span><span class="p">),</span>
+    <span class="n">floc</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">Flocculator</span><span class="p">(</span><span class="n">hl</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">),</span>
+    <span class="n">sed</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">Sedimentor</span><span class="p">(</span><span class="n">temp</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">),</span>
+    <span class="nb">filter</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
-<p>The package is still undergoing rapid development. As it becomes more stable, user guides will be written to demonstrate each of these main functionalities.
-At the moment, you can find some examples in specific pages of the <a class="reference internal" href="api.html#api"><span class="std std-ref">API reference</span></a>.</p>
+</div>
+<div class="section" id="example-usage-core">
+<h3>Example Usage: Core<a class="headerlink" href="#example-usage-core" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># continued from Example Usage: Design</span>
+
+<span class="c1"># Model physical, chemical, and hydraulic properties</span>
+<span class="n">cdc</span> <span class="o">=</span> <span class="n">plant</span><span class="o">.</span><span class="n">cdc</span>
+<span class="n">coag_tube_reynolds_number</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">re_pipe</span><span class="p">(</span>
+    <span class="n">FlowRate</span> <span class="o">=</span> <span class="n">cdc</span><span class="o">.</span><span class="n">coag_q_max</span><span class="p">,</span>
+    <span class="n">Diam</span> <span class="o">=</span> <span class="n">cdc</span><span class="o">.</span><span class="n">coag_tube_id</span><span class="p">,</span>
+    <span class="n">Nu</span> <span class="o">=</span> <span class="n">cdc</span><span class="o">.</span><span class="n">coag_nu</span><span class="p">(</span><span class="n">cdc</span><span class="o">.</span><span class="n">coag_stock_conc</span><span class="p">,</span> <span class="n">cdc</span><span class="o">.</span><span class="n">coag_type</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-usage-research">
+<h3>Example Usage: Research<a class="headerlink" href="#example-usage-research" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aguaclara</span> <span class="k">as</span> <span class="nn">ac</span>
+<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Plan a research experiment</span>
+<span class="n">reactor</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">Variable_C_Stock</span><span class="p">(</span>
+    <span class="n">Q_sys</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mL</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+    <span class="n">C_sys</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mg</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span><span class="p">,</span>
+    <span class="n">Q_stock</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mL</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+<span class="p">)</span>
+<span class="n">C_stock_PACl</span> <span class="o">=</span> <span class="n">reactor</span><span class="o">.</span><span class="n">C_stock</span><span class="p">()</span>
+
+<span class="c1"># Visualize and analyze ProCoDA data</span>
+<span class="n">ac</span><span class="o">.</span><span class="n">iplot_columns</span><span class="p">(</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/AguaClara/team_resources/master/Data/datalog%206-14-2018.xls&quot;</span><span class="p">,</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="n">x_axis</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Turbidity (NTU)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time (hr)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">((</span><span class="s2">&quot;Influent&quot;</span><span class="p">,</span> <span class="s2">&quot;Effluent&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The package is still undergoing rapid development. As it becomes more stable, a user guide will be written with more detailed tutorials.
+At the moment, you can find some more examples in specific pages of the <a class="reference internal" href="api.html#api"><span class="std std-ref">API reference</span></a>.</p>
+</div>
 </div>
 <div class="section" id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
 <p>Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, <a class="reference external" href="https://github.com/AguaClara/aguaclara/issues/new/choose">make an issue</a> in the <a class="reference external" href="https://github.com/AguaClara/aguaclara"><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> Github repository</a>.</p>
-<p>To contribute to the package as a developer, refer to the <a class="reference internal" href="guide-dev/guide-dev.html#guide-dev"><span class="std std-ref">Developer Guide</span></a>.</p>
+<p>To contribute to the package as a developer, refer to the <a class="reference internal" href="guide-dev.html#guide-dev"><span class="std std-ref">Developer Guide</span></a>.</p>
 </div>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide-dev/guide-dev.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide-dev.html">Developer Guide</a></li>
 </ul>
 </div>
 </div>

@@ -16,6 +16,21 @@
 .. |Sphinx autodoc extension| replace:: Sphinx ``autodoc`` extension
 .. _Sphinx autodoc extension: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
 
+.. |html-proofer package| replace:: ``html-proofer`` package
+.. _html-proofer package: https://github.com/gjtorikian/html-proofer
+
+.. |pytest package| replace:: ``pytest`` package
+.. _pytest package: https://docs.pytest.org/en/stable/
+
+.. |unittest package| replace:: ``unittest`` package
+.. _unittest package: https://docs.python.org/3/library/unittest.html
+
+.. |test_physchem.py| replace:: ``tests/core/test_physchem.py``
+.. _test_physchem.py: https://github.com/AguaClara/aguaclara/blob/master/tests/core/test_physchem.py
+
+.. |test_cdc.py| replace:: ``tests/design/test_cdc.py``
+.. _test_cdc.py: https://github.com/AguaClara/aguaclara/blob/master/tests/design/test_cdc.py
+
 .. _guide-dev:
 
 ===============
@@ -75,7 +90,7 @@ If you want to make changes to ``aguaclara``, you should make the package availa
 
         pipenv install --dev
     
-    ``pipenv`` is used to install the dependencies from the file called ``Pipfile`` into a virtual environment. See the :ref:`Additional Topics <envs>` for more details on ``pipenv``, ``Pipfile``, and virtual environments. 
+    Pipenv is used to install the dependencies from the file called ``Pipfile`` into a virtual environment. See the :ref:`envs` for more details. 
 
 #.  You can check whether you have a fully provisioned testing environment now by running:
 
@@ -100,7 +115,7 @@ The master branch is the branch that houses ``aguaclara``'s published releases. 
 
 Your Development Branch
 ***********************
-This means that all work starts on *development branches*, or task or feature branches. (Check out this `article <https://www.atlassian.com/agile/software-development/branching>`_ if you want to learn more!)
+This means that all work starts on *development branches*, or task or feature branches. (Check out this `article <https://www.atlassian.com/agile/software-development/branching>`_ if you want to learn more.)
 It is recommended that you name your branch ``{your_development_type}/short-description``. Some examples of development type are 
 
 .. hlist::
@@ -128,9 +143,7 @@ You can read more about documentation driven development (DDD) in this short `bl
 
 .. Commented out: The primary purpose of the documentation is to inform users how the code is intended to be used and behave. The purpose of the documentation process is to make you, as the developer, consider the best interface for the user. Plus, it lays a clearer roadmap to the end product and is crucial for helping others (and yourself!) to understand and debug the code.
 
-The ``aguaclara`` package uses the `Sphinx format <https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html>`_ and the `NumPy format <https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard>`_ for docstrings. For more details on writing docstrings, see :ref:`sphinx-docs`. 
-
-.. TODO: add more info about documentation conventions
+For docstring syntax, see :ref:`sphinx-docs`. For style, see :ref:`doc-conventions`.
 
 **If possible, gather feedback from likely users after writing the documentation.** Modifications are much more easily made to documentation than to code. 
 
@@ -141,9 +154,7 @@ Make sure to test all types and/or edge cases of accepted inputs (this last part
 
 .. Commented out: Like DDD, test driven development (TDD) focuses on specifying the code most optimally for the user by putting the developer in the user's shoes. TDD also leads to cleaner and better designed code than traditional testing. 
 
-The ``aguaclara`` package uses the ``pytest`` and ``unittest`` packages for testing Python code. More details will be coming on Python testing. 
-
-.. TODO: add more info about pytest and unittest
+For details on writing tests, see :ref:`testing`.
 
 All test files should be located in the ``tests/`` directory. To execute the tests in a test file, run the following command in the command line:
 
@@ -198,7 +209,7 @@ The resulting HTML files will be written to the ``docs/build/html`` directory. Y
 
 Validating Documentation
 ************************
-The ``html-proofer`` package can be used to check the correctness of the rendered HTML pages (e.g., that there are not broken links). To install the package, `download RubyGems <https://rubygems.org/pages/download>`_ and then run:
+The |html-proofer package|_ can be used to check the correctness of the rendered HTML pages (e.g., that there are not broken links). To install the package, `download RubyGems <https://rubygems.org/pages/download>`_ and then run:
 
 .. code::
 
@@ -274,7 +285,7 @@ If you add a file of code that *cannot reasonably be tested*, you may add it to 
 
 The "Build" workflow calculates code coverage and uploads a report to `Codecov <https://app.codecov.io/gh/AguaClara/aguaclara/>`_. The actual change in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green ✓ or a red ✕).
 
-.. image:: ../images/status_checks.png
+.. image:: images/status_checks.png
     :align: center
     :alt: Status Checks Dropdown
     :scale: 40%
@@ -358,18 +369,75 @@ Make sure to close relevant issues if they were not automatically closed.
 
 Congratulations on making a release, and thanks for contributing to AguaClara!
 
+
 Additional Topics
 -----------------
+
 .. _envs:
 
-Dependencies, Virtual Environments, and ``pipenv`` 
-**************************************************
-According to the `Python Standard Library documentation <https://docs.python.org/3/library/venv.html>`_, 
+Dependencies, Virtual Environments, and Pipenv
+**********************************************
+Every Python project must specify the exact names and versions of its **dependencies**, i.e. other libraries and programs it depends on, so as to not fail on users' and other developers' computers.
+**Virtual environments** are used to prevent dependency conflicts between Python projects. According to the `Python Standard Library documentation <https://docs.python.org/3/library/venv.html>`_, 
 
     "A virtual environment is a Python environment such that the Python interpreter, libraries and scripts installed into it are isolated from those installed in other virtual environments, and (by default) any libraries installed in a “system” Python, i.e., one which is installed as part of your operating system."
 
-Since different Python projects on your computer may require different versions of dependencies, virtual environments are important for preventing dependency conflicts. It is also crucial for projects to specify the exact dependencies required for them to behave correctly, so as to not fail on machines other than the developer's.
+**Pipenv** wraps over ``pip`` and ``virtualenv`` to manage dependency specifications and virtual environments. It does so with the help of two files: 
 
-``pipenv`` is a tool that wraps ``pip`` and ``virtualenv`` together to manage virtual environments and dependency specifications for Python projects, with help of two important files: ``Pipfile`` and ``Pipfile.lock``.
+* ``Pipfile`` - where developers specify user/default dependencies and developer dependencies. These should include only top-level dependencies (no sub-dependencies).
+* ``Pipfile.lock`` - an auto-generated file that specifies the exact requirements for reproducing an environment (including sub-dependencies). Do not edit manually!
 
-.. ``pipenv`` is a tool that merges ``pip``, a package manager for Python, and ``virtualenv``, a virtual environment tool, so that you can easily create, work in, and replicate isolated Python environments on your machine.
+Some important commands for Pipenv are:
+
+* ``pipenv install`` - installs default dependencies from ``Pipfile`` into a virtual environment. 
+* ``pipenv install --dev`` - install default *and* developer dependencies from ``Pipfile`` into a virtual environment.
+* ``pipenv install <package>`` - installs a package into the virtual environment and updates ``Pipfile``.
+* ``pipenv lock`` - creates or updates ``Pipfile.lock`` to specify all dependencies and sub-dependencies and their current versions in the virtual environment.
+* ``pipenv sync`` - installs packages into the virtual environment exactly as specified in ``Pipfile.lock``.
+* ``pipenv run <command>`` - runs any terminal command in the virtual environment.
+
+Refer to `Real Python's guide <https://realpython.com/pipenv-guide/>`_ or `Pipenv's documentation <https://pipenv-fork.readthedocs.io/en/latest/basics.html>`_ for more information.
+
+
+.. _doc-conventions:
+
+Docstring Conventions
+*********************
+The ``aguaclara`` package has used the `Sphinx format <https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html>`_ and the `NumPy format <https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard>`_ for documenting modules, classes, functions, and constants. Regardless of which you use, the NumPy documentation is a good conceptual and technical resource.
+
+Exceptions:
+    * Descriptions of parameters and return values usually report data types. For some parameters and return values in ``aguaclara`` that are clearly numeric (of type int, float, or complex), the data type is replaced with the scientific unit of the value, e.g. ``u.degC`` for ``Temperature``. See the :ref:`units` module for a list of frequently used units.
+    * In some cases, it's more appropriate to include an example of code as a static RST code block rather than as a doctest. For more information on doctests, see :ref:`testing`.
+    * A constant can be documented by comments starting with ``#:`` in the lines immediately above it. See the source code of the :ref:`constants` module for examples.
+
+
+.. _testing:
+
+Python Testing
+**************
+``aguaclara`` uses the |pytest package|_ and the |unittest package|_ for testing Python code. See |test_physchem.py|_ for examples of using ``pytest`` and |test_cdc.py|_ for examples of using ``unittest``.
+
+Some modules also use Python tests that are written directly in the docstrings -- that is, doctests. Here's an example from ``design/cdc.py``:
+
+.. code:: python
+    
+    """ 
+    ...
+    >>> from aguaclara.design.cdc import *
+    >>> cdc = CDC(q = 20 * u.L/u.s, coag_type = 'pacl')
+    >>> cdc.coag_stock_vol
+    <Quantity(2500.0, 'liter')>
+    """
+
+**All doctests must pass**, i.e. the lines of code following the ``>>>`` must yield the value immediately after. One way to execute the doctests is to run:
+
+.. code::
+
+    pipenv run pytest path/to/file -v --doctest-modules
+
+To check all doctests in the package at once, run:
+
+.. code::
+
+    cd docs
+    pipenv run make doctest

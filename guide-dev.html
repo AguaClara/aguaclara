@@ -11,14 +11,14 @@
   
 
   
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/youtube.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/youtube.css" type="text/css" />
 
   
   
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
   
 
   
@@ -28,21 +28,21 @@
 
   
   <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
+    <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
     
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
     
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Stock QC" href="../research/stock_qc.html" /> 
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Stock QC" href="research/stock_qc.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -56,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> AguaClara
+            <a href="index.html" class="icon icon-home"> AguaClara
           
 
           
@@ -73,7 +73,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -92,7 +92,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#where-to-start">Where to Start</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-your-local-environment">Setting Up Your Local Environment</a></li>
@@ -130,7 +130,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#publishing-a-release">Publishing a Release</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#additional-topics">Additional Topics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#dependencies-virtual-environments-and-pipenv">Dependencies, Virtual Environments, and <code class="docutils literal notranslate"><span class="pre">pipenv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies-virtual-environments-and-pipenv">Dependencies, Virtual Environments, and Pipenv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docstring-conventions">Docstring Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-testing">Python Testing</a></li>
 </ul>
 </li>
 </ul>
@@ -150,7 +152,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">AguaClara</a>
+          <a href="index.html">AguaClara</a>
         
       </nav>
 
@@ -181,7 +183,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Developer Guide</li>
     
@@ -189,7 +191,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/guide-dev/guide-dev.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/guide-dev.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -218,7 +220,7 @@
 <h2>Setting Up Your Local Environment<a class="headerlink" href="#setting-up-your-local-environment" title="Permalink to this headline">¶</a></h2>
 <p>If you want to make changes to <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>, you should make the package available locally.</p>
 <ol class="arabic">
-<li><p>Make sure to have Python, <code class="docutils literal notranslate"><span class="pre">pip</span></code>, and Git installed (for guidance, see <a class="reference internal" href="../guide-user/install.html#install-software"><span class="std std-ref">Installing Software</span></a>). Check the package’s <a class="reference external" href="https://pypi.org/project/aguaclara/">Pypi</a> page for the required Python version. If you must have a different version on your computer for another project, you can use <a class="reference external" href="https://github.com/pyenv/pyenv#simple-python-version-management-pyenv">pyenv</a> to manage multiple Python versions.</p></li>
+<li><p>Make sure to have Python, <code class="docutils literal notranslate"><span class="pre">pip</span></code>, and Git installed (for guidance, see <a class="reference internal" href="guide-user/install.html#install-software"><span class="std std-ref">Installing Software</span></a>). Check the package’s <a class="reference external" href="https://pypi.org/project/aguaclara/">Pypi</a> page for the required Python version. If you must have a different version on your computer for another project, you can use <a class="reference external" href="https://github.com/pyenv/pyenv#simple-python-version-management-pyenv">pyenv</a> to manage multiple Python versions.</p></li>
 <li><p>Install <a class="reference external" href="https://pypi.org/project/pipenv/">Pipenv</a>, a package management and virtual environment tool, by running the following command in the command line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pipenv</span>
 </pre></div>
@@ -249,7 +251,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">dev</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">pipenv</span></code> is used to install the dependencies from the file called <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> into a virtual environment. See the <a class="reference internal" href="#envs"><span class="std std-ref">Additional Topics</span></a> for more details on <code class="docutils literal notranslate"><span class="pre">pipenv</span></code>, <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>, and virtual environments.</p>
+<p>Pipenv is used to install the dependencies from the file called <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> into a virtual environment. See the <a class="reference internal" href="#envs"><span class="std std-ref">Dependencies, Virtual Environments, and Pipenv</span></a> for more details.</p>
 </li>
 <li><p>You can check whether you have a fully provisioned testing environment now by running:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">run</span> <span class="n">pytest</span>
@@ -273,7 +275,7 @@
 </div>
 <div class="section" id="your-development-branch">
 <h3>Your Development Branch<a class="headerlink" href="#your-development-branch" title="Permalink to this headline">¶</a></h3>
-<p>This means that all work starts on <em>development branches</em>, or task or feature branches. (Check out this <a class="reference external" href="https://www.atlassian.com/agile/software-development/branching">article</a> if you want to learn more!)
+<p>This means that all work starts on <em>development branches</em>, or task or feature branches. (Check out this <a class="reference external" href="https://www.atlassian.com/agile/software-development/branching">article</a> if you want to learn more.)
 It is recommended that you name your branch <code class="docutils literal notranslate"><span class="pre">{your_development_type}/short-description</span></code>. Some examples of development type are</p>
 <table class="hlist"><tr><td><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">feature</span></code></p></li>
@@ -298,14 +300,14 @@ It is recommended that you name your branch <code class="docutils literal notran
 <h3>1. Write Documentation<a class="headerlink" href="#write-documentation" title="Permalink to this headline">¶</a></h3>
 <p>Your development should begin with documentation – that is, creating a blueprint of the code you plan to write. <strong>In this blueprint, each new or modified module, function, class, or method should be defined with a documentation string (i.e. comments, specifications, docstring) that describes its purpose and functionality, before any code is written</strong>.
 You can read more about documentation driven development (DDD) in this short <a class="reference external" href="https://collectiveidea.com/blog/archives/2014/04/21/on-documentation-driven-development">blog</a>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses the <a class="reference external" href="https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html">Sphinx format</a> and the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard">NumPy format</a> for docstrings. For more details on writing docstrings, see <a class="reference internal" href="#sphinx-docs"><span class="std std-ref">Sphinx Documentation</span></a>.</p>
+<p>For docstring syntax, see <a class="reference internal" href="#sphinx-docs"><span class="std std-ref">Sphinx Documentation</span></a>. For style, see <a class="reference internal" href="#doc-conventions"><span class="std std-ref">Docstring Conventions</span></a>.</p>
 <p><strong>If possible, gather feedback from likely users after writing the documentation.</strong> Modifications are much more easily made to documentation than to code.</p>
 </div>
 <div class="section" id="write-a-test">
 <h3>2. Write a Test<a class="headerlink" href="#write-a-test" title="Permalink to this headline">¶</a></h3>
 <p>Next, write a unit test for your code based on the documentation. A unit test tests a basic unit, e.g. function or method, of your code. <strong>If a unit of code produces the expected (documented) outputs for accepted inputs, its test should pass. If it behaves any differently from what is described in its documentation, its test should fail.</strong>
 Make sure to test all types and/or edge cases of accepted inputs (this last part is known as <a class="reference external" href="https://www.guru99.com/black-box-testing.html">black box testing</a>). You can read more about test driven development (TDD) <a class="reference external" href="https://www.agilealliance.org/glossary/tdd/">here</a>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package uses the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> and <code class="docutils literal notranslate"><span class="pre">unittest</span></code> packages for testing Python code. More details will be coming on Python testing.</p>
+<p>For details on writing tests, see <a class="reference internal" href="#testing"><span class="std std-ref">Python Testing</span></a>.</p>
 <p>All test files should be located in the <code class="docutils literal notranslate"><span class="pre">tests/</span></code> directory. To execute the tests in a test file, run the following command in the command line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">run</span> <span class="n">pytest</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">file</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
@@ -352,7 +354,7 @@ For more details on including documentation from docstrings, see the <a class="r
 </div>
 <div class="section" id="validating-documentation">
 <h3>Validating Documentation<a class="headerlink" href="#validating-documentation" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">html-proofer</span></code> package can be used to check the correctness of the rendered HTML pages (e.g., that there are not broken links). To install the package, <a class="reference external" href="https://rubygems.org/pages/download">download RubyGems</a> and then run:</p>
+<p>The <a class="reference external" href="https://github.com/gjtorikian/html-proofer"><code class="docutils literal notranslate"><span class="pre">html-proofer</span></code> package</a> can be used to check the correctness of the rendered HTML pages (e.g., that there are not broken links). To install the package, <a class="reference external" href="https://rubygems.org/pages/download">download RubyGems</a> and then run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gem</span> <span class="n">install</span> <span class="n">html</span><span class="o">-</span><span class="n">proofer</span>
 <span class="n">cd</span> <span class="n">docs</span>
 <span class="n">htmlproofer</span> <span class="n">build</span><span class="o">/</span><span class="n">html</span> <span class="o">--</span><span class="n">allow_hash_href</span> <span class="o">--</span><span class="n">file_ignore</span> <span class="s2">&quot;build/html/search.html&quot;</span>
@@ -427,7 +429,7 @@ The <code class="docutils literal notranslate"><span class="pre">aguaclara</span
 <p>Code coverage is a measure of the amount of source code that has been executed by tests. <strong>Whenever possible, all new or modified code should be covered by tests, so code coverage should either remain the same or increase with each contribution.</strong>
 If you add a file of code that <em>cannot reasonably be tested</em>, you may add it to the list of files and directories ignored by Codecov in <code class="docutils literal notranslate"><span class="pre">codecov.yml</span></code>. (Note: such files are rare!)</p>
 <p>The “Build” workflow calculates code coverage and uploads a report to <a class="reference external" href="https://app.codecov.io/gh/AguaClara/aguaclara/">Codecov</a>. The actual change in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green ✓ or a red ✕).</p>
-<a class="reference internal image-reference" href="../_images/status_checks.png"><img alt="Status Checks Dropdown" class="align-center" src="../_images/status_checks.png" style="width: 464.0px; height: 205.60000000000002px;" /></a>
+<a class="reference internal image-reference" href="_images/status_checks.png"><img alt="Status Checks Dropdown" class="align-center" src="_images/status_checks.png" style="width: 464.0px; height: 205.60000000000002px;" /></a>
 <p>If you’re a collaborator of <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code>, you can also log in to Codecov through your Github account and view the “hit” and “missed” lines of code on Codecov (or directly on Github with a <a class="reference external" href="https://docs.codecov.io/docs/browser-extension">browser extension</a>).</p>
 </div>
 </div>
@@ -504,13 +506,62 @@ The “Documentation” workflow will be running as well to update this document
 <div class="section" id="additional-topics">
 <h2>Additional Topics<a class="headerlink" href="#additional-topics" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="dependencies-virtual-environments-and-pipenv">
-<span id="envs"></span><h3>Dependencies, Virtual Environments, and <code class="docutils literal notranslate"><span class="pre">pipenv</span></code><a class="headerlink" href="#dependencies-virtual-environments-and-pipenv" title="Permalink to this headline">¶</a></h3>
-<p>According to the <a class="reference external" href="https://docs.python.org/3/library/venv.html">Python Standard Library documentation</a>,</p>
+<span id="envs"></span><h3>Dependencies, Virtual Environments, and Pipenv<a class="headerlink" href="#dependencies-virtual-environments-and-pipenv" title="Permalink to this headline">¶</a></h3>
+<p>Every Python project must specify the exact names and versions of its <strong>dependencies</strong>, i.e. other libraries and programs it depends on, so as to not fail on users’ and other developers’ computers.
+<strong>Virtual environments</strong> are used to prevent dependency conflicts between Python projects. According to the <a class="reference external" href="https://docs.python.org/3/library/venv.html">Python Standard Library documentation</a>,</p>
 <blockquote>
 <div><p>“A virtual environment is a Python environment such that the Python interpreter, libraries and scripts installed into it are isolated from those installed in other virtual environments, and (by default) any libraries installed in a “system” Python, i.e., one which is installed as part of your operating system.”</p>
 </div></blockquote>
-<p>Since different Python projects on your computer may require different versions of dependencies, virtual environments are important for preventing dependency conflicts. It is also crucial for projects to specify the exact dependencies required for them to behave correctly, so as to not fail on machines other than the developer’s.</p>
-<p><code class="docutils literal notranslate"><span class="pre">pipenv</span></code> is a tool that wraps <code class="docutils literal notranslate"><span class="pre">pip</span></code> and <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> together to manage virtual environments and dependency specifications for Python projects, with help of two important files: <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> and <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code>.</p>
+<p><strong>Pipenv</strong> wraps over <code class="docutils literal notranslate"><span class="pre">pip</span></code> and <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> to manage dependency specifications and virtual environments. It does so with the help of two files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> - where developers specify user/default dependencies and developer dependencies. These should include only top-level dependencies (no sub-dependencies).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> - an auto-generated file that specifies the exact requirements for reproducing an environment (including sub-dependencies). Do not edit manually!</p></li>
+</ul>
+<p>Some important commands for Pipenv are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span></code> - installs default dependencies from <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> into a virtual environment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">--dev</span></code> - install default <em>and</em> developer dependencies from <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code> into a virtual environment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">&lt;package&gt;</span></code> - installs a package into the virtual environment and updates <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">lock</span></code> - creates or updates <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> to specify all dependencies and sub-dependencies and their current versions in the virtual environment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">sync</span></code> - installs packages into the virtual environment exactly as specified in <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">run</span> <span class="pre">&lt;command&gt;</span></code> - runs any terminal command in the virtual environment.</p></li>
+</ul>
+<p>Refer to <a class="reference external" href="https://realpython.com/pipenv-guide/">Real Python’s guide</a> or <a class="reference external" href="https://pipenv-fork.readthedocs.io/en/latest/basics.html">Pipenv’s documentation</a> for more information.</p>
+</div>
+<div class="section" id="docstring-conventions">
+<span id="doc-conventions"></span><h3>Docstring Conventions<a class="headerlink" href="#docstring-conventions" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> package has used the <a class="reference external" href="https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html">Sphinx format</a> and the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard">NumPy format</a> for documenting modules, classes, functions, and constants. Regardless of which you use, the NumPy documentation is a good conceptual and technical resource.</p>
+<dl class="simple">
+<dt>Exceptions:</dt><dd><ul class="simple">
+<li><p>Descriptions of parameters and return values usually report data types. For some parameters and return values in <code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> that are clearly numeric (of type int, float, or complex), the data type is replaced with the scientific unit of the value, e.g. <code class="docutils literal notranslate"><span class="pre">u.degC</span></code> for <code class="docutils literal notranslate"><span class="pre">Temperature</span></code>. See the <a class="reference internal" href="core/units.html#units"><span class="std std-ref">Units</span></a> module for a list of frequently used units.</p></li>
+<li><p>In some cases, it’s more appropriate to include an example of code as a static RST code block rather than as a doctest. For more information on doctests, see <a class="reference internal" href="#testing"><span class="std std-ref">Python Testing</span></a>.</p></li>
+<li><p>A constant can be documented by comments starting with <code class="docutils literal notranslate"><span class="pre">#:</span></code> in the lines immediately above it. See the source code of the <a class="reference internal" href="core/constants.html#constants"><span class="std std-ref">Constants</span></a> module for examples.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="python-testing">
+<span id="testing"></span><h3>Python Testing<a class="headerlink" href="#python-testing" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">aguaclara</span></code> uses the <a class="reference external" href="https://docs.pytest.org/en/stable/"><code class="docutils literal notranslate"><span class="pre">pytest</span></code> package</a> and the <a class="reference external" href="https://docs.python.org/3/library/unittest.html"><code class="docutils literal notranslate"><span class="pre">unittest</span></code> package</a> for testing Python code. See <a class="reference external" href="https://github.com/AguaClara/aguaclara/blob/master/tests/core/test_physchem.py"><code class="docutils literal notranslate"><span class="pre">tests/core/test_physchem.py</span></code></a> for examples of using <code class="docutils literal notranslate"><span class="pre">pytest</span></code> and <a class="reference external" href="https://github.com/AguaClara/aguaclara/blob/master/tests/design/test_cdc.py"><code class="docutils literal notranslate"><span class="pre">tests/design/test_cdc.py</span></code></a> for examples of using <code class="docutils literal notranslate"><span class="pre">unittest</span></code>.</p>
+<p>Some modules also use Python tests that are written directly in the docstrings – that is, doctests. Here’s an example from <code class="docutils literal notranslate"><span class="pre">design/cdc.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">...</span>
+<span class="sd">&gt;&gt;&gt; from aguaclara.design.cdc import *</span>
+<span class="sd">&gt;&gt;&gt; cdc = CDC(q = 20 * u.L/u.s, coag_type = &#39;pacl&#39;)</span>
+<span class="sd">&gt;&gt;&gt; cdc.coag_stock_vol</span>
+<span class="sd">&lt;Quantity(2500.0, &#39;liter&#39;)&gt;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p><strong>All doctests must pass</strong>, i.e. the lines of code following the <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> must yield the value immediately after. One way to execute the doctests is to run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">run</span> <span class="n">pytest</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">file</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">doctest</span><span class="o">-</span><span class="n">modules</span>
+</pre></div>
+</div>
+<p>To check all doctests in the package at once, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>
+<span class="n">pipenv</span> <span class="n">run</span> <span class="n">make</span> <span class="n">doctest</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -521,7 +572,7 @@ The “Documentation” workflow will be running as well to update this document
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../research/stock_qc.html" class="btn btn-neutral float-left" title="Stock QC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="research/stock_qc.html" class="btn btn-neutral float-left" title="Stock QC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
