@@ -1,3 +1,5 @@
 ignore:
-  - "docs"
-  - "aguaclara/play.py"
+  - docs
+  - tests
+  - aguaclara/play.py
+  - setup.py

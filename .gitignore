@@ -104,6 +104,7 @@ cov_html
 
 # Sphinx documentation
 docs/_build/
+docs/source/_build/
 venv/
 *.iml
 .idea/
