@@ -114,7 +114,9 @@ class Pipe:
 
             return (od-2*t, nd, sch)
         available = list(map(addID, available))
-        return available[np.argmin(np.array(available)[:,0])][1:]
+        m = min(available)[0]
+
+        return list(filter(lambda x: m == x[0], available))[0][1:]
         
 
 def makePipe_ND_SDR(ND, SDR):
