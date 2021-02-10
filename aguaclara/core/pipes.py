@@ -1,6 +1,11 @@
 """This file contains functions which convert between the nominal, inner, and
 outer diameters of pipes based on their standard dimension ratio (SDR).
+
+Note: 
+added to pipe database for schedule 80, 120 and 160 using 
+https://www.engineersedge.com/pipe_schedules.htm#Related 
 """
+
 from aguaclara.core.units import u
 import aguaclara.core.utility as ut
 import numpy as np
@@ -74,9 +79,9 @@ class Pipe:
     def sch(self, NDarr=None, SCHarr=None):
         """ 
         The nominal diameter and schedule that best fits this pipe's criteria and NDarr and SCHarr
-        :param NDarr: an array of preferred nominal diameters (Ex: [10]*u.inch)
+        :param NDarr: an array of preferred nominal diameters (Ex: [10]*u.inch). Default: None
         :type NDarr: numpy.array * u.inch
-        :param SCHarr: an array of preferred schedules (Ex: [pipes.SCH.SCH160, pipes.SCH.SCH40])
+        :param SCHarr: an array of preferred schedules (Ex: [pipes.SCH.SCH160, pipes.SCH.SCH40]). Default: None
         :type SCHarr: pipes.SCH list 
 
         :return: (nominal diameter, schedule) tuple or None
@@ -97,9 +102,10 @@ class Pipe:
                 return SCH.SCH120
             elif n == SCH.SCH160.name:
                 return SCH.SCH160
-        def f (p):
-            #find id that goes with nd sch  
-            # (ND, schedule name)
+        def addID (p):
+            # find id that goes with nd sch and add it to the tuple
+            # p is of the structure (ND, schedule name)
+            # outputs (id, nd, sch) tuple
             nd = p[0]
             sch = p[1]
             row = pipedb.loc[pipedb['NDinch'] == nd.magnitude] # 1 row df
@@ -107,10 +113,8 @@ class Pipe:
             od = row['ODinch'].iloc[0]
 
             return (od-2*t, nd, sch)
-        available = list(map(f, available))
-        m = min(available)[0]
-
-        return list(filter(lambda x: m == x[0], available))[0][1:]
+        available = list(map(addID, available))
+        return available[np.argmin(np.array(available)[:,0])][1:]
         
 
 def makePipe_ND_SDR(ND, SDR):
@@ -171,7 +175,7 @@ def OD_SDR(ID,SDR):
     :param SDR: the standard dimension ratio of the pipe
     :type SDR: float
 
-    :return: minimum outer diamter available
+    :return: minimum outer diameter available
     :rtype: u.inch
     """
     if SDR == 2:
@@ -208,7 +212,7 @@ def ID_SDR(ND, SDR):
     :param SDR: the outer diameter divided by the wall thickness.
     :type SDR: float
 
-    :return: innter diameter of a pipe
+    :return: inner diameter of a pipe
     :rtype: u.inch
     """
     return OD(ND) * (SDR-2) / SDR
@@ -290,8 +294,8 @@ def SCH_all_available(minID, maxSDR, NDarr=None, SCHarr=[SCH.SCH40, SCH.SCH80, S
     :param SCHarr: the preferred list of schedules to look through
     :type SCHarr: pipes.SCH list
 
-    :return: list of tuples in the form (nominal diameter, schedule). Example: (10*u.inch, pipes.SCH.SCH160.name)
-    :rtype: (float*u.inch, pipes.SCH) list
+    :return: list of tuples in the form (nominal diameter, schedule). Example: (10*u.inch, "SCH160")
+    :rtype: (float*u.inch, string) list
     """
     #loop through all nd and sch available. 
     #If find a pipe whose SDR is \le the requirement (smaller SDR=handle more pressure) 
@@ -406,8 +410,3 @@ def cap_thickness(ND):
     return cap_thickness
 
 
-"""
-Note: 
-added to pipe database for schedule 80, 120 and 160 using 
-https://www.engineersedge.com/pipe_schedules.htm#Related 
-"""
