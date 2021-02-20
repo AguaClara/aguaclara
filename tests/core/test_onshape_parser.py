@@ -113,13 +113,14 @@ class OnshapeParserTest(unittest.TestCase):
 
     def test_get_parsed_measurements(self):
         link = 'https://cad.onshape.com/documents/c3a8ce032e33ebe875b9aab4/v/dc76b3f674d3d5d4f6237f35/e/d75b2f7a41dde39791b154e8'
-        measurements, templates = parse.get_parsed_measurements(
+        measurements, templates, processes = parse.get_parsed_measurements(
             link,
-            fields=['variables', 'template'],
+            fields=['variables', 'template', 'process'],
             for_docs=False
         )
 
         self.assertEqual(templates, ['./Entrance_Tank/LFOM.rst'])
+        self.assertEqual(processes, ['ET'])
         self.assertEqual(measurements['N.LfomOrifices'],
                          [17.0, 4.0, 6.0, 3.0, 4.0, 3.0, 3.0, 3.0, 3.0, 2.0, 3.0, 1.0])
         self.assertEqual(measurements['HL.Lfom'], 0.2 * u.m)

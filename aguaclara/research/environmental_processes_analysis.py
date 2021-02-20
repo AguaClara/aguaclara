@@ -293,7 +293,7 @@ def E_CMFR_N(t, N):
     """
     return (N**N)/special.gamma(N) * (t**(N-1))*np.exp(-N*t)
 
-
+@ut.list_handler()
 def E_Advective_Dispersion(t, Pe):
     """Calculate a dimensionless measure of the output tracer concentration from
     a spike input to reactor with advection and dispersion.
@@ -312,11 +312,10 @@ def E_Advective_Dispersion(t, Pe):
     >>> round(E_Advective_Dispersion(0.5, 5), 7)
     0.4774864
     """
-    # replace any times at zero with a number VERY close to zero to avoid
-    # divide by zero errors
-    if isinstance(t, list):
-        t[t == 0] = 10**(-10)
-    return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
+    if t == 0:
+        return 0
+    else:
+        return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
 
 
 def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):

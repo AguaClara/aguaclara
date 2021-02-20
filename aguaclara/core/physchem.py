@@ -113,7 +113,7 @@ def viscosity_dynamic_water(Temperature):
     :return: dynamic viscosity of water
     :rtype: u.kg/(u.m*u.s)
     """
-    ut.check_range([Temperature.magnitude, ">0", "Temperature in Kelvin"])
+    ut.check_range([Temperature.magnitude, ">=0", "Temperature in Kelvin"])
     return 2.414 * (10**-5) * u.kg/(u.m*u.s) * 10**(247.8*u.degK /
                                                     (Temperature - 140*u.degK))
 
@@ -139,7 +139,7 @@ def density_water(Temperature=None, *, temp=None):
                       UserWarning)
         Temperature = temp
 
-    ut.check_range([Temperature.magnitude, ">0", "Temperature in Kelvin"])
+    ut.check_range([Temperature.magnitude, ">=0", "Temperature in Kelvin"])
     rhointerpolated = interpolate.CubicSpline(WATER_DENSITY_TABLE[0],
                                               WATER_DENSITY_TABLE[1])
     Temperature = Temperature.to(u.degK).magnitude
@@ -168,7 +168,7 @@ def viscosity_kinematic_water(Temperature):
     :return: kinematic viscosity of water
     :rtype: u.m**2/u.s
     """
-    ut.check_range([Temperature.magnitude, ">0", "Temperature in Kelvin"])
+    ut.check_range([Temperature.magnitude, ">=0", "Temperature in Kelvin"])
     return (viscosity_dynamic_water(Temperature) / density_water(Temperature))
 
 ####################### Hydraulic Radius #######################
@@ -1680,6 +1680,9 @@ def re_ergun(ApproachVel, DiamMedia, Temperature, Porosity):
     ut.check_range([ApproachVel.magnitude, ">0", "ApproachVel"],
                    [DiamMedia.magnitude, ">0", "DiamMedia"],
                    [Porosity, "0-1", "Porosity"])
+    if Porosity == 1:
+        raise ValueError("Porosity is " + str(Porosity) + " must be great than\
+            or equal to 0 and less than 1")
     return (ApproachVel * DiamMedia /
             (viscosity_kinematic_water(Temperature)
              * (1 - Porosity))).to(u.dimensionless)

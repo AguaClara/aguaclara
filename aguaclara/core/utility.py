@@ -156,9 +156,6 @@ def stepceil_with_units(param, step, unit):
         counter += step * unit
     return counter
 
-# TODO: I'm not sure if these next two functions work for unsorted arrays, so it
-# would be good to check in the future -Oliver Leung (oal22), 19 Jul '19
-
 def floor_nearest(x, array):
     """Get the nearest element of a NumPy array less than or equal to a value.
 
@@ -166,18 +163,26 @@ def floor_nearest(x, array):
         - ``x``: Value to compare
         - ``array (numpy.array)``: Array to search
     """
-    i = np.argmax(array >= x) - 1
-    return array[i]
+    sorted_array = np.sort(array)[::-1]  # [::-1] syntax reverses array
+    if x < sorted_array[-1]:
+        raise ValueError(str(x) + " is smaller than all values in the array.")
+    else:
+        i = np.argmax(sorted_array <= x)
+        return sorted_array[i]
 
 def ceil_nearest(x, array):
-    """Get the nearest element of a NumPy array less than or equal to a value.
+    """Get the nearest element of a NumPy array greater than or equal to a value.
 
     Args:
         - ``x``: Value to compare
         - ``array (numpy.array)``: Array to search
     """
-    i = np.argmax(array >= x)
-    return array[i]
+    sorted_array = np.sort(array)
+    if x > sorted_array[-1]:
+        raise ValueError(str(x) + " is larger than all values in the array.")
+    else:
+        i = np.argmax(sorted_array >= x)
+        return sorted_array[i]
 
 def _minmax(*args, func=np.max):
     """Get the minuimum/maximum value of some Pint quantities with units.

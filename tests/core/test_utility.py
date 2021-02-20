@@ -28,6 +28,26 @@ class UtilityTest(QuantityTest):
         self.assertAlmostEqual(ut.round_sig_figs(0, 4), 0)
         self.assertAlmostEqual(ut.round_sig_figs(0 * u.m, 4), 0 * u.m)
 
+    def test_floor_nearest(self):
+        self.assertEqual(ut.floor_nearest(1, np.array([1, 1.5, 2])), 1)
+        self.assertEqual(ut.floor_nearest(1, np.array([0, 1, 1.5, 2])), 1)
+        self.assertEqual(ut.floor_nearest(1, np.array([0.5, 1.5, 2])), 0.5)
+        self.assertEqual(ut.floor_nearest(1, np.array([0, 2, 1.5, 0.5])), 0.5)
+        self.assertEqual(ut.floor_nearest(1, np.array([0.4, 0.2, 0.1, 0.5])), 0.5)
+
+    def test_floor_nearest_raises(self):
+        self.assertRaises(ValueError, ut.floor_nearest, x=1, array=np.array([1.5, 2, 2.5]))
+
+    def test_ceil_nearest(self):
+        self.assertEqual(ut.ceil_nearest(2, np.array([1, 1.5, 2])), 2)
+        self.assertEqual(ut.ceil_nearest(1.5, np.array([1, 1.5, 2])), 1.5)
+        self.assertEqual(ut.ceil_nearest(1.6, np.array([0.5, 1.5, 2])), 2)
+        self.assertEqual(ut.ceil_nearest(1.4, np.array([0, 2, 1.5, 0.5])), 1.5)
+        self.assertEqual(ut.ceil_nearest(0.4, np.array([0.8, 2, 1, 0.5])), 0.5)
+
+    def test_ceil_nearest_raises(self):
+        self.assertRaises(ValueError, ut.ceil_nearest, x=3, array=np.array([1.5, 2, 2.5]))
+
     def test_max(self):
         self.assertEqual(ut.max(2 * u.m, 4 * u.m),4 * u.m)
         self.assertEqual(ut.max(3 * u.m, 1 * u.m, 6 * u.m, 10 * u.m, 1.5 * u.m), 10 * u.m)
