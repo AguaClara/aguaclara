@@ -38,3 +38,16 @@ Designing an experiment with a contaminant and a coagulant of unknown concentrat
     print("will require a dilution factor of", round(mL_per_L.magnitude, 3),
     "milliliters of PACl super")
     print("stock per liter of water for the PACl stock.")
+
+
+    """
+    Output:
+        A reactor with a system flow rate of 2 milliliter / second ,
+        a system PACl concentration of 1.4 milligram / liter ,
+        and a PACl stock flow rate of 0.007442 milliliter / second
+        will require a dilution factor of 5.353 milliliters of PACl super
+        stock per liter of water for the PACl stock.
+    """
+
+
+Want to try some of this out? **Interact and play with the code** `here <https://colab.research.google.com/drive/1R2gxaF2creyPNXBrDwfsd_z2yx3Skrdf?usp=sharing>`_!

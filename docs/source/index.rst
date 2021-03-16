@@ -120,3 +120,4 @@ Table of Contents
 
     api
     guide-dev
+    guide-user/guide-user

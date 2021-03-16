@@ -10,3 +10,4 @@ User Guide
     install
     data
     experimental-design
+    particle-removal
