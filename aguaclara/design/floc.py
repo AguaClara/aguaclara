@@ -246,11 +246,11 @@ class Flocculator(Component):
     def obstacle_pipe_od(self):
         """The outer diameter of an obstacle pipe. If the available pipe is
         greater than 1.5 inches, the obstacle offset will become false."""
-        pipe_od = pipes.od_available(self.contraction_s)
+        pipe_od = pipes.OD_available(self.contraction_s)
 
         if pipe_od > 1.5 * u.inch:
             self.OBSTACLE_OFFSET = False
-            pipe_od = pipes.od_available(pipe_od / 2)
+            pipe_od = pipes.OD_available(pipe_od / 2)
 
         return pipe_od
 
