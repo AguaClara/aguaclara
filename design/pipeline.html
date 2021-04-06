@@ -205,7 +205,7 @@ inner diameters for pipeline fittings</p></li>
 </dl>
 <dl class="py class">
 <dt id="aguaclara.design.pipeline.PipelineComponent">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.pipeline.</code><code class="sig-name descname">PipelineComponent</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></code><code class="sig-name descname"><span class="pre">PipelineComponent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>An abstract representation of pipeline components</p>
 <p>This abstract base class (ABC) contains common functionality for:</p>
 <ol class="arabic simple">
@@ -235,26 +235,26 @@ defaults to 0)</p></li>
 </dl>
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.PipelineComponent.nu">
-<em class="property">property </em><code class="sig-name descname">nu</code><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.nu" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nu</span></code><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.nu" title="Permalink to this definition">¶</a></dt>
 <dd><p>The kinematic viscosity of the fluid passing through the pipeline
 component.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.PipelineComponent.headloss">
-<em class="property">abstract </em><code class="sig-name descname">headloss</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.headloss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.headloss" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">headloss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.headloss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.headloss" title="Permalink to this definition">¶</a></dt>
 <dd><p>The head loss of this pipeline component.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.PipelineComponent.headloss_pipeline">
-<em class="property">property </em><code class="sig-name descname">headloss_pipeline</code><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.headloss_pipeline" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">headloss_pipeline</span></code><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.headloss_pipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>The head loss of the entire pipeline following this component.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.PipelineComponent.flow_pipeline">
-<code class="sig-name descname">flow_pipeline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target_headloss</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.flow_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.flow_pipeline" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">flow_pipeline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_headloss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.flow_pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.flow_pipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the required flow through a pipeline component and all of
 its next components to reach a desired head loss.</p>
 <dl class="simple">
@@ -268,7 +268,7 @@ the pipeline</p></li>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.PipelineComponent.format_print">
-<em class="property">abstract </em><code class="sig-name descname">format_print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.format_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.format_print" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">format_print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.format_print" title="Permalink to this definition">¶</a></dt>
 <dd><p>The string representation of a pipeline component, disregarding other
 components in its pipeline.</p>
 </dd></dl>
@@ -277,7 +277,7 @@ components in its pipeline.</p>
 
 <dl class="py class">
 <dt id="aguaclara.design.pipeline.Pipe">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.pipeline.</code><code class="sig-name descname">Pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></code><code class="sig-name descname"><span class="pre">Pipe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design class for a pipe</p>
 <p>Instantiate this class to create a readily constructible pipe and calculate
 its hydraulic features.</p>
@@ -311,25 +311,25 @@ defaults to 0)</p></li>
 </dl>
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.Pipe.od">
-<em class="property">property </em><code class="sig-name descname">od</code><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.od" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">od</span></code><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.od" title="Permalink to this definition">¶</a></dt>
 <dd><p>The outer diameter of the pipe</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.Pipe.ID_SDR_all_available">
-<code class="sig-name descname">ID_SDR_all_available</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SDR</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe.ID_SDR_all_available"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.ID_SDR_all_available" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">ID_SDR_all_available</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe.ID_SDR_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.ID_SDR_all_available" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an array of inner diameters with a given SDR.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.Pipe.headloss">
-<em class="property">property </em><code class="sig-name descname">headloss</code><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.headloss" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">headloss</span></code><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.headloss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the total head loss from major and minor losses in a pipe.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.Pipe.format_print">
-<code class="sig-name descname">format_print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe.format_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.format_print" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">format_print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.format_print" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the string representation of this pipe.</p>
 </dd></dl>
 
@@ -337,7 +337,7 @@ defaults to 0)</p></li>
 
 <dl class="py class">
 <dt id="aguaclara.design.pipeline.Elbow">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.pipeline.</code><code class="sig-name descname">Elbow</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></code><code class="sig-name descname"><span class="pre">Elbow</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design class for an Elbow</p>
 <p>Instantiate this class to create a readily constructible Elbow fitting and
 calculate its hydraulic features.</p>
@@ -371,13 +371,13 @@ found in <code class="docutils literal notranslate"><span class="pre">AVAILABLE_
 </dl>
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.Elbow.headloss">
-<em class="property">property </em><code class="sig-name descname">headloss</code><a class="headerlink" href="#aguaclara.design.pipeline.Elbow.headloss" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">headloss</span></code><a class="headerlink" href="#aguaclara.design.pipeline.Elbow.headloss" title="Permalink to this definition">¶</a></dt>
 <dd><p>The headloss</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.Elbow.format_print">
-<code class="sig-name descname">format_print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow.format_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow.format_print" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">format_print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow.format_print" title="Permalink to this definition">¶</a></dt>
 <dd><p>The string representation for an Elbow Fitting.</p>
 </dd></dl>
 
@@ -385,7 +385,7 @@ found in <code class="docutils literal notranslate"><span class="pre">AVAILABLE_
 
 <dl class="py class">
 <dt id="aguaclara.design.pipeline.Tee">
-<em class="property">class </em><code class="sig-prename descclassname">aguaclara.design.pipeline.</code><code class="sig-name descname">Tee</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></code><code class="sig-name descname"><span class="pre">Tee</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee" title="Permalink to this definition">¶</a></dt>
 <dd><p>Design class for a Tee</p>
 <p>Instantiate this class to create a readily constructible tee fitting and
 calculate its hydraulic features.</p>
@@ -427,13 +427,13 @@ can only be one of the elements in AVAILABLE_PATHS.
 </dl>
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.Tee.headloss">
-<em class="property">property </em><code class="sig-name descname">headloss</code><a class="headerlink" href="#aguaclara.design.pipeline.Tee.headloss" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">headloss</span></code><a class="headerlink" href="#aguaclara.design.pipeline.Tee.headloss" title="Permalink to this definition">¶</a></dt>
 <dd><p>The headloss</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="aguaclara.design.pipeline.Tee.format_print">
-<code class="sig-name descname">format_print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee.format_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee.format_print" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">format_print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee.format_print" title="Permalink to this definition">¶</a></dt>
 <dd><p>The string representation of this tee.</p>
 </dd></dl>
 
