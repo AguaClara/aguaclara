@@ -40,8 +40,8 @@ jobs:
         flake8 aguaclara --count --verbose --show-source --statistics
     
     - name: Check with black
-      - uses: actions/setup-python@v2
-      - uses: psf/black@stable
+      uses: actions/setup-python@v2
+      uses: psf/black@stable
       run: |
         black --check aguaclara --verbose --pyi  
       
