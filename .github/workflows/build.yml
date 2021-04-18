@@ -41,7 +41,7 @@ jobs:
     
     - name: Check with black
       run: |
-        black --check aguaclara
+        black --check aguaclara --verbose --pyi  
   
   test-docs:
     runs-on: ubuntu-latest

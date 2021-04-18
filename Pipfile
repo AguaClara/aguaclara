@@ -27,3 +27,5 @@ requests = ">=2.20.0" # Resolves security vulnerability
 rope = "*"
 Sphinx = "*"
 sphinx_rtd_theme = "*"
+flake8 = "*"
+black = "*"
