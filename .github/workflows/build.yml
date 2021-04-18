@@ -35,13 +35,7 @@ jobs:
       with:
         fail_ci_if_error: true
     
-    - name: Lint with flake8
-      run: |
-        flake8 aguaclara --count --verbose --show-source --statistics
-    
-    - name: Check with black
-      run: |
-        black --check aguaclara --verbose --pyi  
+
       
   
   test-docs:
