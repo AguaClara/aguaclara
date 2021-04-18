@@ -40,7 +40,6 @@ jobs:
         flake8 aguaclara --count --verbose --show-source --statistics
     
     - name: Check with black
-      uses: psf/black@stable
       run: |
         black --check aguaclara --verbose --pyi  
       
