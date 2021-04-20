@@ -2,8 +2,8 @@
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
-
 # Ensure that this matches setup.py > setup() > install_requires
+
 [packages]
 matplotlib = "*"
 urllib3 = "*"
@@ -11,6 +11,8 @@ pint = "*"
 pandas = "*"
 scipy = "*"
 onshape_client = "*"
+black = "*"
+flake8 = "*"
 
 [dev-packages]
 aguaclara = {editable = true, path = "."}
@@ -27,5 +29,3 @@ requests = ">=2.20.0" # Resolves security vulnerability
 rope = "*"
 Sphinx = "*"
 sphinx_rtd_theme = "*"
-flake8 = "*"
-black = "*"
