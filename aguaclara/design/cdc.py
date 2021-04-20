@@ -60,10 +60,10 @@ class CDC(Component):
         the coagulant.
         """
         alum_nu = \
-            (1 + (4.255 * 10 ** -6) * coag_conc.magnitude ** 2.289) * \
+            (1 + (4.255 * 10 ** -6) * (coag_conc/(u.kg/u.m**3)).to(u.dimensionless) ** 2.289) * \
             pc.viscosity_kinematic_water(self.temp)
         return alum_nu
-    
+
     def _alum_nu(self, coag_conc):
         """
         .. deprecated::
@@ -72,20 +72,20 @@ class CDC(Component):
         # Deprecated since January 2021
         warnings.warn('_alum_nu is deprecated; use alum_nu instead.',
                   UserWarning)
-    
+
         return self.alum_nu(coag_conc)
-        
+
     def pacl_nu(self, coag_conc):
         """Return the dynamic viscosity of water at a given temperature.
 
         If given units, the function will automatically convert to Kelvin.
         If not given units, the function will assume Kelvin.
         This function assumes that the temperature dependence can be explained
-        based on the effect on water and that there is no confounding effect 
+        based on the effect on water and that there is no confounding effect
         from the coagulant.
         """
         pacl_nu = \
-            (1 + (2.383 * 10 ** -5) * (coag_conc).magnitude ** 1.893) * \
+            (1 + (2.383 * 10 ** -5) * (coag_conc/(u.kg/u.m**3)).to(u.dimensionless) ** 1.893) * \
             pc.viscosity_kinematic_water(self.temp)
         return pacl_nu
 
@@ -97,9 +97,9 @@ class CDC(Component):
         # Deprecated since January 2021
         warnings.warn('_pacl_nu is deprecated; use pacl_nu instead.',
                   UserWarning)
-    
+
         return self.pacl_nu(coag_conc)
-        
+
     def _coag_nu(self, coag_conc, coag_type):
         """
         .. deprecated::
@@ -108,9 +108,9 @@ class CDC(Component):
         # Deprecated since January 2021
         warnings.warn('_coag_nu is deprecated; use coag_nu instead.',
                   UserWarning)
-    
+
         return self.coag_nu(coag_conc, coag_type)
-       
+
     def coag_nu(self, coag_conc, coag_type):
         """Return the dynamic viscosity of water at a given temperature.
 
@@ -130,14 +130,14 @@ class CDC(Component):
 
         .. deprecated::
             `coag_q_max_est` is deprecated; use `coag_q_max` instead, which is
-            based on the exact user-defined coagulant stock concentration, 
+            based on the exact user-defined coagulant stock concentration,
             `coag_stock_conc`.
         """
         # Deprecated since January 2021
         warnings.warn('coag_q_max_est is deprecated; use coag_q_max instead,\
             which is based on the exact user-defined coagulant stock \
             concentration, coag_stock_conc.', UserWarning)
-        
+
         coag_q_max_est = self.q * self.coag_dose_conc_max / \
             self.coag_stock_conc_est
         return coag_q_max_est
@@ -207,7 +207,7 @@ class CDC(Component):
 
     @property
     def coag_tubes_n(self):
-        """The number of coagulant tubes in use, plus a spare tube for 
+        """The number of coagulant tubes in use, plus a spare tube for
         maintenance.
         """
         coag_tubes_n = self.coag_tubes_active_n + 1
