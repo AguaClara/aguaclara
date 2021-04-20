@@ -250,5 +250,6 @@ class CDC(Component):
     def _DiamTubeAvail(self, en_tube_series = True):
         if en_tube_series:
             return 1*u.mm
+        
         else:
             return (1/16)*u.inch
