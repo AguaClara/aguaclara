@@ -37,7 +37,7 @@ jobs:
     
     - name: Lint with flake8
       run: |
-        python -m flake8 aguaclara --count --verbose --show-source --statistics
+        pip show -f flake8
     
     - name: Check with black
       run: |
