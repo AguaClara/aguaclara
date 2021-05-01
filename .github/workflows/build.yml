@@ -51,7 +51,7 @@ jobs:
         pip install pipenv
     - name: Lint with flake8
       run: |
-        flake8 aguaclara --count --verbose --show-source --statistics
+        python -m flake8 aguaclara --count --verbose --show-source --statistics
     - name: Check with black
       run: |
         black --check aguaclara --verbose --pyi 
