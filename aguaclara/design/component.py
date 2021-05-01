@@ -50,14 +50,15 @@ from urllib.parse import quote_plus
 
 class Component(ABC):
     """An abstract class representing AguaClara plant components.
-    
+
     This class provides subclasses with the ability to record and propogate a
     configuration of plant design variables (``q`` and ``temp``) for a component
     and all of its subcomponents.
     """
+
     Q_DEFAULT = 20 * u.L / u.s
     TEMP_DEFAULT = 20 * u.degC
-    onshape_url_default = ''
+    onshape_url_default = ""
 
     def __init__(self, **kwargs):
         self.q = self.Q_DEFAULT
@@ -82,28 +83,28 @@ class Component(ABC):
                 subcomp.temp = self.temp
 
             # Recursively set sub-subcomponents.
-            if hasattr(subcomp, 'subcomponents'):
+            if hasattr(subcomp, "subcomponents"):
                 subcomp.set_subcomponents()
-        
+
     def serialize_properties(self):
-        """Return the properties (fields and ``@property`` functions) of a 
+        """Return the properties (fields and ``@property`` functions) of a
         component as a dictionary string.
         """
         properties = {}
         ignored_properties = [
-            '__dict__',
-            '__doc__',
-            '__module__',
-            '__weakref__',
-            'subcomponents',
-            'Q_DEFAULT',
-            'TEMP_DEFAULT',
-            '__abstractmethods__',
-            '_abc_cache',
-            '_abc_negative_cache',
-            '_abc_negative_cache_version',
-            '_abc_registry',
-            'onshape_config'
+            "__dict__",
+            "__doc__",
+            "__module__",
+            "__weakref__",
+            "subcomponents",
+            "Q_DEFAULT",
+            "TEMP_DEFAULT",
+            "__abstractmethods__",
+            "_abc_cache",
+            "_abc_negative_cache",
+            "_abc_negative_cache_version",
+            "_abc_registry",
+            "onshape_config",
         ]
         # Get all of the object's fields
         for var_name in dir(self):
@@ -118,36 +119,35 @@ class Component(ABC):
             elif not callable(value) and var_name not in ignored_properties:
 
                 # Serialize lists or arrays
-                try: 
+                try:
                     if type(value.magnitude) is np.ndarray:
                         properties[var_name] = ut.array_qtys_to_strs(value)
                     else:
                         properties[var_name] = str(value)
-                
+
                 # Serialize non-iterable properties
-                except AttributeError: 
+                except AttributeError:
                     properties[var_name] = str(value)
-    
+
         return properties
 
     def print_properties(self):
         """Print the serialized properties with pretty indentation."""
         pprint(self.serialize_properties())
-    
+
     def write_properties_to_file(self):
         """Append the properties of a component to a file. If it does not exist,
         then the file is created.
-        
+
         Args:
             - ``filename (str)``: The name of the file
         """
         filename = "props.json"
-        json.dump(self.serialize_properties(), open(filename, mode='w'),
-            indent = 4)
+        json.dump(self.serialize_properties(), open(filename, mode="w"), indent=4)
         print("Properties of component can be found in file props.json")
 
     def _encode_onshape_config(self, config):
-        encoding = ''
+        encoding = ""
         for key, value in onshape_config.items():
             if type(value) is u.Quantity:
                 value = str(value)
@@ -158,14 +158,16 @@ class Component(ABC):
     @property
     def onshape_url_configured(self):
         onshape_url_configured = (
-            self.onshape_url_default + 
-            '?configuration=' +
-            self._encode_onshape_config(self.onshape_config)
+            self.onshape_url_default
+            + "?configuration="
+            + self._encode_onshape_config(self.onshape_config)
         )
         return onshape_url_configured
 
+
 # TODO: get the following to work in the general case when passing a simple
 # nested dictionary to Onshape.
+
 
 def nested_dict_to_str(dict_, level=0):
     for key, value in dict_.items():
@@ -173,25 +175,23 @@ def nested_dict_to_str(dict_, level=0):
             dict_[key] = str(value)
         elif type(value) is dict:
             dict_[key] = nested_dict_to_str(value, level - 1)
-    
+
     if level <= 0:
         dict_ = str(dict_)
     return dict_
 
+
 def encode_onshape_config(config):
-    encoding = ''
+    encoding = ""
     for key, value in config.items():
         if type(value) in [u.Quantity, dict]:
             value = str(value)
         value = quote_plus(value)
-        encoding += '{}={};'.format(key, value)
+        encoding += "{}={};".format(key, value)
 
     return encoding
 
+
 def onshape_url_configured(base_url, encoding):
-    onshape_url_configured = (
-        base_url + 
-        '?configuration=' +
-        quote_plus(encoding)
-    )
+    onshape_url_configured = base_url + "?configuration=" + quote_plus(encoding)
     return onshape_url_configured

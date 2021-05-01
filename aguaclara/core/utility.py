@@ -54,11 +54,13 @@ def optional_units(arg_positions, keys):
                 result = result.magnitude
 
             return result
+
         return wrapper
+
     return decorator
 
 
-@optional_units([0], ['num'])
+@optional_units([0], ["num"])
 def round_sig_figs(num, figs=4):
     """Round a number to some amount of significant figures.
 
@@ -87,13 +89,13 @@ def round_sf(num, figs=4):
     round_sig_figs instead.
     """
     warnings.warn(
-        'round_sf will be deprecated after 21 Dec 2019. Use '
-            'round_sig_figs instead.',
-        FutureWarning
+        "round_sf will be deprecated after 21 Dec 2019. Use " "round_sig_figs instead.",
+        FutureWarning,
     )
-    round_sig_figs(num, figs = figs)
+    round_sig_figs(num, figs=figs)
 
-@optional_units([0, 1], ['num', 'step'])
+
+@optional_units([0, 1], ["num", "step"])
 def _stepper(num, step=10, func=round):
     """Round a number to be a multiple of some step.
 
@@ -112,6 +114,7 @@ def _stepper(num, step=10, func=round):
     num = func(num / step) * step
     return num
 
+
 def round_step(num, step=10):
     """Round a number to be a multiple of some step.
 
@@ -125,15 +128,18 @@ def round_step(num, step=10):
         necessarily the same units (e.g. ``num``: meters and ``step``:
         centimeters are acceptable).
     """
-    return _stepper(num, step = step, func = round)
+    return _stepper(num, step=step, func=round)
+
 
 def ceil_step(num, step=10):
     """Like :func:`round_step`, but ``num`` is always rounded up."""
-    return _stepper(num, step = step, func = ceil)
+    return _stepper(num, step=step, func=ceil)
+
 
 def floor_step(num, step=10):
     """Like :func:`round_step`, but ``num`` is always rounded down."""
-    return _stepper(num, step = step, func = floor)
+    return _stepper(num, step=step, func=floor)
+
 
 def stepceil_with_units(param, step, unit):
     """Round a number up to be a multiple of some step.
@@ -147,14 +153,15 @@ def stepceil_with_units(param, step, unit):
     instead.
     """
     warnings.warn(
-        'stepceil_with_units will be deprecated after 21 Dec 2019. Use '
-            'ceil_step instead.',
-        FutureWarning
+        "stepceil_with_units will be deprecated after 21 Dec 2019. Use "
+        "ceil_step instead.",
+        FutureWarning,
     )
     counter = 0 * unit
     while counter < param.to(unit):
         counter += step * unit
     return counter
+
 
 def floor_nearest(x, array):
     """Get the nearest element of a NumPy array less than or equal to a value.
@@ -170,6 +177,7 @@ def floor_nearest(x, array):
         i = np.argmax(sorted_array <= x)
         return sorted_array[i]
 
+
 def ceil_nearest(x, array):
     """Get the nearest element of a NumPy array greater than or equal to a value.
 
@@ -183,6 +191,7 @@ def ceil_nearest(x, array):
     else:
         i = np.argmax(sorted_array >= x)
         return sorted_array[i]
+
 
 def _minmax(*args, func=np.max):
     """Get the minuimum/maximum value of some Pint quantities with units.
@@ -209,6 +218,7 @@ def _minmax(*args, func=np.max):
     result = func(lst) * base_quantity
     return result
 
+
 def max(*args):
     """Get the maximum value of some Pint quantities with units.
 
@@ -222,11 +232,13 @@ def max(*args):
         >>> ut.max(10 * u.m, 100 * u.cm, 32 * u.cm, 40 * u.inch, 40 * u.km)
         <Quantity(40000.0, 'meter')>
     """
-    return _minmax(*args, func = np.max)
+    return _minmax(*args, func=np.max)
+
 
 def min(*args):
     """Like :func:`max`, but the minimum of the quantites."""
-    return _minmax(*args, func = np.min)
+    return _minmax(*args, func=np.min)
+
 
 def get_sdr(spec):
     """Get the SDR of a string ``spec`` with the form \"sdrXX\".
@@ -234,8 +246,9 @@ def get_sdr(spec):
     Args:
         - ``spec (str)``: The specification string to be parsed."""
     if spec[:3] != "sdr":
-        raise ValueError('Not a valid SDR.')
+        raise ValueError("Not a valid SDR.")
     return int(spec[3:])
+
 
 def list_handler():
     """Wraps a scalar function to output a NumPy array if passed one or more inputs
@@ -249,11 +262,11 @@ def list_handler():
     dimensions d_1, ..., d_n (from left to right), the result would be a
     d_1 x ... x d_n array.
     """
+
     def decorate(func):
-        @functools.wraps(func) # For Sphinx documentation of decorated functions
+        @functools.wraps(func)  # For Sphinx documentation of decorated functions
         def wrapper(*args, **kwargs):
-            """Run through the wrapped function once for each array element.
-            """
+            """Run through the wrapped function once for each array element."""
             # Identify the first positional argument that is a sequence.
             # Pint units must be ignored to include sequences with units.
             argsFirstSequence = None
@@ -306,6 +319,7 @@ def list_handler():
                 return np.array(result)
 
         return wrapper
+
     return decorate
 
 
@@ -327,53 +341,62 @@ def check_range(*args):
     Range requests that this function understands are listed in the
     knownChecks sequence.
     """
-    knownChecks = ('>0', '>=0', '0-1', '<0', '<=0', 'int', 'boolean')
+    knownChecks = (">0", ">=0", "0-1", "<0", "<=0", "int", "boolean")
     for arg in args:
-        #Converts arg to a mutable list
+        # Converts arg to a mutable list
         arg = [*arg]
         if len(arg) == 1:
-            #arg[1] details what range the parameter should fall within; if
-            #len(arg) is 1 that means a validity was not specified and the
-            #parameter should not have been passed in its current form
+            # arg[1] details what range the parameter should fall within; if
+            # len(arg) is 1 that means a validity was not specified and the
+            # parameter should not have been passed in its current form
             raise TypeError("No range-validity parameter provided.")
         elif len(arg) == 2:
-            #Appending 'Input" to the end allows us to give more descriptive
-            #error messages that do not fail if no description was supplied.
+            # Appending 'Input" to the end allows us to give more descriptive
+            # error messages that do not fail if no description was supplied.
             arg.append("Input")
-        #This ensures that all whitespace is removed before checking if the
-        #request is understood
+        # This ensures that all whitespace is removed before checking if the
+        # request is understood
         arg[1] = "".join(arg[1].lower().split())
-        #This block checks that each range request is understood.
-        #If the request is a compound one, it must be separated into individual
-        #requests for validity comprehension
+        # This block checks that each range request is understood.
+        # If the request is a compound one, it must be separated into individual
+        # requests for validity comprehension
         for i in arg[1].split(","):
             if i not in knownChecks:
-                raise RuntimeError("Unknown parameter validation "
-                                       "request: {0}.".format(i))
+                raise RuntimeError(
+                    "Unknown parameter validation " "request: {0}.".format(i)
+                )
         if not isinstance(arg[0], (list, tuple, np.ndarray)):
             arg[0] = [arg[0]]
         for i in arg[0]:
-            if '>0' in arg[1] and i <= 0:
-                raise ValueError("{1} is {0} but must be greater than "
-                                 "0.".format(i, arg[2]))
-            if '>=0' in arg[1] and i <0:
-                raise ValueError("{1} is {0} but must be 0 or "
-                                 "greater.".format(i, arg[2]))
-            if '0-1' in arg[1] and not 0 <= i <= 1:
-                raise ValueError("{1} is {0} but must be between 0 and "
-                                 "1.".format(i, arg[2]))
-            if '<0' in arg[1] and i >= 0:
-                raise ValueError("{1} is {0} but must be less than "
-                                 "0.".format(i, arg[2]))
-            if '<=0' in arg[1] and i >0:
-                raise ValueError("{1} is {0} but must be 0 or "
-                                 "less.".format(i, arg[2]))
-            if 'int' in arg[1] and int(i) != i:
-                raise TypeError("{1} is {0} but must be a numeric "
-                                "integer.".format(i, arg[2]))
-            if 'boolean' in arg[1] and type(i) != bool:
-                raise TypeError("{1} is {0} but must be a "
-                                "boolean.".format(i, arg[2]))
+            if ">0" in arg[1] and i <= 0:
+                raise ValueError(
+                    "{1} is {0} but must be greater than " "0.".format(i, arg[2])
+                )
+            if ">=0" in arg[1] and i < 0:
+                raise ValueError(
+                    "{1} is {0} but must be 0 or " "greater.".format(i, arg[2])
+                )
+            if "0-1" in arg[1] and not 0 <= i <= 1:
+                raise ValueError(
+                    "{1} is {0} but must be between 0 and " "1.".format(i, arg[2])
+                )
+            if "<0" in arg[1] and i >= 0:
+                raise ValueError(
+                    "{1} is {0} but must be less than " "0.".format(i, arg[2])
+                )
+            if "<=0" in arg[1] and i > 0:
+                raise ValueError(
+                    "{1} is {0} but must be 0 or " "less.".format(i, arg[2])
+                )
+            if "int" in arg[1] and int(i) != i:
+                raise TypeError(
+                    "{1} is {0} but must be a numeric " "integer.".format(i, arg[2])
+                )
+            if "boolean" in arg[1] and type(i) != bool:
+                raise TypeError(
+                    "{1} is {0} but must be a " "boolean.".format(i, arg[2])
+                )
+
 
 def array_qtys_to_strs(lst):
     """Convert Pint quantities in a NumPy array to strings.

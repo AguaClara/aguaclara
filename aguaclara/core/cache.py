@@ -32,9 +32,14 @@ def ac_cache(method):
             a_hash = ac_hash_iterable_into_tuple(hashable_object)
         else:
             a_hash = repr(hashable_object)
-            warnings.warn("Using repr() to make a hash of {}. Please consider inheriting HashableObject class as repr "
-                          "will not guarantee replicable hashing and can result in bad cache returns.".format(
-                repr(hashable_object)), Warning, stacklevel=2)
+            warnings.warn(
+                "Using repr() to make a hash of {}. Please consider inheriting HashableObject class as repr "
+                "will not guarantee replicable hashing and can result in bad cache returns.".format(
+                    repr(hashable_object)
+                ),
+                Warning,
+                stacklevel=2,
+            )
         return a_hash
 
     def ac_hash_iterable_into_tuple(hashable_object_list):
@@ -44,10 +49,12 @@ def ac_cache(method):
         return hash_tuple
 
     primitive = (int, str, bool, ...)
+
     def is_simple_hashable(thing):
         return type(thing) in primitive
 
     return _cache
+
 
 class HashableObject:
     def ac_hash(self):

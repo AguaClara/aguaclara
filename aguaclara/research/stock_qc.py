@@ -9,10 +9,10 @@ class Stock(object):
     """
 
     def rpm(self, vol_per_rev, Q):
-        return (Q / vol_per_rev)
+        return Q / vol_per_rev
 
     def T_stock(self, V_stock, Q_stock):
-        return (V_stock / Q_stock)
+        return V_stock / Q_stock
 
     def M_stock(self, V_stock, C_stock):
         return C_stock * V_stock
@@ -96,7 +96,7 @@ class Variable_C_Stock(Stock):
         :return: Pump speed for the material stock, in revolutions per minute
         :rtype: float
         """
-        return Stock.rpm(self, vol_per_rev, self._Q_stock).to(u.rev/u.min)
+        return Stock.rpm(self, vol_per_rev, self._Q_stock).to(u.rev / u.min)
 
     @ut.list_handler()
     def T_stock(self, V_stock):
@@ -228,7 +228,7 @@ class Variable_Q_Stock(Stock):
         :return: Pump speed for the material stock, in revolutions per minute
         :rtype: float
         """
-        return Stock.rpm(self, vol_per_rev, self.Q_stock()).to(u.rev/u.min)
+        return Stock.rpm(self, vol_per_rev, self.Q_stock()).to(u.rev / u.min)
 
     @ut.list_handler()
     def T_stock(self, V_stock):
