@@ -54,6 +54,7 @@ jobs:
       run: |
         pipenv run black aguaclara --check
     - name: If check failed, autoformat using black and push
+      if: failure()
       run : |
         # taken from https://github.com/psf/black/actions/runs/17913292/workflow
         pipenv run black aguaclara 
