@@ -11,8 +11,8 @@ pint = "*"
 pandas = "*"
 scipy = "*"
 onshape_client = "*"
-black = ">=19.10b0"
 flake8 = "*"
+black = "*"
 
 [dev-packages]
 aguaclara = {editable = true, path = "."}
@@ -29,3 +29,6 @@ requests = ">=2.20.0" # Resolves security vulnerability
 rope = "*"
 Sphinx = "*"
 sphinx_rtd_theme = "*"
+
+[pipenv]
+allow_prereleases = true
