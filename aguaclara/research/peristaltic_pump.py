@@ -47,7 +47,7 @@ def vol_per_rev_3_stop(color="", inner_diameter=0):
         inner_diameter = ID_colored_tube(color)
     term1 = (R_pump * 2 * np.pi - k_nonlinear * inner_diameter) / u.rev
     term2 = np.pi * (inner_diameter ** 2) / 4
-    return (term1 * term2).to(u.mL/u.rev)
+    return (term1 * term2).to(u.mL / u.rev)
 
 
 @ut.list_handler()
@@ -71,11 +71,12 @@ def ID_colored_tube(color):
     >>> ID_colored_tube("purple-white")
     <Quantity(2.79, 'millimeter')>
     """
-    tubing_data_path = os.path.join(os.path.dirname(__file__), "data",
-        "3_stop_tubing.txt")
-    df = pd.read_csv(tubing_data_path, delimiter='\t')
+    tubing_data_path = os.path.join(
+        os.path.dirname(__file__), "data", "3_stop_tubing.txt"
+    )
+    df = pd.read_csv(tubing_data_path, delimiter="\t")
     idx = df["Color"] == color
-    return df[idx]['Diameter (mm)'].values[0] * u.mm
+    return df[idx]["Diameter (mm)"].values[0] * u.mm
 
 
 @ut.list_handler()
@@ -98,11 +99,10 @@ def vol_per_rev_LS(id_number):
     >>> vol_per_rev_LS(18)
     <Quantity(3.8, 'milliliter / turn')>
     """
-    tubing_data_path = os.path.join(os.path.dirname(__file__), "data",
-        "LS_tubing.txt")
-    df = pd.read_csv(tubing_data_path, delimiter='\t')
+    tubing_data_path = os.path.join(os.path.dirname(__file__), "data", "LS_tubing.txt")
+    df = pd.read_csv(tubing_data_path, delimiter="\t")
     idx = df["Number"] == id_number
-    return df[idx]['Flow (mL/rev)'].values[0] * u.mL/u.turn
+    return df[idx]["Flow (mL/rev)"].values[0] * u.mL / u.turn
 
 
 @ut.list_handler()
@@ -125,4 +125,4 @@ def flow_rate(vol_per_rev, rpm):
     >>> flow_rate(3*u.mL/u.rev, 5*u.rev/u.min)
     <Quantity(0.25, 'milliliter / second')>
     """
-    return (vol_per_rev * rpm).to(u.mL/u.s)
+    return (vol_per_rev * rpm).to(u.mL / u.s)

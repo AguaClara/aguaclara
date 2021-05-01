@@ -23,7 +23,7 @@ class EntTankFloc(Component):
     classes of the individual components to design all three at once.
 
     Design Inputs:
-        - ``q (float * u.L / u.s)``: Flow rate (recommended, 
+        - ``q (float * u.L / u.s)``: Flow rate (recommended,
           defaults to 20L/s)
         - ``temp (float * u.degC)``: Water temperature (recommended,
           defaults to 20°C)
@@ -31,15 +31,16 @@ class EntTankFloc(Component):
           (optional, see :class:`aguaclara.design.ent.EntranceTank`
           for defaults)
         - ``floc (Flocculator)``: Flocculator
-          (optional, see :class:`aguaclara.design.floc.Flocculator` for 
+          (optional, see :class:`aguaclara.design.floc.Flocculator` for
           defaults)
         - ``lfom (LFOM)``: Linear Flow Orifice Meter
           (optional, see :class:`aguaclara.design.lfom.LFOM` for defaults)
     """
-    def __init__(self, **kwargs): 
+
+    def __init__(self, **kwargs):
         self.ent = EntranceTank()
         self.floc = Flocculator()
-        self.lfom = LFOM()    
+        self.lfom = LFOM()
         self.subcomponents = [self.ent, self.floc, self.lfom]
 
         super().__init__(**kwargs)
@@ -54,14 +55,14 @@ class EntTankFloc(Component):
         entrance tank (used to design the flocculator) is close enough to the
         actual length of the entrance tank (which should accomodate the
         flocculator's channel width).
-        
+
         Args:
             - ``ent_l (float * u.m)``: The initial guess for the entrance tank's
               length, used to design the first iteration of the flocculator.
         """
         # Design the flocculator using a guess of the entrance tank's length.
         self.floc.ent_l = ent_l
-        
+
         # Design the entrance tank using the flocculator's channel width.
         self.ent.floc_chan_w = self.floc.chan_w
 

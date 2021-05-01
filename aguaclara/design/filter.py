@@ -1,35 +1,37 @@
 from aguaclara.core.units import u
 from aguaclara.design.component import Component
 
+
 class Filter(Component):
 
-    sand_layer_thick = 20 *u.cm
+    sand_layer_thick = 20 * u.cm
     n_backwash_manifold_diameter = 4 * u.inch
     max_filtration_head_loss = 30 * u.cm
 
     @property
     def n_tanks():
-        tank = math.ceil(self.q/40)
-        return (tank.magnitude)*2
+        tank = math.ceil(self.q / 40)
+        return (tank.magnitude) * 2
 
     @property
     def flow_rate_per_tank():
         n_tanks = n_tanks()
-        return flow_rate/n_tanks
+        return flow_rate / n_tanks
 
-    #def filt_vel():
+    # def filt_vel():
 
-    #def backwash_vel():
+    # def backwash_vel():
 
-    #def backwash_manifold_diameter():
+    # def backwash_manifold_diameter():
 
-#Design guidelines say 11 mm/s. The success of lab-scale backwashing at
+
+# Design guidelines say 11 mm/s. The success of lab-scale backwashing at
 # 10 mm/s suggests that this is a reasonable and conservative value
 BACKWASH_VEL = 11 * u.mm / u.s
 
 LAYER_N = 6
 
-LAYER_VEL = 1.833 * u.mm / u.s ##VEL_FIBER_DIST_CENTER_/N_FIBER_LAYER
+LAYER_VEL = 1.833 * u.mm / u.s  ##VEL_FIBER_DIST_CENTER_/N_FIBER_LAYER
 
 ##Minimum thickness of each filter layer (can be increased to accomodate
 # larger pipe diameters in the bottom layer)
@@ -67,7 +69,7 @@ SAND_OUTLET_D = 2 * u.inch
 BARRIER_EXIT_DISTRIBUTION_H = 10 * u.cm
 
 ##Length that the siphon pipe extends up into the plant drain channel.
-#Being able to shorten the stub from which the siphon discharges into the
+# Being able to shorten the stub from which the siphon discharges into the
 # main plant drain channel allows for some flexibility in the hydraulic design.
 SIPHON_CHANNEL_STUB_L_MIN = 20 * u.cm
 
@@ -90,7 +92,9 @@ WEIR_THICKNESS = 5 * u.cm
 BRANCH_WALL_S = 5 * u.cm
 
 GATE_VALUE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Fi-Scaled-Gate-Valve-Threaded.dwg"
-BALL_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/FiMetalBallValve.dwg"
+BALL_VALVE_URL = (
+    "https://confluence.cornell.edu/download/attachments/173604905/FiMetalBallValve.dwg"
+)
 
 WALL_PLANT_FLOOR_S_MIN = 10 * u.cm
 
@@ -134,28 +138,28 @@ DRAIN_OUTLET_SAFETY_H = 10 * u.cm
 
 OVERFLOW_WEIR_FREEFALL_H = 10 * u.cm
 
-#We are going to take this pipe size for the slotted pipes as a given.
+# We are going to take this pipe size for the slotted pipes as a given.
 # Larger pipes may block too much flow and they are harder to install.
-MAN_BRANCH_ND = 1*u.inch
+MAN_BRANCH_ND = 1 * u.inch
 
-MAN_BRANCH_BACKWASH_ND = 1.5*u.inch
+MAN_BRANCH_BACKWASH_ND = 1.5 * u.inch
 
-#A slot thickness of 0.008 in or 0.2 mm is selected so that sand
+# A slot thickness of 0.008 in or 0.2 mm is selected so that sand
 # will not enter the slotted pipes.
-MANIFOLD_SLOTS_W = 0.008*u.inch
+MANIFOLD_SLOTS_W = 0.008 * u.inch
 
-BRANCH_HOLDER_ND = 2*u.inch
+BRANCH_HOLDER_ND = 2 * u.inch
 
-BACKWASH_BRANCH_HOLDER_ND = 2*u.inch
+BACKWASH_BRANCH_HOLDER_ND = 2 * u.inch
 
-#Minimum vertical spacing between trunk line pipes going through
-#the filter wall for concrete construction
+# Minimum vertical spacing between trunk line pipes going through
+# the filter wall for concrete construction
 TRUNK_S_MIN = 3 * u.cm
 
-#Space between the ends of the branch receiver pipes and the walls so that
-#the manifold assemblies are easy to lower into the filter boxes
+# Space between the ends of the branch receiver pipes and the walls so that
+# the manifold assemblies are easy to lower into the filter boxes
 # (if the branch receivers extended the entire length of the box they would
-#just barely fit and it would be hard to get into place)
+# just barely fit and it would be hard to get into place)
 MAN_ASSEMBLY_S = 1 * u.cm
 
 ##Sand Properties
@@ -166,9 +170,9 @@ SAND_UNIFORMITY_RATIO = 1.65
 
 DIAM_FILTER_SAND_60 = SAND_D_EFFECTIVE * SAND_UNIFORMITY_RATIO
 
-#Porosity in a sand bed
+# Porosity in a sand bed
 SAND_POROSITY = 0.4
 
 SAND_DENSITY = 2650 * u.kg / (u.m ** 3)
 
-FLUIDIZED_RATIO = 1.3 #Bed expands 30% when fluidized
+FLUIDIZED_RATIO = 1.3  # Bed expands 30% when fluidized
