@@ -11,7 +11,7 @@ pint = "*"
 pandas = "*"
 scipy = "*"
 onshape_client = "*"
-black = "*"
+black = ">=19.10b0"
 flake8 = "*"
 
 [dev-packages]
