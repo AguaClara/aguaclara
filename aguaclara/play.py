@@ -47,7 +47,6 @@ import aguaclara.research.stock_qc as stock_qc
 
 import aguaclara as ac
 
-
 def set_sig_figs(n=4):
     """Set the number of significant figures used to print Pint, Pandas, and
     NumPy quantities.
@@ -55,9 +54,8 @@ def set_sig_figs(n=4):
     Args:
         n (int): Number of significant figures to display.
     """
-    u.default_format = "." + str(n) + "g"
-    pd.options.display.float_format = ("{:,." + str(n) + "}").format
-
+    u.default_format = '.' + str(n) + 'g'
+    pd.options.display.float_format = ('{:,.' + str(n) + '}').format
 
 set_sig_figs()
-matplotlib.style.use("ggplot")
+matplotlib.style.use('ggplot')

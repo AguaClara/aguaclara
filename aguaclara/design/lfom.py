@@ -40,7 +40,6 @@ class LFOM(Component):
         - ``max_row_n (int)``: Maximum number of rows of orifices (optional,
           defaults to 10)
     """
-
     def __init__(self, **kwargs):
         self.hl = 20.0 * u.cm
         self.safety_factor = 1.5
@@ -58,20 +57,17 @@ class LFOM(Component):
         Args:
             - ``h (float * u.m)``: Elevation height
         """
-        w_per_flow = 2 / (
-            (2 * u.gravity * h) ** (1 / 2) * con.VC_ORIFICE_RATIO * np.pi * self.hl
-        )
+        w_per_flow = 2 / ((2 * u.gravity * h) ** (1 / 2) *
+                          con.VC_ORIFICE_RATIO * np.pi * self.hl)
         return w_per_flow.to_base_units()
 
     @property
     def row_n(self):
         """ The number of rows."""
-        N_estimated = (
-            self.hl * np.pi / (2 * self.stout_w_per_flow(self.hl) * self.q)
-        ).to(u.dimensionless)
-        row_n = min(
-            self.max_row_n, max(self.min_row_n, math.trunc(N_estimated.magnitude))
-        )
+        N_estimated = (self.hl * np.pi / (2 * self.stout_w_per_flow(self.hl) * \
+             self.q)).to(u.dimensionless)
+        row_n = min(self.max_row_n,
+                    max(self.min_row_n, math.trunc(N_estimated.magnitude)))
         return row_n
 
     @property
@@ -83,13 +79,14 @@ class LFOM(Component):
     def vel_critical(self):
         """The average vertical velocity of the water inside the LFOM pipe
         at the bottom of the orfices."""
-        return (4 / (3 * math.pi) * (2 * u.gravity * self.hl) ** (1 / 2)).to(u.m / u.s)
+        return (4 / (3 * math.pi) * (2 * u.gravity * self.hl) ** \
+            (1 / 2)).to(u.m/u.s)
 
     @property
     def pipe_a_min(self):
         """The minimum cross-sectional area of the LFOM pipe assuring
         a safety factor."""
-        return (self.safety_factor * self.q / self.vel_critical).to(u.cm ** 2)
+        return (self.safety_factor * self.q / self.vel_critical).to(u.cm**2)
 
     @property
     def pipe_nd(self):
@@ -125,19 +122,18 @@ class LFOM(Component):
         c = math.pi * pipe.ID_SDR(self.pipe_nd, self.sdr)
         b = self.orifice_d + self.orifice_s
 
-        return math.floor(c / b)
+        return math.floor(c/b)
 
     @property
     def q_per_row(self):
         """An array of flow at each row."""
-        return np.linspace(1 / self.row_n, 1, self.row_n) * self.q
+        return np.linspace(1 / self.row_n, 1, self.row_n)*self.q
 
     @property
     def orifice_h_per_row(self):
         """The height of the center of each row of orifices."""
-        height_orifices = (
-            np.linspace(0, self.row_n - 1, self.row_n)
-        ) * self.row_b + 0.5 * self.orifice_d
+        height_orifices = (np.linspace(0, self.row_n - 1, self.row_n)) * \
+            self.row_b + 0.5 * self.orifice_d
         return height_orifices
 
     def q_submerged(self, row_n, orifice_n_per_row):
@@ -148,28 +144,26 @@ class LFOM(Component):
         """
         flow = 0 * u.L / u.s
         for i in range(row_n):
-            flow = flow + (
-                orifice_n_per_row[i]
-                * (
-                    pc.flow_orifice_vert(
-                        self.orifice_d,
-                        self.row_b * (row_n + 1) - self.orifice_h_per_row[i],
-                        con.VC_ORIFICE_RATIO,
-                    )
-                )
-            )
+            flow = flow + (orifice_n_per_row[i] * (
+               pc.flow_orifice_vert(self.orifice_d,
+                                    self.row_b*(row_n + 1)
+                                    - self.orifice_h_per_row[i],
+                                    con.VC_ORIFICE_RATIO)))
         return flow.to(u.L / u.s)
 
     @property
     def orifice_n_per_row(self):
         """The number of orifices at each level."""
-        h = self.row_b - 0.5 * self.orifice_d
-        flow_per_orifice = pc.flow_orifice_vert(self.orifice_d, h, con.VC_ORIFICE_RATIO)
+        h = self.row_b - 0.5*self.orifice_d
+        flow_per_orifice = pc.flow_orifice_vert(self.orifice_d, h,
+         con.VC_ORIFICE_RATIO)
         n = np.zeros(self.row_n)
         for i in range(self.row_n):
             flow_needed = self.q_per_row[i] - self.q_submerged(i, n)
-            n_orifices_real = (flow_needed / flow_per_orifice).to(u.dimensionless)
-            n[i] = min((max(0, round(n_orifices_real))), self.orifice_n_max_per_row)
+            n_orifices_real = (flow_needed / \
+                flow_per_orifice).to(u.dimensionless)
+            n[i] = min((max(0, round(n_orifices_real))),
+             self.orifice_n_max_per_row)
         return n
 
     @property
@@ -179,9 +173,6 @@ class LFOM(Component):
         q_error = np.zeros(self.row_n)
         for i in range(self.row_n):
             actual_flow = self.q_submerged(i, self.orifice_n_per_row)
-            q_error[i] = (
-                ((actual_flow - self.q_per_row[i]) / self.q_per_row[i]).to(
-                    u.dimensionless
-                )
-            ).magnitude
+            q_error[i] = (((actual_flow - self.q_per_row[i]) / \
+                 self.q_per_row[i]).to(u.dimensionless)).magnitude
         return q_error
