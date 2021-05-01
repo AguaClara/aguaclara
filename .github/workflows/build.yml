@@ -50,14 +50,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install pipenv
         pipenv install --dev
-        # python -m pip install flake8
-        # python -m pip install black --pre
     - name: Check with black
       run: |
-        pipenv run black aguaclara --verbose --pyi 
-    - name: Lint with flake8
-      run: |
-        pipenv run flake8 aguaclara --count --verbose --show-source --statistics
+        pipenv run black aguaclara --verbose --pyi --check
+    # - name: Lint with flake8
+    #   run: |
+    #     pipenv run flake8 aguaclara --count --verbose --show-source --statistics
 
   
   test-docs:
