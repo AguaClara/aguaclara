@@ -54,10 +54,10 @@ jobs:
         # python -m pip install black --pre
     - name: Check with black
       run: |
-        black --check aguaclara --verbose --pyi 
+        pipenv run black --check aguaclara --verbose --pyi 
     - name: Lint with flake8
       run: |
-        python -m flake8 aguaclara --count --verbose --show-source --statistics
+        pipenv run flake8 aguaclara --count --verbose --show-source --statistics
 
   
   test-docs:
