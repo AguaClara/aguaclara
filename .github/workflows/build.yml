@@ -52,7 +52,7 @@ jobs:
         pipenv install --dev
     - name: Check with black
       run: |
-        pipenv run black aguaclara --verbose --pyi --check
+        pipenv run black aguaclara
     # - name: Lint with flake8
     #   run: |
     #     pipenv run flake8 aguaclara --count --verbose --show-source --statistics
