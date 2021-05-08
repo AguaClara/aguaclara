@@ -44,8 +44,8 @@ jobs:
       - uses: actions/setup-python@v2
       - uses: psf/black@stable
         with:
-        options: "--pyi"
-        src: "aguaclara"
+          options: ""
+          src: "aguaclara"
     # - name: Lint with flake8
     #   run: |
     #     pipenv run flake8 aguaclara --count --verbose --show-source --statistics
