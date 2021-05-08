@@ -30,7 +30,6 @@ class CDC(Component):
 
         self.coag_dose_conc_max=100 * u.mg / u.L
         self.coag_stock_conc=150 * u.g / u.L
-        self.coag_stock_conc_est=150 * u.g / u.L # Deprecated since January 2021
         self.coag_stock_min_est_time=1 * u.day
         self.chem_tank_vol_supplier=[208.198, 450, 600, 750, 1100, 2500] * u.L
         self.chem_tank_dimensions_supplier=[
@@ -60,57 +59,25 @@ class CDC(Component):
         the coagulant.
         """
         alum_nu = \
-            (1 + (4.255 * 10 ** -6) * coag_conc.magnitude ** 2.289) * \
+            (1 + (4.255 * 10 ** -6) * (coag_conc/(u.kg/u.m**3)).to(u.dimensionless) ** 2.289) * \
             pc.viscosity_kinematic_water(self.temp)
         return alum_nu
-    
-    def _alum_nu(self, coag_conc):
-        """
-        .. deprecated::
-            `_alum_nu` is deprecated; use `alum_nu` instead.
-        """
-        # Deprecated since January 2021
-        warnings.warn('_alum_nu is deprecated; use alum_nu instead.',
-                  UserWarning)
-    
-        return self.alum_nu(coag_conc)
-        
+
+
     def pacl_nu(self, coag_conc):
         """Return the dynamic viscosity of water at a given temperature.
 
         If given units, the function will automatically convert to Kelvin.
         If not given units, the function will assume Kelvin.
         This function assumes that the temperature dependence can be explained
-        based on the effect on water and that there is no confounding effect 
+        based on the effect on water and that there is no confounding effect
         from the coagulant.
         """
         pacl_nu = \
-            (1 + (2.383 * 10 ** -5) * (coag_conc).magnitude ** 1.893) * \
+            (1 + (2.383 * 10 ** -5) * (coag_conc/(u.kg/u.m**3)).to(u.dimensionless) ** 1.893) * \
             pc.viscosity_kinematic_water(self.temp)
         return pacl_nu
 
-    def _pacl_nu(self, coag_conc):
-        """
-        .. deprecated::
-            `_pacl_nu` is deprecated; use `pacl_nu` instead.
-        """
-        # Deprecated since January 2021
-        warnings.warn('_pacl_nu is deprecated; use pacl_nu instead.',
-                  UserWarning)
-    
-        return self.pacl_nu(coag_conc)
-        
-    def _coag_nu(self, coag_conc, coag_type):
-        """
-        .. deprecated::
-            `_coag_nu` is deprecated; use `coag_nu` instead.
-        """
-        # Deprecated since January 2021
-        warnings.warn('_coag_nu is deprecated; use coag_nu instead.',
-                  UserWarning)
-    
-        return self.coag_nu(coag_conc, coag_type)
-       
     def coag_nu(self, coag_conc, coag_type):
         """Return the dynamic viscosity of water at a given temperature.
 
@@ -122,25 +89,6 @@ class CDC(Component):
         elif coag_type.lower() == 'pacl':
             coag_nu = self.pacl_nu(coag_conc)
         return coag_nu
-
-    @property
-    def coag_q_max_est(self):
-        """The estimated maximum permissible flow rate of the coagulant stock,
-        based on a whole number of sacks of coagulant used.
-
-        .. deprecated::
-            `coag_q_max_est` is deprecated; use `coag_q_max` instead, which is
-            based on the exact user-defined coagulant stock concentration, 
-            `coag_stock_conc`.
-        """
-        # Deprecated since January 2021
-        warnings.warn('coag_q_max_est is deprecated; use coag_q_max instead,\
-            which is based on the exact user-defined coagulant stock \
-            concentration, coag_stock_conc.', UserWarning)
-        
-        coag_q_max_est = self.q * self.coag_dose_conc_max / \
-            self.coag_stock_conc_est
-        return coag_q_max_est
 
     @property
     def coag_q_max(self):
@@ -191,12 +139,13 @@ class CDC(Component):
 #==============================================================================
 # Small-diameter Tube Design
 #==============================================================================
-    @property
-    def _coag_tube_q_max(self):
-        """The maximum permissible flow through a coagulant tube."""
-        coag_tube_q_max = ((np.pi * self.coag_tube_id ** 2)/4) * \
-            np.sqrt((2 * self.error_ratio * self.hl * u.gravity)/self.tube_k)
-        return coag_tube_q_max.to(u.L / u.s)
+    # @property
+    # def _coag_tube_q_max(self):
+    #     """The maximum permissible flow through a coagulant tube."""
+    #     coag_tube_q_max = ((np.pi * self.coag_tube_id ** 2)/4) * \
+    #         np.sqrt((2 * self.error_ratio * self.hl * u.gravity)/self.tube_k)
+    #     return coag_tube_q_max.to(u.L / u.s)
+
 
     @property
     def coag_tubes_active_n(self):
@@ -207,7 +156,7 @@ class CDC(Component):
 
     @property
     def coag_tubes_n(self):
-        """The number of coagulant tubes in use, plus a spare tube for 
+        """The number of coagulant tubes in use, plus a spare tube for
         maintenance.
         """
         coag_tubes_n = self.coag_tubes_active_n + 1
