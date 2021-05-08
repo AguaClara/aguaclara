@@ -45,6 +45,9 @@ jobs:
       - uses: piotrpawlaczek/python-blacken@release/stable
         with:
           only-check: 'no'
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply black formatting
 
     # - name: Lint with flake8
     #   run: |
