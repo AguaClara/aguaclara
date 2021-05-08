@@ -45,7 +45,7 @@ jobs:
       - uses: psf/black@stable
         with:
         options: ""
-        src: "./aguaclara"
+        src: "aguaclara"
     # - name: Lint with flake8
     #   run: |
     #     pipenv run flake8 aguaclara --count --verbose --show-source --statistics
