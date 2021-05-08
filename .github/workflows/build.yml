@@ -42,10 +42,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - uses: psf/black@stable
+      - uses: piotrpawlaczek/python-blacken@release/stable
         with:
-          options: ""
-          src: "aguaclara"
+          only-check: 'no'
+
     # - name: Lint with flake8
     #   run: |
     #     pipenv run flake8 aguaclara --count --verbose --show-source --statistics
