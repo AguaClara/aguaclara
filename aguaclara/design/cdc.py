@@ -32,7 +32,9 @@ class CDC(Component):
 
         self.coag_dose_conc_max = 100 * u.mg / u.L
         self.coag_stock_conc = 150 * u.g / u.L
-        self.coag_stock_conc_est = 150 * u.g / u.L  # Deprecated since January 2021
+        self.coag_stock_conc_est = (
+            150 * u.g / u.L
+        )  # Deprecated since January 2021
         self.coag_stock_min_est_time = 1 * u.day
         self.chem_tank_vol_supplier = [208.198, 450, 600, 750, 1100, 2500] * u.L
         self.chem_tank_dimensions_supplier = [
@@ -72,7 +74,9 @@ class CDC(Component):
             `_alum_nu` is deprecated; use `alum_nu` instead.
         """
         # Deprecated since January 2021
-        warnings.warn("_alum_nu is deprecated; use alum_nu instead.", UserWarning)
+        warnings.warn(
+            "_alum_nu is deprecated; use alum_nu instead.", UserWarning
+        )
 
         return self.alum_nu(coag_conc)
 
@@ -96,7 +100,9 @@ class CDC(Component):
             `_pacl_nu` is deprecated; use `pacl_nu` instead.
         """
         # Deprecated since January 2021
-        warnings.warn("_pacl_nu is deprecated; use pacl_nu instead.", UserWarning)
+        warnings.warn(
+            "_pacl_nu is deprecated; use pacl_nu instead.", UserWarning
+        )
 
         return self.pacl_nu(coag_conc)
 
@@ -106,7 +112,9 @@ class CDC(Component):
             `_coag_nu` is deprecated; use `coag_nu` instead.
         """
         # Deprecated since January 2021
-        warnings.warn("_coag_nu is deprecated; use coag_nu instead.", UserWarning)
+        warnings.warn(
+            "_coag_nu is deprecated; use coag_nu instead.", UserWarning
+        )
 
         return self.coag_nu(coag_conc, coag_type)
 
@@ -140,7 +148,9 @@ class CDC(Component):
             UserWarning,
         )
 
-        coag_q_max_est = self.q * self.coag_dose_conc_max / self.coag_stock_conc_est
+        coag_q_max_est = (
+            self.q * self.coag_dose_conc_max / self.coag_stock_conc_est
+        )
         return coag_q_max_est
 
     @property

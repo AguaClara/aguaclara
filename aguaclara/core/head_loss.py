@@ -267,7 +267,9 @@ def _k_value_rounded_expansion(
 ######### Orifices:
 
 
-def _k_value_thin_sharp_orifice(id_pipe: float, id_orifice: float, re: float) -> float:
+def _k_value_thin_sharp_orifice(
+    id_pipe: float, id_orifice: float, re: float
+) -> float:
     # Calculate minor loss coefficient for a thin, sharp orifice
     if re < 2500:
         k = (

@@ -59,7 +59,10 @@ class LFOM(Component):
             - ``h (float * u.m)``: Elevation height
         """
         w_per_flow = 2 / (
-            (2 * u.gravity * h) ** (1 / 2) * con.VC_ORIFICE_RATIO * np.pi * self.hl
+            (2 * u.gravity * h) ** (1 / 2)
+            * con.VC_ORIFICE_RATIO
+            * np.pi
+            * self.hl
         )
         return w_per_flow.to_base_units()
 
@@ -70,7 +73,8 @@ class LFOM(Component):
             self.hl * np.pi / (2 * self.stout_w_per_flow(self.hl) * self.q)
         ).to(u.dimensionless)
         row_n = min(
-            self.max_row_n, max(self.min_row_n, math.trunc(N_estimated.magnitude))
+            self.max_row_n,
+            max(self.min_row_n, math.trunc(N_estimated.magnitude)),
         )
         return row_n
 
@@ -83,7 +87,9 @@ class LFOM(Component):
     def vel_critical(self):
         """The average vertical velocity of the water inside the LFOM pipe
         at the bottom of the orfices."""
-        return (4 / (3 * math.pi) * (2 * u.gravity * self.hl) ** (1 / 2)).to(u.m / u.s)
+        return (4 / (3 * math.pi) * (2 * u.gravity * self.hl) ** (1 / 2)).to(
+            u.m / u.s
+        )
 
     @property
     def pipe_a_min(self):
@@ -164,12 +170,18 @@ class LFOM(Component):
     def orifice_n_per_row(self):
         """The number of orifices at each level."""
         h = self.row_b - 0.5 * self.orifice_d
-        flow_per_orifice = pc.flow_orifice_vert(self.orifice_d, h, con.VC_ORIFICE_RATIO)
+        flow_per_orifice = pc.flow_orifice_vert(
+            self.orifice_d, h, con.VC_ORIFICE_RATIO
+        )
         n = np.zeros(self.row_n)
         for i in range(self.row_n):
             flow_needed = self.q_per_row[i] - self.q_submerged(i, n)
-            n_orifices_real = (flow_needed / flow_per_orifice).to(u.dimensionless)
-            n[i] = min((max(0, round(n_orifices_real))), self.orifice_n_max_per_row)
+            n_orifices_real = (flow_needed / flow_per_orifice).to(
+                u.dimensionless
+            )
+            n[i] = min(
+                (max(0, round(n_orifices_real))), self.orifice_n_max_per_row
+            )
         return n
 
     @property

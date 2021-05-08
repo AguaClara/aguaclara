@@ -228,7 +228,10 @@ class SedimentationTank(Component):
                 + self.plate_settler_thickness
                 * (self.vel_upflow / self.plate_settler_vel_capture)
             )
-            / (np.sin(self.plate_settler_angle) * np.cos(self.plate_settler_angle))
+            / (
+                np.sin(self.plate_settler_angle)
+                * np.cos(self.plate_settler_angle)
+            )
         ).to(u.m)
         return L_sed_plate
 
@@ -236,7 +239,9 @@ class SedimentationTank(Component):
     def outlet_man_orifice_q(self):
         """The flow rate in the orifices of the outlet manifold."""
         outlet_man_orifice_q = pc.flow_orifice_vert(
-            self.outlet_man_orifice_d, self.outlet_man_orifice_hl, con.VC_ORIFICE_RATIO
+            self.outlet_man_orifice_d,
+            self.outlet_man_orifice_hl,
+            con.VC_ORIFICE_RATIO,
         )
         return outlet_man_orifice_q.to(u.L / u.s)
 
@@ -282,7 +287,8 @@ class SedimentationTank(Component):
     def side_slopes_w(self):
         """The width of the side slopes."""
         side_slopes_w = (
-            self.w_inner - pipe.ID_SDR(self.JET_REVERSER_ND, self.jet_reverser_sdr)
+            self.w_inner
+            - pipe.ID_SDR(self.JET_REVERSER_ND, self.jet_reverser_sdr)
         ) / 2
         return side_slopes_w.to(u.m)
 

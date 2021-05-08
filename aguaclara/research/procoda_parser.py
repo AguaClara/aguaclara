@@ -241,7 +241,9 @@ def get_data_by_time(
             col = column_start_to_end(data, columns, start_idx, end_idx)
             result = list(np.subtract(col, start)) * u(units)
         else:
-            result = column_start_to_end(data, columns, start_idx, end_idx) * u(units)
+            result = column_start_to_end(data, columns, start_idx, end_idx) * u(
+                units
+            )
     else:  # columns is a list
         if units == "":
             units = [""] * len(columns)
@@ -253,7 +255,8 @@ def get_data_by_time(
                 result.append(list(np.subtract(col, start)) * u(units[i]))
             else:
                 result.append(
-                    column_start_to_end(data, c, start_idx, end_idx) * u(units[i])
+                    column_start_to_end(data, c, start_idx, end_idx)
+                    * u(units[i])
                 )
             i += 1
 
@@ -330,7 +333,8 @@ def column_start_to_end(data, column, start_idx, end_idx):
         for i in range(1, len(data) - 1):
             data[i].iloc[0, 0] = 0
             result += list(
-                pd.to_numeric(data[i].iloc[:, column]) + (i if column == 0 else 0)
+                pd.to_numeric(data[i].iloc[:, column])
+                + (i if column == 0 else 0)
             )
             # assuming DataFrames are for consecutive days, add number of
             # DataFrame if dealing with the time column (column 0)
@@ -429,7 +433,9 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
                 c = data[column][data_start[i] : data_end[i]]
             if overnight and i == 0:
                 data_agg = np.insert(
-                    data_agg[-1], np.size(data_agg[-1][:, 0]), np.vstack((t, c)).T
+                    data_agg[-1],
+                    np.size(data_agg[-1][:, 0]),
+                    np.vstack((t, c)).T,
                 )
             else:
                 data_agg.append(np.vstack((t, c)).T)
@@ -725,7 +731,9 @@ def write_calculations_to_csv(
         )
         data_agg = np.append(data_agg, [data])
 
-    output = pd.DataFrame(data=np.vstack((ids, data_agg)).T, columns=["ID"] + headers)
+    output = pd.DataFrame(
+        data=np.vstack((ids, data_agg)).T, columns=["ID"] + headers
+    )
     output.to_csv(out_name, sep="\t")
 
     return output
@@ -761,6 +769,8 @@ def intersect(x, y1, y2):
         b2 = y2[c] - slope2 * x[c]
 
         x_points = np.append(x_points, (b2 - b1) / (slope1 - slope2))
-        y_points = np.append(y_points, slope1 * (b2 - b1) / (slope1 - slope2) + b1)
+        y_points = np.append(
+            y_points, slope1 * (b2 - b1) / (slope1 - slope2) + b1
+        )
 
     return x_points, y_points, crossings

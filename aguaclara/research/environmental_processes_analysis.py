@@ -75,7 +75,9 @@ def alpha1_carbonate(pH):
     >>> round(alpha1_carbonate(10), 7)
     <Quantity(0.639969, 'dimensionless')>
     """
-    alpha1_carbonate = 1 / ((invpH(pH) / K1_carbonate) + 1 + (K2_carbonate / invpH(pH)))
+    alpha1_carbonate = 1 / (
+        (invpH(pH) / K1_carbonate) + 1 + (K2_carbonate / invpH(pH))
+    )
     return alpha1_carbonate
 
 
@@ -177,7 +179,9 @@ def aeration_data(DO_column, dirpath):
     # return the list of files in the directory
     filenames = os.listdir(dirpath)
     # extract the flowrates from the filenames and apply units
-    airflows = (np.array([i.split(".", 1)[0] for i in filenames])).astype(np.float32)
+    airflows = (np.array([i.split(".", 1)[0] for i in filenames])).astype(
+        np.float32
+    )
     # sort airflows and filenames so that they are in ascending order of flow rates
     idx = np.argsort(airflows)
     airflows = (np.array(airflows)[idx]) * u.umole / u.s
@@ -191,7 +195,9 @@ def aeration_data(DO_column, dirpath):
     aeration_collection = collections.namedtuple(
         "aeration_results", "filepaths airflows DO_data time_data"
     )
-    aeration_results = aeration_collection(filepaths, airflows, DO_data, time_data)
+    aeration_results = aeration_collection(
+        filepaths, airflows, DO_data, time_data
+    )
     return aeration_results
 
 
@@ -247,7 +253,8 @@ def Gran(data_file_path):
     V_eq = pd.to_numeric(df.iloc[2, 1]) * u.mL
     ANC_sample = pd.to_numeric(df.iloc[3, 1]) * u.mole / u.L
     Gran_collection = collections.namedtuple(
-        "Gran_results", "V_titrant ph_data V_sample Normality_titrant V_equivalent ANC"
+        "Gran_results",
+        "V_titrant ph_data V_sample Normality_titrant V_equivalent ANC",
     )
     Gran = Gran_collection(
         V_titrant=V_t,

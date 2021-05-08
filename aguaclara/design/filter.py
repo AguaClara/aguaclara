@@ -92,9 +92,7 @@ WEIR_THICKNESS = 5 * u.cm
 BRANCH_WALL_S = 5 * u.cm
 
 GATE_VALUE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Fi-Scaled-Gate-Valve-Threaded.dwg"
-BALL_VALVE_URL = (
-    "https://confluence.cornell.edu/download/attachments/173604905/FiMetalBallValve.dwg"
-)
+BALL_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/FiMetalBallValve.dwg"
 
 WALL_PLANT_FLOOR_S_MIN = 10 * u.cm
 

@@ -143,7 +143,9 @@ class Component(ABC):
             - ``filename (str)``: The name of the file
         """
         filename = "props.json"
-        json.dump(self.serialize_properties(), open(filename, mode="w"), indent=4)
+        json.dump(
+            self.serialize_properties(), open(filename, mode="w"), indent=4
+        )
         print("Properties of component can be found in file props.json")
 
     def _encode_onshape_config(self, config):

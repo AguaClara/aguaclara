@@ -94,7 +94,10 @@ def is_fs_type(candidate, type_name):
             result = type_name == candidate["typeName"]
         elif isinstance(type_name, list):
             result = any(
-                [type_name_one == candidate["typeName"] for type_name_one in type_name]
+                [
+                    type_name_one == candidate["typeName"]
+                    for type_name_one in type_name
+                ]
             )
     except Exception:
         result = False
@@ -359,7 +362,9 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
         if unparsed != "" and unparsed is not None and for_docs:
             file = "Introduction/Treatment_Process.rst"
             file_path = (
-                "../../../doc_files/Introduction/Treatment_Process_" + unparsed + ".rst"
+                "../../../doc_files/Introduction/Treatment_Process_"
+                + unparsed
+                + ".rst"
             )
             if os.path.exists(file):
                 merge_treatment_processes(file_path, file)
@@ -428,7 +433,9 @@ def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
                     for doc in docs:
                         for unparsed in doc[msg_str][val_str]:
                             if is_fs_type(unparsed, "BTFSValueMapEntry"):
-                                key = unparsed[msg_str][key_str][msg_str][val_str]
+                                key = unparsed[msg_str][key_str][msg_str][
+                                    val_str
+                                ]
                                 for field in fields:
                                     if key == field:
                                         (
@@ -505,9 +512,13 @@ def get_parsed_measurements(
         _preload_content=False,
     )
 
-    attributes = json.loads(response.data.decode("utf-8"))["result"][msg_str][val_str]
+    attributes = json.loads(response.data.decode("utf-8"))["result"][msg_str][
+        val_str
+    ]
 
-    measurements, templates, processes = parse_attributes(attributes, fields, for_docs)
+    measurements, templates, processes = parse_attributes(
+        attributes, fields, for_docs
+    )
 
     return measurements, templates, processes
 
@@ -547,7 +558,15 @@ def make_replace_list(parsed_dict, filename, var_attachment=""):
 
     for var in parsed_dict:
         if type(parsed_dict[var]) == dict:
-            make_replace_list(parsed_dict[var], filename, var_attachment + var + "_")
+            make_replace_list(
+                parsed_dict[var], filename, var_attachment + var + "_"
+            )
         else:
-            line = prefix + var_attachment + str(var) + suffix + str(parsed_dict[var])
+            line = (
+                prefix
+                + var_attachment
+                + str(var)
+                + suffix
+                + str(parsed_dict[var])
+            )
             line_prepender(filename, line)

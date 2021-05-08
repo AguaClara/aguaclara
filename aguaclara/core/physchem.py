@@ -20,7 +20,9 @@ def density_air(Pressure, MolarMass, Temperature):
     .. deprecated::
         `density_air` is deprecated; use `density_gas` instead.
     """
-    warnings.warn("density_air is deprecated; use density_gas instead.", UserWarning)
+    warnings.warn(
+        "density_air is deprecated; use density_gas instead.", UserWarning
+    )
     return density_gas(Pressure, MolarMass, Temperature)
 
 
@@ -99,7 +101,20 @@ WATER_DENSITY_TABLE = [
         363.15,
         373.15,
     ),
-    (999.9, 1000, 999.7, 998.2, 995.7, 992.2, 988.1, 983.2, 977.8, 971.8, 965.3, 958.4),
+    (
+        999.9,
+        1000,
+        999.7,
+        998.2,
+        995.7,
+        992.2,
+        988.1,
+        983.2,
+        977.8,
+        971.8,
+        965.3,
+        958.4,
+    ),
 ]
 
 
@@ -111,7 +126,8 @@ def viscosity_dynamic(temp):
         instead.
     """
     warnings.warn(
-        "viscosity_dynamic is deprecated; use " "viscosity_dynamic_water instead.",
+        "viscosity_dynamic is deprecated; use "
+        "viscosity_dynamic_water instead.",
         UserWarning,
     )
     return viscosity_dynamic_water(temp)
@@ -154,7 +170,9 @@ def density_water(Temperature=None, *, temp=None):
     elif Temperature is None and temp is None:
         raise TypeError("density_water missing Temperature argument")
     elif temp is not None:
-        warnings.warn("temp is deprecated; use Temperature instead.", UserWarning)
+        warnings.warn(
+            "temp is deprecated; use Temperature instead.", UserWarning
+        )
         Temperature = temp
 
     ut.check_range([Temperature.magnitude, ">=0", "Temperature in Kelvin"])
@@ -173,7 +191,8 @@ def viscosity_kinematic(temp):
         instead.
     """
     warnings.warn(
-        "viscosity_kinematic is deprecated; use " "viscosity_kinematic_water instead.",
+        "viscosity_kinematic is deprecated; use "
+        "viscosity_kinematic_water instead.",
         UserWarning,
     )
     return viscosity_kinematic_water(temp)
@@ -315,7 +334,9 @@ def re_rect(FlowRate, Width, Depth, Nu, OpenChannel=None, *, openchannel=None):
     :return: Reynolds number of flow through rectangular channel
     :rtype: u.dimensionless
     """
-    ut.check_range([FlowRate.magnitude, ">0", "Flow rate"], [Nu.magnitude, ">0", "Nu"])
+    ut.check_range(
+        [FlowRate.magnitude, ">0", "Flow rate"], [Nu.magnitude, ">0", "Nu"]
+    )
     if OpenChannel is not None and openchannel is not None:
         raise TypeError("re_rect received both OpenChannel and openchannel")
     elif OpenChannel is None and openchannel is None:
@@ -340,7 +361,9 @@ def re_general(Vel, Area, PerimWetted, Nu):
     .. deprecated::
         `re_general` is deprecated; use `re_channel` instead.
     """
-    warnings.warn("re_general is deprecated; use re_channel instead.", UserWarning)
+    warnings.warn(
+        "re_general is deprecated; use re_channel instead.", UserWarning
+    )
     return re_channel(Vel, Area, PerimWetted, Nu)
 
 
@@ -360,7 +383,9 @@ def re_channel(Vel, Area, PerimWetted, Nu):
     :return: Reynolds number of flow through general cross section
     :rtype: u.dimensionless
     """
-    ut.check_range([Vel.magnitude, ">=0", "Velocity"], [Nu.magnitude, ">0", "Nu"])
+    ut.check_range(
+        [Vel.magnitude, ">=0", "Velocity"], [Nu.magnitude, ">0", "Nu"]
+    )
     return (4 * radius_hydraulic_channel(Area, PerimWetted) * Vel / Nu).to(
         u.dimensionless
     )
@@ -405,7 +430,8 @@ def fric_pipe(FlowRate, Diam, Nu, Roughness):
             0.25
             / (
                 np.log10(
-                    Roughness / (3.7 * Diam) + 5.74 / re_pipe(FlowRate, Diam, Nu) ** 0.9
+                    Roughness / (3.7 * Diam)
+                    + 5.74 / re_pipe(FlowRate, Diam, Nu) ** 0.9
                 )
             )
             ** 2
@@ -466,7 +492,8 @@ def fric_rect(
             Roughness = PipeRough
         if openchannel is not None:
             warnings.warn(
-                "openchannel is deprecated; use OpenChannel instead.", UserWarning
+                "openchannel is deprecated; use OpenChannel instead.",
+                UserWarning,
             )
             OpenChannel = openchannel
 
@@ -480,15 +507,29 @@ def fric_rect(
                 np.log10(
                     (
                         Roughness
-                        / (3.7 * 4 * radius_hydraulic_rect(Width, Depth, OpenChannel))
+                        / (
+                            3.7
+                            * 4
+                            * radius_hydraulic_rect(Width, Depth, OpenChannel)
+                        )
                     )
-                    + (5.74 / (re_rect(FlowRate, Width, Depth, Nu, OpenChannel) ** 0.9))
+                    + (
+                        5.74
+                        / (
+                            re_rect(FlowRate, Width, Depth, Nu, OpenChannel)
+                            ** 0.9
+                        )
+                    )
                 )
             )
             ** 2
         )
     else:
-        return 64 * u.dimensionless / re_rect(FlowRate, Width, Depth, Nu, OpenChannel)
+        return (
+            64
+            * u.dimensionless
+            / re_rect(FlowRate, Width, Depth, Nu, OpenChannel)
+        )
 
 
 @ut.list_handler()
@@ -497,7 +538,9 @@ def fric_general(Area, PerimWetted, Vel, Nu, PipeRough):
     .. deprecated::
         `fric_general` is deprecated; use `fric_channel` instead.
     """
-    warnings.warn("fric_general is deprecated; use fric_channel instead.", UserWarning)
+    warnings.warn(
+        "fric_general is deprecated; use fric_channel instead.", UserWarning
+    )
     return fric_channel(Area, PerimWetted, Vel, Nu, PipeRough)
 
 
@@ -552,7 +595,8 @@ def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
         `headloss_fric` is deprecated; use `headloss_major_pipe` instead.
     """
     warnings.warn(
-        "headloss_fric is deprecated; use headloss_major_pipe instead", UserWarning
+        "headloss_fric is deprecated; use headloss_major_pipe instead",
+        UserWarning,
     )
     return headloss_major_pipe(FlowRate, Diam, Length, Nu, PipeRough)
 
@@ -594,7 +638,8 @@ def headloss_exp(FlowRate, Diam, KMinor):
         `headloss_exp` is deprecated; use `headloss_minor_pipe` instead.
     """
     warnings.warn(
-        "headloss_exp is deprecated; use headloss_minor_pipe instead", UserWarning
+        "headloss_exp is deprecated; use headloss_minor_pipe instead",
+        UserWarning,
     )
     return headloss_minor_pipe(FlowRate, Diam, KMinor)
 
@@ -620,7 +665,9 @@ def headloss_minor_pipe(FlowRate, Diam, KMinor):
         [Diam.magnitude, ">0", "Diameter"],
         [KMinor, ">=0", "K minor"],
     )
-    return (KMinor * 8 / (u.gravity * np.pi ** 2) * FlowRate ** 2 / Diam ** 4).to(u.m)
+    return (
+        KMinor * 8 / (u.gravity * np.pi ** 2) * FlowRate ** 2 / Diam ** 4
+    ).to(u.m)
 
 
 @ut.list_handler()
@@ -629,7 +676,9 @@ def headloss(FlowRate, Diam, Length, Nu, PipeRough, KMinor):
     .. deprecated::
         `headloss` is deprecated; use `headloss_pipe` instead.
     """
-    warnings.warn("headloss is deprecated; use headloss_pipe instead", UserWarning)
+    warnings.warn(
+        "headloss is deprecated; use headloss_pipe instead", UserWarning
+    )
     return headloss_pipe(FlowRate, Diam, Length, Nu, PipeRough, KMinor)
 
 
@@ -661,13 +710,16 @@ def headloss_pipe(FlowRate, Diam, Length, Nu, Roughness, KMinor):
 
 
 @ut.list_handler()
-def headloss_fric_rect(FlowRate, Width, Depth, Length, Nu, PipeRough, openchannel):
+def headloss_fric_rect(
+    FlowRate, Width, Depth, Length, Nu, PipeRough, openchannel
+):
     """
     .. deprecated::
         `headloss_fric_rect` is deprecated; use `headloss_major_rect` instead.
     """
     warnings.warn(
-        "headloss_fric_rect is deprecated; use headloss_major_rect instead", UserWarning
+        "headloss_fric_rect is deprecated; use headloss_major_rect instead",
+        UserWarning,
     )
     return headloss_major_rect(
         FlowRate, Width, Depth, Length, Nu, PipeRough, openchannel
@@ -675,7 +727,9 @@ def headloss_fric_rect(FlowRate, Width, Depth, Length, Nu, PipeRough, openchanne
 
 
 @ut.list_handler()
-def headloss_major_rect(FlowRate, Width, Depth, Length, Nu, Roughness, OpenChannel):
+def headloss_major_rect(
+    FlowRate, Width, Depth, Length, Nu, Roughness, OpenChannel
+):
     """Return the major head loss due to wall shear in a rectangular channel.
 
     This equation applies to both laminar and turbulent flows.
@@ -715,7 +769,8 @@ def headloss_exp_rect(FlowRate, Width, Depth, KMinor):
         `headloss_exp_rect` is deprecated; use `headloss_minor_rect` instead.
     """
     warnings.warn(
-        "headloss_exp_rect is deprecated; use headloss_minor_rect instead", UserWarning
+        "headloss_exp_rect is deprecated; use headloss_minor_rect instead",
+        UserWarning,
     )
     return headloss_minor_rect(FlowRate, Width, Depth, KMinor)
 
@@ -744,7 +799,9 @@ def headloss_minor_rect(FlowRate, Width, Depth, KMinor):
         [Depth.magnitude, ">0", "Depth"],
         [KMinor, ">=0", "K minor"],
     )
-    return (KMinor * FlowRate ** 2 / (2 * u.gravity * (Width * Depth) ** 2)).to(u.m)
+    return (KMinor * FlowRate ** 2 / (2 * u.gravity * (Width * Depth) ** 2)).to(
+        u.m
+    )
 
 
 @ut.list_handler()
@@ -794,7 +851,9 @@ def headloss_rect(
     elif Roughness is None and PipeRough is None:
         raise TypeError("headloss_rect missing Roughness argument")
     elif OpenChannel is not None and openchannel is not None:
-        raise TypeError("headloss_rect received both OpenChannel and openchannel")
+        raise TypeError(
+            "headloss_rect received both OpenChannel and openchannel"
+        )
     elif OpenChannel is None and openchannel is None:
         raise TypeError("headloss_rect missing OpenChannel argument")
     else:
@@ -805,11 +864,14 @@ def headloss_rect(
             Roughness = PipeRough
         if openchannel is not None:
             warnings.warn(
-                "openchannel is deprecated; use OpenChannel instead.", UserWarning
+                "openchannel is deprecated; use OpenChannel instead.",
+                UserWarning,
             )
             OpenChannel = openchannel
 
-    return headloss_minor_rect(FlowRate, Width, Depth, KMinor) + headloss_major_rect(
+    return headloss_minor_rect(
+        FlowRate, Width, Depth, KMinor
+    ) + headloss_major_rect(
         FlowRate, Width, Depth, Length, Nu, Roughness, OpenChannel
     )
 
@@ -897,9 +959,12 @@ def headloss_gen(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough):
         `headloss_gen` is deprecated; use `headloss_channel` instead.
     """
     warnings.warn(
-        "headloss_gen` is deprecated; use `headloss_channel` instead", UserWarning
+        "headloss_gen` is deprecated; use `headloss_channel` instead",
+        UserWarning,
     )
-    return headloss_channel(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough)
+    return headloss_channel(
+        Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough
+    )
 
 
 @ut.list_handler()
@@ -970,13 +1035,17 @@ def headloss_manifold(
     ut.check_range([NumOutlets, ">0, int", "Number of outlets"])
 
     if Roughness is not None and PipeRough is not None:
-        raise TypeError("headloss_manifold received both Roughness and PipeRough")
+        raise TypeError(
+            "headloss_manifold received both Roughness and PipeRough"
+        )
     elif Roughness is None and PipeRough is None:
         raise TypeError("headloss_manifold missing Roughness argument")
     elif NumOutlets is None:
         raise TypeError("headloss_manifold missing NumOutlets argument")
     elif PipeRough is not None:
-        warnings.warn("PipeRough is deprecated; use Roughness instead.", UserWarning)
+        warnings.warn(
+            "PipeRough is deprecated; use Roughness instead.", UserWarning
+        )
         Roughness = PipeRough
 
     return (
@@ -992,7 +1061,8 @@ def elbow_minor_loss(q, id_, k):
         `elbow_minor_loss` is deprecated; use `headloss_minor_elbow` instead.
     """
     warnings.warn(
-        "elbow_minor_loss is deprecated; use headloss_minor_elbow instead", UserWarning
+        "elbow_minor_loss is deprecated; use headloss_minor_elbow instead",
+        UserWarning,
     )
     return headloss_minor_elbow(q, id_, k)
 
@@ -1034,7 +1104,8 @@ def flow_orifice(Diam, Height, RatioVCOrifice):
     :rtype: u.m**3/u.s
     """
     ut.check_range(
-        [Diam.magnitude, ">0", "Diameter"], [RatioVCOrifice, "0-1", "VC orifice ratio"]
+        [Diam.magnitude, ">0", "Diameter"],
+        [RatioVCOrifice, "0-1", "VC orifice ratio"],
     )
     if Height.magnitude > 0:
         return (
@@ -1071,9 +1142,9 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
             -Diam.magnitude / 2,
             min(Diam / 2, Height).magnitude,
         )
-        return (flow_vert[0] * u.m ** 2.5 * RatioVCOrifice * np.sqrt(2 * u.gravity)).to(
-            u.m ** 3 / u.s
-        )
+        return (
+            flow_vert[0] * u.m ** 2.5 * RatioVCOrifice * np.sqrt(2 * u.gravity)
+        ).to(u.m ** 3 / u.s)
     else:
         return 0 * u.m ** 3 / u.s
 
@@ -1121,7 +1192,9 @@ def area_orifice(Height, RatioVCOrifice, FlowRate):
         [FlowRate.magnitude, ">0", "Flow rate"],
         [RatioVCOrifice, "0-1, >0", "VC orifice ratio"],
     )
-    return (FlowRate / (RatioVCOrifice * np.sqrt(2 * u.gravity * Height))).to(u.m ** 2)
+    return (FlowRate / (RatioVCOrifice * np.sqrt(2 * u.gravity * Height))).to(
+        u.m ** 2
+    )
 
 
 @ut.list_handler()
@@ -1161,12 +1234,16 @@ def flow_transition(Diam, Nu):
     :return: flow rate for laminar/turbulent transition
     :rtype: u.m**3/u.s
     """
-    ut.check_range([Diam.magnitude, ">0", "Diameter"], [Nu.magnitude, ">0", "Nu"])
+    ut.check_range(
+        [Diam.magnitude, ">0", "Diameter"], [Nu.magnitude, ">0", "Nu"]
+    )
     return (np.pi * Diam * RE_TRANSITION_PIPE * Nu / 4).to(u.m ** 3 / u.s)
 
 
 @ut.list_handler()
-def flow_hagen(Diam, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=None):
+def flow_hagen(
+    Diam, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=None
+):
     """Return the flow rate for laminar flow with only major losses.
 
     :param Diam: diameter of pipe
@@ -1184,7 +1261,9 @@ def flow_hagen(Diam, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=N
     :rtype: u.m**3/u.s
     """
     if HeadLossMajor is not None and HeadLossFric is not None:
-        raise TypeError("flow_hagen received both HeadLossMajor and HeadLossFric")
+        raise TypeError(
+            "flow_hagen received both HeadLossMajor and HeadLossFric"
+        )
     elif HeadLossMajor is None and HeadLossFric is None:
         raise TypeError("flow_hagen missing HeadLossMajor argument")
     elif Length is None:
@@ -1203,9 +1282,9 @@ def flow_hagen(Diam, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=N
         [HeadLossMajor.magnitude, ">=0", "Headloss due to friction"],
         [Nu.magnitude, ">0", "Nu"],
     )
-    return ((np.pi * Diam ** 4) / (128 * Nu) * u.gravity * HeadLossMajor / Length).to(
-        u.m ** 3 / u.s
-    )
+    return (
+        (np.pi * Diam ** 4) / (128 * Nu) * u.gravity * HeadLossMajor / Length
+    ).to(u.m ** 3 / u.s)
 
 
 @ut.list_handler()
@@ -1239,7 +1318,9 @@ def flow_swamee(
     :rtype: u.m**3/u.s
     """
     if HeadLossMajor is not None and HeadLossFric is not None:
-        raise TypeError("flow_swamee received both HeadLossMajor and HeadLossFric")
+        raise TypeError(
+            "flow_swamee received both HeadLossMajor and HeadLossFric"
+        )
     elif HeadLossMajor is None and HeadLossFric is None:
         raise TypeError("flow_swamee missing HeadLossMajor argument")
     elif Length is None:
@@ -1253,7 +1334,8 @@ def flow_swamee(
     else:
         if HeadLossFric is not None:
             warnings.warn(
-                "HeadLossFric is deprecated; use HeadLossMajor instead.", UserWarning
+                "HeadLossFric is deprecated; use HeadLossMajor instead.",
+                UserWarning,
             )
             HeadLossMajor = HeadLossFric
         if PipeRough is not None:
@@ -1271,7 +1353,9 @@ def flow_swamee(
     )
     logterm = np.log10(
         Roughness / (3.7 * Diam)
-        + 2.51 * Nu * np.sqrt(Length / (2 * u.gravity * HeadLossMajor * Diam ** 3))
+        + 2.51
+        * Nu
+        * np.sqrt(Length / (2 * u.gravity * HeadLossMajor * Diam ** 3))
     )
     return (
         (-np.pi / np.sqrt(2))
@@ -1288,7 +1372,8 @@ def flow_pipemajor(Diam, HeadLossFric, Length, Nu, PipeRough):
         `flow_pipemajor` is deprecated; use `flow_major_pipe` instead.
     """
     warnings.warn(
-        "flow_pipemajor is deprecated; use " "flow_major_pipe instead.", UserWarning
+        "flow_pipemajor is deprecated; use " "flow_major_pipe instead.",
+        UserWarning,
     )
     return flow_major_pipe(Diam, HeadLossFric, Length, Nu, PipeRough)
 
@@ -1327,7 +1412,8 @@ def flow_pipeminor(Diam, HeadLossExpans, KMinor):
         `flow_pipeminor` is deprecated; use `flow_minor_pipe` instead.
     """
     warnings.warn(
-        "flow_pipeminor is deprecated; use " "flow_minor_pipe instead.", UserWarning
+        "flow_pipeminor is deprecated; use " "flow_minor_pipe instead.",
+        UserWarning,
     )
     return flow_minor_pipe(Diam, HeadLossExpans, KMinor)
 
@@ -1352,9 +1438,9 @@ def flow_minor_pipe(Diam, HeadLossMinor, KMinor):
         [HeadLossMinor.magnitude, ">=0", "Headloss due to expansion"],
         [KMinor, ">0", "K minor"],
     )
-    return (area_circle(Diam) * np.sqrt(2 * u.gravity * HeadLossMinor / KMinor)).to(
-        u.m ** 3 / u.s
-    )
+    return (
+        area_circle(Diam) * np.sqrt(2 * u.gravity * HeadLossMinor / KMinor)
+    ).to(u.m ** 3 / u.s)
 
 
 @ut.list_handler()
@@ -1391,7 +1477,9 @@ def flow_pipe(
     elif KMinor is None:
         raise TypeError("flow_pipe missing KMinor argument")
     elif PipeRough is not None:
-        warnings.warn("PipeRough is deprecated; use Roughness instead.", UserWarning)
+        warnings.warn(
+            "PipeRough is deprecated; use Roughness instead.", UserWarning
+        )
         Roughness = PipeRough
 
     if KMinor == 0:
@@ -1417,7 +1505,9 @@ def flow_pipe(
             if FlowRate == 0:
                 err = 0.0
             else:
-                err = abs(FlowRate - FlowRatePrev) / ((FlowRate + FlowRatePrev) / 2)
+                err = abs(FlowRate - FlowRatePrev) / (
+                    (FlowRate + FlowRatePrev) / 2
+                )
     return FlowRate.to(u.m ** 3 / u.s)
 
 
@@ -1450,7 +1540,9 @@ def diam_hagen(
     :rtype: u.m
     """
     if HeadLossMajor is not None and HeadLossFric is not None:
-        raise TypeError("diam_hagen received both HeadLossMajor and HeadLossFric")
+        raise TypeError(
+            "diam_hagen received both HeadLossMajor and HeadLossFric"
+        )
     elif HeadLossMajor is None and HeadLossFric is None:
         raise TypeError("diam_hagen missing HeadLossMajor argument")
     elif Length is None:
@@ -1512,7 +1604,9 @@ def diam_swamee(
     :rtype: u.m
     """
     if HeadLossMajor is not None and HeadLossFric is not None:
-        raise TypeError("diam_swamee received both HeadLossMajor and HeadLossFric")
+        raise TypeError(
+            "diam_swamee received both HeadLossMajor and HeadLossFric"
+        )
     elif HeadLossMajor is None and HeadLossFric is None:
         raise TypeError("diam_swamee missing HeadLossMajor argument")
     elif Length is None:
@@ -1526,7 +1620,8 @@ def diam_swamee(
     else:
         if HeadLossFric is not None:
             warnings.warn(
-                "HeadLossFric is deprecated; use HeadLossMajor instead.", UserWarning
+                "HeadLossFric is deprecated; use HeadLossMajor instead.",
+                UserWarning,
             )
             HeadLossMajor = HeadLossFric
         if PipeRough is not None:
@@ -1559,7 +1654,8 @@ def diam_pipemajor(FlowRate, HeadLossFric, Length, Nu, PipeRough):
         `diam_pipemajor` is deprecated; use `diam_major_pipe` instead.
     """
     warnings.warn(
-        "diam_pipemajor is deprecated; use " "diam_major_pipe instead.", UserWarning
+        "diam_pipemajor is deprecated; use " "diam_major_pipe instead.",
+        UserWarning,
     )
     return diam_major_pipe(FlowRate, HeadLossFric, Length, Nu, PipeRough)
 
@@ -1598,7 +1694,8 @@ def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
         `diam_pipeminor` is deprecated; use `diam_minor_pipe` instead.
     """
     warnings.warn(
-        "diam_pipeminor is deprecated; use " "diam_minor_pipe instead.", UserWarning
+        "diam_pipeminor is deprecated; use " "diam_minor_pipe instead.",
+        UserWarning,
     )
     return diam_minor_pipe(FlowRate, HeadLossExpans, KMinor)
 
@@ -1691,9 +1788,12 @@ def pipe_ID(FlowRate, Pressure):
     :rtype: u.m
     """
     ut.check_range(
-        [FlowRate.magnitude, ">0", "Flow rate"], [Pressure.magnitude, ">0", "Pressure"]
+        [FlowRate.magnitude, ">0", "Flow rate"],
+        [Pressure.magnitude, ">0", "Pressure"],
     )
-    return np.sqrt(FlowRate / ((np.pi / 4) * np.sqrt(2 * u.gravity * Pressure))).to(u.m)
+    return np.sqrt(
+        FlowRate / ((np.pi / 4) * np.sqrt(2 * u.gravity * Pressure))
+    ).to(u.m)
 
 
 ############################ Weirs ############################
@@ -1706,7 +1806,8 @@ def width_rect_weir(FlowRate, Height):
         `width_rect_weir` is deprecated; use `width_weir_rect` instead.
     """
     warnings.warn(
-        "width_rect_weir is deprecated; use " "width_weir_rect instead.", UserWarning
+        "width_rect_weir is deprecated; use " "width_weir_rect instead.",
+        UserWarning,
     )
     return width_weir_rect(FlowRate, Height)
 
@@ -1726,7 +1827,8 @@ def width_weir_rect(FlowRate, Height):
     :rtypes: u.m
     """
     ut.check_range(
-        [FlowRate.magnitude, ">0", "Flow rate"], [Height.magnitude, ">0", "Height"]
+        [FlowRate.magnitude, ">0", "Flow rate"],
+        [Height.magnitude, ">0", "Height"],
     )
     return (
         (3 / 2)
@@ -1742,7 +1844,8 @@ def headloss_weir(FlowRate, Width):
         `headloss_weir` is deprecated; use `headloss_weir_rect` instead.
     """
     warnings.warn(
-        "headloss_weir is deprecated; use " "headloss_weir_rect instead.", UserWarning
+        "headloss_weir is deprecated; use " "headloss_weir_rect instead.",
+        UserWarning,
     )
     return headloss_weir_rect(FlowRate, Width)
 
@@ -1784,7 +1887,8 @@ def flow_rect_weir(Height, Width):
         `flow_rect_weir` is deprecated; use `flow_weir_rect` instead.
     """
     warnings.warn(
-        "flow_rect_weir is deprecated; use " "flow_weir_rect instead.", UserWarning
+        "flow_rect_weir is deprecated; use " "flow_weir_rect instead.",
+        UserWarning,
     )
     return flow_weir_rect(Height, Width)
 
@@ -1801,7 +1905,9 @@ def flow_weir_rect(Height, Width):
     :return: flow of weir
     :rtype: u.m**3/u.s
     """
-    ut.check_range([Height.magnitude, ">0", "Height"], [Width.magnitude, ">0", "Width"])
+    ut.check_range(
+        [Height.magnitude, ">0", "Height"], [Width.magnitude, ">0", "Width"]
+    )
     return (
         (2 / 3)
         * con.VC_ORIFICE_RATIO
@@ -1944,7 +2050,12 @@ def g_cs_ergun(ApproachVel, DiamMedia, Temperature, Porosity):
         fric_ergun(ApproachVel, DiamMedia, Temperature, Porosity)
         * ApproachVel ** 3
         * (1 - Porosity)
-        / (2 * viscosity_kinematic_water(Temperature) * DiamMedia * Porosity ** 4)
+        / (
+            2
+            * viscosity_kinematic_water(Temperature)
+            * DiamMedia
+            * Porosity ** 4
+        )
     ).to(u.Hz)
 
 
@@ -1979,7 +2090,9 @@ def vel_horizontal(HeightWaterCritical):
     :return: horizontal velocity
     :rtype: u.m/u.s
     """
-    ut.check_range([HeightWaterCritical.magnitude, ">0", "Critical height of water"])
+    ut.check_range(
+        [HeightWaterCritical.magnitude, ">0", "Critical height of water"]
+    )
     return np.sqrt(u.gravity * HeightWaterCritical).to(u.m / u.s)
 
 

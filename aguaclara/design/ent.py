@@ -92,7 +92,9 @@ class EntranceTank(Component):
             drain_pipe_k_minor,
         )
 
-        self.drain_pipe = Pipe(id=drain_id, k_minor=drain_pipe_k_minor, spec=self.spec)
+        self.drain_pipe = Pipe(
+            id=drain_id, k_minor=drain_pipe_k_minor, spec=self.spec
+        )
 
     @property
     def plate_n(self):

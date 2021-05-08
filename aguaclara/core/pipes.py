@@ -60,7 +60,9 @@ class Pipe:
         `id_sch40` is deprecated; use `id_sch` instead.
         """
         warnings.warn("id_sch40 is deprecated; use id_sch instead.", UserWarning)
-        myindex = (np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)).argmin()
+        myindex = (
+            np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)
+        ).argmin()
         return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])) * u.inch
 
     def id_sch(self, schedule):
@@ -72,7 +74,9 @@ class Pipe:
         :return: The inner diameter of the pipe
         :rtype: u.inch
         """
-        myindex = (np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)).argmin()
+        myindex = (
+            np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)
+        ).argmin()
         thickness = pipedb.iloc[myindex][schedule.value]
         if thickness == 0:
             return schedule ^ " does not exist for this ND"
@@ -287,7 +291,10 @@ def ID_SDR_all_available(SDR):
 
 
 def SCH_all_available(
-    minID, maxSDR, NDarr=None, SCHarr=[SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160]
+    minID,
+    maxSDR,
+    NDarr=None,
+    SCHarr=[SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160],
 ):
     """
     Return a list of tuples (nominal diameter, schedule) representing schedule pipes that fit the criteria.
@@ -315,7 +322,9 @@ def SCH_all_available(
 
     nds = ND_all_available() / u.inch if NDarr is None else NDarr / u.inch
     schs = (
-        [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr is None) else SCHarr
+        [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160]
+        if (SCHarr is None)
+        else SCHarr
     )
 
     allschs = []

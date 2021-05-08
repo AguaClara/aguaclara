@@ -152,7 +152,12 @@ class PipelineComponent(Component, ABC):
         """
         if type(self) is Pipe:
             flow = pc.flow_pipe(
-                self.id, target_headloss, self.l, self.nu, self.pipe_rough, self.k_minor
+                self.id,
+                target_headloss,
+                self.l,
+                self.nu,
+                self.pipe_rough,
+                self.k_minor,
             )
         else:
             try:
@@ -207,7 +212,9 @@ class PipelineComponent(Component, ABC):
         valid.
         """
         if self.fluid_type not in self._AVAILABLE_FLUID_TYPES:
-            raise ValueError("fluid_type must be in", self._AVAILABLE_FLUID_TYPES)
+            raise ValueError(
+                "fluid_type must be in", self._AVAILABLE_FLUID_TYPES
+            )
 
         if self.next is not None:
             if type(self) is Pipe and type(self.next) not in [Elbow, Tee]:
@@ -560,11 +567,15 @@ class Tee(PipelineComponent):
 
     def _headloss_left(self):
         """The headloss of the left outlet"""
-        return pc.headloss_minor_elbow(self.q, self.id, self.left_k_minor).to(u.cm)
+        return pc.headloss_minor_elbow(self.q, self.id, self.left_k_minor).to(
+            u.cm
+        )
 
     def _headloss_right(self):
         """The headloss of the right outlet"""
-        return pc.headloss_minor_elbow(self.q, self.id, self.right_k_minor).to(u.cm)
+        return pc.headloss_minor_elbow(self.q, self.id, self.right_k_minor).to(
+            u.cm
+        )
 
     @property
     def headloss(self):
@@ -607,12 +618,14 @@ class Tee(PipelineComponent):
 
         if self.left_type not in self.AVAILABLE_PATHS:
             raise ValueError(
-                "type of branch for left outlet must be in ", self.AVAILABLE_PATHS
+                "type of branch for left outlet must be in ",
+                self.AVAILABLE_PATHS,
             )
 
         if self.right_type not in self.AVAILABLE_PATHS:
             raise ValueError(
-                "type of branch for right outlet must be in ", self.AVAILABLE_PATHS
+                "type of branch for right outlet must be in ",
+                self.AVAILABLE_PATHS,
             )
 
         if self.next is not None and self.size != self.next.size:
