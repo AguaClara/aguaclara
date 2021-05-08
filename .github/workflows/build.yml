@@ -40,30 +40,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install --dev
-    - name: Check with black
-      run: |
-        pipenv run black aguaclara --check
-    - name: If check failed, autoformat using black and push
-      if: failure()
-      run : |
-        # taken from https://github.com/psf/black/actions/runs/17913292/workflow
-        pipenv run black aguaclara 
-        git config --global user.name 'autoblack'
-        git config --global user.email 'annabel48lin@users.noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-        git checkout $GITHUB_HEAD_REF
-        git commit -am "fixup: Format Python code with Black"
-        git push
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - uses: psf/black@stable
     # - name: Lint with flake8
     #   run: |
     #     pipenv run flake8 aguaclara --count --verbose --show-source --statistics
