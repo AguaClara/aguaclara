@@ -676,51 +676,6 @@ def diam_vel(EnergyDis, Temp, ConcAl, ConcClay, coag, material, DIM_FRACTAL):
                )**(3/DIM_FRACTAL)
             ).to(u.m)
 
-
-# @u.wraps(u.m, u.W/u.kg, False)
-@ut.list_handler()
-def diam_floc_max(epsMax):
-    """
-    .. deprecated:: 0.1.13
-        diam_floc_max is deprecated and will be removed after Dec 1 2019. The
-        underlying equation is under suspicion.
-
-    Return floc size as a function of energy dissipation rate.
-
-    Based on Ian Tse's work with floc size as a function of energy
-    dissipation rate. This is for the average energy dissipation rate
-    in a tube flocculator. It isn't clear how to convert this to the
-    turbulent flow case. Maybe the flocs are mostly experiencing viscous
-    shear. But that isn't clear. Some authors have made the case that
-    floc breakup is due to viscous effects. If that is the case, then
-    the results from the tube flocculator should be applicable to the
-    turbulent case. We will have to account for the temporal and spatial
-    variability in the turbulent energy dissipation rate. The factor of
-    95 μm is based on the assumption that the ratio of the max to
-    average energy dissipation rate for laminar flow is approximately 2.
-    """
-    # return (9.5 * 10**-5 * (1 / (epsMax)**(1/3))).to(u.m)
-    raise FutureWarning("diam_floc_max is deprecated and will be removed after Dec"
-                    " 1 2019. The underlying equation is under suspicion.")
-
-
-# @u.wraps(u.W/u.kg, u.m, False)
-@ut.list_handler()
-def ener_dis_diam_floc(Diam):
-    """
-    .. deprecated:: 0.1.13
-        ener_dis_diam_floc is deprecated and will be removed after Dec 1 2019.
-        The underlying equation is under suspicion.
-
-    Return max energy dissipation rate as a function of max floc diameter.
-    """
-    # return ((9.5 * 10**-5 / Diam) ** 3).to(u.W/u.kg)
-    raise FutureWarning("ener_dis_diam_floc is deprecated and will be removed"
-                        " after Dec 1 2019. The underlying equation is under"
-                        " suspicion.")
-
-##### Velocity gradient in tubing for lab scale laminar flow flocculators #####
-
 # @u.wraps(1/u.s, [u.m**3/u.s, u.m], False)
 @ut.list_handler()
 def g_straight(PlantFlow, IDTube):
