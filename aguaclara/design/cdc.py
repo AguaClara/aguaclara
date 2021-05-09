@@ -63,9 +63,9 @@ class CDC(Component):
         based on the effect on water and that there is no confounding effect from
         the coagulant.
         """
-        alum_nu = \
-            (1 + (4.255 * 10 ** -6) * (coag_conc/(u.kg/u.m**3)).to(u.dimensionless) ** 2.289) * \
-            pc.viscosity_kinematic_water(self.temp)
+        alum_nu = (
+            1 + (4.255 * 10 ** -6) * coag_conc.magnitude ** 2.289
+        ) * pc.viscosity_kinematic_water(self.temp)
         return alum_nu
 
     def _alum_nu(self, coag_conc):
@@ -74,8 +74,9 @@ class CDC(Component):
             `_alum_nu` is deprecated; use `alum_nu` instead.
         """
         # Deprecated since January 2021
-        warnings.warn('_alum_nu is deprecated; use alum_nu instead.',
-                  UserWarning)
+        warnings.warn(
+            "_alum_nu is deprecated; use alum_nu instead.", UserWarning
+        )
 
         return self.alum_nu(coag_conc)
 
@@ -88,9 +89,9 @@ class CDC(Component):
         based on the effect on water and that there is no confounding effect
         from the coagulant.
         """
-        pacl_nu = \
-            (1 + (2.383 * 10 ** -5) * (coag_conc/(u.kg/u.m**3)).to(u.dimensionless) ** 1.893) * \
-            pc.viscosity_kinematic_water(self.temp)
+        pacl_nu = (
+            1 + (2.383 * 10 ** -5) * (coag_conc).magnitude ** 1.893
+        ) * pc.viscosity_kinematic_water(self.temp)
         return pacl_nu
 
     def _pacl_nu(self, coag_conc):
@@ -99,8 +100,9 @@ class CDC(Component):
             `_pacl_nu` is deprecated; use `pacl_nu` instead.
         """
         # Deprecated since January 2021
-        warnings.warn('_pacl_nu is deprecated; use pacl_nu instead.',
-                  UserWarning)
+        warnings.warn(
+            "_pacl_nu is deprecated; use pacl_nu instead.", UserWarning
+        )
 
         return self.pacl_nu(coag_conc)
 
@@ -110,8 +112,9 @@ class CDC(Component):
             `_coag_nu` is deprecated; use `coag_nu` instead.
         """
         # Deprecated since January 2021
-        warnings.warn('_coag_nu is deprecated; use coag_nu instead.',
-                  UserWarning)
+        warnings.warn(
+            "_coag_nu is deprecated; use coag_nu instead.", UserWarning
+        )
 
         return self.coag_nu(coag_conc, coag_type)
 
@@ -141,10 +144,13 @@ class CDC(Component):
         warnings.warn(
             "coag_q_max_est is deprecated; use coag_q_max instead,\
             which is based on the exact user-defined coagulant stock \
-            concentration, coag_stock_conc.', UserWarning)
+            concentration, coag_stock_conc.",
+            UserWarning,
+        )
 
-        coag_q_max_est = self.q * self.coag_dose_conc_max / \
-            self.coag_stock_conc_est
+        coag_q_max_est = (
+            self.q * self.coag_dose_conc_max / self.coag_stock_conc_est
+        )
         return coag_q_max_est
 
     @property
