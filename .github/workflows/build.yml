@@ -36,15 +36,17 @@ jobs:
         fail_ci_if_error: true
     
 
-  lint:
+  autoformat:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - uses: piotrpawlaczek/python-blacken@release/stable
+      # format code
+      - uses: piotrpawlaczek/python-blacken@release/stable 
         with:
           only-check: 'no'
+      # push formatted code
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Apply black formatting

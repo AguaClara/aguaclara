@@ -264,7 +264,7 @@ The ``aguaclara`` package uses Github Actions for continuous integration. More s
         - Tasks
     *   - Build
         - Push, pull request
-        - Validate code and documentation, check code coverage
+        - Validate code and documentation, check code coverage, autoformat code
     *   - Documentation
         - Push to master branch
         - Build and publish Sphinx documentation 
@@ -272,7 +272,10 @@ The ``aguaclara`` package uses Github Actions for continuous integration. More s
         - Publishing of release
         - Build and publish the package to Pypi
 
-The `Github Actions documentation <https://docs.github.com/en/actions>`_ is a great place to learn more about workflows and other aspects of Github's CI platform.
+Note: in the ``Build`` workflow, all code in the repository will be automatically formatted and the Github Actions will push the code. **You will have to pull again** to get these updates. 
+
+The `Github Actions documentation <https://docs.github.com/en/actions>`_ is a great place to learn more about workflows and other aspects of Github's CI platform. Additionally, check out `Github Marketplace <https://github.com/marketplace?type=actions>`_  for already existing actions that you can use!
+
 
 Checking Workflow Results
 *************************
