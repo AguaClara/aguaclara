@@ -32,7 +32,9 @@ def column_of_data(path, start, column, end=None, units=""):
 
         data = column_of_data("Reactor_data.txt", 0, 1, -1, "mg/L")
     """
-    df = pd.read_csv(path, delimiter='\t')
+    if ".csv" in path:
+        df = pd.read_csv(path, delimiter='\t')
+    df = path
 
     if isinstance(column, int):
         data = df.iloc[start:end, column]
@@ -64,7 +66,8 @@ def column_of_time(path, start, end=None, units="day"):
 
         time = column_of_time("Reactor_data.txt", 0)
     """
-    df = pd.read_csv(path, delimiter='\t')
+    if ".csv" in path:
+        df = pd.read_csv(path, delimiter='\t')
 
     start_time = pd.to_numeric(df.iloc[start, 0])
     day_times = df.iloc[start:end, 0]
@@ -88,8 +91,9 @@ def plot_columns(path, columns, x_axis=None):
     :return: A list of Line2D objects representing the plotted data
     :rtype: matplotlib.lines.Line2D list
     """
-    df = pd.read_csv(path, delimiter='\t')
-    df = remove_notes(df)
+    if ".csv" in path:
+        df = pd.read_csv(path, delimiter='\t')
+        df = remove_notes(df)
 
     if isinstance(columns, str):
         y = pd.to_numeric(df.loc[:, columns])
@@ -126,7 +130,8 @@ def iplot_columns(path, columns, x_axis=None):
     :return: a list of Line2D objects representing the plotted data
     :rtype: matplotlib.lines.Line2D list
     """
-    df = pd.read_csv(path, delimiter='\t')
+    if ".csv" in path:
+        df = pd.read_csv(path, delimiter='\t')
     df = remove_notes(df)
 
     if isinstance(columns, int):
@@ -159,7 +164,8 @@ def notes(path):
     :return: The rows of the data file that contain text notes inserted during the experiment.
     :rtype: pandas.Dataframe
     """
-    df = pd.read_csv(path, delimiter='\t')
+    if ".csv" in path:
+        df = pd.read_csv(path, delimiter='\t')
     return df[pd.to_numeric(df.iloc[:, 0], errors='coerce').isnull()]
 
 
@@ -602,7 +608,7 @@ def read_state_with_metafile(func, state, column, path, metaids=[],
         ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], ".tsv", "mg/L")
     """
     outputs = []
-
+    # if ".csv" in path:
     metafile = pd.read_csv(path, delimiter='\t', header=None)
     metafile = np.array(metafile)
 
@@ -745,5 +751,3 @@ def intersect(x, y1, y2):
       y_points = np.append(y_points, slope1*(b2-b1)/(slope1-slope2) + b1)
 
     return x_points, y_points, crossings
-
-    
