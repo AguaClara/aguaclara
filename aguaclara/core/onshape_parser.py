@@ -19,8 +19,8 @@ msg_str = "message"
 val_str = "value"
 key_str = "key"
 
-# create global roles using this: https://stackoverflow.com/questions/9698702/how-do-i-create-a-global-role-roles-in-sphinx
-# If this grows too much, we'll need to add a global rst as described in the post above.
+# create global roles using this: https://stackoverflow.com/questions/9698702/how-do-i-create-a-global-role-roles-in-sphinx # noqa
+# If this grows too much, we'll need to add a global rst as described in the post above. # noqa
 
 
 def parse_quantity(q, for_docs=True):
@@ -104,9 +104,10 @@ def is_fs_type(candidate, type_name):
 
 
 def copy_to_docs(file_path, new_name=None, base="doc_files"):
-    """First, searches recursively searches for the base path in parent folders.
-    Then copies a file to the current working directory. The new file's path
-    will be identical to the old file's path relative to the base path.
+    """First, searches recursively searches for the base path in
+    parent folders. Then copies a file to the current working directory.
+    The new file's path will be identical to the old file's path relative
+    to the base path.
 
     Args:
         file_path: path to the file to be copied
@@ -125,7 +126,7 @@ def copy_to_docs(file_path, new_name=None, base="doc_files"):
     new_path = new_name if new_name is not None else file_path
     try:
         copyfile(os.path.join(basepath, file_path), new_path)
-    except IOError as io_err:
+    except IOError:
         os.makedirs(os.path.dirname(new_path))
         copyfile(os.path.join(basepath, file_path), new_path)
 
@@ -159,7 +160,8 @@ def merge_index_sections(new_section, old_section):
     combines them.
 
     Args:
-        new_section: section which is being added to if line from old_section is absent
+        new_section:section which is being added to
+        if line from old_section is absent
         old_section: section which is pulled from
 
     Returns:
@@ -215,10 +217,11 @@ def find_index_section_limits(
 
 
 def merge_indexes(new_index, old_index):
-    """Merges two indexes by comparing the two files, index.rst and new_index.rst
-    section by section and adding pieces which exist in index.rst but are missing
-    from new_index.rst . At the end, the one which was added to is maintained as
-    index.rst and new_index.rst is deleted.
+    """Merges two indexes by comparing the two files, index.rst
+    and new_index.rst section by section and adding pieces which
+    exist in index.rst but are missing from new_index.rst . At the
+    end, the one which was added to is maintained as index.rst
+    and new_index.rst is deleted.
 
     Args:
         new_index: path to index file which is being merged from
@@ -292,12 +295,14 @@ def find_treatment_section_limits(filename, section_delimiter=".. _heading"):
 
 def merge_treatment_processes(new_processes, old_processes):
     """Merges two treatment process descriptions by comparing the two files
-    section by section and adding pieces which exist in new_processes but are missing
-    from old_processes.
+    section by section and adding pieces which exist in new_processes but
+    are missing from old_processes.
 
     Args:
-        new_processes: path to treatment process file which is being merged from
-        old_processes: path to existing treatment process file which is being merged into
+        new_processes: path to treatment process file which is
+        being merged from
+        old_processes: path to existing treatment process file
+        which is being merged into
 
     Returns:
         none
@@ -331,7 +336,8 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
 
     Args:
         unparsed: portion of deserialized JSON which has yet to be parsed
-        default_key: key for the field. Used to detect special entries like index
+        default_key: key for the field. Used to detect special entries
+        like index
         for_docs: True if parsing variables for AIDE documentation,
             False otherwise (e.g. validation)
 
@@ -364,14 +370,14 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
         if unparsed != "" and unparsed is not None and for_docs:
             file = "Introduction/Treatment_Process.rst"
             file_path = (
-                "../../../doc_files/Introduction/Treatment_Process_" + unparsed + ".rst"
+                "../../../doc_files/Introduction/Treatment_Process_" + unparsed + ".rst"  # noqa
             )
             if os.path.exists(file):
                 merge_treatment_processes(file_path, file)
             else:
                 try:
                     copyfile(file_path, file)
-                except IOError as io_err:
+                except IOError:
                     os.makedirs(os.path.dirname(file))
                     copyfile(file_path, file)
         return parsed_variables, templates, processes
@@ -410,7 +416,8 @@ def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
 
     Args:
         attributes: deserialized JSON object returned by Onshape link
-        fields: fields which we are interested in parsing, e.g. 'variables' or 'index'
+        fields: fields which we are interested in parsing, e.g.
+        'variables' or 'index'
         for_docs: True if parsing variables for AIDE documentation,
             False otherwise (e.g. validation)
         type_tag: type from Onshape of the configuration we are parsing for
@@ -434,7 +441,7 @@ def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
                     for doc in docs:
                         for unparsed in doc[msg_str][val_str]:
                             if is_fs_type(unparsed, "BTFSValueMapEntry"):
-                                key = unparsed[msg_str][key_str][msg_str][val_str]
+                                key = unparsed[msg_str][key_str][msg_str][val_str]   # noqa
                                 for field in fields:
                                     if key == field:
                                         (
@@ -442,9 +449,7 @@ def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
                                             new_templates,
                                             new_processes,
                                         ) = parse_variables_from_map(
-                                            unparsed[msg_str][val_str][msg_str][
-                                                val_str
-                                            ],
+                                            unparsed[msg_str][val_str][msg_str][val_str],  # noqa
                                             key,
                                             for_docs,
                                         )
@@ -520,7 +525,7 @@ def get_parsed_measurements(
     return measurements, templates, processes
 
 
-# from https://stackoverflow.com/questions/5914627/prepend-line-to-beginning-of-a-file
+# from https://stackoverflow.com/questions/5914627/prepend-line-to-beginning-of-a-file  # noqa
 def line_prepender(filename, line):
     """Prepends a file with the given line.
 
@@ -538,8 +543,8 @@ def line_prepender(filename, line):
 
 
 def make_replace_list(parsed_dict, filename, var_attachment=""):
-    """Adds the dictionary of variables which have been parsed to the top of the
-    given file.
+    """Adds the dictionary of variables which have been parsed to the
+    top of the given file.
 
     Args:
         parsed_dict: dictionary of variables parsed from Onshape document
