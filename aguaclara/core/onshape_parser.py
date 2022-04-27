@@ -15,13 +15,14 @@ from onshape_client import Client
 from aguaclara.core.units import u
 
 ureg = u
-
 msg_str = "message"
 val_str = "value"
 key_str = "key"
 
 # create global roles using this: https://stackoverflow.com/questions/9698702/how-do-i-create-a-global-role-roles-in-sphinx
 # If this grows too much, we'll need to add a global rst as described in the post above.
+
+
 def parse_quantity(q, for_docs=True):
     """Parse an Onshape units definition
 
@@ -94,7 +95,8 @@ def is_fs_type(candidate, type_name):
             result = type_name == candidate["typeName"]
         elif isinstance(type_name, list):
             result = any(
-                [type_name_one == candidate["typeName"] for type_name_one in type_name]
+                [type_name_one == candidate["typeName"]
+                    for type_name_one in type_name]
             )
     except Exception:
         result = False
@@ -144,7 +146,8 @@ def parse_variables_from_list(unparsed, for_docs=True):
 
     for to_parse in unparsed:
         if is_fs_type(to_parse, "BTFSValueWithUnits"):
-            measurement_list.append(parse_quantity(to_parse[msg_str], for_docs))
+            measurement_list.append(
+                parse_quantity(to_parse[msg_str], for_docs))
         elif is_fs_type(to_parse, ["BTFSValueNumber", "BTFSValueString"]):
             measurement_list.append(to_parse[msg_str][val_str])
 
@@ -299,8 +302,10 @@ def merge_treatment_processes(new_processes, old_processes):
     Returns:
         none
     """
-    old_lines, old_section_limits = find_treatment_section_limits(old_processes)
-    new_lines, new_section_limits = find_treatment_section_limits(new_processes)
+    old_lines, old_section_limits = find_treatment_section_limits(
+        old_processes)
+    new_lines, new_section_limits = find_treatment_section_limits(
+        new_processes)
 
     for start, end in new_section_limits:
         included = False
@@ -386,7 +391,8 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
                         candidate_message[msg_str][val_str], for_docs
                     )
                 elif is_fs_type(candidate_message, "BTFSValueWithUnits"):
-                    value = parse_quantity(candidate_message[msg_str], for_docs)
+                    value = parse_quantity(
+                        candidate_message[msg_str], for_docs)
                 elif is_fs_type(
                     candidate_message, ["BTFSValueNumber", "BTFSValueString"]
                 ):
@@ -505,9 +511,11 @@ def get_parsed_measurements(
         _preload_content=False,
     )
 
-    attributes = json.loads(response.data.decode("utf-8"))["result"][msg_str][val_str]
+    attributes = json.loads(response.data.decode(
+        "utf-8"))["result"][msg_str][val_str]
 
-    measurements, templates, processes = parse_attributes(attributes, fields, for_docs)
+    measurements, templates, processes = parse_attributes(
+        attributes, fields, for_docs)
 
     return measurements, templates, processes
 
@@ -547,7 +555,9 @@ def make_replace_list(parsed_dict, filename, var_attachment=""):
 
     for var in parsed_dict:
         if type(parsed_dict[var]) == dict:
-            make_replace_list(parsed_dict[var], filename, var_attachment + var + "_")
+            make_replace_list(parsed_dict[var],
+                              filename, var_attachment + var + "_")
         else:
-            line = prefix + var_attachment + str(var) + suffix + str(parsed_dict[var])
+            line = prefix + var_attachment + \
+                str(var) + suffix + str(parsed_dict[var])
             line_prepender(filename, line)
