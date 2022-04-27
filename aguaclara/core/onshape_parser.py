@@ -15,14 +15,15 @@ from onshape_client import Client
 from aguaclara.core.units import u
 
 
-ureg =  u
-
+ureg = u
 msg_str = "message"
 val_str = "value"
 key_str = "key"
 
 # create global roles using this: https://stackoverflow.com/questions/9698702/how-do-i-create-a-global-role-roles-in-sphinx
 # If this grows too much, we'll need to add a global rst as described in the post above.
+
+
 def parse_quantity(q, for_docs=True):
     """Parse an Onshape units definition
 
@@ -49,7 +50,7 @@ def parse_quantity(q, for_docs=True):
         units_s = units_s * ureg(unit[key_str].lower()) ** unit[val_str]
         try:
             log = math.floor(math.log10(units_s.magnitude))
-        except:
+        except Exception:
             log = 0
         if for_docs:
             if unit[key_str] == 'METER' and unit[val_str] == 1:
@@ -78,6 +79,7 @@ def parse_quantity(q, for_docs=True):
         else:
             return units_s
 
+
 def is_fs_type(candidate, type_name):
     """Checks if the a JSON entry is of a specific FeatureScript type.
 
@@ -94,11 +96,13 @@ def is_fs_type(candidate, type_name):
             result = type_name == candidate["typeName"]
         elif isinstance(type_name, list):
             result = any(
-                [type_name_one == candidate["typeName"] for type_name_one in type_name]
+                [type_name_one == candidate["typeName"]
+                    for type_name_one in type_name]
             )
     except Exception:
         result = False
     return result
+
 
 def copy_to_docs(file_path, new_name=None, base="doc_files"):
     """First, searches recursively searches for the base path in parent folders.
@@ -126,6 +130,7 @@ def copy_to_docs(file_path, new_name=None, base="doc_files"):
         os.makedirs(os.path.dirname(new_path))
         copyfile(os.path.join(basepath, file_path), new_path)
 
+
 def parse_variables_from_list(unparsed, for_docs=True):
     """Helper function for parse_variables_from_map parses values from a list
     instead of a map.
@@ -142,11 +147,13 @@ def parse_variables_from_list(unparsed, for_docs=True):
 
     for to_parse in unparsed:
         if is_fs_type(to_parse, "BTFSValueWithUnits"):
-            measurement_list.append(parse_quantity(to_parse[msg_str], for_docs))
+            measurement_list.append(
+                parse_quantity(to_parse[msg_str], for_docs))
         elif is_fs_type(to_parse, ["BTFSValueNumber", "BTFSValueString"]):
             measurement_list.append(to_parse[msg_str][val_str])
 
     return measurement_list
+
 
 def merge_index_sections(new_section, old_section):
     """Helper function for merge_indexes which loops through each section and
@@ -166,6 +173,7 @@ def merge_index_sections(new_section, old_section):
             new_section.append(line)
 
     return new_section
+
 
 def find_index_section_limits(filename, section_start=".. toctree::\n",
                               section_end="\n"):
@@ -205,6 +213,7 @@ def find_index_section_limits(filename, section_start=".. toctree::\n",
 
     return lines, section_limits
 
+
 def merge_indexes(new_index, old_index):
     """Merges two indexes by comparing the two files, index.rst and new_index.rst
     section by section and adding pieces which exist in index.rst but are missing
@@ -227,7 +236,8 @@ def merge_indexes(new_index, old_index):
         caption = old_lines[start+1]
         for new_start, new_end in new_section_limits:
             if new_lines[new_start+1] == caption:
-                new_section = merge_index_sections(new_lines[new_start:new_end], old_lines[start:end])
+                new_section = merge_index_sections(
+                    new_lines[new_start:new_end], old_lines[start:end])
                 del new_lines[new_start:new_end]
                 i = new_start
                 for line in new_section:
@@ -246,6 +256,7 @@ def merge_indexes(new_index, old_index):
     old_index_file.close()
 
     os.remove(new_index)
+
 
 def find_treatment_section_limits(filename, section_delimiter=".. _heading"):
     """Helper function for merge_treatment_processes which loops through the
@@ -273,9 +284,10 @@ def find_treatment_section_limits(filename, section_delimiter=".. _heading"):
             section_limits.append([start, end])
             start = i
 
-    section_limits.append([start,len(lines)])
+    section_limits.append([start, len(lines)])
 
     return lines, section_limits
+
 
 def merge_treatment_processes(new_processes, old_processes):
     """Merges two treatment process descriptions by comparing the two files
@@ -289,8 +301,10 @@ def merge_treatment_processes(new_processes, old_processes):
     Returns:
         none
     """
-    old_lines, old_section_limits = find_treatment_section_limits(old_processes)
-    new_lines, new_section_limits = find_treatment_section_limits(new_processes)
+    old_lines, old_section_limits = find_treatment_section_limits(
+        old_processes)
+    new_lines, new_section_limits = find_treatment_section_limits(
+        new_processes)
 
     for start, end in new_section_limits:
         included = False
@@ -308,6 +322,7 @@ def merge_treatment_processes(new_processes, old_processes):
     old_file = open(old_processes, "w+")
     old_file.write("".join(old_lines))
     old_file.close()
+
 
 def parse_variables_from_map(unparsed, default_key="", for_docs=True):
     """Helper function for parse_attributes which loops through an unparsed map
@@ -337,11 +352,11 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
         return parsed_variables, templates, processes
     elif default_key == "index":
         if unparsed != "" and unparsed is not None and for_docs:
-                if os.path.exists('index.rst'):
-                    copy_to_docs(unparsed, 'new_index.rst')
-                    merge_indexes('new_index.rst', 'index.rst')
-                else:
-                    copy_to_docs(unparsed, 'index.rst')
+            if os.path.exists('index.rst'):
+                copy_to_docs(unparsed, 'new_index.rst')
+                merge_indexes('new_index.rst', 'index.rst')
+            else:
+                copy_to_docs(unparsed, 'index.rst')
         return parsed_variables, templates, processes
     elif default_key == "process":
         processes.append(unparsed)
@@ -364,13 +379,15 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
                 key = to_parse[msg_str][key_str][msg_str][val_str]
                 candidate_message = to_parse[msg_str][val_str]
                 if is_fs_type(candidate_message, "BTFSValueMap"):
-                    value, template = parse_variables_from_map(candidate_message[msg_str][val_str])
+                    value, template = parse_variables_from_map(
+                        candidate_message[msg_str][val_str])
                     templates.extend(template)
                 elif is_fs_type(candidate_message,  "BTFSValueArray"):
                     value = parse_variables_from_list(candidate_message[msg_str][val_str],
                                                       for_docs)
                 elif is_fs_type(candidate_message, "BTFSValueWithUnits"):
-                    value = parse_quantity(candidate_message[msg_str], for_docs)
+                    value = parse_quantity(
+                        candidate_message[msg_str], for_docs)
                 elif is_fs_type(candidate_message, ["BTFSValueNumber", "BTFSValueString"]):
                     value = candidate_message[msg_str][val_str]
                 parsed_variables[key] = value
@@ -378,6 +395,7 @@ def parse_variables_from_map(unparsed, default_key="", for_docs=True):
         parsed_variables[default_key] = unparsed
 
     return parsed_variables, templates, processes
+
 
 def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
     """Helper function for get_parsed_measurements which loops through the
@@ -428,8 +446,10 @@ def parse_attributes(attributes, fields, for_docs=True, type_tag="Documenter"):
 
     return measurements, templates, processes
 
+
 def get_parsed_measurements(link,
-                            fields=["variables", "template", "index", "process"],
+                            fields=["variables", "template",
+                                    "index", "process"],
                             for_docs=True):
     """Parses the output of the Onshape Documenter feature found in the Onshape
     document at the given url.
@@ -456,7 +476,7 @@ def get_parsed_measurements(link,
         """
 
     client = Client(
-        configuration = {
+        configuration={
             "base_url": "https://cad.onshape.com",
             "access_key": "ekAHCj04TtODlvlI9yWj2bjB",
             "secret_key": "sS11vEOD5CavkLVcZshLBgfBlB5aBvnpz6v3oEvC0bN0zxhW"
@@ -475,13 +495,17 @@ def get_parsed_measurements(link,
         _preload_content=False,
     )
 
-    attributes = json.loads(response.data.decode("utf-8"))["result"][msg_str][val_str]
+    attributes = json.loads(response.data.decode(
+        "utf-8"))["result"][msg_str][val_str]
 
-    measurements, templates, processes = parse_attributes(attributes, fields, for_docs)
+    measurements, templates, processes = parse_attributes(
+        attributes, fields, for_docs)
 
     return measurements, templates, processes
 
 # from https://stackoverflow.com/questions/5914627/prepend-line-to-beginning-of-a-file
+
+
 def line_prepender(filename, line):
     """Prepends a file with the given line.
 
@@ -496,6 +520,7 @@ def line_prepender(filename, line):
         content = f.read()
         f.seek(0, 0)
         f.write(line.rstrip('\r\n') + '\n' + content)
+
 
 def make_replace_list(parsed_dict, filename, var_attachment=''):
     """Adds the dictionary of variables which have been parsed to the top of the
@@ -515,7 +540,9 @@ def make_replace_list(parsed_dict, filename, var_attachment=''):
 
     for var in parsed_dict:
         if type(parsed_dict[var]) == dict:
-            make_replace_list(parsed_dict[var], filename, var_attachment + var + "_")
+            make_replace_list(parsed_dict[var],
+                              filename, var_attachment + var + "_")
         else:
-            line = prefix + var_attachment + str(var) + suffix + str(parsed_dict[var])
+            line = prefix + var_attachment + \
+                str(var) + suffix + str(parsed_dict[var])
             line_prepender(filename, line)
