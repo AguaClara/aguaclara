@@ -60,7 +60,8 @@ def column_of_time(path, start, end=None, units="day"):
     :type units: string, optional
 
     :return: Experimental times starting at 0
-    :rtype: numpy.ndarray in units of days or hours, specified with units parameter
+    :rtype: numpy.ndarray in units of days or hours,
+    specified with units parameter
 
     :Examples:
 
@@ -222,9 +223,9 @@ def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
 
     .. code-block:: python
 
-        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, dates=['6-14-2018', '6-15-2018'], start_time='12:20', end_time='10:50')
-        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], dates='6-14-2018', start_time='12:20', end_time='23:59')
-        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], dates='6-14-2018')
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=4, dates=['6-14-2018', '6-15-2018'], start_time='12:20', end_time='10:50')  # noqa
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,4], dates='6-14-2018', start_time='12:20', end_time='23:59')  # noqa
+        data = get_data_by_time(path='/Users/.../ProCoDA Data/', columns=[0,3,4], dates='6-14-2018')  # noqa
     """
     # the file path url is not acceptable (ie contains 'github.com')
     if 'github.com' in path:
@@ -315,17 +316,19 @@ def data_from_dates(path, dates, extension):
 
 
 def column_start_to_end(data, column, start_idx, end_idx):
-    """Return a list of numeric data entries in the given column from the starting
-    index to the ending index. This can list can be compiled over one or more
-    DataFrames.
+    """Return a list of numeric data entries in the given column
+    from the starting index to the ending index. This can list
+    can be compiled over one or more DataFrames.
 
     :param data: a list of DataFrames to extract one column from
     :type data: Pandas.DataFrame list
     :param column: a column index
     :type column: int
-    :param start_idx: the index of the starting row of the first DataFrame
+    :param start_idx: the index of the starting row of the
+    first DataFrame
     :type start_idx: int
-    :param end_idx: the index of the ending row of the last DataFrame, excluding this row
+    :param end_idx: the index of the ending row of the last
+    DataFrame, excluding this row
     :type end_idx: int
 
     :return: a list of data from the given column
@@ -355,25 +358,29 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
     Note: column 0 is time, the first data column is column 1. Results for the
     time column are given in elasped time.
 
-    :param path: The path to the folder containing the ProCoDA data file(s), defaults to the current directory
+    :param path: The path to the folder containing the ProCoDA data file(s),
+    defaults to the current directory
     :type path: string
-    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
+    :param dates: A single date or list of dates for which data was recorded,
+    formatted "M-D-YYYY"
     :type dates: string or string list
     :param state: The state ID number for which data should be extracted
     :type state: int
-    :param column: The integer index of the column that you want to extract OR the header of the column that you want to extract
+    :param column: The integer index of the column that you want to
+    extract OR the header of the column that you want to extract
     :type column: int or string
     :param extension: File extension of the data file(s). Defaults to '.tsv'
     :type extension: string, optional
 
-    :return: A list of lists of the time and data columns extracted for each iteration of the state. For example, if "data" is the output, data[i][:,0] gives the time column and data[i][:,1] gives the data column for the ith iteration of the given state and column. data[i][0] would give the first [time, data] pair.
-    :type: 3D float list
-
-    :Examples:
+    :return: A list of lists of the time and data columns extracted for
+    each iteration of the state. For example, if "data" is the output,
+    data[i][:,0] gives the time column and data[i][:,1] gives the data
+    column for the ith iteration of the given state and column.
+    data[i][0] woul
 
     .. code-block:: python
 
-        data = get_data_by_state(path='/Users/.../ProCoDA Data/', dates=["6-19-2013", "6-20-2013"], state=1, column=28)
+        data = get_data_by_state(path='/Users/.../ProCoDA Data/', dates=["6-19-2013", "6-20-2013"], state=1, column=28)  # noqa
     """
     # the file path url is not acceptable (ie contains 'github.com')
     if 'github.com' in path:
@@ -453,21 +460,27 @@ def read_state(dates, state, column, units="", path="", extension=".tsv"):
 
     Note: Column 0 is time. The first data column is column 1.
 
-    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
+    :param dates: A single date or list of dates for which data was recorded,
+    formatted "M-D-YYYY"
     :type dates: string or string list
     :param state: The state ID number for which data should be extracted
     :type state: int
-    :param column: Index of the column that you want to extract OR header of the column that you want to extract
+    :param column: Index of the column that you want to extract
+    OR header of the column that you want to extract
     :type column: int or string
-    :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless)
+    :param units: The units you want to apply to the data, e.g. 'mg/L'.
+    Defaults to "" (dimensionless)
     :type units: string, optional
     :param path: The file path of the ProCoDA data file.
     :type path: string
-    :param extension: The file extension of the tab delimited file. Defaults to ".tsv"
+    :param extension: The file extension of the tab delimited file.
+    Defaults to ".tsv"
     :type extension: string, optional
 
-    :return: time (numpy.ndarray) - Times corresponding to the data (with units)
-    :return: data (numpy.ndarray) - Data in the given column during the given state with units
+    :return: time (numpy.ndarray) - Times corresponding to the
+    data (with units)
+    :return: data (numpy.ndarray) - Data in the given column
+    during the given state with units
 
     :Examples:
 
@@ -489,17 +502,21 @@ def average_state(dates, state, column, units="", path="", extension=".tsv"):
 
     Note: Column 0 is time. The first data column is column 1.
 
-    :param dates: A single date or list of dates for which data was recorded, formatted "M-D-YYYY"
+    :param dates: A single date or list of dates for which data was recorded,
+    formatted "M-D-YYYY"
     :type dates: string or string list
     :param state: The state ID number for which data should be extracted
     :type state: int
-    :param column: Index of the column that you want to extract OR header of the column that you want to extract
+    :param column: Index of the column that you want to extract
+    OR header of the column that you want to extract
     :type column: int or string
-    :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless)
+    :param units: The units you want to apply to the data, e.g. 'mg/L'.
+    Defaults to "" (dimensionless)
     :type units: string, optional
     :param path: The file path of the ProCoDA data file.
     :type path: string
-    :param extension: The file extension of the tab delimited file. Defaults to ".tsv"
+    :param extension: The file extension of the tab delimited file.
+    Defaults to ".tsv"
     :type extension: string, optional
 
     :return: A list of averages for each instance of the given state
@@ -595,23 +612,31 @@ def read_state_with_metafile(func, state, column, path, metaids=[],
 
     Note: Column 0 is time. The first data column is column 1.
 
-    :param func: A function that will be applied to data from each instance of the state
+    :param func: A function that will be applied to data from each instance
+    of the state
     :type func: function
     :param state: The state ID number for which data should be extracted
     :type state: int
-    :param column: Index of the column that you want to extract OR header of the column that you want to extract
+    :param column: Index of the column that you want to extract OR header of
+    the column that you want to extract
     :type column: int or string
-    :param path: The file path of the ProCoDA data file (must be tab-delimited)
+    :param path: The file path of the ProCoDA data file
+    (must be tab-delimited)
     :type path: string
-    :param metaids: a list of the experiment IDs you'd like to analyze from the metafile
+    :param metaids: a list of the experiment IDs you'd like to analyze
+    from the metafile
     :type metaids: string list, optional
-    :param extension: The file extension of the tab delimited file. Defaults to ".tsv"
+    :param extension: The file extension of the tab delimited file.
+    Defaults to ".tsv"
     :type extension: string, optional
-    :param units: The units you want to apply to the data, e.g. 'mg/L'. Defaults to "" (dimensionless)
+    :param units: The units you want to apply to the data, e.g. 'mg/L'.
+    Defaults to "" (dimensionless)
     :type units: string, optional
 
-    :return: ids (string list) - The list of experiment ids given in the metafile
-    :return: outputs (list) - The outputs of the given function for each experiment
+    :return: ids (string list) - The list of experiment ids given
+    in the metafile
+    :return: outputs (list) - The outputs of the given function
+    for each experiment
 
     :Examples:
 
@@ -626,7 +651,7 @@ def read_state_with_metafile(func, state, column, path, metaids=[],
             return acc / num
 
         path = "../tests/data/Test Meta File.txt"
-        ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], ".tsv", "mg/L")
+        ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], ".tsv", "mg/L")  # noqa
     """
     outputs = []
 
@@ -695,27 +720,40 @@ def write_calculations_to_csv(funcs, states, columns, path, headers, out_name,
 
     Note: Column 0 is time. The first data column is column 1.
 
-    :param funcs: A function or list of functions which will be applied in order to the data. If only one function is given it is applied to all the states/columns
+    :param funcs: A function or list of functions which will be applied in
+    order to the data.If only one function is given it is applied to all
+    the states/columns
     :type funcs: function or function list
-    :param states: The state ID numbers for which data should be extracted. List should be in order of calculation or if only one state is given then it will be used for all the calculations
+    :param states: The state ID numbers for which data should be extracted.
+    List should be in order of calculation or if only one state is given then
+    it will be used for all the calculations
     :type states: string or string list
-    :param columns: The index of a column, the header of a column, a list of indexes, OR a list of headers of the column(s) that you want to apply calculations to
+    :param columns: The index of a column, the header of a column, a list
+    of indexes, OR a list of headers of the column(s) that you want to
+    apply calculations to
     :type columns: int, string, int list, or string list
     :param path: Path to your ProCoDA metafile (must be tab-delimited)
     :type path: string
     :param headers: List of the desired header for each calculation, in order
     :type headers: string list
-    :param out_name: Desired name for the output file. Can include a relative path
+    :param out_name: Desired name for the output file. Can include a
+    relative path
     :type out_name: string
-    :param metaids: A list of the experiment IDs you'd like to analyze from the metafile
+    :param metaids: A list of the experiment IDs you'd like to analyze from
+    the metafile
     :type metaids: string list, optional
-    :param extension: The file extension of the tab delimited file. Defaults to ".tsv"
+    :param extension: The file extension of the tab delimited file.
+    Defaults to ".tsv"
     :type extension: string, optional
 
-    :requires: funcs, states, columns, and headers are all of the same length if they are lists. Some being lists and some single values are okay.
+    :requires: funcs, states, columns, and headers are all of the same length
+    if they are lists. Some being lists and some single values are okay.
 
-    :return: out_name.csv (CVS file) - A CSV file with the each column being a new calcuation and each row being a new experiment on which the calcuations were performed
-    :return: output (Pandas.DataFrame)- Pandas DataFrame holding the same data that was written to the output file
+    :return: out_name.csv (CVS file) - A CSV file with the each column being a
+    new calcuation and each row being a new experiment on which the calcuations
+    were performed
+    :return: output (Pandas.DataFrame)- Pandas DataFrame holding the same data
+    that was written to the output file
     """
     if not isinstance(funcs, list):
         funcs = [funcs] * len(headers)
@@ -740,23 +778,24 @@ def write_calculations_to_csv(funcs, states, columns, path, headers, out_name,
 
 
 def intersect(x, y1, y2):
-    """Returns the intersections of two lines represented by a common set of x coordinates and
-    two sets of y coordinates as three numpy arrays: the x coordinates of the intersections,
-    the y coordinates of the intersections, and the indexes in x, y1, y2 immediately
-    after the intersections.
-
-    :param x: common set of x coordinates for the two lines
-    :type x: numpy.ndarray
-    :param y1: the y coordinates of the first line
+    """Returns the intersections of two lines represented by a
+    common set of x coordinates and
+    two sets of y coordinates as three numpy arrays: the x
+    coordinates of the intersections,
+    the y coordin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e y
+    coordinates of the first line
     :type y1: numpy.ndarray
     :param y2: the y coordinates of the second line
     :type y2: numpy.ndarray
 
     :requires: x have no repeating values and is in ascending order
 
-    :return: x_points-numpy.ndarray of the x coordinates where intersections occur
-    :return: y_points-numpy.ndarray of the y coordinates where intersections occur
-    :return: crossings-numpy.ndarray of the indexes after the intersections occur
+    :return: x_points-numpy.ndarray of the x coordinates where
+    intersections occur
+    :return: y_points-numpy.ndarray of the y coordinates where
+    intersections occur
+    :return: crossings-numpy.ndarray of the indexes after the
+    intersections occur
     """
     x_points = np.array([])
     y_points = np.array([])
