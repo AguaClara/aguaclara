@@ -49,7 +49,7 @@ def alpha0_carbonate(pH):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import alpha0_carbonate
+    >>> from aguaclara.research.environmental_processes_analysis import alpha0_carbonate  # noqa
     >>> round(alpha0_carbonate(10), 7)
     <Quantity(0.00015, 'dimensionless')>
     """
@@ -70,7 +70,7 @@ def alpha1_carbonate(pH):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import alpha1_carbonate
+    >>> from aguaclara.research.environmental_processes_analysis import alpha1_carbonate  # noqa
     >>> round(alpha1_carbonate(10), 7)
     <Quantity(0.639969, 'dimensionless')>
     """
@@ -91,7 +91,7 @@ def alpha2_carbonate(pH):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import alpha2_carbonate
+    >>> from aguaclara.research.environmental_processes_analysis import alpha2_carbonate  # noqa
     >>> round(alpha2_carbonate(10), 7)
     <Quantity(0.359881, 'dimensionless')>
     """
@@ -108,7 +108,8 @@ def ANC_closed(pH, total_carbonates):
 
     :param pH: pH of the system
     :type pH: float
-    :param total_carbonates: Total carbonate concentration in the system (mole/L)
+    :param total_carbonates: Total carbonate concentration in
+    the system (mole/L)
     :type total_carbonates: float
 
     :return: The acid neutralizing capacity of the closed system (eq/L)
@@ -139,7 +140,7 @@ def ANC_open(pH):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import ANC_open
+    >>> from aguaclara.research.environmental_processes_analysis import ANC_open  # noqa
     >>> round(ANC_open(10), 7)
     <Quantity(0.0907346, 'equivalent / liter')>
     """
@@ -155,34 +156,47 @@ def aeration_data(DO_column, dirpath):
     micromoles/s. The function opens a file dialog for the user to select
     the directory containing the data.
 
-    :param DO_column: Index of the column that contains the dissolved oxygen concentration data.
+    :param DO_column: Index of the column that contains the dissolved
+    oxygen concentration data.
     :type DO_columm: int
-    :param dirpath: Path to the directory containing aeration data you want to analyze
+    :param dirpath: Path to the directory containing aeration
+    data you want to analyze
     :type dirpath: string
 
     :return: collection of
 
-        * **filepaths** (*string list*) - All file paths in the directory sorted by flow rate
-        * **airflows** (*numpy.array*) - Sorted array of air flow rates with units of micromole/s
-        * **DO_data** (*numpy.array list*) - Sorted list of Numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
-        * **time_data** (*numpy.array list*) - Sorted list of Numpy arrays containing the times with units of seconds
+        * **filepaths** (*string list*) - All file paths in the directory
+        sorted by flow rate
+        * **airflows** (*numpy.array*) - Sorted array of air flow rates with
+        units of micromole/s
+        * **DO_data** (*numpy.array list*) - Sorted list of Numpy arrays. Thus
+        each of the numpy data arrays can have different lengths to accommodate
+        short and long experiments
+        * **time_data** (*numpy.array list*) - Sorted list of Numpy
+        arrays containing the times with units of seconds
     """
-    #return the list of files in the directory
+    # return the list of files in the directory
     filenames = os.listdir(dirpath)
-    #extract the flowrates from the filenames and apply units
-    airflows = ((np.array([i.split('.', 1)[0] for i in filenames])).astype(np.float32))
-    #sort airflows and filenames so that they are in ascending order of flow rates
+    # extract the flowrates from the filenames and apply units
+    airflows = ((np.array([i.split('.', 1)[0]
+                for i in filenames])).astype(np.float32))
+    # sort airflows and filenames so that they are in ascending
+    # order of flow rates
     idx = np.argsort(airflows)
     airflows = (np.array(airflows)[idx])*u.umole/u.s
     filenames = np.array(filenames)[idx]
 
     filepaths = [os.path.join(dirpath, i) for i in filenames]
-    #DO_data is a list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
-    # cycle through all of the files and extract the column of data with oxygen concentrations and the times
-    DO_data=[column_of_data(i,0,DO_column,-1,'mg/L') for i in filepaths]
-    time_data=[(column_of_time(i,0,-1)).to(u.s) for i in filepaths]
-    aeration_collection = collections.namedtuple('aeration_results','filepaths airflows DO_data time_data')
-    aeration_results = aeration_collection(filepaths, airflows, DO_data, time_data)
+    # DO_data is a list of numpy arrays. Thus each of the numpy data arrays
+    # can have different lengths to accommodate short and long experiments
+    # cycle through all of the files and extract the column of data with oxygen
+    # concentrations and the times
+    DO_data = [column_of_data(i, 0, DO_column, -1, 'mg/L') for i in filepaths]
+    time_data = [(column_of_time(i, 0, -1)).to(u.s) for i in filepaths]
+    aeration_collection = collections.namedtuple(
+        'aeration_results', 'filepaths airflows DO_data time_data')
+    aeration_results = aeration_collection(
+        filepaths, airflows, DO_data, time_data)
     return aeration_results
 
 
@@ -233,7 +247,8 @@ def Gran(data_file_path):
     N_t = pd.to_numeric(df.iloc[1, 1])*u.mole/u.L
     V_eq = pd.to_numeric(df.iloc[2, 1])*u.mL
     ANC_sample = pd.to_numeric(df.iloc[3, 1])*u.mole/u.L
-    Gran_collection = collections.namedtuple('Gran_results', 'V_titrant ph_data V_sample Normality_titrant V_equivalent ANC')
+    Gran_collection = collections.namedtuple(
+        'Gran_results', 'V_titrant ph_data V_sample Normality_titrant V_equivalent ANC')
     Gran = Gran_collection(V_titrant=V_t, ph_data=pH, V_sample=V_S,
                            Normality_titrant=N_t, V_equivalent=V_eq,
                            ANC=ANC_sample)
@@ -275,17 +290,21 @@ def E_CMFR_N(t, N):
     """Calculate a dimensionless measure of the output tracer concentration
     from a spike input to a series of completely mixed flow reactors.
 
-    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.
+    :param t: The time(s) at which to calculate the effluent concentration.
+    Time can be made dimensionless by dividing by the residence time of
+    the CMFR.
     :type t: float or numpy.array
-    :param N: The number of completely mixed flow reactors (CMFRS) in series. Must be greater than 1.
+    :param N: The number of completely mixed flow reactors (CMFRS) in series.
+    Must be greater than 1.
     :type N: int
 
-    :return: Dimensionless measure of the output tracer concentration (concentration * volume of 1 CMFR) / (mass of tracer)
+    :return: Dimensionless measure of the output tracer concentration
+    (concentration * volume of 1 CMFR) / (mass of tracer)
     :rtype: float
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import E_CMFR_N
+    >>> from aguaclara.research.environmental_processes_analysis import E_CMFR_N  # noqa
     >>> round(E_CMFR_N(0.5, 3), 7)
     0.7530643
     >>> round(E_CMFR_N(0.1, 1), 7)
@@ -293,17 +312,22 @@ def E_CMFR_N(t, N):
     """
     return (N**N)/special.gamma(N) * (t**(N-1))*np.exp(-N*t)
 
+
 @ut.list_handler()
 def E_Advective_Dispersion(t, Pe):
     """Calculate a dimensionless measure of the output tracer concentration from
     a spike input to reactor with advection and dispersion.
 
-    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.
+    :param t: The time(s) at which to calculate the effluent concentration.
+    Time can be made dimensionless by dividing by the residence time of
+    the CMFR.
     :type t: float or numpy.array
-    :param Pe: The ratio of advection to dispersion ((mean fluid velocity)/(Dispersion*flow path length))
+    :param Pe: The ratio of advection to dispersion
+    ((mean fluid velocity)/(Dispersion*flow path length))
     :type Pe: float
 
-    :return: dimensionless measure of the output tracer concentration (concentration * volume of reactor) / (mass of tracer)
+    :return: dimensionless measure of the output tracer concentration
+    (concentration * volume of reactor) / (mass of tracer)
     :rtype: float
 
     :Examples:
@@ -368,12 +392,13 @@ def Solver_CMFR_N(t_data, C_data, theta_guess, C_bar_guess):
     C_units = str(C_bar_guess.units)
     t_seconds = (t_data.to(u.s)).magnitude
     # assume that a guess of 1 reactor in series is close enough to get a solution
-    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude,1]
+    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude, 1]
     popt, pcov = curve_fit(Tracer_CMFR_N, t_seconds, C_unitless, p0)
     Solver_theta = popt[0]*u.s
     Solver_C_bar = popt[1]*u(C_units)
     Solver_N = popt[2]
-    Reactor_results = collections.namedtuple('Reactor_results','theta C_bar N')
+    Reactor_results = collections.namedtuple(
+        'Reactor_results', 'theta C_bar N')
     CMFR = Reactor_results(theta=Solver_theta, C_bar=Solver_C_bar, N=Solver_N)
     return CMFR
 
@@ -425,18 +450,20 @@ def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
         * **C_bar** (*float*) - Average concentration with same units as C_bar_guess
         * **Pe** (*float*) - Peclet number that best fits the data
     """
-    #remove time=0 data to eliminate divide by zero error
+    # remove time=0 data to eliminate divide by zero error
     t_data = t_data[1:-1]
     C_data = C_data[1:-1]
     C_unitless = C_data.magnitude
     C_units = str(C_bar_guess.units)
     t_seconds = (t_data.to(u.s)).magnitude
     # assume that a guess of 1 reactor in series is close enough to get a solution
-    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude,5]
-    popt, pcov = curve_fit(Tracer_AD_Pe, t_seconds, C_unitless, p0, bounds=(0.01,np.inf))
+    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude, 5]
+    popt, pcov = curve_fit(Tracer_AD_Pe, t_seconds,
+                           C_unitless, p0, bounds=(0.01, np.inf))
     Solver_theta = popt[0]*u.s
     Solver_C_bar = popt[1]*u(C_units)
     Solver_Pe = popt[2]
-    Reactor_results = collections.namedtuple('Reactor_results', 'theta C_bar Pe')
+    Reactor_results = collections.namedtuple(
+        'Reactor_results', 'theta C_bar Pe')
     AD = Reactor_results(theta=Solver_theta, C_bar=Solver_C_bar, Pe=Solver_Pe)
     return AD
