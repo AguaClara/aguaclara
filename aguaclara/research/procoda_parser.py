@@ -219,7 +219,8 @@ def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
         path = path.replace('blob/', '')
         path = path.replace('tree/', '')
 
-    data = data_from_dates(path, dates, extension) # combine data from each date
+    # combine data from each date
+    data = data_from_dates(path, dates, extension)
 
     first_time_column = pd.to_numeric(data[0].iloc[:, 0])
     start = max(day_fraction(start_time), first_time_column[0])
@@ -232,8 +233,9 @@ def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
             col = column_start_to_end(data, columns, start_idx, end_idx)
             result = list(np.subtract(col, start))*u(units)
         else:
-            result = column_start_to_end(data, columns, start_idx, end_idx)*u(units)
-    else: # columns is a list
+            result = column_start_to_end(
+                data, columns, start_idx, end_idx)*u(units)
+    else:  # columns is a list
         if units == '':
             units = ['']*len(columns)
         result = []
@@ -243,7 +245,8 @@ def get_data_by_time(path, columns, dates, start_time='00:00', end_time='23:59',
                 col = column_start_to_end(data, c, start_idx, end_idx)
                 result.append(list(np.subtract(col, start))*u(units[i]))
             else:
-                result.append(column_start_to_end(data, c, start_idx, end_idx)*u(units[i]))
+                result.append(column_start_to_end(
+                    data, c, start_idx, end_idx)*u(units[i]))
             i += 1
 
     return result
@@ -319,12 +322,12 @@ def column_start_to_end(data, column, start_idx, end_idx):
         for i in range(1, len(data)-1):
             data[i].iloc[0, 0] = 0
             result += list(pd.to_numeric(data[i].iloc[:, column]) +
-                      (i if column == 0 else 0))
-                      # assuming DataFrames are for consecutive days, add number of
-                      # DataFrame if dealing with the time column (column 0)
+                           (i if column == 0 else 0))
+            # assuming DataFrames are for consecutive days, add number of
+            # DataFrame if dealing with the time column (column 0)
         data[-1].iloc[0, 0] = 0
         result += list(pd.to_numeric(data[-1].iloc[:end_idx, column]) +
-                  (len(data)-1 if column == 0 else 0))
+                       (len(data)-1 if column == 0 else 0))
 
     return result
 
@@ -497,7 +500,7 @@ def average_state(dates, state, column, units="", path="", extension=".tsv"):
 
     averages = np.zeros(np.size(data_agg))
     for i in range(np.size(data_agg)):
-        averages[i] = np.average(data_agg[i][:,1])
+        averages[i] = np.average(data_agg[i][:, 1])
 
     if units != "":
         return averages*u(units)
@@ -550,9 +553,9 @@ def perform_function_on_state(func, dates, state, column, units="", path="", ext
     output = np.zeros(np.size(data_agg))
     for i in range(np.size(data_agg)):
         if units != "":
-            output[i] = func(data_agg[i][:,1]*u(units)).magnitude
+            output[i] = func(data_agg[i][:, 1]*u(units)).magnitude
         else:
-            output[i] = func(data_agg[i][:,1])
+            output[i] = func(data_agg[i][:, 1])
 
     if units != "":
         return output*func(data_agg[i]*u(units)).units
@@ -736,14 +739,12 @@ def intersect(x, y1, y2):
     crossings = (np.argwhere(np.diff(np.sign(y1-y2)))+1).flatten()
 
     for c in crossings:
-      slope1 = (y1[c] - y1[c-1]) / (x[c] - x[c-1])
-      slope2 = (y2[c] - y2[c-1]) / (x[c] - x[c-1])
-      b1 = y1[c] - slope1 * x[c]
-      b2 = y2[c] - slope2 * x[c]
+        slope1 = (y1[c] - y1[c-1]) / (x[c] - x[c-1])
+        slope2 = (y2[c] - y2[c-1]) / (x[c] - x[c-1])
+        b1 = y1[c] - slope1 * x[c]
+        b2 = y2[c] - slope2 * x[c]
 
-      x_points = np.append(x_points, (b2-b1)/(slope1-slope2))
-      y_points = np.append(y_points, slope1*(b2-b1)/(slope1-slope2) + b1)
+        x_points = np.append(x_points, (b2-b1)/(slope1-slope2))
+        y_points = np.append(y_points, slope1*(b2-b1)/(slope1-slope2) + b1)
 
     return x_points, y_points, crossings
-
-

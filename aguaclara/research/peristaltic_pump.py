@@ -21,17 +21,20 @@ def vol_per_rev_3_stop(color="", inner_diameter=0):
 
     Note:
     1. Either input a string as the tubing color code or a number as the
-    tubing inner diameter. If both are given, the function will default to using
-    the color.
-    2. The calculation is interpolated for inner diameters between 0.13 and 3.17
-    mm. Accuracy is not guaranteed for tubes with smaller or larger diameters.
+    tubing inner diameter. If both are given, the function will
+    default to using the color.
+    2. The calculation is interpolated for inner diameters between
+    0.13 and 3.17mm. Accuracy is not guaranteed for tubes with
+    smaller or larger diameters.
 
     :param color: Color code of the Ismatec 3-stop tubing
     :type color: string
-    :param inner_diameter: Inner diameter of the Ismatec 3-stop tubing. Results will be most accurate for inner diameters between 0.13 and 3.17 mm.
+    :param inner_diameter: Inner diameter of the Ismatec 3-stop tubing.
+    Results will be most accurate for inner diameters between 0.13 and 3.17 mm.
     :type inner_diameter: float
 
-    :return: Volume per revolution output by a 6-roller pump through the 3-stop tubing (mL/rev)
+    :return: Volume per revolution output by a 6-roller pump
+    through the 3-stop tubing (mL/rev)
     :rtype: float
 
     :Examples:
@@ -52,7 +55,8 @@ def vol_per_rev_3_stop(color="", inner_diameter=0):
 
 @ut.list_handler()
 def ID_colored_tube(color):
-    """Look up the inner diameter of Ismatec 3-stop tubing given its color code.
+    """Look up the inner diameter of Ismatec 3-stop tubing
+    given its color code.
 
     :param color: Color of the 3-stop tubing
     :type color: string
@@ -72,7 +76,7 @@ def ID_colored_tube(color):
     <Quantity(2.79, 'millimeter')>
     """
     tubing_data_path = os.path.join(os.path.dirname(__file__), "data",
-        "3_stop_tubing.txt")
+                                    "3_stop_tubing.txt")
     df = pd.read_csv(tubing_data_path, delimiter='\t')
     idx = df["Color"] == color
     return df[idx]['Diameter (mm)'].values[0] * u.mm
@@ -83,10 +87,12 @@ def vol_per_rev_LS(id_number):
     """Look up the volume per revolution output by a Masterflex L/S pump
     through L/S tubing of the given ID number.
 
-    :param id_number: Identification number of the L/S tubing. Valid numbers are 13-18, 24, 35, and 36.
+    :param id_number: Identification number of the L/S tubing.
+    Valid numbers are 13-18, 24, 35, and 36.
     :type id_number: int
 
-    :return: Volume per revolution output by a Masterflex L/S pump through the L/S tubing
+    :return: Volume per revolution output by a Masterflex L/S pump
+    through the L/S tubing
     :rtype: float
 
     :Examples:
@@ -99,7 +105,7 @@ def vol_per_rev_LS(id_number):
     <Quantity(3.8, 'milliliter / turn')>
     """
     tubing_data_path = os.path.join(os.path.dirname(__file__), "data",
-        "LS_tubing.txt")
+                                    "LS_tubing.txt")
     df = pd.read_csv(tubing_data_path, delimiter='\t')
     idx = df["Number"] == id_number
     return df[idx]['Flow (mL/rev)'].values[0] * u.mL/u.turn
@@ -110,7 +116,8 @@ def flow_rate(vol_per_rev, rpm):
     """Return the flow rate from a pump given the volume of fluid pumped per
     revolution and the desired pump speed.
 
-    :param vol_per_rev: Volume of fluid output per revolution (dependent on pump and tubing)
+    :param vol_per_rev: Volume of fluid output per revolution
+    (dependent on pump and tubing)
     :type vol_per_rev: float
     :param rpm: Desired pump speed in revolutions per minute
     :type rpm: float
