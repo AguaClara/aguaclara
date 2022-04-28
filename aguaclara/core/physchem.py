@@ -1842,7 +1842,7 @@ def manifold_nd(q, h, length, q_ratio, nu, eps, k, n, sdr):
 
 
 @ut.list_handler()
-def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
+def horiz_chan_w(q, depth, hl, length, nu, eps, manifold, k):
     hl = min(hl, depth / 3)
     horiz_chan_w_new = q / ((depth - hl) * np.sqrt(2 * u.gravity * hl))
 
@@ -1855,7 +1855,7 @@ def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
             (
                 1 + k +
                 fric_rect(q, w, depth - hl, nu, eps, True) *
-                (l / (4 * radius_hydraulic_rect(w, depth - hl, True))) *
+                (length / (4 * radius_hydraulic_rect(w, depth - hl, True))) *
                 (1 - (2 * (int(manifold) / 3)))
             ) / (2 * u.gravity * hl)
         ) * (q / (depth - hl))
@@ -1864,7 +1864,7 @@ def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
 
 
 @ut.list_handler()
-def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
+def horiz_chan_h(q, w, hl, length, nu, eps, manifold):
     h_new = (q / (w * np.sqrt(2 * u.gravity * hl))) + hl
     error = 1
     i = 0
@@ -1873,18 +1873,18 @@ def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
         hl_local = min(hl, h / 3)
         i = i + 1
         h_new = (q / w) * np.sqrt((1 +
-                                  fric_rect(q, w, h - hl_local, nu, eps, True) * (l / (4 *
-                                                                                       radius_hydraulic_rect(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))
+                                  fric_rect(q, w, h - hl_local, nu, eps, True) * (length / (4 *
+                                                                                            radius_hydraulic_rect(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))
                                    ) / (2 * u.gravity * hl_local)) + (hl_local)
         error = np.abs(h_new - h) / (h_new + h)
     return h_new.to(u.m)
 
 
 @ut.list_handler()
-def pipe_flow_nd(q, sdr, hl, l, nu, eps, k):
+def pipe_flow_nd(q, sdr, hl, length, nu, eps, k):
     i = 0
     id_sdr_all_available = pipe.ID_SDR_all_available(sdr)
-    while q > flow_pipe(id_sdr_all_available[i], hl, l, nu, eps, k):
+    while q > flow_pipe(id_sdr_all_available[i], hl, length, nu, eps, k):
         i_d = id_sdr_all_available[i]
         i += 1
     return pipe.ND_SDR_available(i_d, sdr)
