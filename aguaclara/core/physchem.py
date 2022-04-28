@@ -496,7 +496,8 @@ def headloss_fric(FlowRate, Diam, Length, Nu, PipeRough):
     .. deprecated::
         `headloss_fric` is deprecated; use `headloss_major_pipe` instead.
     """
-    warnings.warn('headloss_fric is deprecated; use headloss_major_pipe instead',
+    warnings.warn("""headloss_fric is deprecated;
+    use headloss_major_pipe instead""",
                   UserWarning)
     return headloss_major_pipe(FlowRate, Diam, Length, Nu, PipeRough)
 
