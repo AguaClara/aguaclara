@@ -602,18 +602,19 @@ def headloss_pipe(FlowRate, Diam, Length, Nu, Roughness, KMinor):
 
 
 @ut.list_handler()
-def headloss_fric_rect(FlowRate, Width, Depth, Length, Nu, PipeRough, openchannel):
+def headloss_fric_rect(FlowRate, Width, Depth, Length, Nu, PipeRough, openchannel):  # noqa
     """
     .. deprecated::
         `headloss_fric_rect` is deprecated; use `headloss_major_rect` instead.
     """
-    warnings.warn('headloss_fric_rect is deprecated; use headloss_major_rect instead',
+    warnings.warn("""headloss_fric_rect is deprecated;
+     use headloss_major_rect instead""",
                   UserWarning)
-    return headloss_major_rect(FlowRate, Width, Depth, Length, Nu, PipeRough, openchannel)
+    return headloss_major_rect(FlowRate, Width, Depth, Length, Nu, PipeRough, openchannel)  # noqa
 
 
 @ut.list_handler()
-def headloss_major_rect(FlowRate, Width, Depth, Length, Nu, Roughness, OpenChannel):
+def headloss_major_rect(FlowRate, Width, Depth, Length, Nu, Roughness, OpenChannel):  # noqa
     """Return the major head loss due to wall shear in a rectangular channel.
 
     This equation applies to both laminar and turbulent flows.
@@ -652,7 +653,8 @@ def headloss_exp_rect(FlowRate, Width, Depth, KMinor):
     .. deprecated::
         `headloss_exp_rect` is deprecated; use `headloss_minor_rect` instead.
     """
-    warnings.warn('headloss_exp_rect is deprecated; use headloss_minor_rect instead',
+    warnings.warn("""headloss_exp_rect is deprecated;
+     use headloss_minor_rect instead""",
                   UserWarning)
     return headloss_minor_rect(FlowRate, Width, Depth, KMinor)
 
