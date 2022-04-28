@@ -561,7 +561,7 @@ def headloss_minor_pipe(FlowRate, Diam, KMinor):
     ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
                    [Diam.magnitude, ">0", "Diameter"],
                    [KMinor, ">=0", "K minor"])
-    return (KMinor * 8 / (u.gravity * np.pi**2) * FlowRate**2 / Diam**4).to(u.m)
+    return (KMinor * 8 / (u.gravity * np.pi**2) * FlowRate**2 / Diam**4).to(u.m)  # noqa
 
 
 @ut.list_handler()
@@ -732,7 +732,8 @@ def headloss_rect(FlowRate, Width, Depth, Length, KMinor, Nu, Roughness=None,
                           UserWarning)
             Roughness = PipeRough
         if openchannel is not None:
-            warnings.warn("openchannel is deprecated; use OpenChannel instead.",
+            warnings.warn("""openchannel is deprecated;
+             use OpenChannel instead.""",
                           UserWarning)
             OpenChannel = openchannel
 
@@ -745,11 +746,13 @@ def headloss_rect(FlowRate, Width, Depth, Length, KMinor, Nu, Roughness=None,
 def headloss_fric_general(Area, PerimWetted, Vel, Length, Nu, PipeRough):
     """
     .. deprecated::
-        `headloss_fric_general` is deprecated; use `headloss_major_channel` instead.
+        `headloss_fric_general` is deprecated;
+        use `headloss_major_channel` instead.
     """
-    warnings.warn('headloss_fric_general` is deprecated; use `headloss_major_channel` instead',
+    warnings.warn("""headloss_fric_general` is deprecated;
+     use `headloss_major_channel` instead""",
                   UserWarning)
-    return headloss_major_channel(Area, PerimWetted, Vel, Length, Nu, PipeRough)
+    return headloss_major_channel(Area, PerimWetted, Vel, Length, Nu, PipeRough)  # noqa
 
 
 @ut.list_handler()
@@ -785,9 +788,11 @@ def headloss_major_channel(Area, PerimWetted, Vel, Length, Nu, Roughness):
 def headloss_exp_general(Vel, KMinor):
     """
     .. deprecated::
-        `headloss_exp_general` is deprecated; use `headloss_minor_channel` instead.
+        `headloss_exp_general` is deprecated;
+        use `headloss_minor_channel` instead.
     """
-    warnings.warn('headloss_exp_general` is deprecated; use `headloss_minor_channel` instead',
+    warnings.warn("""headloss_exp_general` is deprecated;
+    use `headloss_minor_channel` instead""",
                   UserWarning)
     return headloss_minor_channel(Vel, KMinor)
 
@@ -817,7 +822,8 @@ def headloss_gen(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough):
     .. deprecated::
         `headloss_gen` is deprecated; use `headloss_channel` instead.
     """
-    warnings.warn('headloss_gen` is deprecated; use `headloss_channel` instead',
+    warnings.warn("""headloss_gen` is deprecated;
+     use `headloss_channel` instead""",
                   UserWarning)
     return headloss_channel(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough)
 
