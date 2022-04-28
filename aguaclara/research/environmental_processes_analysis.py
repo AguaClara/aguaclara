@@ -374,7 +374,7 @@ def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
     >>> from aguaclara.research.environmental_processes_analysis import Tracer_CMFR_N  # noqa
     >>> from aguaclara.core.units import u
     >>> Tracer_CMFR_N([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 3)
-    <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423],'milligram / liter')>
+    <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], 'milligram / liter')>
     """
     return C_bar*E_CMFR_N(t_seconds/t_bar, N)
 
@@ -440,7 +440,7 @@ def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
     >>> from aguaclara.research.environmental_processes_analysis import Tracer_AD_Pe  # noqa
     >>> from aguaclara.core.units import u
     >>> Tracer_AD_Pe([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 5)
-    <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423],'milligram / liter')>
+    <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], 'milligram / liter')>
     """
     return C_bar*E_Advective_Dispersion(t_seconds/t_bar, Pe)
 
