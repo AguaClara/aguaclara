@@ -325,7 +325,7 @@ def re_channel(Vel, Area, PerimWetted, Nu):
     """
     ut.check_range([Vel.magnitude, ">=0", "Velocity"],
                    [Nu.magnitude, ">0", "Nu"])
-    return (4 * radius_hydraulic_channel(Area, PerimWetted) * Vel / Nu).to(u.dimensionless)
+    return (4 * radius_hydraulic_channel(Area, PerimWetted) * Vel / Nu).to(u.dimensionless)  # noqa
 
 # ########################## Friction ########################## #
 
@@ -412,7 +412,8 @@ def fric_rect(FlowRate, Width, Depth, Nu, Roughness=None, OpenChannel=None, *,
                           UserWarning)
             Roughness = PipeRough
         if openchannel is not None:
-            warnings.warn("openchannel is deprecated; use OpenChannel instead.",
+            warnings.warn("""openchannel is deprecated;
+            use OpenChannel instead.""",
                           UserWarning)
             OpenChannel = openchannel
 
@@ -535,7 +536,8 @@ def headloss_exp(FlowRate, Diam, KMinor):
     .. deprecated::
         `headloss_exp` is deprecated; use `headloss_minor_pipe` instead.
     """
-    warnings.warn('headloss_exp is deprecated; use headloss_minor_pipe instead',
+    warnings.warn("""headloss_exp is deprecated;
+    use headloss_minor_pipe instead""",
                   UserWarning)
     return headloss_minor_pipe(FlowRate, Diam, KMinor)
 
