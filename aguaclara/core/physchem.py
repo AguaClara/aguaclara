@@ -11,7 +11,7 @@ import numpy as np
 from scipy import interpolate, integrate
 import warnings
 
-############################ Gas ##############################
+# ########################### Gas ############################# #
 
 
 @ut.list_handler()
@@ -42,7 +42,7 @@ def density_gas(Pressure, MolarMass, Temperature):
     """
     return (Pressure * MolarMass / (u.R * Temperature)).to(u.kg/u.m**3)
 
-########################## Geometry ###########################
+# ######################### Geometry ########################## #
 
 
 @ut.list_handler()
@@ -73,7 +73,7 @@ def diam_circle(AreaCircle):
     ut.check_range([AreaCircle.magnitude, ">0", "AreaCircle"])
     return np.sqrt(4 * AreaCircle / np.pi)
 
-####################### Water Properties #######################
+# ###################### Water Properties ###################### #
 
 
 #:
@@ -171,7 +171,7 @@ def viscosity_kinematic_water(Temperature):
     ut.check_range([Temperature.magnitude, ">=0", "Temperature in Kelvin"])
     return (viscosity_dynamic_water(Temperature) / density_water(Temperature))
 
-####################### Hydraulic Radius #######################
+# ###################### Hydraulic Radius ###################### #
 
 
 @ut.list_handler()
@@ -238,7 +238,7 @@ def radius_hydraulic_channel(Area, PerimWetted):
                    [PerimWetted.magnitude, ">0", "Wetted perimeter"])
     return (Area / PerimWetted)
 
-####################### Reynolds Number #######################
+# ###################### Reynolds Number ###################### #
 
 
 @ut.list_handler()
@@ -327,7 +327,7 @@ def re_channel(Vel, Area, PerimWetted, Nu):
                    [Nu.magnitude, ">0", "Nu"])
     return (4 * radius_hydraulic_channel(Area, PerimWetted) * Vel / Nu).to(u.dimensionless)
 
-########################### Friction ###########################
+# ########################## Friction ########################## #
 
 
 @ut.list_handler()
@@ -487,7 +487,7 @@ def fric_channel(Area, PerimWetted, Vel, Nu, Roughness):
         f = 64 / re_channel(Vel, Area, PerimWetted, Nu)
     return f * u.dimensionless
 
-######################### Head Loss #########################
+# ######################## Head Loss ######################## #
 
 
 @ut.list_handler()
@@ -717,7 +717,8 @@ def headloss_rect(FlowRate, Width, Depth, Length, KMinor, Nu, Roughness=None,
     elif Roughness is None and PipeRough is None:
         raise TypeError("headloss_rect missing Roughness argument")
     elif OpenChannel is not None and openchannel is not None:
-        raise TypeError("headloss_rect received both OpenChannel and openchannel")
+        raise TypeError(
+            "headloss_rect received both OpenChannel and openchannel")
     elif OpenChannel is None and openchannel is None:
         raise TypeError("headloss_rect missing OpenChannel argument")
     else:
@@ -873,7 +874,8 @@ def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, Roughness=None, NumOut
     ut.check_range([NumOutlets, ">0, int", 'Number of outlets'])
 
     if Roughness is not None and PipeRough is not None:
-        raise TypeError("headloss_manifold received both Roughness and PipeRough")
+        raise TypeError(
+            "headloss_manifold received both Roughness and PipeRough")
     elif Roughness is None and PipeRough is None:
         raise TypeError("headloss_manifold missing Roughness argument")
     elif NumOutlets is None:
@@ -920,7 +922,7 @@ def headloss_minor_elbow(FlowRate, Diam, KMinor):
     minor_loss = KMinor * vel ** 2 / (2 * u.gravity)
     return minor_loss.to(u.m)
 
-######################### Orifices #########################
+# ######################## Orifices ######################## #
 
 
 @ut.list_handler()
@@ -1039,7 +1041,7 @@ def num_orifices(FlowRate, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
     return np.ceil(area_orifice(HeadLossOrifice, RatioVCOrifice, FlowRate)
                    / area_circle(DiamOrifice)).to(u.dimensionless)
 
-########################### Flows ###########################
+# ########################## Flows ########################## #
 
 
 @ut.list_handler()
@@ -1078,7 +1080,8 @@ def flow_hagen(Diam, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=N
     :rtype: u.m**3/u.s
     """
     if HeadLossMajor is not None and HeadLossFric is not None:
-        raise TypeError("flow_hagen received both HeadLossMajor and HeadLossFric")
+        raise TypeError(
+            "flow_hagen received both HeadLossMajor and HeadLossFric")
     elif HeadLossMajor is None and HeadLossFric is None:
         raise TypeError("flow_hagen missing HeadLossMajor argument")
     elif Length is None:
@@ -1120,7 +1123,8 @@ def flow_swamee(Diam, HeadLossMajor=None, Length=None, Nu=None, Roughness=None, 
     :rtype: u.m**3/u.s
     """
     if HeadLossMajor is not None and HeadLossFric is not None:
-        raise TypeError("flow_swamee received both HeadLossMajor and HeadLossFric")
+        raise TypeError(
+            "flow_swamee received both HeadLossMajor and HeadLossFric")
     elif HeadLossMajor is None and HeadLossFric is None:
         raise TypeError("flow_swamee missing HeadLossMajor argument")
     elif Length is None:
@@ -1262,9 +1266,9 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, Roughness=None, KMinor=None, *, PipeRo
     elif KMinor is None:
         raise TypeError("flow_pipe missing KMinor argument")
     elif PipeRough is not None:
-            warnings.warn("PipeRough is deprecated; use Roughness instead.",
-                          UserWarning)
-            Roughness = PipeRough
+        warnings.warn("PipeRough is deprecated; use Roughness instead.",
+                      UserWarning)
+        Roughness = PipeRough
 
     if KMinor == 0:
         FlowRate = flow_major_pipe(Diam, HeadLoss, Length, Nu,
@@ -1295,7 +1299,7 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, Roughness=None, KMinor=None, *, PipeRo
                        )
     return FlowRate.to(u.m**3/u.s)
 
-########################## Diameters ##########################
+# ######################### Diameters ######################### #
 
 
 @ut.list_handler()
@@ -1322,7 +1326,8 @@ def diam_hagen(FlowRate, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFr
     :rtype: u.m
     """
     if HeadLossMajor is not None and HeadLossFric is not None:
-        raise TypeError("diam_hagen received both HeadLossMajor and HeadLossFric")
+        raise TypeError(
+            "diam_hagen received both HeadLossMajor and HeadLossFric")
     elif HeadLossMajor is None and HeadLossFric is None:
         raise TypeError("diam_hagen missing HeadLossMajor argument")
     elif Length is None:
@@ -1371,7 +1376,8 @@ def diam_swamee(FlowRate, HeadLossMajor=None, Length=None, Nu=None, Roughness=No
     :rtype: u.m
     """
     if HeadLossMajor is not None and HeadLossFric is not None:
-        raise TypeError("diam_swamee received both HeadLossMajor and HeadLossFric")
+        raise TypeError(
+            "diam_swamee received both HeadLossMajor and HeadLossFric")
     elif HeadLossMajor is None and HeadLossFric is None:
         raise TypeError("diam_swamee missing HeadLossMajor argument")
     elif Length is None:
@@ -1549,7 +1555,7 @@ def pipe_ID(FlowRate, Pressure):
                    [Pressure.magnitude, ">0", "Pressure"])
     return np.sqrt(FlowRate/((np.pi/4)*np.sqrt(2*u.gravity*Pressure))).to(u.m)
 
-############################ Weirs ############################
+# ########################### Weirs ########################### #
 
 
 @ut.list_handler()
@@ -1646,11 +1652,13 @@ def flow_weir_rect(Height, Width):
             * (np.sqrt(2*u.gravity) * Height**(3/2))
             * Width).to(u.m**3/u.s)
 
-######################## Porous Media ########################
+# ####################### Porous Media ####################### #
+
 
 class DeprecatedFunctionError(Exception):
     def __init__(self, message):
         self.message = message
+
 
 @ut.list_handler()
 def headloss_kozeny(Length, DiamMedia=None, ApproachVel=None, Porosity=None, Nu=None, *, Diam=None, Vel=None):
@@ -1658,7 +1666,8 @@ def headloss_kozeny(Length, DiamMedia=None, ApproachVel=None, Porosity=None, Nu=
     .. deprecated::
         `headloss_kozeny` is deprecated; use `headloss_ergun` instead.
     """
-    raise DeprecatedFunctionError("This function is deprecated. Please use headloss_ergun.")
+    raise DeprecatedFunctionError(
+        "This function is deprecated. Please use headloss_ergun.")
 
 
 @ut.list_handler()
@@ -1752,7 +1761,7 @@ def g_cs_ergun(ApproachVel, DiamMedia, Temperature, Porosity):
                    / (2 * viscosity_kinematic_water(Temperature) * DiamMedia
                       * Porosity**4)).to(u.Hz)
 
-######################## Miscellaneous ########################
+# ####################### Miscellaneous ####################### #
 
 
 @ut.list_handler()
@@ -1782,7 +1791,8 @@ def vel_horizontal(HeightWaterCritical):
     :return: horizontal velocity
     :rtype: u.m/u.s
     """
-    ut.check_range([HeightWaterCritical.magnitude, ">0", "Critical height of water"])
+    ut.check_range([HeightWaterCritical.magnitude,
+                   ">0", "Critical height of water"])
     return np.sqrt(u.gravity * HeightWaterCritical).to(u.m/u.s)
 
 
@@ -1802,7 +1812,7 @@ def manifold_id_alt(q, pr_max):
 
 
 @ut.list_handler()
-def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
+def manifold_id(q, h, length, q_ratio, nu, eps, k, n):
     id_new = 2 * u.inch
     id_old = 0 * u.inch
     error = 1
@@ -1823,11 +1833,11 @@ def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
 
 
 @ut.list_handler()
-def manifold_nd(q, h, l, q_ratio, nu, eps, k, n, sdr):
+def manifold_nd(q, h, length, q_ratio, nu, eps, k, n, sdr):
     manifold_nd = pipe.ND_SDR_available(
-            manifold_id(q, h, l, q_ratio, nu, eps, k, n),
-            sdr
-        )
+        manifold_id(q, h, length, q_ratio, nu, eps, k, n),
+        sdr
+    )
     return manifold_nd
 
 
@@ -1844,9 +1854,9 @@ def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
         horiz_chan_w_new = np.sqrt(
             (
                 1 + k +
-                    fric_rect(q, w, depth - hl, nu, eps, True) *
-                    (l / (4 * radius_hydraulic_rect(w, depth - hl, True))) *
-                    (1 - (2 * (int(manifold) / 3)))
+                fric_rect(q, w, depth - hl, nu, eps, True) *
+                (l / (4 * radius_hydraulic_rect(w, depth - hl, True))) *
+                (1 - (2 * (int(manifold) / 3)))
             ) / (2 * u.gravity * hl)
         ) * (q / (depth - hl))
         error = np.abs(horiz_chan_w_new - w) / (horiz_chan_w_new + w)
@@ -1862,10 +1872,10 @@ def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
         h = h_new
         hl_local = min(hl, h / 3)
         i = i + 1
-        h_new = (q/ w) * np.sqrt((1 + \
-            fric_rect(q, w, h - hl_local, nu, eps, True) * (l / (4 * \
-                radius_hydraulic_rect(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))
-        )/ (2 * u.gravity * hl_local)) + (hl_local)
+        h_new = (q / w) * np.sqrt((1 +
+                                  fric_rect(q, w, h - hl_local, nu, eps, True) * (l / (4 *
+                                                                                       radius_hydraulic_rect(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))
+                                   ) / (2 * u.gravity * hl_local)) + (hl_local)
         error = np.abs(h_new - h) / (h_new + h)
     return h_new.to(u.m)
 
