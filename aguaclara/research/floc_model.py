@@ -97,16 +97,16 @@ Clay = Material('Clay', 7 * 10**-6 * u.m, 2650 * u.kg/u.m**3, None)
 #: A Material representing polyaluminum chloride (PACl) with a diameter of
 #: 9e-8m, density of 1138 kg/m^2, and molecular weight of 1.039 kg/mol. It is
 #: its own precipitate.
-PACl = Chemical('PACl', 9 * 10 **-8 * u.m, 1138 * u.kg/u.m**3,
+PACl = Chemical('PACl', 9 * 10 ** -8 * u.m, 1138 * u.kg/u.m**3,
                 1.039 * u.kg/u.mol, 'PACl', AluminumMPM=13)
 
 #: A Material representing alum with a diameter of 7e-8 m, density of
 #: 2420 kg/m^3, and molecular weight of 0.59921 kg/mol. It's precipitate is
 #: AlOH3, with the same diameter and density, and a molecular weight of 0.078
 #: kg/mol.
-Alum = Chemical('Alum', 7 * 10 **-8 * u.m, 2420 * u.kg/u.m**3,
+Alum = Chemical('Alum', 7 * 10 ** -8 * u.m, 2420 * u.kg/u.m**3,
                 0.59921 * u.kg/u.mol, 'AlOH3', AluminumMPM=2)
-Alum.define_Precip(7 * 10 **-8 * u.m, 2420 * u.kg/u.m**3,
+Alum.define_Precip(7 * 10 ** -8 * u.m, 2420 * u.kg/u.m**3,
                    0.078 * u.kg/u.mol, 1)
 
 #: A Material representing humic acid with a diameter of 7.2e-8 m and density
@@ -291,7 +291,7 @@ def num_coll_reqd(DIM_FRACTAL, material, DiamTarget):
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None,
-               # u.dimensionless, u.m], False)
+    # u.dimensionless, u.m], False)
 @ut.list_handler()
 def sep_dist_floc(ConcAluminum, ConcClay, coag, material,
                   DIM_FRACTAL, DiamTarget):
@@ -399,7 +399,7 @@ def gamma_coag(ConcClay, ConcAluminum, coag, material,
     return (1 - np.exp((
                        (-frac_vol_floc_initial(ConcAluminum, 0*u.kg/u.m**3, coag, material)
                         * material.Diameter)
-                        / (frac_vol_floc_initial(0*u.kg/u.m**3, ConcClay, coag, material)
+                       / (frac_vol_floc_initial(0*u.kg/u.m**3, ConcClay, coag, material)
                            * coag.Diameter))
                        * (1 / np.pi)
                        * (ratio_area_clay_total(ConcClay, material,
@@ -701,7 +701,7 @@ def diam_floc_max(epsMax):
     """
     # return (9.5 * 10**-5 * (1 / (epsMax)**(1/3))).to(u.m)
     raise FutureWarning("diam_floc_max is deprecated and will be removed after Dec"
-                    " 1 2019. The underlying equation is under suspicion.")
+                        " 1 2019. The underlying equation is under suspicion.")
 
 
 # @u.wraps(u.W/u.kg, u.m, False)
@@ -722,6 +722,8 @@ def ener_dis_diam_floc(Diam):
 ##### Velocity gradient in tubing for lab scale laminar flow flocculators #####
 
 # @u.wraps(1/u.s, [u.m**3/u.s, u.m], False)
+
+
 @ut.list_handler()
 def g_straight(PlantFlow, IDTube):
     return (64 * PlantFlow / (3 * np.pi * IDTube**3)).to(1/u.s)
@@ -759,7 +761,7 @@ def g_coil(FlowPlant, IDTube, RadiusCoil, Temp):
     return (g_straight(FlowPlant, IDTube)
             * (1 + 0.033 *
                 np.log10(dean_number(FlowPlant, IDTube, RadiusCoil, Temp)
-                        ) ** 4
+                         ) ** 4
                ) ** (1/2)
             ).to(1/u.s)
 

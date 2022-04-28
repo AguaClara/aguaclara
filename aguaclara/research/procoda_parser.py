@@ -746,4 +746,4 @@ def intersect(x, y1, y2):
 
     return x_points, y_points, crossings
 
-    
+
