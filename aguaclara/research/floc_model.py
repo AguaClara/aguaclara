@@ -3,14 +3,14 @@
 flocs based on the chemical interactions of clay, coagulant, and humic acid.
 """
 
-######################### Imports #########################
+# ######################## Imports ######################## #
 import numpy as np
 from aguaclara.core.units import u
 from aguaclara.core import physchem as pc, utility as ut
 
 u.enable_contexts('chem')
 
-##################### Class Definition #####################
+# #################### Class Definition #################### #
 
 
 class Material:
@@ -88,7 +88,7 @@ class Chemical(Material):
         self.PrecipAluminumMPM = alumMPM
 
 
-################## Material Definitions ##################
+# ################# Material Definitions ################# #
 
 #: A Material representing clay with a diameter of 7e-6 m and density of 2650
 #: kg/m^3.
@@ -115,7 +115,7 @@ HumicAcid = Chemical('Humic Acid', 72 * 10**-9 * u.m, 1780 * u.kg/u.m**3, None,
                      'Humic Acid')
 
 
-################### Necessary Constants ###################
+# ################## Necessary Constants ################## #
 #: Fractal dimension, based on data from published in Environmental Engineering
 #: Science, "Fractal Models for Floc Density, Sedimentation Velocity, and Floc
 #: Volume Fraction for High Peclet Number Reactors" by Monroe Weber-Shirk and
@@ -138,7 +138,7 @@ NUM_AVOGADRO = 6.0221415 * 10**23
 MOLEC_WEIGHT_ALUMINUM = 0.027 * u.kg / u.mol
 
 
-######################## Functions ########################
+# ####################### Functions ####################### #
 # @u.wraps(u.kg/u.m**3, None, False)
 @ut.list_handler()
 def dens_alum_nanocluster(coag):
@@ -209,7 +209,7 @@ def moles_aluminum(ConcAluminum):
 @ut.list_handler()
 def sep_dist_aluminum(ConcAluminum):
     """Return the separation distance between aluminum molecules."""
-    return ((1 / (NUM_AVOGADRO / u.mol * moles_aluminum(ConcAluminum)))**(1/3)).to(u.m)
+    return ((1 / (NUM_AVOGADRO / u.mol * moles_aluminum(ConcAluminum)))**(1/3)).to(u.m)  # noqa
 
 
 @ut.list_handler()
@@ -221,7 +221,7 @@ def particle_number_concentration(ConcMat, material):
     :param material: The material in solution
     :type material: floc_model.Material
     """
-    return (ConcMat / ((material.Density * np.pi * material.Diameter**3) / 6)).to(u.m**-3)
+    return (ConcMat / ((material.Density * np.pi * material.Diameter**3) / 6)).to(u.m**-3)  # noqa
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.m], False)
@@ -242,7 +242,8 @@ def num_nanoclusters(ConcAluminum, coag):
 
 @ut.list_handler()
 def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
-    """Return the volume fraction of flocs initially present, accounting for both suspended particles and coagulant precipitates.
+    """Return the volume fraction of flocs initially present, accounting
+    for both suspended particles and coagulant precipitates.
 
     :param ConcAluminum: Concentration of aluminum in solution
     :type ConcAluminum: float
@@ -260,7 +261,7 @@ def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
             + (ConcClay / material.Density)).to(u.dimensionless)
 
 
-####################### p functions #######################
+# ###################### p functions ###################### #
 @ut.list_handler()
 def p(C, C0=1):
     return -np.log10(C/C0)
@@ -271,7 +272,7 @@ def invp(pC, C0=1):
     return C0 * 10**-pC
 
 
-#################### Fractal functions ####################
+# ################### Fractal functions ################### #
 # @u.wraps(u.m, [u.dimensionless, u.m, u.dimensionless], False)
 @ut.list_handler()
 def diam_fractal(DIM_FRACTAL, DiamInitial, NumCol):
@@ -287,7 +288,7 @@ def num_coll_reqd(DIM_FRACTAL, material, DiamTarget):
     Calculates the number of doubling collisions required to produce
     a floc of diameter DiamTarget.
     """
-    return (DIM_FRACTAL * np.log(DiamTarget/material.Diameter)/np.log(2)).to(u.dimensionless)
+    return (DIM_FRACTAL * np.log(DiamTarget/material.Diameter)/np.log(2)).to(u.dimensionless)  # noqa
 
 
 # @u.wraps(u.m, [u.kg/u.m**3, u.kg/u.m**3, None, None,
@@ -328,7 +329,7 @@ def dens_floc_init(ConcAluminum, ConcClay, coag, material):
             ).to(u.kg/u.m**3)
 
 
-#################### Flocculation Model ####################
+# ################### Flocculation Model ################### #
 # @u.wraps(None, u.m, False)
 @ut.list_handler()
 def ratio_clay_sphere(RatioHeightDiameter):
@@ -336,7 +337,7 @@ def ratio_clay_sphere(RatioHeightDiameter):
 
     Normalized by surface area to volume ratio for a sphere.
     """
-    return ((1/2 + RatioHeightDiameter) * (2 / (3*RatioHeightDiameter))**(2/3))*u.dimensionless
+    return ((1/2 + RatioHeightDiameter) * (2 / (3*RatioHeightDiameter))**(2/3))*u.dimensionless  # noqa
 
 
 @ut.list_handler()
@@ -351,12 +352,15 @@ def ratio_area_clay_total(ConcClay, material, DiamTube, RatioHeightDiameter):
     :type ConcClay: float
     :param material: Type of clay in suspension, e.g. floc_model.Clay
     :type material: floc_model.Material
-    :param DiamTube: Diameter of flocculator tube (assumes tube flocculator for calculation of reactor surface area)
+    :param DiamTube: Diameter of flocculator tube
+    (assumes tube flocculator for calculation of reactor surface area)
     :type DiamTube: float
-    :param RatioHeightDiameter: Dimensionless ratio describing ratio of clay height to clay diameter
+    :param RatioHeightDiameter: Dimensionless ratio describing ratio
+    of clay height to clay diameter
     :type RatioHeightDiameter: float
 
-    :return: The ratio of clay surface area to total available surface area (accounting for reactor walls)
+    :return: The ratio of clay surface area to total available surface area
+    (accounting for reactor walls)
     :rtype: float
     """
     return (1
@@ -388,18 +392,21 @@ def gamma_coag(ConcClay, ConcAluminum, coag, material,
     :type coag: floc_model.Material
     :param material: Type of clay in suspension, e.g. floc_model.Clay
     :type material: floc_model.Material
-    :param DiamTube: Diameter of flocculator tube (assumes tube flocculator for calculation of reactor surface area)
+    :param DiamTube: Diameter of flocculator tube
+    (assumes tube flocculator for calculation of reactor surface area)
     :type DiamTube: float
-    :param RatioHeightDiameter: Dimensionless ratio of clay height to clay diameter
+    :param RatioHeightDiameter: Dimensionless ratio of clay height
+    to clay diameter
     :type RatioHeightDiameter: float
 
-    :return: Fraction of the clay surface area that is coated with coagulant precipitates
+    :return: Fraction of the clay surface area that is coated
+    with coagulant precipitates
     :rtype: float
     """
     return (1 - np.exp((
-                       (-frac_vol_floc_initial(ConcAluminum, 0*u.kg/u.m**3, coag, material)
+                       (-frac_vol_floc_initial(ConcAluminum, 0*u.kg/u.m**3, coag, material)  # noqa
                         * material.Diameter)
-                       / (frac_vol_floc_initial(0*u.kg/u.m**3, ConcClay, coag, material)
+                       / (frac_vol_floc_initial(0*u.kg/u.m**3, ConcClay, coag, material)  # noqa
                            * coag.Diameter))
                        * (1 / np.pi)
                        * (ratio_area_clay_total(ConcClay, material,
@@ -454,10 +461,12 @@ def pacl_term(DiamTube, ConcClay, ConcAl, ConcNatOrgMat, NatOrgMat,
     :type coag: floc_model.Material
     :param material: Type of clay in suspension, e.g. floc_model.Clay
     :type material: floc_model.Material
-    :param RatioHeightDiameter: Dimensionless ratio of clay height to clay diameter
+    :param RatioHeightDiameter: Dimensionless ratio of clay
+    height to clay diameter
     :type RatioHeightDiameter: float
 
-    :return: fraction of the surface area that is covered with coagulant that is not covered with humic acid
+    :return: fraction of the surface area that is covered with coagulant
+    that is not covered with humic acid
     :rtype: float
     """
     return (gamma_coag(ConcClay, ConcAl, coag, material, DiamTube,
@@ -476,7 +485,7 @@ def alpha_pacl_clay(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
     PAClTerm = pacl_term(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                          NatOrgMat, coag, material, RatioHeightDiameter)
     return (2 * (PAClTerm * (1 - gamma_coag(ConcClay, ConcAl, coag, material,
-                                            DiamTube, RatioHeightDiameter)))).to(u.dimensionless)
+                                            DiamTube, RatioHeightDiameter)))).to(u.dimensionless)  # noqa
 
 
 # @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,
@@ -501,7 +510,7 @@ def alpha_pacl_nat_org_mat(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
     return (2 * PAClTerm
             * gamma_coag(ConcClay, ConcAl, coag, material, DiamTube,
                          RatioHeightDiameter)
-            * gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag)).to(u.dimensionless)
+            * gamma_humic_acid_to_coag(ConcAl, ConcNatOrgMat, NatOrgMat, coag)).to(u.dimensionless)  # noqa
 
 
 # @u.wraps(None, [u.m, u.kg/u.m**3, u.kg/u.m**3, u.kg/u.m**3,
@@ -530,7 +539,7 @@ def pc_viscous(EnergyDis, Temp, Time, DiamTube,
     """"""
     return ((3/2)
             * np.log10((2/3) * np.pi * FittingParam * Time
-                       * np.sqrt(EnergyDis / (pc.viscosity_kinematic_water(Temp))
+                       * np.sqrt(EnergyDis / (pc.viscosity_kinematic_water(Temp))  # noqa
                                  )
                        * alpha(DiamTube, ConcClay, ConcAl, ConcNatOrgMat,
                                NatOrgMat, coag, material, RatioHeightDiameter)
@@ -608,7 +617,7 @@ def time_col_laminar(EnergyDis, Temp, ConcAl, ConcClay, coag, material,
     Calculated as a function of floc size.
     """
     return (((1/6) * ((6/np.pi)**(1/3))
-             * frac_vol_floc_initial(ConcAl, ConcClay, coag, material) ** (-2/3)
+             * frac_vol_floc_initial(ConcAl, ConcClay, coag, material) ** (-2/3)  # noqa
              * (pc.viscosity_kinematic_water(Temp) / EnergyDis) ** (1 / 2)
              * (DiamTarget / material.Diameter) ** (2*DIM_FRACTAL/3 - 2)
              )  # End of the numerator
@@ -633,12 +642,12 @@ def time_col_turbulent(EnergyDis, ConcAl, ConcClay, coag, material,
            ).to(u.s)
 
 
-########### Kolmogorov and viscous length scales ###########
+# ########## Kolmogorov and viscous length scales ########## #
 
 # @u.wraps(u.m, [u.W/u.kg, u.degK], False)
 @ut.list_handler()
 def eta_kolmogorov(EnergyDis, Temp):
-    return (((pc.viscosity_kinematic_water(Temp) ** 3) / EnergyDis) ** (1 / 4)).to(u.m)
+    return (((pc.viscosity_kinematic_water(Temp) ** 3) / EnergyDis) ** (1 / 4)).to(u.m)  # noqa
 
 
 # @u.wraps(u.m, [u.W/u.kg, u.degK], False)
@@ -700,7 +709,7 @@ def diam_floc_max(epsMax):
     average energy dissipation rate for laminar flow is approximately 2.
     """
     # return (9.5 * 10**-5 * (1 / (epsMax)**(1/3))).to(u.m)
-    raise FutureWarning("diam_floc_max is deprecated and will be removed after Dec"
+    raise FutureWarning("diam_floc_max is deprecated and will be removed after Dec"  # noqa
                         " 1 2019. The underlying equation is under suspicion.")
 
 
@@ -719,7 +728,7 @@ def ener_dis_diam_floc(Diam):
                         " after Dec 1 2019. The underlying equation is under"
                         " suspicion.")
 
-##### Velocity gradient in tubing for lab scale laminar flow flocculators #####
+# #### Velocity gradient in tubing for lab scale laminar flow flocculators #### #  # noqa
 
 # @u.wraps(1/u.s, [u.m**3/u.s, u.m], False)
 
@@ -733,7 +742,7 @@ def g_straight(PlantFlow, IDTube):
 @ut.list_handler()
 def reynolds_rapid_mix(PlantFlow, IDTube, Temp):
     return (4 * PlantFlow / (np.pi * IDTube
-                             * pc.viscosity_kinematic_water(Temp))).to(u.dimensionless)
+                             * pc.viscosity_kinematic_water(Temp))).to(u.dimensionless)  # noqa
 
 
 # @u.wraps(None, [u.m**3/u.s, u.m, u.m, u.degK], False)
