@@ -1363,8 +1363,9 @@ def diam_hagen(FlowRate, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFr
 
 
 @ut.list_handler()
-def diam_swamee(FlowRate, HeadLossMajor=None, Length=None, Nu=None, Roughness=None, *, HeadLossFric=None, PipeRough=None):
-    """Return the inner diameter of a pipe with turbulent flow and no minor losses.
+def diam_swamee(FlowRate, HeadLossMajor=None, Length=None, Nu=None, Roughness=None, *, HeadLossFric=None, PipeRough=None):  # noqa
+    """Return the inner diameter of a pipe with turbulent flow and
+    no minor losses.
 
     The Swamee Jain equation is dimensionally correct and returns the
     inner diameter of a pipe given the flow rate and the head loss due
@@ -1404,7 +1405,8 @@ def diam_swamee(FlowRate, HeadLossMajor=None, Length=None, Nu=None, Roughness=No
         raise TypeError("diam_swamee missing Roughness argument")
     else:
         if HeadLossFric is not None:
-            warnings.warn("HeadLossFric is deprecated; use HeadLossMajor instead.",
+            warnings.warn("""HeadLossFric is deprecated;
+             use HeadLossMajor instead.""",
                           UserWarning)
             HeadLossMajor = HeadLossFric
         if PipeRough is not None:
@@ -1480,7 +1482,8 @@ def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
 
 @ut.list_handler()
 def diam_minor_pipe(FlowRate, HeadLossMinor, KMinor):
-    """Return the pipe inner diameter that would result in the given minor losses.
+    """Return the pipe inner diameter that would result in the
+    given minor losses.
 
     This function applies to both laminar and turbulent flow.
 
@@ -1496,7 +1499,7 @@ def diam_minor_pipe(FlowRate, HeadLossMinor, KMinor):
     """
     ut.check_range([FlowRate.magnitude, ">0", "Flow rate"],
                    [KMinor, ">=0", "K minor"],
-                   [HeadLossMinor.magnitude, ">0", "Headloss due to expansion"])
+                   [HeadLossMinor.magnitude, ">0", "Headloss due to expansion"])  # noqa
     return (np.sqrt(4 * FlowRate / np.pi)
             * (KMinor / (2 * u.gravity * HeadLossMinor)) ** (1/4)
             ).to(u.m)
@@ -1675,7 +1678,7 @@ class DeprecatedFunctionError(Exception):
 
 
 @ut.list_handler()
-def headloss_kozeny(Length, DiamMedia=None, ApproachVel=None, Porosity=None, Nu=None, *, Diam=None, Vel=None):
+def headloss_kozeny(Length, DiamMedia=None, ApproachVel=None, Porosity=None, Nu=None, *, Diam=None, Vel=None):  # noqa
     """
     .. deprecated::
         `headloss_kozeny` is deprecated; use `headloss_ergun` instead.
@@ -1750,7 +1753,7 @@ def headloss_ergun(ApproachVel, DiamMedia, Temperature, Porosity, Length):
     :rtype: u.m
     """
     return (fric_ergun(ApproachVel, DiamMedia, Temperature, Porosity)
-            * Length / DiamMedia * ApproachVel**2 / (2*u.gravity) * (1-Porosity)
+            * Length / DiamMedia * ApproachVel**2 / (2*u.gravity) * (1-Porosity)  # noqa
             / Porosity**3).to(u.m)
 
 
@@ -1887,8 +1890,8 @@ def horiz_chan_h(q, w, hl, length, nu, eps, manifold):
         hl_local = min(hl, h / 3)
         i = i + 1
         h_new = (q / w) * np.sqrt((1 +
-                                  fric_rect(q, w, h - hl_local, nu, eps, True) * (length / (4 *
-                                                                                            radius_hydraulic_rect(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))
+                                  fric_rect(q, w, h - hl_local, nu, eps, True) * (length / (4 *  # noqa
+                                                                                            radius_hydraulic_rect(w, h - hl_local, True))) * (1 - 2 * (int(manifold) / 3))  # noqa
                                    ) / (2 * u.gravity * hl_local)) + (hl_local)
         error = np.abs(h_new - h) / (h_new + h)
     return h_new.to(u.m)
