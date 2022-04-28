@@ -825,7 +825,7 @@ def headloss_gen(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough):
     warnings.warn("""headloss_gen` is deprecated;
      use `headloss_channel` instead""",
                   UserWarning)
-    return headloss_channel(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough)
+    return headloss_channel(Area, Vel, PerimWetted, Length, KMinor, Nu, PipeRough)  # noqa
 
 
 @ut.list_handler()
@@ -859,7 +859,7 @@ def headloss_channel(Area, Vel, PerimWetted, Length, KMinor, Nu, Roughness):
 
 
 @ut.list_handler()
-def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, Roughness=None, NumOutlets=None, *, PipeRough=None):
+def headloss_manifold(FlowRate, Diam, Length, KMinor, Nu, Roughness=None, NumOutlets=None, *, PipeRough=None):  # noqa
     """Return the total head loss through the manifold.
 
     :param FlowRate: flow rate through manifold
@@ -910,7 +910,8 @@ def elbow_minor_loss(q, id_, k):
     .. deprecated::
         `elbow_minor_loss` is deprecated; use `headloss_minor_elbow` instead.
     """
-    warnings.warn('elbow_minor_loss is deprecated; use headloss_minor_elbow instead',
+    warnings.warn("""elbow_minor_loss is deprecated;
+     use headloss_minor_elbow instead""",
                   UserWarning)
     return headloss_minor_elbow(q, id_, k)
 
@@ -977,7 +978,7 @@ def flow_orifice_vert(Diam, Height, RatioVCOrifice):
     Diam = Diam.to(u.m)
     Height = Height.to(u.m)
     if Height > -Diam / 2:
-        flow_vert = integrate.quad(lambda z: (Diam*np.sin(np.arccos(z*u.m/(Diam/2)))
+        flow_vert = integrate.quad(lambda z: (Diam*np.sin(np.arccos(z*u.m/(Diam/2)))  # noqa
                                               * np.sqrt(Height - z*u.m)
                                               ).magnitude,
                                    - Diam.magnitude / 2,
@@ -1073,7 +1074,7 @@ def flow_transition(Diam, Nu):
 
 
 @ut.list_handler()
-def flow_hagen(Diam, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=None):
+def flow_hagen(Diam, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=None):  # noqa
     """Return the flow rate for laminar flow with only major losses.
 
     :param Diam: diameter of pipe
@@ -1106,14 +1107,14 @@ def flow_hagen(Diam, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=N
 
     ut.check_range([Diam.magnitude, ">0", "Diameter"],
                    [Length.magnitude, ">0", "Length"],
-                   [HeadLossMajor.magnitude, ">=0", "Headloss due to friction"],
+                   [HeadLossMajor.magnitude, ">=0", "Headloss due to friction"],  # noqa
                    [Nu.magnitude, ">0", "Nu"])
     return ((np.pi*Diam**4) / (128*Nu) * u.gravity * HeadLossMajor
             / Length).to(u.m**3/u.s)
 
 
 @ut.list_handler()
-def flow_swamee(Diam, HeadLossMajor=None, Length=None, Nu=None, Roughness=None, *, HeadLossFric=None, PipeRough=None):
+def flow_swamee(Diam, HeadLossMajor=None, Length=None, Nu=None, Roughness=None, *, HeadLossFric=None, PipeRough=None):  # noqa
     """Return the flow rate for turbulent flow with only major losses.
 
     :param Diam: diameter of pipe
@@ -1148,7 +1149,8 @@ def flow_swamee(Diam, HeadLossMajor=None, Length=None, Nu=None, Roughness=None, 
         raise TypeError("flow_swamee missing Roughness argument")
     else:
         if HeadLossFric is not None:
-            warnings.warn("HeadLossFric is deprecated; use HeadLossMajor instead.",
+            warnings.warn("""HeadLossFric is deprecated;
+             use HeadLossMajor instead.""",
                           UserWarning)
             HeadLossMajor = HeadLossFric
         if PipeRough is not None:
@@ -1246,7 +1248,7 @@ def flow_minor_pipe(Diam, HeadLossMinor, KMinor):
 
 
 @ut.list_handler()
-def flow_pipe(Diam, HeadLoss, Length, Nu, Roughness=None, KMinor=None, *, PipeRough=None):
+def flow_pipe(Diam, HeadLoss, Length, Nu, Roughness=None, KMinor=None, *, PipeRough=None):  # noqa
     """Return the flow rate in a pipe.
 
     This function works for both major and minor losses as well as
@@ -1314,8 +1316,9 @@ def flow_pipe(Diam, HeadLoss, Length, Nu, Roughness=None, KMinor=None, *, PipeRo
 
 
 @ut.list_handler()
-def diam_hagen(FlowRate, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=None):
-    """Return the inner diameter of a pipe with laminar flow and no minor losses.
+def diam_hagen(FlowRate, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=None):  # noqa
+    """Return the inner diameter of a pipe with laminar flow and no minor
+    losses.
 
     The Hagen Poiseuille equation is dimensionally correct and returns the
     inner diameter of a pipe given the flow rate and the head loss due
