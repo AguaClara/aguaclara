@@ -11,6 +11,7 @@ pint = "*"
 pandas = "*"
 scipy = "*"
 onshape_client = "*"
+numpy = "==1.22.1"
 
 [dev-packages]
 aguaclara = {editable = true, path = "."}
