@@ -10,7 +10,7 @@ Welcome to the AguaClara Package Documentation!
 .. |ACR| image:: images/acr_logo.png
    :width: 250 px
 
-``aguaclara`` is a Python package developed by `AguaClara Cornell <http://aguaclara.cornell.edu/>`_ and `AguaClara Reach <https://www.aguaclarareach.org/>`_ for designing and performing research on AguaClara water treatment plants. The package has several main functionalities:
+``aguaclara`` is a Python package developed by `AguaClara Cornell <https://aguaclara.cornell.edu/>`_ and `AguaClara Reach <https://www.aguaclarareach.org/>`_ for designing and performing research on AguaClara water treatment plants. The package has several main functionalities:
 
 * **DESIGN** of AguaClara water treatment plant components
 * **MODELING** of physical, chemical, and hydraulic processes in water treatment
