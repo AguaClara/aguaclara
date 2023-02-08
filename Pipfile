@@ -11,6 +11,7 @@ pint = "*"
 pandas = "*"
 scipy = "*"
 onshape_client = "*"
+numpy = "==1.22.1"
 
 [dev-packages]
 aguaclara = {editable = true, path = "."}
@@ -18,7 +19,7 @@ autopep8 = "*"
 codecov = "*"
 coverage = "*"
 pylint = "*"
-pytest = "*"
+pytest = "==7.2.1"
 pytest-cov = "*"
 pytest-runner = "*"
 atomicwrites = {version = ">=1.0", sys.platform = "win32"} # pytest dependency

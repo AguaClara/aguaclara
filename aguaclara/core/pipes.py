@@ -3,7 +3,7 @@ outer diameters of pipes based on their standard dimension ratio (SDR).
 
 Note: 
 added to pipe database for schedule 80, 120 and 160 using 
-https://www.engineersedge.com/pipe_schedules.htm#Related 
+https://www.engineersedge.com/pipe_schedules.htm 
 """
 
 from aguaclara.core.units import u

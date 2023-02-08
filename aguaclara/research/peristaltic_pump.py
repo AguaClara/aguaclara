@@ -17,7 +17,7 @@ def vol_per_rev_3_stop(color="", inner_diameter=0):
     """Return the volume per revolution of an Ismatec 6 roller pump
     given the inner diameter (ID) of 3-stop tubing. The calculation is
     interpolated from the table found at
-    http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm.
+    https://web.archive.org/web/20211027155239/http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm.
 
     Note:
     1. Either input a string as the tubing color code or a number as the

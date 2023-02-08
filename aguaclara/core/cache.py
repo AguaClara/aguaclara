@@ -28,7 +28,7 @@ def ac_cache(method):
             a_hash = repr(hashable_object)
         elif isinstance(hashable_object, HashableObject):
             a_hash = hashable_object.ac_hash()
-        elif isinstance(hashable_object, collections.Iterable):
+        elif isinstance(hashable_object, collections.abc.Iterable):
             a_hash = ac_hash_iterable_into_tuple(hashable_object)
         else:
             a_hash = repr(hashable_object)
