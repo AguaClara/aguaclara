@@ -1,163 +1,78 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>aguaclara.research.procoda_parser &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>aguaclara.research.procoda_parser</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">aguaclara.research.procoda_parser</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for aguaclara.research.procoda_parser</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -169,7 +84,7 @@
 
 
 <div class="viewcode-block" id="column_of_data"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_data">[docs]</a><span class="k">def</span> <span class="nf">column_of_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function extracts a column of data from a ProCoDA data file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function extracts a column of data from a ProCoDA data file.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
 
@@ -205,7 +120,7 @@
 
 
 <div class="viewcode-block" id="column_of_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_time">[docs]</a><span class="k">def</span> <span class="nf">column_of_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function extracts the column of times as elasped times from a ProCoDA data file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function extracts the column of times as elasped times from a ProCoDA data file.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
@@ -237,7 +152,7 @@
 
 
 <div class="viewcode-block" id="plot_columns"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.plot_columns">[docs]</a><span class="k">def</span> <span class="nf">plot_columns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Plot columns of data, located by labels, in the given data file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot columns of data, located by labels, in the given data file.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file</span>
 <span class="sd">    :type path: string</span>
@@ -273,7 +188,7 @@
 
 
 <div class="viewcode-block" id="iplot_columns"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.iplot_columns">[docs]</a><span class="k">def</span> <span class="nf">iplot_columns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Plot columns of data, located by indexes, in the given data file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot columns of data, located by indexes, in the given data file.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file</span>
 <span class="sd">    :type path: string</span>
@@ -311,7 +226,7 @@
 
 
 <div class="viewcode-block" id="notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.notes">[docs]</a><span class="k">def</span> <span class="nf">notes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function extracts any experimental notes from a ProCoDA data file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function extracts any experimental notes from a ProCoDA data file.</span>
 <span class="sd">    Use this to identify the section of the data file that you want to extract.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file.</span>
@@ -325,7 +240,7 @@
 
 
 <div class="viewcode-block" id="remove_notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.remove_notes">[docs]</a><span class="k">def</span> <span class="nf">remove_notes</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Omit notes from a DataFrame object, where notes are identified as rows</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Omit notes from a DataFrame object, where notes are identified as rows</span>
 <span class="sd">    with non-numerical entries in the first column.</span>
 
 <span class="sd">    :param data: DataFrame object to remove notes from</span>
@@ -339,7 +254,7 @@
 
 <div class="viewcode-block" id="get_data_by_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_time">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;00:00&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;23:59&#39;</span><span class="p">,</span>
                      <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">elapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extract columns of data over one or more ProCoDA data files based on date</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract columns of data over one or more ProCoDA data files based on date</span>
 <span class="sd">    and time. Valid only for files whose names are automatically generated by</span>
 <span class="sd">    date, i.e. of the form &quot;datalog_M-D-YYYY&quot;.</span>
 
@@ -411,7 +326,7 @@
 
 
 <span class="k">def</span> <span class="nf">day_fraction</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a 24-hour time to a fraction of a day. For example, midnight</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a 24-hour time to a fraction of a day. For example, midnight</span>
 <span class="sd">    corresponds to 0.0, and noon to 0.5.</span>
 
 <span class="sd">    :param time: Time in the form of &#39;HH:MM&#39; (24-hour time)</span>
@@ -432,7 +347,7 @@
 
 
 <span class="k">def</span> <span class="nf">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a list of DataFrames representing the ProCoDA data files stored in</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of DataFrames representing the ProCoDA data files stored in</span>
 <span class="sd">    the given path and recorded on the given dates.</span>
 
 <span class="sd">    :param path: The path to the folder containing the ProCoDA data file(s)</span>
@@ -457,7 +372,7 @@
 
 
 <span class="k">def</span> <span class="nf">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a list of numeric data entries in the given column from the starting</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of numeric data entries in the given column from the starting</span>
 <span class="sd">    index to the ending index. This can list can be compiled over one or more</span>
 <span class="sd">    DataFrames.</span>
 
@@ -491,7 +406,7 @@
 
 
 <div class="viewcode-block" id="get_data_by_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_state">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and extracts the time and data column for each</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and extracts the time and data column for each</span>
 <span class="sd">    iteration of the given state.</span>
 
 <span class="sd">    Note: column 0 is time, the first data column is column 1. Results for the</span>
@@ -590,7 +505,7 @@
 
 
 <div class="viewcode-block" id="read_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state">[docs]</a><span class="k">def</span> <span class="nf">read_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and outputs the data column and time vector for</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and outputs the data column and time vector for</span>
 <span class="sd">    each iteration of the given state.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
@@ -626,7 +541,7 @@
 
 
 <div class="viewcode-block" id="average_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.average_state">[docs]</a><span class="k">def</span> <span class="nf">average_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Outputs the average value of the data for each instance of a state in</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Outputs the average value of the data for each instance of a state in</span>
 <span class="sd">    the given ProCoDA files</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
@@ -667,7 +582,7 @@
 
 
 <div class="viewcode-block" id="perform_function_on_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.perform_function_on_state">[docs]</a><span class="k">def</span> <span class="nf">perform_function_on_state</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Performs the function given on each state of the data for the given state</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs the function given on each state of the data for the given state</span>
 <span class="sd">    in the given column and outputs the result for each instance of the state</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
@@ -723,7 +638,7 @@
 
 <div class="viewcode-block" id="read_state_with_metafile"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state_with_metafile">[docs]</a><span class="k">def</span> <span class="nf">read_state_with_metafile</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span>
                              <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Takes in a ProCoDA meta file and performs a function for all data of a</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes in a ProCoDA meta file and performs a function for all data of a</span>
 <span class="sd">    certain state in each of the experiments (denoted by file paths in then</span>
 <span class="sd">    metafile)</span>
 
@@ -824,7 +739,7 @@
 
 <div class="viewcode-block" id="write_calculations_to_csv"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.write_calculations_to_csv">[docs]</a><span class="k">def</span> <span class="nf">write_calculations_to_csv</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">out_name</span><span class="p">,</span>
                               <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Writes each output of the given functions on the given states and data</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes each output of the given functions on the given states and data</span>
 <span class="sd">    columns to a new column in the specified output file.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
@@ -874,7 +789,7 @@
 
 
 <div class="viewcode-block" id="intersect"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.intersect">[docs]</a><span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the intersections of two lines represented by a common set of x coordinates and</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the intersections of two lines represented by a common set of x coordinates and</span>
 <span class="sd">    two sets of y coordinates as three numpy arrays: the x coordinates of the intersections,</span>
 <span class="sd">    the y coordinates of the intersections, and the indexes in x, y1, y2 immediately</span>
 <span class="sd">    after the intersections.</span>
@@ -911,46 +826,30 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

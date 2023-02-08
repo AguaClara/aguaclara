@@ -1,163 +1,78 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>aguaclara.design.pipeline &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>aguaclara.design.pipeline</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">aguaclara.design.pipeline</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for aguaclara.design.pipeline</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Pipeline design functions</span>
 
@@ -217,7 +132,7 @@
 
 
 <div class="viewcode-block" id="PipelineComponent"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.PipelineComponent">[docs]</a><span class="k">class</span> <span class="nc">PipelineComponent</span><span class="p">(</span><span class="n">Component</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An abstract representation of pipeline components</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An abstract representation of pipeline components</span>
 
 <span class="sd">    This abstract base class (ABC) contains common functionality for:</span>
 
@@ -264,7 +179,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">nu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The kinematic viscosity of the fluid passing through the pipeline</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The kinematic viscosity of the fluid passing through the pipeline</span>
 <span class="sd">        component.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fluid_type</span> <span class="o">==</span> <span class="s1">&#39;water&#39;</span><span class="p">:</span>
@@ -277,26 +192,26 @@
             <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">_get_available_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the next larger size which is available, given the list of</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the next larger size which is available, given the list of</span>
 <span class="sd">        available sizes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">ceil_nearest</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">AVAILABLE_SIZES</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PipelineComponent.headloss"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.PipelineComponent.headloss">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The head loss of this pipeline component.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The head loss of this pipeline component.&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">headloss_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The head loss of the entire pipeline following this component.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The head loss of the entire pipeline following this component.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">headloss</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">headloss</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">headloss_pipeline</span>
 
     <span class="k">def</span> <span class="nf">_set_next_components_q</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the flow rates of the next components in this pipeline to be</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the flow rates of the next components in this pipeline to be</span>
 <span class="sd">        the same as this component.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -304,7 +219,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">_set_next_components_q</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PipelineComponent.flow_pipeline"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.PipelineComponent.flow_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">flow_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_headloss</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the required flow through a pipeline component and all of</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the required flow through a pipeline component and all of</span>
 <span class="sd">        its next components to reach a desired head loss.</span>
 
 <span class="sd">        Args:</span>
@@ -343,13 +258,13 @@
 
 <div class="viewcode-block" id="PipelineComponent.format_print"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.PipelineComponent.format_print">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The string representation of a pipeline component, disregarding other</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The string representation of a pipeline component, disregarding other</span>
 <span class="sd">        components in its pipeline.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
     <span class="k">def</span> <span class="nf">_pprint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The pretty-printed string representation of a pipeline component</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The pretty-printed string representation of a pipeline component</span>
 <span class="sd">        and its next components.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -364,7 +279,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_rep_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Ensure that the Python representation of a pipeline component is</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure that the Python representation of a pipeline component is</span>
 <span class="sd">        valid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fluid_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_AVAILABLE_FLUID_TYPES</span><span class="p">:</span>
@@ -378,7 +293,7 @@
 
 
 <div class="viewcode-block" id="Pipe"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.Pipe">[docs]</a><span class="k">class</span> <span class="nc">Pipe</span><span class="p">(</span><span class="n">PipelineComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Design class for a pipe</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Design class for a pipe</span>
 
 <span class="sd">    Instantiate this class to create a readily constructible pipe and calculate</span>
 <span class="sd">    its hydraulic features.</span>
@@ -428,14 +343,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">od</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The outer diameter of the pipe&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The outer diameter of the pipe&quot;&quot;&quot;</span>
         <span class="n">index</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_pipe_database</span><span class="p">[</span><span class="s1">&#39;NDinch&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
             <span class="p">)</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">_pipe_database</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
 
     <span class="k">def</span> <span class="nf">_get_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the size of a pipe given an inner diameter and specification.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the size of a pipe given an inner diameter and specification.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``id_ (float * u.inch)``: Inner diameter</span>
@@ -447,7 +362,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_size_sch40</span><span class="p">(</span><span class="n">id_</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the inner diameter of a pipe given the size and specification.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the inner diameter of a pipe given the size and specification.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``size (float * u.inch)``: Nominal size</span>
@@ -459,7 +374,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_id_sch40</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_id_sdr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">sdr</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the inner diameter of a pipe given the size and SDR.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the inner diameter of a pipe given the size and SDR.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``size (float * u.inch)``: Nominal size</span>
@@ -469,7 +384,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="p">(</span><span class="n">sdr</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sdr</span>
 
     <span class="k">def</span> <span class="nf">_get_id_sch40</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the inner diameter of a SCH40 pipe.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the inner diameter of a SCH40 pipe.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``size (float * u.inch)``: Nominal size</span>
@@ -479,7 +394,7 @@
         <span class="k">return</span> <span class="n">AVAILABLE_IDS_SCH40</span><span class="p">[</span><span class="n">myindex</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_get_size_sdr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="n">sdr</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the size of an SDR pipe.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the size of an SDR pipe.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``id_ (float * u.inch)``: Inner diameter</span>
@@ -490,7 +405,7 @@
         <span class="k">return</span> <span class="n">nd</span>
 
     <span class="k">def</span> <span class="nf">_get_size_sch40</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the size of a SCH40 pipe.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the size of a SCH40 pipe.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``id_ (float * u.inch)``: Inner diameter</span>
@@ -500,7 +415,7 @@
         <span class="k">return</span> <span class="n">AVAILABLE_SIZES</span><span class="p">[</span><span class="n">myindex</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Pipe.ID_SDR_all_available"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.Pipe.ID_SDR_all_available">[docs]</a>    <span class="k">def</span> <span class="nf">ID_SDR_all_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SDR</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return an array of inner diameters with a given SDR.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an array of inner diameters with a given SDR.&quot;&quot;&quot;</span>
         <span class="n">ID</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">AVAILABLE_SIZES</span><span class="p">)):</span>
             <span class="n">ID</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_id_sdr</span><span class="p">(</span><span class="n">AVAILABLE_SIZES</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">SDR</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
@@ -508,18 +423,18 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a pipe.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a pipe.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_major_pipe</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipe_rough</span>
             <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Pipe.format_print"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.Pipe.format_print">[docs]</a>    <span class="k">def</span> <span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the string representation of this pipe.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the string representation of this pipe.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;Pipe: (OD: </span><span class="si">{}</span><span class="s1">, Size: </span><span class="si">{}</span><span class="s1">, ID: </span><span class="si">{}</span><span class="s1">, Length: </span><span class="si">{}</span><span class="s1">, Spec: </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">od</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_rep_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Verify that this representation of a Pipe is valid.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that this representation of a Pipe is valid.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">AVAILABLE_SPECS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;spec must be one of:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AVAILABLE_SPECS</span><span class="p">)</span>
 
@@ -529,7 +444,7 @@
 
 
 <div class="viewcode-block" id="Elbow"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.Elbow">[docs]</a><span class="k">class</span> <span class="nc">Elbow</span><span class="p">(</span><span class="n">PipelineComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Design class for an Elbow</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Design class for an Elbow</span>
 
 <span class="sd">    Instantiate this class to create a readily constructible Elbow fitting and</span>
 <span class="sd">    calculate its hydraulic features.</span>
@@ -577,7 +492,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_rep_ok</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_set_k_minor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sets k minor&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets k minor&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">==</span> <span class="mi">45</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">k_minor</span> <span class="o">=</span> <span class="n">hl</span><span class="o">.</span><span class="n">EL45_K_MINOR</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">==</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">:</span>
@@ -585,7 +500,7 @@
 
 
     <span class="k">def</span> <span class="nf">_get_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the size based off the inner diameter.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the size based off the inner diameter.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``id_ (float * u.inch)``: Inner diameter</span>
@@ -595,7 +510,7 @@
         <span class="k">return</span> <span class="n">AVAILABLE_FITTING_SIZES</span><span class="p">[</span><span class="n">myindex</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the inner diameter based off the size.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the inner diameter based off the size.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``size (float * u.inch)``: Nominal Size</span>
@@ -606,16 +521,16 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The headloss&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The headloss&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_minor_elbow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Elbow.format_print"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.Elbow.format_print">[docs]</a>    <span class="k">def</span> <span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The string representation for an Elbow Fitting.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The string representation for an Elbow Fitting.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;Elbow: (Size: </span><span class="si">{}</span><span class="s1">, ID: </span><span class="si">{}</span><span class="s1">, Angle: </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_rep_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Verify that this representation of a Elbow is valid.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that this representation of a Elbow is valid.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">AVAILABLE_ANGLES</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;angle must be in &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">AVAILABLE_ANGLES</span><span class="p">)</span>
 
@@ -623,7 +538,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The next component doesn</span><span class="se">\&#39;</span><span class="s1">t have the same size.&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Tee"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.Tee">[docs]</a><span class="k">class</span> <span class="nc">Tee</span><span class="p">(</span><span class="n">PipelineComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Design class for a Tee</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Design class for a Tee</span>
 
 <span class="sd">    Instantiate this class to create a readily constructible tee fitting and</span>
 <span class="sd">    calculate its hydraulic features.</span>
@@ -686,7 +601,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_rep_ok</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_set_k_minor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sets k minor for the left and right outlet&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets k minor for the left and right outlet&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_type</span> <span class="o">==</span> <span class="s1">&#39;branch&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">left_k_minor</span> <span class="o">=</span> <span class="n">hl</span><span class="o">.</span><span class="n">TEE_FLOW_BR_K_MINOR</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_type</span> <span class="o">==</span> <span class="s1">&#39;run&#39;</span><span class="p">:</span>
@@ -702,7 +617,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">right_k_minor</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_set_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sets the next outlet as well the the type of branch for the next</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the next outlet as well the the type of branch for the next</span>
 <span class="sd">        outlet.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_type</span> <span class="o">==</span> <span class="s1">&#39;stopper&#39;</span><span class="p">:</span>
@@ -713,23 +628,23 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">next_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_type</span>
 
     <span class="k">def</span> <span class="nf">_headloss_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The headloss of the left outlet&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The headloss of the left outlet&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_minor_elbow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_headloss_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The headloss of the right outlet&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The headloss of the right outlet&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">pc</span><span class="o">.</span><span class="n">headloss_minor_elbow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_k_minor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The headloss&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The headloss&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_type</span> <span class="o">==</span><span class="s1">&#39;stopper&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_headloss_right</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_headloss_left</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_get_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the nominal size based off the inner diameter</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the nominal size based off the inner diameter</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``id_ (float * u.inch)``: Inner diameter</span>
@@ -739,7 +654,7 @@
         <span class="k">return</span> <span class="n">AVAILABLE_FITTING_SIZES</span><span class="p">[</span><span class="n">myindex</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the inner diameter based off the size.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the inner diameter based off the size.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            - ``size (float * u.inch)``: Nominal size</span>
@@ -749,12 +664,12 @@
         <span class="k">return</span> <span class="n">AVAILABLE_FITTING_IDS</span><span class="p">[</span><span class="n">myindex</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Tee.format_print"><a class="viewcode-back" href="../../../design/pipeline.html#aguaclara.design.pipeline.Tee.format_print">[docs]</a>    <span class="k">def</span> <span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The string representation of this tee.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The string representation of this tee.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;Tee: (Size: </span><span class="si">{}</span><span class="s1">, ID: </span><span class="si">{}</span><span class="s1">, Next Path Type: </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_type</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_rep_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Verify that this representation of a Tee is valid.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that this representation of a Tee is valid.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_type</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;stopper&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All tees must have one stopper.&#39;</span><span class="p">)</span>
 
@@ -776,46 +691,30 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,163 +1,78 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>aguaclara.core.physchem &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>aguaclara.core.physchem</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">aguaclara.core.physchem</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for aguaclara.core.physchem</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Contains functions pertaining to the design of physical and chemical unit</span>
 <span class="sd">processes of AguaClara water treatment plants.</span>
@@ -177,7 +92,7 @@
 
 <div class="viewcode-block" id="density_air"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.density_air">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">density_air</span><span class="p">(</span><span class="n">Pressure</span><span class="p">,</span> <span class="n">MolarMass</span><span class="p">,</span> <span class="n">Temperature</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `density_air` is deprecated; use `density_gas` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -188,7 +103,7 @@
 
 <div class="viewcode-block" id="density_gas"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.density_gas">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">density_gas</span><span class="p">(</span><span class="n">Pressure</span><span class="p">,</span> <span class="n">MolarMass</span><span class="p">,</span> <span class="n">Temperature</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the density of air at the given pressure, molar mass, and</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the density of air at the given pressure, molar mass, and</span>
 <span class="sd">    temperature.</span>
 
 <span class="sd">    :param Pressure: pressure of air in the system</span>
@@ -208,7 +123,7 @@
 
 <div class="viewcode-block" id="area_circle"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.area_circle">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">area_circle</span><span class="p">(</span><span class="n">DiamCircle</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the area of a circle given its diameter.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the area of a circle given its diameter.</span>
 
 <span class="sd">    :param DiamCircle: diameter of circle</span>
 <span class="sd">    :type DiamCircle: u.m</span>
@@ -222,7 +137,7 @@
 
 <div class="viewcode-block" id="diam_circle"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_circle">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_circle</span><span class="p">(</span><span class="n">AreaCircle</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the diameter of a circle given its area.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the diameter of a circle given its area.</span>
 
 <span class="sd">    :param AreaCircle: area of circle</span>
 <span class="sd">    :type AreaCircle: u.m**2</span>
@@ -254,7 +169,7 @@
 
 <div class="viewcode-block" id="viscosity_dynamic"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.viscosity_dynamic">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">viscosity_dynamic</span><span class="p">(</span><span class="n">temp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `viscosity_dynamic` is deprecated; use `viscosity_dynamic_water`</span>
 <span class="sd">        instead.</span>
@@ -266,7 +181,7 @@
 
 <div class="viewcode-block" id="viscosity_dynamic_water"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.viscosity_dynamic_water">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">viscosity_dynamic_water</span><span class="p">(</span><span class="n">Temperature</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the dynamic viscosity of water at a given temperature.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the dynamic viscosity of water at a given temperature.</span>
 
 <span class="sd">    :param Temperature: temperature of water</span>
 <span class="sd">    :type Temperature: u.degK</span>
@@ -281,7 +196,7 @@
 
 <div class="viewcode-block" id="density_water"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.density_water">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">density_water</span><span class="p">(</span><span class="n">Temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the density of water at a given temperature.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the density of water at a given temperature.</span>
 
 <span class="sd">    :param Temperature: temperature of water</span>
 <span class="sd">    :type Temperature: u.degK</span>
@@ -309,7 +224,7 @@
 
 <div class="viewcode-block" id="viscosity_kinematic"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.viscosity_kinematic">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">viscosity_kinematic</span><span class="p">(</span><span class="n">temp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `viscosity_kinematic` is deprecated; use `viscosity_kinematic_water`</span>
 <span class="sd">        instead.</span>
@@ -321,7 +236,7 @@
 
 <div class="viewcode-block" id="viscosity_kinematic_water"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.viscosity_kinematic_water">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">viscosity_kinematic_water</span><span class="p">(</span><span class="n">Temperature</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the kinematic viscosity of water at a given temperature.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the kinematic viscosity of water at a given temperature.</span>
 
 <span class="sd">    :param Temperature: temperature of water</span>
 <span class="sd">    :type Temperature: u.degK</span>
@@ -337,7 +252,7 @@
 
 <div class="viewcode-block" id="radius_hydraulic"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.radius_hydraulic">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">radius_hydraulic</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `radius_hydraulic` is deprecated; use `radius_hydraulic_rect` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -348,7 +263,7 @@
 
 <div class="viewcode-block" id="radius_hydraulic_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.radius_hydraulic_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">radius_hydraulic_rect</span><span class="p">(</span><span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">OpenChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the hydraulic radius of a rectangular channel given width and</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the hydraulic radius of a rectangular channel given width and</span>
 <span class="sd">    depth of water.</span>
 
 <span class="sd">    :param Width: width of channel</span>
@@ -372,7 +287,7 @@
 
 <div class="viewcode-block" id="radius_hydraulic_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.radius_hydraulic_general">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">radius_hydraulic_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `radius_hydraulic_general` is deprecated; use</span>
 <span class="sd">        `radius_hydraulic_channel` instead.</span>
@@ -384,7 +299,7 @@
 
 <div class="viewcode-block" id="radius_hydraulic_channel"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.radius_hydraulic_channel">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">radius_hydraulic_channel</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the hydraulic radius of a general channel given cross sectional</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the hydraulic radius of a general channel given cross sectional</span>
 <span class="sd">    area and wetted perimeter.</span>
 
 <span class="sd">    :param Area: cross sectional area of channel</span>
@@ -404,7 +319,7 @@
 
 <div class="viewcode-block" id="re_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">re_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the Reynolds number of flow through a pipe.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the Reynolds number of flow through a pipe.</span>
 
 <span class="sd">    :param FlowRate: flow rate through pipe</span>
 <span class="sd">    :type FlowRate: u.m**3/u.s</span>
@@ -424,7 +339,7 @@
 
 <div class="viewcode-block" id="re_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">re_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">OpenChannel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">openchannel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the Reynolds number of flow through a rectangular channel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the Reynolds number of flow through a rectangular channel.</span>
 
 <span class="sd">    :param FlowRate: flow rate through channel</span>
 <span class="sd">    :type FlowRate: u.m**3/u.s</span>
@@ -459,7 +374,7 @@
 
 <div class="viewcode-block" id="re_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_general">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">re_general</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `re_general` is deprecated; use `re_channel` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -470,7 +385,7 @@
 
 <div class="viewcode-block" id="re_channel"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_channel">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">re_channel</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the Reynolds number of flow through a general cross section.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the Reynolds number of flow through a general cross section.</span>
 
 <span class="sd">    :param Vel: velocity of fluid</span>
 <span class="sd">    :type Vel: u.m/u.s</span>
@@ -493,7 +408,7 @@
 
 <div class="viewcode-block" id="fric"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.fric">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `fric` is deprecated; use `fric_pipe` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -503,7 +418,7 @@
 
 <div class="viewcode-block" id="fric_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.fric_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">fric_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the friction factor for pipe flow.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the friction factor for pipe flow.</span>
 
 <span class="sd">    For laminar flow, the friction factor is 64 is divided the Reynolds number.</span>
 <span class="sd">    For turbulent flows, friction factor is calculated using the Swamee-Jain</span>
@@ -536,7 +451,7 @@
 <div class="viewcode-block" id="fric_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.fric_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">fric_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">OpenChannel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
               <span class="n">PipeRough</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">openchannel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the friction factor of a rectangular channel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the friction factor of a rectangular channel.</span>
 
 <span class="sd">    The Swamee-Jain equation is adapted for a rectangular channel.</span>
 
@@ -600,7 +515,7 @@
 
 <div class="viewcode-block" id="fric_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.fric_general">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">fric_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `fric_general` is deprecated; use `fric_channel` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -611,7 +526,7 @@
 
 <div class="viewcode-block" id="fric_channel"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.fric_channel">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">fric_channel</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the friction factor for a general channel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the friction factor for a general channel.</span>
 
 <span class="sd">    The Swamee-Jain equation is adapted for a general cross-section.</span>
 
@@ -653,7 +568,7 @@
 
 <div class="viewcode-block" id="headloss_fric"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_fric">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_fric</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_fric` is deprecated; use `headloss_major_pipe` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -664,7 +579,7 @@
 
 <div class="viewcode-block" id="headloss_major_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_major_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_major_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the major head loss (due to wall shear) in a pipe.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the major head loss (due to wall shear) in a pipe.</span>
 
 <span class="sd">    This function applies to both laminar and turbulent flows.</span>
 
@@ -691,7 +606,7 @@
 
 <div class="viewcode-block" id="headloss_exp"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_exp">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_exp</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_exp` is deprecated; use `headloss_minor_pipe` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -702,7 +617,7 @@
 
 <div class="viewcode-block" id="headloss_minor_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_minor_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_minor_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the minor head loss (due to changes in geometry) in a pipe.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the minor head loss (due to changes in geometry) in a pipe.</span>
 
 <span class="sd">    This function applies to both laminar and turbulent flows.</span>
 
@@ -724,7 +639,7 @@
 
 <div class="viewcode-block" id="headloss"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss` is deprecated; use `headloss_pipe` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -735,7 +650,7 @@
 
 <div class="viewcode-block" id="headloss_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a pipe.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a pipe.</span>
 
 <span class="sd">    This function applies to both laminar and turbulent flows.</span>
 
@@ -761,7 +676,7 @@
 
 <div class="viewcode-block" id="headloss_fric_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_fric_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_fric_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">openchannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_fric_rect` is deprecated; use `headloss_major_rect` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -772,7 +687,7 @@
 
 <div class="viewcode-block" id="headloss_major_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_major_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_major_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">,</span> <span class="n">OpenChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the major head loss due to wall shear in a rectangular channel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the major head loss due to wall shear in a rectangular channel.</span>
 
 <span class="sd">    This equation applies to both laminar and turbulent flows.</span>
 
@@ -806,7 +721,7 @@
 
 <div class="viewcode-block" id="headloss_exp_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_exp_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_exp_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_exp_rect` is deprecated; use `headloss_minor_rect` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -817,7 +732,7 @@
 
 <div class="viewcode-block" id="headloss_minor_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_minor_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_minor_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the minor head loss due to expansion in a rectangular channel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the minor head loss due to expansion in a rectangular channel.</span>
 
 <span class="sd">    This equation applies to both laminar and turbulent flows.</span>
 
@@ -845,7 +760,7 @@
 <div class="viewcode-block" id="headloss_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">,</span> <span class="n">Depth</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">OpenChannel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">PipeRough</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">openchannel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a rectangular</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a rectangular</span>
 <span class="sd">    channel.</span>
 
 <span class="sd">    This equation applies to both laminar and turbulent flows.</span>
@@ -898,7 +813,7 @@
 
 <div class="viewcode-block" id="headloss_fric_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_fric_general">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_fric_general</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_fric_general` is deprecated; use `headloss_major_channel` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -909,7 +824,7 @@
 
 <div class="viewcode-block" id="headloss_major_channel"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_major_channel">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_major_channel</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the major head loss due to wall shear in a general channel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the major head loss due to wall shear in a general channel.</span>
 
 <span class="sd">    This equation applies to both laminar and turbulent flows.</span>
 
@@ -938,7 +853,7 @@
 
 <div class="viewcode-block" id="headloss_exp_general"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_exp_general">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_exp_general</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_exp_general` is deprecated; use `headloss_minor_channel` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -949,7 +864,7 @@
 
 <div class="viewcode-block" id="headloss_minor_channel"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_minor_channel">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_minor_channel</span><span class="p">(</span><span class="n">Vel</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the minor head loss due to expansion in a general channel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the minor head loss due to expansion in a general channel.</span>
 
 <span class="sd">    This equation applies to both laminar and turbulent flows.</span>
 
@@ -968,7 +883,7 @@
 
 <div class="viewcode-block" id="headloss_gen"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_gen">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_gen</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_gen` is deprecated; use `headloss_channel` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -979,7 +894,7 @@
 
 <div class="viewcode-block" id="headloss_channel"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_channel">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_channel</span><span class="p">(</span><span class="n">Area</span><span class="p">,</span> <span class="n">Vel</span><span class="p">,</span> <span class="n">PerimWetted</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a general</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the total head loss from major and minor losses in a general</span>
 <span class="sd">    channel.</span>
 
 <span class="sd">    This equation applies to both laminar and turbulent flows.</span>
@@ -1009,7 +924,7 @@
 
 <div class="viewcode-block" id="headloss_manifold"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_manifold">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_manifold</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NumOutlets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">PipeRough</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the total head loss through the manifold.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the total head loss through the manifold.</span>
 
 <span class="sd">    :param FlowRate: flow rate through manifold</span>
 <span class="sd">    :type FlowRate: u.m**3/u.s</span>
@@ -1054,7 +969,7 @@
 
 <div class="viewcode-block" id="elbow_minor_loss"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.elbow_minor_loss">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">elbow_minor_loss</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `elbow_minor_loss` is deprecated; use `headloss_minor_elbow` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1065,7 +980,7 @@
 
 <div class="viewcode-block" id="headloss_minor_elbow"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_minor_elbow">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_minor_elbow</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Diam</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the minor head loss (due to changes in geometry) in an elbow.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the minor head loss (due to changes in geometry) in an elbow.</span>
 
 <span class="sd">    :param FlowRate: flow rate through pipe</span>
 <span class="sd">    :type FlowRate: u.m**3/u.s</span>
@@ -1086,7 +1001,7 @@
 
 <div class="viewcode-block" id="flow_orifice"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_orifice">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_orifice</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">Height</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate of the orifice.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate of the orifice.</span>
 
 <span class="sd">    :param Diam: diameter of orifice</span>
 <span class="sd">    :type Diam: u.m</span>
@@ -1109,7 +1024,7 @@
 
 <div class="viewcode-block" id="flow_orifice_vert"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_orifice_vert">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_orifice_vert</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">Height</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the vertical flow rate of the orifice.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the vertical flow rate of the orifice.</span>
 
 <span class="sd">    :param Diam: diameter of orifice</span>
 <span class="sd">    :type Diam: u.m</span>
@@ -1138,7 +1053,7 @@
 
 <div class="viewcode-block" id="head_orifice"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.head_orifice">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">head_orifice</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="n">FlowRate</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the piezometric head of the orifice.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the piezometric head of the orifice.</span>
 
 <span class="sd">    :param Diam: diameter of orifice</span>
 <span class="sd">    :type Diam: u.m</span>
@@ -1162,7 +1077,7 @@
 
 <div class="viewcode-block" id="area_orifice"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.area_orifice">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">area_orifice</span><span class="p">(</span><span class="n">Height</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="n">FlowRate</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the area of the orifice.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the area of the orifice.</span>
 
 <span class="sd">    :param Height: piezometric height of orifice</span>
 <span class="sd">    :type Height: u.m</span>
@@ -1183,7 +1098,7 @@
 
 <div class="viewcode-block" id="num_orifices"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.num_orifices">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">num_orifices</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">RatioVCOrifice</span><span class="p">,</span> <span class="n">HeadLossOrifice</span><span class="p">,</span> <span class="n">DiamOrifice</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the number of orifices.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the number of orifices.</span>
 
 <span class="sd">    :param FlowRate: flow rate of orifice</span>
 <span class="sd">    :type FlowRate: u.m**3/u.s</span>
@@ -1205,7 +1120,7 @@
 
 <div class="viewcode-block" id="flow_transition"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_transition">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_transition</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">Nu</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate for the laminar/turbulent transition.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate for the laminar/turbulent transition.</span>
 
 <span class="sd">    :param Diam: diameter of pipe</span>
 <span class="sd">    :type Diam: u.m</span>
@@ -1222,7 +1137,7 @@
 
 <div class="viewcode-block" id="flow_hagen"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_hagen">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_hagen</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossMajor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate for laminar flow with only major losses.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate for laminar flow with only major losses.</span>
 
 <span class="sd">    :param Diam: diameter of pipe</span>
 <span class="sd">    :type Diam: u.m</span>
@@ -1261,7 +1176,7 @@
 
 <div class="viewcode-block" id="flow_swamee"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_swamee">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_swamee</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossMajor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Roughness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">PipeRough</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate for turbulent flow with only major losses.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate for turbulent flow with only major losses.</span>
 
 <span class="sd">    :param Diam: diameter of pipe</span>
 <span class="sd">    :type Diam: u.m</span>
@@ -1320,7 +1235,7 @@
 
 <div class="viewcode-block" id="flow_pipemajor"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_pipemajor">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_pipemajor</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `flow_pipemajor` is deprecated; use `flow_major_pipe` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1331,7 +1246,7 @@
 
 <div class="viewcode-block" id="flow_major_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_major_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_major_pipe</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossMajor</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate with only major losses.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate with only major losses.</span>
 
 <span class="sd">    This function applies to both laminar and turbulent flows.</span>
 
@@ -1358,7 +1273,7 @@
 
 <div class="viewcode-block" id="flow_pipeminor"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_pipeminor">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_pipeminor</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossExpans</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `flow_pipeminor` is deprecated; use `flow_minor_pipe` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1369,7 +1284,7 @@
 
 <div class="viewcode-block" id="flow_minor_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_minor_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_minor_pipe</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLossMinor</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate with only minor losses.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate with only minor losses.</span>
 
 <span class="sd">    This function applies to both laminar and turbulent flows.</span>
 
@@ -1393,7 +1308,7 @@
 
 <div class="viewcode-block" id="flow_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_pipe</span><span class="p">(</span><span class="n">Diam</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">KMinor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">PipeRough</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate in a pipe.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate in a pipe.</span>
 
 <span class="sd">    This function works for both major and minor losses as well as</span>
 <span class="sd">    both laminar and turbulent flows.</span>
@@ -1461,7 +1376,7 @@
 
 <div class="viewcode-block" id="diam_hagen"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_hagen">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_hagen</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossMajor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe with laminar flow and no minor losses.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe with laminar flow and no minor losses.</span>
 
 <span class="sd">    The Hagen Poiseuille equation is dimensionally correct and returns the</span>
 <span class="sd">    inner diameter of a pipe given the flow rate and the head loss due</span>
@@ -1506,7 +1421,7 @@
 
 <div class="viewcode-block" id="diam_swamee"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_swamee">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_swamee</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossMajor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Roughness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">PipeRough</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe with turbulent flow and no minor losses.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe with turbulent flow and no minor losses.</span>
 
 <span class="sd">    The Swamee Jain equation is dimensionally correct and returns the</span>
 <span class="sd">    inner diameter of a pipe given the flow rate and the head loss due</span>
@@ -1571,7 +1486,7 @@
 
 <div class="viewcode-block" id="diam_pipemajor"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_pipemajor">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_pipemajor</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossFric</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `diam_pipemajor` is deprecated; use `diam_major_pipe` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1582,7 +1497,7 @@
 
 <div class="viewcode-block" id="diam_major_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_major_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_major_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossMajor</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">Roughness</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the pipe inner diameter that would result in given major losses.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the pipe inner diameter that would result in given major losses.</span>
 
 <span class="sd">    This function applies to both laminar and turbulent flow.</span>
 
@@ -1610,7 +1525,7 @@
 
 <div class="viewcode-block" id="diam_pipeminor"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_pipeminor">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_pipeminor</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossExpans</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `diam_pipeminor` is deprecated; use `diam_minor_pipe` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1621,7 +1536,7 @@
 
 <div class="viewcode-block" id="diam_minor_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_minor_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_minor_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLossMinor</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the pipe inner diameter that would result in the given minor losses.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the pipe inner diameter that would result in the given minor losses.</span>
 
 <span class="sd">    This function applies to both laminar and turbulent flow.</span>
 
@@ -1645,7 +1560,7 @@
 
 <div class="viewcode-block" id="diam_pipe"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.diam_pipe">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">diam_pipe</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">HeadLoss</span><span class="p">,</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Nu</span><span class="p">,</span> <span class="n">PipeRough</span><span class="p">,</span> <span class="n">KMinor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the pipe inner diameter that would result in the given total head</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the pipe inner diameter that would result in the given total head</span>
 <span class="sd">    loss.</span>
 
 <span class="sd">    This function applies to both laminar and turbulent flow and</span>
@@ -1695,7 +1610,7 @@
 
 <div class="viewcode-block" id="pipe_ID"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.pipe_ID">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">pipe_ID</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Pressure</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe for a given pressure</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe for a given pressure</span>
 <span class="sd">    recovery constraint.</span>
 
 <span class="sd">    :param FlowRate: flow rate of pipe</span>
@@ -1715,7 +1630,7 @@
 
 <div class="viewcode-block" id="width_rect_weir"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.width_rect_weir">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">width_rect_weir</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Height</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `width_rect_weir` is deprecated; use `width_weir_rect` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1726,7 +1641,7 @@
 
 <div class="viewcode-block" id="width_weir_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.width_weir_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">width_weir_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Height</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the width of a rectangular weir given its flow rate and the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the width of a rectangular weir given its flow rate and the</span>
 <span class="sd">    height of the water above the weir. For a weir that is a vertical pipe,</span>
 <span class="sd">    this value is the circumference.</span>
 
@@ -1747,7 +1662,7 @@
 
 <div class="viewcode-block" id="headloss_weir"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_weir">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_weir</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_weir` is deprecated; use `headloss_weir_rect` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1758,7 +1673,7 @@
 
 <div class="viewcode-block" id="headloss_weir_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_weir_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_weir_rect</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the head loss of a rectangular or vertical pipe weir.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the head loss of a rectangular or vertical pipe weir.</span>
 
 <span class="sd">    Head loss for a weir is the difference in height between the water</span>
 <span class="sd">    upstream of the weir and the top of the weir.</span>
@@ -1780,7 +1695,7 @@
 
 <div class="viewcode-block" id="flow_rect_weir"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_rect_weir">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_rect_weir</span><span class="p">(</span><span class="n">Height</span><span class="p">,</span> <span class="n">Width</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `flow_rect_weir` is deprecated; use `flow_weir_rect` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1791,7 +1706,7 @@
 
 <div class="viewcode-block" id="flow_weir_rect"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.flow_weir_rect">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_weir_rect</span><span class="p">(</span><span class="n">Height</span><span class="p">,</span> <span class="n">Width</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate of a rectangular or vertical pipe weir.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate of a rectangular or vertical pipe weir.</span>
 
 <span class="sd">    :param Height: height of water above weir</span>
 <span class="sd">    :type Height: u.m</span>
@@ -1815,7 +1730,7 @@
 
 <div class="viewcode-block" id="headloss_kozeny"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_kozeny">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_kozeny</span><span class="p">(</span><span class="n">Length</span><span class="p">,</span> <span class="n">DiamMedia</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ApproachVel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Porosity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">Diam</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Vel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. deprecated::</span>
 <span class="sd">        `headloss_kozeny` is deprecated; use `headloss_ergun` instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1824,7 +1739,7 @@
 
 <div class="viewcode-block" id="re_ergun"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.re_ergun">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">re_ergun</span><span class="p">(</span><span class="n">ApproachVel</span><span class="p">,</span> <span class="n">DiamMedia</span><span class="p">,</span> <span class="n">Temperature</span><span class="p">,</span> <span class="n">Porosity</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the Reynolds number for flow through porous media.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the Reynolds number for flow through porous media.</span>
 
 <span class="sd">    :param ApproachVel: approach velocity or superficial fluid velocity</span>
 <span class="sd">    :type ApproachVel: u.m/u.s</span>
@@ -1851,7 +1766,7 @@
 
 <div class="viewcode-block" id="fric_ergun"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.fric_ergun">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">fric_ergun</span><span class="p">(</span><span class="n">ApproachVel</span><span class="p">,</span> <span class="n">DiamMedia</span><span class="p">,</span> <span class="n">Temperature</span><span class="p">,</span> <span class="n">Porosity</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the friction factor for flow through porous media.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the friction factor for flow through porous media.</span>
 
 <span class="sd">    :param ApproachVel: superficial fluid velocity (VelSuperficial?)</span>
 <span class="sd">    :type ApproachVel: u.m/u.s</span>
@@ -1871,7 +1786,7 @@
 
 <div class="viewcode-block" id="headloss_ergun"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.headloss_ergun">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">headloss_ergun</span><span class="p">(</span><span class="n">ApproachVel</span><span class="p">,</span> <span class="n">DiamMedia</span><span class="p">,</span> <span class="n">Temperature</span><span class="p">,</span> <span class="n">Porosity</span><span class="p">,</span> <span class="n">Length</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the frictional head loss for flow through porous media.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the frictional head loss for flow through porous media.</span>
 
 <span class="sd">    :param ApproachVel: superficial fluid velocity (VelSuperficial?)</span>
 <span class="sd">    :type ApproachVel: u.m/u.s</span>
@@ -1894,7 +1809,7 @@
 
 <div class="viewcode-block" id="g_cs_ergun"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.g_cs_ergun">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">g_cs_ergun</span><span class="p">(</span><span class="n">ApproachVel</span><span class="p">,</span> <span class="n">DiamMedia</span><span class="p">,</span> <span class="n">Temperature</span><span class="p">,</span> <span class="n">Porosity</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Camp Stein velocity gradient for flow through porous media.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Camp Stein velocity gradient for flow through porous media.</span>
 
 <span class="sd">    :param ApproachVel: superficial fluid velocity (VelSuperficial?)</span>
 <span class="sd">    :type ApproachVel: u.m/u.s</span>
@@ -1918,7 +1833,7 @@
 
 <div class="viewcode-block" id="height_water_critical"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.height_water_critical">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">height_water_critical</span><span class="p">(</span><span class="n">FlowRate</span><span class="p">,</span> <span class="n">Width</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the critical local water height.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the critical local water height.</span>
 
 <span class="sd">    :param FlowRate: flow rate of water</span>
 <span class="sd">    :type FlowRate: u.m**3/u.s</span>
@@ -1935,7 +1850,7 @@
 
 <div class="viewcode-block" id="vel_horizontal"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.vel_horizontal">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">vel_horizontal</span><span class="p">(</span><span class="n">HeightWaterCritical</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the horizontal velocity. (at the critical water depth??????)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the horizontal velocity. (at the critical water depth??????)</span>
 
 <span class="sd">    :param HeightWaterCritical: critical water height</span>
 <span class="sd">    :type HeightWaterCritical: u.m</span>
@@ -1949,7 +1864,7 @@
 
 <div class="viewcode-block" id="manifold_id_alt"><a class="viewcode-back" href="../../../core/physchem.html#aguaclara.core.physchem.manifold_id_alt">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">manifold_id_alt</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">pr_max</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the inner diameter of a manifold when major losses are</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the inner diameter of a manifold when major losses are</span>
 <span class="sd">    negligible.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">manifold_id_alt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
@@ -2042,46 +1957,30 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

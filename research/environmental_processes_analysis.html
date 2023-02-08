@@ -1,103 +1,76 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Environmental Processes Analysis &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Floc Model" href="floc_model.html" />
     <link rel="prev" title="Research" href="research.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../core/core.html">Core</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design/design.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="research.html">Research</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Environmental Processes Analysis</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Environmental Processes Analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.invpH"><code class="docutils literal notranslate"><span class="pre">invpH()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.alpha0_carbonate"><code class="docutils literal notranslate"><span class="pre">alpha0_carbonate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.alpha1_carbonate"><code class="docutils literal notranslate"><span class="pre">alpha1_carbonate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.alpha2_carbonate"><code class="docutils literal notranslate"><span class="pre">alpha2_carbonate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.ANC_closed"><code class="docutils literal notranslate"><span class="pre">ANC_closed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.ANC_open"><code class="docutils literal notranslate"><span class="pre">ANC_open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.aeration_data"><code class="docutils literal notranslate"><span class="pre">aeration_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.O2_sat"><code class="docutils literal notranslate"><span class="pre">O2_sat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.Gran"><code class="docutils literal notranslate"><span class="pre">Gran()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.CMFR"><code class="docutils literal notranslate"><span class="pre">CMFR()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.E_CMFR_N"><code class="docutils literal notranslate"><span class="pre">E_CMFR_N()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.E_Advective_Dispersion"><code class="docutils literal notranslate"><span class="pre">E_Advective_Dispersion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.Tracer_CMFR_N"><code class="docutils literal notranslate"><span class="pre">Tracer_CMFR_N()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.Solver_CMFR_N"><code class="docutils literal notranslate"><span class="pre">Solver_CMFR_N()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.Tracer_AD_Pe"><code class="docutils literal notranslate"><span class="pre">Tracer_AD_Pe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.research.environmental_processes_analysis.Solver_AD_Pe"><code class="docutils literal notranslate"><span class="pre">Solver_AD_Pe()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="floc_model.html">Floc Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="peristaltic_pump.html">Peristaltic Pump</a></li>
 <li class="toctree-l3"><a class="reference internal" href="procoda_parser.html">ProCoDA Parser</a></li>
@@ -109,92 +82,49 @@
 <li class="toctree-l1"><a class="reference internal" href="../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../api.html">API Reference</a> &raquo;</li>
-        
-          <li><a href="research.html">Research</a> &raquo;</li>
-        
-      <li>Environmental Processes Analysis</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="research.html">Research</a></li>
+      <li class="breadcrumb-item active">Environmental Processes Analysis</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../_sources/research/environmental_processes_analysis.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="module-aguaclara.research.environmental_processes_analysis">
-<span id="environmental-processes-analysis"></span><h1>Environmental Processes Analysis<a class="headerlink" href="#module-aguaclara.research.environmental_processes_analysis" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="module-aguaclara.research.environmental_processes_analysis">
+<span id="environmental-processes-analysis"></span><h1>Environmental Processes Analysis<a class="headerlink" href="#module-aguaclara.research.environmental_processes_analysis" title="Permalink to this heading"></a></h1>
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.invpH">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">invpH</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#invpH"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.invpH" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.invpH">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">invpH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#invpH"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.invpH" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate inverse pH, i.e. hydronium ion concentration, given pH.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – pH to be inverted</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pH to be inverted</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The inverse pH or hydronium ion concentration (in moles per liter)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">invpH</span>
@@ -205,20 +135,20 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.alpha0_carbonate">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">alpha0_carbonate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#alpha0_carbonate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.alpha0_carbonate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.alpha0_carbonate">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">alpha0_carbonate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#alpha0_carbonate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.alpha0_carbonate" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the fraction of total carbonates in carbonic acid form (H2CO3)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – pH of the system</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pH of the system</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Fraction of carbonates in carbonic acid form (H2CO3)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">alpha0_carbonate</span>
@@ -229,20 +159,20 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.alpha1_carbonate">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">alpha1_carbonate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#alpha1_carbonate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.alpha1_carbonate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.alpha1_carbonate">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">alpha1_carbonate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#alpha1_carbonate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.alpha1_carbonate" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the fraction of total carbonates in bicarbonate form (HCO3-)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – pH of the system</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pH of the system</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Fraction of carbonates in bicarbonate form (HCO3-)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">alpha1_carbonate</span>
@@ -253,20 +183,20 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.alpha2_carbonate">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">alpha2_carbonate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#alpha2_carbonate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.alpha2_carbonate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.alpha2_carbonate">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">alpha2_carbonate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#alpha2_carbonate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.alpha2_carbonate" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the fraction of total carbonates in carbonate form (CO3-2)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – pH of the system</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pH of the system</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Fraction of carbonates in carbonate form (CO3-2)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">alpha2_carbonate</span>
@@ -277,25 +207,25 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.ANC_closed">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">ANC_closed</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_carbonates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#ANC_closed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.ANC_closed" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.ANC_closed">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">ANC_closed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_carbonates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#ANC_closed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.ANC_closed" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the acid neutralizing capacity (ANC) under a closed system
 in which no carbonates are exchanged with the atmosphere during the
 experiment. Based on pH and total carbonates in the system.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – pH of the system</p></li>
-<li><p><strong>total_carbonates</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Total carbonate concentration in the system (mole/L)</p></li>
+<li><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pH of the system</p></li>
+<li><p><strong>total_carbonates</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Total carbonate concentration in the system (mole/L)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The acid neutralizing capacity of the closed system (eq/L)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">ANC_closed</span>
@@ -307,21 +237,21 @@ experiment. Based on pH and total carbonates in the system.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.ANC_open">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">ANC_open</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#ANC_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.ANC_open" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.ANC_open">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">ANC_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#ANC_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.ANC_open" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the acid neutralizing capacity (ANC) calculated under an open
 system based on pH.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – pH of the system</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pH</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – pH of the system</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The acid neutralizing capacity of the closed system (eq/L)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">ANC_open</span>
@@ -332,8 +262,8 @@ system based on pH.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.aeration_data">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">aeration_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">DO_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirpath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#aeration_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.aeration_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.aeration_data">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">aeration_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">DO_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirpath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#aeration_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.aeration_data" title="Permalink to this definition"></a></dt>
 <dd><p>Extract the data from folder containing tab delimited
 files of aeration data. The file must be the original tab delimited file.
 All text strings below the header must be removed from these files.
@@ -342,13 +272,13 @@ An example file name would be “300.xls” where 300 is the flow rate in
 micromoles/s. The function opens a file dialog for the user to select
 the directory containing the data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>DO_column</strong> – Index of the column that contains the dissolved oxygen concentration data.</p></li>
 <li><p><strong>dirpath</strong> (<em>string</em>) – Path to the directory containing aeration data you want to analyze</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>collection of</p>
 <ul class="simple">
 <li><p><strong>filepaths</strong> (<em>string list</em>) - All file paths in the directory sorted by flow rate</p></li>
@@ -362,23 +292,23 @@ the directory containing the data.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.O2_sat">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">O2_sat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_air</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#O2_sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.O2_sat" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.O2_sat">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">O2_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_air</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#O2_sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.O2_sat" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate saturaed oxygen concentration in mg/L for 278 K &lt; T &lt; 318 K</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>P_air</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Air pressure with appropriate units</p></li>
-<li><p><strong>temp</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Water temperature with appropriate units</p></li>
+<li><p><strong>P_air</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Air pressure with appropriate units</p></li>
+<li><p><strong>temp</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Water temperature with appropriate units</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Saturated oxygen concentration in mg/L</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">O2_sat</span>
@@ -390,14 +320,14 @@ the directory containing the data.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.Gran">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">Gran</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Gran"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Gran" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.Gran">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">Gran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Gran"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Gran" title="Permalink to this definition"></a></dt>
 <dd><p>Extract the data from a ProCoDA Gran plot file. The file must be the original tab delimited file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data_file_path</strong> – The path to the file. If the file is in the working directory, then the file name is sufficient.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>collection of</p>
 <ul class="simple">
 <li><p><strong>V_titrant</strong> (<em>float</em>) - Volume of titrant in mL</p></li>
@@ -413,27 +343,27 @@ the directory containing the data.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.CMFR">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">CMFR</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_influent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#CMFR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.CMFR" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.CMFR">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">CMFR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_influent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#CMFR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.CMFR" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the effluent concentration of a conversative (non-reacting)
 material with continuous input to a completely mixed flow reactor.</p>
 <p>Note: time t=0 is the time at which the material starts to flow into the
 reactor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>C_initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – The concentration in the CMFR at time t=0.</p></li>
-<li><p><strong>C_influent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – The concentration entering the CMFR.</p></li>
-<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>numpy.array</em>) – The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</p></li>
+<li><p><strong>C_initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The concentration in the CMFR at time t=0.</p></li>
+<li><p><strong>C_influent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The concentration entering the CMFR.</p></li>
+<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em> or </em><em>numpy.array</em>) – The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Effluent concentration</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">CMFR</span>
@@ -447,24 +377,24 @@ reactor.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.E_CMFR_N">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">E_CMFR_N</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#E_CMFR_N"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.E_CMFR_N" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.E_CMFR_N">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">E_CMFR_N</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#E_CMFR_N"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.E_CMFR_N" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate a dimensionless measure of the output tracer concentration
 from a spike input to a series of completely mixed flow reactors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>numpy.array</em>) – The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</p></li>
-<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of completely mixed flow reactors (CMFRS) in series. Must be greater than 1.</p></li>
+<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em> or </em><em>numpy.array</em>) – The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</p></li>
+<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The number of completely mixed flow reactors (CMFRS) in series. Must be greater than 1.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Dimensionless measure of the output tracer concentration (concentration * volume of 1 CMFR) / (mass of tracer)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">E_CMFR_N</span>
@@ -477,24 +407,24 @@ from a spike input to a series of completely mixed flow reactors.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.E_Advective_Dispersion">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">E_Advective_Dispersion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#E_Advective_Dispersion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.E_Advective_Dispersion" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.E_Advective_Dispersion">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">E_Advective_Dispersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#E_Advective_Dispersion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.E_Advective_Dispersion" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate a dimensionless measure of the output tracer concentration from
 a spike input to reactor with advection and dispersion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>numpy.array</em>) – The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</p></li>
-<li><p><strong>Pe</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – The ratio of advection to dispersion ((mean fluid velocity)/(Dispersion*flow path length))</p></li>
+<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em> or </em><em>numpy.array</em>) – The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</p></li>
+<li><p><strong>Pe</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The ratio of advection to dispersion ((mean fluid velocity)/(Dispersion*flow path length))</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dimensionless measure of the output tracer concentration (concentration * volume of reactor) / (mass of tracer)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">E_Advective_Dispersion</span>
@@ -505,27 +435,27 @@ a spike input to reactor with advection and dispersion.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.Tracer_CMFR_N">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">Tracer_CMFR_N</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Tracer_CMFR_N"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Tracer_CMFR_N" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.Tracer_CMFR_N">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">Tracer_CMFR_N</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Tracer_CMFR_N"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Tracer_CMFR_N" title="Permalink to this definition"></a></dt>
 <dd><p>Used by Solver_CMFR_N. All inputs and outputs are unitless. This is
 The model function, f(x, …). It takes the independent variable as the
 first argument and the parameters to fit as separate remaining arguments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t_seconds</strong> (<em>float list</em>) – List of times</p></li>
-<li><p><strong>t_bar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Average time spent in the reactor</p></li>
-<li><p><strong>C_bar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Average concentration (mass of tracer)/(volume of the reactor)</p></li>
-<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of completely mixed flow reactors (CMFRs) in series, must be greater than 1</p></li>
+<li><p><strong>t_bar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Average time spent in the reactor</p></li>
+<li><p><strong>C_bar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Average concentration (mass of tracer)/(volume of the reactor)</p></li>
+<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Number of completely mixed flow reactors (CMFRs) in series, must be greater than 1</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The model concentration as a function of time</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float list</p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">Tracer_CMFR_N</span>
@@ -537,20 +467,20 @@ first argument and the parameters to fit as separate remaining arguments.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.Solver_CMFR_N">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">Solver_CMFR_N</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_bar_guess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Solver_CMFR_N"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Solver_CMFR_N" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.Solver_CMFR_N">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">Solver_CMFR_N</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_bar_guess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Solver_CMFR_N"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Solver_CMFR_N" title="Permalink to this definition"></a></dt>
 <dd><p>Use non-linear least squares to fit the function
 Tracer_CMFR_N(t_seconds, t_bar, C_bar, N) to reactor data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t_data</strong> (<em>float list</em>) – Array of times with units</p></li>
 <li><p><strong>C_data</strong> (<em>float list</em>) – Array of tracer concentration data with units</p></li>
-<li><p><strong>theta_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Estimate of time spent in one CMFR with units.</p></li>
-<li><p><strong>C_bar_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Estimate of average concentration with units ((mass of tracer)/(volume of one CMFR))</p></li>
+<li><p><strong>theta_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Estimate of time spent in one CMFR with units.</p></li>
+<li><p><strong>C_bar_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Estimate of average concentration with units ((mass of tracer)/(volume of one CMFR))</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>tuple of</p>
 <ul class="simple">
 <li><p><strong>theta</strong> (<em>float</em>)- Residence time in seconds</p></li>
@@ -563,27 +493,27 @@ Tracer_CMFR_N(t_seconds, t_bar, C_bar, N) to reactor data.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.Tracer_AD_Pe">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">Tracer_AD_Pe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Tracer_AD_Pe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Tracer_AD_Pe" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.Tracer_AD_Pe">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">Tracer_AD_Pe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_bar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Tracer_AD_Pe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Tracer_AD_Pe" title="Permalink to this definition"></a></dt>
 <dd><p>Used by Solver_AD_Pe. All inputs and outputs are unitless. This is the
 model function, f(x, …). It takes the independent variable as the
 first argument and the parameters to fit as separate remaining arguments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t_seconds</strong> (<em>float list</em>) – List of times</p></li>
-<li><p><strong>t_bar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Average time spent in the reactor</p></li>
-<li><p><strong>C_bar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Average concentration ((mass of tracer)/(volume of the reactor))</p></li>
-<li><p><strong>Pe</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – The Peclet number for the reactor.</p></li>
+<li><p><strong>t_bar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Average time spent in the reactor</p></li>
+<li><p><strong>C_bar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Average concentration ((mass of tracer)/(volume of the reactor))</p></li>
+<li><p><strong>Pe</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The Peclet number for the reactor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The model concentration as a function of time</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float list</p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.research.environmental_processes_analysis</span> <span class="kn">import</span> <span class="n">Tracer_AD_Pe</span>
@@ -595,20 +525,20 @@ first argument and the parameters to fit as separate remaining arguments.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="aguaclara.research.environmental_processes_analysis.Solver_AD_Pe">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></code><code class="sig-name descname"><span class="pre">Solver_AD_Pe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_bar_guess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Solver_AD_Pe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Solver_AD_Pe" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.research.environmental_processes_analysis.Solver_AD_Pe">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.environmental_processes_analysis.</span></span><span class="sig-name descname"><span class="pre">Solver_AD_Pe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_guess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_bar_guess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/environmental_processes_analysis.html#Solver_AD_Pe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.environmental_processes_analysis.Solver_AD_Pe" title="Permalink to this definition"></a></dt>
 <dd><p>Use non-linear least squares to fit the function
 Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe) to reactor data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t_data</strong> (<em>float list</em>) – Array of times with units</p></li>
 <li><p><strong>C_data</strong> (<em>float list</em>) – Array of tracer concentration data with units</p></li>
-<li><p><strong>theta_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Estimate of time spent in one CMFR with units.</p></li>
-<li><p><strong>C_bar_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Estimate of average concentration with units ((mass of tracer)/(volume of one CMFR))</p></li>
+<li><p><strong>theta_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Estimate of time spent in one CMFR with units.</p></li>
+<li><p><strong>C_bar_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Estimate of average concentration with units ((mass of tracer)/(volume of one CMFR))</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>tuple of</p>
 <ul class="simple">
 <li><p><strong>theta</strong> (<em>float</em>)- Residence time in seconds</p></li>
@@ -620,54 +550,37 @@ Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe) to reactor data.</p>
 </dl>
 </dd></dl>
 
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="floc_model.html" class="btn btn-neutral float-right" title="Floc Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="research.html" class="btn btn-neutral float-left" title="Research" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="floc_model.html" class="btn btn-neutral float-right" title="Floc Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

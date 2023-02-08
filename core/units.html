@@ -1,97 +1,52 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Units &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Utility" href="utility.html" />
     <link rel="prev" title="Pipes" href="pipes.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="core.html">Core</a><ul class="current">
@@ -103,6 +58,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Units</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#frequently-used-units-and-constants-in-u">Frequently Used Units and Constants in <code class="docutils literal notranslate"><span class="pre">u</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.core.units.set_sig_figs"><code class="docutils literal notranslate"><span class="pre">set_sig_figs()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="utility.html">Utility</a></li>
@@ -115,87 +71,44 @@
 <li class="toctree-l1"><a class="reference internal" href="../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../api.html">API Reference</a> &raquo;</li>
-        
-          <li><a href="core.html">Core</a> &raquo;</li>
-        
-      <li>Units</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="core.html">Core</a></li>
+      <li class="breadcrumb-item active">Units</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../_sources/core/units.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="units">
-<span id="id1"></span><h1>Units<a class="headerlink" href="#units" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="units">
+<span id="id1"></span><h1>Units<a class="headerlink" href="#units" title="Permalink to this heading"></a></h1>
 <span class="target" id="module-aguaclara.core.units"></span><p>Module containing global unit registry.</p>
 <p>The <a class="reference external" href="https://pint.readthedocs.io/en/latest/">Pint package</a> supports arithmetic
 of physical quantities, which are combinations of numerical values and units of
 measurement. The units of a quantity come from Pint’s unit registry. This
 module contains a unit registry, named <code class="docutils literal notranslate"><span class="pre">u</span></code>, based on Pint’s unit registry.
 It also defines a few additional units.</p>
-<div class="section" id="frequently-used-units-and-constants-in-u">
-<h2>Frequently Used Units and Constants in <code class="docutils literal notranslate"><span class="pre">u</span></code><a class="headerlink" href="#frequently-used-units-and-constants-in-u" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="prefixes-for-metric-units">
-<h3>Prefixes for Metric Units<a class="headerlink" href="#prefixes-for-metric-units" title="Permalink to this headline">¶</a></h3>
+<section id="frequently-used-units-and-constants-in-u">
+<h2>Frequently Used Units and Constants in <code class="docutils literal notranslate"><span class="pre">u</span></code><a class="headerlink" href="#frequently-used-units-and-constants-in-u" title="Permalink to this heading"></a></h2>
+<section id="prefixes-for-metric-units">
+<h3>Prefixes for Metric Units<a class="headerlink" href="#prefixes-for-metric-units" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>pico- =  1e-12 = p-</p></li>
 <li><p>nano- =  1e-9  = n-</p></li>
@@ -210,9 +123,9 @@ It also defines a few additional units.</p>
 <li><p>giga- =  1e9   = G-</p></li>
 <li><p>tera- =  1e12  = T-</p></li>
 </ul>
-</div>
-<div class="section" id="units-of-length">
-<h3>Units of Length<a class="headerlink" href="#units-of-length" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-length">
+<h3>Units of Length<a class="headerlink" href="#units-of-length" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.meter</span></code> = <code class="docutils literal notranslate"><span class="pre">u.metre</span></code> = <code class="docutils literal notranslate"><span class="pre">u.m</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.inch</span></code></p></li>
@@ -220,9 +133,9 @@ It also defines a few additional units.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.yard</span></code> = <code class="docutils literal notranslate"><span class="pre">u.yd</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.mile</span></code> = <code class="docutils literal notranslate"><span class="pre">u.mi</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-mass">
-<h3>Units of Mass<a class="headerlink" href="#units-of-mass" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-mass">
+<h3>Units of Mass<a class="headerlink" href="#units-of-mass" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.gram</span></code> = <code class="docutils literal notranslate"><span class="pre">u.g</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.metric_ton</span></code> = <code class="docutils literal notranslate"><span class="pre">u.tonne</span></code> = <code class="docutils literal notranslate"><span class="pre">u.t</span></code></p></li>
@@ -231,9 +144,9 @@ It also defines a few additional units.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.ton</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.atomic_mass_unit</span></code> = <code class="docutils literal notranslate"><span class="pre">u.amu</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-time">
-<h3>Units of Time<a class="headerlink" href="#units-of-time" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-time">
+<h3>Units of Time<a class="headerlink" href="#units-of-time" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.second</span></code> = <code class="docutils literal notranslate"><span class="pre">u.sec</span></code> = <code class="docutils literal notranslate"><span class="pre">u.s</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.minute</span></code> = <code class="docutils literal notranslate"><span class="pre">u.min</span></code></p></li>
@@ -242,25 +155,25 @@ It also defines a few additional units.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.week</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.year</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-temperature">
-<h3>Units of Temperature<a class="headerlink" href="#units-of-temperature" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-temperature">
+<h3>Units of Temperature<a class="headerlink" href="#units-of-temperature" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.kelvin</span></code> = <code class="docutils literal notranslate"><span class="pre">u.degK</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.celsius</span></code> = <code class="docutils literal notranslate"><span class="pre">u.degC</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.fahrenheit</span></code> = <code class="docutils literal notranslate"><span class="pre">u.degF</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-angle">
-<h3>Units of Angle<a class="headerlink" href="#units-of-angle" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-angle">
+<h3>Units of Angle<a class="headerlink" href="#units-of-angle" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.revolution</span></code> = <code class="docutils literal notranslate"><span class="pre">u.rev</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.radian</span></code> = <code class="docutils literal notranslate"><span class="pre">u.rad</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.degree</span></code> = <code class="docutils literal notranslate"><span class="pre">u.deg</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-force">
-<h3>Units of Force<a class="headerlink" href="#units-of-force" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-force">
+<h3>Units of Force<a class="headerlink" href="#units-of-force" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.newton</span></code> = <code class="docutils literal notranslate"><span class="pre">u.N</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.gram_force</span></code> = <code class="docutils literal notranslate"><span class="pre">u.gf</span></code></p></li>
@@ -269,30 +182,30 @@ It also defines a few additional units.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.ton_force</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.kip</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-frequency">
-<h3>Units of Frequency<a class="headerlink" href="#units-of-frequency" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-frequency">
+<h3>Units of Frequency<a class="headerlink" href="#units-of-frequency" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.hertz</span></code> = <code class="docutils literal notranslate"><span class="pre">u.Hz</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.revolutions_per_minute</span></code> = <code class="docutils literal notranslate"><span class="pre">u.rpm</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-money">
-<h3>Units of Money<a class="headerlink" href="#units-of-money" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-money">
+<h3>Units of Money<a class="headerlink" href="#units-of-money" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.dollar</span></code> = <code class="docutils literal notranslate"><span class="pre">u.USD</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.lempira</span></code> = <code class="docutils literal notranslate"><span class="pre">u.HNL</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-power">
-<h3>Units of Power<a class="headerlink" href="#units-of-power" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-power">
+<h3>Units of Power<a class="headerlink" href="#units-of-power" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.watt</span></code> = <code class="docutils literal notranslate"><span class="pre">u.W</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.horsepower</span></code> = <code class="docutils literal notranslate"><span class="pre">u.hp</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-pressure">
-<h3>Units of Pressure<a class="headerlink" href="#units-of-pressure" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-pressure">
+<h3>Units of Pressure<a class="headerlink" href="#units-of-pressure" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.pascal</span></code> = <code class="docutils literal notranslate"><span class="pre">u.Pa</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.bar</span></code></p></li>
@@ -300,9 +213,9 @@ It also defines a few additional units.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.torr</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.millimeter_Hg</span></code> = <code class="docutils literal notranslate"><span class="pre">u.mmHg</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="units-of-volume">
-<h3>Units of Volume<a class="headerlink" href="#units-of-volume" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="units-of-volume">
+<h3>Units of Volume<a class="headerlink" href="#units-of-volume" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.liter</span></code> = <code class="docutils literal notranslate"><span class="pre">u.litre</span></code> = <code class="docutils literal notranslate"><span class="pre">u.L</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.cubic_centimeter</span></code> = <code class="docutils literal notranslate"><span class="pre">u.cc</span></code></p></li>
@@ -314,9 +227,9 @@ It also defines a few additional units.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.tablespoon</span></code> = <code class="docutils literal notranslate"><span class="pre">u.tbsp</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.teaspoon</span></code> = <code class="docutils literal notranslate"><span class="pre">tsp</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="other-units">
-<h3>Other Units<a class="headerlink" href="#other-units" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="other-units">
+<h3>Other Units<a class="headerlink" href="#other-units" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.joule</span></code> = <code class="docutils literal notranslate"><span class="pre">u.J</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.mole</span></code> = <code class="docutils literal notranslate"><span class="pre">u.mol</span></code> = <code class="docutils literal notranslate"><span class="pre">u.equivalent</span></code> = <code class="docutils literal notranslate"><span class="pre">u.eq</span></code></p></li>
@@ -328,19 +241,19 @@ obtained from <a class="reference external" href="https://doi.org/10.1016/j.cjch
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="constants">
-<h3>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="constants">
+<h3>Constants<a class="headerlink" href="#constants" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">u.gravity</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.molar_gas_constant</span></code> = <code class="docutils literal notranslate"><span class="pre">u.R</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.avogadro_number</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">u.boltzmann_constant</span></code></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mass</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kg</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">height</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
@@ -359,16 +272,17 @@ obtained from <a class="reference external" href="https://doi.org/10.1016/j.cjch
 <span class="go">&lt;Quantity(117.6798, &#39;kilogram * meter ** 2 / second ** 2&#39;)&gt;</span>
 </pre></div>
 </div>
+</section>
 <dl class="py function">
-<dt id="aguaclara.core.units.set_sig_figs">
-<code class="sig-prename descclassname"><span class="pre">aguaclara.core.units.</span></code><code class="sig-name descname"><span class="pre">set_sig_figs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/units.html#set_sig_figs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.units.set_sig_figs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.core.units.set_sig_figs">
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.units.</span></span><span class="sig-name descname"><span class="pre">set_sig_figs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/units.html#set_sig_figs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.units.set_sig_figs" title="Permalink to this definition"></a></dt>
 <dd><p>Set the default number of significant figures used to print Pint,
 Pandas and NumPy value quantities.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – number of significant figures to display. Defaults to 4.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of significant figures to display. Defaults to 4.</p>
 </dd>
-<dt class="field-even">Examples</dt>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">set_sig_figs</span><span class="p">,</span> <span class="n">u</span>
@@ -387,55 +301,37 @@ Pandas and NumPy value quantities.</p>
 </div>
 </dd></dl>
 
-</div>
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="utility.html" class="btn btn-neutral float-right" title="Utility" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pipes.html" class="btn btn-neutral float-left" title="Pipes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utility.html" class="btn btn-neutral float-right" title="Utility" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

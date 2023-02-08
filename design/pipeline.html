@@ -1,97 +1,52 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Pipeline &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Research" href="../research/research.html" />
     <link rel="prev" title="Sedimentation Tank" href="sed_tank.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../core/core.html">Core</a></li>
@@ -105,7 +60,13 @@
 <li class="toctree-l3"><a class="reference internal" href="sed.html">Sedimentor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sed_chan.html">Sedimentation Channel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sed_tank.html">Sedimentation Tank</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Pipeline</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.design.pipeline.PipelineComponent"><code class="docutils literal notranslate"><span class="pre">PipelineComponent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.design.pipeline.Pipe"><code class="docutils literal notranslate"><span class="pre">Pipe</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.design.pipeline.Elbow"><code class="docutils literal notranslate"><span class="pre">Elbow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aguaclara.design.pipeline.Tee"><code class="docutils literal notranslate"><span class="pre">Tee</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../research/research.html">Research</a></li>
@@ -114,77 +75,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../api.html">API Reference</a> &raquo;</li>
-        
-          <li><a href="design.html">Design</a> &raquo;</li>
-        
-      <li>Pipeline</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="design.html">Design</a></li>
+      <li class="breadcrumb-item active">Pipeline</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../_sources/design/pipeline.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="module-aguaclara.design.pipeline">
-<span id="pipeline"></span><span id="design-pipeline"></span><h1>Pipeline<a class="headerlink" href="#module-aguaclara.design.pipeline" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="module-aguaclara.design.pipeline">
+<span id="pipeline"></span><span id="design-pipeline"></span><h1>Pipeline<a class="headerlink" href="#module-aguaclara.design.pipeline" title="Permalink to this heading"></a></h1>
 <p>Pipeline design functions</p>
 <p>This module provides simple functions for creating pipeline components (pipes,
 elbows, and tees), joining them together, and calculating ideal head loss/flow
@@ -204,8 +122,8 @@ inner diameters for pipeline fittings</p></li>
 </dd>
 </dl>
 <dl class="py class">
-<dt id="aguaclara.design.pipeline.PipelineComponent">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></code><code class="sig-name descname"><span class="pre">PipelineComponent</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.PipelineComponent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></span><span class="sig-name descname"><span class="pre">PipelineComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent" title="Permalink to this definition"></a></dt>
 <dd><p>An abstract representation of pipeline components</p>
 <p>This abstract base class (ABC) contains common functionality for:</p>
 <ol class="arabic simple">
@@ -233,28 +151,28 @@ defaults to 0)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt id="aguaclara.design.pipeline.PipelineComponent.nu">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nu</span></code><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.nu" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.PipelineComponent.nu">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nu</span></span><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.nu" title="Permalink to this definition"></a></dt>
 <dd><p>The kinematic viscosity of the fluid passing through the pipeline
 component.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="aguaclara.design.pipeline.PipelineComponent.headloss">
-<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">headloss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.headloss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.headloss" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.PipelineComponent.headloss">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headloss</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.headloss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.headloss" title="Permalink to this definition"></a></dt>
 <dd><p>The head loss of this pipeline component.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="aguaclara.design.pipeline.PipelineComponent.headloss_pipeline">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">headloss_pipeline</span></code><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.headloss_pipeline" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.PipelineComponent.headloss_pipeline">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headloss_pipeline</span></span><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.headloss_pipeline" title="Permalink to this definition"></a></dt>
 <dd><p>The head loss of the entire pipeline following this component.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="aguaclara.design.pipeline.PipelineComponent.flow_pipeline">
-<code class="sig-name descname"><span class="pre">flow_pipeline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_headloss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.flow_pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.flow_pipeline" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.PipelineComponent.flow_pipeline">
+<span class="sig-name descname"><span class="pre">flow_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_headloss</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.flow_pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.flow_pipeline" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the required flow through a pipeline component and all of
 its next components to reach a desired head loss.</p>
 <dl class="simple">
@@ -267,8 +185,8 @@ the pipeline</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="aguaclara.design.pipeline.PipelineComponent.format_print">
-<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">format_print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.format_print" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.PipelineComponent.format_print">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#PipelineComponent.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.PipelineComponent.format_print" title="Permalink to this definition"></a></dt>
 <dd><p>The string representation of a pipeline component, disregarding other
 components in its pipeline.</p>
 </dd></dl>
@@ -276,8 +194,8 @@ components in its pipeline.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="aguaclara.design.pipeline.Pipe">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></code><code class="sig-name descname"><span class="pre">Pipe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Pipe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></span><span class="sig-name descname"><span class="pre">Pipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe" title="Permalink to this definition"></a></dt>
 <dd><p>Design class for a pipe</p>
 <p>Instantiate this class to create a readily constructible pipe and calculate
 its hydraulic features.</p>
@@ -309,35 +227,35 @@ defaults to 0)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt id="aguaclara.design.pipeline.Pipe.od">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">od</span></code><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.od" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Pipe.od">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">od</span></span><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.od" title="Permalink to this definition"></a></dt>
 <dd><p>The outer diameter of the pipe</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="aguaclara.design.pipeline.Pipe.ID_SDR_all_available">
-<code class="sig-name descname"><span class="pre">ID_SDR_all_available</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe.ID_SDR_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.ID_SDR_all_available" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Pipe.ID_SDR_all_available">
+<span class="sig-name descname"><span class="pre">ID_SDR_all_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe.ID_SDR_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.ID_SDR_all_available" title="Permalink to this definition"></a></dt>
 <dd><p>Return an array of inner diameters with a given SDR.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="aguaclara.design.pipeline.Pipe.headloss">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">headloss</span></code><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.headloss" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Pipe.headloss">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headloss</span></span><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.headloss" title="Permalink to this definition"></a></dt>
 <dd><p>Return the total head loss from major and minor losses in a pipe.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="aguaclara.design.pipeline.Pipe.format_print">
-<code class="sig-name descname"><span class="pre">format_print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.format_print" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Pipe.format_print">
+<span class="sig-name descname"><span class="pre">format_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Pipe.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Pipe.format_print" title="Permalink to this definition"></a></dt>
 <dd><p>Return the string representation of this pipe.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="aguaclara.design.pipeline.Elbow">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></code><code class="sig-name descname"><span class="pre">Elbow</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Elbow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></span><span class="sig-name descname"><span class="pre">Elbow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow" title="Permalink to this definition"></a></dt>
 <dd><p>Design class for an Elbow</p>
 <p>Instantiate this class to create a readily constructible Elbow fitting and
 calculate its hydraulic features.</p>
@@ -369,23 +287,23 @@ found in <code class="docutils literal notranslate"><span class="pre">AVAILABLE_
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt id="aguaclara.design.pipeline.Elbow.headloss">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">headloss</span></code><a class="headerlink" href="#aguaclara.design.pipeline.Elbow.headloss" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Elbow.headloss">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headloss</span></span><a class="headerlink" href="#aguaclara.design.pipeline.Elbow.headloss" title="Permalink to this definition"></a></dt>
 <dd><p>The headloss</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="aguaclara.design.pipeline.Elbow.format_print">
-<code class="sig-name descname"><span class="pre">format_print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow.format_print" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Elbow.format_print">
+<span class="sig-name descname"><span class="pre">format_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Elbow.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Elbow.format_print" title="Permalink to this definition"></a></dt>
 <dd><p>The string representation for an Elbow Fitting.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="aguaclara.design.pipeline.Tee">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></code><code class="sig-name descname"><span class="pre">Tee</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Tee">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.design.pipeline.</span></span><span class="sig-name descname"><span class="pre">Tee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee" title="Permalink to this definition"></a></dt>
 <dd><p>Design class for a Tee</p>
 <p>Instantiate this class to create a readily constructible tee fitting and
 calculate its hydraulic features.</p>
@@ -425,68 +343,51 @@ can only be one of the elements in AVAILABLE_PATHS.
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt id="aguaclara.design.pipeline.Tee.headloss">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">headloss</span></code><a class="headerlink" href="#aguaclara.design.pipeline.Tee.headloss" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Tee.headloss">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headloss</span></span><a class="headerlink" href="#aguaclara.design.pipeline.Tee.headloss" title="Permalink to this definition"></a></dt>
 <dd><p>The headloss</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="aguaclara.design.pipeline.Tee.format_print">
-<code class="sig-name descname"><span class="pre">format_print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee.format_print" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="aguaclara.design.pipeline.Tee.format_print">
+<span class="sig-name descname"><span class="pre">format_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/pipeline.html#Tee.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.pipeline.Tee.format_print" title="Permalink to this definition"></a></dt>
 <dd><p>The string representation of this tee.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../research/research.html" class="btn btn-neutral float-right" title="Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sed_tank.html" class="btn btn-neutral float-left" title="Sedimentation Tank" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../research/research.html" class="btn btn-neutral float-right" title="Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,163 +1,78 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>aguaclara.research.environmental_processes_analysis &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>aguaclara.research.environmental_processes_analysis</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">aguaclara.research.environmental_processes_analysis</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for aguaclara.research.environmental_processes_analysis</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">aguaclara.research.procoda_parser</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
@@ -181,7 +96,7 @@
 
 <div class="viewcode-block" id="invpH"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.invpH">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">invpH</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate inverse pH, i.e. hydronium ion concentration, given pH.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate inverse pH, i.e. hydronium ion concentration, given pH.</span>
 
 <span class="sd">    :param pH: pH to be inverted</span>
 <span class="sd">    :type pH: float</span>
@@ -200,7 +115,7 @@
 
 <div class="viewcode-block" id="alpha0_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha0_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">alpha0_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in carbonic acid form (H2CO3)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in carbonic acid form (H2CO3)</span>
 
 <span class="sd">    :param pH: pH of the system</span>
 <span class="sd">    :type pH: float</span>
@@ -221,7 +136,7 @@
 
 <div class="viewcode-block" id="alpha1_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha1_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">alpha1_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in bicarbonate form (HCO3-)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in bicarbonate form (HCO3-)</span>
 
 <span class="sd">    :param pH: pH of the system</span>
 <span class="sd">    :type pH: float</span>
@@ -242,7 +157,7 @@
 
 <div class="viewcode-block" id="alpha2_carbonate"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.alpha2_carbonate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">alpha2_carbonate</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in carbonate form (CO3-2)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the fraction of total carbonates in carbonate form (CO3-2)</span>
 
 <span class="sd">    :param pH: pH of the system</span>
 <span class="sd">    :type pH: float</span>
@@ -263,7 +178,7 @@
 
 <div class="viewcode-block" id="ANC_closed"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.ANC_closed">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ANC_closed</span><span class="p">(</span><span class="n">pH</span><span class="p">,</span> <span class="n">total_carbonates</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the acid neutralizing capacity (ANC) under a closed system</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the acid neutralizing capacity (ANC) under a closed system</span>
 <span class="sd">    in which no carbonates are exchanged with the atmosphere during the</span>
 <span class="sd">    experiment. Based on pH and total carbonates in the system.</span>
 
@@ -289,7 +204,7 @@
 
 <div class="viewcode-block" id="ANC_open"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.ANC_open">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ANC_open</span><span class="p">(</span><span class="n">pH</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the acid neutralizing capacity (ANC) calculated under an open</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the acid neutralizing capacity (ANC) calculated under an open</span>
 <span class="sd">    system based on pH.</span>
 
 <span class="sd">    :param pH: pH of the system</span>
@@ -308,7 +223,7 @@
 
 
 <div class="viewcode-block" id="aeration_data"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.aeration_data">[docs]</a><span class="k">def</span> <span class="nf">aeration_data</span><span class="p">(</span><span class="n">DO_column</span><span class="p">,</span> <span class="n">dirpath</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extract the data from folder containing tab delimited</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the data from folder containing tab delimited</span>
 <span class="sd">    files of aeration data. The file must be the original tab delimited file.</span>
 <span class="sd">    All text strings below the header must be removed from these files.</span>
 <span class="sd">    The file names must be the air flow rates with units of micromoles/s.</span>
@@ -349,7 +264,7 @@
 
 <div class="viewcode-block" id="O2_sat"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.O2_sat">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">O2_sat</span><span class="p">(</span><span class="n">P_air</span><span class="p">,</span> <span class="n">temp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate saturaed oxygen concentration in mg/L for 278 K &lt; T &lt; 318 K</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate saturaed oxygen concentration in mg/L for 278 K &lt; T &lt; 318 K</span>
 
 <span class="sd">    :param P_air: Air pressure with appropriate units</span>
 <span class="sd">    :type P_air: float</span>
@@ -373,7 +288,7 @@
 
 
 <div class="viewcode-block" id="Gran"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Gran">[docs]</a><span class="k">def</span> <span class="nf">Gran</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extract the data from a ProCoDA Gran plot file. The file must be the original tab delimited file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the data from a ProCoDA Gran plot file. The file must be the original tab delimited file.</span>
 
 <span class="sd">    :param data_file_path: The path to the file. If the file is in the working directory, then the file name is sufficient.</span>
 
@@ -404,7 +319,7 @@
 <span class="c1"># Reactors</span>
 <span class="c1"># The following code is for reactor responses to tracer inputs.</span>
 <div class="viewcode-block" id="CMFR"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.CMFR">[docs]</a><span class="k">def</span> <span class="nf">CMFR</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">C_initial</span><span class="p">,</span> <span class="n">C_influent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the effluent concentration of a conversative (non-reacting)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the effluent concentration of a conversative (non-reacting)</span>
 <span class="sd">    material with continuous input to a completely mixed flow reactor.</span>
 
 <span class="sd">    Note: time t=0 is the time at which the material starts to flow into the</span>
@@ -433,7 +348,7 @@
 
 
 <div class="viewcode-block" id="E_CMFR_N"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.E_CMFR_N">[docs]</a><span class="k">def</span> <span class="nf">E_CMFR_N</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate a dimensionless measure of the output tracer concentration</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a dimensionless measure of the output tracer concentration</span>
 <span class="sd">    from a spike input to a series of completely mixed flow reactors.</span>
 
 <span class="sd">    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</span>
@@ -456,7 +371,7 @@
 
 <div class="viewcode-block" id="E_Advective_Dispersion"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.E_Advective_Dispersion">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">E_Advective_Dispersion</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Pe</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate a dimensionless measure of the output tracer concentration from</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a dimensionless measure of the output tracer concentration from</span>
 <span class="sd">    a spike input to reactor with advection and dispersion.</span>
 
 <span class="sd">    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.</span>
@@ -480,7 +395,7 @@
 
 
 <div class="viewcode-block" id="Tracer_CMFR_N"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Tracer_CMFR_N">[docs]</a><span class="k">def</span> <span class="nf">Tracer_CMFR_N</span><span class="p">(</span><span class="n">t_seconds</span><span class="p">,</span> <span class="n">t_bar</span><span class="p">,</span> <span class="n">C_bar</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Used by Solver_CMFR_N. All inputs and outputs are unitless. This is</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used by Solver_CMFR_N. All inputs and outputs are unitless. This is</span>
 <span class="sd">    The model function, f(x, ...). It takes the independent variable as the</span>
 <span class="sd">    first argument and the parameters to fit as separate remaining arguments.</span>
 
@@ -507,7 +422,7 @@
 
 
 <div class="viewcode-block" id="Solver_CMFR_N"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Solver_CMFR_N">[docs]</a><span class="k">def</span> <span class="nf">Solver_CMFR_N</span><span class="p">(</span><span class="n">t_data</span><span class="p">,</span> <span class="n">C_data</span><span class="p">,</span> <span class="n">theta_guess</span><span class="p">,</span> <span class="n">C_bar_guess</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Use non-linear least squares to fit the function</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use non-linear least squares to fit the function</span>
 <span class="sd">    Tracer_CMFR_N(t_seconds, t_bar, C_bar, N) to reactor data.</span>
 
 <span class="sd">    :param t_data: Array of times with units</span>
@@ -540,7 +455,7 @@
 
 
 <div class="viewcode-block" id="Tracer_AD_Pe"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Tracer_AD_Pe">[docs]</a><span class="k">def</span> <span class="nf">Tracer_AD_Pe</span><span class="p">(</span><span class="n">t_seconds</span><span class="p">,</span> <span class="n">t_bar</span><span class="p">,</span> <span class="n">C_bar</span><span class="p">,</span> <span class="n">Pe</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Used by Solver_AD_Pe. All inputs and outputs are unitless. This is the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used by Solver_AD_Pe. All inputs and outputs are unitless. This is the</span>
 <span class="sd">    model function, f(x, ...). It takes the independent variable as the</span>
 <span class="sd">    first argument and the parameters to fit as separate remaining arguments.</span>
 
@@ -568,7 +483,7 @@
 
 
 <div class="viewcode-block" id="Solver_AD_Pe"><a class="viewcode-back" href="../../../research/environmental_processes_analysis.html#aguaclara.research.environmental_processes_analysis.Solver_AD_Pe">[docs]</a><span class="k">def</span> <span class="nf">Solver_AD_Pe</span><span class="p">(</span><span class="n">t_data</span><span class="p">,</span> <span class="n">C_data</span><span class="p">,</span> <span class="n">theta_guess</span><span class="p">,</span> <span class="n">C_bar_guess</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Use non-linear least squares to fit the function</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use non-linear least squares to fit the function</span>
 <span class="sd">    Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe) to reactor data.</span>
 
 <span class="sd">    :param t_data: Array of times with units</span>
@@ -604,46 +519,30 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

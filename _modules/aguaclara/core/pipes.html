@@ -1,170 +1,85 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>aguaclara.core.pipes &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>aguaclara.core.pipes</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">aguaclara.core.pipes</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for aguaclara.core.pipes</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;This file contains functions which convert between the nominal, inner, and</span>
 <span class="sd">outer diameters of pipes based on their standard dimension ratio (SDR).</span>
 
 <span class="sd">Note: </span>
 <span class="sd">added to pipe database for schedule 80, 120 and 160 using </span>
-<span class="sd">https://www.engineersedge.com/pipe_schedules.htm#Related </span>
+<span class="sd">https://www.engineersedge.com/pipe_schedules.htm </span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
@@ -195,25 +110,25 @@
 
 
 <div class="viewcode-block" id="Pipe"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.Pipe">[docs]</a><span class="k">class</span> <span class="nc">Pipe</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A pipe using the SDR system, represented by its nominal diameter (ND) and standard dimension ratio (SDR)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A pipe using the SDR system, represented by its nominal diameter (ND) and standard dimension ratio (SDR)&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nd</span><span class="p">,</span><span class="n">sdr</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="o">=</span> <span class="n">nd</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span> <span class="o">=</span> <span class="n">sdr</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">od</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The outer diameter of the pipe.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The outer diameter of the pipe.&quot;&quot;&quot;</span>
         <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pipedb</span><span class="p">[</span><span class="s1">&#39;NDinch&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">magnitude</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id_sdr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The inner diameter of the pipe, calculated using the pipe&#39;s OD and SDR.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The inner diameter of the pipe, calculated using the pipe&#39;s OD and SDR.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">od</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sdr</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sdr</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id_sch40</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. deprecated::</span>
 <span class="sd">        `id_sch40` is deprecated; use `id_sch` instead.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -223,7 +138,7 @@
 
 
 <div class="viewcode-block" id="Pipe.id_sch"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.Pipe.id_sch">[docs]</a>    <span class="k">def</span> <span class="nf">id_sch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schedule</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        The inner diameter of this pipe, based on schedule and nominal diameter</span>
 <span class="sd">        :param schedule: the schedule of the pipe (Ex: pipes.SCH.SCH40)</span>
 <span class="sd">        :type schedule: pipes.SCH</span>
@@ -238,7 +153,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">pipedb</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">myindex</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">thickness</span><span class="p">))</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span></div>
 
 <div class="viewcode-block" id="Pipe.sch"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.Pipe.sch">[docs]</a>    <span class="k">def</span> <span class="nf">sch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NDarr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">SCHarr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        The nominal diameter and schedule that best fits this pipe&#39;s criteria and NDarr and SCHarr</span>
 <span class="sd">        :param NDarr: an array of preferred nominal diameters (Ex: [10]*u.inch). Default: None</span>
 <span class="sd">        :type NDarr: numpy.array * u.inch</span>
@@ -281,7 +196,7 @@
         
 
 <div class="viewcode-block" id="makePipe_ND_SDR"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.makePipe_ND_SDR">[docs]</a><span class="k">def</span> <span class="nf">makePipe_ND_SDR</span><span class="p">(</span><span class="n">ND</span><span class="p">,</span> <span class="n">SDR</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a Pipe object, given a ND (nominal diameter) and SDR (standard diameter ratio).</span>
 
 <span class="sd">    :param ND: nominal diameter of pipe</span>
@@ -295,7 +210,7 @@
     <span class="k">return</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">ND</span><span class="p">,</span> <span class="n">SDR</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="makePipe_minID_SDR"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.makePipe_minID_SDR">[docs]</a><span class="k">def</span> <span class="nf">makePipe_minID_SDR</span><span class="p">(</span><span class="n">minID</span><span class="p">,</span> <span class="n">SDR</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a new pipe, given its minID (minimum inner diameter) and SDR (standard diameter ratio).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a new pipe, given its minID (minimum inner diameter) and SDR (standard diameter ratio).</span>
 
 <span class="sd">    :param minID: minimum inner diameter of pipe</span>
 <span class="sd">    :type minID: u.inch</span>
@@ -310,7 +225,7 @@
 
 <div class="viewcode-block" id="OD"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.OD">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">OD</span><span class="p">(</span><span class="n">ND</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a pipe&#39;s outer diameter according to its nominal diameter.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a pipe&#39;s outer diameter according to its nominal diameter.</span>
 <span class="sd">    :param ND: nominal diameter of pipe</span>
 <span class="sd">    :type ND: u.inch</span>
 <span class="sd">    :return: outer diameter of pipe, in inches</span>
@@ -330,7 +245,7 @@
 
 
 <div class="viewcode-block" id="OD_SDR"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.OD_SDR">[docs]</a><span class="k">def</span> <span class="nf">OD_SDR</span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="n">SDR</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the minimum OD that is available given ID and SDR. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Return the minimum OD that is available given ID and SDR. </span>
 <span class="sd">    raises: ValueError if SDR is 2. </span>
 
 <span class="sd">    :param ID: inner diameter of pipe</span>
@@ -348,7 +263,7 @@
 
 <div class="viewcode-block" id="fitting_od"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.fitting_od">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">fitting_od</span><span class="p">(</span><span class="n">pipe_nd</span><span class="p">,</span> <span class="n">fitting_sdr</span><span class="o">=</span><span class="mi">41</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the OD of a fitting given SDR and the ND of the pipe it will be fitted around</span>
 
 <span class="sd">    :param pipe_nd: ND of the pipe to be fitted around</span>
@@ -367,7 +282,7 @@
 
 <div class="viewcode-block" id="ID_SDR"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_SDR">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ID_SDR</span><span class="p">(</span><span class="n">ND</span><span class="p">,</span> <span class="n">SDR</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe given its nominal diameter and SDR</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the inner diameter of a pipe given its nominal diameter and SDR</span>
 <span class="sd">    (standard dimension ratio).</span>
 
 <span class="sd">    :param ND: the nominal diameter </span>
@@ -382,7 +297,7 @@
 
 
 <div class="viewcode-block" id="ID_sch"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_sch">[docs]</a><span class="k">def</span> <span class="nf">ID_sch</span><span class="p">(</span><span class="n">ND</span><span class="p">,</span> <span class="n">schedule</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">    Return the inner diameter of this pipe, given the ND and desired schedule</span>
 <span class="sd">    :param ND: the nominal diameter of the pipe</span>
 <span class="sd">    :type ND: u.inch</span>
@@ -400,7 +315,7 @@
 
 
 <div class="viewcode-block" id="ND_all_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ND_all_available">[docs]</a><span class="k">def</span> <span class="nf">ND_all_available</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Return an array of available nominal diameters.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an array of available nominal diameters.</span>
 
 <span class="sd">    NDs available are those commonly used as based on the &#39;Used&#39; column</span>
 <span class="sd">    in the pipedb.</span>
@@ -413,7 +328,7 @@
 
 
 <div class="viewcode-block" id="OD_all_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.OD_all_available">[docs]</a><span class="k">def</span> <span class="nf">OD_all_available</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Return an array of available outer diameters.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an array of available outer diameters.</span>
 
 <span class="sd">    NDs available are those commonly used as based on the &#39;Used&#39; column</span>
 <span class="sd">    in the pipedb.</span>
@@ -427,7 +342,7 @@
 
 <div class="viewcode-block" id="ID_SDR_all_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ID_SDR_all_available">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ID_SDR_all_available</span><span class="p">(</span><span class="n">SDR</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return an array of inner diameters with a given SDR.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an array of inner diameters with a given SDR.</span>
 
 <span class="sd">    IDs available are those commonly used based on the &#39;Used&#39; column</span>
 <span class="sd">    in the pipedb.</span>
@@ -443,7 +358,7 @@
 
 
 <div class="viewcode-block" id="SCH_all_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.SCH_all_available">[docs]</a><span class="k">def</span> <span class="nf">SCH_all_available</span><span class="p">(</span><span class="n">minID</span><span class="p">,</span> <span class="n">maxSDR</span><span class="p">,</span> <span class="n">NDarr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">SCHarr</span><span class="o">=</span><span class="p">[</span><span class="n">SCH</span><span class="o">.</span><span class="n">SCH40</span><span class="p">,</span> <span class="n">SCH</span><span class="o">.</span><span class="n">SCH80</span><span class="p">,</span> <span class="n">SCH</span><span class="o">.</span><span class="n">SCH120</span><span class="p">,</span> <span class="n">SCH</span><span class="o">.</span><span class="n">SCH160</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a list of tuples (nominal diameter, schedule) representing schedule pipes that fit the criteria. </span>
 <span class="sd">    Meeting criteria means: has at least minID, has at most maxSDR, and whose ND and/or SCH are in NDarr and SCHarr respectively. </span>
 <span class="sd">    Default: NDarr looks through all available ND, SCHarr looks through all schedules</span>
@@ -490,7 +405,7 @@
 
 <div class="viewcode-block" id="ND_SDR_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ND_SDR_available">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ND_SDR_available</span><span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="n">SDR</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return an available ND given an ID and a schedule.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Return an available ND given an ID and a schedule.</span>
 
 <span class="sd">    Takes the values of the array, compares to the ID, and finds the index</span>
 <span class="sd">    of the first value greater or equal.</span>
@@ -510,7 +425,7 @@
 
 <div class="viewcode-block" id="ND_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.ND_available">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ND_available</span><span class="p">(</span><span class="n">NDguess</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the minimum ND that is available.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the minimum ND that is available.</span>
 
 <span class="sd">    :param NDguess: the lower bound nominal diameter </span>
 <span class="sd">    :type NDguess: u.inch</span>
@@ -528,7 +443,7 @@
 
 <div class="viewcode-block" id="OD_available"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.OD_available">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">OD_available</span><span class="p">(</span><span class="n">ODguess</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the minimum OD that is available.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the minimum OD that is available.</span>
 
 <span class="sd">    :param ODguess: the lower bound outer diameter</span>
 <span class="sd">    :type ODguess: u.inch</span>
@@ -546,7 +461,7 @@
 
 <div class="viewcode-block" id="socket_depth"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.socket_depth">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">socket_depth</span><span class="p">(</span><span class="n">ND</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the socket depth given ND</span>
 
 <span class="sd">    :param ND: the nominal diameter</span>
@@ -560,7 +475,7 @@
 
 <div class="viewcode-block" id="cap_thickness"><a class="viewcode-back" href="../../../core/pipes.html#aguaclara.core.pipes.cap_thickness">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">cap_thickness</span><span class="p">(</span><span class="n">ND</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the cap thickness given ND</span>
 
 <span class="sd">    :param ND: the nominal diameter</span>
@@ -576,46 +491,30 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

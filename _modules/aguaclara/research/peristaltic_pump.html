@@ -1,163 +1,78 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>aguaclara.research.peristaltic_pump &mdash; AguaClara EXPERIMENTAL documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home"> AguaClara
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            AguaClara
           </a>
-
-          
-            
-            
               <div class="version">
                 EXPERIMENTAL
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guide-dev.html">Developer Guide</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">AguaClara</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>aguaclara.research.peristaltic_pump</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">aguaclara.research.peristaltic_pump</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for aguaclara.research.peristaltic_pump</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
 <span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
@@ -175,10 +90,10 @@
 
 <div class="viewcode-block" id="vol_per_rev_3_stop"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_3_stop">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">inner_diameter</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the volume per revolution of an Ismatec 6 roller pump</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the volume per revolution of an Ismatec 6 roller pump</span>
 <span class="sd">    given the inner diameter (ID) of 3-stop tubing. The calculation is</span>
 <span class="sd">    interpolated from the table found at</span>
-<span class="sd">    http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm.</span>
+<span class="sd">    https://web.archive.org/web/20211027155239/http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">    1. Either input a string as the tubing color code or a number as the</span>
@@ -213,7 +128,7 @@
 
 <div class="viewcode-block" id="ID_colored_tube"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.ID_colored_tube">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ID_colored_tube</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Look up the inner diameter of Ismatec 3-stop tubing given its color code.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Look up the inner diameter of Ismatec 3-stop tubing given its color code.</span>
 
 <span class="sd">    :param color: Color of the 3-stop tubing</span>
 <span class="sd">    :type color: string</span>
@@ -241,7 +156,7 @@
 
 <div class="viewcode-block" id="vol_per_rev_LS"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_LS">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">vol_per_rev_LS</span><span class="p">(</span><span class="n">id_number</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Look up the volume per revolution output by a Masterflex L/S pump</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Look up the volume per revolution output by a Masterflex L/S pump</span>
 <span class="sd">    through L/S tubing of the given ID number.</span>
 
 <span class="sd">    :param id_number: Identification number of the L/S tubing. Valid numbers are 13-18, 24, 35, and 36.</span>
@@ -268,7 +183,7 @@
 
 <div class="viewcode-block" id="flow_rate"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.flow_rate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">flow_rate</span><span class="p">(</span><span class="n">vol_per_rev</span><span class="p">,</span> <span class="n">rpm</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the flow rate from a pump given the volume of fluid pumped per</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate from a pump given the volume of fluid pumped per</span>
 <span class="sd">    revolution and the desired pump speed.</span>
 
 <span class="sd">    :param vol_per_rev: Volume of fluid output per revolution (dependent on pump and tubing)</span>
@@ -290,46 +205,30 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019, AguaClara Cornell.
-
-    </p>
+    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
