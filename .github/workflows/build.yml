@@ -22,11 +22,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
         pip install pipenv
-        pipenv shell
-        pip install -U pip
-        exit
         pipenv install --dev
         
     - name: Run pytests and generate coverage report
@@ -65,4 +61,4 @@ jobs:
       uses: chabad360/htmlproofer@master
       with:
         directory: docs/build/html
-        arguments: --allow_hash_href --file_ignore "docs/build/html/search.html"
+        arguments: --allow_hash_href --ignore-files "docs/build/html/search.html"
