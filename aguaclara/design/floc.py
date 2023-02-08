@@ -153,11 +153,11 @@ class Flocculator(Component):
                  ) + self.ent_l
             ) / self.chan_l).to_base_units()
 
-            if self.chan_n_parity is 'even':
+            if self.chan_n_parity == 'even':
                 return ut.ceil_step(chan_n, step=2)
-            elif self.chan_n_parity is 'odd':
+            elif self.chan_n_parity == 'odd':
                 return ut.ceil_step(chan_n, step=2) - 1
-            elif self.chan_n_parity is 'any':
+            elif self.chan_n_parity == 'any':
                 return ut.ceil_step(chan_n, step=1)
 
     @property

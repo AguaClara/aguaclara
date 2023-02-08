@@ -165,8 +165,9 @@ u = unit_registry
 u.default_format = '.4g'
 pd.options.display.float_format = '{:,.4g}'.format
 
-u.load_definitions(os.path.join(os.path.dirname(__file__),
-                                            "data", "unit_definitions.txt"))
+u.load_definitions(
+    os.path.join(os.path.dirname(__file__), "data", "unit_definitions.txt")
+)
 
 
 def set_sig_figs(n=4):
