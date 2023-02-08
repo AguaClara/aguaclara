@@ -5,7 +5,7 @@ with open("README.md") as readme_file:
 
 setup(
     name = 'aguaclara',
-    version = '0.3.3',
+    version = '0.3.4',
     description = (
         'An open-source Python package for designing and performing research '
         'on AguaClara water treatment plants.'
