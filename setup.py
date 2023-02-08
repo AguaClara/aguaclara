@@ -38,7 +38,7 @@ setup(
 
     python_requires='>=3.8',
     setup_requires=["pytest-runner"],
-    tests_require=["pytest==6.2.5"],
+    tests_require=["pytest==7.2.1"],
     include_package_data=True,
     test_suite="tests",
     zip_safe=False
