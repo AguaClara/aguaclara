@@ -91,4 +91,4 @@ The package is still undergoing rapid development. As it becomes more stable, a 
 ## Contributing
 Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, [make an issue](https://github.com/AguaClara/aguaclara/issues/new/choose) in the [`aguaclara` Github repository](https://github.com/AguaClara/aguaclara>).
 
-To contribute to the package as a developer, refer to the [Developer Guide](https://aguaclara.github.io/aguaclara/guide-dev/guide-dev.html).
+To contribute to the package as a developer, refer to the [Developer Guide](https://aguaclara.github.io/aguaclara/guide-dev.html).
