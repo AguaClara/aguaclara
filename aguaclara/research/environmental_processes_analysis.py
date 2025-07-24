@@ -11,11 +11,11 @@ import collections
 # Carbonates
 # The following code defines the carbonate system and provides functions for
 # calculating Acid Neutralizing Capacity.
-Kw = 10**(-14) * (u.mole/u.L)**2
-K1_carbonate = 10**(-6.37)*u.mol/u.L
-K2_carbonate = 10**(-10.25)*u.mol/u.L
-K_Henry_CO2 = 10**(-1.5) * u.mole/(u.L*u.atm)
-P_CO2 = 10**(-3.5) * u.atm
+Kw = 10 ** (-14) * (u.mole / u.L) ** 2
+K1_carbonate = 10 ** (-6.37) * u.mol / u.L
+K2_carbonate = 10 ** (-10.25) * u.mol / u.L
+K_Henry_CO2 = 10 ** (-1.5) * u.mole / (u.L * u.atm)
+P_CO2 = 10 ** (-3.5) * u.atm
 
 
 @ut.list_handler()
@@ -34,7 +34,7 @@ def invpH(pH):
     >>> invpH(10)
     <Quantity(1e-10, 'mole / liter')>
     """
-    return 10**(-pH)*u.mol/u.L
+    return 10 ** (-pH) * u.mol / u.L
 
 
 @ut.list_handler()
@@ -53,8 +53,9 @@ def alpha0_carbonate(pH):
     >>> round(alpha0_carbonate(10), 7)
     <Quantity(0.00015, 'dimensionless')>
     """
-    alpha0_carbonate = 1/(1+(K1_carbonate/invpH(pH)) *
-                            (1+(K2_carbonate/invpH(pH))))
+    alpha0_carbonate = 1 / (
+        1 + (K1_carbonate / invpH(pH)) * (1 + (K2_carbonate / invpH(pH)))
+    )
     return alpha0_carbonate
 
 
@@ -74,8 +75,9 @@ def alpha1_carbonate(pH):
     >>> round(alpha1_carbonate(10), 7)
     <Quantity(0.639969, 'dimensionless')>
     """
-    alpha1_carbonate = 1/((invpH(pH)/K1_carbonate) + 1 +
-                          (K2_carbonate/invpH(pH)))
+    alpha1_carbonate = 1 / (
+        (invpH(pH) / K1_carbonate) + 1 + (K2_carbonate / invpH(pH))
+    )
     return alpha1_carbonate
 
 
@@ -95,8 +97,9 @@ def alpha2_carbonate(pH):
     >>> round(alpha2_carbonate(10), 7)
     <Quantity(0.359881, 'dimensionless')>
     """
-    alpha2_carbonate = 1/(1+(invpH(pH)/K2_carbonate) *
-                            (1+(invpH(pH)/K1_carbonate)))
+    alpha2_carbonate = 1 / (
+        1 + (invpH(pH) / K2_carbonate) * (1 + (invpH(pH) / K1_carbonate))
+    )
     return alpha2_carbonate
 
 
@@ -121,9 +124,15 @@ def ANC_closed(pH, total_carbonates):
     >>> round(ANC_closed(10, 1*u.mol/u.L), 7)
     <Quantity(1.359831, 'equivalent / liter')>
     """
-    return (total_carbonates * (u.eq/u.mol * alpha1_carbonate(pH) +
-            2 * u.eq/u.mol * alpha2_carbonate(pH)) +
-            1 * u.eq/u.mol * Kw/invpH(pH) - 1 * u.eq/u.mol * invpH(pH))
+    return (
+        total_carbonates
+        * (
+            u.eq / u.mol * alpha1_carbonate(pH)
+            + 2 * u.eq / u.mol * alpha2_carbonate(pH)
+        )
+        + 1 * u.eq / u.mol * Kw / invpH(pH)
+        - 1 * u.eq / u.mol * invpH(pH)
+    )
 
 
 @ut.list_handler()
@@ -143,7 +152,7 @@ def ANC_open(pH):
     >>> round(ANC_open(10), 7)
     <Quantity(0.0907346, 'equivalent / liter')>
     """
-    return ANC_closed(pH, P_CO2*K_Henry_CO2/alpha0_carbonate(pH))
+    return ANC_closed(pH, P_CO2 * K_Henry_CO2 / alpha0_carbonate(pH))
 
 
 def aeration_data(DO_column, dirpath):
@@ -167,22 +176,28 @@ def aeration_data(DO_column, dirpath):
         * **DO_data** (*numpy.array list*) - Sorted list of Numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
         * **time_data** (*numpy.array list*) - Sorted list of Numpy arrays containing the times with units of seconds
     """
-    #return the list of files in the directory
+    # return the list of files in the directory
     filenames = os.listdir(dirpath)
-    #extract the flowrates from the filenames and apply units
-    airflows = ((np.array([i.split('.', 1)[0] for i in filenames])).astype(np.float32))
-    #sort airflows and filenames so that they are in ascending order of flow rates
+    # extract the flowrates from the filenames and apply units
+    airflows = (np.array([i.split(".", 1)[0] for i in filenames])).astype(
+        np.float32
+    )
+    # sort airflows and filenames so that they are in ascending order of flow rates
     idx = np.argsort(airflows)
-    airflows = (np.array(airflows)[idx])*u.umole/u.s
+    airflows = (np.array(airflows)[idx]) * u.umole / u.s
     filenames = np.array(filenames)[idx]
 
     filepaths = [os.path.join(dirpath, i) for i in filenames]
-    #DO_data is a list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
+    # DO_data is a list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
     # cycle through all of the files and extract the column of data with oxygen concentrations and the times
-    DO_data=[column_of_data(i,0,DO_column,-1,'mg/L') for i in filepaths]
-    time_data=[(column_of_time(i,0,-1)).to(u.s) for i in filepaths]
-    aeration_collection = collections.namedtuple('aeration_results','filepaths airflows DO_data time_data')
-    aeration_results = aeration_collection(filepaths, airflows, DO_data, time_data)
+    DO_data = [column_of_data(i, 0, DO_column, -1, "mg/L") for i in filepaths]
+    time_data = [(column_of_time(i, 0, -1)).to(u.s) for i in filepaths]
+    aeration_collection = collections.namedtuple(
+        "aeration_results", "filepaths airflows DO_data time_data"
+    )
+    aeration_results = aeration_collection(
+        filepaths, airflows, DO_data, time_data
+    )
     return aeration_results
 
 
@@ -207,8 +222,12 @@ def O2_sat(P_air, temp):
     """
     fraction_O2 = 0.21
     P_O2 = P_air * fraction_O2
-    return ((P_O2.to(u.atm).magnitude) *
-            u.mg/u.L*np.exp(1727 / temp.to(u.K).magnitude - 2.105))
+    return (
+        (P_O2.to(u.atm).magnitude)
+        * u.mg
+        / u.L
+        * np.exp(1727 / temp.to(u.K).magnitude - 2.105)
+    )
 
 
 def Gran(data_file_path):
@@ -225,18 +244,26 @@ def Gran(data_file_path):
         * **V_equivalent** (*float*) - Volume of acid required to consume all of the ANC in mL
         * **ANC** (*float*) - Acid Neutralizing Capacity of the sample in mole/L
     """
-    df = pd.read_csv(data_file_path, delimiter='\t', header=5)
-    V_t = np.array(pd.to_numeric(df.iloc[0:, 0]))*u.mL
+    df = pd.read_csv(data_file_path, delimiter="\t", header=5)
+    V_t = np.array(pd.to_numeric(df.iloc[0:, 0])) * u.mL
     pH = np.array(pd.to_numeric(df.iloc[0:, 1]))
-    df = pd.read_csv(data_file_path, delimiter='\t', header=None, nrows=5)
-    V_S = pd.to_numeric(df.iloc[0, 1])*u.mL
-    N_t = pd.to_numeric(df.iloc[1, 1])*u.mole/u.L
-    V_eq = pd.to_numeric(df.iloc[2, 1])*u.mL
-    ANC_sample = pd.to_numeric(df.iloc[3, 1])*u.mole/u.L
-    Gran_collection = collections.namedtuple('Gran_results', 'V_titrant ph_data V_sample Normality_titrant V_equivalent ANC')
-    Gran = Gran_collection(V_titrant=V_t, ph_data=pH, V_sample=V_S,
-                           Normality_titrant=N_t, V_equivalent=V_eq,
-                           ANC=ANC_sample)
+    df = pd.read_csv(data_file_path, delimiter="\t", header=None, nrows=5)
+    V_S = pd.to_numeric(df.iloc[0, 1]) * u.mL
+    N_t = pd.to_numeric(df.iloc[1, 1]) * u.mole / u.L
+    V_eq = pd.to_numeric(df.iloc[2, 1]) * u.mL
+    ANC_sample = pd.to_numeric(df.iloc[3, 1]) * u.mole / u.L
+    Gran_collection = collections.namedtuple(
+        "Gran_results",
+        "V_titrant ph_data V_sample Normality_titrant V_equivalent ANC",
+    )
+    Gran = Gran_collection(
+        V_titrant=V_t,
+        ph_data=pH,
+        V_sample=V_S,
+        Normality_titrant=N_t,
+        V_equivalent=V_eq,
+        ANC=ANC_sample,
+    )
     return Gran
 
 
@@ -268,7 +295,7 @@ def CMFR(t, C_initial, C_influent):
     >>> round(CMFR(0.9, 5*u.mg/u.L, 10*u.mg/u.L), 7)
     <Quantity(7.9671517, 'milligram / liter')>
     """
-    return C_influent * (1-np.exp(-t)) + C_initial*np.exp(-t)
+    return C_influent * (1 - np.exp(-t)) + C_initial * np.exp(-t)
 
 
 def E_CMFR_N(t, N):
@@ -291,7 +318,8 @@ def E_CMFR_N(t, N):
     >>> round(E_CMFR_N(0.1, 1), 7)
     0.9048374
     """
-    return (N**N)/special.gamma(N) * (t**(N-1))*np.exp(-N*t)
+    return (N**N) / special.gamma(N) * (t ** (N - 1)) * np.exp(-N * t)
+
 
 @ut.list_handler()
 def E_Advective_Dispersion(t, Pe):
@@ -315,7 +343,9 @@ def E_Advective_Dispersion(t, Pe):
     if t == 0:
         return 0
     else:
-        return (Pe/(4*np.pi*t))**(0.5)*np.exp((-Pe*((1-t)**2))/(4*t))
+        return (Pe / (4 * np.pi * t)) ** (0.5) * np.exp(
+            (-Pe * ((1 - t) ** 2)) / (4 * t)
+        )
 
 
 def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
@@ -342,7 +372,7 @@ def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
     >>> Tracer_CMFR_N([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 3)
     <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423], 'milligram / liter')>
     """
-    return C_bar*E_CMFR_N(t_seconds/t_bar, N)
+    return C_bar * E_CMFR_N(t_seconds / t_bar, N)
 
 
 def Solver_CMFR_N(t_data, C_data, theta_guess, C_bar_guess):
@@ -368,12 +398,14 @@ def Solver_CMFR_N(t_data, C_data, theta_guess, C_bar_guess):
     C_units = str(C_bar_guess.units)
     t_seconds = (t_data.to(u.s)).magnitude
     # assume that a guess of 1 reactor in series is close enough to get a solution
-    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude,1]
+    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude, 1]
     popt, pcov = curve_fit(Tracer_CMFR_N, t_seconds, C_unitless, p0)
-    Solver_theta = popt[0]*u.s
-    Solver_C_bar = popt[1]*u(C_units)
+    Solver_theta = popt[0] * u.s
+    Solver_C_bar = popt[1] * u(C_units)
     Solver_N = popt[2]
-    Reactor_results = collections.namedtuple('Reactor_results','theta C_bar N')
+    Reactor_results = collections.namedtuple(
+        "Reactor_results", "theta C_bar N"
+    )
     CMFR = Reactor_results(theta=Solver_theta, C_bar=Solver_C_bar, N=Solver_N)
     return CMFR
 
@@ -403,7 +435,7 @@ def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
     <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], 'milligram / liter')>
 
     """
-    return C_bar*E_Advective_Dispersion(t_seconds/t_bar, Pe)
+    return C_bar * E_Advective_Dispersion(t_seconds / t_bar, Pe)
 
 
 def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
@@ -425,18 +457,22 @@ def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
         * **C_bar** (*float*) - Average concentration with same units as C_bar_guess
         * **Pe** (*float*) - Peclet number that best fits the data
     """
-    #remove time=0 data to eliminate divide by zero error
+    # remove time=0 data to eliminate divide by zero error
     t_data = t_data[1:-1]
     C_data = C_data[1:-1]
     C_unitless = C_data.magnitude
     C_units = str(C_bar_guess.units)
     t_seconds = (t_data.to(u.s)).magnitude
     # assume that a guess of 1 reactor in series is close enough to get a solution
-    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude,5]
-    popt, pcov = curve_fit(Tracer_AD_Pe, t_seconds, C_unitless, p0, bounds=(0.01,np.inf))
-    Solver_theta = popt[0]*u.s
-    Solver_C_bar = popt[1]*u(C_units)
+    p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude, 5]
+    popt, pcov = curve_fit(
+        Tracer_AD_Pe, t_seconds, C_unitless, p0, bounds=(0.01, np.inf)
+    )
+    Solver_theta = popt[0] * u.s
+    Solver_C_bar = popt[1] * u(C_units)
     Solver_Pe = popt[2]
-    Reactor_results = collections.namedtuple('Reactor_results', 'theta C_bar Pe')
+    Reactor_results = collections.namedtuple(
+        "Reactor_results", "theta C_bar Pe"
+    )
     AD = Reactor_results(theta=Solver_theta, C_bar=Solver_C_bar, Pe=Solver_Pe)
     return AD

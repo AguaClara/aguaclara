@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Data for materials that are used in the construction of AguaClara water
 treatment plants.
@@ -11,7 +11,7 @@ PVC_PIPE_ROUGH = 0.12 * u.mm
 #:
 CONCRETE_PIPE_ROUGH = 2 * u.mm
 #:
-CONCRETE_DENSITY = 2400 * (u.kg / u.m ** 3)
+CONCRETE_DENSITY = 2400 * (u.kg / u.m**3)
 #:
 CONCRETE_THICKNESS_MIN = 5 * u.cm
 

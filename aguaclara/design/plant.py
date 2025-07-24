@@ -14,6 +14,7 @@ from aguaclara.core.units import u
 
 class Plant(Component):
     """Functions for designing an AguaClara water treatment plant."""
+
     def __init__(self, **kwargs):
         self.etf = EntTankFloc()
         self.sed = Sedimentor()
@@ -25,4 +26,6 @@ class Plant(Component):
         self.design_floc()
 
     def design_floc(self):
-        self.etf.floc.sed_chan_inlet_w_pre_weir = self.sed.chan.inlet_w_pre_weir
+        self.etf.floc.sed_chan_inlet_w_pre_weir = (
+            self.sed.chan.inlet_w_pre_weir
+        )

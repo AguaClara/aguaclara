@@ -154,16 +154,15 @@ import pandas as pd
 
 # A global unit registry that can be used by any of other module.
 unit_registry = pint.UnitRegistry(
-    system='mks',
-    autoconvert_offset_to_baseunit=True
+    system="mks", autoconvert_offset_to_baseunit=True
 )
 u = unit_registry
 
 # default formatting includes 4 significant digits.
 # This can be overridden on a per-print basis with
 # print('{:.3f}'.format(3 * ureg.m / 9)).
-u.default_format = '.4g'
-pd.options.display.float_format = '{:,.4g}'.format
+u.default_format = ".4g"
+pd.options.display.float_format = "{:,.4g}".format
 
 u.load_definitions(
     os.path.join(os.path.dirname(__file__), "data", "unit_definitions.txt")
@@ -192,5 +191,5 @@ def set_sig_figs(n=4):
     >>> print('e after sigfig adjustment:',e)
     e after sigfig adjustment: 2.553253252e+16 meter
     """
-    u.default_format = '.' + str(n) + 'g'
-    pd.options.display.float_format = ('{:,.' + str(n) + '}').format
+    u.default_format = "." + str(n) + "g"
+    pd.options.display.float_format = ("{:,." + str(n) + "}").format

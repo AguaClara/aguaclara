@@ -8,17 +8,17 @@ from aguaclara.core.units import u
 #: Gravitational constant
 #:
 #: DEPRECATED: ``1 * u.gravity`` should be used instead
-GRAVITY = 9.80665 * u.m / u.s ** 2
+GRAVITY = 9.80665 * u.m / u.s**2
 
 #: Density of water
 #:
 #: DEPRECATED: ``core.physchem.density_water()`` should be used instead
-WATER_DENSITY = 1000 * u.kg / u.m ** 3
+WATER_DENSITY = 1000 * u.kg / u.m**3
 
 #: Kinematic viscosity of water
 #:
 #: DEPRECATED: ``core.physchem.viscosity_kinematic()`` should be used instead
-WATER_NU = 1 * 10 ** -6 * u.m ** 2 / u.s
+WATER_NU = 1 * 10**-6 * u.m**2 / u.s
 
 #: Atmospheric pressure
 #:
@@ -29,7 +29,7 @@ ATM_P = 1 * u.atm
 #:
 #: DEPRECATED: viscosity of air should be determined by temperature and
 #: atmospheric pressure
-AIR_NU = 12 * u.mm ** 2 / u.s
+AIR_NU = 12 * u.mm**2 / u.s
 
 #: The ratio of maximum energy dissipation rate in a round jet to the kinetic
 #: energy per time required for the jet to travel a distance equal to its

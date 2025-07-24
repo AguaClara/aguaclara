@@ -1,4 +1,4 @@
-""" A sedimentation tank of an AguaClara water treatment plant
+"""A sedimentation tank of an AguaClara water treatment plant
 
 Example:
     >>> from aguaclara.design.sed_tank import *
@@ -6,6 +6,7 @@ Example:
     >>> round(sed_tank.diffuser_hl, 5)
     <Quantity(0.00926, 'centimeter')>
 """
+
 from aguaclara.core.units import u
 import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
@@ -98,40 +99,41 @@ class SedimentationTank(Component):
           hopper wall slopes to vertical (optional, defaults to 60°)
 
     """
+
     INLET_MAN_Q_RATIO = 0.8
-    OUTLET_MAN_HL = 4. * u.cm
-    JET_REVERSER_ND = 3. * u.inch
+    OUTLET_MAN_HL = 4.0 * u.cm
+    JET_REVERSER_ND = 3.0 * u.inch
     JET_PLANE_RATIO = 0.0124
-    JET_REVERSER_TO_DIFFUSERS_H = 3.0* u.cm
+    JET_REVERSER_TO_DIFFUSERS_H = 3.0 * u.cm
     WALL_THICKNESS = 0.15 * u.m
     DIFFUSER_L = 15.0 * u.cm
 
     def __init__(self, **kwargs):
-        self.vel_upflow=1.0 * u.mm / u.s
-        self.l_inner=5.8 * u.m
-        self.w_inner=42.0 * u.inch
+        self.vel_upflow = 1.0 * u.mm / u.s
+        self.l_inner = 5.8 * u.m
+        self.w_inner = 42.0 * u.inch
 
-        self.diffuser_vel_max=44.29 * u.cm / u.s
-        self.diffuser_n=108
-        self.diffuser_wall_thickness=1.17 * u.inch
-        self.diffuser_sdr=41
+        self.diffuser_vel_max = 44.29 * u.cm / u.s
+        self.diffuser_n = 108
+        self.diffuser_wall_thickness = 1.17 * u.inch
+        self.diffuser_sdr = 41
 
-        self.inlet_man_hl=1. * u.cm
+        self.inlet_man_hl = 1.0 * u.cm
         self.inlet_man_sdr = 41
         self.jet_reverser_sdr = 26
 
-        self.plate_settler_angle=60.0 * u.deg
-        self.plate_settler_s=2.5 * u.cm
-        self.plate_settler_thickness=2.0 * u.mm
-        self.plate_settler_cantilever_l_max=20.0 * u.cm
-        self.plate_settler_vel_capture=0.12 * u.mm / u.s
+        self.plate_settler_angle = 60.0 * u.deg
+        self.plate_settler_s = 2.5 * u.cm
+        self.plate_settler_thickness = 2.0 * u.mm
+        self.plate_settler_cantilever_l_max = 20.0 * u.cm
+        self.plate_settler_vel_capture = 0.12 * u.mm / u.s
 
-        self.outlet_man_orifice_hl=4.0 * u.cm
-        self.outlet_man_orifice_q_ratio_max=0.8
+        self.outlet_man_orifice_hl = 4.0 * u.cm
+        self.outlet_man_orifice_q_ratio_max = 0.8
         self.outlet_man_orifice_n_est = 58
-        self.outlet_man_sdr=41
+        self.outlet_man_sdr = 41
 
-        self.slope_angle=50. * u.deg
+        self.slope_angle = 50.0 * u.deg
         self.side_slope_to_floc_weir_h_min = 5.0 * u.cm
         self.sed_chan_w_outer = 60.0 * u.cm
         self.sed_chan_weir_thickness = 5.0 * u.cm
@@ -167,15 +169,18 @@ class SedimentationTank(Component):
     def diffuser_a(self):
         """The area of the diffuser"""
         diffuser_a = self.q_tank / (self.diffuser_vel * self.diffuser_n)
-        return diffuser_a.to(u.cm ** 2)
+        return diffuser_a.to(u.cm**2)
 
     @property
     def inlet_man_v_max(self):
         """The maximumum velocity in the inlet manifold."""
-        vel_manifold_max = np.sqrt(4 * con.GRAVITY * self.diffuser_hl *
-                (1 - self.INLET_MAN_Q_RATIO ** 2) /
-                (self.INLET_MAN_Q_RATIO ** 2 + 1)
-            )
+        vel_manifold_max = np.sqrt(
+            4
+            * con.GRAVITY
+            * self.diffuser_hl
+            * (1 - self.INLET_MAN_Q_RATIO**2)
+            / (self.INLET_MAN_Q_RATIO**2 + 1)
+        )
         return vel_manifold_max.to(u.m / u.s)
 
     @property
@@ -197,7 +202,7 @@ class SedimentationTank(Component):
             mat.PVC_PIPE_ROUGH.to(u.m),
             hl.PIPE_EXIT_K_MINOR,
             self.outlet_man_orifice_n_est,
-            self.outlet_man_sdr
+            self.outlet_man_sdr,
         )
         return outlet_man_nd
 
@@ -205,54 +210,68 @@ class SedimentationTank(Component):
     def outlet_man_orifice_d(self):
         """The diameter of the orifices in the outlet manifold."""
         Q_orifice = self.q_tank / self.outlet_man_orifice_n_est
-        D_orifice = pc.diam_circle(Q_orifice/(con.VC_ORIFICE_RATIO * \
-            np.sqrt(2 * con.GRAVITY* self.outlet_man_orifice_hl)))
+        D_orifice = pc.diam_circle(
+            Q_orifice
+            / (
+                con.VC_ORIFICE_RATIO
+                * np.sqrt(2 * con.GRAVITY * self.outlet_man_orifice_hl)
+            )
+        )
         return ut.ceil_nearest(D_orifice, drills.DRILL_BITS_D_METRIC)
 
     @property
     def plate_l(self):
         """The length of a plate in the plate settlers."""
-        L_sed_plate = ((self.plate_settler_s * ((self.vel_upflow / \
-             self.plate_settler_vel_capture) - 1)
-                        + self.plate_settler_thickness * (
-                            self.vel_upflow / self.plate_settler_vel_capture))
-                     / (np.sin(self.plate_settler_angle) * \
-                         np.cos(self.plate_settler_angle))
-                     ).to(u.m)
+        L_sed_plate = (
+            (
+                self.plate_settler_s
+                * ((self.vel_upflow / self.plate_settler_vel_capture) - 1)
+                + self.plate_settler_thickness
+                * (self.vel_upflow / self.plate_settler_vel_capture)
+            )
+            / (
+                np.sin(self.plate_settler_angle)
+                * np.cos(self.plate_settler_angle)
+            )
+        ).to(u.m)
         return L_sed_plate
 
     @property
     def outlet_man_orifice_q(self):
         """The flow rate in the orifices of the outlet manifold."""
         outlet_man_orifice_q = pc.flow_orifice_vert(
-                self.outlet_man_orifice_d,
-                self.outlet_man_orifice_hl,
-                con.VC_ORIFICE_RATIO
-            )
+            self.outlet_man_orifice_d,
+            self.outlet_man_orifice_hl,
+            con.VC_ORIFICE_RATIO,
+        )
         return outlet_man_orifice_q.to(u.L / u.s)
 
     @property
     def outlet_man_orifice_spacing(self):
         """The spacing between orifices on the outlet manifold."""
         outlet_man_orifice_spacing = (
-            self.l_inner -
-            pipe.socket_depth(self.outlet_man_nd) -
-            pipe.cap_thickness(self.outlet_man_nd) -
-            self.outlet_man_orifice_d
-            ) / ((self.q_tank / self.outlet_man_orifice_q) - 1)
+            self.l_inner
+            - pipe.socket_depth(self.outlet_man_nd)
+            - pipe.cap_thickness(self.outlet_man_nd)
+            - self.outlet_man_orifice_d
+        ) / ((self.q_tank / self.outlet_man_orifice_q) - 1)
         return outlet_man_orifice_spacing
 
     @property
     def outlet_man_orifice_n(self):
         """The number of orifices on the outlet manifold."""
-        outlet_orifice_n = math.floor(
-            (
-                self.l_inner -
-                pipe.socket_depth(self.outlet_man_nd) -
-                pipe.cap_thickness(self.outlet_man_nd) -
-                self.outlet_man_orifice_d
-            ) / self.outlet_man_orifice_spacing
-        ) + 1
+        outlet_orifice_n = (
+            math.floor(
+                (
+                    self.l_inner
+                    - pipe.socket_depth(self.outlet_man_nd)
+                    - pipe.cap_thickness(self.outlet_man_nd)
+                    - self.outlet_man_orifice_d
+                )
+                / self.outlet_man_orifice_spacing
+            )
+            + 1
+        )
         return outlet_orifice_n
 
     @property
@@ -261,17 +280,17 @@ class SedimentationTank(Component):
         outlet_orifice_hl = pc.head_orifice(
             self.outlet_man_nd,
             con.VC_ORIFICE_RATIO,
-            self.q_tank / self.outlet_man_orifice_n
-            )
+            self.q_tank / self.outlet_man_orifice_n,
+        )
         return outlet_orifice_hl.to(u.mm)
 
     @property
     def side_slopes_w(self):
         """The width of the side slopes."""
         side_slopes_w = (
-            self.w_inner -
-            pipe.ID_SDR(self.JET_REVERSER_ND, self.jet_reverser_sdr)
-            ) / 2
+            self.w_inner
+            - pipe.ID_SDR(self.JET_REVERSER_ND, self.jet_reverser_sdr)
+        ) / 2
         return side_slopes_w.to(u.m)
 
     @property
@@ -283,16 +302,20 @@ class SedimentationTank(Component):
     @property
     def inlet_man_h(self):
         """The height of the inlet manifold height."""
-        inlet_man_h = self.JET_REVERSER_TO_DIFFUSERS_H + self.DIFFUSER_L + \
-             ( pipe.OD(self.inlet_man_nd)/ 2 )
+        inlet_man_h = (
+            self.JET_REVERSER_TO_DIFFUSERS_H
+            + self.DIFFUSER_L
+            + (pipe.OD(self.inlet_man_nd) / 2)
+        )
         return inlet_man_h
 
     @property
     def floc_weir_h(self):
         """The height of the floc weir."""
         floc_weir_h = max(
-            self.inlet_man_h + (pipe.OD(self.inlet_man_nd) / 2) + \
-                mat.CONCRETE_THICKNESS_MIN,
-            self.side_slopes_h + self.side_slope_to_floc_weir_h_min
+            self.inlet_man_h
+            + (pipe.OD(self.inlet_man_nd) / 2)
+            + mat.CONCRETE_THICKNESS_MIN,
+            self.side_slopes_h + self.side_slope_to_floc_weir_h_min,
         )
         return floc_weir_h
