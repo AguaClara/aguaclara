@@ -400,7 +400,7 @@ def check_range(*args):
                     "{1} is {0} but must be a numeric "
                     "integer.".format(i, arg[2])
                 )
-            if "boolean" in arg[1] and type(i) != bool:
+            if "boolean" in arg[1] and not isinstance(i, bool):
                 raise TypeError(
                     "{1} is {0} but must be a " "boolean.".format(i, arg[2])
                 )

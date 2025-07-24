@@ -428,11 +428,11 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
             start_time = data[0, 0]
 
         for i in range(np.size(data_start)):
-            t = data[data_start[i] : data_end[i], 0] + day - start_time
+            t = data[data_start[i]:data_end[i], 0] + day - start_time
             if isinstance(column, int):
-                c = data[data_start[i] : data_end[i], column]
+                c = data[data_start[i]:data_end[i], column]
             else:
-                c = data[column][data_start[i] : data_end[i]]
+                c = data[column][data_start[i]:data_end[i]]
             if overnight and i == 0:
                 data_agg = np.insert(
                     data_agg[-1],

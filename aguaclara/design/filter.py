@@ -31,44 +31,44 @@ BACKWASH_VEL = 11 * u.mm / u.s
 
 LAYER_N = 6
 
-LAYER_VEL = 1.833 * u.mm / u.s  ##VEL_FIBER_DIST_CENTER_/N_FIBER_LAYER
+LAYER_VEL = 1.833 * u.mm / u.s  # VEL_FIBER_DIST_CENTER_ / N_FIBER_LAYER
 
-##Minimum thickness of each filter layer (can be increased to accomodate
+# Minimum thickness of each filter layer (can be increased to accomodate
 # larger pipe diameters in the bottom layer)
 LAYER_H_MIN = 20 * u.cm
 
-##center to center distance for slotted pipes
+# Center to center distance for slotted pipes
 MAN_CENTER_BRANCH_DIST = 10 * u.cm
 
-##How far the branch extends into the trunk line
+# How far the branch extends into the trunk line
 MAN_BRANCH_EXTENSION_L = 2 * u.cm
 
-##The time to drain the filter box of the water above the fluidized bed
+# The time to drain the filter box of the water above the fluidized bed
 FIBER_BACKWASH_INITIATION_BOD_TIME = 3 * u.min
 
-##Mickey suggested this value based on lab experience. This was moved to
+# Mickey suggested this value based on lab experience. This was moved to
 # Expert Inputs 12/4/16 by mrf222 as a result of feedback from Monroe and
 # Skyler. In the Moroceli plant, the Fi Entrance box was overflowing
 # before filtration backwash. The HL of a dirty filter has therefore been
 # increased from 40 to 60 cm.
 HL_DIRTY = 60 * u.cm
 
-##This is the extra head we are going to provide on top of steady state
+# This is the extra head we are going to provide on top of steady state
 # backwash head loss to ensure that we can fluidize the bed to initiate
 # backwash.
 HL_FIBER_BACKWASH_STEADY_FLOW = 20 * u.cm
 
-##Maximum acceptable head loss through the siphon at steady state; used to
+# Maximum acceptable head loss through the siphon at steady state; used to
 # calculate a diameter
 SIPHON_HL_MAX = 35 * u.cm
 
-##Diameter of sand drain pipe
+# Diameter of sand drain pipe
 SAND_OUTLET_D = 2 * u.inch
 
-##Height of the barrier between the exit box and distribution box.
+# Height of the barrier between the exit box and distribution box.
 BARRIER_EXIT_DISTRIBUTION_H = 10 * u.cm
 
-##Length that the siphon pipe extends up into the plant drain channel.
+# Length that the siphon pipe extends up into the plant drain channel.
 # Being able to shorten the stub from which the siphon discharges into the
 # main plant drain channel allows for some flexibility in the hydraulic design.
 SIPHON_CHANNEL_STUB_L_MIN = 20 * u.cm
@@ -79,12 +79,12 @@ TRUNK_D_MAX = 6 * u.inch
 
 BACKWASH_SIPHON_D_MAX = 8 * u.inch
 
-##Purge valves on the trunk lines are angled downwards so that sediment is
+# Purge valves on the trunk lines are angled downwards so that sediment is
 # cleared more effectively. This angle allows the tees to fit on top of one
 # another at the filter wall.
 TRUNK_VALVES_ANGLE = 25 * u.deg
 
-##Purge valves on the trunk lines are angled downwards so that sediment is
+# Purge valves on the trunk lines are angled downwards so that sediment is
 # cleared more effectively. This angle allows the tees to fit on top of one
 # another at the filter wall.
 WEIR_THICKNESS = 5 * u.cm
@@ -98,27 +98,29 @@ WALL_PLANT_FLOOR_S_MIN = 10 * u.cm
 
 INLET_WEIR_HL_MAX = 5 * u.cm
 
-##Dimensions get too small for construction below a certain flow rate
+# Dimensions get too small for construction below a certain flow rate
 Q_MIN = 8 * u.L / u.s
 
 MAN_FEMCO_COUPLING_L = 6 * u.cm
 
-##Nominal diameter of the spacer tees in the four corners of the filter
+# Nominal diameter of the spacer tees in the four corners of the filter
 # manifold assembly.
 MAN_WING_SPACER_ND = 2 * u.inch
 
-##Length of the vertical pipe segment following the valve on the filter
+# Length of the vertical pipe segment following the valve on the filter
 # sand drain. This stub can be capped to allow the sand in the valve to
 # settle, so that the valve can be closed without damage from fluidized sand.
 SAND_OUTLET_PIPE_L = 20 * u.cm
 
-#######Elevation Safety Margins
+##########################
+# Elevation Safety Margins
+##########################
 
-##Minimum depth in the entrance box during backwash such that there is
+# Minimum depth in the entrance box during backwash such that there is
 # standing water over the inlet.
 BACKWASH_NO_SUCK_AIR_H = 20 * u.cm
 
-##Minimum water depth over the orifices in the siphon manifold so that air
+# Minimum water depth over the orifices in the siphon manifold so that air
 # is not entrained.
 SIPHON_NO_SUCK_AIR_H = 10 * u.cm
 
@@ -160,7 +162,9 @@ TRUNK_S_MIN = 3 * u.cm
 # just barely fit and it would be hard to get into place)
 MAN_ASSEMBLY_S = 1 * u.cm
 
-##Sand Properties
+#################
+# Sand Properties
+#################
 
 SAND_D_EFFECTIVE = 0.5 * u.mm
 

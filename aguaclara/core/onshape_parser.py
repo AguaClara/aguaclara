@@ -49,7 +49,7 @@ def parse_quantity(q, for_docs=True):
         units_s = units_s * ureg(unit[key_str].lower()) ** unit[val_str]
         try:
             log = math.floor(math.log10(units_s.magnitude))
-        except:
+        except ZeroDivisionError:
             log = 0
         if for_docs:
             if unit[key_str] == "METER" and unit[val_str] == 1:
@@ -566,7 +566,7 @@ def make_replace_list(parsed_dict, filename, var_attachment=""):
     suffix = "| replace:: "
 
     for var in parsed_dict:
-        if type(parsed_dict[var]) == dict:
+        if isinstance(parsed_dict[var], dict):
             make_replace_list(
                 parsed_dict[var], filename, var_attachment + var + "_"
             )

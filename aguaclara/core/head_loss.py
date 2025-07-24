@@ -244,7 +244,9 @@ def _k_value_rounded_reduction(id_entrance, id_exit, re):
     return (0.1 + (50 / re)) * ((id_entrance / id_exit) ** 4 - 1)
 
 
-######### Expansions:
+############
+# Expansions
+############
 
 
 def _k_value_square_expansion(
@@ -280,7 +282,9 @@ def _k_value_rounded_expansion(
     return _k_value_square_expansion(id_entrance, id_exit, re, f)
 
 
-######### Orifices:
+##########
+# Orifices
+##########
 
 
 def _k_value_thin_sharp_orifice(
