@@ -1,12 +1,13 @@
-from aguaclara.research.procoda_parser import *
-from aguaclara.core.units import u
-import aguaclara.core.utility as ut
-import pandas as pd
+import os
+import collections
 import numpy as np
+import pandas as pd
 from scipy import special
 from scipy.optimize import curve_fit
-import collections
 
+from aguaclara.core.units import u
+import aguaclara.core.utility as ut
+from aguaclara.research.procoda_parser import column_of_data, column_of_time
 
 # Carbonates
 # The following code defines the carbonate system and provides functions for
@@ -25,7 +26,8 @@ def invpH(pH):
     :param pH: pH to be inverted
     :type pH: float
 
-    :return: The inverse pH or hydronium ion concentration (in moles per liter)
+    :return: The inverse pH or hydronium ion concentration
+        (in moles per liter)
     :rtype: float
 
     :Examples:
@@ -39,7 +41,8 @@ def invpH(pH):
 
 @ut.list_handler()
 def alpha0_carbonate(pH):
-    """Calculate the fraction of total carbonates in carbonic acid form (H2CO3)
+    """Calculate the fraction of total carbonates in carbonic acid form
+    (H2CO3)
 
     :param pH: pH of the system
     :type pH: float
@@ -49,7 +52,9 @@ def alpha0_carbonate(pH):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import alpha0_carbonate
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        alpha0_carbonate
+    )
     >>> round(alpha0_carbonate(10), 7)
     <Quantity(0.00015, 'dimensionless')>
     """
@@ -71,7 +76,9 @@ def alpha1_carbonate(pH):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import alpha1_carbonate
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        alpha1_carbonate
+    )
     >>> round(alpha1_carbonate(10), 7)
     <Quantity(0.639969, 'dimensionless')>
     """
@@ -93,7 +100,9 @@ def alpha2_carbonate(pH):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import alpha2_carbonate
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        alpha2_carbonate
+    )
     >>> round(alpha2_carbonate(10), 7)
     <Quantity(0.359881, 'dimensionless')>
     """
@@ -111,7 +120,8 @@ def ANC_closed(pH, total_carbonates):
 
     :param pH: pH of the system
     :type pH: float
-    :param total_carbonates: Total carbonate concentration in the system (mole/L)
+    :param total_carbonates: Total carbonate concentration in the system
+        (mole/L)
     :type total_carbonates: float
 
     :return: The acid neutralizing capacity of the closed system (eq/L)
@@ -119,7 +129,9 @@ def ANC_closed(pH, total_carbonates):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import ANC_closed
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        ANC_closed
+    )
     >>> from aguaclara.core.units import u
     >>> round(ANC_closed(10, 1*u.mol/u.L), 7)
     <Quantity(1.359831, 'equivalent / liter')>
@@ -148,7 +160,9 @@ def ANC_open(pH):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import ANC_open
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        ANC_open
+    )
     >>> round(ANC_open(10), 7)
     <Quantity(0.0907346, 'equivalent / liter')>
     """
@@ -164,17 +178,24 @@ def aeration_data(DO_column, dirpath):
     micromoles/s. The function opens a file dialog for the user to select
     the directory containing the data.
 
-    :param DO_column: Index of the column that contains the dissolved oxygen concentration data.
+    :param DO_column: Index of the column that contains the dissolved
+        oxygen concentration data.
     :type DO_columm: int
-    :param dirpath: Path to the directory containing aeration data you want to analyze
+    :param dirpath: Path to the directory containing aeration data
+        that you want to analyze.
     :type dirpath: string
 
     :return: collection of
 
-        * **filepaths** (*string list*) - All file paths in the directory sorted by flow rate
-        * **airflows** (*numpy.array*) - Sorted array of air flow rates with units of micromole/s
-        * **DO_data** (*numpy.array list*) - Sorted list of Numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
-        * **time_data** (*numpy.array list*) - Sorted list of Numpy arrays containing the times with units of seconds
+        * **filepaths** (*string list*) - All file paths in the directory
+            sorted by flow rate
+        * **airflows** (*numpy.array*) - Sorted array of air flow rates
+            with units of micromole/s
+        * **DO_data** (*numpy.array list*) - Sorted list of Numpy arrays.
+            Thus each of the numpy data arrays can have different lengths
+            to accommodate short and long experiments
+        * **time_data** (*numpy.array list*) - Sorted list of Numpy arrays
+            containing the times with units of seconds
     """
     # return the list of files in the directory
     filenames = os.listdir(dirpath)
@@ -182,14 +203,17 @@ def aeration_data(DO_column, dirpath):
     airflows = (np.array([i.split(".", 1)[0] for i in filenames])).astype(
         np.float32
     )
-    # sort airflows and filenames so that they are in ascending order of flow rates
+    # sort airflows and filenames so that they are in ascending order
+    # of flow rates
     idx = np.argsort(airflows)
     airflows = (np.array(airflows)[idx]) * u.umole / u.s
     filenames = np.array(filenames)[idx]
 
     filepaths = [os.path.join(dirpath, i) for i in filenames]
-    # DO_data is a list of numpy arrays. Thus each of the numpy data arrays can have different lengths to accommodate short and long experiments
-    # cycle through all of the files and extract the column of data with oxygen concentrations and the times
+    # DO_data is a list of numpy arrays. Thus each of the numpy data arrays
+    # can have different lengths to accommodate short and long experiments
+    # cycle through all of the files and extract the column of data with
+    # oxygen concentrations and the times
     DO_data = [column_of_data(i, 0, DO_column, -1, "mg/L") for i in filepaths]
     time_data = [(column_of_time(i, 0, -1)).to(u.s) for i in filepaths]
     aeration_collection = collections.namedtuple(
@@ -231,18 +255,24 @@ def O2_sat(P_air, temp):
 
 
 def Gran(data_file_path):
-    """Extract the data from a ProCoDA Gran plot file. The file must be the original tab delimited file.
+    """Extract the data from a ProCoDA Gran plot file.
+    The file must be the original tab delimited file.
 
-    :param data_file_path: The path to the file. If the file is in the working directory, then the file name is sufficient.
+    :param data_file_path: The path to the file.
+        If the file is in the working directory,
+        then the file name is sufficient.
 
     :return: collection of
 
         * **V_titrant** (*float*) - Volume of titrant in mL
         * **ph_data** (*numpy.array*) - pH of the sample
-        * **V_sample** (*float*) - Volume of the original sample that was titrated in mL
-        * **Normality_titrant** (*float*) - Normality of the acid used to titrate the sample in mole/L
-        * **V_equivalent** (*float*) - Volume of acid required to consume all of the ANC in mL
-        * **ANC** (*float*) - Acid Neutralizing Capacity of the sample in mole/L
+        * **V_sample** (*float*) - Volume of the original sample
+            that was titrated in mL
+        * **Normality_titrant** (*float*) - Normality of the acid used
+            to titrate the sample in mole/L
+        * **V_equivalent** (*float*) - Volume of acid required to
+            consume all of the ANC in mL
+        * **ANC** (*float*) - Acid Neutralizing Capacity of sample in mole/L
     """
     df = pd.read_csv(data_file_path, delimiter="\t", header=5)
     V_t = np.array(pd.to_numeric(df.iloc[0:, 0])) * u.mL
@@ -280,7 +310,9 @@ def CMFR(t, C_initial, C_influent):
     :type C_initial: float
     :param C_influent: The concentration entering the CMFR.
     :type C_influent: float
-    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.
+    :param t: The time(s) at which to calculate the effluent concentration.
+        Time can be made dimensionless by dividing by the residence
+        time of the CMFR.
     :type t: float or numpy.array
 
     :return: Effluent concentration
@@ -302,17 +334,23 @@ def E_CMFR_N(t, N):
     """Calculate a dimensionless measure of the output tracer concentration
     from a spike input to a series of completely mixed flow reactors.
 
-    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.
+    :param t: The time(s) at which to calculate the effluent concentration.
+        Time can be made dimensionless by dividing by the residence
+        time of the CMFR.
     :type t: float or numpy.array
-    :param N: The number of completely mixed flow reactors (CMFRS) in series. Must be greater than 1.
+    :param N: The number of completely mixed flow reactors (CMFRS) in series.
+        Must be greater than 1.
     :type N: int
 
-    :return: Dimensionless measure of the output tracer concentration (concentration * volume of 1 CMFR) / (mass of tracer)
+    :return: Dimensionless measure of the output tracer concentration
+        (concentration * volume of 1 CMFR) / (mass of tracer)
     :rtype: float
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import E_CMFR_N
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        E_CMFR_N
+    )
     >>> round(E_CMFR_N(0.5, 3), 7)
     0.7530643
     >>> round(E_CMFR_N(0.1, 1), 7)
@@ -323,20 +361,26 @@ def E_CMFR_N(t, N):
 
 @ut.list_handler()
 def E_Advective_Dispersion(t, Pe):
-    """Calculate a dimensionless measure of the output tracer concentration from
-    a spike input to reactor with advection and dispersion.
+    """Calculate a dimensionless measure of the output tracer concentration
+    from a spike input to reactor with advection and dispersion.
 
-    :param t: The time(s) at which to calculate the effluent concentration. Time can be made dimensionless by dividing by the residence time of the CMFR.
+    :param t: The time(s) at which to calculate the effluent concentration.
+        Time can be made dimensionless by dividing by the residence
+        time of the CMFR.
     :type t: float or numpy.array
-    :param Pe: The ratio of advection to dispersion ((mean fluid velocity)/(Dispersion*flow path length))
+    :param Pe: The ratio of advection to dispersion
+        ((mean fluid velocity)/(Dispersion*flow path length))
     :type Pe: float
 
-    :return: dimensionless measure of the output tracer concentration (concentration * volume of reactor) / (mass of tracer)
+    :return: dimensionless measure of the output tracer concentration
+        (concentration * volume of reactor) / (mass of tracer)
     :rtype: float
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import E_Advective_Dispersion
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        E_Advective_Dispersion
+    )
     >>> round(E_Advective_Dispersion(0.5, 5), 7)
     0.4774864
     """
@@ -350,16 +394,18 @@ def E_Advective_Dispersion(t, Pe):
 
 def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
     """Used by Solver_CMFR_N. All inputs and outputs are unitless. This is
-    The model function, f(x, ...). It takes the independent variable as the
+    the model function, f(x, ...). It takes the independent variable as the
     first argument and the parameters to fit as separate remaining arguments.
 
     :param t_seconds: List of times
     :type t_seconds: float list
     :param t_bar: Average time spent in the reactor
     :type t_bar: float
-    :param C_bar: Average concentration (mass of tracer)/(volume of the reactor)
+    :param C_bar: Average concentration
+        (mass of tracer)/(volume of the reactor)
     :type C_bar: float
-    :param N: Number of completely mixed flow reactors (CMFRs) in series, must be greater than 1
+    :param N: Number of completely mixed flow reactors (CMFRs) in series,
+        must be greater than 1
     :type N: int
 
     :return: The model concentration as a function of time
@@ -367,10 +413,13 @@ def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import Tracer_CMFR_N
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        Tracer_CMFR_N
+    )
     >>> from aguaclara.core.units import u
     >>> Tracer_CMFR_N([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 3)
-    <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423], 'milligram / liter')>
+    <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423],
+    'milligram / liter')>
     """
     return C_bar * E_CMFR_N(t_seconds / t_bar, N)
 
@@ -385,19 +434,22 @@ def Solver_CMFR_N(t_data, C_data, theta_guess, C_bar_guess):
     :type C_data: float list
     :param theta_guess: Estimate of time spent in one CMFR with units.
     :type theta_guess: float
-    :param C_bar_guess: Estimate of average concentration with units ((mass of tracer)/(volume of one CMFR))
+    :param C_bar_guess: Estimate of average concentration with units
+        ((mass of tracer)/(volume of one CMFR))
     :type C_bar_guess: float
 
     :return: tuple of
 
         * **theta** (*float*)- Residence time in seconds
-        * **C_bar** (*float*) - Average concentration with same units as C_bar_guess
+        * **C_bar** (*float*) - Average concentration with same units
+            as C_bar_guess
         * **N** (*float*)- Number of CMFRS in series that best fit the data
     """
     C_unitless = C_data.magnitude
     C_units = str(C_bar_guess.units)
     t_seconds = (t_data.to(u.s)).magnitude
-    # assume that a guess of 1 reactor in series is close enough to get a solution
+    # assume that a guess of 1 reactor in series is close enough
+    # to get a solution
     p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude, 1]
     popt, pcov = curve_fit(Tracer_CMFR_N, t_seconds, C_unitless, p0)
     Solver_theta = popt[0] * u.s
@@ -411,15 +463,16 @@ def Solver_CMFR_N(t_data, C_data, theta_guess, C_bar_guess):
 
 
 def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
-    """Used by Solver_AD_Pe. All inputs and outputs are unitless. This is the
-    model function, f(x, ...). It takes the independent variable as the
+    """Used by Solver_AD_Pe. All inputs and outputs are unitless. This is
+    the model function, f(x, ...). It takes the independent variable as the
     first argument and the parameters to fit as separate remaining arguments.
 
     :param t_seconds: List of times
     :type t_seconds: float list
     :param t_bar: Average time spent in the reactor
     :type t_bar: float
-    :param C_bar: Average concentration ((mass of tracer)/(volume of the reactor))
+    :param C_bar: Average concentration
+        ((mass of tracer)/(volume of the reactor))
     :type C_bar: float
     :param Pe: The Peclet number for the reactor.
     :type Pe: float
@@ -429,11 +482,13 @@ def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
 
     :Examples:
 
-    >>> from aguaclara.research.environmental_processes_analysis import Tracer_AD_Pe
+    >>> from aguaclara.research.environmental_processes_analysis import (
+        Tracer_AD_Pe
+    )
     >>> from aguaclara.core.units import u
     >>> Tracer_AD_Pe([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 5)
-    <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], 'milligram / liter')>
-
+    <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131],
+    'milligram / liter')>
     """
     return C_bar * E_Advective_Dispersion(t_seconds / t_bar, Pe)
 
@@ -448,13 +503,15 @@ def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
     :type C_data: float list
     :param theta_guess: Estimate of time spent in one CMFR with units.
     :type theta_guess: float
-    :param C_bar_guess: Estimate of average concentration with units ((mass of tracer)/(volume of one CMFR))
+    :param C_bar_guess: Estimate of average concentration with units
+        ((mass of tracer)/(volume of one CMFR))
     :type C_bar_guess: float
 
     :return: tuple of
 
         * **theta** (*float*)- Residence time in seconds
-        * **C_bar** (*float*) - Average concentration with same units as C_bar_guess
+        * **C_bar** (*float*) - Average concentration with same units
+            as C_bar_guess
         * **Pe** (*float*) - Peclet number that best fits the data
     """
     # remove time=0 data to eliminate divide by zero error
@@ -463,7 +520,8 @@ def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
     C_unitless = C_data.magnitude
     C_units = str(C_bar_guess.units)
     t_seconds = (t_data.to(u.s)).magnitude
-    # assume that a guess of 1 reactor in series is close enough to get a solution
+    # assume that a guess of 1 reactor in series is close enough
+    # to get a solution
     p0 = [theta_guess.to(u.s).magnitude, C_bar_guess.magnitude, 5]
     popt, pcov = curve_fit(
         Tracer_AD_Pe, t_seconds, C_unitless, p0, bounds=(0.01, np.inf)

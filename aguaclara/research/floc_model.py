@@ -3,14 +3,19 @@
 flocs based on the chemical interactions of clay, coagulant, and humic acid.
 """
 
-######################### Imports #########################
+#########
+# Imports
+#########
+
 import numpy as np
 from aguaclara.core.units import u
 from aguaclara.core import physchem as pc, utility as ut
 
 u.enable_contexts("chem")
 
-##################### Class Definition #####################
+##################
+# Class Definition
+##################
 
 
 class Material:
@@ -95,7 +100,9 @@ class Chemical(Material):
         self.PrecipAluminumMPM = alumMPM
 
 
-################## Material Definitions ##################
+######################
+# Material Definitions
+######################
 
 #: A Material representing clay with a diameter of 7e-6 m and density of 2650
 #: kg/m^3.
@@ -136,7 +143,9 @@ HumicAcid = Chemical(
 )
 
 
-################### Necessary Constants ###################
+#####################
+# Necessary Constants
+#####################
 #: Fractal dimension, based on data from published in Environmental Engineering
 #: Science, "Fractal Models for Floc Density, Sedimentation Velocity, and Floc
 #: Volume Fraction for High Peclet Number Reactors" by Monroe Weber-Shirk and
@@ -159,7 +168,10 @@ NUM_AVOGADRO = 6.0221415 * 10**23
 MOLEC_WEIGHT_ALUMINUM = 0.027 * u.kg / u.mol
 
 
-######################## Functions ########################
+###########
+# Functions
+###########
+
 # @u.wraps(u.kg/u.m**3, None, False)
 @ut.list_handler()
 def dens_alum_nanocluster(coag):
@@ -280,7 +292,8 @@ def num_nanoclusters(ConcAluminum, coag):
 
 @ut.list_handler()
 def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
-    """Return the volume fraction of flocs initially present, accounting for both suspended particles and coagulant precipitates.
+    """Return the volume fraction of flocs initially present,
+    accounting for both suspended particles and coagulant precipitates.
 
     :param ConcAluminum: Concentration of aluminum in solution
     :type ConcAluminum: float
@@ -300,7 +313,9 @@ def frac_vol_floc_initial(ConcAluminum, ConcClay, coag, material):
     ).to(u.dimensionless)
 
 
-####################### p functions #######################
+#############
+# p functions
+#############
 @ut.list_handler()
 def p(C, C0=1):
     return -np.log10(C / C0)
@@ -311,7 +326,9 @@ def invp(pC, C0=1):
     return C0 * 10**-pC
 
 
-#################### Fractal functions ####################
+###################
+# Fractal functions
+###################
 # @u.wraps(u.m, [u.dimensionless, u.m, u.dimensionless], False)
 @ut.list_handler()
 def diam_fractal(DIM_FRACTAL, DiamInitial, NumCol):
@@ -379,7 +396,9 @@ def dens_floc_init(ConcAluminum, ConcClay, coag, material):
     ).to(u.kg / u.m**3)
 
 
-#################### Flocculation Model ####################
+####################
+# Flocculation Model
+####################
 # @u.wraps(None, u.m, False)
 @ut.list_handler()
 def ratio_clay_sphere(RatioHeightDiameter):
@@ -405,12 +424,14 @@ def ratio_area_clay_total(ConcClay, material, DiamTube, RatioHeightDiameter):
     :type ConcClay: float
     :param material: Type of clay in suspension, e.g. floc_model.Clay
     :type material: floc_model.Material
-    :param DiamTube: Diameter of flocculator tube (assumes tube flocculator for calculation of reactor surface area)
+    :param DiamTube: Diameter of flocculator tube
+        (assumes tube flocculator for calculation of reactor surface area)
     :type DiamTube: float
-    :param RatioHeightDiameter: Dimensionless ratio describing ratio of clay height to clay diameter
+    :param RatioHeightDiameter: Dimensionless ratio of clay height to diameter
     :type RatioHeightDiameter: float
 
-    :return: The ratio of clay surface area to total available surface area (accounting for reactor walls)
+    :return: The ratio of clay surface area to total available surface area
+        (accounting for reactor walls)
     :rtype: float
     """
     return (
@@ -450,12 +471,14 @@ def gamma_coag(
     :type coag: floc_model.Material
     :param material: Type of clay in suspension, e.g. floc_model.Clay
     :type material: floc_model.Material
-    :param DiamTube: Diameter of flocculator tube (assumes tube flocculator for calculation of reactor surface area)
+    :param DiamTube: Diameter of flocculator tube
+        (assumes tube flocculator for calculation of reactor surface area)
     :type DiamTube: float
-    :param RatioHeightDiameter: Dimensionless ratio of clay height to clay diameter
+    :param RatioHeightDiameter: Dimensionless ratio of clay height to diameter
     :type RatioHeightDiameter: float
 
-    :return: Fraction of the clay surface area that is coated with coagulant precipitates
+    :return: Fraction of the clay surface area that is coated
+        with coagulant precipitates
     :rtype: float
     """
     return (
@@ -539,16 +562,18 @@ def pacl_term(
     :type ConcAl: float
     :param ConcNatOrgMat: Concentration of natural organic matter in solution
     :type ConcNatOrgMat: float
-    :param NatOrgMat: type of natural organic matter, e.g. floc_model.HumicAcid
+    :param NatOrgMat: type of natural organic matter,
+        e.g. floc_model.HumicAcid
     :type NatOrgMat: floc_model.Material
     :param coag: Type of coagulant in solution, e.g. floc_model.PACl
     :type coag: floc_model.Material
     :param material: Type of clay in suspension, e.g. floc_model.Clay
     :type material: floc_model.Material
-    :param RatioHeightDiameter: Dimensionless ratio of clay height to clay diameter
+    :param RatioHeightDiameter: Dimensionless ratio of clay height to diameter
     :type RatioHeightDiameter: float
 
-    :return: fraction of the surface area that is covered with coagulant that is not covered with humic acid
+    :return: fraction of the surface area that is covered with coagulant
+        that is not covered with humic acid
     :rtype: float
     """
     return (
@@ -877,7 +902,9 @@ def time_col_turbulent(
     ).to(u.s)
 
 
-########### Kolmogorov and viscous length scales ###########
+######################################
+# Kolmogorov and viscous length scales
+######################################
 
 
 # @u.wraps(u.m, [u.W/u.kg, u.degK], False)
@@ -982,8 +1009,9 @@ def ener_dis_diam_floc(Diam):
     )
 
 
-##### Velocity gradient in tubing for lab scale laminar flow flocculators #####
-
+#####################################################################
+# Velocity gradient in tubing for lab scale laminar flow flocculators
+#####################################################################
 
 # @u.wraps(1/u.s, [u.m**3/u.s, u.m], False)
 @ut.list_handler()
