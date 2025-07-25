@@ -11,7 +11,9 @@ import numpy as np
 from scipy import interpolate, integrate
 import warnings
 
-############################ Gas ##############################
+#####
+# Gas
+#####
 
 
 @ut.list_handler()
@@ -44,7 +46,9 @@ def density_gas(Pressure, MolarMass, Temperature):
     return (Pressure * MolarMass / (u.R * Temperature)).to(u.kg / u.m**3)
 
 
-########################## Geometry ###########################
+###########
+# Geometry
+###########
 
 
 @ut.list_handler()
@@ -76,7 +80,9 @@ def diam_circle(AreaCircle):
     return np.sqrt(4 * AreaCircle / np.pi)
 
 
-####################### Water Properties #######################
+##################
+# Water Properties
+##################
 
 
 #:
@@ -212,7 +218,9 @@ def viscosity_kinematic_water(Temperature):
     return viscosity_dynamic_water(Temperature) / density_water(Temperature)
 
 
-####################### Hydraulic Radius #######################
+##################
+# Hydraulic Radius
+##################
 
 
 @ut.list_handler()
@@ -290,7 +298,9 @@ def radius_hydraulic_channel(Area, PerimWetted):
     return Area / PerimWetted
 
 
-####################### Reynolds Number #######################
+#################
+# Reynolds Number
+#################
 
 
 @ut.list_handler()
@@ -392,7 +402,9 @@ def re_channel(Vel, Area, PerimWetted, Nu):
     )
 
 
-########################### Friction ###########################
+##########
+# Friction
+##########
 
 
 @ut.list_handler()
@@ -590,7 +602,9 @@ def fric_channel(Area, PerimWetted, Vel, Nu, Roughness):
     return f * u.dimensionless
 
 
-######################### Head Loss #########################
+###########
+# Head Loss
+###########
 
 
 @ut.list_handler()
@@ -885,10 +899,12 @@ def headloss_rect(
 def headloss_fric_general(Area, PerimWetted, Vel, Length, Nu, PipeRough):
     """
     .. deprecated::
-        `headloss_fric_general` is deprecated; use `headloss_major_channel` instead.
+        `headloss_fric_general` is deprecated;
+        use `headloss_major_channel` instead.
     """
     warnings.warn(
-        "headloss_fric_general` is deprecated; use `headloss_major_channel` instead",
+        "headloss_fric_general` is deprecated; "
+        "use `headloss_major_channel` instead",
         UserWarning,
     )
     return headloss_major_channel(
@@ -932,10 +948,12 @@ def headloss_major_channel(Area, PerimWetted, Vel, Length, Nu, Roughness):
 def headloss_exp_general(Vel, KMinor):
     """
     .. deprecated::
-        `headloss_exp_general` is deprecated; use `headloss_minor_channel` instead.
+        `headloss_exp_general` is deprecated;
+        use `headloss_minor_channel` instead.
     """
     warnings.warn(
-        "headloss_exp_general` is deprecated; use `headloss_minor_channel` instead",
+        "headloss_exp_general` is deprecated; "
+        "use `headloss_minor_channel` instead",
         UserWarning,
     )
     return headloss_minor_channel(Vel, KMinor)
@@ -1095,7 +1113,9 @@ def headloss_minor_elbow(FlowRate, Diam, KMinor):
     return minor_loss.to(u.m)
 
 
-######################### Orifices #########################
+##########
+# Orifices
+##########
 
 
 @ut.list_handler()
@@ -1231,7 +1251,9 @@ def num_orifices(FlowRate, RatioVCOrifice, HeadLossOrifice, DiamOrifice):
     ).to(u.dimensionless)
 
 
-########################### Flows ###########################
+#######
+# Flows
+#######
 
 
 @ut.list_handler()
@@ -1524,14 +1546,17 @@ def flow_pipe(
     return FlowRate.to(u.m**3 / u.s)
 
 
-########################## Diameters ##########################
+###########
+# Diameters
+###########
 
 
 @ut.list_handler()
 def diam_hagen(
     FlowRate, HeadLossMajor=None, Length=None, Nu=None, *, HeadLossFric=None
 ):
-    """Return the inner diameter of a pipe with laminar flow and no minor losses.
+    """Return the inner diameter of a pipe with laminar flow and
+    no minor losses.
 
     The Hagen Poiseuille equation is dimensionally correct and returns the
     inner diameter of a pipe given the flow rate and the head loss due
@@ -1592,7 +1617,8 @@ def diam_swamee(
     HeadLossFric=None,
     PipeRough=None
 ):
-    """Return the inner diameter of a pipe with turbulent flow and no minor losses.
+    """Return the inner diameter of a pipe with turbulent flow and
+    no minor losses.
 
     The Swamee Jain equation is dimensionally correct and returns the
     inner diameter of a pipe given the flow rate and the head loss due
@@ -1716,7 +1742,7 @@ def diam_pipeminor(FlowRate, HeadLossExpans, KMinor):
 
 @ut.list_handler()
 def diam_minor_pipe(FlowRate, HeadLossMinor, KMinor):
-    """Return the pipe inner diameter that would result in the given minor losses.
+    """Return the pipe inner diameter that would result in given minor losses.
 
     This function applies to both laminar and turbulent flow.
 
@@ -1743,8 +1769,8 @@ def diam_minor_pipe(FlowRate, HeadLossMinor, KMinor):
 
 @ut.list_handler()
 def diam_pipe(FlowRate, HeadLoss, Length, Nu, PipeRough, KMinor):
-    """Return the pipe inner diameter that would result in the given total head
-    loss.
+    """Return the pipe inner diameter that would result in the given total
+    head loss.
 
     This function applies to both laminar and turbulent flow and
     incorporates both minor and major losses.
@@ -1810,7 +1836,9 @@ def pipe_ID(FlowRate, Pressure):
     ).to(u.m)
 
 
-############################ Weirs ############################
+#######
+# Weirs
+#######
 
 
 @ut.list_handler()
@@ -1931,7 +1959,9 @@ def flow_weir_rect(Height, Width):
     ).to(u.m**3 / u.s)
 
 
-######################## Porous Media ########################
+##############
+# Porous Media
+##############
 
 
 class DeprecatedFunctionError(Exception):
@@ -2074,7 +2104,9 @@ def g_cs_ergun(ApproachVel, DiamMedia, Temperature, Porosity):
     ).to(u.Hz)
 
 
-######################## Miscellaneous ########################
+###############
+# Miscellaneous
+###############
 
 
 @ut.list_handler()
@@ -2124,7 +2156,7 @@ def manifold_id_alt(q, pr_max):
 
 
 @ut.list_handler()
-def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
+def manifold_id(q, h, l, q_ratio, nu, eps, k, n):  # noqa: E741
     id_new = 2 * u.inch
     id_old = 0 * u.inch
     error = 1
@@ -2146,7 +2178,7 @@ def manifold_id(q, h, l, q_ratio, nu, eps, k, n):
 
 
 @ut.list_handler()
-def manifold_nd(q, h, l, q_ratio, nu, eps, k, n, sdr):
+def manifold_nd(q, h, l, q_ratio, nu, eps, k, n, sdr):  # noqa: E741
     manifold_nd = pipe.ND_SDR_available(
         manifold_id(q, h, l, q_ratio, nu, eps, k, n), sdr
     )
@@ -2154,7 +2186,7 @@ def manifold_nd(q, h, l, q_ratio, nu, eps, k, n, sdr):
 
 
 @ut.list_handler()
-def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
+def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):  # noqa: E741
     hl = min(hl, depth / 3)
     horiz_chan_w_new = q / ((depth - hl) * np.sqrt(2 * u.gravity * hl))
 
@@ -2178,7 +2210,7 @@ def horiz_chan_w(q, depth, hl, l, nu, eps, manifold, k):
 
 
 @ut.list_handler()
-def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
+def horiz_chan_h(q, w, hl, l, nu, eps, manifold):  # noqa: E741
     h_new = (q / (w * np.sqrt(2 * u.gravity * hl))) + hl
     error = 1
     i = 0
@@ -2200,7 +2232,7 @@ def horiz_chan_h(q, w, hl, l, nu, eps, manifold):
 
 
 @ut.list_handler()
-def pipe_flow_nd(q, sdr, hl, l, nu, eps, k):
+def pipe_flow_nd(q, sdr, hl, l, nu, eps, k):  # noqa: E741
     i = 0
     id_sdr_all_available = pipe.ID_SDR_all_available(sdr)
     while q > flow_pipe(id_sdr_all_available[i], hl, l, nu, eps, k):

@@ -182,7 +182,8 @@ def floor_nearest(x, array):
 
 
 def ceil_nearest(x, array):
-    """Get the nearest element of a NumPy array greater than or equal to a value.
+    """Get the nearest element of a NumPy array greater than or equal to
+    a value.
 
     Args:
         - ``x``: Value to compare
@@ -254,14 +255,14 @@ def get_sdr(spec):
 
 
 def list_handler():
-    """Wraps a scalar function to output a NumPy array if passed one or more inputs
-    as sequences (lists, tuples or NumPy arrays). For each sequence input, this
-    wrapper will recursively evaluate the function with the sequence replaced
-    by each of its elements and return the results in n-dimensional NumPy array,
-    where n is the number of sequence inputs.
+    """Wraps a scalar function to output a NumPy array if passed one or more
+    inputs as sequences (lists, tuples or NumPy arrays). For each sequence
+    input, this wrapper will recursively evaluate the function with the
+    sequence replaced by each of its elements and return the results in
+    n-dimensional NumPy array, where n is the number of sequence inputs.
 
-    For a function "f" of one argument, f([x_1, ..., x_n]) would be evaluated to
-    [f(x_1), ..., f(x_n)]. For a function passed multiple sequences of
+    For a function "f" of one argument, f([x_1, ..., x_n]) would be evaluated
+    to [f(x_1), ..., f(x_n)]. For a function passed multiple sequences of
     dimensions d_1, ..., d_n (from left to right), the result would be a
     d_1 x ... x d_n array.
     """
@@ -363,8 +364,8 @@ def check_range(*args):
         # request is understood
         arg[1] = "".join(arg[1].lower().split())
         # This block checks that each range request is understood.
-        # If the request is a compound one, it must be separated into individual
-        # requests for validity comprehension
+        # If the request is a compound one, it must be separated into
+        # individual requests for validity comprehension
         for i in arg[1].split(","):
             if i not in knownChecks:
                 raise RuntimeError(

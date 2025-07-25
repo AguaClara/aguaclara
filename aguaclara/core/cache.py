@@ -1,6 +1,8 @@
-# The cache decorator does not support objects nested within datastructures or other objects. It is quite limited
-# because the hash function is limited. This could be revisited and we could use a serialization library like Pickle
-# if this proved to be an issue (which it most likely will when we get more complex classes)
+# The cache decorator does not support objects nested within datastructures
+# or other objects. It is quite limited because the hash function is limited.
+# This could be revisited and we could use a serialization library like Pickle
+# if this proved to be an issue.
+# (which it most likely will when we get more complex classes)
 
 import collections
 import warnings
@@ -33,8 +35,10 @@ def ac_cache(method):
         else:
             a_hash = repr(hashable_object)
             warnings.warn(
-                "Using repr() to make a hash of {}. Please consider inheriting HashableObject class as repr "
-                "will not guarantee replicable hashing and can result in bad cache returns.".format(
+                "Using repr() to make a hash of {}. Please consider "
+                "inheriting HashableObject class as repr "
+                "will not guarantee replicable hashing and can result "
+                "in bad cache returns.".format(
                     repr(hashable_object)
                 ),
                 Warning,

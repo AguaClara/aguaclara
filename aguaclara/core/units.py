@@ -1,10 +1,10 @@
 """Module containing global unit registry.
 
-The `Pint package <https://pint.readthedocs.io/en/latest/>`_ supports arithmetic
-of physical quantities, which are combinations of numerical values and units of
-measurement. The units of a quantity come from Pint's unit registry. This
-module contains a unit registry, named ``u``, based on Pint's unit registry.
-It also defines a few additional units.
+The `Pint package <https://pint.readthedocs.io/en/latest/>`_ supports
+arithmetic of physical quantities, which are combinations of numerical values
+and units of measurement. The units of a quantity come from Pint's unit
+registry. This module contains a unit registry, named ``u``,
+based on Pint's unit registry. It also defines a few additional units.
 
 Frequently Used Units and Constants in ``u``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

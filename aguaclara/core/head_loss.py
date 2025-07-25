@@ -310,7 +310,8 @@ def _k_value_thick_orifice(
     id_pipe: float, id_orifice: float, length_orifice: float, re: float
 ) -> float:
     # Calculate minor loss coefficient for a thick orifice
-    # if L/id_orifice > 5, use the equation for a square reduction and expansion.
+    # if L/id_orifice > 5,
+    # use the equation for a square reduction and expansion.
     k_thin = _k_value_thin_sharp_orifice(id_pipe, id_orifice, re)
     # thickness coefficient:
     c = 0.584 + (0.0936 / ((length_orifice / id_orifice) ** 1.5 + 0.225))

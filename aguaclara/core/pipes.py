@@ -36,7 +36,8 @@ class SCH(Enum):
 
 
 class Pipe:
-    """A pipe using the SDR system, represented by its nominal diameter (ND) and standard dimension ratio (SDR)"""
+    """A pipe using the SDR system, represented by its nominal diameter (ND)
+    and standard dimension ratio (SDR)"""
 
     def __init__(self, nd, sdr):
         self.nd = nd
@@ -52,7 +53,9 @@ class Pipe:
 
     @property
     def id_sdr(self):
-        """The inner diameter of the pipe, calculated using the pipe's OD and SDR."""
+        """The inner diameter of the pipe, calculated
+        using the pipe's OD and SDR.
+        """
         return (self.od.magnitude * (self.sdr - 2) / self.sdr) * u.inch
 
     @property
@@ -73,7 +76,9 @@ class Pipe:
 
     def id_sch(self, schedule):
         """
-        The inner diameter of this pipe, based on schedule and nominal diameter
+        The inner diameter of this pipe, based on schedule and
+        nominal diameter.
+
         :param schedule: the schedule of the pipe (Ex: pipes.SCH.SCH40)
         :type schedule: pipes.SCH
 
@@ -90,17 +95,22 @@ class Pipe:
 
     def sch(self, NDarr=None, SCHarr=None):
         """
-        The nominal diameter and schedule that best fits this pipe's criteria and NDarr and SCHarr
-        :param NDarr: an array of preferred nominal diameters (Ex: [10]*u.inch). Default: None
+        The nominal diameter and schedule that best fits this pipe's criteria
+        and NDarr and SCHarr.
+
+        :param NDarr: an array of preferred nominal diameters
+            (Ex: [10]*u.inch). Default: None
         :type NDarr: numpy.array * u.inch
-        :param SCHarr: an array of preferred schedules (Ex: [pipes.SCH.SCH160, pipes.SCH.SCH40]). Default: None
+        :param SCHarr: an array of preferred schedules
+            (Ex: [pipes.SCH.SCH160, pipes.SCH.SCH40]). Default: None
         :type SCHarr: pipes.SCH list
 
         :return: (nominal diameter, schedule) tuple or None
         :rtype: (u.inch, SCH) or None
         """
 
-        # get list of all (ND, SCH) available and return the (ND, SCH) resulting in the least ID
+        # get list of all (ND, SCH) available and return the (ND, SCH)
+        # resulting in the least ID
         available = SCH_all_available(self.id_sdr, self.sdr, NDarr, SCHarr)
 
         if available == []:
@@ -136,7 +146,8 @@ class Pipe:
 
 def makePipe_ND_SDR(ND, SDR):
     """
-    Return a Pipe object, given a ND (nominal diameter) and SDR (standard diameter ratio).
+    Return a Pipe object, given a ND (nominal diameter) and
+    SDR (standard diameter ratio).
 
     :param ND: nominal diameter of pipe
     :type ND: u.inch
@@ -150,7 +161,8 @@ def makePipe_ND_SDR(ND, SDR):
 
 
 def makePipe_minID_SDR(minID, SDR):
-    """Return a new pipe, given its minID (minimum inner diameter) and SDR (standard diameter ratio).
+    """Return a new pipe, given its minID (minimum inner diameter) and
+    SDR (standard diameter ratio).
 
     :param minID: minimum inner diameter of pipe
     :type minID: u.inch
@@ -205,7 +217,8 @@ def OD_SDR(ID, SDR):
 @ut.list_handler()
 def fitting_od(pipe_nd, fitting_sdr=41):
     """
-    Return the OD of a fitting given SDR and the ND of the pipe it will be fitted around
+    Return the OD of a fitting given SDR and the ND of the pipe it will
+    be fitted around.
 
     :param pipe_nd: ND of the pipe to be fitted around
     :type pipe_nd: u.inch
@@ -303,9 +316,14 @@ def SCH_all_available(
     SCHarr=[SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160],
 ):
     """
-    Return a list of tuples (nominal diameter, schedule) representing schedule pipes that fit the criteria.
-    Meeting criteria means: has at least minID, has at most maxSDR, and whose ND and/or SCH are in NDarr and SCHarr respectively.
-    Default: NDarr looks through all available ND, SCHarr looks through all schedules
+    Return a list of tuples (nominal diameter, schedule) representing
+    schedule pipes that fit the criteria.
+
+    Meeting criteria means: has at least minID, has at most maxSDR,
+    and whose ND and/or SCH are in NDarr and SCHarr respectively.
+
+    Default: NDarr looks through all available ND,
+    SCHarr looks through all schedules
 
     :param minID: the minimum inner diameter required
     :type minID: u.inch
@@ -316,11 +334,13 @@ def SCH_all_available(
     :param SCHarr: the preferred list of schedules to look through
     :type SCHarr: pipes.SCH list
 
-    :return: list of tuples in the form (nominal diameter, schedule). Example: (10*u.inch, "SCH160")
+    :return: list of tuples in the form (nominal diameter, schedule).
+        Example: (10*u.inch, "SCH160")
     :rtype: (float*u.inch, string) list
     """
     # loop through all nd and sch available.
-    # If find a pipe whose SDR is \le the requirement (smaller SDR=handle more pressure)
+    # If find a pipe whose SDR is \le the requirement
+    # (smaller SDR=handle more pressure)
     # and whose inner diameter is \ge the id_sdr,
     # put it in a list. Send back that list.
 
