@@ -9,11 +9,10 @@ Example:
     4
 """
 
-from aguaclara.design.sed_tank import SedimentationTank
 from aguaclara.design.sed_chan import SedimentationChannel
+from aguaclara.design.sed_tank import SedimentationTank
 from aguaclara.design.component import Component
 from aguaclara.core.units import u
-import aguaclara.core.constants as con
 
 import numpy as np
 
@@ -28,8 +27,8 @@ class Sedimentor(Component):
 
     Design inputs:
         - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
+        - ``temp (float * u.degC)``: Water temperature
+          (recommended, defaults to 20°C)
         - ``wall_thickness (float * u.cm)``: Wall thickness (optional, defaults
           to 15 * u.cm)
         - ``tank (SedimentationTank)``: Sedimentation Tank
@@ -81,9 +80,9 @@ MODULE_PLATES_N_MIN = 8
 
 WATER_H_EST = 2 * u.m
 
-GATE_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Sed-Scaled-Gate-Valve-Threaded.dwg"
+GATE_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Sed-Scaled-Gate-Valve-Threaded.dwg"  # noqa: E501
 
-SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/173604905/PlateSettlerSupportBolt.dwg"
+SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/173604905/PlateSettlerSupportBolt.dwg"  # noqa: E501
 
 # ratio of the height to the width of the sedimentation tank inlet channel.
 INLET_H_W_RATIO = 0.95
@@ -115,7 +114,7 @@ MOD_SPACER_ND = 0.75 * u.inch
 
 MOD_SPACER_SDR = 17
 
-# This is the vertical thickness of the lip where the lamella support sits. mrf222
+# This is the vertical thickness of the lip where the lamella support sits
 LAMELLA_LEDGE_THICKNESS = 8 * u.cm
 
 LAMELLA_PIPE_EDGE_S = 5 * u.cm

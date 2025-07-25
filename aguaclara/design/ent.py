@@ -1,21 +1,23 @@
 """The entrance tank of an AguaClara water treatment plant
 
 #. removes large grit particles using plate settlers,
-#. contains the :ref:`design-lfom`, which maintains a linear relation between flow and water level, and
-#. introduces chemical dosing through the CDC <add link> using the water level set by the :ref:`design-lfom`.
+#. contains the :ref:`design-lfom`, which maintains a linear
+   relation between flow and water level, and
+#. introduces chemical dosing through the CDC <add link> using
+   the water level set by the :ref:`design-lfom`.
 
 Example:
     >>> from aguaclara.design.ent import *
-    >>> ent_tank = EntranceTank(q = 20 * u.L / u.s, floc_chan_w = 42.0 * u.inch)
+    >>> ent_tank = EntranceTank(
+            q=20 * u.L / u.s, floc_chan_w = 42.0 * u.inch
+        )
     >>> ent_tank.plate_n
     <Quantity(11.0, 'dimensionless')>
 """
 
-import aguaclara.core.constants as con
 import aguaclara.core.head_loss as hl
 import aguaclara.core.materials as mat
 import aguaclara.core.physchem as pc
-import aguaclara.core.pipes as pipe
 from aguaclara.core.units import u
 import aguaclara.core.utility as ut
 
@@ -34,11 +36,12 @@ class EntranceTank(Component):
     :class:`aguaclara.design.ent_floc.EntTankFloc`.
 
     Design Inputs:
-        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
-        - ``lfom_nd (float * u.inch)``: The LFOM's nominal diameter (recommended,
-          defaults to 2")
+        - ``q (float * u.L / u.s)``: Flow rate
+          (recommended, defaults to 20L/s)
+        - ``temp (float * u.degC)``: Water temperature
+          (recommended, defaults to 20°C)
+        - ``lfom_nd (float * u.inch)``: The LFOM's nominal diameter
+          (recommended, defaults to 2")
         - ``floc_chan_w (float * u.inch)``: The flocculator's channel width
           (recommended, defaults to 42")
         - ``floc_chan_depth (float * u.m)``: The flocculator's channel depth
@@ -49,8 +52,8 @@ class EntranceTank(Component):
           plate settler (optional, defaults to 2mm)
         - ``plate_angle (float * u.deg)``: The angle of the plate settler
           (optional, defaults to 60 degrees)
-        - ``plate_capture_vel (float * u.mm / u.s)``: The capture velocity of the
-          plate settler (optional, defaults to 8m/s)
+        - ``plate_capture_vel (float * u.mm / u.s)``: The capture velocity of
+          the plate settler (optional, defaults to 8m/s)
         - ``fab_s(float * u.cm)``: The space needed for a person to remove
           the drain pipe (optional, defaults to 5cm)
         - ``sdr (float)``: Standard demension ratio (optional,
@@ -130,13 +133,13 @@ class EntranceTank(Component):
         return plate_l_rounded
 
     @property
-    def l(self):
+    def l(self):  # noqa: E743
         """The length of the entrance tank."""
         plate_array_thickness = (self.plate_thickness * self.plate_n) + (
             self.plate_s * (self.plate_n - 1)
         )
 
-        l = (
+        l = (  # noqa: E741
             self.drain_pipe.od
             + (self.fab_s * 2)
             + (

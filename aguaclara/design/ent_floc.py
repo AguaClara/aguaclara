@@ -11,9 +11,13 @@ Example:
     <Quantity(40.56721, 'inch')>
 """
 
-from aguaclara.design.ent import *
-from aguaclara.design.lfom import *
-from aguaclara.design.floc import *
+from aguaclara.design.component import Component
+from aguaclara.design.ent import EntranceTank
+from aguaclara.design.floc import Flocculator
+from aguaclara.design.lfom import LFOM
+from aguaclara.core.units import u
+
+import numpy as np
 
 
 class EntTankFloc(Component):
@@ -58,7 +62,7 @@ class EntTankFloc(Component):
         flocculator's channel width).
 
         Args:
-            - ``ent_l (float * u.m)``: The initial guess for the entrance tank's
+            - ``ent_l (float * u.m)``: The initial guess for the entrance tank
               length, used to design the first iteration of the flocculator.
         """
         # Design the flocculator using a guess of the entrance tank's length.

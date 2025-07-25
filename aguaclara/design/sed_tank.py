@@ -44,8 +44,8 @@ class SedimentationTank(Component):
     Design Inputs:
         - ``q (float * u.L / u.s)``: Plant flow rate
           (recommended, defaults to 20L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
+        - ``temp (float * u.degC)``: Water temperature
+          (recommended, defaults to 20°C)
         - ``vel_upflow (float * u.mm / u.s)``: Upflow velocity
           (optional, defaults to 1mm/s)
         - ``l_inner (float * u.m)``: The inner length
@@ -78,13 +78,14 @@ class SedimentationTank(Component):
           velocity of a plate settler (optional, defaults to 0.12mm/s)
         - ``outlet_man_orifice_hl (float * u.cm)``: The headloss of the
           orifices in the outlet manifold (optional, defaults to 4cm)
-        - ``outlet_man_orifice_q_ratio_max (float)``: The max ratio of the flow
-          rate for the orifices of the outlet manifold (optional, defaults to 0.8)
+        - ``outlet_man_orifice_q_ratio_max (float)``: The max ratio of the
+          flow rate for the orifices of the outlet manifold.
+          (optional, defaults to 0.8)
         - ``outlet_man_orifice_n_est (int)``: The estimated number of orifices
           for the outlet manifold (optional, defaults to 58)
         - ``outlet_man_sdr (int)``: The standard dimension ratio of the outlet
           manifold (optional, defaults to 41)
-        - ``slope_angle (float * u.deg)``: The angle at the bottom of the sed tank
+        - ``slope_angle (float * u.deg)``: Angle at the bottom of the sed tank
           (optional, defaults to 50°)
         - ``side_slope_to_floc_weir_h_min (float * u.cm)``: The minimum height
           between the side slope and the floc weir. (optional, defaults to 5cm)

@@ -27,8 +27,8 @@ class LFOM(Component):
 
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (recommended, defaults to 20L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
+        - ``temp (float * u.degC)``: Water temperature
+          (recommended, defaults to 20°C)
         - ``hl (float * u.cm)``: Head loss (optional, defaults to 20cm)
         - ``safety_factor (float)``: Safety factor (optional, defaults to 1.5)
         - ``sdr (float)``: Standard dimension ratio (optional, defaults to 26)

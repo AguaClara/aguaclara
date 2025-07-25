@@ -1,5 +1,7 @@
-from aguaclara.core.units import u
 from aguaclara.design.component import Component
+from aguaclara.core.units import u
+
+import math
 
 
 class Filter(Component):
@@ -9,14 +11,14 @@ class Filter(Component):
     max_filtration_head_loss = 30 * u.cm
 
     @property
-    def n_tanks():
+    def n_tanks(self):
         tank = math.ceil(self.q / 40)
         return (tank.magnitude) * 2
 
     @property
-    def flow_rate_per_tank():
-        n_tanks = n_tanks()
-        return flow_rate / n_tanks
+    def flow_rate_per_tank(self):
+        n_tanks = self.n_tanks()
+        return self.q / n_tanks
 
     # def filt_vel():
 
@@ -91,8 +93,8 @@ WEIR_THICKNESS = 5 * u.cm
 
 BRANCH_WALL_S = 5 * u.cm
 
-GATE_VALUE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Fi-Scaled-Gate-Valve-Threaded.dwg"
-BALL_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/FiMetalBallValve.dwg"
+GATE_VALUE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Fi-Scaled-Gate-Valve-Threaded.dwg"  # noqa: E501
+BALL_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/FiMetalBallValve.dwg"  # noqa: E501
 
 WALL_PLANT_FLOOR_S_MIN = 10 * u.cm
 

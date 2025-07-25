@@ -10,7 +10,6 @@ Example:
 """
 
 from aguaclara.core.units import u
-import aguaclara.core.constants as con
 import aguaclara.core.materials as mat
 import aguaclara.core.utility as ut
 import aguaclara.core.physchem as pc
@@ -20,7 +19,6 @@ import aguaclara.design.human_access as ha
 from aguaclara.design.component import Component
 from aguaclara.design.pipeline import Pipe
 
-import numpy as np
 import math
 
 
@@ -29,8 +27,8 @@ class SedimentationChannel(Component):
 
     The sedimentation channel relies on the number and dimensions of the
     sedimentation tanks in the same plant, but assumed/default values may be
-    used to design a sedimentation channel by itself. To design these components
-    in tandem, use :class:`aguaclara.design.sed.Sedimentor`.
+    used to design a sedimentation channel by itself. To design these
+    components in tandem, use :class:`aguaclara.design.sed.Sedimentor`.
 
     Constants:
         - ``SED_TANK_Q_RATIO (float)``: Permissible ratio of influent flow
@@ -42,12 +40,12 @@ class SedimentationChannel(Component):
 
     Design Inputs:
         - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
+        - ``temp (float * u.degC)``: Water temperature
+          (recommended, defaults to 20°C)
         - ``sed_tank_n (int)``: Number of sedimentation tanks (recommended,
           defaults to 4)
-        - ``sed_tank_w_inner (float * u.inch)``: Inner width of the sedimentation
-          tank (recommended, defaults to 42 in)
+        - ``sed_tank_w_inner (float * u.inch)``: Inner width of the
+          sedimentation tank (recommended, defaults to 42 in)
         - ``sed_tank_wall_thickness (float * u.cm)``: Wall thickness of the
           sedimentation tank (recommended, defaults to 15 cm)
         - ``sed_tank_inlet_man_nd (float * u.cm)``: Nominal diameter of the
@@ -72,9 +70,10 @@ class SedimentationChannel(Component):
         - ``drain_sdr (int)``: SDR of the drain pipe (optional, defaults to 26)
         - ``outlet_free_h (float * u.cm)``: Permissible increase of water level
           in the outlet channel (optional, defaults to 5 cm)
-          ``outlet_weir_depth``:The depth of the outlet weir. (optional, defaults to 5 cm)
-        - ``outlet_pipe_sdr (int)``: SDR of the outlet pipe (optional, defaults
-          to 41)
+          ``outlet_weir_depth``:The depth of the outlet weir.
+          (optional, defaults to 5 cm)
+        - ``outlet_pipe_sdr (int)``: SDR of the outlet pipe
+          (optional, defaults to 41)
         - ``outlet_pipe_hl_max (float * u.cm)``: Maximum head loss through the
           outlet pipe (optional, defaults to 1 cm)
         - ``outlet_pipe_nd_max (float * u.inch)``: Maximum nominal diameter of
@@ -117,9 +116,9 @@ class SedimentationChannel(Component):
         super().set_subcomponents()
 
     @property
-    def l(self):
+    def l(self):  # noqa: E743
         """Length of the sedimentation channel."""
-        l = (
+        l = (  # noqa: E741
             (self.sed_tank_n * self.sed_tank_w_inner)
             + ((self.sed_tank_n - 1) * self.sed_tank_wall_thickness)
             + self.sed_wall_thickness

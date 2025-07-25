@@ -9,7 +9,6 @@ Example:
 """
 
 import aguaclara.core.head_loss as hl
-import aguaclara.design.human_access as ha
 import aguaclara.core.physchem as pc
 import aguaclara.core.pipes as pipes
 import aguaclara.core.utility as ut
@@ -71,7 +70,7 @@ class Flocculator(Component):
     # input as well? -Oliver L., oal22, 5 Jun 19
     OBSTACLE_OFFSET = True
 
-    _onshape_url = "https://cad.onshape.com/documents/c3a8ce032e33ebe875b9aab4/w/de9ad5474448b34f33fef097/e/08f41d8bdd9a9c90ab396f8a"
+    _onshape_url = "https://cad.onshape.com/documents/c3a8ce032e33ebe875b9aab4/w/de9ad5474448b34f33fef097/e/08f41d8bdd9a9c90ab396f8a"  # noqa: E501
 
     def __init__(self, **kwargs):
         self.ent_l = 1.5 * u.m
@@ -301,8 +300,8 @@ class Flocculator(Component):
         # Make the configuration string for the flocculator concrete. {{ and }}
         # are used so that str.format() doesn't recognize them.
         concrete_config = (
-            '{{"w_channel":"{}", "h_channel":"{}", "l_channel":"{}", "s_baffle"'
-            ':"{}", "n_channel":{}, "t_wall":"{}"}}'.format(
+            '{{"w_channel":"{}", "h_channel":"{}", "l_channel":"{}", '
+            '"s_baffle":"{}", "n_channel":{}, "t_wall":"{}"}}'.format(
                 self.chan_w,
                 self.end_water_depth,
                 self.chan_l,

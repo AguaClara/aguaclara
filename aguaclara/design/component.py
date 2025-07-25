@@ -45,7 +45,7 @@ import aguaclara.core.utility as ut
 import numpy as np
 import json
 from pprint import pprint
-from abc import ABC, abstractmethod
+from abc import ABC
 from urllib.parse import quote_plus
 
 
@@ -53,8 +53,8 @@ class Component(ABC):
     """An abstract class representing AguaClara plant components.
 
     This class provides subclasses with the ability to record and propogate a
-    configuration of plant design variables (``q`` and ``temp``) for a component
-    and all of its subcomponents.
+    configuration of plant design variables (``q`` and ``temp``) for a
+    component and all of its subcomponents.
     """
 
     Q_DEFAULT = 20 * u.L / u.s
@@ -72,8 +72,8 @@ class Component(ABC):
         """Set the plant-wide inputs of all subcomponents.
 
         Call this function at the end of a subclass's ``__init__()`` set ``q``
-        and ``temp`` for subcomponents, except when a subcomponent specifies its
-        own custom ``q`` and ``temp``.
+        and ``temp`` for subcomponents, except when a subcomponent specifies
+        its own custom ``q`` and ``temp``.
         """
         for subcomp in self.subcomponents:
             # Set the subcomponent's ``q`` and ``temp`` to match this component
@@ -137,8 +137,8 @@ class Component(ABC):
         pprint(self.serialize_properties())
 
     def write_properties_to_file(self):
-        """Append the properties of a component to a file. If it does not exist,
-        then the file is created.
+        """Append the properties of a component to a file.
+        If it does not exist, then the file is created.
 
         Args:
             - ``filename (str)``: The name of the file
@@ -155,7 +155,7 @@ class Component(ABC):
             if type(value) is u.Quantity:
                 value = str(value)
             elif type(value) is dict:
-                value = _encode_onshape_config(value)
+                value = self._encode_onshape_config(value)
             encoding += key
 
     @property

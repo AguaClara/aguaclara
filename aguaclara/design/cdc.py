@@ -68,8 +68,8 @@ class CDC(Component):
         If given units, the function will automatically convert to Kelvin.
         If not given units, the function will assume Kelvin.
         This function assumes that the temperature dependence can be explained
-        based on the effect on water and that there is no confounding effect from
-        the coagulant.
+        based on the effect on water and that there is no confounding effect
+        from the coagulant.
         """
         alum_nu = (
             1
@@ -243,7 +243,7 @@ class CDC(Component):
 
     @property
     def coag_tube_operating_q_max(self):
-        """The maximum flow through a coagulant tube during actual operation."""
+        """The maximum flow through a coagulant tube during operation."""
         coag_tube_operating_q_max = self.coag_q_max / self.coag_tubes_active_n
         return coag_tube_operating_q_max
 

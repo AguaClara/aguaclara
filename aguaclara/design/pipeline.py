@@ -19,7 +19,6 @@ Constants:
 from aguaclara.core.units import unit_registry as u
 from aguaclara.core import physchem as pc
 from aguaclara.core import head_loss as hl
-import aguaclara.core.constants as con
 import aguaclara.core.materials as mats
 import aguaclara.core.utility as ut
 from aguaclara.design.component import Component
@@ -38,9 +37,9 @@ _fitting_database_path = os.path.join(_dir_path, "data/fitting_database.csv")
 with open(_fitting_database_path) as _fitting_database_file:
     _fitting_database = pd.read_csv(_fitting_database_file)
 
-# TODO: Once we support a Pint version that supports use with Pandas DataFrame's
-# (>=0.10.0), we can assign units to DataFrame's rather than converting them to
-# NumPy arrays.
+# TODO: Once we support a Pint version that supports use with Pandas
+#  DataFrame's (>=0.10.0), we can assign units to DataFrame's rather
+# than converting them toNumPy arrays.
 _available_sizes_raw = _pipe_database.query("Used==1")["NDinch"]
 AVAILABLE_SIZES = np.array(_available_sizes_raw) * u.inch
 
@@ -68,16 +67,16 @@ class PipelineComponent(Component, ABC):
 
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (recommended, defaults to 20 L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
+        - ``temp (float * u.degC)``: Water temperature
+          (recommended, defaults to 20°C)
         - ``size (float * u.inch)``: Nominal size (recommended, defaults to 0.5
           in)
         - ``fluid_type (str)``: Fluid type. Must be 'water', 'pacl', or 'alum'
           (optional, defaults to 'water')
-        - ``next (PipelineComponent)``: The next pipeline component with respect
-          to the flow direction. This can be either a newly-instantiated
-          ``PipelineComponent`` child class, or a variable that contains such
-          a component (optional, defaults to None)
+        - ``next (PipelineComponent)``: The next pipeline component with
+          respect to the flow direction. This can be either a
+          newly-instantiated``PipelineComponent`` child class, or a
+          variable that contains such a component (optional, defaults to None)
         - ``k_minor (float)``: The minor loss coefficient (k-value) (optional,
           defaults to 0)
     """
@@ -87,8 +86,8 @@ class PipelineComponent(Component, ABC):
     def __init__(self, **kwargs):
         if all(key in kwargs for key in ("size", "id")):
             raise AttributeError(
-                "A PipelineComponent must be instantiated with either the size "
-                "or inner diameter, but not both."
+                "A PipelineComponent must be instantiated with either "
+                "the size or inner diameter, but not both."
             )
 
         self.size = 0.5 * u.inch
@@ -188,8 +187,8 @@ class PipelineComponent(Component, ABC):
 
     @abstractmethod
     def format_print(self):
-        """The string representation of a pipeline component, disregarding other
-        components in its pipeline.
+        """The string representation of a pipeline component, disregarding
+        other components in its pipeline.
         """
         pass
 
@@ -227,24 +226,25 @@ class PipelineComponent(Component, ABC):
 class Pipe(PipelineComponent):
     """Design class for a pipe
 
-    Instantiate this class to create a readily constructible pipe and calculate
-    its hydraulic features.
+    Instantiate this class to create a readily constructible pipe and
+    calculate its hydraulic features.
 
-    ``Pipe``'s may be instantiated from a nominal size (to fit into an existing
-    pipeline) or inner diameter (to follow hydraulic constraints), but not both.
+    ``Pipe``'s may be instantiated from a nominal size (to fit into an
+    existing pipeline) or inner diameter (to follow hydraulic constraints),
+    but not both.
 
     Design Inputs:
         - ``q (float * u.L/u.s)``: Flow rate (recommended, defaults to 20 L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
-        - ``size (float * u.inch)``: Nominal size (recommended, defaults to 0.5
-          in)
+        - ``temp (float * u.degC)``: Water temperature
+          (recommended, defaults to 20°C)
+        - ``size (float * u.inch)``: Nominal size
+          (recommended, defaults to 0.5 in)
         - ``fluid_type (str)``: Fluid type. Must be 'water', 'pacl', or 'alum'
           (optional, defaults to 'water')
-        - ``next (PipelineComponent)``: The next pipeline component with respect
-          to the flow direction. This can be either a newly-instantiated
-          ``PipelineComponent`` child class, or a variable that contains such
-          a component (optional, defaults to None)
+        - ``next (PipelineComponent)``: The next pipeline component with
+          respect to the flow direction. This can be either a
+          newly-instantiated ``PipelineComponent`` child class, or a variable
+          that contains such a component (optional, defaults to None)
         - ``id (float * u.inch)``: Inner diameter (optional, defaults to 0.476
           in)
         - ``spec (str)``: The pipe specification. Must be one of 'sdr26',
@@ -262,7 +262,7 @@ class Pipe(PipelineComponent):
     def __init__(self, **kwargs):
         self.id = 0.476 * u.inch
         self.spec = "sdr41"
-        self.l = 1 * u.m
+        self.l = 1 * u.m  # noqa: E741
         self.pipe_rough = mats.PVC_PIPE_ROUGH
 
         super().__init__(**kwargs)
@@ -385,8 +385,9 @@ class Elbow(PipelineComponent):
     Instantiate this class to create a readily constructible Elbow fitting and
     calculate its hydraulic features.
 
-    ``Elbow``'s may be instantiated from a nominal size (to fit into an existing
-    pipeline) or inner diameter (to follow hydraulic constraints), but not both.
+    ``Elbow``'s may be instantiated from a nominal size (to fit into an
+    existing pipeline) or inner diameter (to follow hydraulic constraints),
+    but not both.
 
     Constants:
         - ``AVAILABLE_ANGLES (int * u.deg list)``: The possible angles for this
@@ -481,31 +482,34 @@ class Tee(PipelineComponent):
     Instantiate this class to create a readily constructible tee fitting and
     calculate its hydraulic features.
 
-    ``Tee``'s may be instantiated from a nominal size (to fit into an existing
-    pipeline) or inner diameter (to follow hydraulic constraints), but not both.
+    ``Tee``'s may be instantiated from a nominal size (to fit into an
+    existing pipeline) or inner diameter (to follow hydraulic constraints),
+    but not both.
 
     Constants:
         - ``AVAILABLE_PATHS (str list)``: The available paths for the left and
-          right outlet. Branch meaning the flow would turn, run meaning the flow
-          stays straight, and stopper meaning there is no flow for that outlet
-          due to a stopper.
+          right outlet. Branch meaning the flow would turn, run meaning the
+          flow stays straight, and stopper meaning there is no flow for that
+          outlet due to a stopper.
 
     Design Inputs:
-        - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
+        - ``q (float * u.L / u.s)``: Flow rate
+          (recommended, defaults to 20L/s)
         - ``temp (float * u.degC)``: Water temperature
           (recommended, defaults to 20°C )
-        - ``size (float * u.inch)``: The size (recommended, defaults to 0.5 in.)
+        - ``size (float * u.inch)``: The size
+          (recommended, defaults to 0.5 in.)
         - ``fluid_type (str)``: The type of fluid flowing inside
           (optional, defaults to water)
-        - ``left (PipelineComponent)``: The type of piping for the left outlet,
-          cannot be an elbow or tee (recommended, defaults to None)
+        - ``left (PipelineComponent)``: The type of piping for the left
+          outlet, cannot be an elbow or tee (recommended, defaults to None)
         - ``left_type (str)``: The type of path for the left outlet,
           can only be one of the elements in AVAILABLE_PATHS.
           can only be one of the elements in AVAILABLE_PATHS.
           can only be one of the elements in AVAILABLE_PATHS.
           (recommended, defaults to 'branch')
-        - ``right (PipelineComponent)``: The type of piping for the right outlet,
-          cannot be an elbow or tee. (recommended, defaults to None)
+        - ``right (PipelineComponent)``: The type of piping for the right
+           outlet, cannot be an elbow or tee. (recommended, defaults to None)
         - ``right_type (str)``: The type of path for the right outlet,
           can only be one of the elements in AVAILABLE_PATHS.
           can only be one of the elements in AVAILABLE_PATHS.
