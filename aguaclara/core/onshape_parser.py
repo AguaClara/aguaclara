@@ -51,7 +51,7 @@ def parse_quantity(q, for_docs=True):
         units_s = units_s * ureg(unit[key_str].lower()) ** unit[val_str]
         try:
             log = math.floor(math.log10(units_s.magnitude))
-        except ZeroDivisionError:
+        except (ZeroDivisionError, ValueError):
             log = 0
         if for_docs:
             if unit[key_str] == "METER" and unit[val_str] == 1:
