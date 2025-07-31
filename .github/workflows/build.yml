@@ -20,13 +20,13 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }} for Linux
-      if: runner.os != "Windows"
+      if: runner.os != 'Windows'
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Install Conda for Windows with Python ${{ matrix.python-version }}
-      if: runner.os == "Windows"
+      if: runner.os == 'Windows'
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
@@ -34,14 +34,14 @@ jobs:
         channels: conda-forge
 
     - name: Install dependencies for Linux
-      if: runner.os != "Windows"
+      if: runner.os != 'Windows'
       run: |
         python -m pip install --upgrade pip setuptools wheel
         pip install pipenv
         pipenv install --dev --python ${{ matrix.python-version }}
 
     - name: Install dependencies for Windows
-      if: runner.os == "Windows"
+      if: runner.os == 'Windows'
       run: |
         python -m pip install --upgrade pip
         pip install pipenv
