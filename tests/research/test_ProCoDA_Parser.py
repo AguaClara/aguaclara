@@ -373,7 +373,7 @@ class TestProCoDAParser(unittest.TestCase):
             self.assertSequenceEqual([round(o, 5) for o in output[i][:,0]], [round(a, 5) for a in answer[i][:,0]])
             self.assertSequenceEqual([round(o, 5) for o in output[i][:,1]], [round(a, 5) for a in answer[i][:,1]])
 
-         # Github.com URL (tree)
+        # Github.com URL (tree)
         url_github = 'https://github.com/monroews/playing/tree/master/ProCoDA_data'
         output = pp.get_data_by_state(url_github, dates="11-5-2019", state=1, column=1, extension='.tsv')
         for i in range(len(output)):
@@ -514,12 +514,13 @@ class TestProCoDAParser(unittest.TestCase):
         [5.5, 5.5, 5.5, 5.43125, 5.42094, 5.40908, 5.39544, 5.37976, 5.36172,
         5.34098, 5.31712, 5.28969, 5.5, 5.5, 5.5]*u.mL/u.s
         )
+        assert False
 
     def test_perform_function_on_state(self):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', '')
 
         def avg_with_units(lst):
-            num = np.size(lst)
+            num = len(lst)
             acc = 0
             for i in lst:
                 acc = i + acc
@@ -540,7 +541,7 @@ class TestProCoDAParser(unittest.TestCase):
         path = os.path.join(os.path.dirname(__file__), '.', 'data', 'Test Meta File.txt')
 
         def avg_with_units(lst):
-            num = np.size(lst)
+            num = len(lst)
             acc = 0
             for i in lst:
                 acc = i + acc
@@ -557,7 +558,7 @@ class TestProCoDAParser(unittest.TestCase):
         out_path = os.path.join(os.path.dirname(__file__), '.', 'data', 'test_output.txt')
 
         def avg_with_units(lst):
-            num = np.size(lst)
+            num = len(lst)
             acc = 0
             for i in lst:
                 acc = i + acc

@@ -461,16 +461,16 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
         # get the corresponding indices in the data array
         data_start = []
         data_end = []
-        for i in range(np.size(state_start)):
+        for i in range(len(state_start)):
             data_start.append((data[:, 0] > state_start[i]).argmax())
             data_end.append((data[:, 0] > state_end[i]).argmax() - 1)
-        if np.size(data_end) < np.size(data_start):
+        if len(data_end) < len(data_start):
             data_end = np.append(data_end, -1)
 
         if first_day:
             start_time = data[0, 0]
 
-        for i in range(np.size(data_start)):
+        for i in range(len(data_start)):
             t = data[data_start[i]:data_end[i], 0] + day - start_time
             if isinstance(column, int):
                 c = data[data_start[i]:data_end[i], column]
@@ -479,7 +479,7 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
             if overnight and i == 0:
                 data_agg = np.insert(
                     data_agg[-1],
-                    np.size(data_agg[-1][:, 0]),
+                    len(data_agg[-1][:, 0]),
                     np.vstack((t, c)).T,
                 )
             else:
@@ -571,8 +571,8 @@ def average_state(dates, state, column, units="", path="", extension=".tsv"):
     """
     data_agg = get_data_by_state(path, dates, state, column, extension)
 
-    averages = np.zeros(np.size(data_agg))
-    for i in range(np.size(data_agg)):
+    averages = np.zeros(len(data_agg))
+    for i in range(len(data_agg)):
         averages[i] = np.average(data_agg[i][:, 1])
 
     if units != "":
@@ -622,7 +622,7 @@ def perform_function_on_state(
     .. code-block:: python
 
         def avg_with_units(lst):
-        num = np.size(lst)
+        num = len(lst)
         acc = 0
         for i in lst:
             acc = i + acc
@@ -635,8 +635,8 @@ def perform_function_on_state(
     """
     data_agg = get_data_by_state(path, dates, state, column, extension)
 
-    output = np.zeros(np.size(data_agg))
-    for i in range(np.size(data_agg)):
+    output = np.zeros(len(data_agg))
+    for i in range(len(data_agg)):
         if units != "":
             output[i] = func(data_agg[i][:, 1] * u(units)).magnitude
         else:
@@ -688,7 +688,7 @@ def read_state_with_metafile(
     .. code-block:: python
 
         def avg_with_units(lst):
-            num = np.size(lst)
+            num = len(lst)
             acc = 0
             for i in lst:
                 acc = i + acc
