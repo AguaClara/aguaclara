@@ -509,6 +509,7 @@ class TestProCoDAParser(unittest.TestCase):
                              extension=".xls")
         avgs = np.round(avgs, 5)
 
+        print(avgs.tolist())
         self.assertSequenceEqual(
         avgs.tolist(),
         [5.5, 5.5, 5.5, 5.43125, 5.42094, 5.40908, 5.39544, 5.37976, 5.36172,
