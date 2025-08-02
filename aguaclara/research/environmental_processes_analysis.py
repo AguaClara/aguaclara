@@ -82,9 +82,7 @@ def alpha1_carbonate(pH):
     >>> round(alpha1_carbonate(10), 7)
     <Quantity(0.639969, 'dimensionless')>
     """
-    alpha1_carbonate = 1 / (
-        (invpH(pH) / K1_carbonate) + 1 + (K2_carbonate / invpH(pH))
-    )
+    alpha1_carbonate = 1 / ((invpH(pH) / K1_carbonate) + 1 + (K2_carbonate / invpH(pH)))
     return alpha1_carbonate
 
 
@@ -200,9 +198,7 @@ def aeration_data(DO_column, dirpath):
     # return the list of files in the directory
     filenames = os.listdir(dirpath)
     # extract the flowrates from the filenames and apply units
-    airflows = (np.array([i.split(".", 1)[0] for i in filenames])).astype(
-        np.float32
-    )
+    airflows = (np.array([i.split(".", 1)[0] for i in filenames])).astype(np.float32)
     # sort airflows and filenames so that they are in ascending order
     # of flow rates
     idx = np.argsort(airflows)
@@ -219,9 +215,7 @@ def aeration_data(DO_column, dirpath):
     aeration_collection = collections.namedtuple(
         "aeration_results", "filepaths airflows DO_data time_data"
     )
-    aeration_results = aeration_collection(
-        filepaths, airflows, DO_data, time_data
-    )
+    aeration_results = aeration_collection(filepaths, airflows, DO_data, time_data)
     return aeration_results
 
 
@@ -455,9 +449,7 @@ def Solver_CMFR_N(t_data, C_data, theta_guess, C_bar_guess):
     Solver_theta = popt[0] * u.s
     Solver_C_bar = popt[1] * u(C_units)
     Solver_N = popt[2]
-    Reactor_results = collections.namedtuple(
-        "Reactor_results", "theta C_bar N"
-    )
+    Reactor_results = collections.namedtuple("Reactor_results", "theta C_bar N")
     CMFR = Reactor_results(theta=Solver_theta, C_bar=Solver_C_bar, N=Solver_N)
     return CMFR
 
@@ -529,8 +521,6 @@ def Solver_AD_Pe(t_data, C_data, theta_guess, C_bar_guess):
     Solver_theta = popt[0] * u.s
     Solver_C_bar = popt[1] * u(C_units)
     Solver_Pe = popt[2]
-    Reactor_results = collections.namedtuple(
-        "Reactor_results", "theta C_bar Pe"
-    )
+    Reactor_results = collections.namedtuple("Reactor_results", "theta C_bar Pe")
     AD = Reactor_results(theta=Solver_theta, C_bar=Solver_C_bar, Pe=Solver_Pe)
     return AD

@@ -17,6 +17,4 @@ class Plant(Component):
         self.design_floc()
 
     def design_floc(self):
-        self.etf.floc.sed_chan_inlet_w_pre_weir = (
-            self.sed.chan.inlet_w_pre_weir
-        )
+        self.etf.floc.sed_chan_inlet_w_pre_weir = self.sed.chan.inlet_w_pre_weir

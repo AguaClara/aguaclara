@@ -140,9 +140,7 @@ class Variable_C_Stock(Stock):
         :return: Volume of super stock to dilute
         :rtype: float
         """
-        return Stock.V_super_stock(
-            self, V_stock, self.C_stock(), C_super_stock
-        )
+        return Stock.V_super_stock(self, V_stock, self.C_stock(), C_super_stock)
 
     @ut.list_handler()
     def dilution_factor(self, C_super_stock):
@@ -278,9 +276,7 @@ class Variable_Q_Stock(Stock):
         :return: Volume of super stock to dilute
         :rtype: float
         """
-        return Stock.V_super_stock(
-            self, V_stock, self._C_stock, C_super_stock
-        )
+        return Stock.V_super_stock(self, V_stock, self._C_stock, C_super_stock)
 
     @ut.list_handler()
     def dilution_factor(self, C_super_stock):

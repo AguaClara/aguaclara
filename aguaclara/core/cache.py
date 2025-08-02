@@ -38,9 +38,7 @@ def ac_cache(method):
                 "Using repr() to make a hash of {}. Please consider "
                 "inheriting HashableObject class as repr "
                 "will not guarantee replicable hashing and can result "
-                "in bad cache returns.".format(
-                    repr(hashable_object)
-                ),
+                "in bad cache returns.".format(repr(hashable_object)),
                 Warning,
                 stacklevel=2,
             )

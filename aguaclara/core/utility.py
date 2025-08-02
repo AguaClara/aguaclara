@@ -91,8 +91,7 @@ def round_sf(num, figs=4):
     round_sig_figs instead.
     """
     warnings.warn(
-        "round_sf will be deprecated after 21 Dec 2019. Use "
-        "round_sig_figs instead.",
+        "round_sf will be deprecated after 21 Dec 2019. Use " "round_sig_figs instead.",
         FutureWarning,
     )
     round_sig_figs(num, figs=figs)
@@ -268,9 +267,7 @@ def list_handler():
     """
 
     def decorate(func):
-        @functools.wraps(
-            func
-        )  # For Sphinx documentation of decorated functions
+        @functools.wraps(func)  # For Sphinx documentation of decorated functions
         def wrapper(*args, **kwargs):
             """Run through the wrapped function once for each array element."""
             # Identify the first positional argument that is a sequence.
@@ -376,8 +373,7 @@ def check_range(*args):
         for i in arg[0]:
             if ">0" in arg[1] and i <= 0:
                 raise ValueError(
-                    "{1} is {0} but must be greater than "
-                    "0.".format(i, arg[2])
+                    "{1} is {0} but must be greater than " "0.".format(i, arg[2])
                 )
             if ">=0" in arg[1] and i < 0:
                 raise ValueError(
@@ -385,8 +381,7 @@ def check_range(*args):
                 )
             if "0-1" in arg[1] and not 0 <= i <= 1:
                 raise ValueError(
-                    "{1} is {0} but must be between 0 and "
-                    "1.".format(i, arg[2])
+                    "{1} is {0} but must be between 0 and " "1.".format(i, arg[2])
                 )
             if "<0" in arg[1] and i >= 0:
                 raise ValueError(
@@ -398,8 +393,7 @@ def check_range(*args):
                 )
             if "int" in arg[1] and int(i) != i:
                 raise TypeError(
-                    "{1} is {0} but must be a numeric "
-                    "integer.".format(i, arg[2])
+                    "{1} is {0} but must be a numeric " "integer.".format(i, arg[2])
                 )
             if "boolean" in arg[1] and not isinstance(i, bool):
                 raise TypeError(

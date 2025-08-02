@@ -212,9 +212,7 @@ class PipelineComponent(Component, ABC):
         valid.
         """
         if self.fluid_type not in self._AVAILABLE_FLUID_TYPES:
-            raise ValueError(
-                "fluid_type must be in", self._AVAILABLE_FLUID_TYPES
-            )
+            raise ValueError("fluid_type must be in", self._AVAILABLE_FLUID_TYPES)
 
         if self.next is not None:
             if type(self) is Pipe and type(self.next) not in [Elbow, Tee]:
@@ -572,15 +570,11 @@ class Tee(PipelineComponent):
 
     def _headloss_left(self):
         """The headloss of the left outlet"""
-        return pc.headloss_minor_elbow(self.q, self.id, self.left_k_minor).to(
-            u.cm
-        )
+        return pc.headloss_minor_elbow(self.q, self.id, self.left_k_minor).to(u.cm)
 
     def _headloss_right(self):
         """The headloss of the right outlet"""
-        return pc.headloss_minor_elbow(self.q, self.id, self.right_k_minor).to(
-            u.cm
-        )
+        return pc.headloss_minor_elbow(self.q, self.id, self.right_k_minor).to(u.cm)
 
     @property
     def headloss(self):

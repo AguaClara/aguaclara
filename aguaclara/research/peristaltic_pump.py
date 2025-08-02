@@ -106,9 +106,7 @@ def vol_per_rev_LS(id_number):
     >>> vol_per_rev_LS(18)
     <Quantity(3.8, 'milliliter / turn')>
     """
-    tubing_data_path = os.path.join(
-        os.path.dirname(__file__), "data", "LS_tubing.txt"
-    )
+    tubing_data_path = os.path.join(os.path.dirname(__file__), "data", "LS_tubing.txt")
     df = pd.read_csv(tubing_data_path, delimiter="\t")
     idx = df["Number"] == id_number
     return df[idx]["Flow (mL/rev)"].values[0] * u.mL / u.turn

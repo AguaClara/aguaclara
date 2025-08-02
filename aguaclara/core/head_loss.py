@@ -211,9 +211,7 @@ def _k_value_square_reduction(ent_pipe_id, exit_pipe_id, re, f):
         )
 
 
-def _k_value_tapered_reduction(
-    ent_pipe_id, exit_pipe_id, fitting_angle, re, f
-):
+def _k_value_tapered_reduction(ent_pipe_id, exit_pipe_id, fitting_angle, re, f):
     """Returns the minor loss coefficient for a tapered reducer.
 
     Parameters:
@@ -270,9 +268,7 @@ def _k_value_tapered_expansion(
     elif 0 < theta <= 45:
         k = k_square * 2.6 * np.sin(theta / 2)
     else:
-        raise ValueError(
-            "The reducer angle cannot be outside the [0,180] range"
-        )
+        raise ValueError("The reducer angle cannot be outside the [0,180] range")
     return k
 
 
@@ -287,9 +283,7 @@ def _k_value_rounded_expansion(
 ##########
 
 
-def _k_value_thin_sharp_orifice(
-    id_pipe: float, id_orifice: float, re: float
-) -> float:
+def _k_value_thin_sharp_orifice(id_pipe: float, id_orifice: float, re: float) -> float:
     # Calculate minor loss coefficient for a thin, sharp orifice
     if re < 2500:
         k = (

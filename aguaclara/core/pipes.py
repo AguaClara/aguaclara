@@ -46,9 +46,7 @@ class Pipe:
     @property
     def od(self):
         """The outer diameter of the pipe."""
-        index = (
-            np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)
-        ).argmin()
+        index = (np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)).argmin()
         return pipedb.iloc[index, 1] * u.inch
 
     @property
@@ -64,15 +62,9 @@ class Pipe:
         .. deprecated::
         `id_sch40` is deprecated; use `id_sch` instead.
         """
-        warnings.warn(
-            "id_sch40 is deprecated; use id_sch instead.", UserWarning
-        )
-        myindex = (
-            np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)
-        ).argmin()
-        return (
-            pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])
-        ) * u.inch
+        warnings.warn("id_sch40 is deprecated; use id_sch instead.", UserWarning)
+        myindex = (np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)).argmin()
+        return (pipedb.iloc[myindex, 1] - 2 * (pipedb.iloc[myindex, 5])) * u.inch
 
     def id_sch(self, schedule):
         """
@@ -85,9 +77,7 @@ class Pipe:
         :return: The inner diameter of the pipe
         :rtype: u.inch
         """
-        myindex = (
-            np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)
-        ).argmin()
+        myindex = (np.abs(np.array(pipedb["NDinch"]) - self.nd.magnitude)).argmin()
         thickness = pipedb.iloc[myindex][schedule.value]
         if thickness == 0:
             return schedule ^ " does not exist for this ND"
@@ -348,9 +338,7 @@ def SCH_all_available(
 
     nds = ND_all_available() / u.inch if NDarr is None else NDarr / u.inch
     schs = (
-        [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160]
-        if (SCHarr is None)
-        else SCHarr
+        [SCH.SCH40, SCH.SCH80, SCH.SCH120, SCH.SCH160] if (SCHarr is None) else SCHarr
     )
 
     allschs = []

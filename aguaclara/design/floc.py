@@ -272,9 +272,7 @@ class Flocculator(Component):
 
     def _set_drain_pipe(self):
         drain_k_minor = (
-            hl.PIPE_ENTRANCE_K_MINOR
-            + hl.PIPE_ENTRANCE_K_MINOR
-            + hl.PIPE_EXIT_K_MINOR
+            hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_ENTRANCE_K_MINOR + hl.PIPE_EXIT_K_MINOR
         )
 
         chan_pair_a = 2 * self.chan_l * self.chan_w
@@ -284,16 +282,12 @@ class Flocculator(Component):
                 * chan_pair_a
                 / (np.pi * self.drain_t)
                 * np.sqrt(
-                    self.end_water_depth
-                    * drain_k_minor
-                    / (2 * u.standard_gravity)
+                    self.end_water_depth * drain_k_minor / (2 * u.standard_gravity)
                 )
             )
         ).to_base_units()
 
-        self.drain_pipe = Pipe(
-            id=drain_id, k_minor=drain_k_minor, spec=self.spec
-        )
+        self.drain_pipe = Pipe(id=drain_id, k_minor=drain_k_minor, spec=self.spec)
 
     @property
     def onshape_url_configured(self):
@@ -313,9 +307,7 @@ class Flocculator(Component):
         # concrete_config = quote_plus(concrete_config)
         encoded_config = "?configuration="
 
-        encoded_config += quote_plus(
-            "Concrete_config=" + concrete_config + ";"
-        )
+        encoded_config += quote_plus("Concrete_config=" + concrete_config + ";")
         encoded_config += quote_plus("Channel_L=" + str(self.chan_l) + ";")
 
         configured_url = self._onshape_url + encoded_config
