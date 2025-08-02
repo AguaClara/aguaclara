@@ -67,9 +67,9 @@ setup(
     packages = find_packages(),
     # Ensure that this matches Pipfile > [packages]
     install_requires=requirements,
-    test_requires=test_requirements,
     # Ensure that this matches Pipfile > [dev-packages]
-    dev_requirements=dev_requirements,
+    test_requires=test_requirements,
+    extras_require=extra_requirements,
     python_requires=">=3.8",
     setup_requires=["pytest-runner"],
     tests_require=["pytest==7.2.1", "codecov>=2.1.4"],
