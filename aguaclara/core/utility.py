@@ -12,7 +12,6 @@ Example:
 from aguaclara.core.units import u
 import numpy as np
 from math import log10, floor, ceil
-import warnings
 import functools
 
 

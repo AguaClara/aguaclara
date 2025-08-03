@@ -32,7 +32,14 @@ jobs:
     - name: Run pytests and generate coverage report
       run: |
         pytest --cov=./ --cov-report=xml
-        codecov -t ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Upload coverage to Codecov
+      if: ${{ (matrix.python-version == 3.12) && (runner.os == 'Linux') }}
+      uses: codecov/codecov-action@v5
+      with:
+        fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
+        verbose: true
 
   test-docs:
     runs-on: ubuntu-latest
