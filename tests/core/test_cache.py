@@ -36,7 +36,7 @@ side_effect_n_calls = 0
 
 def increment_n_calls():
     global side_effect_n_calls
-    side_effect_n_calls = side_effect_n_calls +1
+    side_effect_n_calls = side_effect_n_calls + 1
 
 
 def test_ac_cache():
@@ -47,7 +47,7 @@ def test_ac_cache():
     assert 2 == side_effect_n_calls
     assert 9 == my_computed_object.sum
     assert 2 == side_effect_n_calls
-    my_computed_object.a=3
+    my_computed_object.a = 3
     assert 36 == my_computed_object.product
     assert 3 == side_effect_n_calls
     assert 10 == my_computed_object.sum
