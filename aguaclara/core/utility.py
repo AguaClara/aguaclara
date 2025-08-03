@@ -79,24 +79,6 @@ def round_sig_figs(num, figs=4):
     return num
 
 
-def round_sf(num, figs=4):
-    """Round a number to some amount of significant figures.
-
-    Args:
-        - ``num (float)``: Value to be rounded (optional units)
-        - ``figs (int)``: Number of significant digits to be rounded to
-          (recommended, defaults to 4)
-
-    Note: This function will be deprecated after 21 Dec 2019. Use
-    round_sig_figs instead.
-    """
-    warnings.warn(
-        "round_sf will be deprecated after 21 Dec 2019. Use " "round_sig_figs instead.",
-        FutureWarning,
-    )
-    round_sig_figs(num, figs=figs)
-
-
 @optional_units([0, 1], ["num", "step"])
 def _stepper(num, step=10, func=round):
     """Round a number to be a multiple of some step.
@@ -141,28 +123,6 @@ def ceil_step(num, step=10):
 def floor_step(num, step=10):
     """Like :func:`round_step`, but ``num`` is always rounded down."""
     return _stepper(num, step=step, func=floor)
-
-
-def stepceil_with_units(param, step, unit):
-    """Round a number up to be a multiple of some step.
-
-    Args:
-        - ``param (float)``: Value to be rounded (optional units)
-        - ``step (float)``: Factor to which ``param`` will be rounded
-        - ``unit (Quantity)``: units of ``step``
-
-    Note: this function will be deprecated after 21 Dec 2019. Use ceil_step
-    instead.
-    """
-    warnings.warn(
-        "stepceil_with_units will be deprecated after 21 Dec 2019. Use "
-        "ceil_step instead.",
-        FutureWarning,
-    )
-    counter = 0 * unit
-    while counter < param.to(unit):
-        counter += step * unit
-    return counter
 
 
 def floor_nearest(x, array):
