@@ -20,45 +20,21 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }} for Linux
-      if: runner.os != 'Windows'
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install Conda for Windows with Python ${{ matrix.python-version }}
-      if: runner.os == 'Windows'
-      uses: conda-incubator/setup-miniconda@v3
-      with:
-        auto-update-conda: true
-        python-version: ${{ matrix.python-version }}
-        channels: conda-forge
-
-    - name: Install dependencies for Linux
-      if: runner.os != 'Windows'
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        pip install pipenv
-        pipenv install ".[dev]"
+        pip install ".[dev]"
 
-    - name: Install dependencies for Windows
-      if: runner.os == 'Windows'
-      run: |
-        conda run python -m pip install --upgrade pip setuptools wheel
-        conda run python -m pip install pipenv
-        conda run pipenv install ".[dev]"
-        
-    - name: Run pytests and generate coverage report for Linux
+    - name: Run pytests and generate coverage report
       if: runner.os != 'Windows'
       run: |
-        pipenv run pytest --cov=./ --cov-report=xml
-        pipenv run codecov -t ${{ secrets.CODECOV_TOKEN }}
+        pytest --cov=./ --cov-report=xml
+        codecov -t ${{ secrets.CODECOV_TOKEN }}
 
-    - name: Run pytests and generate coverage report for Windows
-      if: runner.os == 'Windows'
-      run: |
-        conda run pipenv run pytest --cov=./ --cov-report=xml
-        conda run pipenv run codecov -t ${{ secrets.CODECOV_TOKEN }}
-  
   test-docs:
     runs-on: ubuntu-latest
     
@@ -73,14 +49,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        pip install pipenv
-        pipenv install ".[dev]"
+        pip install ".[dev]"
         
     - name: Run doctests and build html files
       run: |
         cd docs
-        pipenv run make doctest
-        pipenv run make html
+        make doctest
+        make html
 
     - name: Run html-proofer
       uses: chabad360/htmlproofer@master
@@ -102,13 +77,12 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        pip install pipenv
-        pipenv install ".[dev]"
+        pip install ".[dev]"
 
     - name: Lint with flake8
       run: |
-        pipenv run flake8 aguaclara --count --verbose --show-source --statistics
+        flake8 aguaclara --count --verbose --show-source --statistics
 
     - name: Check with black
       run: |
-        pipenv run black --check aguaclara
+        black --check aguaclara

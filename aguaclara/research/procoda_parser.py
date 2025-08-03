@@ -465,11 +465,11 @@ def get_data_by_state(path, dates, state, column, extension=".tsv"):
             start_time = data[0, 0]
 
         for i in range(len(data_start)):
-            t = data[data_start[i] : data_end[i], 0] + day - start_time
+            t = data[data_start[i] : data_end[i], 0] + day - start_time  # noqa: E203
             if isinstance(column, int):
-                c = data[data_start[i] : data_end[i], column]
+                c = data[data_start[i] : data_end[i], column]  # noqa: E203
             else:
-                c = data[column][data_start[i] : data_end[i]]
+                c = data[column][data_start[i] : data_end[i]]  # noqa: E203
             if overnight and i == 0:
                 data_agg = np.insert(
                     data_agg[-1],
