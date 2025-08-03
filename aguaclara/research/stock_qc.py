@@ -9,10 +9,10 @@ class Stock(object):
     """
 
     def rpm(self, vol_per_rev, Q):
-        return (Q / vol_per_rev)
+        return Q / vol_per_rev
 
     def T_stock(self, V_stock, Q_stock):
-        return (V_stock / Q_stock)
+        return V_stock / Q_stock
 
     def M_stock(self, V_stock, C_stock):
         return C_stock * V_stock
@@ -32,7 +32,9 @@ class Variable_C_Stock(Stock):
 
     >>> from aguaclara.research.stock_qc import Variable_C_Stock
     >>> from aguaclara.core.units import u
-    >>> reactor = Variable_C_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, Q_stock = .01*u.mL/u.s)
+    >>> reactor = Variable_C_Stock(
+    ...     Q_sys=1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, Q_stock = .01*u.mL/u.s
+    ... )
     >>> reactor.C_stock()
     <Quantity(140.0, 'milligram / liter')>
     """
@@ -90,13 +92,14 @@ class Variable_C_Stock(Stock):
         """Return the pump speed required for the reactor's stock of material
         given the volume of fluid output per revolution by the stock's pump.
 
-        :param vol_per_rev: Volume of fluid pumped per revolution (dependent on pump and tubing)
+        :param vol_per_rev: Volume of fluid pumped per revolution
+            (dependent on pump and tubing)
         :type vol_per_rev: float
 
         :return: Pump speed for the material stock, in revolutions per minute
         :rtype: float
         """
-        return Stock.rpm(self, vol_per_rev, self._Q_stock).to(u.rev/u.min)
+        return Stock.rpm(self, vol_per_rev, self._Q_stock).to(u.rev / u.min)
 
     @ut.list_handler()
     def T_stock(self, V_stock):
@@ -147,7 +150,8 @@ class Variable_C_Stock(Stock):
         :param C_super_stock: Concentration of the super stock
         :type C_super_stock: float
 
-        :return: dilution factor of stock concentration over super stock concentration (< 1)
+        :return: dilution factor of stock concentration
+            over super stock concentration (< 1)
         :rtype: float
         """
         return Stock.dilution_factor(self, self.C_stock(), C_super_stock)
@@ -161,7 +165,9 @@ class Variable_Q_Stock(Stock):
 
     >>> from aguaclara.research.stock_qc import Variable_Q_Stock
     >>> from aguaclara.core.units import u
-    >>> reactor = Variable_Q_Stock(Q_sys = 1*u.mL/u.s, C_sys = 1.4*u.mg/u.L, C_stock = 7.6*u.mg/u.L)
+    >>> reactor = Variable_Q_Stock(
+    ... Q_sys=1*u.mL/u.s, C_sys=1.4*u.mg/u.L, C_stock=7.6*u.mg/u.L
+    ... )
     >>> round(reactor.Q_stock(), 6)
     <Quantity(0.184211, 'milliliter / second')>
     >>> pump_speed = reactor.rpm(vol_per_rev = .5*u.mL/u.rev).to(u.rev/u.min)
@@ -222,13 +228,14 @@ class Variable_Q_Stock(Stock):
         """Return the pump speed required for the reactor's stock of material
         given the volume of fluid output per revolution by the stock's pump.
 
-        :param vol_per_rev: Volume of fluid pumped per revolution (dependent on pump and tubing)
+        :param vol_per_rev: Volume of fluid pumped per revolution
+            (dependent on pump and tubing)
         :type vol_per_rev: float
 
         :return: Pump speed for the material stock, in revolutions per minute
         :rtype: float
         """
-        return Stock.rpm(self, vol_per_rev, self.Q_stock()).to(u.rev/u.min)
+        return Stock.rpm(self, vol_per_rev, self.Q_stock()).to(u.rev / u.min)
 
     @ut.list_handler()
     def T_stock(self, V_stock):
@@ -279,7 +286,8 @@ class Variable_Q_Stock(Stock):
         :param C_super_stock: Concentration of the super stock
         :type C_super_stock: float
 
-        :return: dilution factor of stock concentration over super stock concentration (< 1)
+        :return: dilution factor of stock concentration
+            over super stock concentration (< 1)
         :rtype: float
         """
         return Stock.dilution_factor(self, self._C_stock, C_super_stock)

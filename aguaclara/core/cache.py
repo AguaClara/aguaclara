@@ -1,6 +1,8 @@
-# The cache decorator does not support objects nested within datastructures or other objects. It is quite limited
-# because the hash function is limited. This could be revisited and we could use a serialization library like Pickle
-# if this proved to be an issue (which it most likely will when we get more complex classes)
+# The cache decorator does not support objects nested within datastructures
+# or other objects. It is quite limited because the hash function is limited.
+# This could be revisited and we could use a serialization library like Pickle
+# if this proved to be an issue.
+# (which it most likely will when we get more complex classes)
 
 import collections
 import warnings
@@ -11,7 +13,7 @@ __ac_cache__ = {}
 
 def ac_cache(method):
     def _cache(*args, **kw):
-        global __cache__
+        global __cache__  # noqa: F824
         param_list = [args, kw]
         params_key = tuple([method.__name__, ac_hash(param_list)])
         try:
@@ -32,9 +34,14 @@ def ac_cache(method):
             a_hash = ac_hash_iterable_into_tuple(hashable_object)
         else:
             a_hash = repr(hashable_object)
-            warnings.warn("Using repr() to make a hash of {}. Please consider inheriting HashableObject class as repr "
-                          "will not guarantee replicable hashing and can result in bad cache returns.".format(
-                repr(hashable_object)), Warning, stacklevel=2)
+            warnings.warn(
+                "Using repr() to make a hash of {}. Please consider "
+                "inheriting HashableObject class as repr "
+                "will not guarantee replicable hashing and can result "
+                "in bad cache returns.".format(repr(hashable_object)),
+                Warning,
+                stacklevel=2,
+            )
         return a_hash
 
     def ac_hash_iterable_into_tuple(hashable_object_list):
@@ -44,10 +51,12 @@ def ac_cache(method):
         return hash_tuple
 
     primitive = (int, str, bool, ...)
+
     def is_simple_hashable(thing):
         return type(thing) in primitive
 
     return _cache
+
 
 class HashableObject:
     def ac_hash(self):

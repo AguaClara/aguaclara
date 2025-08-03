@@ -8,11 +8,11 @@ Example:
     >>> sed.tank_n
     4
 """
-from aguaclara.design.sed_tank import SedimentationTank
+
 from aguaclara.design.sed_chan import SedimentationChannel
+from aguaclara.design.sed_tank import SedimentationTank
 from aguaclara.design.component import Component
 from aguaclara.core.units import u
-import aguaclara.core.constants as con
 
 import numpy as np
 
@@ -27,8 +27,8 @@ class Sedimentor(Component):
 
     Design inputs:
         - ``q (float * u.L / u.s)``: Flow rate (recommended, defaults to 20L/s)
-        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to
-          20°C)
+        - ``temp (float * u.degC)``: Water temperature
+          (recommended, defaults to 20°C)
         - ``wall_thickness (float * u.cm)``: Wall thickness (optional, defaults
           to 15 * u.cm)
         - ``tank (SedimentationTank)``: Sedimentation Tank
@@ -38,9 +38,10 @@ class Sedimentor(Component):
           (optional, see
           :class:`aguaclara.design.sed_chan.SedimentationChannel` for defaults)
     """
+
     def __init__(self, **kwargs):
         self.wall_thickness = 15.0 * u.cm
-        
+
         self.tank = SedimentationTank()
         self.chan = SedimentationChannel()
         self.subcomponents = [self.tank, self.chan]
@@ -56,7 +57,7 @@ class Sedimentor(Component):
         """The number of sedimentation tanks."""
         tank_n = np.ceil(self.q / self.tank.q_tank)
         return int(tank_n)
-    
+
     def _design_chan(self):
         """Design the sedimentation channel based off of the tank."""
         self.chan.sed_tank_n = self.tank_n
@@ -73,14 +74,15 @@ class Sedimentor(Component):
         """Design the sedimentation tank based off of the channel"""
         self.tank.sed_chan_w_outer = self.chan.w_outer
         self.tank.sed_chan_weir_thickness = self.chan.weir_thickness
-        
+
+
 MODULE_PLATES_N_MIN = 8
 
 WATER_H_EST = 2 * u.m
 
-GATE_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Sed-Scaled-Gate-Valve-Threaded.dwg"
+GATE_VALVE_URL = "https://confluence.cornell.edu/download/attachments/173604905/Sed-Scaled-Gate-Valve-Threaded.dwg"  # noqa: E501
 
-SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/173604905/PlateSettlerSupportBolt.dwg"
+SUPPORT_BOLT_URL = "https://confluence.cornell.edu/download/attachments/173604905/PlateSettlerSupportBolt.dwg"  # noqa: E501
 
 # ratio of the height to the width of the sedimentation tank inlet channel.
 INLET_H_W_RATIO = 0.95
@@ -112,7 +114,7 @@ MOD_SPACER_ND = 0.75 * u.inch
 
 MOD_SPACER_SDR = 17
 
-# This is the vertical thickness of the lip where the lamella support sits. mrf222
+# This is the vertical thickness of the lip where the lamella support sits
 LAMELLA_LEDGE_THICKNESS = 8 * u.cm
 
 LAMELLA_PIPE_EDGE_S = 5 * u.cm
@@ -133,7 +135,7 @@ PLATE_FRAME_ND = 1.5 * u.inch
 ################
 
 # Max energy dissipation rate in the sed diffuser outletS
-ENERGY_DIS_INT_MAX = 150 * u.mW/u.kg
+ENERGY_DIS_INT_MAX = 150 * u.mW / u.kg
 
 # Ratio of min to max flow through the inlet manifold diffusers
 MAN_ND_MAX = 8 * u.inch
@@ -151,13 +153,13 @@ MAN_CONNECTION_STUB_L = 4 * u.cm
 
 MAN_FIRST_DIFFUSER_GAP_L = 3 * u.cm
 
-#Vertical distance from the edge of the jet reverser half-pipe to the tip
+# Vertical distance from the edge of the jet reverser half-pipe to the tip
 # of the inlet manifold diffusers
 JET_REVERSER_TO_DIFFUSERS_H = 3 * u.cm
 
-#Gap between the end of the inlet manifold pipe and the end wall of the
+# Gap between the end of the inlet manifold pipe and the end wall of the
 # tank to be able to install the pipe
-MAN_PIPE_FROM_TANK_END_L = 2  *u.cm
+MAN_PIPE_FROM_TANK_END_L = 2 * u.cm
 
 WALL_TO_DIFFUSER_GAP_L_MIN = 3 * u.cm
 
@@ -193,12 +195,12 @@ FILTER_OUTLET_HL_MAX = 10 * u.cm
 
 PLATE_CANTILEVERED_L = 20 * u.cm
 
-HOPPER_DRAIN_ND = 1*u.inch
+HOPPER_DRAIN_ND = 1 * u.inch
 
-HOPPER_VIEWER_ND = 2*u.inch
+HOPPER_VIEWER_ND = 2 * u.inch
 
-HOPPER_SKIMMER_ND = 2*u.inch
+HOPPER_SKIMMER_ND = 2 * u.inch
 
 # Diffusers/Jet Reverser
 
-DIFFUSER_ND = 1*u.inch
+DIFFUSER_ND = 1 * u.inch
