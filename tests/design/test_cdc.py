@@ -61,16 +61,3 @@ def test_cdc(actual, expected):
         assert actual.magnitude == pytest.approx(expected.magnitude)
     else:
         assert actual == pytest.approx(expected)
-
-
-@pytest.mark.parametrize(
-    "warning, func",
-    [
-        (UserWarning, lambda: cdc_20._alum_nu(2 * u.g / u.L)),
-        (UserWarning, lambda: cdc_20._pacl_nu(2 * u.g / u.L)),
-        (UserWarning, lambda: cdc_20._coag_nu(2 * u.g / u.L, "alum")),
-        (UserWarning, lambda: cdc_20.coag_q_max_est),
-    ],
-)
-def test_cdc_warning(warning, func):
-    pytest.warns(warning, func)

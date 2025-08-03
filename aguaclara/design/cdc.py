@@ -76,16 +76,6 @@ class CDC(Component):
         ) * pc.viscosity_kinematic_water(self.temp)
         return alum_nu
 
-    def _alum_nu(self, coag_conc):
-        """
-        .. deprecated::
-            `_alum_nu` is deprecated; use `alum_nu` instead.
-        """
-        # Deprecated since January 2021
-        warnings.warn("_alum_nu is deprecated; use alum_nu instead.", UserWarning)
-
-        return self.alum_nu(coag_conc)
-
     def pacl_nu(self, coag_conc):
         """Return the dynamic viscosity of water at a given temperature.
 
@@ -101,26 +91,6 @@ class CDC(Component):
             * (coag_conc / (u.kg / u.m**3)).to(u.dimensionless) ** 1.893
         ) * pc.viscosity_kinematic_water(self.temp)
         return pacl_nu
-
-    def _pacl_nu(self, coag_conc):
-        """
-        .. deprecated::
-            `_pacl_nu` is deprecated; use `pacl_nu` instead.
-        """
-        # Deprecated since January 2021
-        warnings.warn("_pacl_nu is deprecated; use pacl_nu instead.", UserWarning)
-
-        return self.pacl_nu(coag_conc)
-
-    def _coag_nu(self, coag_conc, coag_type):
-        """
-        .. deprecated::
-            `_coag_nu` is deprecated; use `coag_nu` instead.
-        """
-        # Deprecated since January 2021
-        warnings.warn("_coag_nu is deprecated; use coag_nu instead.", UserWarning)
-
-        return self.coag_nu(coag_conc, coag_type)
 
     def coag_nu(self, coag_conc, coag_type):
         """Return the dynamic viscosity of water at a given temperature.
