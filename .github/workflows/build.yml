@@ -30,7 +30,6 @@ jobs:
         pip install ".[dev]"
 
     - name: Run pytests and generate coverage report
-      if: runner.os != 'Windows'
       run: |
         pytest --cov=./ --cov-report=xml
         codecov -t ${{ secrets.CODECOV_TOKEN }}
