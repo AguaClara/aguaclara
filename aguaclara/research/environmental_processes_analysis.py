@@ -53,8 +53,8 @@ def alpha0_carbonate(pH):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        alpha0_carbonate
-    )
+    ...     alpha0_carbonate
+    ... )
     >>> round(alpha0_carbonate(10), 7)
     <Quantity(0.00015, 'dimensionless')>
     """
@@ -77,8 +77,8 @@ def alpha1_carbonate(pH):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        alpha1_carbonate
-    )
+    ...     alpha1_carbonate
+    ... )
     >>> round(alpha1_carbonate(10), 7)
     <Quantity(0.639969, 'dimensionless')>
     """
@@ -99,8 +99,8 @@ def alpha2_carbonate(pH):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        alpha2_carbonate
-    )
+    ...     alpha2_carbonate
+    ... )
     >>> round(alpha2_carbonate(10), 7)
     <Quantity(0.359881, 'dimensionless')>
     """
@@ -128,8 +128,8 @@ def ANC_closed(pH, total_carbonates):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        ANC_closed
-    )
+    ...     ANC_closed
+    ... )
     >>> from aguaclara.core.units import u
     >>> round(ANC_closed(10, 1*u.mol/u.L), 7)
     <Quantity(1.359831, 'equivalent / liter')>
@@ -159,8 +159,8 @@ def ANC_open(pH):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        ANC_open
-    )
+    ...     ANC_open
+    ... )
     >>> round(ANC_open(10), 7)
     <Quantity(0.0907346, 'equivalent / liter')>
     """
@@ -343,12 +343,12 @@ def E_CMFR_N(t, N):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        E_CMFR_N
-    )
+    ...     E_CMFR_N
+    ... )
     >>> round(E_CMFR_N(0.5, 3), 7)
-    0.7530643
+    np.float64(0.7530643)
     >>> round(E_CMFR_N(0.1, 1), 7)
-    0.9048374
+    np.float64(0.9048374)
     """
     return (N**N) / special.gamma(N) * (t ** (N - 1)) * np.exp(-N * t)
 
@@ -373,10 +373,10 @@ def E_Advective_Dispersion(t, Pe):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        E_Advective_Dispersion
-    )
+    ...     E_Advective_Dispersion
+    ... )
     >>> round(E_Advective_Dispersion(0.5, 5), 7)
-    0.4774864
+    np.float64(0.4774864)
     """
     if t == 0:
         return 0
@@ -408,12 +408,11 @@ def Tracer_CMFR_N(t_seconds, t_bar, C_bar, N):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        Tracer_CMFR_N
-    )
+    ...     Tracer_CMFR_N
+    ... )
     >>> from aguaclara.core.units import u
     >>> Tracer_CMFR_N([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 3)
-    <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423],
-    'milligram / liter')>
+    <Quantity([2.96358283 6.50579498 8.03352597 7.83803116 6.72125423], 'milligram / liter')>
     """
     return C_bar * E_CMFR_N(t_seconds / t_bar, N)
 
@@ -475,12 +474,11 @@ def Tracer_AD_Pe(t_seconds, t_bar, C_bar, Pe):
     :Examples:
 
     >>> from aguaclara.research.environmental_processes_analysis import (
-        Tracer_AD_Pe
-    )
+    ...     Tracer_AD_Pe
+    ... )
     >>> from aguaclara.core.units import u
     >>> Tracer_AD_Pe([1, 2, 3, 4, 5]*u.s, 5*u.s, 10*u.mg/u.L, 5)
-    <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131],
-    'milligram / liter')>
+    <Quantity([0.25833732 3.23793989 5.8349833  6.62508831 6.30783131], 'milligram / liter')>
     """
     return C_bar * E_Advective_Dispersion(t_seconds / t_bar, Pe)
 

@@ -9,8 +9,8 @@
 Example:
     >>> from aguaclara.design.ent import *
     >>> ent_tank = EntranceTank(
-            q=20 * u.L / u.s, floc_chan_w = 42.0 * u.inch
-        )
+    ...     q=20 * u.L / u.s, floc_chan_w = 42.0 * u.inch
+    ... )
     >>> ent_tank.plate_n
     <Quantity(11.0, 'dimensionless')>
 """
