@@ -31,7 +31,7 @@ jobs:
 
     - name: Run pytests and generate coverage report
       run: |
-        pytest --cov=./ --cov-report=xml
+        pytest --cov=./ --cov-report=xml tests
         codecov -t ${{ secrets.CODECOV_TOKEN }}
 
   test-docs:
