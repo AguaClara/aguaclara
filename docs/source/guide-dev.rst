@@ -246,7 +246,7 @@ It's a good idea to **commit your work early and commit often**. Saving more sna
         git pull
         git push
 
-For more guidance on using Git in the command line, see the `AguaClara Tutorial Wiki <https://aguaclara-reach.github.io/aguaclara_tutorial/git-and-github/git-in-the-command-line.html>`_.
+For more guidance on using Git in the command line, see the `AguaClara Tutorial Wiki <https://aguaclara.github.io/aguaclara_tutorial/git-and-github/git-in-the-command-line.html>`_.
 
 
 .. _github-actions:
