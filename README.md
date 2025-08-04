@@ -1,8 +1,8 @@
 # `aguaclara`
 [![Pypi Version](https://img.shields.io/pypi/v/aguaclara?color=blue&label=PyPI)](https://pypi.org/project/aguaclara/)
-[![Documentation](https://github.com/AguaClara/aguaclara/workflows/Documentation/badge.svg)](https://aguaclara.github.io/aguaclara/) 
-[![Build Status](https://github.com/AguaClara/aguaclara/workflows/Build/badge.svg)](https://github.com/AguaClara/aguaclara/actions) 
-[![Code Coverage](https://codecov.io/gh/AguaClara/aguaclara/branch/master/graph/badge.svg)](https://app.codecov.io/gh/AguaClara/aguaclara/)
+[![Documentation](https://github.com/AguaClara-Reach/aguaclara/workflows/Documentation/badge.svg)](https://aguaclara-reach.github.io/aguaclara/) 
+[![Build Status](https://github.com/AguaClara-Reach/aguaclara/workflows/Build/badge.svg)](https://github.com/AguaClara-Reach/aguaclara/actions) 
+[![Code Coverage](https://codecov.io/gh/AguaClara-Reach/aguaclara/branch/main/graph/badge.svg)](https://app.codecov.io/gh/AguaClara-Reach/aguaclara/)
 
 `aguaclara` is a Python package developed by [AguaClara Cornell](http://aguaclara.cornell.edu/) and [AguaClara Reach](https://www.aguaclarareach.org/) for designing and performing research on AguaClara water treatment plants. The package has several main functionalities:
 
@@ -77,7 +77,7 @@ C_stock_PACl = reactor.C_stock()
 
 # Visualize and analyze ProCoDA data
 ac.iplot_columns(
-    path = "https://raw.githubusercontent.com/AguaClara/team_resources/master/Data/datalog%206-14-2018.xls", 
+    path = "https://github.com/AguaClara-Reach/aguaclara/raw/refs/heads/main/tests/research/data/datalog_6-14-2018.xls", 
     columns = [3, 4], 
     x_axis = 0
 )
@@ -86,9 +86,9 @@ plt.xlabel("Time (hr)")
 plt.legend(("Influent", "Effluent"))
 ```
 
-The package is still undergoing rapid development. As it becomes more stable, a user guide will be written with more detailed tutorials. At the moment, you can find some more examples in specific pages of the [API reference](https://aguaclara.github.io/aguaclara/api.html).
+The package is still undergoing rapid development. As it becomes more stable, a user guide will be written with more detailed tutorials. At the moment, you can find some more examples in specific pages of the [API reference](https://aguaclara-reach.github.io/aguaclara/api.html).
 
 ## Contributing
-Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, [make an issue](https://github.com/AguaClara/aguaclara/issues/new/choose) in the [`aguaclara` Github repository](https://github.com/AguaClara/aguaclara>).
+Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, [make an issue](https://github.com/AguaClara-Reach/aguaclara/issues/new/choose) in the [`aguaclara` Github repository](https://github.com/AguaClara-Reach/aguaclara>).
 
-To contribute to the package as a developer, refer to the [Developer Guide](https://aguaclara.github.io/aguaclara/guide-dev.html).
+To contribute to the package as a developer, refer to the [Developer Guide](https://aguaclara-reach.github.io/aguaclara/guide-dev.html).

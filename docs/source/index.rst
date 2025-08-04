@@ -91,7 +91,7 @@ Example Usage: Research
 
   # Visualize and analyze ProCoDA data
   ac.iplot_columns(
-      path = "https://raw.githubusercontent.com/AguaClara/team_resources/master/Data/datalog%206-14-2018.xls", 
+      path = "https://github.com/AguaClara-Reach/aguaclara/raw/refs/heads/main/tests/research/data/datalog_6-14-2018.xls", 
       columns = [3, 4], 
       x_axis = 0
   )
@@ -107,9 +107,9 @@ At the moment, you can find some more examples in specific pages of the :ref:`AP
 Contributing
 ------------
 .. |aguaclara Github| replace:: ``aguaclara`` Github repository
-.. _aguaclara Github: https://github.com/AguaClara/aguaclara
+.. _aguaclara Github: https://github.com/AguaClara-Reach/aguaclara
 
-Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, `make an issue <https://github.com/AguaClara/aguaclara/issues/new/choose>`_ in the |aguaclara Github|_.
+Bug reports, features requests, documentation updates, and any other enhancements are welcome! To suggest a change, `make an issue <https://github.com/AguaClara-Reach/aguaclara/issues/new/choose>`_ in the |aguaclara Github|_.
 
 To contribute to the package as a developer, refer to the :ref:`Developer Guide <guide-dev>`.
 

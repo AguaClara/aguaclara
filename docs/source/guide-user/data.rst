@@ -10,7 +10,7 @@ Reading and visualizing data from a ProCoDA data file
     from aguaclara.core.units import u
     import matplotlib.pyplot as plt
     
-    path = "https://raw.githubusercontent.com/AguaClara/team_resources/master/Data/datalog%206-14-2018.xls"
+    path = "https://github.com/AguaClara-Reach/aguaclara/raw/refs/heads/main/tests/research/data/datalog_6-14-2018.xls"
 
     time = ac.column_of_time(path=path, start=2250, end=5060).to(u.hr)
     influent_turbidity = ac.column_of_data(path=path, start=2250, column=3, end=5060)
