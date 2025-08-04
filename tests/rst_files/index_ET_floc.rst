@@ -3,7 +3,7 @@
 ===============
 Memoria Tecnica
 ===============
-Este documento está escrito y mantenido en `Github <https://github.com/AguaClara/aide_design_specs>`_ via `Sphinx <http://www.sphinx-doc.org/en/master/>`_. Utiliza y se refiere a código y funciones de AguaClara en `AguaClara <https://github.com/AguaClara/aguaclara>`_. A continuación se enumeran las versiones de los programas que utilizamos:
+Este documento está escrito y mantenido en `Github <https://github.com/AguaClara/aide_design_specs>`_ via `Sphinx <http://www.sphinx-doc.org/en/master/>`_. Utiliza y se refiere a código y funciones de AguaClara en `AguaClara <https://github.com/AguaClara-Reach/aguaclara>`_. A continuación se enumeran las versiones de los programas que utilizamos:
 
 .. _software_versions:
 .. csv-table:: Estas son las versiones de software utilizadas para compilar esta documentación.

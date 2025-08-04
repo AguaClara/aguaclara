@@ -1,11 +1,11 @@
 .. |aguaclara Github| replace:: ``aguaclara`` Github repository
-.. _aguaclara Github: https://github.com/AguaClara/aguaclara
+.. _aguaclara Github: https://github.com/AguaClara-Reach/aguaclara
 
 .. |aguaclara issues| replace:: ``aguaclara`` Github repository issues
-.. _aguaclara issues: https://github.com/AguaClara/aguaclara/issues
+.. _aguaclara issues: https://github.com/AguaClara-Reach/aguaclara/issues
 
 .. |aguaclara actions| replace:: ``aguaclara``'s Github Actions page
-.. _aguaclara actions: https://github.com/AguaClara/aguaclara/actions
+.. _aguaclara actions: https://github.com/AguaClara-Reach/aguaclara/actions
 
 .. |flake8| replace:: ``flake8``, a Python linter (code style checker),
 .. _flake8: https://flake8.pycqa.org/en/latest/
@@ -26,10 +26,10 @@
 .. _unittest package: https://docs.python.org/3/library/unittest.html
 
 .. |test_physchem.py| replace:: ``tests/core/test_physchem.py``
-.. _test_physchem.py: https://github.com/AguaClara/aguaclara/blob/master/tests/core/test_physchem.py
+.. _test_physchem.py: https://github.com/AguaClara-Reach/aguaclara/blob/main/tests/core/test_physchem.py
 
 .. |test_cdc.py| replace:: ``tests/design/test_cdc.py``
-.. _test_cdc.py: https://github.com/AguaClara/aguaclara/blob/master/tests/design/test_cdc.py
+.. _test_cdc.py: https://github.com/AguaClara-Reach/aguaclara/blob/main/tests/design/test_cdc.py
 
 .. _guide-dev:
 
@@ -70,7 +70,7 @@ If you want to make changes to ``aguaclara``, you should make the package availa
     .. code::
         
         (Cloning original repository)
-        git clone https://github.com/AguaClara/aguaclara.git
+        git clone https://github.com/AguaClara-Reach/aguaclara.git
 
         (Cloning forked repository)
         git clone https://github.com/{your_username_here}/aguaclara.git
@@ -98,16 +98,16 @@ If you want to make changes to ``aguaclara``, you should make the package availa
 
         pipenv run pytest
     
-    The tests should all pass. If they don't, check in with the latest `Github Actions build of the master branch <https://github.com/AguaClara/aguaclara/actions?query=branch%3Amaster>`_ to see what difference between the Github Actions environment and your local environment could make the tests fail.
+    The tests should all pass. If they don't, check in with the latest `Github Actions build of the main branch <https://github.com/AguaClara-Reach/aguaclara/actions?query=branch%3Amain>`_ to see what difference between the Github Actions environment and your local environment could make the tests fail.
 
 
 Branching
 ---------
 Before you develop, it's important to understand the branching conventions for the ``aguaclara`` repository.
 
-The Master Branch
-*****************
-The master branch is the branch that houses ``aguaclara``'s published releases. Therefore, the master branch is a *protected* with rules (on Github) that
+The Main Branch
+***************
+The main branch is the branch that houses ``aguaclara``'s published releases. Therefore, the main branch is a *protected* with rules (on Github) that
 
 * pull requests are required before merging into the branch,
 * only administrators and maintainers can push to the branch, and
@@ -266,7 +266,7 @@ The ``aguaclara`` package uses Github Actions for continuous integration. More s
         - Push, pull request
         - Validate code and documentation, check code coverage
     *   - Documentation
-        - Push to master branch
+        - Push to main branch
         - Build and publish Sphinx documentation 
     *   - Publish to Pypi
         - Publishing of release
@@ -276,14 +276,14 @@ The `Github Actions documentation <https://docs.github.com/en/actions>`_ is a gr
 
 Checking Workflow Results
 *************************
-Results of workflow runs can be viewed in the `Actions <https://github.com/AguaClara/aguaclara/actions>`_ tab of the ``aguaclara`` Github repository. If a job fails in the "Build" workflow for your latest push, find the error in the job's log and debug from there.
+Results of workflow runs can be viewed in the `Actions <https://github.com/AguaClara-Reach/aguaclara/actions>`_ tab of the ``aguaclara`` Github repository. If a job fails in the "Build" workflow for your latest push, find the error in the job's log and debug from there.
 
 Checking Code Coverage
 **********************
 Code coverage is a measure of the amount of source code that has been executed by tests. **Whenever possible, all new or modified code should be covered by tests, so code coverage should either remain the same or increase with each contribution.**
 If you add a file of code that *cannot reasonably be tested*, you may add it to the list of files and directories ignored by Codecov in ``codecov.yml``. (Note: such files are rare!)
 
-The "Build" workflow calculates code coverage and uploads a report to `Codecov <https://app.codecov.io/gh/AguaClara/aguaclara/>`_. The actual change in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green ✓ or a red ✕).
+The "Build" workflow calculates code coverage and uploads a report to `Codecov <https://app.codecov.io/gh/AguaClara-Reach/aguaclara/>`_. The actual change in coverage can then be viewed on Codecov or in the dropdown of status checks next to the commit ID on Github (click on either a green ✓ or a red ✕).
 
 .. image:: images/status_checks.png
     :align: center
@@ -323,16 +323,16 @@ Determine what version number is most appropriate for your release and update ``
         # ...
     )
 
-Merging from Master
-*******************
-To ensure that your code can safely integrate with the ``aguaclara`` package, pull any new changes that were made to the master branch and merge them into your development branch.
+Merging from Main
+*****************
+To ensure that your code can safely integrate with the ``aguaclara`` package, pull any new changes that were made to the main branch and merge them into your development branch.
 
 .. code::
 
-    git checkout master
+    git checkout main
     git pull
     git checkout name_of_your_branch
-    git merge master
+    git merge main
 
 .. note:: Follow Github's instructions for `Syncing a fork <https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork>`_ if you're working in a forked repository.
 
@@ -344,19 +344,19 @@ If the command line alerts you of merge conflicts, open the files with conflicts
 
 Pull Requests
 *************
-Once you're finally ready to merge your code into the master branch...
+Once you're finally ready to merge your code into the main branch...
 
 #.  Push any final commits on your branch.
-#.  `Create a pull request <https://github.com/AguaClara/aguaclara/compare>`_ (PR) on Gitub to merge your development branch with the master branch.
+#.  `Create a pull request <https://github.com/AguaClara-Reach/aguaclara/compare>`_ (PR) on Gitub to merge your development branch with the main branch.
 #.  Follow the pull request template to write a title and description for your PR.
 #.  Add at least one reviewer who is a maintainer of ``aguaclara``. You can also tag, message, or email them to make sure they know to give a review.
 #.  Wait for the reviewer to approve and merge the PR or request changes.
 
 Publishing a Release
 --------------------
-If your PR has been merged into the master branch, publish your release (or ask a collaborator to) as follows:
+If your PR has been merged into the main branch, publish your release (or ask a collaborator to) as follows:
 
-#. Go to the `Releases <https://github.com/AguaClara/aguaclara/releases>`_ on the ``aguaclara`` Github.
+#. Go to the `Releases <https://github.com/AguaClara-Reach/aguaclara/releases>`_ on the ``aguaclara`` Github.
 #. Click "Draft a new release".
 #. Create a new tag with the same name as the new version number (e.g. v0.3.0).
 #. Give your release a title and description.

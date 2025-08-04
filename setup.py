@@ -53,12 +53,12 @@ setup(
     ),
     long_description = readme,
     long_description_content_type="text/markdown",
-    url = "https://github.com/AguaClara/aguaclara",
+    url = "https://github.com/AguaClara-Reach/aguaclara",
     project_urls = {
-        "Documentation": "https://aguaclara.github.io/aguaclara/"
+        "Documentation": "https://aguaclara-reach.github.io/aguaclara/"
     },
-    author = "AguaClara Cornell",
-    author_email = "aguaclara@cornell.edu",
+    author = "AguaClara Reach",
+    author_email = "mwebershirk@aguaclarareach.org",
     license = "MIT",
     classifiers = [
         "Programming Language :: Python :: 3.8",

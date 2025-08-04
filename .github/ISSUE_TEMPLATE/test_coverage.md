@@ -7,7 +7,7 @@ labels: "testing, medium"
 
 ---
 
-- [ ] I have reviewed the test coverage on [Codecov](https://codecov.io/gh/AguaClara/aguaclara)
+- [ ] I have reviewed the test coverage on [Codecov](https://codecov.io/gh/AguaClara-Reach/aguaclara)
 
 ---
 
