@@ -27,7 +27,7 @@ Paste any and all error messages that showed up. Screenshots are also super help
 
 **What software are you using?**
 
-- Operating system: (Windows, macOS, Linux)
+- Operating system: (Windows 10, macOS X, etc.)
 - Python version: (3.7.0, etc.)
     - Open your command line and run `python -V`.
 - `aguaclara` version: (0.0.19, etc.)

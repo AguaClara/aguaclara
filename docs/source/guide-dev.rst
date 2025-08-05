@@ -323,6 +323,8 @@ Determine what version number is most appropriate for your release and update ``
         # ...
     )
 
+Besides ``setup.py``, the version needs to be incremented in the ``CITATION.cff``.
+
 Merging from Main
 *****************
 To ensure that your code can safely integrate with the ``aguaclara`` package, pull any new changes that were made to the main branch and merge them into your development branch.
