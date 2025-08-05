@@ -319,9 +319,11 @@ Determine what version number is most appropriate for your release and update ``
     # ...
     setup(
         name = 'aguaclara',
-        version = '0.3.0',  # Edit the version number here
+        version = '0.4.0',  # Edit the version number here
         # ...
     )
+
+Besides ``setup.py``, the version needs to be incremented in the ``CITATION.cff``.
 
 Merging from Main
 *****************
@@ -358,7 +360,7 @@ If your PR has been merged into the main branch, publish your release (or ask a 
 
 #. Go to the `Releases <https://github.com/AguaClara-Reach/aguaclara/releases>`_ on the ``aguaclara`` Github.
 #. Click "Draft a new release".
-#. Create a new tag with the same name as the new version number (e.g. v0.3.0).
+#. Create a new tag with the same name as the new version number (e.g. v0.4.0).
 #. Give your release a title and description.
 #. Publish the release!
 
