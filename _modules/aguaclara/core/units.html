@@ -1,22 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>aguaclara.core.units &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>aguaclara.core.units &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -33,9 +34,6 @@
           <a href="../../../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -76,11 +74,11 @@
   <h1>Source code for aguaclara.core.units</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Module containing global unit registry.</span>
 
-<span class="sd">The `Pint package &lt;https://pint.readthedocs.io/en/latest/&gt;`_ supports arithmetic</span>
-<span class="sd">of physical quantities, which are combinations of numerical values and units of</span>
-<span class="sd">measurement. The units of a quantity come from Pint&#39;s unit registry. This</span>
-<span class="sd">module contains a unit registry, named ``u``, based on Pint&#39;s unit registry.</span>
-<span class="sd">It also defines a few additional units.</span>
+<span class="sd">The `Pint package &lt;https://pint.readthedocs.io/en/latest/&gt;`_ supports</span>
+<span class="sd">arithmetic of physical quantities, which are combinations of numerical values</span>
+<span class="sd">and units of measurement. The units of a quantity come from Pint&#39;s unit</span>
+<span class="sd">registry. This module contains a unit registry, named ``u``,</span>
+<span class="sd">based on Pint&#39;s unit registry. It also defines a few additional units.</span>
 
 <span class="sd">Frequently Used Units and Constants in ``u``</span>
 <span class="sd">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
@@ -224,29 +222,28 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pint</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># A global unit registry that can be used by any of other module.</span>
-<span class="n">unit_registry</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span>
-    <span class="n">system</span><span class="o">=</span><span class="s1">&#39;mks&#39;</span><span class="p">,</span>
-    <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
+<span class="n">unit_registry</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="s2">&quot;mks&quot;</span><span class="p">,</span> <span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">u</span> <span class="o">=</span> <span class="n">unit_registry</span>
 
 <span class="c1"># default formatting includes 4 significant digits.</span>
 <span class="c1"># This can be overridden on a per-print basis with</span>
 <span class="c1"># print(&#39;{:.3f}&#39;.format(3 * ureg.m / 9)).</span>
-<span class="n">u</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="s1">&#39;.4g&#39;</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,.4g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
+<span class="n">u</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="s2">&quot;.4g&quot;</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:,.4g}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span>
 
 <span class="n">u</span><span class="o">.</span><span class="n">load_definitions</span><span class="p">(</span>
     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;unit_definitions.txt&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="set_sig_figs"><a class="viewcode-back" href="../../../core/units.html#aguaclara.core.units.set_sig_figs">[docs]</a><span class="k">def</span> <span class="nf">set_sig_figs</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<div class="viewcode-block" id="set_sig_figs">
+<a class="viewcode-back" href="../../../core/units.html#aguaclara.core.units.set_sig_figs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_sig_figs</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the default number of significant figures used to print Pint,</span>
 <span class="sd">    Pandas and NumPy value quantities.</span>
 
@@ -268,8 +265,9 @@
 <span class="sd">    &gt;&gt;&gt; print(&#39;e after sigfig adjustment:&#39;,e)</span>
 <span class="sd">    e after sigfig adjustment: 2.553253252e+16 meter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">u</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;g&#39;</span>
-    <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;{:,.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span></div>
+    <span class="n">u</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;g&quot;</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;{:,.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span></div>
+
 </pre></div>
 
            </div>
@@ -279,7 +277,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

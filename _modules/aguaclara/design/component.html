@@ -1,22 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>aguaclara.design.component &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>aguaclara.design.component &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -33,9 +34,6 @@
           <a href="../../../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -114,40 +112,46 @@
 
 <span class="sd">.. # TODO: update the a code example with the complete Onshape design flow.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
-<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote_plus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aguaclara.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">u</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aguaclara.core.utility</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ut</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">quote_plus</span>
 
 
-<div class="viewcode-block" id="Component"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component">[docs]</a><span class="k">class</span> <span class="nc">Component</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="Component">
+<a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Component</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An abstract class representing AguaClara plant components.</span>
-<span class="sd">    </span>
+
 <span class="sd">    This class provides subclasses with the ability to record and propogate a</span>
-<span class="sd">    configuration of plant design variables (``q`` and ``temp``) for a component</span>
-<span class="sd">    and all of its subcomponents.</span>
+<span class="sd">    configuration of plant design variables (``q`` and ``temp``) for a</span>
+<span class="sd">    component and all of its subcomponents.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">Q_DEFAULT</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
     <span class="n">TEMP_DEFAULT</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span>
-    <span class="n">onshape_url_default</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">onshape_url_default</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_DEFAULT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TEMP_DEFAULT</span>
 
         <span class="c1"># Update the Component with new expert inputs, if any were given</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Component.set_subcomponents"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.set_subcomponents">[docs]</a>    <span class="k">def</span> <span class="nf">set_subcomponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Component.set_subcomponents">
+<a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.set_subcomponents">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_subcomponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the plant-wide inputs of all subcomponents.</span>
 
 <span class="sd">        Call this function at the end of a subclass&#39;s ``__init__()`` set ``q``</span>
-<span class="sd">        and ``temp`` for subcomponents, except when a subcomponent specifies its</span>
-<span class="sd">        own custom ``q`` and ``temp``.</span>
+<span class="sd">        and ``temp`` for subcomponents, except when a subcomponent specifies</span>
+<span class="sd">        its own custom ``q`` and ``temp``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">subcomp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subcomponents</span><span class="p">:</span>
             <span class="c1"># Set the subcomponent&#39;s ``q`` and ``temp`` to match this component</span>
@@ -158,28 +162,31 @@
                 <span class="n">subcomp</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp</span>
 
             <span class="c1"># Recursively set sub-subcomponents.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">subcomp</span><span class="p">,</span> <span class="s1">&#39;subcomponents&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">subcomp</span><span class="p">,</span> <span class="s2">&quot;subcomponents&quot;</span><span class="p">):</span>
                 <span class="n">subcomp</span><span class="o">.</span><span class="n">set_subcomponents</span><span class="p">()</span></div>
-        
-<div class="viewcode-block" id="Component.serialize_properties"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.serialize_properties">[docs]</a>    <span class="k">def</span> <span class="nf">serialize_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the properties (fields and ``@property`` functions) of a </span>
+
+
+<div class="viewcode-block" id="Component.serialize_properties">
+<a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.serialize_properties">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">serialize_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the properties (fields and ``@property`` functions) of a</span>
 <span class="sd">        component as a dictionary string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">ignored_properties</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;__module__&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;__weakref__&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;subcomponents&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Q_DEFAULT&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;TEMP_DEFAULT&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;__abstractmethods__&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;_abc_cache&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;_abc_negative_cache&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;_abc_negative_cache_version&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;_abc_registry&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;onshape_config&#39;</span>
+            <span class="s2">&quot;__dict__&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;__doc__&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;__module__&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;__weakref__&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;subcomponents&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Q_DEFAULT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;TEMP_DEFAULT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;__abstractmethods__&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_abc_cache&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_abc_negative_cache&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_abc_negative_cache_version&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_abc_registry&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;onshape_config&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="c1"># Get all of the object&#39;s fields</span>
         <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -191,85 +198,92 @@
                 <span class="n">properties</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">serialize_properties</span><span class="p">())</span>
 
             <span class="c1"># Serialize non-component properties</span>
-            <span class="k">elif</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">var_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignored_properties</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">var_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignored_properties</span><span class="p">:</span>
 
                 <span class="c1"># Serialize lists or arrays</span>
-                <span class="k">try</span><span class="p">:</span> 
+                <span class="k">try</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
                         <span class="n">properties</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">array_qtys_to_strs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">properties</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                
+
                 <span class="c1"># Serialize non-iterable properties</span>
-                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span> 
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                     <span class="n">properties</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    
+
         <span class="k">return</span> <span class="n">properties</span></div>
 
-<div class="viewcode-block" id="Component.print_properties"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.print_properties">[docs]</a>    <span class="k">def</span> <span class="nf">print_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Component.print_properties">
+<a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.print_properties">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the serialized properties with pretty indentation.&quot;&quot;&quot;</span>
         <span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serialize_properties</span><span class="p">())</span></div>
-    
-<div class="viewcode-block" id="Component.write_properties_to_file"><a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.write_properties_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_properties_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Append the properties of a component to a file. If it does not exist,</span>
-<span class="sd">        then the file is created.</span>
-<span class="sd">        </span>
+
+
+<div class="viewcode-block" id="Component.write_properties_to_file">
+<a class="viewcode-back" href="../../../design/component.html#aguaclara.design.component.Component.write_properties_to_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_properties_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Append the properties of a component to a file.</span>
+<span class="sd">        If it does not exist, then the file is created.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            - ``filename (str)``: The name of the file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;props.json&quot;</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serialize_properties</span><span class="p">(),</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">),</span>
-            <span class="n">indent</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serialize_properties</span><span class="p">(),</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Properties of component can be found in file props.json&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_encode_onshape_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
-        <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_encode_onshape_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onshape_config</span><span class="p">):</span>
+        <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">onshape_config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">_encode_onshape_config</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode_onshape_config</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="n">encoding</span> <span class="o">+=</span> <span class="n">key</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">onshape_url_configured</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">onshape_url_configured</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onshape_config</span><span class="p">):</span>
         <span class="n">onshape_url_configured</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">onshape_url_default</span> <span class="o">+</span> 
-            <span class="s1">&#39;?configuration=&#39;</span> <span class="o">+</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_encode_onshape_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onshape_config</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">onshape_url_default</span>
+            <span class="o">+</span> <span class="s2">&quot;?configuration=&quot;</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encode_onshape_config</span><span class="p">(</span><span class="n">onshape_config</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">onshape_url_configured</span></div>
+
+
 
 <span class="c1"># TODO: get the following to work in the general case when passing a simple</span>
 <span class="c1"># nested dictionary to Onshape.</span>
 
-<span class="k">def</span> <span class="nf">nested_dict_to_str</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">nested_dict_to_str</span><span class="p">(</span><span class="n">dict_</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dict_</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">:</span>
             <span class="n">dict_</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
             <span class="n">dict_</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">nested_dict_to_str</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    
+
     <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">dict_</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dict_</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dict_</span>
 
-<span class="k">def</span> <span class="nf">encode_onshape_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
-    <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">encode_onshape_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">quote_plus</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">encoding</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">=</span><span class="si">{}</span><span class="s1">;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">encoding</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">=</span><span class="si">{}</span><span class="s2">;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">encoding</span>
 
-<span class="k">def</span> <span class="nf">onshape_url_configured</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
-    <span class="n">onshape_url_configured</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">base_url</span> <span class="o">+</span> 
-        <span class="s1">&#39;?configuration=&#39;</span> <span class="o">+</span>
-        <span class="n">quote_plus</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
-    <span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">onshape_url_configured</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
+    <span class="n">onshape_url_configured</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;?configuration=&quot;</span> <span class="o">+</span> <span class="n">quote_plus</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">onshape_url_configured</span>
 </pre></div>
 
@@ -280,7 +294,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

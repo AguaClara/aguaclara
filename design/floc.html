@@ -1,23 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flocculator &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Flocculator &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -36,9 +37,6 @@
           <a href="../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -99,11 +97,11 @@
            <div itemprop="articleBody">
              
   <section id="module-aguaclara.design.floc">
-<span id="flocculator"></span><span id="design-floc"></span><h1>Flocculator<a class="headerlink" href="#module-aguaclara.design.floc" title="Permalink to this heading"></a></h1>
+<span id="flocculator"></span><span id="design-floc"></span><h1>Flocculator<a class="headerlink" href="#module-aguaclara.design.floc" title="Link to this heading"></a></h1>
 <p>The flocculator of an AguaClara water treatment plant uses turbulence to
 cause coagulant and other particles to accumulate, forming flocs.</p>
 <dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.floc</span> <span class="kn">import</span> <span class="o">*</span>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">aguaclara.design.floc</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">floc</span> <span class="o">=</span> <span class="n">Flocculator</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">hl</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">floc</span><span class="o">.</span><span class="n">chan_w</span><span class="p">)</span>
 <span class="go">&lt;Quantity(34, &#39;centimeter&#39;)&gt;</span>
@@ -113,7 +111,7 @@ cause coagulant and other particles to accumulate, forming flocs.</p>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.design.floc.</span></span><span class="sig-name descname"><span class="pre">Flocculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/floc.html#Flocculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.design.floc.</span></span><span class="sig-name descname"><span class="pre">Flocculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/floc.html#Flocculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.floc.Flocculator" title="Link to this definition"></a></dt>
 <dd><p>Design an AguaClara plant’s flocculator.</p>
 <p>A flocculator’s design relies on the entrance tank’s design in the same
 plant, but assumed/default values may be used to design a flocculator by
@@ -158,106 +156,106 @@ walls between each flocculator channel (optional, defaults to 15 cm)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.vel_grad_avg">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vel_grad_avg</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vel_grad_avg" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vel_grad_avg</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vel_grad_avg" title="Link to this definition"></a></dt>
 <dd><p>The average velocity gradient of water.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.retention_time">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">retention_time</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.retention_time" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">retention_time</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.retention_time" title="Link to this definition"></a></dt>
 <dd><p>The hydraulic retention time neglecting the volume
 created by head loss.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.vol">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vol</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vol" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vol</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.vol" title="Link to this definition"></a></dt>
 <dd><p>The target volume (not counting the volume added by head loss).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.chan_w_min_hs_ratio">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_w_min_hs_ratio</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min_hs_ratio" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_w_min_hs_ratio</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min_hs_ratio" title="Link to this definition"></a></dt>
 <dd><p>The minimum channel width.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.chan_w_min">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_w_min</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_w_min</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min" title="Link to this definition"></a></dt>
 <dd><p>The minimum channel width.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.chan_n">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_n</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_n" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_n</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_n" title="Link to this definition"></a></dt>
 <dd><p>The minimum number of channels based on the maximum
 possible channel width and the maximum length of the channels.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.chan_w_min_gt">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_w_min_gt</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min_gt" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_w_min_gt</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w_min_gt" title="Link to this definition"></a></dt>
 <dd><p>The channel width minimum regarding the collision potential.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.chan_w">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_w</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_w</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_w" title="Link to this definition"></a></dt>
 <dd><p>The channel width.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.l_max_vol">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">l_max_vol</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.l_max_vol" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">l_max_vol</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.l_max_vol" title="Link to this definition"></a></dt>
 <dd><p>The maximum length depeneding on the volume.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.chan_l">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_l</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_l" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chan_l</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.chan_l" title="Link to this definition"></a></dt>
 <dd><p>The channel length.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.expansion_h_max">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expansion_h_max</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h_max" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expansion_h_max</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h_max" title="Link to this definition"></a></dt>
 <dd><p>“The maximum distance between expansions for the largest
 allowable H/S ratio.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.expansion_n">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expansion_n</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_n" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expansion_n</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_n" title="Link to this definition"></a></dt>
 <dd><p>The minimum number of expansions per baffle space.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.expansion_h">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expansion_h</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expansion_h</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.expansion_h" title="Link to this definition"></a></dt>
 <dd><p>The height between flow expansions.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.baffle_s">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">baffle_s</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.baffle_s" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">baffle_s</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.baffle_s" title="Link to this definition"></a></dt>
 <dd><p>The spacing between baffles.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.obstacle_n">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">obstacle_n</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.obstacle_n" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">obstacle_n</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.obstacle_n" title="Link to this definition"></a></dt>
 <dd><p>The number of obstacles per baffle.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.contraction_s">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">contraction_s</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.contraction_s" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">contraction_s</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.contraction_s" title="Link to this definition"></a></dt>
 <dd><p>The space in the baffle by which the flow contracts.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.floc.Flocculator.obstacle_pipe_od">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">obstacle_pipe_od</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.obstacle_pipe_od" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">obstacle_pipe_od</span></span><a class="headerlink" href="#aguaclara.design.floc.Flocculator.obstacle_pipe_od" title="Link to this definition"></a></dt>
 <dd><p>The outer diameter of an obstacle pipe. If the available pipe is
 greater than 1.5 inches, the obstacle offset will become false.</p>
 </dd></dl>
@@ -277,7 +275,7 @@ greater than 1.5 inches, the obstacle offset will become false.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

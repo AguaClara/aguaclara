@@ -1,22 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>aguaclara.research.peristaltic_pump &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>aguaclara.research.peristaltic_pump &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -33,9 +34,6 @@
           <a href="../../../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -74,11 +72,11 @@
            <div itemprop="articleBody">
              
   <h1>Source code for aguaclara.research.peristaltic_pump</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
-<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">aguaclara.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">u</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aguaclara.core.utility</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ut</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="c1"># pump rotor radius based on minimizing error between predicted and measured</span>
 <span class="c1"># values</span>
@@ -88,26 +86,32 @@
 <span class="n">k_nonlinear</span> <span class="o">=</span> <span class="mi">13</span>
 
 
-<div class="viewcode-block" id="vol_per_rev_3_stop"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_3_stop">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">inner_diameter</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="vol_per_rev_3_stop">
+<a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_3_stop">[docs]</a>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vol_per_rev_3_stop</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">inner_diameter</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the volume per revolution of an Ismatec 6 roller pump</span>
 <span class="sd">    given the inner diameter (ID) of 3-stop tubing. The calculation is</span>
 <span class="sd">    interpolated from the table found at</span>
 <span class="sd">    https://web.archive.org/web/20211027155239/http://www.ismatec.com/int_e/pumps/t_mini_s_ms_ca/tubing_msca2.htm.</span>
 
 <span class="sd">    Note:</span>
-<span class="sd">    1. Either input a string as the tubing color code or a number as the</span>
-<span class="sd">    tubing inner diameter. If both are given, the function will default to using</span>
-<span class="sd">    the color.</span>
-<span class="sd">    2. The calculation is interpolated for inner diameters between 0.13 and 3.17</span>
-<span class="sd">    mm. Accuracy is not guaranteed for tubes with smaller or larger diameters.</span>
+<span class="sd">        1. Either input a string as the tubing color code or a number as the</span>
+<span class="sd">           tubing inner diameter. If both are given, the function will default</span>
+<span class="sd">           to using the color.</span>
+<span class="sd">        2. The calculation is interpolated for inner diameters between</span>
+<span class="sd">           0.13 and 3.17 mm. Accuracy is not guaranteed for tubes with</span>
+<span class="sd">           smaller or larger diameters.</span>
 
 <span class="sd">    :param color: Color code of the Ismatec 3-stop tubing</span>
 <span class="sd">    :type color: string</span>
-<span class="sd">    :param inner_diameter: Inner diameter of the Ismatec 3-stop tubing. Results will be most accurate for inner diameters between 0.13 and 3.17 mm.</span>
+<span class="sd">    :param inner_diameter: Inner diameter of the Ismatec 3-stop tubing.</span>
+<span class="sd">        Results will be most accurate for inner diameters between 0.13</span>
+<span class="sd">        and 3.17 mm.</span>
 <span class="sd">    :type inner_diameter: float</span>
 
-<span class="sd">    :return: Volume per revolution output by a 6-roller pump through the 3-stop tubing (mL/rev)</span>
+<span class="sd">    :return: Volume per revolution output by a 6-roller pump through</span>
+<span class="sd">        the 3-stop tubing (mL/rev)</span>
 <span class="sd">    :rtype: float</span>
 
 <span class="sd">    :Examples:</span>
@@ -122,13 +126,16 @@
     <span class="k">if</span> <span class="n">color</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
         <span class="n">inner_diameter</span> <span class="o">=</span> <span class="n">ID_colored_tube</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
     <span class="n">term1</span> <span class="o">=</span> <span class="p">(</span><span class="n">R_pump</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">k_nonlinear</span> <span class="o">*</span> <span class="n">inner_diameter</span><span class="p">)</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">rev</span>
-    <span class="n">term2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">inner_diameter</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">term1</span> <span class="o">*</span> <span class="n">term2</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="p">)</span></div>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">inner_diameter</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">term1</span> <span class="o">*</span> <span class="n">term2</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">rev</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ID_colored_tube"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.ID_colored_tube">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">ID_colored_tube</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Look up the inner diameter of Ismatec 3-stop tubing given its color code.</span>
+
+<div class="viewcode-block" id="ID_colored_tube">
+<a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.ID_colored_tube">[docs]</a>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ID_colored_tube</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Look up the inner diameter of Ismatec 3-stop tubing given color code.</span>
 
 <span class="sd">    :param color: Color of the 3-stop tubing</span>
 <span class="sd">    :type color: string</span>
@@ -147,22 +154,28 @@
 <span class="sd">    &gt;&gt;&gt; ID_colored_tube(&quot;purple-white&quot;)</span>
 <span class="sd">    &lt;Quantity(2.79, &#39;millimeter&#39;)&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tubing_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;3_stop_tubing.txt&quot;</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">tubing_data_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">tubing_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;3_stop_tubing.txt&quot;</span>
+    <span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">tubing_data_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Color&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">color</span>
-    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s1">&#39;Diameter (mm)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span></div>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;Diameter (mm)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span></div>
 
 
-<div class="viewcode-block" id="vol_per_rev_LS"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_LS">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">vol_per_rev_LS</span><span class="p">(</span><span class="n">id_number</span><span class="p">):</span>
+
+<div class="viewcode-block" id="vol_per_rev_LS">
+<a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.vol_per_rev_LS">[docs]</a>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vol_per_rev_LS</span><span class="p">(</span><span class="n">id_number</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Look up the volume per revolution output by a Masterflex L/S pump</span>
 <span class="sd">    through L/S tubing of the given ID number.</span>
 
-<span class="sd">    :param id_number: Identification number of the L/S tubing. Valid numbers are 13-18, 24, 35, and 36.</span>
+<span class="sd">    :param id_number: Identification number of the L/S tubing.</span>
+<span class="sd">        Valid numbers are 13-18, 24, 35, and 36.</span>
 <span class="sd">    :type id_number: int</span>
 
-<span class="sd">    :return: Volume per revolution output by a Masterflex L/S pump through the L/S tubing</span>
+<span class="sd">    :return: Volume per revolution output by a Masterflex L/S pump</span>
+<span class="sd">        through the L/S tubing</span>
 <span class="sd">    :rtype: float</span>
 
 <span class="sd">    :Examples:</span>
@@ -174,19 +187,22 @@
 <span class="sd">    &gt;&gt;&gt; vol_per_rev_LS(18)</span>
 <span class="sd">    &lt;Quantity(3.8, &#39;milliliter / turn&#39;)&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tubing_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;LS_tubing.txt&quot;</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">tubing_data_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">tubing_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;LS_tubing.txt&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">tubing_data_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Number&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">id_number</span>
-    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s1">&#39;Flow (mL/rev)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">turn</span></div>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;Flow (mL/rev)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mL</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">turn</span></div>
 
 
-<div class="viewcode-block" id="flow_rate"><a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.flow_rate">[docs]</a><span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">flow_rate</span><span class="p">(</span><span class="n">vol_per_rev</span><span class="p">,</span> <span class="n">rpm</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate from a pump given the volume of fluid pumped per</span>
-<span class="sd">    revolution and the desired pump speed.</span>
 
-<span class="sd">    :param vol_per_rev: Volume of fluid output per revolution (dependent on pump and tubing)</span>
+<div class="viewcode-block" id="flow_rate">
+<a class="viewcode-back" href="../../../research/peristaltic_pump.html#aguaclara.research.peristaltic_pump.flow_rate">[docs]</a>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">list_handler</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">flow_rate</span><span class="p">(</span><span class="n">vol_per_rev</span><span class="p">,</span> <span class="n">rpm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the flow rate from a pump given the volume of</span>
+<span class="sd">    fluid pumped per revolution and the desired pump speed.</span>
+
+<span class="sd">    :param vol_per_rev: Volume of fluid output per revolution</span>
+<span class="sd">        (dependent on pump and tubing)</span>
 <span class="sd">    :type vol_per_rev: float</span>
 <span class="sd">    :param rpm: Desired pump speed in revolutions per minute</span>
 <span class="sd">    :type rpm: float</span>
@@ -201,7 +217,8 @@
 <span class="sd">    &gt;&gt;&gt; flow_rate(3*u.mL/u.rev, 5*u.rev/u.min)</span>
 <span class="sd">    &lt;Quantity(0.25, &#39;milliliter / second&#39;)&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">vol_per_rev</span> <span class="o">*</span> <span class="n">rpm</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">vol_per_rev</span> <span class="o">*</span> <span class="n">rpm</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">mL</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span></div>
+
 </pre></div>
 
            </div>
@@ -211,7 +228,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

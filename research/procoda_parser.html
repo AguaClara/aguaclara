@@ -1,23 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ProCoDA Parser &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>ProCoDA Parser &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -36,9 +37,6 @@
           <a href="../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -107,20 +105,22 @@
            <div itemprop="articleBody">
              
   <section id="module-aguaclara.research.procoda_parser">
-<span id="procoda-parser"></span><h1>ProCoDA Parser<a class="headerlink" href="#module-aguaclara.research.procoda_parser" title="Permalink to this heading"></a></h1>
+<span id="procoda-parser"></span><h1>ProCoDA Parser<a class="headerlink" href="#module-aguaclara.research.procoda_parser" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.column_of_data">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">column_of_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_data" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">column_of_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_data" title="Link to this definition"></a></dt>
 <dd><p>This function extracts a column of data from a ProCoDA data file.</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file</p></li>
-<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of first row of data to extract, inclusive</p></li>
-<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Index of last row of data to extract until, exclusive. Defaults to extracting all rows.</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>string</em>) – Index or label of the column that you want to extract</p></li>
-<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless).</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Index of first row of data to extract, inclusive</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Index of last row of data to extract until, exclusive.
+Defaults to extracting all rows.</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><em>string</em>) – Index or label of the column that you want to extract</p></li>
+<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” (dimensionless).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -139,14 +139,16 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.column_of_time">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">column_of_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'day'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_time" title="Permalink to this definition"></a></dt>
-<dd><p>This function extracts the column of times as elasped times from a ProCoDA data file.</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">column_of_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'day'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#column_of_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.column_of_time" title="Link to this definition"></a></dt>
+<dd><p>This function extracts the column of times as elasped times
+from a ProCoDA data file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
-<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of first row of data to extract from the data file</p></li>
-<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of last row of data to extract from the data. Defaults to last row</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Index of first row of data to extract from the data file</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Index of last row of data to extract from the data.
+Defaults to last row</p></li>
 <li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The return type units, which defaults to day.</p></li>
 </ul>
 </dd>
@@ -154,7 +156,8 @@
 <dd class="field-even"><p>Experimental times starting at 0</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray in units of days or hours, specified with units parameter</p>
+<dd class="field-odd"><p>numpy.ndarray in units of days or hours,
+specified with units parameter</p>
 </dd>
 <dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
@@ -166,7 +169,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.plot_columns">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">plot_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#plot_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.plot_columns" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">plot_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#plot_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.plot_columns" title="Link to this definition"></a></dt>
 <dd><p>Plot columns of data, located by labels, in the given data file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -187,15 +190,16 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.iplot_columns">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">iplot_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#iplot_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.iplot_columns" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">iplot_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#iplot_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.iplot_columns" title="Link to this definition"></a></dt>
 <dd><p>Plot columns of data, located by indexes, in the given data file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file</p></li>
-<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or list of column indexes</p></li>
-<li><p><strong>x_axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The index of the x-axis column (defaults to None)</p></li>
-<li><p><strong>sep</strong> (<em>string</em>) – The separator or delimiter, of the data file. Use ‘,’ for CSV’s, ‘      ‘ for TSV’s.</p></li>
+<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or list of column indexes</p></li>
+<li><p><strong>x_axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – The index of the x-axis column (defaults to None)</p></li>
+<li><p><strong>sep</strong> (<em>string</em>) – The separator or delimiter, of the data file.
+Use ‘,’ for CSV’s, ‘    ‘ for TSV’s.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -209,15 +213,16 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.notes">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.notes" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.notes" title="Link to this definition"></a></dt>
 <dd><p>This function extracts any experimental notes from a ProCoDA data file.
-Use this to identify the section of the data file that you want to extract.</p>
+Used to identify the section of the data file that you want to extract.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The rows of the data file that contain text notes inserted during the experiment.</p>
+<dd class="field-even"><p>The rows of the data file that contain text notes
+inserted during the experiment.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>pandas.Dataframe</p>
@@ -227,7 +232,7 @@ Use this to identify the section of the data file that you want to extract.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.remove_notes">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">remove_notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#remove_notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.remove_notes" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">remove_notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#remove_notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.remove_notes" title="Link to this definition"></a></dt>
 <dd><p>Omit notes from a DataFrame object, where notes are identified as rows
 with non-numerical entries in the first column.</p>
 <dl class="field-list simple">
@@ -245,27 +250,32 @@ with non-numerical entries in the first column.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.get_data_by_time">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">get_data_by_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00:00'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'23:59'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elapsed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Permalink to this definition"></a></dt>
-<dd><p>Extract columns of data over one or more ProCoDA data files based on date
-and time. Valid only for files whose names are automatically generated by
-date, i.e. of the form “datalog_M-D-YYYY”.</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">get_data_by_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00:00'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'23:59'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elapsed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_time" title="Link to this definition"></a></dt>
+<dd><p>Extract columns of data over one or more ProCoDA data files based on
+date and time.
+Valid only for files whose names are automatically generated by date,
+i.e. of the form “datalog_M-D-YYYY”.</p>
 <p>Note: Column 0 is time. The first data column is column 1. Results for the
 time column are adjusted for multi-day experiments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s)</p></li>
-<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or a list of column indexes</p></li>
+<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><em>int list</em>) – A single column index or a list of column indexes</p></li>
 <li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates, formatted “M-D-YYYY”</p></li>
-<li><p><strong>start_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Starting time of data to extract, formatted ‘HH:MM’ (24-hour time)</p></li>
-<li><p><strong>end_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Ending time of data to extract, formatted ‘HH:MM’ (24-hour time)</p></li>
+<li><p><strong>start_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Starting time of data to extract,
+formatted ‘HH:MM’ (24-hour time)</p></li>
+<li><p><strong>end_time</strong> (<em>string</em><em>, </em><em>optional</em>) – Ending time of data to extract,
+formatted ‘HH:MM’ (24-hour time)</p></li>
 <li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – File extension of the data file(s). Defaults to ‘.tsv’</p></li>
-<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – A single unit or list of units to apply to each column, e.g. ‘mg/L’ or [‘hr’, ‘mg/L’]. Defaults to ‘’ (dimensionless).</p></li>
-<li><p><strong>elapsed</strong> (<em>boolean</em>) – If true, results for the time column are given in elapsed time</p></li>
+<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – A single unit or list of units to apply to each column,
+e.g. ‘mg/L’ or [‘hr’, ‘mg/L’]. Defaults to ‘’ (dimensionless).</p></li>
+<li><p><strong>elapsed</strong> (<em>boolean</em>) – If true, the time column is given in elapsed time</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the single column of data or a list of the columns of data (in the order of the indexes given in the columns variable)</p>
+<dd class="field-even"><p>the single column of data or a list of the columns of data
+(in the order of the indexes given in the columns variable)</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>1D or 2D float list</p>
@@ -273,16 +283,31 @@ time column are adjusted for multi-day experiments.</p>
 <dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">,</span> <span class="s1">&#39;6-15-2018&#39;</span><span class="p">],</span> <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;12:20&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;10:50&#39;</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">dates</span><span class="o">=</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;12:20&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;23:59&#39;</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">dates</span><span class="o">=</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span>
+    <span class="n">columns</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">,</span> <span class="s1">&#39;6-15-2018&#39;</span><span class="p">],</span>
+    <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;12:20&#39;</span><span class="p">,</span>
+    <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;10:50&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">dates</span><span class="o">=</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">,</span>
+    <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;12:20&#39;</span><span class="p">,</span>
+    <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;23:59&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_time</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">dates</span><span class="o">=</span><span class="s1">&#39;6-14-2018&#39;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.get_data_by_state">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">get_data_by_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_state" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">get_data_by_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#get_data_by_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.get_data_by_state" title="Link to this definition"></a></dt>
 <dd><p>Reads a ProCoDA file and extracts the time and data column for each
 iteration of the given state.</p>
 <p>Note: column 0 is time, the first data column is column 1. Results for the
@@ -290,15 +315,22 @@ time column are given in elasped time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s), defaults to the current directory</p></li>
-<li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>string</em>) – The integer index of the column that you want to extract OR the header of the column that you want to extract</p></li>
+<li><p><strong>path</strong> (<em>string</em>) – The path to the folder containing the ProCoDA data file(s),
+defaults to the current directory</p></li>
+<li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded,
+formatted “M-D-YYYY”</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><em>string</em>) – The integer index of the column that you want to extract
+OR the header of the column that you want to extract</p></li>
 <li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – File extension of the data file(s). Defaults to ‘.tsv’</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of lists of the time and data columns extracted for each iteration of the state. For example, if “data” is the output, data[i][:,0] gives the time column and data[i][:,1] gives the data column for the ith iteration of the given state and column. data[i][0] would give the first [time, data] pair.</p>
+<dd class="field-even"><p>A list of lists of the time and data columns extracted
+for each iteration of the state. For example, if “data” is the output,
+data[i][:,0] gives the time column and data[i][:,1] gives the data
+column for the ith iteration of the given state and column.
+data[i][0] would give the first [time, data] pair.</p>
 </dd>
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>3D float list</p>
@@ -306,33 +338,44 @@ time column are given in elasped time.</p>
 <dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="n">state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">28</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">get_data_by_state</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/Users/.../ProCoDA Data/&#39;</span><span class="p">,</span>
+    <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span>
+    <span class="n">state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">column</span><span class="o">=</span><span class="mi">28</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.read_state">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">read_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">read_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state" title="Link to this definition"></a></dt>
 <dd><p>Reads a ProCoDA file and outputs the data column and time vector for
 each iteration of the given state.</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
-<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</p></li>
+<li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded,
+formatted “M-D-YYYY”</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract
+OR header of the column that you want to extract</p></li>
+<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” (dimensionless)</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
-<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”</p></li>
+<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file.
+Defaults to “.tsv”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>time (numpy.ndarray) - Times corresponding to the data (with units)</p>
+<dd class="field-even"><p>time (numpy.ndarray) - Times corresponding to the data
+(with units)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>data (numpy.ndarray) - Data in the given column during the given state with units</p>
+<dd class="field-odd"><p>data (numpy.ndarray) - Data in the given column during the given
+state with units</p>
 </dd>
 <dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
@@ -344,19 +387,23 @@ each iteration of the given state.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.average_state">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">average_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#average_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.average_state" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">average_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#average_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.average_state" title="Link to this definition"></a></dt>
 <dd><p>Outputs the average value of the data for each instance of a state in
 the given ProCoDA files</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
-<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</p></li>
+<li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded,
+formatted “M-D-YYYY”</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract
+OR header of the column that you want to extract</p></li>
+<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” (dimensionless)</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
-<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”</p></li>
+<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file.
+Defaults to “.tsv”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -375,77 +422,101 @@ the given ProCoDA files</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.perform_function_on_state">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">perform_function_on_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#perform_function_on_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.perform_function_on_state" title="Permalink to this definition"></a></dt>
-<dd><p>Performs the function given on each state of the data for the given state
-in the given column and outputs the result for each instance of the state</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">perform_function_on_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#perform_function_on_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.perform_function_on_state" title="Link to this definition"></a></dt>
+<dd><p>Performs the function given on each state of the data
+for the given state in the given column and outputs the result
+for each instance of the state</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>func</strong> (<em>function</em>) – A function that will be applied to data from each instance of the state</p></li>
-<li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded, formatted “M-D-YYYY”</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
-<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</p></li>
-<li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file.</p></li>
-<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”.</p></li>
+<li><p><strong>func</strong> (<em>function</em>) – A function that will be applied to data from each instance
+of the state</p></li>
+<li><p><strong>dates</strong> (<em>string</em><em> or </em><em>string list</em>) – A single date or list of dates for which data was recorded,
+formatted “M-D-YYYY”</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract
+OR header of the column that you want to extract</p></li>
+<li><p><strong>units</strong> – The units you want to apply to the data, e.g. ‘mg/L’.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Requires<span class="colon">:</span></dt>
-<dd class="field-even"><p>func takes in a list of data with units and outputs the correct units</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The outputs of the given function for each instance of the given state</p>
-</dd>
-<dt class="field-even">Type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
-</dd>
-<dt class="field-odd">Examples<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">avg_with_units</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-<span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+<p>Defaults to “” (dimensionless)
+:type units: string, optional
+:param path: The file path of the ProCoDA data file.
+:type path: string
+:param extension: The file extension of the tab delimited file.</p>
+<blockquote>
+<div><p>Defaults to “.tsv”.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Requires<span class="colon">:</span></dt>
+<dd class="field-odd"><p>func takes in a list of data with units
+and outputs the correct units</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The outputs of the given function for each instance
+of the given state</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)">list</a></p>
+</dd>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">avg_with_units</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+<span class="n">num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
 <span class="n">acc</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
     <span class="n">acc</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">acc</span>
 
 <span class="k">return</span> <span class="n">acc</span> <span class="o">/</span> <span class="n">num</span>
 
-<span class="n">data_avgs</span> <span class="o">=</span> <span class="n">perform_function_on_state</span><span class="p">(</span><span class="n">avg_with_units</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;mL/s&quot;</span><span class="p">)</span>
+<span class="n">data_avgs</span> <span class="o">=</span> <span class="n">perform_function_on_state</span><span class="p">(</span>
+    <span class="n">avg_with_units</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;6-19-2013&quot;</span><span class="p">,</span> <span class="s2">&quot;6-20-2013&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;mL/s&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.read_state_with_metafile">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">read_state_with_metafile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state_with_metafile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state_with_metafile" title="Permalink to this definition"></a></dt>
-<dd><p>Takes in a ProCoDA meta file and performs a function for all data of a
-certain state in each of the experiments (denoted by file paths in then
-metafile)</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">read_state_with_metafile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#read_state_with_metafile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.read_state_with_metafile" title="Link to this definition"></a></dt>
+<dd><p>Takes in a ProCoDA meta file and performs a function for all
+data of a certain state in each of the experiments
+(denoted by file paths in the metafile)</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>func</strong> (<em>function</em>) – A function that will be applied to data from each instance of the state</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
-<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract OR header of the column that you want to extract</p></li>
-<li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file (must be tab-delimited)</p></li>
-<li><p><strong>metaids</strong> (<em>string list</em><em>, </em><em>optional</em>) – a list of the experiment IDs you’d like to analyze from the metafile</p></li>
-<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”</p></li>
-<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’. Defaults to “” (dimensionless)</p></li>
+<li><p><strong>func</strong> (<em>function</em>) – A function that will be applied to data
+from each instance of the state</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – The state ID number for which data should be extracted</p></li>
+<li><p><strong>column</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em> or </em><em>string</em>) – Index of the column that you want to extract
+OR header of the column that you want to extract</p></li>
+<li><p><strong>path</strong> (<em>string</em>) – The file path of the ProCoDA data file
+(must be tab-delimited)</p></li>
+<li><p><strong>metaids</strong> (<em>string list</em><em>, </em><em>optional</em>) – a list of the experiment IDs you’d like to analyze
+from the metafile</p></li>
+<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file.
+Defaults to “.tsv”</p></li>
+<li><p><strong>units</strong> (<em>string</em><em>, </em><em>optional</em>) – The units you want to apply to the data, e.g. ‘mg/L’.
+Defaults to “” (dimensionless)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>ids (string list) - The list of experiment ids given in the metafile</p>
+<dd class="field-even"><p>ids (string list) - The list of experiment ids given
+in the metafile</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>outputs (list) - The outputs of the given function for each experiment</p>
+<dd class="field-odd"><p>outputs (list) - The outputs of the given function
+for each experiment</p>
 </dd>
 <dt class="field-even">Examples<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">avg_with_units</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-    <span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">avg_with_units</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
     <span class="n">acc</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
         <span class="n">acc</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">acc</span>
@@ -453,68 +524,88 @@ metafile)</p>
     <span class="k">return</span> <span class="n">acc</span> <span class="o">/</span> <span class="n">num</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;../tests/data/Test Meta File.txt&quot;</span>
-<span class="n">ids</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">read_state_with_metafile</span><span class="p">(</span><span class="n">avg_with_units</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="p">[],</span> <span class="s2">&quot;.tsv&quot;</span><span class="p">,</span> <span class="s2">&quot;mg/L&quot;</span><span class="p">)</span>
+<span class="n">ids</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">read_state_with_metafile</span><span class="p">(</span>
+    <span class="n">avg_with_units</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="p">[],</span> <span class="s2">&quot;.tsv&quot;</span><span class="p">,</span> <span class="s2">&quot;mg/L&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.write_calculations_to_csv">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">write_calculations_to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">funcs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#write_calculations_to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.write_calculations_to_csv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">write_calculations_to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">funcs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.tsv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#write_calculations_to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.write_calculations_to_csv" title="Link to this definition"></a></dt>
 <dd><p>Writes each output of the given functions on the given states and data
 columns to a new column in the specified output file.</p>
 <p>Note: Column 0 is time. The first data column is column 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>funcs</strong> (<em>function</em><em> or </em><em>function list</em>) – A function or list of functions which will be applied in order to the data. If only one function is given it is applied to all the states/columns</p></li>
-<li><p><strong>states</strong> (<em>string</em><em> or </em><em>string list</em>) – The state ID numbers for which data should be extracted. List should be in order of calculation or if only one state is given then it will be used for all the calculations</p></li>
-<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>string</em><em>, </em><em>int list</em><em>, or </em><em>string list</em>) – The index of a column, the header of a column, a list of indexes, OR a list of headers of the column(s) that you want to apply calculations to</p></li>
+<li><p><strong>funcs</strong> (<em>function</em><em> or </em><em>function list</em>) – A function or list of functions which will be applied
+in order to the data. If only one function is given,
+then it is applied to all the states/columns</p></li>
+<li><p><strong>states</strong> (<em>string</em><em> or </em><em>string list</em>) – The state ID numbers for which data should be extracted.
+List should be in order of calculation, or
+if only one state is given then it is used for all the calculations</p></li>
+<li><p><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>string</em><em>, </em><em>int list</em><em>, or </em><em>string list</em>) – The index of a column, the header of a column,
+a list of indexes, OR a list of headers of the column(s)
+that you want to apply calculations to</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – Path to your ProCoDA metafile (must be tab-delimited)</p></li>
 <li><p><strong>headers</strong> (<em>string list</em>) – List of the desired header for each calculation, in order</p></li>
-<li><p><strong>out_name</strong> (<em>string</em>) – Desired name for the output file. Can include a relative path</p></li>
-<li><p><strong>metaids</strong> (<em>string list</em><em>, </em><em>optional</em>) – A list of the experiment IDs you’d like to analyze from the metafile</p></li>
-<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file. Defaults to “.tsv”</p></li>
+<li><p><strong>out_name</strong> (<em>string</em>) – Desired name for the output file.
+Can include a relative path</p></li>
+<li><p><strong>metaids</strong> (<em>string list</em><em>, </em><em>optional</em>) – A list of the experiment IDs you’d like to analyze
+from the metafile</p></li>
+<li><p><strong>extension</strong> (<em>string</em><em>, </em><em>optional</em>) – The file extension of the tab delimited file.
+Defaults to “.tsv”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Requires<span class="colon">:</span></dt>
-<dd class="field-even"><p>funcs, states, columns, and headers are all of the same length if they are lists. Some being lists and some single values are okay.</p>
+<dd class="field-even"><p>funcs, states, columns, and headers are all of the same length
+if they are lists. Some being lists and some single values are okay.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>out_name.csv (CVS file) - A CSV file with the each column being a new calcuation and each row being a new experiment on which the calcuations were performed</p>
+<dd class="field-odd"><p>out_name.csv (CVS file) - A CSV file with the each column being a
+new calcuation and each row being a new experiment on which the
+calcuations were performed</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>output (Pandas.DataFrame)- Pandas DataFrame holding the same data that was written to the output file</p>
+<dd class="field-even"><p>output (Pandas.DataFrame) - Pandas DataFrame holding the samedata
+data that was written to the output file</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.research.procoda_parser.intersect">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#intersect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.intersect" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the intersections of two lines represented by a common set of x coordinates and
-two sets of y coordinates as three numpy arrays: the x coordinates of the intersections,
-the y coordinates of the intersections, and the indexes in x, y1, y2 immediately
-after the intersections.</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.research.procoda_parser.</span></span><span class="sig-name descname"><span class="pre">intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/research/procoda_parser.html#intersect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.research.procoda_parser.intersect" title="Link to this definition"></a></dt>
+<dd><p>Returns the intersections of two lines represented by a common set of
+x coordinates and two sets of y coordinates as three numpy arrays:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>the x coordinates of the intersections,</p></li>
+<li><p>the y coordinates of the intersections,</p></li>
+<li><p>and the indexes in x, y1, y2 immediately after the intersections.</p></li>
+</ol>
+</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>numpy.ndarray</em>) – common set of x coordinates for the two lines</p></li>
-<li><p><strong>y1</strong> (<em>numpy.ndarray</em>) – the y coordinates of the first line</p></li>
-<li><p><strong>y2</strong> (<em>numpy.ndarray</em>) – the y coordinates of the second line</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><em>numpy.ndarray</em></a>) – common set of x coordinates for the two lines</p></li>
+<li><p><strong>y1</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><em>numpy.ndarray</em></a>) – the y coordinates of the first line</p></li>
+<li><p><strong>y2</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><em>numpy.ndarray</em></a>) – the y coordinates of the second line</p></li>
 </ul>
 </dd>
 <dt class="field-even">Requires<span class="colon">:</span></dt>
 <dd class="field-even"><p>x have no repeating values and is in ascending order</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>x_points-numpy.ndarray of the x coordinates where intersections occur</p>
+<dd class="field-odd"><p>x_points-numpy.ndarray of x coordinates where intersections occur</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>y_points-numpy.ndarray of the y coordinates where intersections occur</p>
+<dd class="field-even"><p>y_points-numpy.ndarray of y coordinates where intersections occur</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>crossings-numpy.ndarray of the indexes after the intersections occur</p>
+<dd class="field-odd"><p>crossings-numpy.ndarray of indices after the intersections occur</p>
 </dd>
 </dl>
 </dd></dl>
@@ -532,7 +623,7 @@ after the intersections.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

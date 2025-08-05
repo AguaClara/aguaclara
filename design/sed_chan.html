@@ -1,23 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sedimentation Channel &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Sedimentation Channel &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -36,9 +37,6 @@
           <a href="../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -99,12 +97,12 @@
            <div itemprop="articleBody">
              
   <section id="module-aguaclara.design.sed_chan">
-<span id="sedimentation-channel"></span><span id="design-sed-chan"></span><h1>Sedimentation Channel<a class="headerlink" href="#module-aguaclara.design.sed_chan" title="Permalink to this heading"></a></h1>
+<span id="sedimentation-channel"></span><span id="design-sed-chan"></span><h1>Sedimentation Channel<a class="headerlink" href="#module-aguaclara.design.sed_chan" title="Link to this heading"></a></h1>
 <p>The sedimentation channel of an AguaClara water treatment plant ensures that
 the sedimentation tanks do not exceed their maximum influent flow. If that were
 to happen, the upflow velocity would be too great for flocs to settle out.</p>
 <dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">aguaclara.design.sed_chan</span> <span class="kn">import</span> <span class="o">*</span>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">aguaclara.design.sed_chan</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sed_chan</span> <span class="o">=</span> <span class="n">SedimentationChannel</span><span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sed_chan</span><span class="o">.</span><span class="n">inlet_w</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="go">&lt;Quantity(59.52756, &#39;inch&#39;)&gt;</span>
@@ -114,12 +112,12 @@ to happen, the upflow velocity would be too great for flocs to settle out.</p>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.design.sed_chan.</span></span><span class="sig-name descname"><span class="pre">SedimentationChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/sed_chan.html#SedimentationChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.design.sed_chan.</span></span><span class="sig-name descname"><span class="pre">SedimentationChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/design/sed_chan.html#SedimentationChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel" title="Link to this definition"></a></dt>
 <dd><p>Design an AguaClara sedimentation channel.</p>
 <p>The sedimentation channel relies on the number and dimensions of the
 sedimentation tanks in the same plant, but assumed/default values may be
-used to design a sedimentation channel by itself. To design these components
-in tandem, use <a class="reference internal" href="sed.html#aguaclara.design.sed.Sedimentor" title="aguaclara.design.sed.Sedimentor"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed.Sedimentor</span></code></a>.</p>
+used to design a sedimentation channel by itself. To design these
+components in tandem, use <a class="reference internal" href="sed.html#aguaclara.design.sed.Sedimentor" title="aguaclara.design.sed.Sedimentor"><code class="xref py py-class docutils literal notranslate"><span class="pre">aguaclara.design.sed.Sedimentor</span></code></a>.</p>
 <dl class="simple">
 <dt>Constants:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">SED_TANK_Q_RATIO</span> <span class="pre">(float)</span></code>: Permissible ratio of influent flow
@@ -132,12 +130,12 @@ weir</p></li>
 </dd>
 <dt>Design Inputs:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.L</span> <span class="pre">/</span> <span class="pre">u.s)</span></code>: Flow rate (recommended, defaults to 20L/s)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature (recommended, defaults to
-20°C)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temp</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.degC)</span></code>: Water temperature
+(recommended, defaults to 20°C)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sed_tank_n</span> <span class="pre">(int)</span></code>: Number of sedimentation tanks (recommended,
 defaults to 4)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sed_tank_w_inner</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: Inner width of the sedimentation
-tank (recommended, defaults to 42 in)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sed_tank_w_inner</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: Inner width of the
+sedimentation tank (recommended, defaults to 42 in)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sed_tank_wall_thickness</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Wall thickness of the
 sedimentation tank (recommended, defaults to 15 cm)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sed_tank_inlet_man_nd</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Nominal diameter of the
@@ -162,9 +160,10 @@ to 15 cm)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">drain_sdr</span> <span class="pre">(int)</span></code>: SDR of the drain pipe (optional, defaults to 26)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">outlet_free_h</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Permissible increase of water level
 in the outlet channel (optional, defaults to 5 cm)
-<code class="docutils literal notranslate"><span class="pre">outlet_weir_depth</span></code>:The depth of the outlet weir. (optional, defaults to 5 cm)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">outlet_pipe_sdr</span> <span class="pre">(int)</span></code>: SDR of the outlet pipe (optional, defaults
-to 41)</p></li>
+<code class="docutils literal notranslate"><span class="pre">outlet_weir_depth</span></code>:The depth of the outlet weir.
+(optional, defaults to 5 cm)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outlet_pipe_sdr</span> <span class="pre">(int)</span></code>: SDR of the outlet pipe
+(optional, defaults to 41)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">outlet_pipe_hl_max</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.cm)</span></code>: Maximum head loss through the
 outlet pipe (optional, defaults to 1 cm)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">outlet_pipe_nd_max</span> <span class="pre">(float</span> <span class="pre">*</span> <span class="pre">u.inch)</span></code>: Maximum nominal diameter of
@@ -174,145 +173,145 @@ the outlet pipe (optional, defaults to 8 in)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.l">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">l</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.l" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">l</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.l" title="Link to this definition"></a></dt>
 <dd><p>Length of the sedimentation channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_hl">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_weir_hl</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_hl" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_weir_hl</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_hl" title="Link to this definition"></a></dt>
 <dd><p>Head loss over the outlet channel weir.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_hl_max">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_hl_max</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_hl_max" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_hl_max</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_hl_max" title="Link to this definition"></a></dt>
 <dd><p>Maximum head loss in the inlet channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_w_pre_weir">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_w_pre_weir</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w_pre_weir" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_w_pre_weir</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w_pre_weir" title="Link to this definition"></a></dt>
 <dd><p>Width of the inlet channel (pre-weir).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_depth">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_depth</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_depth" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_depth</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_depth" title="Link to this definition"></a></dt>
 <dd><p>Depth of the inlet channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_hl">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_weir_hl</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_hl" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_weir_hl</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_hl" title="Link to this definition"></a></dt>
 <dd><p>Head loss through the inlet channel weir.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_h">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_h" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_h" title="Link to this definition"></a></dt>
 <dd><p>Height of the inlet channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_h">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_weir_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_h" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_weir_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_weir_h" title="Link to this definition"></a></dt>
 <dd><p>Height of the inlet channel weir.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_w_post_weir">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_w_post_weir</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w_post_weir" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_w_post_weir</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w_post_weir" title="Link to this definition"></a></dt>
 <dd><p>Width of the inlet channel (post-weir)</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_w">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_w" title="Link to this definition"></a></dt>
 <dd><p>Width of the inlet channel</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_drain_box_w">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_drain_box_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_drain_box_w" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_drain_box_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_drain_box_w" title="Link to this definition"></a></dt>
 <dd><p>Width of the inlet channel drain box</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_depth">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_depth</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_depth" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_depth</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_depth" title="Link to this definition"></a></dt>
 <dd><p>Depth of the outlet channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_depth">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_weir_depth</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_depth" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_weir_depth</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_depth" title="Link to this definition"></a></dt>
 <dd><p>Depth of the outlet channel weir.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_w_pre_weir">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_w_pre_weir</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_w_pre_weir" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_w_pre_weir</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_w_pre_weir" title="Link to this definition"></a></dt>
 <dd><p>Width of the outlet channel (pre-weir).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_q_max">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_pipe_q_max</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_q_max" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_pipe_q_max</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_q_max" title="Link to this definition"></a></dt>
 <dd><p>Maximum flow through the outlet pipe.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_n">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_pipe_n</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_n" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_pipe_n</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_pipe_n" title="Link to this definition"></a></dt>
 <dd><p>Number of outlet pipes.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_post_weir_w">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_post_weir_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_post_weir_w" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_post_weir_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_post_weir_w" title="Link to this definition"></a></dt>
 <dd><p>Width of the outlet channel (post-weir).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_w">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_w" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_w" title="Link to this definition"></a></dt>
 <dd><p>Width of the outlet channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_drain_box_w">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_drain_box_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_drain_box_w" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_drain_box_w</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_drain_box_w" title="Link to this definition"></a></dt>
 <dd><p>Width of the outlet channel drain box.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_h">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_weir_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_h" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet_weir_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.outlet_weir_h" title="Link to this definition"></a></dt>
 <dd><p>Height of the outlet channel weir.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.w_outer">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">w_outer</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.w_outer" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">w_outer</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.w_outer" title="Link to this definition"></a></dt>
 <dd><p>Outer width of the sedimentation channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_last_coupling_h">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_last_coupling_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_last_coupling_h" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_last_coupling_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_last_coupling_h" title="Link to this definition"></a></dt>
 <dd><p>Height of the last coupling in the inlet channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_step_h">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_step_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_step_h" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_step_h</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_step_h" title="Link to this definition"></a></dt>
 <dd><p>Height of the steps between each pipe in the inlet channel.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.design.sed_chan.SedimentationChannel.inlet_slope_l">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_slope_l</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_slope_l" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet_slope_l</span></span><a class="headerlink" href="#aguaclara.design.sed_chan.SedimentationChannel.inlet_slope_l" title="Link to this definition"></a></dt>
 <dd><p>Length of the slopes between each pipe in the inlet channel.</p>
 </dd></dl>
 
@@ -331,7 +330,7 @@ the outlet pipe (optional, defaults to 8 in)</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,22 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>aguaclara.design.sed_tank &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>aguaclara.design.sed_tank &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -33,9 +34,6 @@
           <a href="../../../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -74,7 +72,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for aguaclara.design.sed_tank</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot; A sedimentation tank of an AguaClara water treatment plant</span>
+<span></span><span class="sd">&quot;&quot;&quot;A sedimentation tank of an AguaClara water treatment plant</span>
 
 <span class="sd">Example:</span>
 <span class="sd">    &gt;&gt;&gt; from aguaclara.design.sed_tank import *</span>
@@ -82,21 +80,24 @@
 <span class="sd">    &gt;&gt;&gt; round(sed_tank.diffuser_hl, 5)</span>
 <span class="sd">    &lt;Quantity(0.00926, &#39;centimeter&#39;)&gt;</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
-<span class="kn">import</span> <span class="nn">aguaclara.core.constants</span> <span class="k">as</span> <span class="nn">con</span>
-<span class="kn">import</span> <span class="nn">aguaclara.core.materials</span> <span class="k">as</span> <span class="nn">mat</span>
-<span class="kn">import</span> <span class="nn">aguaclara.core.pipes</span> <span class="k">as</span> <span class="nn">pipe</span>
-<span class="kn">from</span> <span class="nn">aguaclara.core</span> <span class="kn">import</span> <span class="n">drills</span>
-<span class="kn">import</span> <span class="nn">aguaclara.core.utility</span> <span class="k">as</span> <span class="nn">ut</span>
-<span class="kn">from</span> <span class="nn">aguaclara.design.component</span> <span class="kn">import</span> <span class="n">Component</span>
-<span class="kn">import</span> <span class="nn">aguaclara.core.physchem</span> <span class="k">as</span> <span class="nn">pc</span>
-<span class="kn">import</span> <span class="nn">aguaclara.core.head_loss</span> <span class="k">as</span> <span class="nn">hl</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aguaclara.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">u</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aguaclara.core.constants</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">con</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aguaclara.core.materials</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mat</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aguaclara.core.pipes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pipe</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aguaclara.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">drills</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aguaclara.core.utility</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ut</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aguaclara.design.component</span><span class="w"> </span><span class="kn">import</span> <span class="n">Component</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aguaclara.core.physchem</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aguaclara.core.head_loss</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hl</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 
-<div class="viewcode-block" id="SedimentationTank"><a class="viewcode-back" href="../../../design/sed_tank.html#aguaclara.design.sed_tank.SedimentationTank">[docs]</a><span class="k">class</span> <span class="nc">SedimentationTank</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+<div class="viewcode-block" id="SedimentationTank">
+<a class="viewcode-back" href="../../../design/sed_tank.html#aguaclara.design.sed_tank.SedimentationTank">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SedimentationTank</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Design an AguaClara plant&#39;s sedimentation tank.</span>
 
 <span class="sd">    An sedimentation tank&#39;s design relies on the sedimentation channel&#39;s design</span>
@@ -119,8 +120,8 @@
 <span class="sd">    Design Inputs:</span>
 <span class="sd">        - ``q (float * u.L / u.s)``: Plant flow rate</span>
 <span class="sd">          (recommended, defaults to 20L/s)</span>
-<span class="sd">        - ``temp (float * u.degC)``: Water temperature (recommended, defaults to</span>
-<span class="sd">          20°C)</span>
+<span class="sd">        - ``temp (float * u.degC)``: Water temperature</span>
+<span class="sd">          (recommended, defaults to 20°C)</span>
 <span class="sd">        - ``vel_upflow (float * u.mm / u.s)``: Upflow velocity</span>
 <span class="sd">          (optional, defaults to 1mm/s)</span>
 <span class="sd">        - ``l_inner (float * u.m)``: The inner length</span>
@@ -153,13 +154,14 @@
 <span class="sd">          velocity of a plate settler (optional, defaults to 0.12mm/s)</span>
 <span class="sd">        - ``outlet_man_orifice_hl (float * u.cm)``: The headloss of the</span>
 <span class="sd">          orifices in the outlet manifold (optional, defaults to 4cm)</span>
-<span class="sd">        - ``outlet_man_orifice_q_ratio_max (float)``: The max ratio of the flow</span>
-<span class="sd">          rate for the orifices of the outlet manifold (optional, defaults to 0.8)</span>
+<span class="sd">        - ``outlet_man_orifice_q_ratio_max (float)``: The max ratio of the</span>
+<span class="sd">          flow rate for the orifices of the outlet manifold.</span>
+<span class="sd">          (optional, defaults to 0.8)</span>
 <span class="sd">        - ``outlet_man_orifice_n_est (int)``: The estimated number of orifices</span>
 <span class="sd">          for the outlet manifold (optional, defaults to 58)</span>
 <span class="sd">        - ``outlet_man_sdr (int)``: The standard dimension ratio of the outlet</span>
 <span class="sd">          manifold (optional, defaults to 41)</span>
-<span class="sd">        - ``slope_angle (float * u.deg)``: The angle at the bottom of the sed tank</span>
+<span class="sd">        - ``slope_angle (float * u.deg)``: Angle at the bottom of the sed tank</span>
 <span class="sd">          (optional, defaults to 50°)</span>
 <span class="sd">        - ``side_slope_to_floc_weir_h_min (float * u.cm)``: The minimum height</span>
 <span class="sd">          between the side slope and the floc weir. (optional, defaults to 5cm)</span>
@@ -174,40 +176,41 @@
 <span class="sd">          hopper wall slopes to vertical (optional, defaults to 60°)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">INLET_MAN_Q_RATIO</span> <span class="o">=</span> <span class="mf">0.8</span>
-    <span class="n">OUTLET_MAN_HL</span> <span class="o">=</span> <span class="mf">4.</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
-    <span class="n">JET_REVERSER_ND</span> <span class="o">=</span> <span class="mf">3.</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
+    <span class="n">OUTLET_MAN_HL</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+    <span class="n">JET_REVERSER_ND</span> <span class="o">=</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
     <span class="n">JET_PLANE_RATIO</span> <span class="o">=</span> <span class="mf">0.0124</span>
-    <span class="n">JET_REVERSER_TO_DIFFUSERS_H</span> <span class="o">=</span> <span class="mf">3.0</span><span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+    <span class="n">JET_REVERSER_TO_DIFFUSERS_H</span> <span class="o">=</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
     <span class="n">WALL_THICKNESS</span> <span class="o">=</span> <span class="mf">0.15</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
     <span class="n">DIFFUSER_L</span> <span class="o">=</span> <span class="mf">15.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">l_inner</span><span class="o">=</span><span class="mf">5.8</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_inner</span><span class="o">=</span><span class="mf">42.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_inner</span> <span class="o">=</span> <span class="mf">5.8</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_inner</span> <span class="o">=</span> <span class="mf">42.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_vel_max</span><span class="o">=</span><span class="mf">44.29</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_n</span><span class="o">=</span><span class="mi">108</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_wall_thickness</span><span class="o">=</span><span class="mf">1.17</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_sdr</span><span class="o">=</span><span class="mi">41</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_vel_max</span> <span class="o">=</span> <span class="mf">44.29</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_n</span> <span class="o">=</span> <span class="mi">108</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_wall_thickness</span> <span class="o">=</span> <span class="mf">1.17</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">inch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_sdr</span> <span class="o">=</span> <span class="mi">41</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_hl</span><span class="o">=</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_hl</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_sdr</span> <span class="o">=</span> <span class="mi">41</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jet_reverser_sdr</span> <span class="o">=</span> <span class="mi">26</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_angle</span><span class="o">=</span><span class="mf">60.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_s</span><span class="o">=</span><span class="mf">2.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_thickness</span><span class="o">=</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_cantilever_l_max</span><span class="o">=</span><span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_vel_capture</span><span class="o">=</span><span class="mf">0.12</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_angle</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_s</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_thickness</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_cantilever_l_max</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_vel_capture</span> <span class="o">=</span> <span class="mf">0.12</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">mm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_hl</span><span class="o">=</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_q_ratio_max</span><span class="o">=</span><span class="mf">0.8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_hl</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_q_ratio_max</span> <span class="o">=</span> <span class="mf">0.8</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_n_est</span> <span class="o">=</span> <span class="mi">58</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_sdr</span><span class="o">=</span><span class="mi">41</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_sdr</span> <span class="o">=</span> <span class="mi">41</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">slope_angle</span><span class="o">=</span><span class="mf">50.</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slope_angle</span> <span class="o">=</span> <span class="mf">50.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">side_slope_to_floc_weir_h_min</span> <span class="o">=</span> <span class="mf">5.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sed_chan_w_outer</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sed_chan_weir_thickness</span> <span class="o">=</span> <span class="mf">5.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span>
@@ -217,52 +220,55 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">q_tank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">q_tank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The flow rate present in the tank.&quot;&quot;&quot;</span>
         <span class="n">q_tank</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_inner</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_inner</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span>
         <span class="k">return</span> <span class="n">q_tank</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">diffuser_hl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">diffuser_hl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The headloss of the diffuser.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_hl</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_n</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">diffuser_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">diffuser_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The velocity of the diffuser&quot;&quot;&quot;</span>
         <span class="n">diffuser_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">con</span><span class="o">.</span><span class="n">GRAVITY</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_hl</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">diffuser_vel</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">mm</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">diffuser_w_inner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">diffuser_w_inner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The inner width(neglecting walls) of the diffuser.&quot;&quot;&quot;</span>
         <span class="n">diffuser_w_inner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_inner</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_vel</span>
         <span class="k">return</span> <span class="n">diffuser_w_inner</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">diffuser_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">diffuser_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The area of the diffuser&quot;&quot;&quot;</span>
         <span class="n">diffuser_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_tank</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diffuser_vel</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_n</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">diffuser_a</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">diffuser_a</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">inlet_man_v_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inlet_man_v_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The maximumum velocity in the inlet manifold.&quot;&quot;&quot;</span>
-        <span class="n">vel_manifold_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">con</span><span class="o">.</span><span class="n">GRAVITY</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_hl</span> <span class="o">*</span>
-                <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">INLET_MAN_Q_RATIO</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span>
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">INLET_MAN_Q_RATIO</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="p">)</span>
+        <span class="n">vel_manifold_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+            <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">con</span><span class="o">.</span><span class="n">GRAVITY</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuser_hl</span>
+            <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">INLET_MAN_Q_RATIO</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">INLET_MAN_Q_RATIO</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">vel_manifold_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">inlet_man_nd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inlet_man_nd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The nominal diameter of the inlet manifold&quot;&quot;&quot;</span>
         <span class="n">diam_inner</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_tank</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_v_max</span><span class="p">))</span>
         <span class="n">inlet_man_nd</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">ND_SDR_available</span><span class="p">(</span><span class="n">diam_inner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_sdr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">inlet_man_nd</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">outlet_man_nd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">outlet_man_nd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The nominal diameter of the outlet manifold.&quot;&quot;&quot;</span>
         <span class="n">outlet_man_nd</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">manifold_nd</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">q_tank</span><span class="p">,</span>
@@ -273,105 +279,120 @@
             <span class="n">mat</span><span class="o">.</span><span class="n">PVC_PIPE_ROUGH</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">),</span>
             <span class="n">hl</span><span class="o">.</span><span class="n">PIPE_EXIT_K_MINOR</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_n_est</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_sdr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_sdr</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">outlet_man_nd</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">outlet_man_orifice_d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">outlet_man_orifice_d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The diameter of the orifices in the outlet manifold.&quot;&quot;&quot;</span>
         <span class="n">Q_orifice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_tank</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_n_est</span>
-        <span class="n">D_orifice</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">diam_circle</span><span class="p">(</span><span class="n">Q_orifice</span><span class="o">/</span><span class="p">(</span><span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span> <span class="o">*</span> \
-            <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">con</span><span class="o">.</span><span class="n">GRAVITY</span><span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_hl</span><span class="p">)))</span>
+        <span class="n">D_orifice</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">diam_circle</span><span class="p">(</span>
+            <span class="n">Q_orifice</span>
+            <span class="o">/</span> <span class="p">(</span>
+                <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span>
+                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">con</span><span class="o">.</span><span class="n">GRAVITY</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_hl</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">ceil_nearest</span><span class="p">(</span><span class="n">D_orifice</span><span class="p">,</span> <span class="n">drills</span><span class="o">.</span><span class="n">DRILL_BITS_D_METRIC</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">plate_l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plate_l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The length of a plate in the plate settlers.&quot;&quot;&quot;</span>
-        <span class="n">L_sed_plate</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_s</span> <span class="o">*</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span> <span class="o">/</span> \
-             <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_vel_capture</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                        <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_thickness</span> <span class="o">*</span> <span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_vel_capture</span><span class="p">))</span>
-                     <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_angle</span><span class="p">)</span> <span class="o">*</span> \
-                         <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_angle</span><span class="p">))</span>
-                     <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">L_sed_plate</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_s</span>
+                <span class="o">*</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_vel_capture</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_thickness</span>
+                <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_upflow</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_vel_capture</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plate_settler_angle</span><span class="p">))</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">L_sed_plate</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">outlet_man_orifice_q</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">outlet_man_orifice_q</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The flow rate in the orifices of the outlet manifold.&quot;&quot;&quot;</span>
         <span class="n">outlet_man_orifice_q</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">flow_orifice_vert</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_d</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_hl</span><span class="p">,</span>
-                <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_d</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_hl</span><span class="p">,</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">outlet_man_orifice_q</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">outlet_man_orifice_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">outlet_man_orifice_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The spacing between orifices on the outlet manifold.&quot;&quot;&quot;</span>
         <span class="n">outlet_man_orifice_spacing</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">l_inner</span> <span class="o">-</span>
-            <span class="n">pipe</span><span class="o">.</span><span class="n">socket_depth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">)</span> <span class="o">-</span>
-            <span class="n">pipe</span><span class="o">.</span><span class="n">cap_thickness</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">)</span> <span class="o">-</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_d</span>
-            <span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">q_tank</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_q</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">l_inner</span>
+            <span class="o">-</span> <span class="n">pipe</span><span class="o">.</span><span class="n">socket_depth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">)</span>
+            <span class="o">-</span> <span class="n">pipe</span><span class="o">.</span><span class="n">cap_thickness</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_d</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">q_tank</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_q</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">outlet_man_orifice_spacing</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">outlet_man_orifice_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">outlet_man_orifice_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The number of orifices on the outlet manifold.&quot;&quot;&quot;</span>
-        <span class="n">outlet_orifice_n</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">l_inner</span> <span class="o">-</span>
-                <span class="n">pipe</span><span class="o">.</span><span class="n">socket_depth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">)</span> <span class="o">-</span>
-                <span class="n">pipe</span><span class="o">.</span><span class="n">cap_thickness</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">)</span> <span class="o">-</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_d</span>
-            <span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_spacing</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">outlet_orifice_n</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">l_inner</span>
+                    <span class="o">-</span> <span class="n">pipe</span><span class="o">.</span><span class="n">socket_depth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="n">pipe</span><span class="o">.</span><span class="n">cap_thickness</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_d</span>
+                <span class="p">)</span>
+                <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_spacing</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">outlet_orifice_n</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">outlet_orifice_hl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">outlet_orifice_hl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The headloss for the orifices of the outlet&quot;&quot;&quot;</span>
         <span class="n">outlet_orifice_hl</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">head_orifice</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_nd</span><span class="p">,</span>
             <span class="n">con</span><span class="o">.</span><span class="n">VC_ORIFICE_RATIO</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_tank</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_n</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_tank</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlet_man_orifice_n</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">outlet_orifice_hl</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">mm</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">side_slopes_w</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">side_slopes_w</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The width of the side slopes.&quot;&quot;&quot;</span>
         <span class="n">side_slopes_w</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">w_inner</span> <span class="o">-</span>
-            <span class="n">pipe</span><span class="o">.</span><span class="n">ID_SDR</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">JET_REVERSER_ND</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jet_reverser_sdr</span><span class="p">)</span>
-            <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_inner</span> <span class="o">-</span> <span class="n">pipe</span><span class="o">.</span><span class="n">ID_SDR</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">JET_REVERSER_ND</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jet_reverser_sdr</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">side_slopes_w</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">side_slopes_h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">side_slopes_h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The height of the side slopes.&quot;&quot;&quot;</span>
         <span class="n">side_slopes_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slope_angle</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">side_slopes_w</span>
         <span class="k">return</span> <span class="n">side_slopes_h</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">inlet_man_h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inlet_man_h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The height of the inlet manifold height.&quot;&quot;&quot;</span>
-        <span class="n">inlet_man_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">JET_REVERSER_TO_DIFFUSERS_H</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIFFUSER_L</span> <span class="o">+</span> \
-             <span class="p">(</span> <span class="n">pipe</span><span class="o">.</span><span class="n">OD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_nd</span><span class="p">)</span><span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="n">inlet_man_h</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">JET_REVERSER_TO_DIFFUSERS_H</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIFFUSER_L</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">OD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_nd</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">inlet_man_h</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">floc_weir_h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">floc_weir_h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The height of the floc weir.&quot;&quot;&quot;</span>
         <span class="n">floc_weir_h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_h</span> <span class="o">+</span> <span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">OD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_nd</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> \
-                <span class="n">mat</span><span class="o">.</span><span class="n">CONCRETE_THICKNESS_MIN</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">side_slopes_h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">side_slope_to_floc_weir_h_min</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_h</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">OD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inlet_man_nd</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">mat</span><span class="o">.</span><span class="n">CONCRETE_THICKNESS_MIN</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">side_slopes_h</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">side_slope_to_floc_weir_h_min</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">floc_weir_h</span></div>
+
 </pre></div>
 
            </div>
@@ -381,7 +402,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

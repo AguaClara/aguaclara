@@ -1,23 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pipes &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Pipes &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -36,9 +37,6 @@
           <a href="../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -113,70 +111,79 @@
            <div itemprop="articleBody">
              
   <section id="module-aguaclara.core.pipes">
-<span id="pipes"></span><h1>Pipes<a class="headerlink" href="#module-aguaclara.core.pipes" title="Permalink to this heading"></a></h1>
+<span id="pipes"></span><h1>Pipes<a class="headerlink" href="#module-aguaclara.core.pipes" title="Link to this heading"></a></h1>
 <p>This file contains functions which convert between the nominal, inner, and
 outer diameters of pipes based on their standard dimension ratio (SDR).</p>
-<p>Note: 
-added to pipe database for schedule 80, 120 and 160 using 
+<p>Note:
+added to pipe database for schedule 80, 120 and 160 using
 <a class="reference external" href="https://www.engineersedge.com/pipe_schedules.htm">https://www.engineersedge.com/pipe_schedules.htm</a></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.SCH">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">SCH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#SCH"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.SCH" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">SCH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#SCH"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.SCH" title="Link to this definition"></a></dt>
 <dd><p>An enumeration.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.Pipe">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">Pipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#Pipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.Pipe" title="Permalink to this definition"></a></dt>
-<dd><p>A pipe using the SDR system, represented by its nominal diameter (ND) and standard dimension ratio (SDR)</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">Pipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#Pipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.Pipe" title="Link to this definition"></a></dt>
+<dd><p>A pipe using the SDR system, represented by its nominal diameter (ND)
+and standard dimension ratio (SDR)</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.Pipe.od">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">od</span></span><a class="headerlink" href="#aguaclara.core.pipes.Pipe.od" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">od</span></span><a class="headerlink" href="#aguaclara.core.pipes.Pipe.od" title="Link to this definition"></a></dt>
 <dd><p>The outer diameter of the pipe.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.Pipe.id_sdr">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id_sdr</span></span><a class="headerlink" href="#aguaclara.core.pipes.Pipe.id_sdr" title="Permalink to this definition"></a></dt>
-<dd><p>The inner diameter of the pipe, calculated using the pipe’s OD and SDR.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id_sdr</span></span><a class="headerlink" href="#aguaclara.core.pipes.Pipe.id_sdr" title="Link to this definition"></a></dt>
+<dd><p>The inner diameter of the pipe, calculated
+using the pipe’s OD and SDR.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.Pipe.id_sch40">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id_sch40</span></span><a class="headerlink" href="#aguaclara.core.pipes.Pipe.id_sch40" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id_sch40</span></span><a class="headerlink" href="#aguaclara.core.pipes.Pipe.id_sch40" title="Link to this definition"></a></dt>
 <dd><p><cite>id_sch40</cite> is deprecated; use <cite>id_sch</cite> instead.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.Pipe.id_sch">
-<span class="sig-name descname"><span class="pre">id_sch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schedule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#Pipe.id_sch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.Pipe.id_sch" title="Permalink to this definition"></a></dt>
-<dd><p>The inner diameter of this pipe, based on schedule and nominal diameter
-:param schedule: the schedule of the pipe (Ex: pipes.SCH.SCH40)
-:type schedule: pipes.SCH</p>
+<span class="sig-name descname"><span class="pre">id_sch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schedule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#Pipe.id_sch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.Pipe.id_sch" title="Link to this definition"></a></dt>
+<dd><p>The inner diameter of this pipe, based on schedule and
+nominal diameter.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The inner diameter of the pipe</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>schedule</strong> (<a class="reference internal" href="#aguaclara.core.pipes.SCH" title="aguaclara.core.pipes.SCH"><em>pipes.SCH</em></a>) – the schedule of the pipe (Ex: pipes.SCH.SCH40)</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>u.inch</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The inner diameter of the pipe</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>u.inch</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.Pipe.sch">
-<span class="sig-name descname"><span class="pre">sch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NDarr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SCHarr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#Pipe.sch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.Pipe.sch" title="Permalink to this definition"></a></dt>
-<dd><p>The nominal diameter and schedule that best fits this pipe’s criteria and NDarr and SCHarr
-:param NDarr: an array of preferred nominal diameters (Ex: [10]*u.inch). Default: None
-:type NDarr: numpy.array * u.inch
-:param SCHarr: an array of preferred schedules (Ex: [pipes.SCH.SCH160, pipes.SCH.SCH40]). Default: None
-:type SCHarr: pipes.SCH list</p>
+<span class="sig-name descname"><span class="pre">sch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NDarr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SCHarr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#Pipe.sch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.Pipe.sch" title="Link to this definition"></a></dt>
+<dd><p>The nominal diameter and schedule that best fits this pipe’s criteria
+and NDarr and SCHarr.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(nominal diameter, schedule) tuple or None</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>NDarr</strong> (<em>numpy.array * u.inch</em>) – an array of preferred nominal diameters
+(Ex: [10]*u.inch). Default: None</p></li>
+<li><p><strong>SCHarr</strong> (<em>pipes.SCH list</em>) – an array of preferred schedules
+(Ex: [pipes.SCH.SCH160, pipes.SCH.SCH40]). Default: None</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>(u.inch, <a class="reference internal" href="#aguaclara.core.pipes.SCH" title="aguaclara.core.pipes.SCH">SCH</a>) or None</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(nominal diameter, schedule) tuple or None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(u.inch, <a class="reference internal" href="#aguaclara.core.pipes.SCH" title="aguaclara.core.pipes.SCH">SCH</a>) or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -185,13 +192,14 @@ added to pipe database for schedule 80, 120 and 160 using
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.makePipe_ND_SDR">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">makePipe_ND_SDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#makePipe_ND_SDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.makePipe_ND_SDR" title="Permalink to this definition"></a></dt>
-<dd><p>Return a Pipe object, given a ND (nominal diameter) and SDR (standard diameter ratio).</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">makePipe_ND_SDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#makePipe_ND_SDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.makePipe_ND_SDR" title="Link to this definition"></a></dt>
+<dd><p>Return a Pipe object, given a ND (nominal diameter) and
+SDR (standard diameter ratio).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ND</strong> (<em>u.inch</em>) – nominal diameter of pipe</p></li>
-<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – standard diameter ratio of pipe</p></li>
+<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – standard diameter ratio of pipe</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -205,13 +213,14 @@ added to pipe database for schedule 80, 120 and 160 using
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.makePipe_minID_SDR">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">makePipe_minID_SDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#makePipe_minID_SDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.makePipe_minID_SDR" title="Permalink to this definition"></a></dt>
-<dd><p>Return a new pipe, given its minID (minimum inner diameter) and SDR (standard diameter ratio).</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">makePipe_minID_SDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#makePipe_minID_SDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.makePipe_minID_SDR" title="Link to this definition"></a></dt>
+<dd><p>Return a new pipe, given its minID (minimum inner diameter) and
+SDR (standard diameter ratio).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>minID</strong> (<em>u.inch</em>) – minimum inner diameter of pipe</p></li>
-<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – standard diameter ratio of pipe</p></li>
+<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – standard diameter ratio of pipe</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -225,7 +234,7 @@ added to pipe database for schedule 80, 120 and 160 using
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.OD">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">OD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.OD" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">OD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.OD" title="Link to this definition"></a></dt>
 <dd><p>Return a pipe’s outer diameter according to its nominal diameter.
 :param ND: nominal diameter of pipe
 :type ND: u.inch
@@ -235,14 +244,14 @@ added to pipe database for schedule 80, 120 and 160 using
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.OD_SDR">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">OD_SDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD_SDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.OD_SDR" title="Permalink to this definition"></a></dt>
-<dd><p>Return the minimum OD that is available given ID and SDR. 
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">OD_SDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD_SDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.OD_SDR" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum OD that is available given ID and SDR.
 raises: ValueError if SDR is 2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ID</strong> (<em>u.inch</em>) – inner diameter of pipe</p></li>
-<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – the standard dimension ratio of the pipe</p></li>
+<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – the standard dimension ratio of the pipe</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -256,13 +265,14 @@ raises: ValueError if SDR is 2.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.fitting_od">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">fitting_od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipe_nd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitting_sdr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">41</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#fitting_od"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.fitting_od" title="Permalink to this definition"></a></dt>
-<dd><p>Return the OD of a fitting given SDR and the ND of the pipe it will be fitted around</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">fitting_od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipe_nd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitting_sdr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">41</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#fitting_od"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.fitting_od" title="Link to this definition"></a></dt>
+<dd><p>Return the OD of a fitting given SDR and the ND of the pipe it will
+be fitted around.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pipe_nd</strong> (<em>u.inch</em>) – ND of the pipe to be fitted around</p></li>
-<li><p><strong>fitting_sdr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – SDR of the pipe to be fitted around</p></li>
+<li><p><strong>fitting_sdr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – SDR of the pipe to be fitted around</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -276,14 +286,14 @@ raises: ValueError if SDR is 2.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.ID_SDR">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ID_SDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ID_SDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR" title="Link to this definition"></a></dt>
 <dd><p>Return the inner diameter of a pipe given its nominal diameter and SDR
 (standard dimension ratio).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ND</strong> (<em>u.inch</em>) – the nominal diameter</p></li>
-<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – the outer diameter divided by the wall thickness.</p></li>
+<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – the outer diameter divided by the wall thickness.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -297,7 +307,7 @@ raises: ValueError if SDR is 2.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.ID_sch">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ID_sch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schedule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_sch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_sch" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ID_sch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schedule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_sch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_sch" title="Link to this definition"></a></dt>
 <dd><p>Return the inner diameter of this pipe, given the ND and desired schedule
 :param ND: the nominal diameter of the pipe
 :type ND: u.inch
@@ -315,7 +325,7 @@ raises: ValueError if SDR is 2.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.ND_all_available">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ND_all_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_all_available" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ND_all_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_all_available" title="Link to this definition"></a></dt>
 <dd><p>Return an array of available nominal diameters.</p>
 <p>NDs available are those commonly used as based on the ‘Used’ column
 in the pipedb.</p>
@@ -331,7 +341,7 @@ in the pipedb.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.OD_all_available">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">OD_all_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.OD_all_available" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">OD_all_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.OD_all_available" title="Link to this definition"></a></dt>
 <dd><p>Return an array of available outer diameters.</p>
 <p>NDs available are those commonly used as based on the ‘Used’ column
 in the pipedb.</p>
@@ -347,13 +357,13 @@ in the pipedb.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.ID_SDR_all_available">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ID_SDR_all_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR_all_available" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ID_SDR_all_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ID_SDR_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ID_SDR_all_available" title="Link to this definition"></a></dt>
 <dd><p>Return an array of inner diameters with a given SDR.</p>
 <p>IDs available are those commonly used based on the ‘Used’ column
 in the pipedb.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – the standard dimension ratio</p>
+<dd class="field-odd"><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – the standard dimension ratio</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>an array of inner diamers</p>
@@ -366,31 +376,35 @@ in the pipedb.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.SCH_all_available">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">SCH_all_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minID,</span> <span class="pre">maxSDR,</span> <span class="pre">NDarr=None,</span> <span class="pre">SCHarr=[&lt;SCH.SCH40:</span> <span class="pre">'SCH40Wall'&gt;,</span> <span class="pre">&lt;SCH.SCH80:</span> <span class="pre">'SCH80Wall'&gt;,</span> <span class="pre">&lt;SCH.SCH120:</span> <span class="pre">'SCH120Wall'&gt;,</span> <span class="pre">&lt;SCH.SCH160:</span> <span class="pre">'SCH160Wall'&gt;]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#SCH_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.SCH_all_available" title="Permalink to this definition"></a></dt>
-<dd><p>Return a list of tuples (nominal diameter, schedule) representing schedule pipes that fit the criteria. 
-Meeting criteria means: has at least minID, has at most maxSDR, and whose ND and/or SCH are in NDarr and SCHarr respectively. 
-Default: NDarr looks through all available ND, SCHarr looks through all schedules</p>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">SCH_all_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxSDR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NDarr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SCHarr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[SCH.SCH40,</span> <span class="pre">SCH.SCH80,</span> <span class="pre">SCH.SCH120,</span> <span class="pre">SCH.SCH160]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#SCH_all_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.SCH_all_available" title="Link to this definition"></a></dt>
+<dd><p>Return a list of tuples (nominal diameter, schedule) representing
+schedule pipes that fit the criteria.</p>
+<p>Meeting criteria means: has at least minID, has at most maxSDR,
+and whose ND and/or SCH are in NDarr and SCHarr respectively.</p>
+<p>Default: NDarr looks through all available ND,
+SCHarr looks through all schedules</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>minID</strong> (<em>u.inch</em>) – the minimum inner diameter required</p></li>
-<li><p><strong>maxSDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – the maximum SDR required</p></li>
+<li><p><strong>maxSDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – the maximum SDR required</p></li>
 <li><p><strong>NDarr</strong> (<em>numpy.array * u.inch</em>) – the preferred list of NDs to look through</p></li>
 <li><p><strong>SCHarr</strong> (<em>pipes.SCH list</em>) – the preferred list of schedules to look through</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of tuples in the form (nominal diameter, schedule). Example: (10*u.inch, “SCH160”)</p>
+<dd class="field-even"><p>list of tuples in the form (nominal diameter, schedule).
+Example: (10*u.inch, “SCH160”)</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(float*u.inch, string) <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
+<dd class="field-odd"><p>(float*u.inch, string) <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.ND_SDR_available">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ND_SDR_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_SDR_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_SDR_available" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ND_SDR_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SDR</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_SDR_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_SDR_available" title="Link to this definition"></a></dt>
 <dd><p>Return an available ND given an ID and a schedule.</p>
 <p>Takes the values of the array, compares to the ID, and finds the index
 of the first value greater or equal.</p>
@@ -398,7 +412,7 @@ of the first value greater or equal.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ID</strong> (<em>u.inch</em>) – the inner diameter</p></li>
-<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – the standard dimension ratio</p></li>
+<li><p><strong>SDR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – the standard dimension ratio</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -412,7 +426,7 @@ of the first value greater or equal.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.ND_available">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ND_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NDguess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_available" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">ND_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NDguess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#ND_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.ND_available" title="Link to this definition"></a></dt>
 <dd><p>Return the minimum ND that is available.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -429,7 +443,7 @@ of the first value greater or equal.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.OD_available">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">OD_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ODguess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.OD_available" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">OD_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ODguess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#OD_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.OD_available" title="Link to this definition"></a></dt>
 <dd><p>Return the minimum OD that is available.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -446,7 +460,7 @@ of the first value greater or equal.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.socket_depth">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">socket_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#socket_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.socket_depth" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">socket_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#socket_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.socket_depth" title="Link to this definition"></a></dt>
 <dd><p>Return the socket depth given ND</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -463,7 +477,7 @@ of the first value greater or equal.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aguaclara.core.pipes.cap_thickness">
-<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">cap_thickness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#cap_thickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.cap_thickness" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aguaclara.core.pipes.</span></span><span class="sig-name descname"><span class="pre">cap_thickness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ND</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aguaclara/core/pipes.html#cap_thickness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aguaclara.core.pipes.cap_thickness" title="Link to this definition"></a></dt>
 <dd><p>Return the cap thickness given ND</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -491,7 +505,7 @@ of the first value greater or equal.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,22 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>aguaclara.research.procoda_parser &mdash; AguaClara EXPERIMENTAL documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>aguaclara.research.procoda_parser &mdash; AguaClara v0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/youtube.css?v=bb2027ad" />
       <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/youtube.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=97b6c874"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -33,9 +34,6 @@
           <a href="../../../index.html" class="icon icon-home">
             AguaClara
           </a>
-              <div class="version">
-                EXPERIMENTAL
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -74,16 +72,19 @@
            <div itemprop="articleBody">
              
   <h1>Source code for aguaclara.research.procoda_parser</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">aguaclara.core.units</span> <span class="kn">import</span> <span class="n">u</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">aguaclara.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">u</span>
 
 
-<div class="viewcode-block" id="column_of_data"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_data">[docs]</a><span class="k">def</span> <span class="nf">column_of_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="column_of_data">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">column_of_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This function extracts a column of data from a ProCoDA data file.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
@@ -92,11 +93,13 @@
 <span class="sd">    :type path: string</span>
 <span class="sd">    :param start: Index of first row of data to extract, inclusive</span>
 <span class="sd">    :type start: int</span>
-<span class="sd">    :param end: Index of last row of data to extract until, exclusive. Defaults to extracting all rows.</span>
+<span class="sd">    :param end: Index of last row of data to extract until, exclusive.</span>
+<span class="sd">        Defaults to extracting all rows.</span>
 <span class="sd">    :type end: int, optional</span>
 <span class="sd">    :param column: Index or label of the column that you want to extract</span>
 <span class="sd">    :type column: int or string</span>
-<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless).</span>
+<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; (dimensionless).</span>
 <span class="sd">    :type units: string, optional</span>
 
 <span class="sd">    :return: The column of data</span>
@@ -108,31 +111,37 @@
 
 <span class="sd">        data = column_of_data(&quot;Reactor_data.txt&quot;, 0, 1, -1, &quot;mg/L&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">][</span><span class="n">column</span><span class="p">]</span>
-    <span class="n">num_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+    <span class="n">num_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
 
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">num_data</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="column_of_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_time">[docs]</a><span class="k">def</span> <span class="nf">column_of_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function extracts the column of times as elasped times from a ProCoDA data file.</span>
+
+<div class="viewcode-block" id="column_of_time">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.column_of_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">column_of_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function extracts the column of times as elasped times</span>
+<span class="sd">    from a ProCoDA data file.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
 <span class="sd">    :param start: Index of first row of data to extract from the data file</span>
 <span class="sd">    :type start: int</span>
-<span class="sd">    :param end: Index of last row of data to extract from the data. Defaults to last row</span>
+<span class="sd">    :param end: Index of last row of data to extract from the data.</span>
+<span class="sd">        Defaults to last row</span>
 <span class="sd">    :type end: int</span>
 <span class="sd">    :param units: The return type units, which defaults to day.</span>
 <span class="sd">    :type units: string, optional</span>
 
 <span class="sd">    :return: Experimental times starting at 0</span>
-<span class="sd">    :rtype: numpy.ndarray in units of days or hours, specified with units parameter</span>
+<span class="sd">    :rtype: numpy.ndarray in units of days or hours,</span>
+<span class="sd">        specified with units parameter</span>
 
 <span class="sd">    :Examples:</span>
 
@@ -140,18 +149,21 @@
 
 <span class="sd">        time = column_of_time(&quot;Reactor_data.txt&quot;, 0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
     <span class="n">day_times</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">is_numeric</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">day_times</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span>
+    <span class="n">is_numeric</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">day_times</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span>
     <span class="n">num_day_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">day_times</span><span class="p">[</span><span class="n">is_numeric</span><span class="p">])</span>
     <span class="n">elapsed_times</span> <span class="o">=</span> <span class="n">num_day_times</span> <span class="o">-</span> <span class="n">start_time</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">elapsed_times</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="plot_columns"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.plot_columns">[docs]</a><span class="k">def</span> <span class="nf">plot_columns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="plot_columns">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.plot_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_columns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot columns of data, located by labels, in the given data file.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file</span>
@@ -164,7 +176,7 @@
 <span class="sd">    :return: A list of Line2D objects representing the plotted data</span>
 <span class="sd">    :rtype: matplotlib.lines.Line2D list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">remove_notes</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -184,10 +196,13 @@
                 <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">x_axis</span><span class="p">])</span>
                 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;columns must be a string or list of strings&#39;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;columns must be a string or list of strings&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="iplot_columns"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.iplot_columns">[docs]</a><span class="k">def</span> <span class="nf">iplot_columns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="iplot_columns">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.iplot_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iplot_columns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot columns of data, located by indexes, in the given data file.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file</span>
@@ -196,13 +211,14 @@
 <span class="sd">    :type columns: int or int list</span>
 <span class="sd">    :param x_axis: The index of the x-axis column (defaults to None)</span>
 <span class="sd">    :type x_axis: int, optional</span>
-<span class="sd">    :param sep: The separator or delimiter, of the data file. Use &#39;,&#39; for CSV&#39;s, &#39;\t&#39; for TSV&#39;s.</span>
+<span class="sd">    :param sep: The separator or delimiter, of the data file.</span>
+<span class="sd">        Use &#39;,&#39; for CSV&#39;s, &#39;\t&#39; for TSV&#39;s.</span>
 <span class="sd">    :type sep: string</span>
 
 <span class="sd">    :return: a list of Line2D objects representing the plotted data</span>
 <span class="sd">    :rtype: matplotlib.lines.Line2D list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">remove_notes</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
@@ -222,24 +238,31 @@
                 <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">x_axis</span><span class="p">])</span>
                 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;columns must be an int or a list of ints&#39;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;columns must be an int or a list of ints&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.notes">[docs]</a><span class="k">def</span> <span class="nf">notes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+
+<div class="viewcode-block" id="notes">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.notes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">notes</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This function extracts any experimental notes from a ProCoDA data file.</span>
-<span class="sd">    Use this to identify the section of the data file that you want to extract.</span>
+<span class="sd">    Used to identify the section of the data file that you want to extract.</span>
 
 <span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
 
-<span class="sd">    :return: The rows of the data file that contain text notes inserted during the experiment.</span>
+<span class="sd">    :return: The rows of the data file that contain text notes</span>
+<span class="sd">        inserted during the experiment.</span>
 <span class="sd">    :rtype: pandas.Dataframe</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span></div>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span></div>
 
 
-<div class="viewcode-block" id="remove_notes"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.remove_notes">[docs]</a><span class="k">def</span> <span class="nf">remove_notes</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+
+<div class="viewcode-block" id="remove_notes">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.remove_notes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_notes</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Omit notes from a DataFrame object, where notes are identified as rows</span>
 <span class="sd">    with non-numerical entries in the first column.</span>
 
@@ -249,14 +272,26 @@
 <span class="sd">    :return: DataFrame object with no notes</span>
 <span class="sd">    :rtype: Pandas.DataFrame</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span></div>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span></div>
 
 
-<div class="viewcode-block" id="get_data_by_time"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_time">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_time</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s1">&#39;00:00&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s1">&#39;23:59&#39;</span><span class="p">,</span>
-                     <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tsv&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">elapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract columns of data over one or more ProCoDA data files based on date</span>
-<span class="sd">    and time. Valid only for files whose names are automatically generated by</span>
-<span class="sd">    date, i.e. of the form &quot;datalog_M-D-YYYY&quot;.</span>
+
+<div class="viewcode-block" id="get_data_by_time">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_data_by_time</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">columns</span><span class="p">,</span>
+    <span class="n">dates</span><span class="p">,</span>
+    <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;00:00&quot;</span><span class="p">,</span>
+    <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;23:59&quot;</span><span class="p">,</span>
+    <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span>
+    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">elapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract columns of data over one or more ProCoDA data files based on</span>
+<span class="sd">    date and time.</span>
+<span class="sd">    Valid only for files whose names are automatically generated by date,</span>
+<span class="sd">    i.e. of the form &quot;datalog_M-D-YYYY&quot;.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1. Results for the</span>
 <span class="sd">    time column are adjusted for multi-day experiments.</span>
@@ -267,65 +302,88 @@
 <span class="sd">    :type columns: int or int list</span>
 <span class="sd">    :param dates: A single date or list of dates, formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
-<span class="sd">    :param start_time: Starting time of data to extract, formatted &#39;HH:MM&#39; (24-hour time)</span>
+<span class="sd">    :param start_time: Starting time of data to extract,</span>
+<span class="sd">        formatted &#39;HH:MM&#39; (24-hour time)</span>
 <span class="sd">    :type start_time: string, optional</span>
-<span class="sd">    :param end_time: Ending time of data to extract, formatted &#39;HH:MM&#39; (24-hour time)</span>
+<span class="sd">    :param end_time: Ending time of data to extract,</span>
+<span class="sd">        formatted &#39;HH:MM&#39; (24-hour time)</span>
 <span class="sd">    :type end_time: string, optional</span>
 <span class="sd">    :param extension: File extension of the data file(s). Defaults to &#39;.tsv&#39;</span>
 <span class="sd">    :type extension: string, optional</span>
-<span class="sd">    :param units: A single unit or list of units to apply to each column, e.g. &#39;mg/L&#39; or [&#39;hr&#39;, &#39;mg/L&#39;]. Defaults to &#39;&#39; (dimensionless).</span>
+<span class="sd">    :param units: A single unit or list of units to apply to each column,</span>
+<span class="sd">        e.g. &#39;mg/L&#39; or [&#39;hr&#39;, &#39;mg/L&#39;]. Defaults to &#39;&#39; (dimensionless).</span>
 <span class="sd">    :type units: string, optional</span>
-<span class="sd">    :param elapsed: If true, results for the time column are given in elapsed time</span>
+<span class="sd">    :param elapsed: If true, the time column is given in elapsed time</span>
 <span class="sd">    :type elapsed: boolean</span>
 
-<span class="sd">    :return: the single column of data or a list of the columns of data (in the order of the indexes given in the columns variable)</span>
+<span class="sd">    :return: the single column of data or a list of the columns of data</span>
+<span class="sd">        (in the order of the indexes given in the columns variable)</span>
 <span class="sd">    :rtype: 1D or 2D float list</span>
 
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        data = get_data_by_time(path=&#39;/Users/.../ProCoDA Data/&#39;, columns=4, dates=[&#39;6-14-2018&#39;, &#39;6-15-2018&#39;], start_time=&#39;12:20&#39;, end_time=&#39;10:50&#39;)</span>
-<span class="sd">        data = get_data_by_time(path=&#39;/Users/.../ProCoDA Data/&#39;, columns=[0,4], dates=&#39;6-14-2018&#39;, start_time=&#39;12:20&#39;, end_time=&#39;23:59&#39;)</span>
-<span class="sd">        data = get_data_by_time(path=&#39;/Users/.../ProCoDA Data/&#39;, columns=[0,3,4], dates=&#39;6-14-2018&#39;)</span>
+<span class="sd">        data = get_data_by_time(</span>
+<span class="sd">            path=&#39;/Users/.../ProCoDA Data/&#39;,</span>
+<span class="sd">            columns=4, dates=[&#39;6-14-2018&#39;, &#39;6-15-2018&#39;],</span>
+<span class="sd">            start_time=&#39;12:20&#39;,</span>
+<span class="sd">            end_time=&#39;10:50&#39;,</span>
+<span class="sd">        )</span>
+<span class="sd">        data = get_data_by_time(</span>
+<span class="sd">            path=&#39;/Users/.../ProCoDA Data/&#39;,</span>
+<span class="sd">            columns=[0,4],</span>
+<span class="sd">            dates=&#39;6-14-2018&#39;,</span>
+<span class="sd">            start_time=&#39;12:20&#39;,</span>
+<span class="sd">            end_time=&#39;23:59&#39;,</span>
+<span class="sd">        )</span>
+<span class="sd">        data = get_data_by_time(</span>
+<span class="sd">            path=&#39;/Users/.../ProCoDA Data/&#39;,</span>
+<span class="sd">            columns=[0,3,4],</span>
+<span class="sd">            dates=&#39;6-14-2018&#39;,</span>
+<span class="sd">        )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># the file path url is not acceptable (ie contains &#39;github.com&#39;)</span>
-    <span class="k">if</span> <span class="s1">&#39;github.com&#39;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;github.com&#39;</span><span class="p">,</span> <span class="s1">&#39;raw.githubusercontent.com&#39;</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;blob/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;tree/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;github.com&quot;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;github.com&quot;</span><span class="p">,</span> <span class="s2">&quot;raw.githubusercontent.com&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;blob/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;tree/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span> <span class="c1"># combine data from each date</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>  <span class="c1"># combine data from each date</span>
 
     <span class="n">first_time_column</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
     <span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">day_fraction</span><span class="p">(</span><span class="n">start_time</span><span class="p">),</span> <span class="n">first_time_column</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">start_idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">first_time_column</span> <span class="o">&gt;=</span> <span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
-    <span class="n">end_idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span>
-               <span class="n">day_fraction</span><span class="p">(</span><span class="n">end_time</span><span class="p">))</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">end_idx</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">day_fraction</span><span class="p">(</span><span class="n">end_time</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">columns</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">elapsed</span><span class="p">:</span>
             <span class="n">col</span> <span class="o">=</span> <span class="n">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">)</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">start</span><span class="p">))</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">start</span><span class="p">))</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span> <span class="c1"># columns is a list</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># columns is a list</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">elapsed</span><span class="p">:</span>
                 <span class="n">col</span> <span class="o">=</span> <span class="n">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">start</span><span class="p">))</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">start</span><span class="p">))</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">result</span></div>
 
 
-<span class="k">def</span> <span class="nf">day_fraction</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">day_fraction</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a 24-hour time to a fraction of a day. For example, midnight</span>
 <span class="sd">    corresponds to 0.0, and noon to 0.5.</span>
 
@@ -343,21 +401,23 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">hour</span><span class="o">/</span><span class="mi">24</span> <span class="o">+</span> <span class="n">minute</span><span class="o">/</span><span class="mi">1440</span>
+    <span class="k">return</span> <span class="n">hour</span> <span class="o">/</span> <span class="mi">24</span> <span class="o">+</span> <span class="n">minute</span> <span class="o">/</span> <span class="mi">1440</span>
 
 
-<span class="k">def</span> <span class="nf">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of DataFrames representing the ProCoDA data files stored in</span>
-<span class="sd">    the given path and recorded on the given dates.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">data_from_dates</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of DataFrames representing the ProCoDA data files stored</span>
+<span class="sd">    in the given path and recorded on the given dates.</span>
 
 <span class="sd">    :param path: The path to the folder containing the ProCoDA data file(s)</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param dates: A single date or list of dates for which data was recorded, formatted &quot;M-D-YYYY&quot;</span>
+<span class="sd">    :param dates: A single date or list of dates for which data was recorded,</span>
+<span class="sd">        formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
 <span class="sd">    :param extension: File extension of the data file(s)</span>
 <span class="sd">    :type extension: string, optional</span>
 
-<span class="sd">    :return: a list of DataFrames representing the ProCoDA data files recorded on the given dates</span>
+<span class="sd">    :return: a list of DataFrames representing the ProCoDA data files recorded</span>
+<span class="sd">        on the given dates</span>
 <span class="sd">    :rtype: pandas.DataFrame list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -365,16 +425,16 @@
 
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;datalog_&#39;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span><span class="p">)</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remove_notes</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)))</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;datalog_&quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remove_notes</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">data</span>
 
 
-<span class="k">def</span> <span class="nf">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of numeric data entries in the given column from the starting</span>
-<span class="sd">    index to the ending index. This can list can be compiled over one or more</span>
-<span class="sd">    DataFrames.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">column_start_to_end</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of numeric data entries in the given column from the</span>
+<span class="sd">    starting index to the ending index. This can list can be compiled over</span>
+<span class="sd">    one or more DataFrames.</span>
 
 <span class="sd">    :param data: a list of DataFrames to extract one column from</span>
 <span class="sd">    :type data: Pandas.DataFrame list</span>
@@ -382,7 +442,8 @@
 <span class="sd">    :type column: int</span>
 <span class="sd">    :param start_idx: the index of the starting row of the first DataFrame</span>
 <span class="sd">    :type start_idx: int</span>
-<span class="sd">    :param end_idx: the index of the ending row of the last DataFrame, excluding this row</span>
+<span class="sd">    :param end_idx: the index of the ending row of the last DataFrame,</span>
+<span class="sd">        excluding this row</span>
 <span class="sd">    :type end_idx: int</span>
 
 <span class="sd">    :return: a list of data from the given column</span>
@@ -392,58 +453,75 @@
         <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">,</span> <span class="n">column</span><span class="p">]))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:,</span> <span class="n">column</span><span class="p">]))</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">result</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">column</span><span class="p">])</span> <span class="o">+</span>
-                      <span class="p">(</span><span class="n">i</span> <span class="k">if</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">))</span>
-                      <span class="c1"># assuming DataFrames are for consecutive days, add number of</span>
-                      <span class="c1"># DataFrame if dealing with the time column (column 0)</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">column</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="k">if</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># assuming DataFrames are for consecutive days, add number of</span>
+            <span class="c1"># DataFrame if dealing with the time column (column 0)</span>
         <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">result</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">end_idx</span><span class="p">,</span> <span class="n">column</span><span class="p">])</span> <span class="o">+</span>
-                  <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">end_idx</span><span class="p">,</span> <span class="n">column</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">result</span>
 
 
-<div class="viewcode-block" id="get_data_by_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_state">[docs]</a><span class="k">def</span> <span class="nf">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_data_by_state">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.get_data_by_state">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and extracts the time and data column for each</span>
 <span class="sd">    iteration of the given state.</span>
 
 <span class="sd">    Note: column 0 is time, the first data column is column 1. Results for the</span>
 <span class="sd">    time column are given in elasped time.</span>
 
-<span class="sd">    :param path: The path to the folder containing the ProCoDA data file(s), defaults to the current directory</span>
+<span class="sd">    :param path: The path to the folder containing the ProCoDA data file(s),</span>
+<span class="sd">        defaults to the current directory</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param dates: A single date or list of dates for which data was recorded, formatted &quot;M-D-YYYY&quot;</span>
+<span class="sd">    :param dates: A single date or list of dates for which data was recorded,</span>
+<span class="sd">        formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
 <span class="sd">    :param state: The state ID number for which data should be extracted</span>
 <span class="sd">    :type state: int</span>
-<span class="sd">    :param column: The integer index of the column that you want to extract OR the header of the column that you want to extract</span>
+<span class="sd">    :param column: The integer index of the column that you want to extract</span>
+<span class="sd">        OR the header of the column that you want to extract</span>
 <span class="sd">    :type column: int or string</span>
 <span class="sd">    :param extension: File extension of the data file(s). Defaults to &#39;.tsv&#39;</span>
 <span class="sd">    :type extension: string, optional</span>
 
-<span class="sd">    :return: A list of lists of the time and data columns extracted for each iteration of the state. For example, if &quot;data&quot; is the output, data[i][:,0] gives the time column and data[i][:,1] gives the data column for the ith iteration of the given state and column. data[i][0] would give the first [time, data] pair.</span>
+<span class="sd">    :return: A list of lists of the time and data columns extracted</span>
+<span class="sd">        for each iteration of the state. For example, if &quot;data&quot; is the output,</span>
+<span class="sd">        data[i][:,0] gives the time column and data[i][:,1] gives the data</span>
+<span class="sd">        column for the ith iteration of the given state and column.</span>
+<span class="sd">        data[i][0] would give the first [time, data] pair.</span>
 <span class="sd">    :type: 3D float list</span>
 
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        data = get_data_by_state(path=&#39;/Users/.../ProCoDA Data/&#39;, dates=[&quot;6-19-2013&quot;, &quot;6-20-2013&quot;], state=1, column=28)</span>
+<span class="sd">        data = get_data_by_state(</span>
+<span class="sd">            path=&#39;/Users/.../ProCoDA Data/&#39;,</span>
+<span class="sd">            dates=[&quot;6-19-2013&quot;, &quot;6-20-2013&quot;],</span>
+<span class="sd">            state=1,</span>
+<span class="sd">            column=28</span>
+<span class="sd">        )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># the file path url is not acceptable (ie contains &#39;github.com&#39;)</span>
-    <span class="k">if</span> <span class="s1">&#39;github.com&#39;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;github.com&#39;</span><span class="p">,</span> <span class="s1">&#39;raw.githubusercontent.com&#39;</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;blob/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;tree/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;github.com&quot;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;github.com&quot;</span><span class="p">,</span> <span class="s2">&quot;raw.githubusercontent.com&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;blob/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;tree/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
     <span class="n">data_agg</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">day</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">first_day</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">overnight</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
-        <span class="n">path</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+    <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">+=</span> <span class="s2">&quot;/&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dates</span><span class="p">]</span>
@@ -452,8 +530,8 @@
         <span class="n">state_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;statelog_&quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
         <span class="n">data_file</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;datalog_&quot;</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">extension</span>
 
-        <span class="n">states</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -474,24 +552,27 @@
         <span class="c1"># get the corresponding indices in the data array</span>
         <span class="n">data_start</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">data_end</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">state_start</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">state_start</span><span class="p">)):</span>
             <span class="n">data_start</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_start</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">argmax</span><span class="p">())</span>
-            <span class="n">data_end</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_end</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_end</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_start</span><span class="p">):</span>
+            <span class="n">data_end</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">state_end</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_end</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_start</span><span class="p">):</span>
             <span class="n">data_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_end</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">first_day</span><span class="p">:</span>
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_start</span><span class="p">)):</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">day</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_start</span><span class="p">)):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span> <span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">day</span> <span class="o">-</span> <span class="n">start_time</span>  <span class="c1"># noqa: E203</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">column</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span> <span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">column</span><span class="p">]</span>  <span class="c1"># noqa: E203</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="n">data_start</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span> <span class="n">data_end</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>  <span class="c1"># noqa: E203</span>
             <span class="k">if</span> <span class="n">overnight</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]),</span>
-                                     <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+                <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                    <span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">data_agg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
@@ -504,27 +585,36 @@
     <span class="k">return</span> <span class="n">data_agg</span></div>
 
 
-<div class="viewcode-block" id="read_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state">[docs]</a><span class="k">def</span> <span class="nf">read_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="read_state">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads a ProCoDA file and outputs the data column and time vector for</span>
 <span class="sd">    each iteration of the given state.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
 
-<span class="sd">    :param dates: A single date or list of dates for which data was recorded, formatted &quot;M-D-YYYY&quot;</span>
+<span class="sd">    :param dates: A single date or list of dates for which data was recorded,</span>
+<span class="sd">        formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
 <span class="sd">    :param state: The state ID number for which data should be extracted</span>
 <span class="sd">    :type state: int</span>
-<span class="sd">    :param column: Index of the column that you want to extract OR header of the column that you want to extract</span>
+<span class="sd">    :param column: Index of the column that you want to extract</span>
+<span class="sd">        OR header of the column that you want to extract</span>
 <span class="sd">    :type column: int or string</span>
-<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
+<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; (dimensionless)</span>
 <span class="sd">    :type units: string, optional</span>
 <span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file.</span>
+<span class="sd">        Defaults to &quot;.tsv&quot;</span>
 <span class="sd">    :type extension: string, optional</span>
 
-<span class="sd">    :return: time (numpy.ndarray) - Times corresponding to the data (with units)</span>
-<span class="sd">    :return: data (numpy.ndarray) - Data in the given column during the given state with units</span>
+<span class="sd">    :return: time (numpy.ndarray) - Times corresponding to the data</span>
+<span class="sd">        (with units)</span>
+<span class="sd">    :return: data (numpy.ndarray) - Data in the given column during the given</span>
+<span class="sd">        state with units</span>
 
 <span class="sd">    :Examples:</span>
 
@@ -535,28 +625,35 @@
     <span class="n">data_agg</span> <span class="o">=</span> <span class="n">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
     <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">data_agg</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="average_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.average_state">[docs]</a><span class="k">def</span> <span class="nf">average_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="average_state">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.average_state">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">average_state</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Outputs the average value of the data for each instance of a state in</span>
 <span class="sd">    the given ProCoDA files</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
 
-<span class="sd">    :param dates: A single date or list of dates for which data was recorded, formatted &quot;M-D-YYYY&quot;</span>
+<span class="sd">    :param dates: A single date or list of dates for which data was recorded,</span>
+<span class="sd">        formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
 <span class="sd">    :param state: The state ID number for which data should be extracted</span>
 <span class="sd">    :type state: int</span>
-<span class="sd">    :param column: Index of the column that you want to extract OR header of the column that you want to extract</span>
+<span class="sd">    :param column: Index of the column that you want to extract</span>
+<span class="sd">        OR header of the column that you want to extract</span>
 <span class="sd">    :type column: int or string</span>
-<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
+<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; (dimensionless)</span>
 <span class="sd">    :type units: string, optional</span>
 <span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file.</span>
+<span class="sd">        Defaults to &quot;.tsv&quot;</span>
 <span class="sd">    :type extension: string, optional</span>
 
 <span class="sd">    :return: A list of averages for each instance of the given state</span>
@@ -571,40 +668,53 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data_agg</span> <span class="o">=</span> <span class="n">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
 
-    <span class="n">averages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">)):</span>
-        <span class="n">averages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">averages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_agg</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_agg</span><span class="p">)):</span>
+        <span class="n">averages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">averages</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">averages</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">averages</span></div>
 
 
-<div class="viewcode-block" id="perform_function_on_state"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.perform_function_on_state">[docs]</a><span class="k">def</span> <span class="nf">perform_function_on_state</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs the function given on each state of the data for the given state</span>
-<span class="sd">    in the given column and outputs the result for each instance of the state</span>
+
+<div class="viewcode-block" id="perform_function_on_state">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.perform_function_on_state">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perform_function_on_state</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs the function given on each state of the data</span>
+<span class="sd">    for the given state in the given column and outputs the result</span>
+<span class="sd">    for each instance of the state</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
 
-<span class="sd">    :param func: A function that will be applied to data from each instance of the state</span>
+<span class="sd">    :param func: A function that will be applied to data from each instance</span>
+<span class="sd">        of the state</span>
 <span class="sd">    :type func: function</span>
-<span class="sd">    :param dates: A single date or list of dates for which data was recorded, formatted &quot;M-D-YYYY&quot;</span>
+<span class="sd">    :param dates: A single date or list of dates for which data was recorded,</span>
+<span class="sd">        formatted &quot;M-D-YYYY&quot;</span>
 <span class="sd">    :type dates: string or string list</span>
 <span class="sd">    :param state: The state ID number for which data should be extracted</span>
 <span class="sd">    :type state: int</span>
-<span class="sd">    :param column: Index of the column that you want to extract OR header of the column that you want to extract</span>
+<span class="sd">    :param column: Index of the column that you want to extract</span>
+<span class="sd">        OR header of the column that you want to extract</span>
 <span class="sd">    :type column: int or string</span>
-<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
+<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">    Defaults to &quot;&quot; (dimensionless)</span>
 <span class="sd">    :type units: string, optional</span>
 <span class="sd">    :param path: The file path of the ProCoDA data file.</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;.</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file.</span>
+<span class="sd">        Defaults to &quot;.tsv&quot;.</span>
 <span class="sd">    :type extension: string, optional</span>
 
-<span class="sd">    :requires: func takes in a list of data with units and outputs the correct units</span>
+<span class="sd">    :requires: func takes in a list of data with units</span>
+<span class="sd">        and outputs the correct units</span>
 
-<span class="sd">    :return: The outputs of the given function for each instance of the given state</span>
+<span class="sd">    :return: The outputs of the given function for each instance</span>
+<span class="sd">        of the given state</span>
 <span class="sd">    :type: list</span>
 
 <span class="sd">    :Examples:</span>
@@ -612,62 +722,76 @@
 <span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        def avg_with_units(lst):</span>
-<span class="sd">        num = np.size(lst)</span>
+<span class="sd">        num = len(lst)</span>
 <span class="sd">        acc = 0</span>
 <span class="sd">        for i in lst:</span>
 <span class="sd">            acc = i + acc</span>
 
 <span class="sd">        return acc / num</span>
 
-<span class="sd">        data_avgs = perform_function_on_state(avg_with_units, [&quot;6-19-2013&quot;, &quot;6-20-2013&quot;], 1, 28, &quot;mL/s&quot;)</span>
+<span class="sd">        data_avgs = perform_function_on_state(</span>
+<span class="sd">            avg_with_units, [&quot;6-19-2013&quot;, &quot;6-20-2013&quot;], 1, 28, &quot;mL/s&quot;</span>
+<span class="sd">        )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data_agg</span> <span class="o">=</span> <span class="n">get_data_by_state</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data_agg</span><span class="p">)):</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_agg</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_agg</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">))</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">))</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">output</span><span class="o">*</span><span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">))</span><span class="o">.</span><span class="n">units</span>
+        <span class="k">return</span> <span class="n">output</span> <span class="o">*</span> <span class="n">func</span><span class="p">(</span><span class="n">data_agg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="n">units</span><span class="p">))</span><span class="o">.</span><span class="n">units</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">output</span></div>
 
 
-<div class="viewcode-block" id="read_state_with_metafile"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state_with_metafile">[docs]</a><span class="k">def</span> <span class="nf">read_state_with_metafile</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span>
-                             <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes in a ProCoDA meta file and performs a function for all data of a</span>
-<span class="sd">    certain state in each of the experiments (denoted by file paths in then</span>
-<span class="sd">    metafile)</span>
+
+<div class="viewcode-block" id="read_state_with_metafile">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.read_state_with_metafile">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_state_with_metafile</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes in a ProCoDA meta file and performs a function for all</span>
+<span class="sd">    data of a certain state in each of the experiments</span>
+<span class="sd">    (denoted by file paths in the metafile)</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
 
-<span class="sd">    :param func: A function that will be applied to data from each instance of the state</span>
+<span class="sd">    :param func: A function that will be applied to data</span>
+<span class="sd">        from each instance of the state</span>
 <span class="sd">    :type func: function</span>
 <span class="sd">    :param state: The state ID number for which data should be extracted</span>
 <span class="sd">    :type state: int</span>
-<span class="sd">    :param column: Index of the column that you want to extract OR header of the column that you want to extract</span>
+<span class="sd">    :param column: Index of the column that you want to extract</span>
+<span class="sd">        OR header of the column that you want to extract</span>
 <span class="sd">    :type column: int or string</span>
-<span class="sd">    :param path: The file path of the ProCoDA data file (must be tab-delimited)</span>
+<span class="sd">    :param path: The file path of the ProCoDA data file</span>
+<span class="sd">        (must be tab-delimited)</span>
 <span class="sd">    :type path: string</span>
-<span class="sd">    :param metaids: a list of the experiment IDs you&#39;d like to analyze from the metafile</span>
+<span class="sd">    :param metaids: a list of the experiment IDs you&#39;d like to analyze</span>
+<span class="sd">        from the metafile</span>
 <span class="sd">    :type metaids: string list, optional</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file.</span>
+<span class="sd">        Defaults to &quot;.tsv&quot;</span>
 <span class="sd">    :type extension: string, optional</span>
-<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;. Defaults to &quot;&quot; (dimensionless)</span>
+<span class="sd">    :param units: The units you want to apply to the data, e.g. &#39;mg/L&#39;.</span>
+<span class="sd">        Defaults to &quot;&quot; (dimensionless)</span>
 <span class="sd">    :type units: string, optional</span>
 
-<span class="sd">    :return: ids (string list) - The list of experiment ids given in the metafile</span>
-<span class="sd">    :return: outputs (list) - The outputs of the given function for each experiment</span>
+<span class="sd">    :return: ids (string list) - The list of experiment ids given</span>
+<span class="sd">        in the metafile</span>
+<span class="sd">    :return: outputs (list) - The outputs of the given function</span>
+<span class="sd">        for each experiment</span>
 
 <span class="sd">    :Examples:</span>
 
 <span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        def avg_with_units(lst):</span>
-<span class="sd">            num = np.size(lst)</span>
+<span class="sd">            num = len(lst)</span>
 <span class="sd">            acc = 0</span>
 <span class="sd">            for i in lst:</span>
 <span class="sd">                acc = i + acc</span>
@@ -675,11 +799,13 @@
 <span class="sd">            return acc / num</span>
 
 <span class="sd">        path = &quot;../tests/data/Test Meta File.txt&quot;</span>
-<span class="sd">        ids, answer = read_state_with_metafile(avg_with_units, 1, 28, path, [], &quot;.tsv&quot;, &quot;mg/L&quot;)</span>
+<span class="sd">        ids, answer = read_state_with_metafile(</span>
+<span class="sd">            avg_with_units, 1, 28, path, [], &quot;.tsv&quot;, &quot;mg/L&quot;</span>
+<span class="sd">        )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">metafile</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">metafile</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">metafile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">metafile</span><span class="p">)</span>
 
     <span class="n">ids</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
@@ -700,7 +826,7 @@
     <span class="c1"># use a loop to evaluate each experiment in the metafile</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)):</span>
         <span class="c1"># get the range of dates for experiment i</span>
-        <span class="n">day1</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">day1</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># modify the metafile date so that it works with datetime format</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">day1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span> <span class="ow">or</span> <span class="n">day1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span><span class="p">):</span>
@@ -712,7 +838,7 @@
             <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">day1</span><span class="p">,</span> <span class="s2">&quot;%m-</span><span class="si">%d</span><span class="s2">-%Y&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">day1</span><span class="p">,</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%y&quot;</span><span class="p">)</span>
-        <span class="n">duration</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">metafile</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="n">duration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
@@ -737,34 +863,58 @@
     <span class="k">return</span> <span class="n">ids</span><span class="p">,</span> <span class="n">outputs</span></div>
 
 
-<div class="viewcode-block" id="write_calculations_to_csv"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.write_calculations_to_csv">[docs]</a><span class="k">def</span> <span class="nf">write_calculations_to_csv</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">out_name</span><span class="p">,</span>
-                              <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="write_calculations_to_csv">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.write_calculations_to_csv">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_calculations_to_csv</span><span class="p">(</span>
+    <span class="n">funcs</span><span class="p">,</span>
+    <span class="n">states</span><span class="p">,</span>
+    <span class="n">columns</span><span class="p">,</span>
+    <span class="n">path</span><span class="p">,</span>
+    <span class="n">headers</span><span class="p">,</span>
+    <span class="n">out_name</span><span class="p">,</span>
+    <span class="n">metaids</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes each output of the given functions on the given states and data</span>
 <span class="sd">    columns to a new column in the specified output file.</span>
 
 <span class="sd">    Note: Column 0 is time. The first data column is column 1.</span>
 
-<span class="sd">    :param funcs: A function or list of functions which will be applied in order to the data. If only one function is given it is applied to all the states/columns</span>
+<span class="sd">    :param funcs: A function or list of functions which will be applied</span>
+<span class="sd">        in order to the data. If only one function is given,</span>
+<span class="sd">        then it is applied to all the states/columns</span>
 <span class="sd">    :type funcs: function or function list</span>
-<span class="sd">    :param states: The state ID numbers for which data should be extracted. List should be in order of calculation or if only one state is given then it will be used for all the calculations</span>
+<span class="sd">    :param states: The state ID numbers for which data should be extracted.</span>
+<span class="sd">        List should be in order of calculation, or</span>
+<span class="sd">        if only one state is given then it is used for all the calculations</span>
 <span class="sd">    :type states: string or string list</span>
-<span class="sd">    :param columns: The index of a column, the header of a column, a list of indexes, OR a list of headers of the column(s) that you want to apply calculations to</span>
+<span class="sd">    :param columns: The index of a column, the header of a column,</span>
+<span class="sd">        a list of indexes, OR a list of headers of the column(s)</span>
+<span class="sd">        that you want to apply calculations to</span>
 <span class="sd">    :type columns: int, string, int list, or string list</span>
 <span class="sd">    :param path: Path to your ProCoDA metafile (must be tab-delimited)</span>
 <span class="sd">    :type path: string</span>
 <span class="sd">    :param headers: List of the desired header for each calculation, in order</span>
 <span class="sd">    :type headers: string list</span>
-<span class="sd">    :param out_name: Desired name for the output file. Can include a relative path</span>
+<span class="sd">    :param out_name: Desired name for the output file.</span>
+<span class="sd">        Can include a relative path</span>
 <span class="sd">    :type out_name: string</span>
-<span class="sd">    :param metaids: A list of the experiment IDs you&#39;d like to analyze from the metafile</span>
+<span class="sd">    :param metaids: A list of the experiment IDs you&#39;d like to analyze</span>
+<span class="sd">        from the metafile</span>
 <span class="sd">    :type metaids: string list, optional</span>
-<span class="sd">    :param extension: The file extension of the tab delimited file. Defaults to &quot;.tsv&quot;</span>
+<span class="sd">    :param extension: The file extension of the tab delimited file.</span>
+<span class="sd">        Defaults to &quot;.tsv&quot;</span>
 <span class="sd">    :type extension: string, optional</span>
 
-<span class="sd">    :requires: funcs, states, columns, and headers are all of the same length if they are lists. Some being lists and some single values are okay.</span>
+<span class="sd">    :requires: funcs, states, columns, and headers are all of the same length</span>
+<span class="sd">        if they are lists. Some being lists and some single values are okay.</span>
 
-<span class="sd">    :return: out_name.csv (CVS file) - A CSV file with the each column being a new calcuation and each row being a new experiment on which the calcuations were performed</span>
-<span class="sd">    :return: output (Pandas.DataFrame)- Pandas DataFrame holding the same data that was written to the output file</span>
+<span class="sd">    :return: out_name.csv (CVS file) - A CSV file with the each column being a</span>
+<span class="sd">        new calcuation and each row being a new experiment on which the</span>
+<span class="sd">        calcuations were performed</span>
+<span class="sd">    :return: output (Pandas.DataFrame) - Pandas DataFrame holding the samedata</span>
+<span class="sd">        data that was written to the output file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">funcs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">funcs</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
@@ -777,22 +927,26 @@
 
     <span class="n">data_agg</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)):</span>
-        <span class="n">ids</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">read_state_with_metafile</span><span class="p">(</span><span class="n">funcs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                                             <span class="n">path</span><span class="p">,</span> <span class="n">metaids</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
+        <span class="n">ids</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">read_state_with_metafile</span><span class="p">(</span>
+            <span class="n">funcs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">path</span><span class="p">,</span> <span class="n">metaids</span><span class="p">,</span> <span class="n">extension</span>
+        <span class="p">)</span>
         <span class="n">data_agg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_agg</span><span class="p">,</span> <span class="p">[</span><span class="n">data</span><span class="p">])</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ids</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span><span class="o">+</span><span class="n">headers</span><span class="p">)</span>
-    <span class="n">output</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_name</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ids</span><span class="p">,</span> <span class="n">data_agg</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">headers</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_name</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span></div>
 
 
-<div class="viewcode-block" id="intersect"><a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.intersect">[docs]</a><span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the intersections of two lines represented by a common set of x coordinates and</span>
-<span class="sd">    two sets of y coordinates as three numpy arrays: the x coordinates of the intersections,</span>
-<span class="sd">    the y coordinates of the intersections, and the indexes in x, y1, y2 immediately</span>
-<span class="sd">    after the intersections.</span>
+
+<div class="viewcode-block" id="intersect">
+<a class="viewcode-back" href="../../../research/procoda_parser.html#aguaclara.research.procoda_parser.intersect">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">intersect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the intersections of two lines represented by a common set of</span>
+<span class="sd">    x coordinates and two sets of y coordinates as three numpy arrays:</span>
+<span class="sd">        1. the x coordinates of the intersections,</span>
+<span class="sd">        2. the y coordinates of the intersections,</span>
+<span class="sd">        3. and the indexes in x, y1, y2 immediately after the intersections.</span>
 
 <span class="sd">    :param x: common set of x coordinates for the two lines</span>
 <span class="sd">    :type x: numpy.ndarray</span>
@@ -803,26 +957,25 @@
 
 <span class="sd">    :requires: x have no repeating values and is in ascending order</span>
 
-<span class="sd">    :return: x_points-numpy.ndarray of the x coordinates where intersections occur</span>
-<span class="sd">    :return: y_points-numpy.ndarray of the y coordinates where intersections occur</span>
-<span class="sd">    :return: crossings-numpy.ndarray of the indexes after the intersections occur</span>
+<span class="sd">    :return: x_points-numpy.ndarray of x coordinates where intersections occur</span>
+<span class="sd">    :return: y_points-numpy.ndarray of y coordinates where intersections occur</span>
+<span class="sd">    :return: crossings-numpy.ndarray of indices after the intersections occur</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
     <span class="n">y_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
-    <span class="n">crossings</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)))</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">crossings</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">crossings</span><span class="p">:</span>
-      <span class="n">slope1</span> <span class="o">=</span> <span class="p">(</span><span class="n">y1</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">y1</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-      <span class="n">slope2</span> <span class="o">=</span> <span class="p">(</span><span class="n">y2</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">y2</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-      <span class="n">b1</span> <span class="o">=</span> <span class="n">y1</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">slope1</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
-      <span class="n">b2</span> <span class="o">=</span> <span class="n">y2</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">slope2</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="n">slope1</span> <span class="o">=</span> <span class="p">(</span><span class="n">y1</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">y1</span><span class="p">[</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">slope2</span> <span class="o">=</span> <span class="p">(</span><span class="n">y2</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">y2</span><span class="p">[</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="n">y1</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">slope1</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="n">b2</span> <span class="o">=</span> <span class="n">y2</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">slope2</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
 
-      <span class="n">x_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_points</span><span class="p">,</span> <span class="p">(</span><span class="n">b2</span><span class="o">-</span><span class="n">b1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">slope1</span><span class="o">-</span><span class="n">slope2</span><span class="p">))</span>
-      <span class="n">y_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_points</span><span class="p">,</span> <span class="n">slope1</span><span class="o">*</span><span class="p">(</span><span class="n">b2</span><span class="o">-</span><span class="n">b1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">slope1</span><span class="o">-</span><span class="n">slope2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span>
+        <span class="n">x_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_points</span><span class="p">,</span> <span class="p">(</span><span class="n">b2</span> <span class="o">-</span> <span class="n">b1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">slope1</span> <span class="o">-</span> <span class="n">slope2</span><span class="p">))</span>
+        <span class="n">y_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_points</span><span class="p">,</span> <span class="n">slope1</span> <span class="o">*</span> <span class="p">(</span><span class="n">b2</span> <span class="o">-</span> <span class="n">b1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">slope1</span> <span class="o">-</span> <span class="n">slope2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">x_points</span><span class="p">,</span> <span class="n">y_points</span><span class="p">,</span> <span class="n">crossings</span></div>
 
-    
 </pre></div>
 
            </div>
@@ -832,7 +985,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, AguaClara Cornell.</p>
+    <p>&#169; Copyright 2025, AguaClara Reach.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
