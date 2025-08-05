@@ -46,7 +46,7 @@ extra_requirements = {
 
 setup(
     name = "aguaclara",
-    version = "0.3.4",
+    version = "0.4.0",
     description = (
         "An open-source Python package for designing and performing research "
         "on AguaClara water treatment plants."
