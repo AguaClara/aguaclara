@@ -57,4 +57,5 @@ authors:
 title: "The AguaClara Package"
 version: 0.4.0
 date-released: 2023-02-08
+doi: 10.5281/zenodo.16748574
 url: "https://github.com/AguaClara-Reach/aguaclara"

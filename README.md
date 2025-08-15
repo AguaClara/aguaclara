@@ -3,6 +3,7 @@
 [![Documentation](https://github.com/AguaClara-Reach/aguaclara/workflows/Documentation/badge.svg)](https://aguaclara-reach.github.io/aguaclara/) 
 [![Build Status](https://github.com/AguaClara-Reach/aguaclara/workflows/Build/badge.svg)](https://github.com/AguaClara-Reach/aguaclara/actions) 
 [![Code Coverage](https://codecov.io/gh/AguaClara-Reach/aguaclara/branch/main/graph/badge.svg)](https://app.codecov.io/gh/AguaClara-Reach/aguaclara/)
+[![DOI](https://zenodo.org/badge/92859213.svg)](https://doi.org/10.5281/zenodo.16748397)
 
 `aguaclara` is a Python package developed by [AguaClara Cornell](http://aguaclara.cornell.edu/) and [AguaClara Reach](https://www.aguaclarareach.org/) for designing and performing research on AguaClara water treatment plants. The package has several main functionalities:
 
